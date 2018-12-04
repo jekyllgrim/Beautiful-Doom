@@ -55,7 +55,7 @@ states
 		TNT1 A 0 A_JumpIfCloser(512,1)
 		goto See
 		SPO1 E 15
-		TNT1 A 0 A_MonsterRefire(128,"See")
+		TNT1 A 0 A_MonsterRefire(80,"See")
 		goto MissileModern+3
 	Reload:
 		TNT1 A 0 A_ChangeFlag("FRIGHTENED",1)

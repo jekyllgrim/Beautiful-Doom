@@ -26,7 +26,7 @@ states
 			TNT1 A 0 A_Jump(256,2)
 			TNT1 A 0 A_PlaySound("weapons/chaingun/fire")
 		TNT1 A 0 A_JumpIf(GetCVAR("Bdoom_tracers")==0,3)
-		CPAS F 2 A_CustomBulletAttack(22.5, 0, 1, random(1,5)*3, "EnBulletPuff", 0, CBAF_NORANDOM,AAPTR_TARGET,"BulletTracer",30,0)
+		CPAS F 2 A_CustomBulletAttack(22.5, 0, 1, random(1,5)*3, "EnBulletPuff", 0, CBAF_NORANDOM,AAPTR_TARGET,"BulletTracer",30,32)
 		TNT1 A 0 A_Jump(256,2)
 		CPAS F 2 A_CustomBulletAttack(22.5, 0, 1, random(1,5)*3, "EnBulletPuff", 0, CBAF_NORANDOM)
 		CPAS E 2 A_FaceTarget
