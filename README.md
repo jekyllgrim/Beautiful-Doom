@@ -7,6 +7,15 @@ Repo is here!
 
 Progress so far:
 
+MODERN WEAPON SET
+I added the third weapon set (only partly functional for now). All weapons require reloading, weapons that aren't automatic require pressing trigger manually. All bullet weapons use projectile bullets instead of hitscans. Weapons have different sway and recoil.
+* Fist: has a combo system with finishers and stuff
+* Pistol: pretty darn fast
+* Shotgun: faster and altered animation
+* Riot Gun: this is gonna get some hate, I'm sure, but I hope some love too. The thing is, when I made shotgun faster, the SSG just didn't feel viable no matter what I did with it. The riot gun is essentially an automatic SSG. Powerful but requires ammo management.
+* Rocket Launcher: basically faster and can also work as a grenade launcher.
+* Plasma Rifle: similar to original but builds up heat that needs to be dissipated manually. Also deals AOE damage (similar to how, I think, it works in Doom Eternal, judging from trailers).
+
 ADDED/IMPROVED
 * A lot of stuff moved to Zscript
 * Added Modern weaponset (BFGs currently inaccessible; both Chainsaws accessible; neither is in ZScript yet)
