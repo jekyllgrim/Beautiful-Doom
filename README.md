@@ -11,6 +11,7 @@ MODERN WEAPON SET
 
 I added the third weapon set (only partly functional for now). All weapons require reloading, weapons that aren't automatic require pressing trigger manually. All bullet weapons use projectile bullets instead of hitscans. Weapons have different sway and recoil.
 * Fist: has a combo system with finishers and stuff
+* Chainsaw: very powerful but gets clogged with blood while used and may jam (chances increases with clogging). Needs to be restarted manually. The more clogged it is, the harder it is to restart. Alt fire pushes blood out, unclogging it.
 * Pistol: pretty darn fast
 * Shotgun: faster and altered animation
 * Riot Gun: this is gonna get some hate, I'm sure, but I hope some love too. The thing is, when I made shotgun faster, the SSG just didn't feel viable no matter what I did with it. The riot gun is essentially an automatic SSG. Powerful but requires ammo management.
