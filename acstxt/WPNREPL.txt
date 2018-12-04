@@ -1,0 +1,258 @@
+#library "WPNREPL"
+#include "zcommon.acs"
+
+Script "BD_Weapon_Replacement" (void)//Enter
+{
+if (CheckClass("BD_DoomPlayer") == false) //in case somebody wants to play without weapons and new playerclass, terminate this cript
+	{
+	terminate;
+	}
+//run this for Vanilla or Enhanced
+if (GetCVAR("bdoom_weapons") < 2)
+	{
+	if (CheckInventory("Chainsaw") || CheckInventory("ModernChainsaw"))
+		{
+		GiveInventory("BD_Chainsaw",1);
+			if (GetWeapon() == "Chainsaw" || GetWeapon() == "ModernChainsaw")
+				{
+				SetWeapon("BD_Chainsaw");
+				}
+		delay(7); TakeInventory("Chainsaw",1);TakeInventory("ModernChainsaw",1);
+		}
+	if (CheckInventory("Fist") || CheckInventory("ModernFist"))
+		{
+		GiveInventory("BD_Fist",1);
+			if (GetWeapon() == "Fist" || GetWeapon() == "ModernFist")
+				{
+				SetWeapon("BD_Fist");
+				}
+		delay(7); TakeInventory("Fist",1);TakeInventory("ModernFist",1);
+		}
+	if (CheckInventory("Pistol") || CheckInventory("ModernPistol"))
+		{
+		GiveInventory("BD_Pistol",1); TakeInventory("Clip",20); if (GameSkill() == 0 || GameSkill() == 4) { TakeInventory("Clip",20); }
+			if (GetWeapon() == "Pistol" || GetWeapon() == "ModernPistol")
+				{
+				SetWeapon("BD_Pistol");
+				}
+		delay(7); TakeInventory("Pistol",1);TakeInventory("ModernPistol",1);
+		}
+	if (CheckInventory("Shotgun") || CheckInventory("ModernShotgun"))
+		{
+		GiveInventory("BD_Shotgun",1); TakeInventory("Shell",8); if (GameSkill() == 0 || GameSkill() == 4) { TakeInventory("Shell",8); }
+			if (GetWeapon() == "Shotgun" || GetWeapon() == "ModernShotgun")
+				{
+				SetWeapon("BD_Shotgun");
+				}
+		delay(7); TakeInventory("Shotgun",1);TakeInventory("ModernShotgun",1);
+		}
+	if (CheckInventory("SuperShotgun") || CheckInventory("ModernSuperShotgun"))
+		{
+		GiveInventory("BD_SuperShotgun",1); TakeInventory("Shell",8); if (GameSkill() == 0 || GameSkill() == 4) { TakeInventory("Shell",8); }
+			if (GetWeapon() == "SuperShotgun" || GetWeapon() == "ModernSuperShotgun")
+				{
+				SetWeapon("BD_SuperShotgun");
+				}
+		delay(7); TakeInventory("SuperShotgun",1);TakeInventory("ModernSuperShotgun",1);
+		}
+	if (CheckInventory("Chaingun") || CheckInventory("ModernChaingun"))
+		{
+		GiveInventory("BD_Chaingun",1); TakeInventory("Clip",20); if (GameSkill() == 0 || GameSkill() == 4) { TakeInventory("Clip",20); }
+			if (GetWeapon() == "Chaingun" || GetWeapon() == "ModernChaingun")
+				{
+				SetWeapon("BD_Chaingun");
+				}
+		delay(7); TakeInventory("Chaingun",1);TakeInventory("ModernChaingun",1);
+		}
+	if (CheckInventory("RocketLauncher") || CheckInventory("ModernRocketLauncher"))
+		{
+		GiveInventory("BD_RocketLauncher",1); TakeInventory("RocketAmmo",2); if (GameSkill() == 0 || GameSkill() == 4) { TakeInventory("RocketAmmo",2); }
+			if (GetWeapon() == "RocketLauncher" || GetWeapon() == "ModernRocketLauncher")
+				{
+				SetWeapon("BD_RocketLauncher");
+				}
+		delay(7); TakeInventory("RocketLauncher",1);TakeInventory("ModernRocketLauncher",1);
+		}
+	if (CheckInventory("PlasmaRifle") || CheckInventory("ModernPlasmaRifle"))
+		{
+		GiveInventory("BD_PlasmaRifle",1); TakeInventory("Cell",20); if (GameSkill() == 0 || GameSkill() == 4) { TakeInventory("Cell",20); }
+			if (GetWeapon() == "PlasmaRifle" || GetWeapon() == "ModernPlasmaRifle")
+				{
+				SetWeapon("BD_PlasmaRifle");
+				}
+		delay(7); TakeInventory("PlasmaRifle",1);TakeInventory("ModernPlasmaRifle",1);
+		}
+	if (CheckInventory("BFG9000") || CheckInventory("ModernBFG9000"))
+		{
+		GiveInventory("BD_BFG9000",1); TakeInventory("Cell",20); if (GameSkill() == 0 || GameSkill() == 4) { TakeInventory("Cell",20); }
+			if (GetWeapon() == "BFG9000" || GetWeapon() == "ModernBFG9000")
+				{
+				SetWeapon("BD_BFG9000");
+				}
+		delay(7); TakeInventory("BFG9000",1);TakeInventory("ModernBFG9000",1);
+		}
+	}
+//run this for Modern
+if (GetCVAR("bdoom_weapons") == 2)	
+	{
+	if (CheckInventory("Chainsaw") || CheckInventory("BD_Chainsaw"))
+		{
+		GiveInventory("ModernChainsaw",1);
+			if (GetWeapon() == "Chainsaw" || GetWeapon() == "BD_Chainsaw")
+				{
+				SetWeapon("ModernChainsaw");
+				}
+		delay(7); TakeInventory("Chainsaw",1);TakeInventory("BD_Chainsaw",1);
+		}
+	if (CheckInventory("Fist") || CheckInventory("BD_Fist"))
+		{
+		GiveInventory("ModernFist",1);
+			if (GetWeapon() == "Fist" || GetWeapon() == "BD_Fist")
+				{
+				SetWeapon("ModernFist");
+				}
+		delay(7); TakeInventory("Fist",1);TakeInventory("BD_Fist",1);
+		}
+	if (CheckInventory("Pistol") || CheckInventory("BD_Pistol"))
+		{
+		GiveInventory("ModernPistol",1);
+			if (GetWeapon() == "Pistol" || GetWeapon() == "BD_Pistol")
+				{
+				SetWeapon("ModernPistol");
+				}
+		delay(7); TakeInventory("Pistol",1);TakeInventory("BD_Pistol",1);
+		}
+	if (CheckInventory("Shotgun") || CheckInventory("BD_Shotgun"))
+		{
+		GiveInventory("ModernShotgun",1);
+			if (GetWeapon() == "Shotgun" || GetWeapon() == "BD_Shotgun")
+				{
+				SetWeapon("ModernShotgun");
+				}
+		delay(7); TakeInventory("Shotgun",1);TakeInventory("BD_Shotgun",1);
+		}
+	if (CheckInventory("SuperShotgun") || CheckInventory("BD_SuperShotgun"))
+		{
+		GiveInventory("ModernSuperShotgun",1);
+			if (GetWeapon() == "SuperShotgun" || GetWeapon() == "BD_SuperShotgun")
+				{
+				SetWeapon("ModernSuperShotgun");
+				}
+		delay(7); TakeInventory("SuperShotgun",1);TakeInventory("BD_SuperShotgun",1);
+		}
+	if (CheckInventory("Chaingun") || CheckInventory("BD_Chaingun"))
+		{
+		GiveInventory("ModernChaingun",1);
+			if (GetWeapon() == "Chaingun" || GetWeapon() == "BD_Chaingun")
+				{
+				SetWeapon("ModernChaingun");
+				}
+		delay(7); TakeInventory("Chaingun",1);TakeInventory("BD_Chaingun",1);
+		}
+	if (CheckInventory("RocketLauncher") || CheckInventory("BD_RocketLauncher"))
+		{
+		GiveInventory("ModernRocketLauncher",1);
+			if (GetWeapon() == "RocketLauncher" || GetWeapon() == "BD_RocketLauncher")
+				{
+				SetWeapon("ModernRocketLauncher");
+				}
+		delay(7); TakeInventory("RocketLauncher",1);TakeInventory("BD_RocketLauncher",1);
+		}
+	if (CheckInventory("PlasmaRifle") || CheckInventory("BD_PlasmaRifle"))
+		{
+		GiveInventory("ModernPlasmaRifle",1);
+			if (GetWeapon() == "PlasmaRifle" || GetWeapon() == "BD_PlasmaRifle")
+				{
+				SetWeapon("ModernPlasmaRifle");
+				}
+		delay(7); TakeInventory("PlasmaRifle",1);TakeInventory("BD_PlasmaRifle",1);
+		}
+	if (CheckInventory("BFG9000") || CheckInventory("BD_BFG9000"))
+		{
+		GiveInventory("ModernBFG9000",1);
+			if (GetWeapon() == "BFG9000" || GetWeapon() == "BD_BFG9000")
+				{
+				SetWeapon("ModernBFG9000");
+				}
+		delay(7); TakeInventory("BFG9000",1);TakeInventory("BD_BFG9000",1);
+		}
+	}
+delay(1);
+restart;
+}
+
+str BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer0";
+
+Script "BD_AssignPlayerSpecies" Enter //used to assign species for the custom BFG to work
+{
+	if (PlayerNumber() == 0)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer0"; }
+	if (PlayerNumber() == 1)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer1"; }
+	if (PlayerNumber() == 2)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer2"; }
+	if (PlayerNumber() == 3)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer3"; }
+	if (PlayerNumber() == 4)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer4"; }
+	if (PlayerNumber() == 5)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer5"; }
+	if (PlayerNumber() == 6)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer6"; }
+	if (PlayerNumber() == 7)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer7"; }
+	if (PlayerNumber() == 8)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer8"; }
+	if (PlayerNumber() == 9)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer9"; }
+	if (PlayerNumber() == 10)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer10"; }
+	if (PlayerNumber() == 11)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer11"; }
+	if (PlayerNumber() == 12)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer12"; }
+	if (PlayerNumber() == 13)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer13"; }
+	if (PlayerNumber() == 14)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer14"; }
+	if (PlayerNumber() == 15)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer15"; }
+	if (PlayerNumber() == 16)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer16"; }
+	if (PlayerNumber() == 17)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer17"; }
+	if (PlayerNumber() == 18)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer18"; }
+	if (PlayerNumber() == 19)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer19"; }
+	if (PlayerNumber() == 20)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer20"; }
+	if (PlayerNumber() == 21)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer21"; }
+	if (PlayerNumber() == 22)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer22"; }
+	if (PlayerNumber() == 23)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer23"; }
+	if (PlayerNumber() == 24)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer24"; }
+	if (PlayerNumber() == 25)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer25"; }
+	if (PlayerNumber() == 26)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer26"; }
+	if (PlayerNumber() == 27)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer27"; }
+	if (PlayerNumber() == 28)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer28"; }
+	if (PlayerNumber() == 29)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer29"; }
+	if (PlayerNumber() == 30)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer30"; }
+	if (PlayerNumber() == 31)
+		{ BD_DoomPlayerSpecies = "BD_BeautifulDoomPlayer31"; }
+	SetActorProperty(0,APROP_Species,BD_DoomPlayerSpecies);
+}
+
+Script "BD_AssignMBFGSpecies" (void)
+{
+	SetActorProperty(0,APROP_Species,BD_DoomPlayerSpecies);
+}

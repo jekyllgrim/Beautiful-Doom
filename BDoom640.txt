@@ -1,0 +1,767 @@
+===========================================================================
+Advanced engine needed  : GZDoom 3.2.5 or newer
+Primary purpose         : No levels included
+===========================================================================
+Title                   : Beautiful Doom (version 6.4.0)
+Filename                : BDoom633.pk3
+Release date            : 
+Authors                 : Agent_Ash aka Jekyll Grim Payne, Gifty
+Email Address           : jekyllgrim@gmail.com
+Other Files By Author   : runngun2.wad, wizardr2.wad (aka wizard2.wad),
+                          equilibr.wad, painkill.wad, badguns.wad, 
+						  virtus.wad, rusars.wad, rusarsR.wad
+Additional Credits		: 
+
+* Gifty - for Smooth Doom where most of smooth monsters come from. Check out his mod:
+https://forum.zdoom.org/viewtopic.php?t=45550	
+
+* Death Egg - for all the really sweet HD item sprites
+						
+* Mike12 - for original assault rifle sprites
+
+* Revenant100 - for Minor Sprite Fixing project
+https://www.doomworld.com/vb/wads-mods/62403-doom-2-minor-sprite-fixing-project-v1-2-release-updated-1-1-13/
+				
+* perkistan — for Doom HD sound pack which is included
+https://www.doomworld.com/vb/wads-mods/58879-the-hi-res-doom-sound-pack-is-updated/
+For older Smooth Weapon Animation mod
+						
+* The Zombie Killer - for ACS footsteps
+http://forum.zdoom.org/viewtopic.php?f=37&t=35388
+	
+* Michael Henderson - for Ultra Heavy Laser sound effect
+
+* Enjay - for new switches and splashes, help with footsteps and about sound bugs
+
+* D2JK — for helping with proper blood pool collision
+	
+* David G. - Doom Guy alt. death sprites
+						
+* Accensus, phantombeta, josh771, Caligari87 — Zscript help and advice
+
+* josh771 — camera sway function for Modern Fists
+
+* DenisBelmondo - Doom Guy alt. death sprites
+
+* WildWeasel - for cool ww-diaz.wad and inspiration
+
+* Nash - for Nashgore and SpriteShadows
+						  
+* alando1 - for some of the additional death  sprites.
+
+* BurningCadavre - lots of useful bug reports.
+
+			  
+Description             : Beautiful Doom is the grandfather of enhancement mods,
+						  born in 2008, updated multiple times, and finally
+						  updated again in 2015, after a long silence. Version 6.0
+						  was an ultimate update that took it to the next level.
+						
+						  It's a mod that keeps original Doom gameplay unchanged 
+						  but introduces lots of special effects and visual 
+						  enhancements for deeper and more thrilling Doom 
+						  experience. Practically every single object in Doom was
+						  remade and updated, and many effects can be controlled
+						  while using the mod.
+
+Known Issues			: "Smarter" sprite clipping mode is recommended. If you
+						  notice some issues like sprites bouncing up and down or
+						  clipping through the floor, use "Smart" clipping.
+				
+						  Sometimes using kick (Enhanced Fist's alt. attack) may
+						  kick back some decorative objects like projectile
+						  trails.
+
+						  If you play the mod with another wad that contains its own
+						  animated textures which use parts of the Doom vanilla
+						  textures (such as water, lava), the texture may freeze 
+						  without showing any animation or special effects.
+
+						  If you suffer from performance issues or don't like 
+						  some of the new effects, you can use options under 
+						  'Beautiful Doom Settings', which let you turn on and
+						  off advanced gibbing, blood, smoke and plasma trails
+						  and debris, weapon empty casings and weapon smoke,
+						  as well as set up the maximum amount of debris and blood.
+
+===========================================================================
+
+YOUTUBE TRAILER: https://www.youtube.com/watch?v=axs1rA4KdaQ
+
+WHAT'S NEW IN 6.x compared to the earlier generation of the mod:
+
+* It's inside a properly-structured pk3
+* All weapons carefully imitate vanilla behavior
+* Added an option to switch between Vanilla and Enhanced weapons; the latter are 
+slightly rebalanced and have alternative attacks and new SFX.
+* Added Beautiful Doom Options menu that allows toggling various SFX.
+* Monsters also have fully vanilla behavior. For example Arch-Vile can now
+properly resurrect gibbed monsters, and Spider-Mastermind shoots at proper
+speed (although it looks like she's shooting faster, it's just for show).
+* Most sprites have been redrawn, with better detail and more variations.
+They also use smooth animations from Smooth Doom with Gifty's blessing.
+* Gibs have improved and optimized physics
+* LOTS of new deaths, including dismemberment (when you deal more damage than needed
+  for regular death but not enough to gib the monster), lots of regular deaths
+  plus a chainsaw death for some enemies
+* New footsteps code by The Zombie Killer
+* Tons of code optimizations and bug fixes
+
+
+ ** MINOR VERSIONS CHANGELOG **
+---------------------------------
+NEXT VERSION TDB || TBD
+* ADDED/IMPROVED *
+-- Added Modern weaponset
+-- Completely revamped blood graphics and physics
+-- Bullet tracers now aim exactly at the same place where the hitscan bullet hits (thanks A_D_M_E_R_A_L for the suggestion) 
+-- Added SpriteShadow mod by Nash Muhandes
+-- The red 'overheat' tint of the Enhanced Chaingun now has several degrees of intensity that fade in and out gradually
+
+* FIXED *
+-- Empty casings now spawn at the corret position when using Vanilla Pistol
+-- Fixed a missing frame in the Megasphere animation (thanks A_D_M_E_R_A_L)
+-- SSG now properly leaves shot decals instead of bullet decals
+-- Fixed an issue with a few guns where their firing sprite would light up fully instead of just the muzzle flash
+-- BFG orb's decorative 'lightning' will no longer be able to cause enemies to enter their pain state
+-- Removed unnecessary resource-intensive dynamic light on flame particles emitted by Lost Souls
+-- Restored BFG and Plasma Rifle kickback (thanks 3saster)
+-- Mancubus now properly calls A_BossDeath in 'plasma death' animation (thanks 3saster)
+-- Cyberdemon and Spider Mastermind now become non-solid after the correct amount of time in their death animations (thanks 3saster)
+-- All sprites in the mod are now correctly PNG which will eliminate conflicts with other wads that have custom palettes
+-- The statusbar kill count now caps at 9999 monsters instead of 999
+-- You can no longer fire 3 shots using dual Pistols if you only have 2 pistol ammo left
+-- When using Enhanced Chaingun alt. attack the first three bullets will no longer have 0 spread
+-- Icon of Sin's and Arch Vile summoning pentagrams will no longer fall down if they were created in the air
+
+
+* CHANGED *
+-- Enhanced Chaingun can now fire 60 bullets before overheating instead of 50 (the warning red color comes up at 30 instead of 25)
+
+---------------------------------
+VERSION 6.3.2 || April 15, 2018
+* ADDED/IMPROVED *
+-- Added brightmaps for all monsters. Welcome glowing eyes and more realistic lighting! While shooting monster sprites don't light up fully, instead only the relevant regions are highlighted.
+-- Kickback from kick attack now works more consistently
+-- If you comment weapon-related #include strings in the main DECORATE file to play without new weapons, you no longer have to comment WPNREPL in LOADACS too
+(But you will have to comment strings in MAPINFO. See DECORATE.txt for instructions.)
+-- Added instructions into DECORATE.txt for those who want to exclude new weapons
+-- Shotgun melee animation is a little bit more fluid
+-- Torches now emit a quiet burning sound
+-- Lamps now emit a quiet humming sound
+-- Lamps destroyed by explosions now occasionally produce electric sparks (they're disabled along with Enhanced Lights option)
+
+* CHANGED *
+-- Enhanced Fist is silent as before, but Enhanced Kick will now alert monsters within 256 map units around you if you hit an enemy
+(512 units if you're using Berserk). No alert if you swing in the air or hit a wall
+-- Enhanced Shotgun Melee alerts enemies the same way the kick does
+
+* FIXED *
+-- Shotgun melee attack is fixed and reworked:
+	- only pushes monsters away when an enemy was hit (it'll no longer sometimes push things around when you just swing in the air)
+	- it pushes monsters away similarly to kick but stronger
+	- in contrast to kick it can only push monsters horizontally, not vertically, so the practical kickback strength is lower
+	- as before, it gets stronger with Berserk
+-- Commenting weapon-related strings in DECORATE file now actually allows playing the mod without new weapons and doesn't produce any relevant errors
+-- Explosive barrel's explosion frames are now bright
+
+---------------------------------
+VERSION 6.3.1 || April 8, 2018
+* ADDED/IMPROVED *
+-- Bullet tracers now respect autoaim settings
+-- Arch-Vile's attacks now trigger fire death animations (although inconsistently)
+
+* CHANGED *
+-- Reduced the volume of some of the louder sounds:
+	- chaingun fire sound by 40%
+	- chaingun emtpy casing sound by 50%
+	- pistol emtpy casing sound by 30%
+	- shotgun empty shell sound by 60%
+	- chainsaw wall hit sound by 65%
+
+* FIXED *
+-- Added code optimization that *should* fix the issue that caused Pain Elemental/Cacodemon deaths to sometimes crash the game (thanks Rowsol)
+-- The kick attack no longer pushes enemies away if they're behind walls, and the push effect is only activated if you actually hit a monster
+-- Chaingun will no longer fire 2 bullets if you have only 1 Clip left
+-- Fixed an issue that allowed using kick in the short window after Vanilla Chainsaw primary attack (thanks SiFi270)
+-- While using Dual Pistols with Bullet Tracers on, the tracers are now properly aligned with the guns (used to be reversed)
+-- Revenant's missile is no longer missing dynamic light (thanks Rowsol)
+-- BDoom*.txt now properly lists GZDoom 3.2.5 as the earliest compatible version
+-- GZDoom loading screen now properly lists the release date instead of TBA (GAMEINFO lump)
+-- Fixed the spelling of the name of the 'Beautiful Doom Credits' menu (thanks Chewcumber)
+
+---------------------------------
+VERSION 6.3 || 29 January 2018
+* CHANGED *
+-- Removed HD item sprites. Many people pointed out that they stood out and that they didn't really add anything to the mod. 
+You find those HD sprites by downloading NAHDS project which contains these sprites from here:
+https://www.dropbox.com/sh/qelbexa5oj2qz27/AACTsVx4ECZQSR3_eDy-LF4za?dl=0
+The current version of the mod, however, now uses a different set of sprites with new animations and effects, so it's largely not compatible with NAHDS.
+-- The mod's file is now a proper PK3 with directories, which essentially removes its modular features (that weren't popular anyway). Doesn't really affect anything from player's perspective, although improves maitenance and may improve memory use.
+If you wish to disable specific features, you can comment certain lines in the DECORATE file (instead of using only specific wad files as before)
+-- Enhanced Chaingun Alt Attack felt a little overpowered. Now it has overheating mechanic that doesn't let you fire more than 50 bullets without letting go of the trigger. 
+If you fire 50, it'll need to cool off for a bit (this cooldown is slightly longer than if you let go of the trigger earlier).
+After you've fired 25 bullets in a row the barrels will become slightly red, warning you of overheating.
+-- Enhanced BFG Ray (alt.attack) no longer makes enemies bleed (which reduces memory consumption and adds consistency, as none of the other plasma attacks in the mod produce blood)
+-- Arachnotron's and player's plasma orbs now have a less jittery light halo and new sprites
+-- Arachnotron's plasma orbs no longer have a trail behind them (it always looks jittery and makes them look bigger which may hamper dodging)
+
+* ADDED/IMPROVED *
+-- Added smooth animations for all monsters and a number of objects. Most of animations are taken from Smooth Doom with some additions by me (some new death and idle animations mostly).
+Most of the death animations are the same as used in Beautiful Doom before, but improved to match the smoothness of the updated animations.
+Certain old animations were redrawn (such as Chaingun Guy's saw death, Cacodemon's gib-puking death and some others).
+-- Bullet weapons (both player's and monsters') now create bullet tracers when firing, which can be clearly seen (and heard if they whizz right next to you). It's just an effect without any change to weapon performance (bullets are still hitscan).
+-- Added "Bullet Tracers" option under Beautiful Doom Settings that allows enabling/disabling tracers
+-- Ricochetting bullets now also use tracer model and are now produced by tracers (if those are enabled; otherwise produced by bullet puffs like before)
+-- Added flies that start circling over enemy corpses after 2-4 minutes. The number of flies can increase over time.
+-- Added "Corpse flies" option under Beautiful Doom Settings that allows disabling/enabling flies over corpses. When reenabled, flies will start spawning again.
+-- Added "Muzzle Flashes" option under Beautiful Doom Settings. When set to Enhanced, bullet weapons use more realistic muzzle flash sprites with more frame variations. 
+When set to Vanilla, vanilla red muzzle flashes are used. Any type of flashes can be used with either vanilla or enhanced weapons.
+-- Power-up spheres (soulsphere, invisibility, invulnerability, megasphere) now have light halos and more consistent bobbing effect
+-- Explosive Barrels now have a light halo, similarly to other light sources
+-- In Revenant's attack animation only one of his guns lights up, to coincide with the fact that they shoot only 1 missile at a time
+-- Various exposions now use new and better sprites
+-- Key cards are now animated, and skull keys have visible shafts to look more like keys; they also have different pickup sounds
+-- Most of monster projectiles now have better effects and light halos
+-- Idle (non-alerted) Cacodemon now floats up and down a bit and blinks (blinks faster when alerted)
+-- The spawn pentagram produced by Icon of Sin's spawn cubes is now accompanied by more elegant floating particles instead of 8 fire flashes.
+The pentagram now also uses a better sprite.
+-- Added a new spawning sound to Icon of Sin's spawn cube
+-- Arch-Vile's ressurrection creates a temporary pentagram under the body, akin to Icon of Sin's spawn cubes effect
+
+* FIXED *
+-- Demon/Spectre now properly moves twice as fast on Nightmare as in vanilla Doom (previously moved at normal speed)
+-- Removed pause in animation when alternating between primary and secondary attacks of the Enhanced Super Shotgun
+-- Removed pause in animation when switching from secondary to primary attack of the Enhanced Rocket Launcher
+-- Empty casings won't eternally float horizontally if they get stuck on a horizontal surface (e.g. when landing on top of a moving elevator)
+-- Blood drops will no longer sometimes fly along the ground
+-- Pain Elemental's and Player's severed hand sprites no longer share the same names (which could cause one spawn instead of the other)
+-- Picking up a second pistol no longer forces you to select Dual Pistols (which could result in selecting pistols while already wielding a superior weapon)
+-- Fixed a missing frame in Cacodemon's gibs
+-- Fixed Shotgun Guy's walking frames being a little longer than vanilla which could result in slower enemy tracking
+-- Blood sprays created by a beating heart on a column no longer produce blood pools on the ground (it looked bad and also could cause monster blood to despawn)
+-- Shotgun can no longer be selected when you have 0 shells. Previously it was possible because Enhanced Shotgun has a melee attack,
+but it seems pointless because with Enhanced weapons you can always use kick instead; plus with Vanilla weapons being able to select it made no sense
+(and it's impossible to make it available for selection with 0 ammo only while using Enhanced version and not Vanilla)
+
+
+
+---------------------------------
+VERSION 6.2.1.1 || 07 August 2017
+* FIXED *
+-- Decoratibe blood pools (spawned by dead bodies) won't appear on liquid surfaces (works only for default Doom liquid surfaces)
+-- Small debris produced by hitscan attacks no longer clips in the terrain and floats above the ground indefinitely
+-- Zombiemen now drop the proper amount of bullets instead of 1
+---------------------------------
+VERSION 6.2.1 ||  23 July 2017
+* CHANGED *
+-- MAJOR: weapon types (Vanilla or Enhanced) are no longer bound to player classes. Instead they can be switched at any moment under Options > Beautiful Doom Settings > Player Weapons or using bdoom_weapons CVAR in console.
+Reasons:
+- No more restarts, just change on the fly. This also changes the weapon sounds that enemies make to correspond to your weapons
+- Multiplayer compatibility: the host changes the variable and all players get corresponding weapons
+- Easier to manage if for whatever reason I decide to add more weapon sets
+- It makes both weapon sets properly available when you're playing with mods that introduce their own player classes (like Unloved)
+-- Enhanced BFG Heavy Laser doesn't push enemies away anymore (which allows to more easily make use of its piercing property to cut through enemies)
+-- Spectre now uses regular red blood. Reason: because of technical limitations it's impossible to create proper fuzzy effect for blood sprites, blood marks on planes and blood decals on walls AND also make them look proper depending on the fuzz style the player chooses in the game. Giving it black blood didn't look right either.
+(Spectre gibs are still properly fuzzy)
+-- Vanilla guns now have red (vanilla) muzzle flashes (while enhanced guns retain yellow flashes)
+* FIXED *
+-- Fixed long-standing issue: Pain Elementals can no longer be resurrected by an Arch-Vile even if a death animation was used in which they leave behind a corpse (Thanks, Grigori)
+-- Removed references to now non-existent "Vanish" state in some actors. That should make certain debris properly disappear when Advanced Debris option is off, as well as remove some yellow errors upon startup. (Thanks, drfrag)
+-- Fixed a minor but ugly bug where blood drops would sometimes fly parallel to floor instead of falling
+-- Fixed a bug that made the level brighter after using BFG alternative attack (thanks MasterMind)
+-- Enhanced Chainsaw now uses a different sound during sawing (previously it mistakenly used the same sound as vanilla chainsaw)
+-- Sparks that come out of the BFG ball no longer leave BFG decals on walls (only the ball itself does)
+-- Removed unnecessary function that changed Thing ID of SS soldiers and Cacodemons on spawn which could potentially interfere with some custom scripts from other wads
+-- Hell Knight now isn't animated when it's not moving, like other monsters
+-- Removed unnecessary dynamic light definition for a currently removed version of BFG ball (produced yellow error on GZDoom startup)
+-- Shotgun casings no longer change size randomly upon spawning (Thanks, Grigori)
+-- If you're playing the mod with a map where a custom ACS direclty gives you a vanilla weapon, it gets replaced with a BD weapon (via a custom BD script) but previous you'd also get extra ammo; this is now fixed
+(Also, if that happens, a BD weapon gets properly selected instead of returning to your previous weapon, although there's a slight delay)
+* ADDED/IMPROVED *
+-- MAJOR (technical): after flying through the air for a while, gibs will stop rotating and spawning blood and come to rest even if they haven't fallen down yet. This prevents continuous blood spawning in case gibs somehow get stuck in walls or terrain.
+-- Chainsaw now has an alternative attack: kick (basically the same kick as with Enhanced Fist but a bit slower)
+-- Plasma Rifle's muzzle flash color is now closer to the color of new plasmaballs 
+-- Added 'Explosion Shakes' option to Beautiful Doom Settings that allows toggling the shaking of explosions produced by BFG, barrels and boss deaths
+-- Added minor short shake for rocket explosions
+-- Boss Brain (John Romero's head) now explodes into blood when dying (although you normally can't see it)
+-- When Icon of Sin's spawn cubes spawn a monster, it's now accompanied by a temporary glowing rotating pentagram surrounded by flames
+-- Explosive barrel's explosion now shakes the ground immediately at exploding without a delay (in contrast to damage, which is dealt with a delay, as per vanilla barrel stats)
+-- Added high-quality decals for chainsaw, Berserk punch and kick, explosions and BFG ball
+-- Blood decals on walls now better match the color of blood pools on floors/ceilings (the match still isn't perfect because blood sprites and blood decals have to be drawn and shaded using different methods) (Thanks, TheCamaleonMaligno)
+-- Hell Knight's blood now has darker and deeper color
+-- You now only leave bloody footprints while you're pressing movement buttons, which results in a more consistent footprint pattern
+-- Explosive barrels may leave explosion decals on walls
+-- Enhanced Chainsaw now properly plays start and stop sounds at the beginning and end of sawing animation
+-- Added new more informative Help (F1) screen
+-- Added "Beautiful Doom Credits" menu above "Beautiful Doom Settings" where you can see some names who were involved in the making of the mod
+-- Decorative gibbed marine body now looks a bit better (gibs may spawn further) and doesn't make any noise at spawn (obvious at, for example, the beginning of E1M1 and E1M2 of Doom 1)
+-- Decorative dead bodies are now also surrounded by a few pools of blood to make them look more like actual killed monsters
+---------------------------------
+VERSION 6.2.0 || 14 July, 2017
+* CHANGED
+-- ZDoom is no longer officially supported due to the number of features that aren't (or are badly) compatible with it
+-- Enhanced BFG9000 has a completely new alternative attack. Now it's a powerful piercing short-range railgun/laser in a Shoop Da Whoop style that can be channeled for a few seconds. With some aiming in certain situations it may be even more effective than primary attack.
+-- Max number of blood pools, gibs and debris is now controlled by one CVAR (previously blood and debris were separate and gibs weren't limited at all). This value is ZDoom's standard Corpse Queue feature (sv_corpsequeuesize) rather than custom CVARs, which produces more stable behavior
+-- Enhanced Shotgun alternative attack now only pushes monsters horizontally and has the same range as a kick (longer than a punch). This way it's more consistent and more distinct from kick.
+-- The window to use primary attack after using melee attack of Enhanced Shotgun now begins earlier, so that you can combo them more effectively (especially against Shotgun Guys, Imps and Chaingun Guys)
+* FIXED
+-- Added proper support for playing with PWADs that contain their own scripts that could mess up with weapons (you'll no longer end up with default weapons or screwed weapon slots)
+-- Blood, gibs and debris no longer collide with actors which could result in wrong animations, gibs coming to rest after landing on top of other actors or even possible crashes
+-- Plasma Railgun's ray origin point is no longer too low
+-- Shotgunguy's gibbed legs no longer show Zombieman's sprites
+-- Fixed an issue that made gibs only movable by splash damage instead of regular shooting
+-- Fixed missing/incorrect sprites for SS soldier gibs
+-- Fixed missing/incorrect sprites for Doom Marine gibs
+-- Revenant's and Arachnotron's crushed sprites are no longer blue
+-- Enhanced Shotgun's melee attack doesn't leave bullet decals anymore
+-- Whether Imp's fireballs spawn trails or not is now controlled by Advanced trails/debris option, not Advanced flames
+-- Fixed Arachnotron's plasmaballs not leaving decals
+-- Fixed incorrect pickup sound for Radiation Shielding Suit
+-- Fixed minor blood issues regarding falling into water and skipping some frames
+-- Fixed inconsistent frequency of decorative blood drops spawned by decorative dead bodies
+-- Bloody Twitch (hanging body with no legs) now continues to spawn decorative blood after being killed
+-- Removed outdated copies of sprites of certain light sources which could possibly cause visual bugs
+-- Rocket's smoke is no longer displayer when Enhanced Debris option is off
+* ADDED/IMPROVED
+-- Blood pools are now flat sprites (new GZDoom feature) which properly spawn on the floor
+-- When a monster is resurrected, its gibs will move towards it during the resurrection animation
+-- If you step over a large amount of blood pools, you'll be leaving bloody footprints behind you for a short while (which then slowly fade out)
+-- If blood spurts high enough it can create temporary pools on the ceiling which drip down some blood and then fade out
+-- BFG ball is now much smaller (closer to vanilla size) and doesn't illuminate surroundings with huge green light, but it has more effects attached (including sparks coming out of it).
+-- Blood spurts (thick trails of blood) now look a little better and are only spawned by biggest gibs, torsoes and in some death animations. This results in more visually consistent gibbing sequences
+-- Decorative blood drops (spawned by hanging dead bodies, etc.) now have a better sprite and better animation
+-- Added a little more vertical momentum to sprayed blood
+-- Added a separate blood spray pattern for chainsaw attacks (blood spurts higher)
+-- Weapons now have custom raising animations (visual effect only)
+-- Gibbed marine bodies (map decoration) now have particle gibs and blood drops around them
+-- Small blood pools (map decoration) are now also flat sprites
+-- Beautiful Doom Settings menu is now properly defined so that it doesn't conflict with any other custom menus if present (e.g. when used alongside other mods)
+-- Added high resolution decals for bullets
+-- Shotgun/SSG shots now leave smaller decals than Pistol or Chaingun
+-- An extra pistol doesn't spawn too close to chainsaw anymore
+-- Removed unnecessary ACS and optimized code for greater stability
+---------------------------------
+VERSION 6.1.4.1 || January 24, 2017
+* IMPROVED
+-- Reduced Imp's fireball size and length of its fire tail, because it seemeed a little too over the top
+-- Added new and unique deploy sounds for pistol, shotgun and SSG (as before, heard only when using Enhanced Guns)
+* FIXED
+-- Brought back the liquid splashes that I accidentally deleted in the previous update
+-- Explosives barrels now explode after a 15-tic delay, like in vanilla (thanks Someone64)
+---------------------------------
+VERSION 6.1.4 || January 16, 2017
+* FIXED
+-- Picked-up weapons now give the correct amount of ammo (I was able to track down the issue that was causing ammo errors, thanks Someone64)
+-- Destructible decorations (lamps, victims, hanging bodies) can no longer be pushed by kicks or Enhanced Shotgun's alt. attack
+* IMPROVED/SFX
+-- Added new smoother sprite flames for torches, candles and candelabras
+-- Candles and candelabras now have a different flame from torches
+-- Replaced light halos with smoother ones (with less obvious edges)
+-- Arachnotron's plasmaballs now has a yellowish-green hue instead of pure green. It's more similar to vanilla and also harder to confuse with Baron's fireballs.
+-- Plasmaballs now have shorter trail and smaller halo so they don't obstruct vision too much
+-- Small generic pieces of meat now spawn smaller blood while limbs spawn bigger blood
+-- Objects falling on hard surfaces (like guns dropped by enemies) no longer produce unnecessary hard terrain sounds (they still produce liquid splashes)
+-- Added special death animations for monsters when they're telefragged or killed via console. Previously they just spawned lots of gibs without any momentum which then fell down; now they show basic gibbing animation and spawn blood spurts, which looks better and doesn't cause that much slowdowns when using 'kill monstes'.
+* IMPROVED/OPTIMIZATION
+-- Adjusted light halos and light sources code so that it consumes less memory
+-- Plasma Railgun's ray is now surrounded with blue halo only for a limited part of its length, so that it consumes less memory when firing over very long distances
+-- Similarly to blood pools change in previous update, reduced the frequency of checks for the state of Gibs Toggle option which should reduce slowdowns cause by multiple gibs on older systems 
+------------------------
+VERSION 6.1.3.1 hotfix || January 12, 2017
+*** IMPROVED
+	- Reduced the frequency of checks for the number of existing blood pools which should reduce slowdowns on older systems
+	- Made the blood pool number checks less glitchy
+*** FIXED
+	- Fixed a bug that caused Zombieman to never drop an extra pistol when using Enhanced Guns
+	- Clip starting amount is now 50 (despite what previous version's changelog said, it was still incorrect)
+	- Arachnotron now also has BFG death (like Plasma death but with blood)
+	- Mancubus now doesn't skip initial frames of BFG death animation
+------------------------
+VERSION 6.1.3 || January 9, 2017
+*** CHANGED
+	- (Zandronum) Added separate version for Zandronum because certain 6.1.3 features
+	aren't supported even by its development builds
+	- By popular demand the mod file naming convention is changed: it's now BDoom###.pk3, 
+	where ### refers to the version number (in this case 613)
+		-- (Zandronum) The Zandronum file is named BDznd###.pk3
+	- Advanced effects are now controlled via 'Beautiful Doom Settings' menu under 'Options';
+	can also be changed via custom CVARs (starting with "bdoom_")
+	- Changed normal statusbar: it no longer includes Doomguy's face (as much as I liked it,
+	it looked weird and just blocked part of the weapon sprite)
+	- Added fullscreen HUD (can be seen only if Alternative Hud is off): a simple hud similar
+	to ZDoom's Alternative HUD but with a little more information and with Doomguy's face
+	above health value
+*** ADDED
+	- The number of existing blood drops is now controlled via a corresponding option under
+	'Beautiful Doom Settings'; can also be changed via bdoom_bloodnum CVAR
+	- The number of existing debris is now is now controlled via a corresponding option under
+	'Beautiful Doom Settings'; can also be changed via bdoom_debrisnum CVAR
+	- Ricochet/chainsaw spark sounds can now be disabled under 'Beautiful Doom Settings'
+	in case you find them annoying; doesn't affect animation
+	- Replaced skull cursor in the main menu with a modified Lost Soul animation
+	- Icon of Sin's spawn cubes now leave yellow fire trail behind them and have some additional
+	fire effects on spawning monsters
+	- Arachnotron now also has a black/smoky death (from fire/plasma damage)
+*** IMPROVED/CHANGED
+	- Enhanced Fist now has a different alternative attack: a kick. It's stronger than the
+	punch but also slower, and is slows you down during the animation (because hard to walk while
+	kicking). Knocks enemies back similar to Hexen's Disc of Repulsion (barefly affects big enemies, 
+	though). Kick speed, damage, and pushback effect increase with Berserk. Punching is 
+	still faster, easier and more reliable, but have fun playing King Leonidas!
+		-- (Zandronum) For technical reason, in Zandronum version the kick temporarily stops you
+		instead of slowing you down
+	- ((G)ZDoom) When a monster is resurrected, its gibs and most of its blood slowly fade out
+	which gives a nicer effect and shows that the monster is alive again
+	- Improved blooddrop sprites
+	- Enemies leave less blood pools when shot (the amount of blood during gibbing is unchanged)
+	- Light halos are now invisible when the player can't see the light source, which conserves resources
+	- Particle fire is also invisible when outside the player's LOS, so multiple Lost Souls hidden
+	behind walls won't slow down your computer too much
+		-- As an added bonus, this makes Lost Soul dynamic lights invisible when they're behind a wall,
+		like in Doom 2 map 13
+	- Pinky's head now has a smaller sprite (seemed too big before)
+	- Enhanced Shotgun's alternative attack has been reworked and is now similar to the kick,
+	but generally less effective than the latter; it is still effective as part of the 
+	pushback+shoot combo (works well on imps and zombies)
+	- Enhcnaed Shotgun's attack timing has been adjusted, so that primary and secondary attacks
+	can be more effectively cancelled into each other to allow a kind of simple combo
+	- Fist hits the wall with a different, 'drier' sound
+	- The halo of Plasma Railgun fades out more slowly for a nicer effect
+	- Chainsaw initial puff sprites appear lower, closer to the position of the blade
+	- Smoke effcts look slightly more varied (less like a straight line of sprites)
+	- Smoke rising over weapon barrels is now less opaque
+	- Adjusted Column (small floor lamp) sprite position to better align with the light halo
+	(remember that using different sprite clipping modes can still offset the position of the sprites)
+*** FIXED
+	- The shotgun now has correct vanilla fire rate (used to be 3 tics faster because I screwed up)
+	- Starting amount of bullets is now correctly 50 (was 70)
+	- (Zandronum) Light halos no longer remain after a lamp is destroyed by explosions
+	- All weapon sprites now have unique non-vanilla names, so if the mod is used along with anoter 
+	wad which replaces certain vanilla sprites, that wad won't draw its sprites over the mod's frames
+	- Puffs now don't create solid terrain sounds when spawned on flats
+	- Fixed a minor glitchy frame in the Fist animation following the hit
+	- Slightly improved sprites in the chainsaw idle animation
+	- Fixed a bug that could sometimes cause empty casings to spawn even if debris were disabled
+	- Pinky/Spectre heads don't collide so much with actors
+------------------------
+VERSION 6.1.0.2
+*** CHANGE: now GZDoom 2.1.1 or ZDoom 2.8.1 are required (earlier versions won't work). Zandronum 3.0 is still fine.
+*** FIXED
+	- IMPORTANT: gibs used to block teleporting monsters. Now with +ALWAYSTELEFRAG flag they don't.
+	- Hell Knight doesn't show Baron of Hell sprites in one of his resurrection animations.
+*** IMPROVED
+	- Vanilla Supershotgun's reload animation is more similar to the classic one (you put in both rounds simultaneously)
+------------------------
+VERSION 6.1.0.1
+*** IMPROVED
+	- My new statusbar now replaces standard Doom statusbar (with the mug) while ZDoom's fullscreen statusbar remains unaltered
+*** FIXED
+	- M_DOOM (image above the main menu) shows correct version
+------------------------
+VERSION 6.1.0.0
+*** FIXED
+	- In 6.0.9.9 Enhanced Guns still worked in Deathmatch because I made a mistake in the script. Now they don't
+	- Dual Pistols don't spawn in Deathmatch games
+	- Fixed a bug where Shotgun Guy would stay mirrored (walk backwards) after being resurrected by an Arch-Vile
+	- Fixed a bug where Imp would show incorrect resurrecting animation after one of the 2 possible "plasma death" animations
+	- Cacodemon now shows corret resurrection animations depending on which death animation was used
+	- Enhanced Shotgun melee alt. attack doesn't alert monsters anymore
+	- Arachnotron's plasmaballs leave proper green decals, not blue ones
+	- Missing dynamic lighting when firing a weapon
+	- Decorative blood spawned by hanging dead bodies now properly disappears when landing on water
+	- Decorative dead bodies now never spawn blood if Advanced Bleeding is off
+	- Missing sprite in Cyberdemon's death animation
+*** ADDED
+	- When connecting to a deathmatch game having selected Enhanced Guns you will see a message
+	telling you they won't work, after which you'll be switched to Vanilla Guns
+	- Alternative death animation for Chaingun Guy, similar to Smooth Doom, but with improved blood 
+	graphics (and less smooth, to correspond to the original sprite rate)
+	- Sprite variations for decorative marine corpse
+*** IMPROVED
+	- All scripts connected to toggling special effects were moved to the MAIN wad, so that now there's 
+	only one section of controls related to turning on/off the SFX in 'Customize Controls'
+	- Decorative dead bodies don't spawn decorative blood as often
+	- Changed the font and the position of the SFX-toggle on-screen messages
+	- Added improved HD sprites for Medikit, Stimpack, Berserk, Health Bonus, Green Armor and Blue Armor
+
+
+SEE THE EARLIER CHANGELOG ENTRIES AT THE BOTTOM OF THE DOCUMENT
+
+****************************************************************************
+
+* Copyright / Permissions *                                  
+
+Authors MAY use the contents of this file as a base for modification or
+reuse.  Permissions have been obtained from original authors for any of
+their resources modified or included in this file.
+
+You MAY distribute this file, provided you include this text file, with no
+modifications.  You may distribute this file in any electronic format (BBS,
+Diskette, CD, etc) as long as you include this file intact.  I have
+received permission from the original authors of any modified or included
+content in this file to allow further distribution.
+
+* Where to get the file that this text file describes *
+
+You can always find the latest version here: 
+https://www.dropbox.com/sh/4pwb7f4p841u26i/AAAGw7DUlbbCp2vzu-1tn3pka?dl=0
+
+****************************************************************************
+
+
+
+
+
+
+VERSION 6.0.9.9
+*** ADDED
+	- FINALLY, PLAYER'S ALT. DEATHS AND GIBS! 
+All the same that zombies have: fire, green fire, plasma, BFG, chainsaw deaths and advanced gibbing with unique gibs
+	- Secrets and kills counters to the statusbar
+*** IMPROVED
+	- Health, armor and ammo counters on the statusbar now change color depending on the amount
+	- Stimpack, Medikit and Berserk HD sprites are slightly improved
+	- Enhanced Guns now don't work in Deathmatch (although the player class can be selected, you'll still get vanilla guns)
+*** FIXED
+	- Possible bug when SFX would turn back on when entering a new level even if you'd turned them off before that
+	- Removed unnecessary TEXTURES lump from BDoom_Monsters.wad that may have caused some errors
+	- Enhanced Shotgun alt. attack doesn't leave holes on the walls anymore
+	- Zandronum: Replaced CheckClass command with a different one so that the mod works in	Zandronum
+	- Zandronum: changed rocket's damage type so that it doesn't trigger fire deaths anymore (seems like in Zandronum rocket has damagetype "Fire" internally)
+------------------------
+VERSION 6.0.9.8
+*** ADDED
+	- New STATUSBAR: a 'remix' of Doom's original status bar that works in all
+	aspect ratios. It works as a fullscreen statusbar (with alternative hud off only)
+	and is basically the same old statusbar, just rearranged on the screen
+	- Enhanced Fist alt. attack (temporary experiment to see how it goes): 
+	secondary attack alows to push enemies away for quick getaway, dealing to damage;
+	with Berserk Pack push is much stronger and hurts enemies if they hit something;
+	this attack's effectiveness is boosted by your spead (use while running)
+	- perkistan's HD Doom sounds are now included in the mod; you can hear the HD
+	weapon sounds if you use Vanilla Guns, while Enhanced Guns still use my sounds
+	- Dynamic light for Megasphere	
+	- New smoke for bullet puffs and guns: now the smoke spawned by bullets and 
+	over gun barrels is different fromt the smoke spawned behind rockets and 
+	raising over charred bodies.
+	- A replacement actor for BFG sprays (secondary small plasma explosions
+	spawned at enemies when BFG ball explodes)
+	- A second type of "plasma death", a "BFG death": it blackens corpses
+	like plasma death, but doesn't prevent gibbing and bleeding (so the corpses
+	end up sort of black-and-red or black-and-blue in case of Cacodemon)
+	- Imps, Hell Knights and Baron of Hells now spawn particle fire in their
+	hands prior to throwing a fireball
+	- Minor enemies now have "green fire death" in addition to "fire death", which
+	activates when they're burnt by a Hell Knight/Baron of Hell
+*** CHANGED
+	- Teleport Fog animation is now shorter (takes less time)
+	- Updated information on enhanced pistol on HELP (F1) screen according to
+	changes (no +1 damage anymore)
+	- Chaingun drawing sound
+	- Plasmaballs now leave a decal that fades out much quicker
+	- But plasma railgun leaves a long-fading decal, similar to the one
+	previously used by plasmaballs
+	- Chainsaw idle animation is now much less pronounced, just minor shaking
+	- Idle Chainsaw now produces some smoke
+*** FIXED
+	- Missing Rocket launcher drawing sound
+	- Missing pickup sounds for SSG and Shotgun
+	- Missing float-bobbing on Soulsphere
+	- Cacodemon not clipping into TERRAIN water when killed with plasma
+	- Dual pistols not having a gun flash when dual wielding
+	- Enhanced Pistol still having 6 damage instead of 5
+------------------------
+VERSION 6.0.9.7
+*** BUG FIXES
+	- Fixed a bug where a gibbed enemy would drop double items
+	- Fixed vanilla chainsaw having faster deselection animation like enhanced one
+*** BEHAVIOR CHANGES
+	- Vanilla Guns now always use Doom vanilla sounds, Enhanced Guns new use new sounds
+	- If you use both the Weapons wad and the Monsters wad, then enemy's attack 
+	sounds will always correspond to the chosen weapon set (i.e. they will use
+	either vanilla or enhanced sounds depending on the chosed weapon set)
+	- Chainsaw used to have small delay (3 tics) before beginning its attack
+	which is not how it works in original Doom. Now the delay is still present
+	visually, but the actual attack begins and happens at the same rate as in
+	original Doom.
+	- Slightly reduced the chance of getting an extra pistol (Enhanced Guns only)
+	from a Zombieman
+	- However now with a 50% chance an extra pistol may spawn next to a chainsaw
+	(for those maps where there are no Zombiemen at the beginning), if you're
+	using Enhanced Guns class
+*** IMPROVEMENTS
+	- Fixed buggy light halo spawning. Fixed that a blue halo would spawn on
+	non-blue torches if you turn Advanced Flames off and then on again.
+	- Short torches now have smaller light halos than big torches
+	- Chainsaw death animations can also be occasionally mirrored, like other
+	death animations
+	- I removed smooth wall textures for water-/lava-falls. The reason is that many
+	wads use replacements for these textures, and even original Doom wads other than 
+	doom2.wad also use different textures for these, and my replacements often screwed
+	them up. So even though it makes me sad now only water/lava/slime flats (i.e. 
+	floors/ceilings) are smooth.
+	- Footsteps are now more frequent
+	- Chainsaw now has some idle animation. I didn't like animations from original
+	Doom or Smooth Doom because, in my opinion, they both made the chainsaw look
+	like the blade is moving which shouldn't happen in idle state, so I use mine
+	modified sprites.
+------------------------
+VERSION 6.0.9.6
+*** STRUCTURAL CHANGE
+- I decided to put wads indise a PK3. Why I keep the wads? Well, I'm old-fashioned this way. Anyway, now the important thing is that there's a BDOOM_MAIN.WAD inside this pk3: this wad contains all baisc objects and sprites for the game. If you want to play any other wad separately (like only weapons, only objects, only monsters), you will ALSO NEED THE BDOOM_MAIN.WAD with any of them! So be careful with that.
+*** BUG FIXES
+- Fixed code for light halos so that it should work more efficiently and also work in Zanondrum
+- Fixed the bug that resulted in Enhanced Guns player being unable to use enhanced weapons after leaving the first map
+*** BEHAVIOR CHANGE
+- Increased Chaingun's alt. attack bullet spread
+- Enhanced Guns Pistol now has 5 points of damage instead of 6, as it makes no sence for a pistol to deal more damage than a chaingun (the faster fire-rate for Enhanced Pistol is still present)
+*** IMPROVEMENTS
+- Light halo size variation/flickering is now smoother
+- Added smooth BFG ball explosion and proper gl lights
+------------------------
+VERSION 6.0.9.5
+- Added smooth explosion sprites for revenant's, mancubus' and cacodemon's fireballs
+- Turns out I had forgotten to actually include proper translucency change for a rocket's explosion. Now it's there.
+- Revenant's seeker missile now makes a looped flying sound, similarly to player's rocket (but the sound is different)
+(it's pretty cool to actually hear them fly)
+- Arch Vile now shows animated fire spawning from his hands when attacking (if Advanced Flames aren't off)
+- Hell Knight's/Baron of Hell's fireball has better (shorter and thicker) trail
+- Enhanced Teleport Fog now added to the objects wad: includes new sprite, dynamic lighting, light halo
+- Implemented a (hopefully) less memory-consuming method of creating light halos for torches and other light sources
+- Light halos are now brighter
+- Added a more efficient way to make blood drops disappear when they fall in water that will work both on TERRAIN water and water defined via other ZDoom and GZDoom methods (Transfer Heights, 3d floors)
+- Incorporated footsteps scripting by The Zombie Killer instead of previous footstep mechanics
+- Increased pistols spread when dual-wielding
+------------------------
+VERSION 6.0.9.4
+*** NEW ALTERNATIVE ATTACKS (enhanced weapon set only):
+- DUAL PISTOLS: Zombiemen have a chance of dropping an extra pistol (requires BDoom_monsters.wad as well). The basic attack of this weapon is the same as one pistol (during this attack Doomguy just holds the second pistol in the off hand), but the alt.attack allows you to dual-wield pistols for increased firerate. The trade off is inferior accuracy, harder ammunition control and there's a small delay before shooting while the Doomguy takes aim.
+- HOMING ROCKET: enhanced rocket launcher's alt. attack allows to fire a homing rocket that flies slightly slower than regular rocket and homes in on targets within your field of vision. It may be erratic sometimes, homing in on different targets than you expected, but it's effective for delivering long-range explosions. On the other hand shooting these rockets is much slower than regular ones.
+*** IMPROVEMENTS/OPTIMIZATION
+- Enhanced BFG alt.attack plasmaballs now can only bounce off planes a limited number of times (so that if you play GZDoom and fire them directly upwards or downwards you won't be stuck with them bouncing up and down forerever).
+- Rocket's smoketrail is less opaque (so it doesn't block your vision too much)
+- Rocket's explosion sprite were adjusted, proper translucency has been added, so the explosion looks smoother and better; the number of smoky debris spawned in the explosion is now randomized and reduced
+- PlasmaRailgun (Plasma rifle alt.attack) now has a light halo and stays a little longer in the air, looks better
+- If you choose Vanilla Guns, the Fist and the Pistol will be left-handed as in original Doom.
+*** BEHAVIOR CHANGES
+- Rocket Launcher deselection animation in enhanced guns is no longer faster than regular
+- Monsters now rarely enter Decapitation death animation. Decapitation was originally intended to be a 'lighter gibbing' animation, mostly triggered only by explosions which didn't land close enough to fully gib the monster, while bullet weapons should almost never trigger it. That's how it works now.
+- Imp enters gibbing animation slightly more often (in original Doom he's very resilient to gibbing).
+*** BUG FIXES
+- Fixed a bug where Chaingun spinning sound could get stuck playing on the loop if the weapon runs out of ammo while firing
+------------------------
+VERSION 6.0.9.3
+*** VANILLA RULE VIOLATION FIX: 
+- As it turns out I was using wrong code for Fist which resulted in slightly different damage. Changed to fully vanilla now. (It used to be occasionally higher.)
+*** NEW ALTERNATIVE ATTACKS (enhanced weapon set only):
+- Much requested PLASMA RIFLE RAILGUN ALT.ATTACK. It takes 20 Cell, requires short charge and longer cooling than regular attack and deals 250-625 damage (10*random(10,25) to be precise) which is averagely the same as the same amount of plasma can do.
+- SHOTGUN ALT.ATTACK: buttstock melee. Hits slightly stronger and further than fist but more slowly.
+  It also pushes enemies away. It's affected by Berserk too (as it's a physical attack).
+  Notice that you can shoot very quickly after performing melee.
+- BFG ALT.ATTACK: similar to beta-Doom BFG attack with some tweaks. It has a slow charge and you can hold the charge button as long as you want;, the gun won't fire until you release the fire button. 
+  When you do, it fires 40 green plasma balls each dealing 5 damage and able to bounce off floors and ceilings (not walls). The total damage is somewhat lower than a full BFG blast but has different tactical applications.
+*** BUG FIXES:
+- The mod now works with Ultimate Doom without the need of doom2.wad
+- Fixed decorative dead bodies bugs
+- Fixed resurrected Cacodemon being stuck to the floor
+- Fixed a bug where imp would stay mirrored (walk backwards) when resurrected by Arch-Vile after certain death animations
+- Fixed a few GL lights and changed Armor Bonus GL light
+*** ADDED/REMOVED:
+- Added a sweet HD pickup for Armor Bonus (thanks again, Death Egg)
+- Added new death animation for Zombieman
+- Added new death animation for Cacodemon
+- Added sound variations to BFG ball explosion
+- Added a flying mid-air sound for the flying rocket (if BDoom_weapsounds.wad is used)
+- Removed one of Imp's deaths (it didn't look good plus even now he still has 3 basic variations)
+- Added sprite variations for big brown tree and small burnt tree
+*** BEHAVIOR IMPROVEMENTS:
+- Small blood drops don't produce any sound when hitting TERRAIN water (big ones still do but there are much fewer of them)
+- Lamps now don't block bullets and block projectiles (which is vanilla behavior) but still can be destroyed by explosions
+- Lamps have more health (cannot be destroyed as easily)
+Note: the logic here is that lamps are functional (i.e. give light) and shouldn't be easily destroyed
+- Lamps' lens flare is now not completely static but flickers and varies in size
+
+------------------------
+VERSION 6.0.9.2
+* New sprites for Cell Pack and Rocket Box (thanks Death Egg)
+* Fixed a couple of typos in wads; now one small effect of Arachnotron's plasma works properly (thanks unRyker)
+* Fixed Pinky and Spectre; turns out I still made a mistake in 6.0.9 that resulted in bugs in some versions (thanks Yutrzenika)
+------------------------
+VERSION 6.0.9.1
+* Non-development versions of (G)ZDoom and Zanondrum shouldn't give an error now
+------------------------
+VERSION 6.0.9
+* Fixed bugs with Demon and Spectre
+* More death animations: new death anims for Shotgun Guy, Imp, Baron of Hell, Hell Knight, Mancubus and Revenant
+------------------------
+VERSION 6.0.8
+* Fixed no pistol start
+* Minor Sprite Fixing project sprites are now included in the mod 
+* Returned vanilla Chaingun screen sprite (not stretched)
+* Death animations are occasionally mirrored for greater randomization
+* Better Cell HD sprite
+* Fixed Chaingun HD pickup sprite not appearing
+* Fixed slightly wrong SSG firing animation length (this one is soo dificult; checked it 4 times)
+* Fixed wrong sprite in SSG first frame of reloading animation
+------------------------
+VERSION 6.0.7.1
+* Playerclass selection now works better
+Detailed information about weapon stats is provided on the help screen (F1)
+Added faster deselection for all enhanced weapons except BFG
+Enhanced chainsaw doesn't pull you towards the enemy
+------------------------
+VERSION 6.0.7
+* Added 2 player classes: vanilla weapons and enhanced weapons. They only differ in weapons.
+The enhanced weapons has:
+	- Fist: faster, silent (doesn't alert enemies)
+	- Pistol: a little faster, +1 point of damage
+	- SSG: has alt.attack (the vanilla weapons player doesn't have it anymore)
+	- Chaingun: has alt.attack (the vanilla weapons player doesn't have it anymore)
+* Added HD sprites for Light Amplification Goggles and better ammo boxes hi-res sprites (thanks Death Egg)
+* Fixed decorative corpses: they now use proper sprites and are randomized just like actual monster corpses
+* If you're high in the air you can't hear footsteps on the ground below anymore
+------------------------
+VERSION 6.0.6.1
+* After trying and failing to change keys so that there would be different pickup sounds for keycards and skull keys as well as doors requiring cards or skulls, I stopped doing that. Now there's only one locked sound and one key pickup sounds, but keys work properly.
+* Added missing XY sprite billboard flag to Invisibility Sphere
+* Fixed correct version showing up in load screen (seems to be seen only if loading wads unpacked)
+* Correct release date in txt :)
+------------------------
+VERSION 6.0.6
+* BDoom_HDsprites.wad is included in the archive again (forgot it in the previous version)
+* Added keycards and skullkeys HD sprites (thanks Death Egg)
+* Added missing blue skull key dynamic light
+* Fixed SSG main attack alternative sound (has more punch, sounds like pre-6.0.1)
+* Cacodemon's fireball now looks better and also has correct coloring if fire effects are turned off
+------------------------
+VERSION 6.0.5.1 (mini-update)
+* BFG ball explosion is now original size (was smaller before) (thanks Zhs2)
+* Decapitation death (losing head or arm but not gibbing) now doesn't appear as often (thanks Zhs2)
+* Demon's head flies in the correct direction in the rare death animation where he loses his head
+------------------------
+VERSION 6.0.5
+* HD and hires sprites are now in a separate Bdoom_HDsprites.wad. Those who do not like the new sprites can simply not use the wad. Those who like everything can just load the whole BDoom_60.zip as usual
+* SSG main fire sound is not cut off by reload sound anymore
+* SSG alt.fire sound is not quiet anymore
+* Fixed a few missing GL-lights definitions
+* EvilEye code looks slightly different
+------------------------
+VERSION 6.0.4
+* Fixed SSG using 1 ammo instead of 2 in version 6.0.3 (thanks Kombine)
+* Fixed multiplayer keys, now really, yes (thanks Zhs2)
+* Changed sounds so that weapons only have a drawing sound when you use the sounds wad, but don't have it if you use standard sounds.
+------------------------
+VERSION 6.0.3
+* Fixed menu sounds so that they work with any wads used
+* Fixed wrong baron ball trail
+* Weapons kickback is now original
+------------------------
+VERSION 6.0.2
+* Blood pools are now limited to the amount of 50. They start despawning starting from the earliest one when more appear. Helps to conserve memory.
+* SSG shells falling position is more varied
+* Some small fixes in weapons original/alternative sounds
+------------------------
+VERSION 6.0.1.
+* Added BDoom_weapsounds WAD: if you don't use it, the weapons will have standard sounds.
+* Fixed Debris Toggle function so that it properly affects all weapon

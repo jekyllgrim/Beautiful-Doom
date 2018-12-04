@@ -1,0 +1,17 @@
+/*-----------------------------------------------------------
+		NEW WEAPONS
+-----------------------------------------------------------*/
+
+#include "DECORATE/BD_DGUY.txt"
+// Player class code is tied to weapons, that's why it's in this section.
+// Don't use player class without weapons or vice versa.
+#include "DECORATE/WEAPONS/BD_AMMO.txt"
+//#include "DECORATE/WEAPONS/BD_FIST.txt"
+#include "DECORATE/WEAPONS/BD_SAW.txt"
+//#include "DECORATE/WEAPONS/BD_PIST.txt"
+#include "DECORATE/WEAPONS/BD_SHOT.txt"
+//#include "DECORATE/WEAPONS/BD_SSG.txt"
+//#include "DECORATE/WEAPONS/BD_CHGN.txt"
+//#include "DECORATE/WEAPONS/BD_ROCK.txt"
+//#include "DECORATE/WEAPONS/BD_PLAS.txt"
+//#include "DECORATE/WEAPONS/BD_BFG.txt"

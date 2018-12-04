@@ -1,0 +1,433 @@
+monospacefonts true, "0";
+
+statusbar normal, forcescaled, 0.75
+{
+AspectRatio "4:3"
+	{
+	drawimage "BDSTBL",	0,	 126;
+	drawimage "BDSTBR",	260, 126;
+
+	//armor
+	drawnumber 3, HUDFONT_DOOM, green, armor, 	48, 140, 0, grey,0, 		blue, 101;
+	//health
+	drawnumber 3, HUDFONT_DOOM, yellow, health,	48, 172, 0, red,25, 	green, 75;
+	//current ammo
+	WeaponAmmo Clip
+	{
+		InInventory Backpack || BD_Backpack
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 304, 140,0,	red,50,	green, 200;
+		}
+		else
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 304, 140,0,	red,20,	green, 100;
+		}
+	}
+	WeaponAmmo Shell
+	{
+		InInventory Backpack || BD_Backpack
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 304, 140,0,	red,16,	green, 50;
+		}
+		else
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 304, 140,0,	red,8,	green, 20;
+		}
+	}
+	WeaponAmmo RocketAmmo
+	{
+		InInventory Backpack || BD_Backpack
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 304, 140,0,	red,10,	green, 40;
+		}
+		else
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 304, 140,0,	red,5,	green, 20;
+		}
+	}
+	WeaponAmmo Cell
+	{
+		InInventory Backpack || BD_Backpack
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 304, 140,0,	red,80,	green, 300;
+		}
+		else
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 304, 140,0,	red,40,	green, 150;
+		}
+	}
+
+	//secrets counter
+	drawnumber 3, INDEXFONT_DOOM, yellow, secrets, 		44, 128;
+	drawnumber 3, INDEXFONT_DOOM, yellow, totalsecrets, 	56, 128;
+	//kills counter
+	drawnumber 4, INDEXFONT_DOOM, yellow, kills, 		299,128;
+	drawnumber 4, INDEXFONT_DOOM, yellow, Monsters, 	319, 128;
+
+	//keys
+	drawswitchableimage keyslot 2 && 5, "nullimage", "STKEYS0", "STKEYS3", "STKEYS6", 310, 139;
+	drawswitchableimage keyslot 3 && 6, "nullimage", "STKEYS1", "STKEYS4", "STKEYS7", 310, 149;
+	drawswitchableimage keyslot 1 && 4, "nullimage", "STKEYS2", "STKEYS5", "STKEYS8", 310, 159;
+
+	//ammo
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammo(Clip), 		295, 173;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammo(Shell), 		295, 179;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammo(RocketAmmo), 	295, 185;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammo(Cell), 		295, 191;
+
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammocapacity(Clip), 		318, 173;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammocapacity(Shell), 		318, 179;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammocapacity(RocketAmmo), 	318, 185;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammocapacity(Cell), 		318, 191;
+	}
+
+AspectRatio "5:4"
+	{
+	drawimage "BDSTBL",	0,	 126;
+	drawimage "BDSTBR",	260, 126;
+
+	//armor
+	drawnumber 3, HUDFONT_DOOM, green, armor, 	48, 140, 0, grey,0, 		blue, 101;
+	//health
+	drawnumber 3, HUDFONT_DOOM, yellow, health,	48, 172, 0, red,25, 	green, 75;
+	//current ammo
+	WeaponAmmo Clip
+	{
+		InInventory Backpack || BD_Backpack
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 304, 140,0,	red,50,	green, 200;
+		}
+		else
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 304, 140,0,	red,20,	green, 100;
+		}
+	}
+	WeaponAmmo Shell
+	{
+		InInventory Backpack || BD_Backpack
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 304, 140,0,	red,16,	green, 50;
+		}
+		else
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 304, 140,0,	red,8,	green, 20;
+		}
+	}
+	WeaponAmmo RocketAmmo
+	{
+		InInventory Backpack || BD_Backpack
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 304, 140,0,	red,10,	green, 40;
+		}
+		else
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 304, 140,0,	red,5,	green, 20;
+		}
+	}
+	WeaponAmmo Cell
+	{
+		InInventory Backpack || BD_Backpack
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 304, 140,0,	red,80,	green, 300;
+		}
+		else
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 304, 140,0,	red,40,	green, 150;
+		}
+	}
+
+	//secrets counter
+	drawnumber 3, INDEXFONT_DOOM, yellow, secrets, 		44, 128;
+	drawnumber 3, INDEXFONT_DOOM, yellow, totalsecrets, 	56, 128;
+
+	//kills counter
+	drawnumber 4, INDEXFONT_DOOM, yellow, kills, 		299,128;
+	drawnumber 4, INDEXFONT_DOOM, yellow, Monsters, 	319, 128;
+
+	//ammo
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammo(Clip), 		295, 173;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammo(Shell), 		295, 179;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammo(RocketAmmo), 	295, 185;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammo(Cell), 		295, 191;
+
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammocapacity(Clip), 		318, 173;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammocapacity(Shell), 		318, 179;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammocapacity(RocketAmmo), 	318, 185;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammocapacity(Cell), 		318, 191;
+	}
+
+AspectRatio "16:9"
+	{
+	drawimage "BDSTBL",	-53, 126;
+	drawimage "BDSTBR",	313, 126;
+
+	//armor
+	drawnumber 3, HUDFONT_DOOM, green, armor, 	-5, 140, 0,	grey,0, 		blue, 101;
+	//drawimage "STTPRCNT", -12, 140;
+	//health
+	drawnumber 3, HUDFONT_DOOM, yellow, health, -5, 172, 0, red,25, 	green, 75;
+	//drawimage "STTPRCNT", -12, 175;
+
+	//current ammo
+	WeaponAmmo Clip
+	{
+		InInventory Backpack || BD_Backpack
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 357, 140,0,	red,50,	green, 200;
+		}
+		else
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 357, 140,0,	red,20,	green, 100;
+		}
+	}
+	WeaponAmmo Shell
+	{
+		InInventory Backpack || BD_Backpack
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 357, 140,0,	red,16,	green, 50;
+		}
+		else
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 357, 140,0,	red,8,	green, 20;
+		}
+	}
+	WeaponAmmo RocketAmmo
+	{
+		InInventory Backpack || BD_Backpack
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 357, 140,0,	red,10,	green, 40;
+		}
+		else
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 357, 140,0,	red,5,	green, 20;
+		}
+	}
+	WeaponAmmo Cell
+	{
+		InInventory Backpack || BD_Backpack
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 357, 140,0,	red,80,	green, 300;
+		}
+		else
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 357, 140,0,	red,40,	green, 150;
+		}
+	}
+
+	//secrets counter
+	drawnumber 3, INDEXFONT_DOOM, yellow, secrets, 		-10, 128;
+	drawnumber 3, INDEXFONT_DOOM, yellow, totalsecrets, 	2, 128;
+	//kills counter
+	drawnumber 4, INDEXFONT_DOOM, yellow, kills, 		352, 128;
+	drawnumber 4, INDEXFONT_DOOM, yellow, Monsters, 	372, 128;
+
+	//keys
+	drawswitchableimage keyslot 2 && 5, "nullimage", "STKEYS0", "STKEYS3", "STKEYS6", 363, 139;
+	drawswitchableimage keyslot 3 && 6, "nullimage", "STKEYS1", "STKEYS4", "STKEYS7", 363, 149;
+	drawswitchableimage keyslot 1 && 4, "nullimage", "STKEYS2", "STKEYS5", "STKEYS8", 363, 159;
+
+	//ammo
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammo(Clip), 		348, 173;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammo(Shell), 		348, 179;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammo(RocketAmmo),	348, 185;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammo(Cell), 		348, 191;
+
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammocapacity(Clip), 		371, 173;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammocapacity(Shell), 		371, 179;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammocapacity(RocketAmmo), 	371, 185;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammocapacity(Cell), 		371, 191;
+	}
+
+AspectRatio "16:10"
+	{
+	drawimage "BDSTBL",	-34,	 126;
+	drawimage "BDSTBR",	292, 126;
+
+	//armor
+	drawnumber 3, HUDFONT_DOOM, green, armor, 14, 140, 0,	grey,0, 		blue, 101;
+	//health
+	drawnumber 3, HUDFONT_DOOM, yellow, health, 14, 172, 0, red,25, 	green, 75;
+	//current ammo
+	WeaponAmmo Clip
+	{
+		InInventory Backpack || BD_Backpack
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 336, 140,0,	red,50,	green, 200;
+		}
+		else
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 336, 140,0,	red,20,	green, 100;
+		}
+	}
+	WeaponAmmo Shell
+	{
+		InInventory Backpack || BD_Backpack
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 336, 140,0,	red,16,	green, 50;
+		}
+		else
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 336, 140,0,	red,8,	green, 20;
+		}
+	}
+	WeaponAmmo RocketAmmo
+	{
+		InInventory Backpack || BD_Backpack
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 336, 140,0,	red,10,	green, 40;
+		}
+		else
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 336, 140,0,	red,5,	green, 20;
+		}
+	}
+	WeaponAmmo Cell
+	{
+		InInventory Backpack || BD_Backpack
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 336, 140,0,	red,80,	green, 300;
+		}
+		else
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, 336, 140,0,	red,40,	green, 150;
+		}
+	}
+
+	//secrets counter
+	drawnumber 3, INDEXFONT_DOOM, yellow, secrets, 		11, 128;
+	drawnumber 3, INDEXFONT_DOOM, yellow, totalsecrets, 	23, 128;
+	//kills counter
+	drawnumber 4, INDEXFONT_DOOM, yellow, kills, 		330,128;
+	drawnumber 4, INDEXFONT_DOOM, yellow, Monsters, 	350, 128;
+
+	//keys
+	drawswitchableimage keyslot 2 && 5, "nullimage", "STKEYS0", "STKEYS3", "STKEYS6", 341, 139;
+	drawswitchableimage keyslot 3 && 6, "nullimage", "STKEYS1", "STKEYS4", "STKEYS7", 341, 149;
+	drawswitchableimage keyslot 1 && 4, "nullimage", "STKEYS2", "STKEYS5", "STKEYS8", 341, 159;
+
+	//ammo
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammo(Clip), 		326, 173;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammo(Shell), 		326, 179;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammo(RocketAmmo), 	326, 185;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammo(Cell), 		326, 191;
+
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammocapacity(Clip), 		349, 173;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammocapacity(Shell), 		349, 179;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammocapacity(RocketAmmo), 	349, 185;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammocapacity(Cell), 		349, 191;
+	}
+}
+
+statusbar fullscreen, fullscreenoffsets // ZDoom HUD
+{
+
+    //health
+	drawmugshot "STF", 5, 12, -60;
+
+    drawnumber 3, HUDFONT_DOOM, green, health, drawshadow, 50, -20, 	0, red,0, 		blue, 101;
+
+    //armor
+    drawimage armoricon, 89, -36, centerbottom;
+
+	drawnumber 3, HUDFONT_DOOM, green, armor, drawshadow, 110, -20,		0,grey,0,		blue, 101;
+
+    //ammo
+    drawimage ammoicon1, -14, -4, centerbottom;
+
+	WeaponAmmo Clip
+	{
+		InInventory Backpack || BD_Backpack
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, drawshadow, -25,-20,	0,red,50,	green, 200;
+		}
+		else
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, drawshadow, -25,-20,	0,red,20,	green, 100;
+		}
+	}
+	WeaponAmmo Shell
+	{
+		InInventory Backpack || BD_Backpack
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, drawshadow, -25,-20,	0,red,16,	green, 50;
+		}
+		else
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, drawshadow, -25,-20,	0,red,8,	green, 20;
+		}
+	}
+	WeaponAmmo RocketAmmo
+	{
+		InInventory Backpack || BD_Backpack
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, drawshadow, -25,-20,	0,red,10,	green, 40;
+		}
+		else
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, drawshadow, -25,-20,	0,red,5,	green, 20;
+		}
+	}
+	WeaponAmmo Cell
+	{
+		InInventory Backpack || BD_Backpack
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, drawshadow, -25,-20,	0,red,80,	green, 300;
+		}
+		else
+		{
+			drawnumber 3, HUDFONT_DOOM, yellow, ammo1, drawshadow, -25,-20,	0,red,40,	green, 150;
+		}
+	}
+    
+
+	//ammo totals
+	drawstring SMALLFONT, yellow, "BULL",-50, -65;
+	drawstring SMALLFONT, yellow, "SHEL",-50, -57;
+	drawstring SMALLFONT, yellow, "ROCK",-50, -49;
+	drawstring SMALLFONT, yellow, "CELL",-50, -41;
+
+
+	drawstring SMALLFONT, yellow, "/",-22, -65;
+	drawstring SMALLFONT, yellow, "/",-22, -57;
+	drawstring SMALLFONT, yellow, "/",-22, -49;
+	drawstring SMALLFONT, yellow, "/",-22, -41;
+
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammo(Clip), 		-32, -64;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammo(Shell), 		-32, -56;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammo(RocketAmmo), -32, -48;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammo(Cell), 		-32, -40;
+
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammocapacity(Clip), 		-6, -64;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammocapacity(Shell), 		-6, -56;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammocapacity(RocketAmmo), -6, -48;
+	drawnumber 3, INDEXFONT_DOOM, yellow, ammocapacity(Cell), 		-6, -40;
+
+    
+    // no ammo but inventory
+    usesammo not
+    {
+        inventorybarnotvisible
+        {
+            drawselectedinventory centerbottom, drawshadow, alwaysshowcounter, HUDFONT_DOOM, -14, -3, -26, -20, untranslated;
+        }
+    }
+
+    gamemode deathmatch
+    {
+        drawnumber 2, HUDFONT_DOOM, untranslated, frags, drawshadow, -3, 1;
+    }
+    gamemode singleplayer, cooperative, teamgame
+    {
+        drawkeybar 6, vertical, reverserows, auto, -10, 2, 0, 3, auto;
+    }
+}
+
+statusbar inventory // Standard bar overlay (ZDoom Addition)
+{
+    drawinventorybar Doom, 7, INDEXFONT, 50, 170;
+}
+
+statusbar inventoryfullscreen // ZDoom HUD overlay.
+{
+    drawinventorybar Doom, translucent, 7, INDEXFONT, 50, 170;
+}

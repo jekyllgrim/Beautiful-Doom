@@ -1,0 +1,697 @@
+//**********
+// CHAINSAW
+//**********
+
+Actor BD_ChainsawSpawner : CustomInventory replaces Chainsaw
+{
+Inventory.PickupMessage "$GOTCHAINSAW"
+inventory.pickupsound "weapons/chainsaw/draw"
+states
+	{
+	Spawn:
+		CSAW A -1
+		Stop
+	Pickup:
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_weapons")==2,"ModernPickup")
+		TNT1 A 0 A_GiveInventory("BD_Chainsaw",1)
+		TNT1 A 0 A_JumpIfInventory("BD_Chainsaw",1,2)
+		TNT1 A 0 A_SelectWeapon("BD_Chainsaw")
+		stop
+	ModernPickup:
+		TNT1 A 0 A_GiveInventory("ModernChainsaw",1)
+		TNT1 A 0 A_JumpIfInventory("ModernChainsaw",1,2)
+		TNT1 A 0 A_SelectWeapon("ModernChainsaw")
+		TNT1 A 0
+		stop
+	}
+}
+
+
+Actor BD_Chainsaw : Chainsaw //replaces Chainsaw
+{
+//weapon.sisterweapon	ModernChainsaw
++AXEBLOOD
+weapon.selectionorder 220
+weapon.readysound ""
+weapon.upsound ""
+inventory.pickupsound "weapons/chainsaw/draw"
+weapon.slotnumber 1
+weapon.slotpriority 1
+states
+	{
+	Spawn:
+		//TNT1 A 0 NoDelay A_SpawnItemEx("DualPistols",0,0,0,random(3,5),random(3,5),4,random(0,360),0,128)
+		CSAW A -1
+		Stop
+	Select:
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_weapons")==1,3)
+		TNT1 A 0 A_PlaySound("weapons/sawup")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 0 A_PlaySound("weapons/chainsaw/draw")
+		TNT1 AAAAAAAA 0 A_Raise
+		SAWS ABCDEF 1 A_WeaponReady(WRF_NOFIRE)
+		goto ready
+	Deselect:
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_weapons")==1,"Deselect.Enhanced")
+		TNT1 A 0 A_Stopsound(4)
+		SAWN A 1 A_Lower
+		wait
+	Ready:
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_weapons")==1,"Ready.Enhanced")
+		TNT1 A 0 A_PlaySound("weapons/sawidle")
+		SAWB BCDC 2 A_weaponready(WRF_NOSECONDARY)
+		TNT1 A 0 A_SpawnItemEx("SawSmoke",cos(pitch)*15,random(8,10),sin(-pitch)*25+random(22,26),0,0,1,0,SXF_ABSOLUTEVELOCITY,80)
+		TNT1 A 0 A_SpawnItemEx("SawSmoke",cos(pitch)*15,random(8,10),sin(-pitch)*25+random(22,26),0,0,1,0,0,210)
+		loop
+	Fire: //should be 8 tics with no refire frames
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_weapons")==1,"Fire.Enhanced")
+		TNT1 A 0 A_Saw("","weapons/sawhit",2,"ChainsawPuff") 
+		SAWN ABC 1 //shows preparation animation but the firing function has already begun (to coincide with vanilla attack speed)
+		SAWF A 1 A_playsound("weapons/sawfull",4,1.0,TRUE)
+		TNT1 A 0 A_Saw("","weapons/sawhit",2,"ChainsawPuff")
+		SAWF AB 2 A_WeaponOffset(frandom(-2.0,2.0),frandom(32.0,34.0),WOF_INTERPOLATE)
+
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_Stopsound(4)
+		SAWN CBA 1 A_WeaponReady(WRF_NOSECONDARY)
+		goto ready
+	Hold:
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_weapons")==1,"Hold.Enhanced")
+		TNT1 A 0 A_Saw("","weapons/sawhit",2,"ChainsawPuff")
+		SAWF AB 2 A_WeaponOffset(frandom(-2.0,2.0),frandom(32.0,34.0),WOF_INTERPOLATE)
+		TNT1 A 0 A_Saw("","weapons/sawhit",2,"ChainsawPuff")
+		SAWF AB 2 A_WeaponOffset(frandom(-2.0,2.0),frandom(32.0,34.0),WOF_INTERPOLATE)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_Stopsound(4)
+		SAWN CBA 1 A_WeaponReady(WRF_NOSECONDARY)
+		goto ready
+
+	Ready.Enhanced:
+		TNT1 A 0 A_PlaySound("weapons/chainsaw/idle",5)
+		SAWB BCDC 2 A_weaponready
+		TNT1 A 0 A_SpawnItemEx("SawSmoke",cos(pitch)*15,random(8,10),sin(-pitch)*25+random(22,26),0,0,1,0,SXF_ABSOLUTEVELOCITY,80)
+		TNT1 A 0 A_SpawnItemEx("SawSmoke",cos(pitch)*15,random(8,10),sin(-pitch)*25+random(22,26),0,0,1,0,0,210)
+		goto ready
+
+	AltFire:
+		TNT1 A 0 A_GunFlash("SawKick",GFF_NOEXTCHANGE)
+		TNT1 A 2
+		TNT1 A 0 A_jumpifinventory("PowerStrength",1,"AltHoldStrong")
+		KICK AB 1
+		TNT1 A 0 A_SetSpeed(0.1)
+		TNT1 A 0 A_playsound("weapons/kick/swing")
+		KICK CD 1 
+		TNT1 A 0 A_Recoil(-2)
+		KICK EF 1
+		KICK G 3 A_CustomPunch(3*random(5,12),TRUE,CPF_NOTURN,"KickPuff",72)
+		KICK HD 2
+		KICK CBA 3
+		TNT1 A 0 A_SetSpeed(1)
+		TNT1 A 4 
+		goto ready
+	AltHoldStrong:
+		KICK AB 1
+		TNT1 A 0 A_SetSpeed(0.2)
+		TNT1 A 0 A_playsound("weapons/kick/swing")
+		KICK CD 1 
+		TNT1 A 0 A_Recoil(-5)
+		KICK EF 1
+		KICK G 3 A_CustomPunch(30*random(3,10),TRUE,CPF_NOTURN,"KickPuffStrong",80)
+		KICK HD 2
+		KICK CBA 3
+		TNT1 A 0 A_SetSpeed(1)
+		TNT1 A 4
+		goto ready
+	SawKick:
+		TNT1 A 0 A_PlaySound("weapons/chainsaw/idle",5)
+		SAW2 ACDF 1
+		SAW2 FE 2
+		TNT1 A 0 A_PlaySound("weapons/chainsaw/idle",5)
+		SAW2 DCBA 2
+		TNT1 A 0 A_PlaySound("weapons/chainsaw/idle",5)
+		SAWN A 4
+		TNT1 A 0 A_PlaySound("weapons/chainsaw/idle",5)
+		SAWB BCDC 2 
+		stop
+
+	Deselect.Enhanced:
+		TNT1 A 0 A_Stopsound(4)
+		SAWN A 1 A_Lower
+		SAWN A 0 A_Lower
+		goto deselect.Enhanced+1
+	Fire.Enhanced:
+		TNT1 A 0  A_PlaySound("weapons/chainsaw/start",4)
+		TNT1 A 0 A_CustomPunch(2*random(1,10),1,0,"ChainsawPuff")
+		SAWN ABC 1 
+		SAWF A 1
+		TNT1 A 0 A_CustomPunch(2*random(1,10),1,0,"ChainsawPuff")
+		SAWF AB 2 A_WeaponOffset(frandom(-2.0,2.0),frandom(32.0,34.0),WOF_INTERPOLATE)
+		TNT1 A 0 A_Refire("Hold.Enhanced")
+		TNT1 A 0 A_PlaySound("weapons/chainsaw/stop",4)
+		SAWN CBA 1 A_WeaponReady
+		goto ready
+	Hold.Enhanced:
+		TNT1 A 0 A_playsound("weapons/chainsaw/loop",4,1.0,TRUE)
+		TNT1 A 0 A_CustomPunch(2*random(1,10),1,0,"ChainsawPuff")
+		SAWF AB 2 A_WeaponOffset(frandom(-2.0,2.0),frandom(32.0,34.0),WOF_INTERPOLATE)
+		TNT1 A 0 A_CustomPunch(2*random(1,10),1,0,"ChainsawPuff")
+		SAWF AB 2 A_WeaponOffset(frandom(-2.0,2.0),frandom(32.0,34.0),WOF_INTERPOLATE)
+		TNT1 A 0 A_Refire("Hold.Enhanced")
+		TNT1 A 0 A_PlaySound("weapons/chainsaw/stop",4)
+		SAWN CBA 1 A_WeaponReady
+		goto ready
+	}
+}
+
+actor SawSmoke : Smoke_General
+{
+vspeed 0
+alpha 0.3
+scale 0.22
+states
+	{
+	Spawn:
+		TNT1 A 0 
+		TNT1 A 0 A_JumpIf(GetCVAR("BDoom_Debris")==0,"Disappear")
+		SMK1 AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRR 1 A_FadeOut(0.01)
+		stop
+	}
+}
+
+
+Actor ChainsawPuff : EnBulletPuff
+{
+Damagetype Saw
+scale 0.15
+alpha 0.6
+decal sawmark
+states
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIf(GetCVAR("BDoom_Debris")==0,"Puff")
+		TNT1 AAAAA 0 A_SpawnItemEx("Wallpart",0,0,0,	random(6,9),0,random(6,15),	random(0,360),0,64)
+		TNT1 A 0 A_SpawnItem("ShotSmoke")
+		TNT1 A 0 A_Jump(180,"Puff")
+		TNT1 A 0 A_JumpIf(GetCVAR("BDoom_Sparks")==0,2)
+		TNT1 A 0 A_PlaySound("weapons/chainsaw/hitwall")
+		TNT1 AAAAAAAAAAAAAAA 0 A_SpawnItemEx("RicochetSpark",0,0,0,	random(1,2),0,random(5,10),random(0,360),0,40)
+	Puff:
+		CPUF ABCD 1 bright
+		TNT1 A 0
+		stop
+	}
+}
+
+
+
+Actor ModernChainsaw : BD_Chainsaw
+{
+//weapon.sisterweapon	BD_Chainsaw
+//+POWERED_UP
++NOALERT
++NOAUTOFIRE
+Weapon.BobStyle Smooth
+weapon.bobrangex 0.2
+weapon.bobrangey 0.5
+weapon.bobspeed 2.0
+weapon.slotpriority 2
+states
+	{	
+	Select:
+		TNT1 AAAAAAAA 0 A_Raise
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",64,"Select4")
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",52,"Select3")
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",30,"Select2")
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",8,"Select1")
+		SAWN A 1 offset(30,68) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SAWN A 1 offset(25,62) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SAWN A 1 offset(20,56) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SAWN A 1 offset(15,50) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SAWN A 1 offset(10,44) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SAWN A 1 offset(5,38) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		goto ready
+	Select1:
+		SA1N A 1 offset(30,68) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SA1N A 1 offset(25,62) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SA1N A 1 offset(20,56) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SA1N A 1 offset(15,50) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SA1N A 1 offset(10,44) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SA1N A 1 offset(5,38) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		goto ready
+	Select2:
+		SA2N A 1 offset(30,68) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SA2N A 1 offset(25,62) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SA2N A 1 offset(20,56) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SA2N A 1 offset(15,50) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SA2N A 1 offset(10,44) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SA2N A 1 offset(5,38) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		goto ready
+	Select3:
+		SA3N A 1 offset(30,68) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SA3N A 1 offset(25,62) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SA3N A 1 offset(20,56) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SA3N A 1 offset(15,50) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SA3N A 1 offset(10,44) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SA3N A 1 offset(5,38) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		goto ready
+	Select4:
+		SA4N A 1 offset(30,68) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SA4N A 1 offset(25,62) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SA4N A 1 offset(20,56) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SA4N A 1 offset(15,50) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SA4N A 1 offset(10,44) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		SA4N A 1 offset(5,38) A_WeaponReady(WRF_NOFIRE|WRF_NOBOB)
+		goto ready
+	Deselect:
+		TNT1 A 0 A_ClearRefire
+		TNT1 A 0 A_TakeInventory("ChainsawSNDCounter",100)
+		TNT1 A 0 A_TakeInventory("ChainsawSwitch",1)
+		TNT1 A 0 A_TakeInventory("ChainsawCooler",1)
+		TNT1 A 0 A_TakeInventory("ChainsawHitWall",100)
+		TNT1 A 0 A_Stopsound(4)
+		TNT1 A 0 A_Stopsound(5)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",64,"DeSelect4")
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",52,"DeSelect3")
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",30,"DeSelect2")
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",8,"DeSelect1")
+	Deselect0:
+		SAWN A 1 A_Lower
+		SAWN A 0 A_Lower
+		loop
+	Deselect1:
+		SA1N A 1 A_Lower
+		SA1N A 0 A_Lower
+		loop
+	Deselect2:
+		SA2N A 1 A_Lower
+		SA2N A 0 A_Lower
+		loop
+	Deselect3:
+		SA3N A 1 A_Lower
+		SA3N A 0 A_Lower
+		loop
+	Deselect4:
+		SA4N A 1 A_Lower
+		SA4N A 0 A_Lower
+		loop
+	Ready:
+		TNT1 A 0 A_JumpIfInventory("ChainsawSwitch",1,"ReadyOn")
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",64,8)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",52,6)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",30,4)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",8,2)
+		SAWN A 1 A_WeaponReady
+		loop
+		SA1N A 1 A_WeaponReady
+		loop
+		SA2N A 1 A_WeaponReady
+		loop
+		SA3N A 1 A_WeaponReady
+		loop
+		SA4N A 1 A_WeaponReady
+		loop
+	ReadyOn:
+		TNT1 A 0 A_PlaySound("Mweapons/saw/ready",5,1.0,TRUE)
+		TNT1 A 0 A_GiveInventory("ChainsawSwitch",1)
+		
+		TNT1 A 0 A_AlertMonsters(312)
+		TNT1 A 0 A_SPawnItemEx("ChainsawBloodSpill",cos(pitch)* 24,frandom(1.0,3.0),sin(-pitch) * 25 + random(34,36),velx,vely,0,0,SXF_ABSOLUTEVELOCITY,256 - CountInv("ChainsawJamStack") * 8)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",64,24)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",52,18)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",30,12)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",8,6)
+		SAWB ABCDC 2 A_WeaponReady
+		goto ReadyOn1
+		SA1B ABCDC 2 A_WeaponReady
+		goto ReadyOn1
+		SA2B ABCDC 2 A_WeaponReady
+		goto ReadyOn1
+		SA3B ABCDC 2 A_WeaponReady
+		goto ReadyOn1
+		SA4B ABCDC 2 A_WeaponReady
+		goto ReadyOn1
+	ReadyOn1:
+		TNT1 AA 0 A_SpawnItemEx("SawSmoke",cos(pitch)*15,random(8,10),sin(-pitch)*25+random(22,26),0,0,1,0,SXF_ABSOLUTEVELOCITY,80)
+		TNT1 A 0 A_AlertMonsters(312)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",64,24)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",52,18)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",30,12)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",8,6)
+		SAWB ABCDC 2 A_WeaponReady
+		goto ReadyOnEnd
+		SA1B ABCDC 2 A_WeaponReady
+		goto ReadyOnEnd
+		SA2B ABCDC 2 A_WeaponReady
+		goto ReadyOnEnd
+		SA3B ABCDC 2 A_WeaponReady
+		goto ReadyOnEnd
+		SA4B ABCDC 2 A_WeaponReady
+		goto ReadyOnEnd
+	ReadyOnEnd:
+		TNT1 AA 0 A_SpawnItemEx("SawSmoke",cos(pitch)*15,random(8,10),sin(-pitch)*25+random(22,26),0,0,1,0,SXF_ABSOLUTEVELOCITY,80)
+		TNT1 A 0 A_TakeINventory("ChainsawJamStack",1)
+		goto ReadyOn+2
+
+	AltFire:
+		TNT1 A 0 A_JumpIfInventory("ChainsawSwitch",1,1)
+		goto Fire
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",64,"AltFire4")
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",52,"AltFire3")
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",30,"AltFire2")
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",8,"AltFire1")
+	AltFire0:
+		TNT1 A 0 A_JumpIfInventory("ChainsawCooler",1,5)
+		SAW2 ABCDE 1
+		TNT1 A 0 A_PlaySound("Mweapons/saw/start",4)
+		SAW2 EGHEGHEGH 1
+		TNT1 A 0 A_PlaySound("Mweapons/saw/stop",4)
+		TNT1 A 0 A_TakeInventory("ChainsawJamStack",8)
+		TNT1 A 0 A_GiveInventory("ChainsawCooler",1)
+		SAW2 E 9 A_WeaponReady(WRF_NOPRIMARY)
+		SAW2 E 9 A_WeaponReady
+		TNT1 A 0 A_TakeInventory("ChainsawCooler",1)
+		SAW2 DCBA 1
+		goto ready
+	AltFire1:
+		TNT1 A 0 A_JumpIfInventory("ChainsawCooler",1,5)
+		SA12 ABCDE 1
+		TNT1 A 0 A_PlaySound("Mweapons/saw/start",4)
+		SA12 EGHEGHEGH 1 A_SpawnItemEx("ChainsawBlood",0,5,random(10,13),velx+random(4,5),vely*0.4,random(6,8),random(4,8),0,160)
+		TNT1 A 0 A_PlaySound("Mweapons/saw/stop",4)
+		TNT1 A 0 A_TakeInventory("ChainsawJamStack",8)
+		TNT1 A 0 A_GiveInventory("ChainsawCooler",1)
+		SA12 E 9 A_WeaponReady(WRF_NOPRIMARY)
+		SA12 E 9 A_WeaponReady
+		TNT1 A 0 A_TakeInventory("ChainsawCooler",1)
+		SA12 DCBA 1
+		goto ready
+	AltFire2:
+		TNT1 A 0 A_JumpIfInventory("ChainsawCooler",1,5)
+		SA22 ABCDE 1
+		TNT1 A 0 A_PlaySound("Mweapons/saw/start",4)
+		SA22 EGHEGHEGH 1 A_SpawnItemEx("ChainsawBlood",0,5,random(10,13),velx+random(4,5),vely*0.4,random(6,8),random(4,8),0,128)
+		TNT1 A 0 A_PlaySound("Mweapons/saw/stop",4)
+		TNT1 A 0 A_TakeInventory("ChainsawJamStack",8)
+		TNT1 A 0 A_GiveInventory("ChainsawCooler",1)
+		SA22 E 9 A_WeaponReady(WRF_NOPRIMARY)
+		SA22 E 9 A_WeaponReady
+		TNT1 A 0 A_TakeInventory("ChainsawCooler",1)
+		SA22 DCBA 1
+		goto ready
+	AltFire3:
+		TNT1 A 0 A_JumpIfInventory("ChainsawCooler",1,5)
+		SA32 ABCDE 1
+		TNT1 A 0 A_PlaySound("Mweapons/saw/start",4)
+		SA32 EGHEGHEGH 1 A_SpawnItemEx("ChainsawBlood",0,5,random(10,13),velx+random(4,5),vely*0.4,random(6,8),random(4,8),0,64)
+		TNT1 A 0 A_PlaySound("Mweapons/saw/stop",4)
+		TNT1 A 0 A_TakeInventory("ChainsawJamStack",8)
+		TNT1 A 0 A_GiveInventory("ChainsawCooler",1)
+		SA32 E 9 A_WeaponReady(WRF_NOPRIMARY)
+		SA32 E 9 A_WeaponReady
+		TNT1 A 0 A_TakeInventory("ChainsawCooler",1)
+		SA32 DCBA 1
+		goto ready
+	AltFire4:
+		TNT1 A 0 A_JumpIfInventory("ChainsawCooler",1,5)
+		SA42 ABCDE 1
+		TNT1 A 0 A_PlaySound("Mweapons/saw/start",4)
+		SA42 EGHEGHEGH 1 A_SpawnItemEx("ChainsawBlood",0,5,random(10,13),velx+random(4,5),vely*0.4,random(6,8),random(4,8),0,32)
+		TNT1 A 0 A_PlaySound("Mweapons/saw/stop",4)
+		TNT1 A 0 A_TakeInventory("ChainsawJamStack",8)
+		TNT1 A 0 A_GiveInventory("ChainsawCooler",1)
+		SA42 E 9 A_WeaponReady(WRF_NOPRIMARY)
+		SA42 E 9 A_WeaponReady
+		TNT1 A 0 A_TakeInventory("ChainsawCooler",1)
+		SA42 DCBA 1
+		goto ready
+	Fire:
+		TNT1 A 0 A_TakeInventory("ChainsawCooler",1)
+		TNT1 A 0 A_JumpIfInventory("ChainsawSwitch",1,"Attack")
+		TNT1 A 0 A_AlertMonsters(312)
+		TNT1 A 0 A_PlaySound("Mweapons/saw/cock")
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",64,48)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",52,36)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",30,24)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",8,12)
+		SAWS FEDCBA 1 A_WeaponOffset(0,32)
+		SAWS BCD 1 A_WeaponOffset(0,32)
+		SAWS EF 2 A_WeaponOffset(0,32)
+		goto FireEnd
+		SA1S FEDCBA 1 A_WeaponOffset(0,32)
+		SA1S BCD 2 A_WeaponOffset(0,32)
+		SA1S EF 3 A_WeaponOffset(0,32)
+		goto FireEnd
+		SA2S FEDCBA 1 A_WeaponOffset(0,32)
+		SA2S BCD 2 A_WeaponOffset(0,32)
+		SA2S EF 3 A_WeaponOffset(0,32)
+		goto FireEnd
+		SA3S FEDCBA 1 A_WeaponOffset(0,32)
+		SA3S BCD 2 A_WeaponOffset(0,32)
+		SA3S EF 3 A_WeaponOffset(0,32)
+		goto FireEnd
+		SA4S FEDCBA 1 A_WeaponOffset(0,32)
+		SA4S BCD 2 A_WeaponOffset(0,32)
+		SA4S EF 3 A_WeaponOffset(0,32)
+		goto FireEnd
+	FireEnd:
+		TNT1 A 0 A_Jump(256 - CountInv("ChainsawJamStack") * 2,"ReadyOn")
+		TNT1 A 0 A_TakeInventory("ChainsawJamStack",8)
+		goto ready
+	Attack:	
+		TNT1 A 0 A_StopSound(5)
+		TNT1 A 0 A_PlaySound("Mweapons/saw/start",4)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",64,16)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",52,12)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",30,8)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",8,4)
+		SAWN ABC 2 
+		goto Hold
+		SA1N ABC 2 
+		goto Hold
+		SA2N ABC 2 
+		goto Hold
+		SA3N ABC 2 
+		goto Hold
+		SA4N ABC 2 
+		goto Hold
+	Hold:
+		TNT1 A 0 A_JUmpIfInventory("ChainsawSNDCounter",75,3)
+		TNT1 A 0 A_playsound("Mweapons/saw/loop",4,1.0,TRUE)
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 0 A_playsound("Mweapons/saw/highloop",4,1.0,TRUE)
+		TNT1 A 0 A_AlertMonsters
+		TNT1 A 0 A_CustomPunch(6*random(1,4),1,CPF_NOTURN,"ModernsawPuff")
+		TNT1 A 0 A_GiveInventory("ChainsawSNDCounter",1)
+
+		TNT1 A 0 A_SetAngle(angle + frandom(CountInv("ChainsawJamStack") * -0.01,CountInv("ChainsawJamStack") * 0.01))
+		TNT1 A 0 A_SetPitch(Pitch + frandom(CountInv("ChainsawJamStack") * -0.01,CountInv("ChainsawJamStack") * 0.01))
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",64,12)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",52,9)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",30,6)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",8,3)
+		SAWF AB 1 A_WeaponOffset(frandom(-0.3 + CountInv("ChainsawJamStack") * -0.01, 0.3 + CountInv("ChainsawJamStack") * 0.01),frandom(32.0, 32.8 + CountInv("ChainsawJamStack")* 0.01), WOF_INTERPOLATE)
+		goto SawEnd
+		SA1F AB 1 A_WeaponOffset(frandom(-0.3 + CountInv("ChainsawJamStack") * -0.01, 0.3 + CountInv("ChainsawJamStack") * 0.01),frandom(32.0, 32.8 + CountInv("ChainsawJamStack")* 0.01),WOF_INTERPOLATE)
+		goto SawEnd
+		SA2F AB 1 A_WeaponOffset(frandom(-0.3 + CountInv("ChainsawJamStack") * -0.01, 0.3 + CountInv("ChainsawJamStack") * 0.01),frandom(32.0, 32.8 + CountInv("ChainsawJamStack")* 0.01),WOF_INTERPOLATE)
+		goto SawEnd
+		SA3F AB 1 A_WeaponOffset(frandom(-0.3 + CountInv("ChainsawJamStack") * -0.01, 0.3 + CountInv("ChainsawJamStack") * 0.01),frandom(32.0, 32.8 + CountInv("ChainsawJamStack")* 0.01),WOF_INTERPOLATE)
+		goto SawEnd
+		SA4F AB 1 A_WeaponOffset(frandom(-0.3 + CountInv("ChainsawJamStack") * -0.01, 0.3 + CountInv("ChainsawJamStack") * 0.01),frandom(32.0, 32.8 + CountInv("ChainsawJamStack")* 0.01),WOF_INTERPOLATE)
+		goto SawEnd
+
+
+	SawEnd:
+		TNT1 A 0 A_JumpIf(CountInv("ChainsawHitTarget") == 0 || CountInv("ChainsawJamStack") < 28,2)
+		TNT1 A 0 A_Jump(CountInv("ChainsawJamStack") / 8,"Jam")
+	SawWall:
+		TNT1 A 0 A_Jump(256 - CountInv("ChainsawHitWall"),"SawFinal")
+		TNT1 A 0 A_PlaySound("Mweapons/saw/stop",6)
+		TNT1 A 0 A_SetAngle(angle + frandom(5.0,5.0))
+		TNT1 A 0 A_SetPitch(Pitch + frandom(1.5,1.5))
+		TNT1 A 0 A_Recoil(frandom(1.0,3.0))
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",64,12)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",52,9)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",30,6)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",8,3)
+		SAWN CBA 1
+		goto SawFinal
+		SA1N CBA 1
+		goto SawFinal
+		SA2N CBA 1
+		goto SawFinal
+		SA3N CBA 1
+		goto SawFinal
+	SawFinal:
+		TNT1 A 0 A_TakeInventory("ChainsawHitWall",256)
+		TNT1 A 0 A_TakeInventory("ChainsawHitTarget",1)
+		TNT1 A 0 A_Refire("Hold")
+		TNT1 A 0 A_TakeInventory("ChainsawSNDCounter",100)
+		TNT1 A 0 A_PlaySound("Mweapons/saw/stop",4)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",64,24)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",52,18)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",30,12)
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",8,6)
+		SAWN CBAA 2
+		TNT1 A 0 A_PlaySound("Mweapons/saw/ready",5,1.0,TRUE)
+		goto ready
+		SA1N CBAA 2
+		TNT1 A 0 A_PlaySound("Mweapons/saw/ready",5,1.0,TRUE)
+		goto ready
+		SA2N CBAA 2
+		TNT1 A 0 A_PlaySound("Mweapons/saw/ready",5,1.0,TRUE)
+		goto ready
+		SA3N CBAA 2
+		TNT1 A 0 A_PlaySound("Mweapons/saw/ready",5,1.0,TRUE)
+		goto ready
+		SA4N CBAA 2
+		TNT1 A 0 A_PlaySound("Mweapons/saw/ready",5,1.0,TRUE)
+		goto ready
+	Jam:
+		TNT1 A 0 A_PlaySound("Mweapons/saw/stuck",4)
+		TNT1 A 0 A_TakeInventory("ChainsawSwitch",1)
+		TNT1 A 0 A_TakeInventory("ChainsawSNDCounter",100)
+		TNT1 A 0 A_TakeInventory("ChainsawHitTarget",1)
+		TNT1 A 0 A_ClearRefire
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",64,"Jam4")
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",52,"Jam3")
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",30,"Jam2")
+		TNT1 A 0 A_JumpIfInventory("ChainsawJamStack",8,"Jam1")
+	Jam0:
+		SAW2 ABCDE 1
+		SAW2 FFFF 1 A_WeaponOffset(random(-1,1),random(32,33),WOF_INTERPOLATE)
+		SAW2 F 9
+		SAW2 EDCBA 2
+		SAWN A 2
+		goto ready
+	Jam1:
+		SA12 ABCDE 1
+		SA12 FFFF 1 A_WeaponOffset(random(-1,1),random(32,33),WOF_INTERPOLATE)
+		SA12 F 9
+		SA12 EDCBA 2
+		SA1N A 2
+		goto ready
+	Jam2:
+		SA22 ABCDE 1
+		SA22 FFFF 1 A_WeaponOffset(random(-1,1),random(32,33),WOF_INTERPOLATE)
+		SA22 F 9
+		SA22 EDCBA 2
+		SA2N A 2
+		goto ready
+	Jam3:
+		SA32 ABCDE 1
+		SA32 FFFF 1 A_WeaponOffset(random(-1,1),random(32,33),WOF_INTERPOLATE)
+		SA32 F 9
+		SA32 EDCBA 2
+		SA3N A 2
+		goto ready
+	Jam4:
+		SA42 ABCDE 1
+		SA42 FFFF 1 A_WeaponOffset(random(-1,1),random(32,33),WOF_INTERPOLATE)
+		SA42 F 9
+		SA42 EDCBA 2
+		SA4N A 2
+		goto ready
+	}
+}
+
+Actor ChainsawSwitch : DummyChecker {inventory.maxamount 1}
+	
+Actor ChainsawHitTarget : DummyChecker {inventory.maxamount 1}
+
+
+Actor ChainsawCooler : DummyChecker {inventory.maxamount 1}
+
+Actor ChainsawJamStack : DummyChecker 
+{inventory.maxamount 212}
+
+
+
+Actor ChainsawHitWall : ChainsawJamStack
+{inventory.maxamount 256}
+
+Actor ChainsawSNDCounter : DummyChecker 
+{inventory.maxamount 100}
+
+Actor ModernsawPuff : ChainsawPuff
+{
++PUFFONACTORS
++PUFFGETSOWNER
+states
+	{
+	Crash:
+		TNT1 A 0 A_GiveInventory("ChainsawHitWall",32,AAPTR_TARGET)
+		TNT1 A 0 A_JumpIf(GetCVAR("BDoom_Debris")==0,"Puff")
+		TNT1 AAAAA 0 A_SpawnItemEx("Wallpart",0,0,0,	random(6,9),0,random(6,15),	random(0,360),0,64)
+		TNT1 A 0 A_SpawnItem("ShotSmoke")
+		TNT1 A 0 A_JumpIf(GetCVAR("BDoom_Sparks")==0,2)
+		TNT1 A 0 A_PlaySound("weapons/chainsaw/hitwall")
+		TNT1 AAAAAAAAAAAAAAA 0 A_SpawnItemEx("RicochetSpark",0,0,0,	random(1,2),0,random(5,10),random(0,360),0,160)
+	Puff:
+		CPUF ABCD 1 bright
+		stop
+	Melee:
+		TNT1 A 0 A_GiveInventory("ChainsawJamStack",1,AAPTR_TARGET)
+		TNT1 A 0 A_GiveInventory("ChainsawHitTarget",1,AAPTR_TARGET)
+		stop
+	}
+}
+
+Actor ChainsawBlood : BloodDrop
+{ scale 0.12 }
+
+Actor ChainsawBloodSpill : BloodSpill
+{
+deathsound "gibs/blooddrop"
+scale 0.13
+gravity 0.7
+scale .14
+-NOGRAVITY
+states
+	{
+	spawn:
+		TNT1 A 0 NoDelay A_JumpIf(GetCVAR("bdoom_blood")==0,"Null")
+		TNT1 A 0 A_SetScale(scalex*randompick(-1,1),scaley)
+		BLOD XY 1
+		BLOD ZZZZZZZ 2 A_FadeOut(0.01)
+		stop
+	Death:
+		TNT1 A 0 A_Stop
+		TNT1 A 0 A_ChangeFLag("FLATSPRITE",1)
+		TNT1 A 0 A_GiveInventory("DummyChecker",random(1,12))
+		TNT1 A 0 A_SetRenderstyle(0.85,STYLE_Shaded)
+	Crash:
+		TNT1 A 0 A_JumpIf(GetZAt(20,0) != floorz || GetZAt(-20,0) != floorz || GetZAt(0,20) != floorz || GetZAt(0,-20) != floorz, "Null")
+		TNT1 A 0 ACS_NamedExecuteAlways("BD_BloodRemoval",0)
+		TNT1 A 0 A_SetFloorClip
+	Crash1:
+		TNT1 A 0 A_JumpIf(GetCvar("bdoom_blood")==0,"Null")
+		TNT1 A 0 A_JumpIfInventory("WasGibbed",1,"Raise")
+		TNT1 A 0 A_Jump(256,CountInv("DummyChecker"))
+		SPLT A 1 A_FadeOUt(0.05)
+		wait
+		SPLT B 1 A_FadeOUt(0.05)
+		wait
+		SPLT C 1 A_FadeOUt(0.05)
+		wait
+		SPLT D 1 A_FadeOUt(0.05)
+		wait
+		SPLT E 1 A_FadeOUt(0.05)
+		wait
+		SPLT F 1 A_FadeOUt(0.05)
+		wait
+		SPLT G 1 A_FadeOUt(0.05)
+		wait
+		SPLT H 1 A_FadeOUt(0.05)
+		wait
+		SPLT I 1 A_FadeOUt(0.05)
+		wait
+		SPLT J 1 A_FadeOUt(0.05)
+		wait
+		SPLT K 1 A_FadeOUt(0.05)
+		wait
+		SPLT L 1 A_FadeOUt(0.05)
+		wait
+	}
+}

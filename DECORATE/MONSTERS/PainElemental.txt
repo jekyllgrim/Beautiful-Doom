@@ -1,0 +1,69 @@
+Actor BD_PainElemental : PainElemental replaces PainElemental		
+{
++FORCEXYBILLBOARD
++FLOATBOB
+FloatBobStrength 0.35
+states
+	{
+	Spawn:
+		PAI1 AAAAA 10 A_Look
+		PAI1 B 5 A_Look
+		PAI1 C 5
+		PAI1 D 5 A_Look
+		PAI1 B 5
+		Loop
+	see:
+		TNT1 A 0 A_ChangeFlag("FLOATBOB",0)
+		SAIN abcdedcb 3 a_chase
+		loop
+	Missile:
+		PATT abc 3 a_facetarget
+		PATT d 3 a_facetarget
+		PATT e 2 a_facetarget
+		PATT e 1 a_painattack
+		Goto See
+	Pain:
+		TNT1 A 0 A_ChangeFlag("FLOATBOB",0)
+		PPPP a 4
+		PPPP b 2
+		PPPP b 2 a_pain
+		PPPP c 4 a_pain
+		goto see
+	death:
+		TNT1 A 0 A_ChangeFlag("FLOATBOB",0)
+		TNT1 A 0 A_SetScale(randompick(-1.0,1.0),1.0)
+		SPAI A 4
+		SPAI b 4
+		spai c 4 a_scream
+		spai defg 4
+		TNT1 A 0 A_SetRenderstyle(0.65,Style_ADD)
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_Gibs")==0,"Deathnext")
+		//TNT1 A 0 A_spawnItemEx("PainElemental_ResidualFlame",0,0,16,0,0,0,0)
+		TNT1 A 0 A_SpawnItemEx("PainHorn",	random(-4,4),random(-16,-18),random(32,36),	random(3,5),0,random(4,7),random(85,95),	0,80)
+		TNT1 A 0 A_SpawnItemEx("PainHorn",	random(-4,4),random(16,18),random(32,36),	random(3,5),0,random(4,7),random(-85,-95),	0,80)
+		TNT1 A 0 A_SpawnItemEx("PainJaw",	random(-4,4),random(-4,4),random(6,12),		random(3,5),0,random(3,5),random(0,360), 	0,100)
+		TNT1 A 0 A_SpawnItemEx("PainHand",	random(-4,4),random(-20,-22),random(20,22),	random(3,4),0,random(4,7),random(85,95),	0,80)
+		TNT1 A 0 A_SpawnItemEx("PainHand",	random(-4,4),random(20,22),random(20,22),	random(3,4),0,random(4,7),random(-85,-95),	0,80)
+		TNT1 AAAAAA 0 A_SpawnItemEx("MeatPiece",	random(-10,10),random(-10,10),random(6,40),	random(3,7),0,random(2,8),random(0,360), 	0,100)
+	Deathnext:
+		SPAI H 3 bright
+		spai i 3 bright a_paindie
+		spai jk 3 bright
+		stop
+	Crush:
+		CRS2 A -1
+		stop	
+		}
+}
+
+Actor PainElemental_ResidualFlame
+{
++NOINTERACTION
++NOGRAVITY
+states
+	{
+	Spawn:
+		TNT1 AAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("ParticleFire_Red",random(-14,14),random(-14,14),random(-4,4),random(0,1),random(0,1),random(1,2),random(0,360))
+		stop
+	}
+}

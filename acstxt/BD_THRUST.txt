@@ -1,0 +1,8 @@
+#library "BD_THRUST"
+#include "zcommon.acs"
+
+Script "BD_GibThrust" (void)
+{
+	ThrustThing(GetActorAngle(0) >> 8,10,0,0);
+	ThrustThingZ(0,8,0,1);
+}

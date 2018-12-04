@@ -1,0 +1,314 @@
+Actor BD_ShotgunGuy : ShotgunGuy replaces ShotgunGuy
+{
++DOHARMSPECIES
+attacksound ""
+states
+	{
+	Spawn:
+		SARR AB 10 A_Look
+		loop
+	See:
+		TNT1 A 0 A_SetScale(1.0,1.0)
+	    SPO1 ABCDDCBA 3 A_Chase
+		Loop 	
+	Crush:
+		CRS1 A -1
+		stop
+	Missile:	
+		TNT1 A 0 A_Jumpif(GetCVAR("bdoom_weapons")==2,"MissileModern")	
+		SPSR A 5 A_FaceTarget
+		SPSR C 2 A_FaceTarget
+		SPO1 E 3 A_FaceTarget
+				TNT1 A 0 A_JumpIf(GetCVAR("bdoom_weapons")==1,3)
+				TNT1 A 0 A_PlaySound("shotguy/attack")
+				TNT1 A 0 A_Jump(256,2)
+				TNT1 A 0 A_PlaySound("weapons/shotgun/fire")
+		TNT1 A 0 A_JumpIf(GetCVAR("Bdoom_tracers")==0,3)
+		SPO1 F 4 A_CustomBulletAttack(22.5, 0, 3, random(1,5)*3, "EnShotPuff", 0, CBAF_NORANDOM,AAPTR_TARGET,"BulletTracer",29,7)
+		TNT1 A 0 A_Jump(256,2)
+		SPO1 F 4 A_CustomBulletAttack(22.5, 0, 3, random(1,5)*3, "EnShotPuff", 0, CBAF_NORANDOM)
+		SPO1 E 3
+		SPSR C 3
+			TNT1 A 0 A_JumpIf(GetCVAR("bdoom_weapons")==0,2)
+			TNT1 A 0 A_playsound("weapons/shotgun/pump",5)
+			TNT1 A 0 A_JumpIf(GetCVAR("bdoom_Debris")==0,2)
+			TNT1 A 0  A_SpawnItemEx("MonsterShotgunCasing",random(0,1),-5,random(27,29),		random(1,3),0,random(4,6),	random(-85,-95))
+		SPSR A 3
+		SPSR B 4
+		SPSR A 3
+		goto See
+	MissileModern:		
+		SPSR A 5 A_FaceTarget
+		SPSR C 2 A_FaceTarget
+		SPO1 E 3 A_FaceTarget
+		TNT1 A 0 A_PlaySound("Mweapons/shotgun/fire")
+		TNT1 A 0 A_JumpIf(GetCVAR("Bdoom_tracers")==0,3)
+		SPO1 F 4 A_CustomBulletAttack(20.0, 1.5, 6, 0, "NUllPuff", 0, CBAF_NORANDOM,AAPTR_TARGET,"BD_ZombiePellet",29,7)
+		SPO1 E 3
+		SPSR C 3 A_GiveInventory("BD_MonsterClip",1)
+		TNT1 A 0 A_playsound("Mweapons/shotgun/pump",5)
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_Debris")==0,2)
+		TNT1 A 0 A_SpawnItemEx("MonsterShotgunCasing",random(0,1),-5,random(27,29),		random(1,3),0,random(4,6),	random(-85,-95))
+		SPSR A 3
+		SPSR BAC 4
+		TNT1 A 0 A_JUmpIfInventory("BD_MonsterClip",8,"Reload")
+		TNT1 A 0 A_JumpIfCloser(512,1)
+		goto See
+		SPO1 E 15
+		TNT1 A 0 A_MonsterRefire(128,"See")
+		goto MissileModern+3
+	Reload:
+		TNT1 A 0 A_ChangeFlag("FRIGHTENED",1)
+		TNT1 A 0 A_TakeInventory("BD_MonsterClip",50)
+	    SPO1 ABCDDCBA 3 A_Chase(0,0)
+		TNT1 A 0 A_PlaySound("Mweapons/shotgun/shellin")
+	    SPO1 ABCD 3 A_Chase(0,0)
+		TNT1 A 0 A_PlaySound("Mweapons/shotgun/shellin")
+	    SPO1 DCBA 3 A_Chase(0,0)
+		TNT1 A 0 A_PlaySound("Mweapons/shotgun/shellin")
+	    SPO1 ABCD 3 A_Chase(0,0)
+		TNT1 A 0 A_PlaySound("Mweapons/shotgun/shellin")
+	    SPO1 DCBA 3 A_Chase(0,0)
+		TNT1 A 0 A_PlaySound("Mweapons/shotgun/shellin")
+	    SPO1 ABCD 3 A_Chase(0,0)
+		TNT1 A 0 A_PlaySound("Mweapons/shotgun/shellin")
+	    SPO1 DCBA 3 A_Chase(0,0)
+		TNT1 A 0 A_PlaySound("Mweapons/shotgun/shellin")
+	    SPO1 ABCD 3 A_Chase(0,0)
+		TNT1 A 0 A_PlaySound("Mweapons/shotgun/shellin")
+	    SPO1 DCBA 3 A_Chase(0,0)
+		TNT1 A 0 A_ChangeFlag("FRIGHTENED",0)
+		goto see
+	Pain:
+		SSPA a 3
+		SSPA b 3 a_pain
+		goto see
+	Death:
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_Gibs")==0,2)
+		TNT1 A 0 A_JumpIfHealthLower(-10,"DecapDeath")
+		TNT1 A 0 A_Jump(256,"Death.Vanilla","Death1","Death2")
+	Death.Vanilla:
+		TNT1 A 0  A_spawnitemEx("BloodSpatter",0,0,random(16,20),0,0,0,0,SXF_SETMASTER)
+		SPOM A 3 A_Scream
+		SPOM B 3 A_NoBlocking
+		TNT1 A 0  A_spawnitemEx("BloodSpatter",0,0,random(16,20),0,0,0,0,SXF_SETMASTER)
+		SPOM CDEFG 2
+		SPOM H 3
+		TNT1 A 0 A_SpawnItemEx("CorpseFlySpawner",0,0,0,0,0,0,0,SXF_SETMASTER)
+		SPOM I -1
+		Stop
+	Death1: //fall forward
+			TNT1 A 0 A_GiveInventory("BD_KillChecker",1)
+		SPON A 3 A_spawnitemEx("BloodSpatter",0,0,random(16,20),0,0,0,0,SXF_SETMASTER)
+		SPON B 3 A_Scream
+		TNT1 A 0 A_spawnitemEx("BloodSpatter",0,0,random(16,20),0,0,0,0,SXF_SETMASTER)
+		SPON C 3 A_NoBlocking
+		SPON D 3 A_spawnitemEx("BloodSpatter",0,0,random(16,20),0,0,0,0,SXF_SETMASTER)
+		SPON EFGHI 3
+		SPON JKL 4
+		TNT1 A 0 A_SpawnItemEx("CorpseFlySpawner",0,0,0,0,0,0,0,SXF_SETMASTER)
+		SPON M -1
+		stop
+	Death2: //fall left/right
+		TNT1 A 0 A_GiveInventory("BD_KillChecker",2)
+		TNT1 A 0 A_Jump(128,"Death3")
+		TNT1 A 0 A_Scream
+		SPOO ABC 2 A_SpawnItemEx("BloodDrop",random(-2,2),0,random(32,34),	random(4,6),0,random(3,5),random(-70,-90)*scalex,SXF_SETMASTER)
+		TNT1 A 0 A_NoBlocking
+		SPOO DEF 3 A_SpawnItemEx("BloodDrop",random(-2,2),0,random(24,26),	random(4,6),0,random(3,5),random(-70,-90)*scalex,SXF_SETMASTER)
+		SPOO GHI 3 A_SpawnItemEx("BloodDrop",random(-2,2),0,random(10,16),	random(4,6),0,random(3,5),random(-70,-90)*scalex,SXF_SETMASTER)
+		SPOO KLM 3
+		TNT1 A 0 A_SpawnItemEx("CorpseFlySpawner",0,0,0,0,0,0,0,SXF_SETMASTER)
+		SPOO N -1
+		stop
+	Death.Saw:
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_Gibs")==0,"Death")
+		TNT1 A 0 A_Jump(128,"Death")
+		TNT1 A 0 A_GiveInventory("BD_KillChecker",3)
+		TNT1 A 0 A_SetScale(randompick(-1.0,1.0),1.0)
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_Pain
+			TNT1 A 0 A_Jump(160,2,3,4)
+		SPOY AAAZZZ 6 	A_SpawnItemEx("BloodDrop",	random(-4,4),random(-8,-10),random(24,26),	random(3,5),0,random(4,10),	random(-20,20),SXF_SETMASTER,80)
+		SPOY Z 5 A_Pain
+		TNT1 A 0 A_NoBlocking
+			TNT1 A 0 A_Jump(80,2,3)
+		SPOY AAAZZ 7 	A_SpawnItemEx("BloodDrop",	random(-4,4),random(-8,-10),random(24,26),	random(3,5),0,random(4,10),	random(-20,20),SXF_SETMASTER,80)
+		SPOY Z 5 A_Scream
+		SPOY BCDEFG 3 A_SpawnItemEx("BloodSpurt",	random(-4,4),random(0,6),	random(12,18),	random(2,4),0,random(4,6),	random(-20,20),SXF_SETMASTER,128)
+		TNT1 A 0 A_PlaySound("gibs/meatland")
+		SPOY HI 2 		A_SpawnItemEx("BloodSpurt",	random(-4,4),random(0,6),	random(12,18),	random(2,4),0,random(4,6),	random(-20,20),SXF_SETMASTER,128)
+		TNT1 A 0 A_PlaySound("gibs/meatland")
+		SPOY JK 3 		A_SpawnItemEx("BloodSpurt",	random(-4,4),random(0,6),	random(12,18),	random(2,4),0,random(4,6),	random(-20,20),SXF_SETMASTER,128)
+		TNT1 A 0 A_SpawnItemEx("CorpseFlySpawner",0,0,0,0,0,0,0,SXF_SETMASTER)
+		SPOY L -1
+		stop
+	DecapDeath:
+		TNT1 A 0 A_GiveInventory("BD_KillChecker",4)
+		SPOD A 3 A_SpawnItemEx("SPosHead",random(-2,2),random(-2,2),random(50,54),random(2,5),0,random(1,5),random(150,210),SXF_SETMASTER)
+		SPOD B 3 A_SpawnItemEx("BloodDrop",0,0,	random(48,52),	random(0,2),random(0,2),random(4,6),0,SXF_SETMASTER,64)
+		TNT1 A 0 A_SpawnItemEx("BloodDrop",0,0,	random(48,52),	random(0,2),random(0,2),random(4,6),0,SXF_SETMASTER,64)
+		SPOD C 3 A_NoBlocking
+		SPOD DEF 2 A_SpawnItemEx("BloodDrop",0,0,	random(48,52),	random(0,2),random(0,2),random(4,6),0,SXF_SETMASTER,80)
+		SPOD G 3 A_SpawnItemEx("BloodDrop",0,0,	random(48,52),	random(0,2),random(0,2),random(4,6),0,SXF_SETMASTER,64)
+		SPOD HIJ 3
+		TNT1 A 0 A_SpawnItemEx("CorpseFlySpawner",0,0,0,0,0,0,0,SXF_SETMASTER)
+		SPOD K -1
+		stop
+	Death.BFGSplash:
+		TNT1 A 0 Thing_SetTranslation(0,11) //translation to grey+blood
+	XDeath:
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_Gibs")==1,"XDeath.Particles")
+		TNT1 A 0 A_GiveInventory("BD_KillChecker",5)
+		SGIB ab 2
+		SGIB cd 2 A_XScream
+		SGIB e 2 a_noblocking
+		SGIB f 2
+		SGIB ghijklmnop 2
+		TNT1 A 0 A_SpawnItemEx("CorpseFlySpawner",0,0,0,0,0,0,0,SXF_SETMASTER)
+		SGIB q -1
+		Stop
+	XDeath.Particles:
+		TNT1 A 0 A_PlaySound("gibs/gibbed")
+		TNT1 A 0 A_GiveInventory("WasGibbed",1)
+
+		TNT1 A 0 A_SpawnItemEx("Heart",			random(-4,4),random(-4,4),random(24,32),	velx*random(1,2),vely*random(1,2),random(1,3),	0,					SXF_ABSOLUTEMOMENTUM | SXF_TRANSFERTRANSLATION | SXF_SETMASTER, 220)
+		TNT1 A 0 A_SpawnItemEx("SposTorso1",	random(-4,4),random(-4,4),random(5,48),	velx*random(1,2),vely*random(1,2),random(1,2),	random(-45,-135),	SXF_ABSOLUTEMOMENTUM | SXF_TRANSFERTRANSLATION | SXF_SETMASTER)
+		TNT1 A 0 A_SpawnItemEx("SposTorso2",	random(-4,4),random(-4,4),random(5,48),	velx*random(1,2),vely*random(1,2),random(1,2),	random(45,135),		SXF_ABSOLUTEMOMENTUM | SXF_TRANSFERTRANSLATION | SXF_SETMASTER)
+
+	TNT1 AAAAAAAAAA 0 A_SpawnItemEx("MeatPiece",random(-4,4),random(-4,4),random(10,48),		velx*random(1,2),vely*random(1,2),random(5,10),	0,	SXF_ABSOLUTEMOMENTUM | SXF_TRANSFERTRANSLATION | SXF_SETMASTER,	80)
+		TNT1 A 0 A_SpawnItemEx("SposHand",		random(-6,-4),random(-4,4),random(35,40),	velx*random(1,2),vely*random(1,2),random(5,10),	0,	SXF_ABSOLUTEMOMENTUM | SXF_TRANSFERTRANSLATION | SXF_SETMASTER, 48)
+		TNT1 A 0 A_SpawnItemEx("SposHand",		random(6,4),random(-4,4),random(35,40),		velx*random(1,2),vely*random(1,2),random(5,10),	0,	SXF_ABSOLUTEMOMENTUM | SXF_TRANSFERTRANSLATION | SXF_SETMASTER, 48)
+		TNT1 A 0 A_SpawnItemEx("SposLeg1",		random(-6,-4),random(-4,4),random(10,12),	velx*random(1,2),vely*random(1,2),random(5,10),	0,	SXF_ABSOLUTEMOMENTUM | SXF_TRANSFERTRANSLATION | SXF_SETMASTER, 48)
+		TNT1 A 0 A_SpawnItemEx("SposLeg2",		random(6,4),random(-4,4),random(10,12),		velx*random(1,2),vely*random(1,2),random(5,10),	0,	SXF_ABSOLUTEMOMENTUM | SXF_TRANSFERTRANSLATION | SXF_SETMASTER, 48)
+		TNT1 A 0 A_SpawnItemEx("SposHead",		random(-2,2),random(-2,2),random(42,48),	velx*random(1,2),vely*random(1,2),random(5,10),	0,	SXF_ABSOLUTEMOMENTUM | SXF_TRANSFERTRANSLATION | SXF_SETMASTER, 48)
+		POSX AB 2
+		POSX C 2 A_XScream
+		POSX D 2 A_NoBlocking
+		POSX EFGHIJKLMN 2
+		TNT1 A 0 A_SpawnItemEx("CorpseFlySpawner",0,0,0,0,0,0,0,SXF_SETMASTER)
+		POSX O -1
+		stop
+	Death.Massacre:
+	Death.Telefrag:
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_Gibs")==0,"XDeath")
+		TNT1 A 0 A_PlaySound("gibs/gibbed")
+		TNT1 A 0 A_GiveInventory("WasGibbed",1)
+		TNT1 AAAAAAAAAAA 0 A_SpawnItemEx("BloodSpurt",	random(-4,4),random(-4,4),random(8,48),	random(1,3),random(1,3),random(5,10),	random(0,360), SXF_SETMASTER, 48)
+		POSX AB 2
+		POSX C 2 A_XScream
+		POSX D 2 A_NoBlocking
+		POSX EFGHIJKLMN 2
+		POSX O -1
+		stop
+	Death.PlasmaDamage:
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_Gibs")==0,"Death")
+		TNT1 A 0 Thing_SetTranslation(0,7) //translation to grey
+		TNT1 A 0 A_SetScale(randompick(-1.0,1.0),1.0)		
+
+		TNT1 A 0  A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1)
+		SPOM A 3 A_Scream
+		TNT1 A 0  A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1)
+		SPOM B 3 A_NoBlocking
+		TNT1 A 0  A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1)
+		SPOM CDE 2
+		TNT1 A 0  A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1)
+		SPOM FG 2
+		SPOM H 3
+		SPOM IIIII 6 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1)
+		SPOM IIIII 9 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1)
+		SPOM IIIII 12 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1)
+		SPOM I -1
+		Stop
+	Death.Fire:
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_Gibs")==0,"Death")
+		TNT1 A 0 A_SetScale(randompick(-1.0,1.0),1.0)
+
+		TNT1 A 0 Thing_SetTranslation(0,8) //translation to scorched orange-red
+		TNT1 A 0 A_PlaySoundEx("world/torch","Body",1,-1)
+
+		SPOM A 1 A_Scream
+		SPOM AA 1 A_SpawnItemEx("ParticleFire_Yellow",random(-16,16),random(-16,16),random(8,16),0,0,2)
+		SPOM B 1 A_NoBlocking
+		SPOM BB 1 A_SpawnItemEx("ParticleFire_Yellow",random(-16,16),random(-16,16),random(8,16),0,0,2)
+		SPOM CCDDEEFFGG 1 A_SpawnItemEx("ParticleFire_Yellow",random(-16,16),random(-16,16),random(8,16),0,0,2)
+		SPOM HHH 1 A_SpawnItemEx("ParticleFire_Yellow",random(-16,16),random(-16,16),random(8,16),0,0,2)
+		SPOM IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII 1 A_SpawnItemEx("ParticleFire_Yellow",random(-16,16),random(-16,16),random(8,16),0,0,2)
+		TNT1 A 0 A_StopSoundEx("Body")
+		TNT1 A 0 Thing_SetTranslation(0,7) //translation to grey
+		SPOM IIIII 6 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1)
+		SPOM IIIII 9 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1)
+		SPOM IIIII 12 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1)
+		SPOM I -1
+		Stop
+	Death.GreenFire:
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_Gibs")==0,"Death")
+		TNT1 A 0 A_SetScale(randompick(-1.0,1.0),1.0)
+		TNT1 A 0 Thing_SetTranslation(0,14) //translation to scorched green
+		TNT1 A 0 A_PlaySoundEx("world/torch","Body",1,-1)
+
+		SPOM A 1 A_Scream
+		SPOM AA 1 A_SpawnItemEx("ParticleFire_Green",random(-16,16),random(-16,16),random(8,16),0,0,2)
+		SPOM B 1 A_NoBlocking
+		SPOM BB 1 A_SpawnItemEx("ParticleFire_Green",random(-16,16),random(-16,16),random(8,16),0,0,2)
+		SPOM CCDDEEFFGG 1 A_SpawnItemEx("ParticleFire_Green",random(-16,16),random(-16,16),random(8,16),0,0,2)
+		SPOM HHH 1 A_SpawnItemEx("ParticleFire_Green",random(-16,16),random(-16,16),random(8,16),0,0,2)
+		SPOM IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII 1 A_SpawnItemEx("ParticleFire_Green",random(-16,16),random(-16,16),random(8,16),0,0,2)
+		TNT1 A 0 A_StopSoundEx("Body")
+		TNT1 A 0 Thing_SetTranslation(0,7) //translation to grey
+		SPOM IIIII 6 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1)
+		SPOM IIIII 9 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1)
+		SPOM IIIII 12 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1)
+		SPOM I -1
+		Stop
+	Raise:
+		TNT1 A 0 A_GiveToChildren("WasGibbed",1)
+		TNT1 A 0 Thing_SetTranslation(0,10)
+		TNT1 A 0 A_JumpIfInventory("WasGibbed",1,"XRaise.Particles") //if particle gibbing was applied
+		TNT1 A 0 A_JumpIfInventory("BD_KillChecker",5,"XRaise") //vanilla gibbing
+		TNT1 A 0 A_JumpIfInventory("BD_KillChecker",4,"DecapRaise")
+		TNT1 A 0 A_JumpIfInventory("BD_KillChecker",3,"SawRaise")
+		TNT1 A 0 A_JumpIfInventory("BD_KillChecker",2,"Raise3")
+		TNT1 A 0 A_JumpIfInventory("BD_KillChecker",1,"Raise2")
+		TNT1 A 0 A_TakeInventory("BD_KillChecker",10)
+		SPOM HGFEDCBA 2
+		TNT1 A 0 A_SetScale(1.0,1.0)
+		Goto See
+	Raise2: //fell forward
+		TNT1 A 0 A_TakeInventory("BD_KillChecker",10)
+		SPON KJIHGFEDCBA 2
+		TNT1 A 0 A_SetScale(1.0,1.0)
+		goto See
+	Raise3: //fell to the side
+		TNT1 A 0 A_TakeInventory("BD_KillChecker",10)
+		SPOO MLKJIHGFEDCBA 2
+		TNT1 A 0 A_SetScale(1.0,1.0)
+		goto See
+	SawRaise:
+		TNT1 A 0 A_TakeInventory("BD_KillChecker",10)
+		SPOY JIHGFEDCBA 2
+		TNT1 A 0 A_SetScale(1.0,1.0)
+		goto See
+	DecapRaise:
+		TNT1 A 0 A_TakeInventory("BD_KillChecker",10)
+		POSD KJIHQFEDCBA 2
+		TNT1 A 0 A_SetScale(1.0,1.0)
+		goto See
+	XRaise:
+		TNT1 A 0 A_TakeInventory("BD_KillChecker",10)
+		CGIB PONMLKJIHQFEDCBA 1
+		goto See
+	XRaise.Particles:
+		TNT1 A 0 A_TakeInventory("WasGibbed",1)
+		POSX NMLKJ 1 
+		POSX IHQFEDCBA 2
+		TNT1 A 0 A_SetScale(1.0,1.0)
+		goto See
+		}
+}
+
+Actor BD_ZombiePellet : RealBullet
+{
+damage (2 * random(3,4))
+decal ShotChip
+}

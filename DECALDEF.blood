@@ -1,0 +1,987 @@
+
+//////////////////////
+//////////////////////
+///////////////////////
+slider BSlideHD
+{
+DistX 0
+DistY -40
+SlideStart 0
+SlideTime 50
+}
+
+stretcher BStretchHD
+{
+GoalX 0.15
+GoalY 0.28
+StretchStart 0
+StretchTime 50
+}
+
+combiner BloodSlideHD
+{
+BSlideHD
+BStretchHD
+}
+
+
+/// +++++++++++++++++////
+/// Red Blood
+/// +++++++++++++++++////
+
+decal BloodSplat01
+{
+pic BRSPLT01
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BloodSplat02
+{
+animator BloodSlideHD
+pic BRSPLT02
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BloodSplat03
+{
+pic BRSPLT03
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BloodSplat04
+{
+animator BloodSlideHD
+pic BRSPLT04
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BloodSplat05
+{
+pic BRSPLT05
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BloodSplat06
+{
+animator BloodSlideHD
+pic BRSPLT06
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BloodSplat07
+{
+pic BRSPLT07
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BloodSplat08
+{
+pic BRSPLT08
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BloodSplat09
+{
+pic BRSPLT09
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BloodSplat10
+{
+animator BloodSlideHD
+pic BRSPLT10
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BloodSplat11
+{
+animator BloodSlideHD
+pic BRSPLT11
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BloodSplat12
+{
+pic BRSPLT12
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BloodSplat13
+{
+animator BloodSlideHD
+pic BRSPLT13
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BloodSplat14
+{
+animator BloodSlideHD
+pic BRSPLT14
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BloodSplat15
+{
+animator BloodSlideHD
+pic BRSPLT15
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BloodSplat16
+{
+pic BRSPLT16
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BloodSplat17
+{
+animator BloodSlideHD
+pic BRSPLT17
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BloodSplat18
+{
+pic BRSPLT18
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BloodSplat19
+{
+pic BRSPLT19
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BloodSplat20
+{
+animator BloodSlideHD
+pic BRSPLT20
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+
+decalgroup BloodSplatRed
+{
+
+BloodSplat01 1
+BloodSplat02 1
+BloodSplat03 1
+BloodSplat04 1
+BloodSplat05 1
+BloodSplat06 1
+BloodSplat07 1
+BloodSplat08 1
+BloodSplat09 1 
+BloodSplat10 1
+BloodSplat11 1 
+BloodSplat12 1
+BloodSplat13 1 
+BloodSplat14 1
+BloodSplat15 1
+BloodSplat16 1
+BloodSplat17 1
+BloodSplat18 1
+BloodSplat19 1
+BloodSplat20 1
+}
+
+
+/// +++++++++++++++++////
+/// Blue Blood
+/// +++++++++++++++++////
+
+decal BlueBloodSplat01
+{
+pic BBSPLT01
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BlueBloodSplat02
+{
+animator BloodSlideHD
+pic BBSPLT02
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BlueBloodSplat03
+{
+pic BBSPLT03
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BlueBloodSplat04
+{
+animator BloodSlideHD
+pic BBSPLT04
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BlueBloodSplat05
+{
+pic BBSPLT05
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BlueBloodSplat06
+{
+animator BloodSlideHD
+pic BBSPLT06
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BlueBloodSplat07
+{
+pic BBSPLT07
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BlueBloodSplat08
+{
+pic BBSPLT08
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BlueBloodSplat09
+{
+pic BBSPLT09
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BlueBloodSplat10
+{
+animator BloodSlideHD
+pic BBSPLT10
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BlueBloodSplat11
+{
+animator BloodSlideHD
+pic BBSPLT11
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BlueBloodSplat12
+{
+pic BBSPLT12
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BlueBloodSplat13
+{
+animator BloodSlideHD
+pic BBSPLT13
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BlueBloodSplat14
+{
+animator BloodSlideHD
+pic BBSPLT14
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BlueBloodSplat15
+{
+animator BloodSlideHD
+pic BBSPLT15
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BlueBloodSplat16
+{
+pic BBSPLT16
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BlueBloodSplat17
+{
+animator BloodSlideHD
+pic BBSPLT17
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BlueBloodSplat18
+{
+pic BBSPLT18
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BlueBloodSplat19
+{
+pic BBSPLT19
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal BlueBloodSplat20
+{
+animator BloodSlideHD
+pic BBSPLT20
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+
+decalgroup BloodSplatBlue
+{
+
+BlueBloodSplat01 1
+BlueBloodSplat02 1
+BlueBloodSplat03 1
+BlueBloodSplat04 1
+BlueBloodSplat05 1
+BlueBloodSplat06 1
+BlueBloodSplat07 1
+BlueBloodSplat08 1
+BlueBloodSplat09 1 
+BlueBloodSplat10 1
+BlueBloodSplat11 1 
+BlueBloodSplat12 1
+BlueBloodSplat13 1 
+BlueBloodSplat14 1
+BlueBloodSplat15 1
+BlueBloodSplat16 1
+BlueBloodSplat17 1
+BlueBloodSplat18 1
+BlueBloodSplat19 1
+BlueBloodSplat20 1
+}
+
+/// +++++++++++++++++////
+/// Green Blood
+/// +++++++++++++++++////
+
+decal GreenBloodSplat01
+{
+pic BGSPLT01
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal GreenBloodSplat02
+{
+animator BloodSlideHD
+pic BGSPLT02
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal GreenBloodSplat03
+{
+pic BGSPLT03
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal GreenBloodSplat04
+{
+animator BloodSlideHD
+pic BGSPLT04
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal GreenBloodSplat05
+{
+pic BGSPLT05
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal GreenBloodSplat06
+{
+animator BloodSlideHD
+pic BGSPLT06
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal GreenBloodSplat07
+{
+pic BGSPLT07
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal GreenBloodSplat08
+{
+pic BGSPLT08
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal GreenBloodSplat09
+{
+pic BGSPLT09
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal GreenBloodSplat10
+{
+animator BloodSlideHD
+pic BGSPLT10
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal GreenBloodSplat11
+{
+animator BloodSlideHD
+pic BGSPLT11
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal GreenBloodSplat12
+{
+pic BGSPLT12
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal GreenBloodSplat13
+{
+animator BloodSlideHD
+pic BGSPLT13
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal GreenBloodSplat14
+{
+animator BloodSlideHD
+pic BGSPLT14
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal GreenBloodSplat15
+{
+animator BloodSlideHD
+pic BGSPLT15
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal GreenBloodSplat16
+{
+pic BGSPLT16
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal GreenBloodSplat17
+{
+animator BloodSlideHD
+pic BGSPLT17
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal GreenBloodSplat18
+{
+pic BGSPLT18
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal GreenBloodSplat19
+{
+pic BGSPLT19
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal GreenBloodSplat20
+{
+animator BloodSlideHD
+pic BGSPLT20
+//shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+
+decalgroup GreenBloodSplatGreen
+{
+GreenBloodSplat01 1
+GreenBloodSplat02 1
+GreenBloodSplat03 1
+GreenBloodSplat04 1
+GreenBloodSplat05 1
+GreenBloodSplat06 1
+GreenBloodSplat07 1
+GreenBloodSplat08 1
+GreenBloodSplat09 1 
+GreenBloodSplat10 1
+GreenBloodSplat11 1 
+GreenBloodSplat12 1
+GreenBloodSplat13 1 
+GreenBloodSplat14 1
+GreenBloodSplat15 1
+GreenBloodSplat16 1
+GreenBloodSplat17 1
+GreenBloodSplat18 1
+GreenBloodSplat19 1
+GreenBloodSplat20 1
+}
+
+/// +++++++++++++++++////
+/// Shaded blood
+/// +++++++++++++++++////
+
+decal WBloodSplat01
+{
+pic BWSPLT01
+shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal WBloodSplat02
+{
+//animator BloodSlideHD
+pic BWSPLT02
+shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal WBloodSplat03
+{
+pic BWSPLT03
+shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal WBloodSplat04
+{
+//animator BloodSlideHD
+pic BWSPLT04
+shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal WBloodSplat05
+{
+pic BWSPLT05
+shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal WBloodSplat06
+{
+//animator BloodSlideHD
+pic BWSPLT06
+shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal WBloodSplat07
+{
+pic BWSPLT07
+shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal WBloodSplat08
+{
+pic BWSPLT08
+shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal WBloodSplat09
+{
+pic BWSPLT09
+shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal WBloodSplat10
+{
+//animator BloodSlideHD
+pic BWSPLT10
+shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal WBloodSplat11
+{
+//animator BloodSlideHD
+pic BWSPLT11
+shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal WBloodSplat12
+{
+pic BWSPLT12
+shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal WBloodSplat13
+{
+//animator BloodSlideHD
+pic BWSPLT13
+shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal WBloodSplat14
+{
+//animator BloodSlideHD
+pic BWSPLT14
+shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal WBloodSplat15
+{
+//animator BloodSlideHD
+pic BWSPLT15
+shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal WBloodSplat16
+{
+pic BWSPLT16
+shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal WBloodSplat17
+{
+//animator BloodSlideHD
+pic BWSPLT17
+shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal WBloodSplat18
+{
+pic BWSPLT18
+shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal WBloodSplat19
+{
+pic BWSPLT19
+shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+decal WBloodSplat20
+{
+//animator BloodSlideHD
+pic BWSPLT20
+shade "BloodDefault"
+x-scale 0.15
+y-scale 0.15
+randomflipx
+randomflipy
+}
+
+
+decalgroup BloodSplat
+{
+
+WBloodSplat01 1
+WBloodSplat02 1
+WBloodSplat03 1
+WBloodSplat04 1
+WBloodSplat05 1
+WBloodSplat06 1
+WBloodSplat07 1
+WBloodSplat08 1
+WBloodSplat09 1 
+WBloodSplat10 1
+WBloodSplat11 1 
+WBloodSplat12 1
+WBloodSplat13 1 
+WBloodSplat14 1
+WBloodSplat15 1
+WBloodSplat16 1
+WBloodSplat17 1
+WBloodSplat18 1
+WBloodSplat19 1
+WBloodSplat20 1
+}
+

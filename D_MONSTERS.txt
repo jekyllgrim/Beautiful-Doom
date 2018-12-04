@@ -1,0 +1,23 @@
+/*-----------------------------------------------------------
+		NEW MONSTERS
+-----------------------------------------------------------*/
+
+#include "DECORATE/MONSTERS/Zombieman.txt"
+#include "DECORATE/MONSTERS/ShotgunGuy.txt"
+#include "DECORATE/MONSTERS/ChaingunGuy.txt"
+#include "DECORATE/MONSTERS/WolfensteinSS.txt"
+#include "DECORATE/MONSTERS/Imp.txt"
+#include "DECORATE/MONSTERS/PinkyDemon.txt"
+#include "DECORATE/MONSTERS/LostSoul.txt"
+#include "DECORATE/MONSTERS/PainElemental.txt"
+#include "DECORATE/MONSTERS/Cacodemon.txt"
+#include "DECORATE/MONSTERS/Mancubus.txt"
+#include "DECORATE/MONSTERS/Arachnotron.txt"
+#include "DECORATE/MONSTERS/Revenant.txt"
+#include "DECORATE/MONSTERS/HellKnight.txt"
+#include "DECORATE/MONSTERS/BaronOfHell.txt"
+#include "DECORATE/MONSTERS/ArchVile.txt"
+#include "DECORATE/MONSTERS/Cyberdemon.txt"
+#include "DECORATE/MONSTERS/SpiderMastermind.txt"
+#include "DECORATE/MONSTERS/IconOfSin.txt"
+#include "DECORATE/MONSTERS/DeadBodies.txt" //these use new monster sprites

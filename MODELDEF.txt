@@ -1,0 +1,100 @@
+
+Model BulletTracer
+{
+	Path "models"
+	Model 0 "tracer.md3"
+	Skin 0 "tracer1.png"
+	Scale 1.0 1.0 1.0
+	PITCHFROMMOMENTUM
+	
+	FrameIndex PUFF A 0 0
+}
+/*
+Model ModernPlasmaTracer
+{
+	Path "models"
+	Model 0 "tracer.md3"
+	Skin 0 "ptracer.png"
+	Scale 1.4 5.0 5.0
+	offset -190 0 1
+	PITCHFROMMOMENTUM
+	
+	FrameIndex PUFF A 0 0
+}*/
+
+
+Model BloodDrop //debug
+{
+	Path "models"
+	Model 0 "tracer.md3"
+	Skin 0 "ptracer.png"
+	Scale 1.0 1.0 1.0
+	
+	FrameIndex PUFF A 0 0
+}
+
+Model RicochetBullet
+{
+	Path "models"
+	Model 0 "tracer.md3"
+	Skin 0 "tracer1.png"
+	Scale 0.3 0.9 0.9
+	PITCHFROMMOMENTUM
+	
+	FrameIndex PUFF A 0 0
+}
+
+Model BD_PistolBullet
+{
+	Path "models"
+	Model 0 "tracer.md3"
+	Skin 0 "tracer1.png"
+	Scale 1.0 1.0 1.0
+	PITCHFROMMOMENTUM
+	
+	FrameIndex PUFF A 0 0
+}
+
+Model BD_RifleBullet
+{
+	Path "models"
+	Model 0 "tracer.md3"
+	Skin 0 "tracer1.png"
+	Scale 1.0 1.0 1.0
+	PITCHFROMMOMENTUM
+	
+	FrameIndex PUFF A 0 0
+}
+
+Model BD_ShotgunPellet
+{
+	Path "models"
+	Model 0 "tracer.md3"
+	Skin 0 "tracer1.png"
+	Scale 1.0 1.0 1.0
+	PITCHFROMMOMENTUM
+	
+	FrameIndex PUFF A 0 0
+}
+
+Model BD_ZombiePellet
+{
+	Path "models"
+	Model 0 "tracer.md3"
+	Skin 0 "tracer1.png"
+	Scale 1.0 1.0 1.0
+	PITCHFROMMOMENTUM
+	
+	FrameIndex PUFF A 0 0
+}
+
+Model BD_ZombieBullet
+{
+	Path "models"
+	Model 0 "tracer.md3"
+	Skin 0 "tracer1.png"
+	Scale 1.0 1.0 1.0
+	PITCHFROMMOMENTUM
+	
+	FrameIndex PUFF A 0 0
+}

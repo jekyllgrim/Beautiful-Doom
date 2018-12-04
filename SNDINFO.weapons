@@ -1,0 +1,295 @@
+///////////////////////
+//// WEAPON SOUNDS \\\\
+///////////////////////
+
+$random weapons/casing  { weapons/casing1 weapons/casing2 weapons/casing3 } 
+$volume weapons/casing 0.7
+$limit weapons/casing  3
+weapons/casing1	dscasin1
+weapons/casing2	dscasin2
+weapons/casing3	dscasin3
+
+$random weapons/shotgunshells { weapons/shell1 weapons/shell2 weapons/shell3 }
+$volume weapons/shotgunshells 0.3
+$limit weapons/shotgunshells 3
+weapons/shell1	DSSHELL1
+weapons/shell2	DSSHELL2
+weapons/shell3	DSSHELL3
+
+$random chaingun/casing { chaingun/casing1 chaingun/casing2 chaingun/casing3 }
+$volume chaingun/casing 0.5
+$limit chaingun/casing 3
+chaingun/casing1	CHGNCAS1
+chaingun/casing2	CHGNCAS2
+chaingun/casing3	CHGNCAS3
+
+weapons/draw	WEAPDRAW
+
+$random weapons/tracerwhizz { weapons/tracerwhizz1 weapons/tracerwhizz2 weapons/tracerwhizz3 }
+$limit weapons/tracerwhizz 2
+weapons/tracerwhizz1	TRACER1
+weapons/tracerwhizz2	TRACER2
+weapons/tracerwhizz3	TRACER3
+
+// Fist
+$random weapons/fist/punch { weapons/fist/punch1 weapons/fist/punch2 weapons/fist/punch3 }
+weapons/fist/punch1	FISTPUN1
+weapons/fist/punch2	FISTPUN2
+weapons/fist/punch3	FISTPUN3
+$random weapons/fist/strong { weapons/fist/strong1 weapons/fist/strong2 weapons/fist/strong3 }
+weapons/fist/strong1	FISTSTR1
+weapons/fist/strong2	FISTSTR2
+weapons/fist/strong3	FISTSTR3
+$random weapons/fist/hitwall { weapons/fist/hitwall1 weapons/fist/hitwall2 weapons/fist/hitwall3 weapons/fist/hitwall4 }
+weapons/fist/hitwall1	FISTWAL1
+weapons/fist/hitwall2	FISTWAL2
+weapons/fist/hitwall3	FISTWAL3
+weapons/fist/hitwall4	FISTWAL4
+$random weapons/fist/swing { weapons/fist/swing1 weapons/fist/swing2 }
+weapons/fist/swing1	FISTSW1
+weapons/fist/swing2	FISTSW2
+weapons/doompunch	DSPUNCH //vanilla sound
+
+// Kick
+$random weapons/kick/hit { weapons/kick/hit1 weapons/kick/hit2 }
+weapons/kick/hit1	KICKHIT1
+weapons/kick/hit2	KICKHIT2
+$random weapons/kick/swing { weapons/kick/swing1 weapons/kick/swing2 }
+weapons/kick/swing1	KICKSW1
+weapons/kick/swing2	KICKSW2
+
+// Chainsaw
+weapons/chainsaw/draw	CSAWDRAW
+weapons/chainsaw/start	CSAWSTRT
+weapons/chainsaw/loop	CSAWLOOP
+weapons/chainsaw/stop	CSAWSTOP
+weapons/chainsaw/idle	CSAWREDY
+$random weapons/chainsaw/hitwall { weapons/chainsaw/hitwall1 weapons/chainsaw/hitwall2 weapons/chainsaw/hitwall3 weapons/chainsaw/hitwall4 }
+$volume weapons/chainsaw/hitwall 0.5
+weapons/chainsaw/hitwall1	DSSAWAL1
+weapons/chainsaw/hitwall2	DSSAWAL2
+weapons/chainsaw/hitwall3	DSSAWAL3
+weapons/chainsaw/hitwall4	DSSAWAL4
+
+// Pistol
+weapons/pistol/fire	PISTSHOT
+weapons/pistol/pickup	PISTPKUP
+weapons/pistol/draw	PISTDRAW
+
+// Shotgun
+weapons/shotgun/draw	STGNDRAW
+weapons/shotgun/fire	STGNSHOT
+weapons/shotgun/pump	STGNPUMP
+weapons/shotgun/in	STGNIN
+weapons/shotgun/melee1 FISTWAL1
+weapons/shotgun/melee2 FISTWAL2
+weapons/shotgun/melee3 FISTWAL3
+weapons/shotgun/melee4 FISTWAL4
+$random weapons/shotgun/melee { weapons/shotgun/melee1 weapons/shotgun/melee2 weapons/shotgun/melee3 weapons/shotgun/melee4 }
+
+// Supershotgun
+weapons/ssg/draw	SSGDRAW
+weapons/ssg/open	SSGOPEN
+weapons/ssg/close	SSGCLOSE
+weapons/ssg/in		SSGIN
+weapons/ssg/fire	SSGSHOT1
+
+// Chaingun
+weapons/chaingun/draw	CHGNDRAW
+weapons/chaingun/fire	CHGNSHOT
+$volume weapons/chaingun/fire 0.6
+$limit weapons/chaingun/fire 0
+weapons/chaingun/spin	CHGNSPIN
+weapons/chaingun/stop	CHGNSTOP
+weapons/chaingun/start	CHGNSTRT
+weapons/chaingun/pickup	CHGNPKUP
+
+// Rocket Launcher
+weapons/rlan/draw	RLANDRAW
+weapons/rlan/fire	RLANSHOT
+weapons/rlan/explosion	RLANEXPL
+weapons/rlan/fly	RLANFLY
+$volume weapons/rlan/fly 0.65
+$limit weapons/rlan/fire 0
+$limit weapons/rlan/explosion 0
+weapons/rlan/lock		RLANLOCK
+weapons/rlan/seek		RLANSEEK
+
+// Plasma Rifle
+weapons/plasma/draw		PLSDRAW
+$random weapons/plasma/fire { weapons/plasma/fire1 weapons/plasma/fire2 weapons/plasma/fire3 }
+$limit weapons/plasma/fire 0
+weapons/plasma/fire1	PLSSHOT1
+weapons/plasma/fire2	PLSSHOT2
+weapons/plasma/fire3	PLSSHOT3
+weapons/plasma/cool	PLSCOOL
+$limit weapons/plasmax 48
+weapons/plasma/charge	PLSCHARG
+weapons/plasma/railgun	PLSRAIL
+
+// BFG 9000
+weapons/bfg/draw	BFGDRAW
+weapons/bfg/start	BFGCHRG	//BFGSTART //BFGSTRT1
+weapons/bfg/fire	BFGSHOOT
+$random weapons/bfg/explosion { weapons/bfg/explosion1 weapons/bfg/explosion2 weapons/bfg/explosion3 weapons/bfg/explosion4 }
+weapons/bfg/explosion1	BFGEXPL1
+weapons/bfg/explosion2	BFGEXPL2
+weapons/bfg/explosion3	BFGEXPL3
+weapons/bfg/explosion4	BFGEXPL4
+weapons/bfg/cool	PLSCOOL
+$limit weapons/bfg/start 0
+weapons/bfg/fly		BFGFLY //mid-air sound
+weapons/bfg/altcharge	BFGACH1
+weapons/bfg/altidle		BFGACH2
+weapons/bfg/altfire		BFGACH3
+
+weapons/bfg/railcharge	BFGLCHR
+weapons/bfg/railfire	BFGLSH
+weapons/bfg/railcool	BFGLEND
+
+//////////////////////////////
+//// MODERN WEAPON SOUNDS \\\\
+//////////////////////////////
+
+Mweapons/dry		"sounds/modern/wempty.ogg"
+
+Mweapons/saw/start		"sounds/modern/saw/saw_start.ogg"
+Mweapons/saw/stop		"sounds/modern/saw/saw_stop.ogg"
+Mweapons/saw/loop		"sounds/modern/saw/saw_loop.ogg"
+Mweapons/saw/highloop	"sounds/modern/saw/saw_highloop.ogg"
+Mweapons/saw/ready		"sounds/modern/saw/saw_ready.ogg"
+Mweapons/saw/cock		"sounds/modern/saw/saw_cock.ogg"
+Mweapons/saw/stuck		"sounds/modern/saw/saw_stuck.ogg"
+$volume Mweapons/saw/loop 0.7
+$volume Mweapons/saw/highloop 0.7
+
+$random Mweapons/pistol/fire { rpistolfire1 rpistolfire2 rpistolfire3 }
+$volume Mweapons/pistol/fire 0.8
+$limit Mweapons/pistol/fire 10
+rpistolfire1	"sounds/modern/pistol/glock1.ogg"
+rpistolfire2	"sounds/modern/pistol/glock2.ogg"
+rpistolfire3	"sounds/modern/pistol/glock3.ogg"
+Mweapons/pistol/clipin		"sounds/modern/pistol/glock_clipin.ogg"
+Mweapons/pistol/clipout	"sounds/modern/pistol/glock_clipout.ogg"
+Mweapons/pistol/cock	"sounds/modern/pistol/glock_cock.ogg"
+
+
+$random Mweapons/shotgun/fire { rshotgun1 rshotgun2 rshotgun3 }
+$volume Mweapons/shotgun/fire 0.85
+$limit Mweapons/shotgun/fire 10
+rshotgun1		"sounds/modern/shotgun/mossberg1.ogg"
+rshotgun2		"sounds/modern/shotgun/mossberg2.ogg"
+rshotgun3		"sounds/modern/shotgun/mossberg3.ogg"
+Mweapons/shotgun/pump	"sounds/modern/shotgun/mossberg_pump.ogg"
+$random Mweapons/shotgun/shellin { shellin1 shellin2 shellin3 }
+shellin1		"sounds/modern/shotgun/shell_in1.ogg"
+shellin2		"sounds/modern/shotgun/shell_in2.ogg"
+shellin3		"sounds/modern/shotgun/shell_in3.ogg"
+
+$random Mweapons/rifle/fire { rrifle1 rrifle2 rrifle3 }
+$volume Mweapons/rifle/fire 0.6
+$limit	Mweapons/rifle/fire 40
+rrifle1			"sounds/modern/rifle/m4fire1.ogg"
+rrifle2			"sounds/modern/rifle/m4fire2.ogg"
+rrifle3			"sounds/modern/rifle/m4fire3.ogg"
+Mweapons/rifle/cock		"sounds/modern/rifle/m4cock.ogg"
+Mweapons/rifle/aim		"sounds/modern/rifle/m4aim.ogg"
+Mweapons/rifle/clipin	"sounds/modern/rifle/m4clipin.ogg"
+Mweapons/rifle/clipout	"sounds/modern/rifle/m4clipout.ogg"
+Mweapons/rifle/unaim	"sounds/modern/rifle/m4unaim.ogg"
+Mweapons/rifle/select	"sounds/modern/rifle/m4select.ogg"
+
+$random Mweapons/assg/fire { assg1 assg2 assg3 assg4 }
+assg1			"sounds/modern/assg/assg_fire1.ogg"
+assg2			"sounds/modern/assg/assg_fire2.ogg"
+assg3			"sounds/modern/assg/assg_fire3.ogg"
+assg4			"sounds/modern/assg/assg_fire4.ogg"
+Mweapons/assg/clipin		"sounds/modern/assg/assg_clipin.ogg"
+Mweapons/assg/clipout		"sounds/modern/assg/assg_clipout.ogg"
+Mweapons/assg/cock			"sounds/modern/assg/assg_cock.ogg"
+Mweapons/assg/trigger		"sounds/modern/assg/assg_trigger.ogg"
+Mweapons/assg/open		"sounds/modern/assg/assg_open.ogg"
+
+Mweapons/rocket/raise		"sounds/modern/launcher/rock_raise.wav"
+$random Mweapons/rocket/fire { rocket1 rocket2 rocket3 }
+rocket1			"sounds/modern/launcher/rocket1.ogg"
+rocket2			"sounds/modern/launcher/rocket2.ogg"
+rocket3			"sounds/modern/launcher/rocket3.ogg"
+$random Mweapons/grenade/fire { grenade1 grenade2 grenade3 }
+grenade1			"sounds/modern/launcher/gren1.ogg"
+grenade2			"sounds/modern/launcher/gren2.ogg"
+grenade3			"sounds/modern/launcher/gren3.ogg"
+Mweapons/rocket/clipout "sounds/modern/launcher/rock_clipout.ogg"
+Mweapons/rocket/clipin "sounds/modern/launcher/rock_clipin.ogg"
+$random Mweapons/rocket/explosion	{ rock_exp1 rock_exp2 rock_exp3 rock_exp4 }
+rock_exp1	"sounds/modern/launcher/rock_exp1.ogg"
+rock_exp2	"sounds/modern/launcher/rock_exp2.ogg"
+rock_exp3	"sounds/modern/launcher/rock_exp3.ogg"
+rock_exp4	"sounds/modern/launcher/rock_exp4.ogg"
+$attenuation rock_exp1 0.5
+$attenuation rock_exp2 0.5
+$attenuation rock_exp3 0.5
+$attenuation rock_exp4 0.5
+$random Mweapons/grenade/bounce { gbounce1 gbounce2 gbounce3 gbounce4 gbounce5 }
+gbounce1		"sounds/modern/launcher/gbounce1.ogg"
+gbounce2		"sounds/modern/launcher/gbounce2.ogg"
+gbounce3		"sounds/modern/launcher/gbounce3.ogg"
+gbounce4		"sounds/modern/launcher/gbounce4.ogg"
+gbounce5		"sounds/modern/launcher/gbounce5.ogg"
+
+$random Mweapons/plasma/fire { plasma1 plasma2 plasma3 plasma4 }
+plasma1 "sounds/modern/plasma/plasma1.ogg"
+plasma2 "sounds/modern/plasma/plasma2.ogg"
+plasma3 "sounds/modern/plasma/plasma3.ogg"
+plasma4 "sounds/modern/plasma/plasma4.ogg"
+Mweapons/plasma/charge "sounds/modern/plasma/plasma_charge.ogg"
+Mweapons/plasma/select	"sounds/modern/plasma/plasma_select.ogg"
+Mweapons/plasma/hum	"sounds/modern/plasma/plasma_hum.ogg"
+Mweapons/plasma/steamfast	"sounds/modern/plasma/plasma_steamfast.ogg"
+Mweapons/plasma/steamslow	"sounds/modern/plasma/plasma_steamslow.ogg"
+Mweapons/plasma/alarm	"sounds/modern/plasma/plasma_alarm.ogg"
+
+Mweapons/bfg/raise			"sounds/modern/bfg/bfg_raise.ogg"
+Mweapons/bfg/charge			"sounds/modern/bfg/bfg_charge.ogg"
+Mweapons/bfg/charge2		"sounds/modern/bfg/bfg_charge2.ogg"
+$random Mweapons/bfg/fire { bfgshot1 bfgshot2 bfgshot3 }
+bfgshot1		"sounds/modern/bfg/bfg_shot1.ogg"
+bfgshot2		"sounds/modern/bfg/bfg_shot2.ogg"
+bfgshot3		"sounds/modern/bfg/bfg_shot3.ogg"
+Mweapons/bfg/overcharge			"sounds/modern/bfg/bfg_overcharge.ogg"
+Mweapons/bfg/ready			"sounds/modern/bfg/bfg_readyloop.ogg"
+
+$random Mweapons/fist/punch { knuckle/punch1 knuckle/punch2 knuckle/punch3 knuckle/punch4 knuckle/punch5 }
+$random Mweapons/fist/heavypunch { knuckle/hpunch1 knuckle/hpunch2 knuckle/hpunch3 }
+$random Mweapons/fist/uppercut { knuckle/uppercut1 knuckle/uppercut2 knuckle/uppercut3 }
+knuckle/punch1	"sounds/modern/fist/punch1.ogg"
+knuckle/punch2	"sounds/modern/fist/punch2.ogg"
+knuckle/punch3	"sounds/modern/fist/punch3.ogg"
+knuckle/punch4	"sounds/modern/fist/punch4.ogg"
+knuckle/punch5	"sounds/modern/fist/punch5.ogg"
+knuckle/hpunch1	"sounds/modern/fist/hpunch1.ogg"
+knuckle/hpunch2	"sounds/modern/fist/hpunch2.ogg"
+knuckle/hpunch3	"sounds/modern/fist/hpunch3.ogg"
+knuckle/uppercut1	"sounds/modern/fist/knucklehit1.ogg"
+knuckle/uppercut2	"sounds/modern/fist/knucklehit2.ogg"
+knuckle/uppercut3	"sounds/modern/fist/knucklehit3.ogg"
+
+$random Mweapons/fist/swing { fist/swing1 fist/swing2 fist/swing3 fist/swing4 }
+$random Mweapons/fist/heavyswing { fist/heavyswing1 fist/heavyswing2 fist/heavyswing3 fist/heavyswing4 }
+fist/swing1		"sounds/modern/fist/fist_swing1.ogg"
+fist/swing2		"sounds/modern/fist/fist_swing2.ogg"
+fist/swing3		"sounds/modern/fist/fist_swing3.ogg"
+fist/swing4		"sounds/modern/fist/fist_swing4.ogg"
+fist/heavyswing1	"sounds/modern/fist/swing_heavy1.ogg"
+fist/heavyswing2	"sounds/modern/fist/swing_heavy2.ogg"
+fist/heavyswing3	"sounds/modern/fist/swing_heavy3.ogg"
+fist/heavyswing4	"sounds/modern/fist/swing_heavy4.ogg"
+Mweapons/fist/wear	"sounds/modern/fist/knuckle_wear.ogg"
+$random Mweapons/fist/heavyhit { hfist/hit1 hfist/hit2 hfist/hit3}
+$random Mweapons/fist/heavyflesh { hfist/flesh1 hfist/flesh2 hfist/flesh3 }
+hfist/hit1		"sounds/modern/fist/heavyhit1.ogg"
+hfist/hit2		"sounds/modern/fist/heavyhit2.ogg"
+hfist/hit3		"sounds/modern/fist/heavyhit3.ogg"
+hfist/flesh1	"sounds/modern/fist/heavyhitflesh1.ogg"
+hfist/flesh2	"sounds/modern/fist/heavyhitflesh2.ogg"
+hfist/flesh3	"sounds/modern/fist/heavyhitflesh3.ogg"

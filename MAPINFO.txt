@@ -1,0 +1,6 @@
+
+gameinfo
+{
+	AddEventHandlers = "SpriteShadowHandler"
+	PlayerClasses = "BD_DoomPlayer"
+}

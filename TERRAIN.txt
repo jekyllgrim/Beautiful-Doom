@@ -1,0 +1,261 @@
+// Thanks to Enjay for this
+
+
+splash Water
+{
+	smallclass		WaterSplashBase
+	smallclip		4
+	smallsound		world/watersplashsmall
+
+	baseclass		WaterSplashBase
+	chunkclass		WaterSplash
+	chunkxvelshift	8
+	chunkyvelshift	8
+	chunkzvelshift	8
+	chunkbasezvel	2
+	sound			world/watersplash
+	NoAlert
+}
+
+terrain Water
+{
+	splash		Water
+	footclip	6
+	liquid
+}
+
+splash Blood
+{
+	smallclass		BloodSplash
+	smallclip		10
+	smallsound		world/sludgegloopsmall
+
+	baseclass		BloodSplash
+	chunkclass		BloodSplash
+	chunkxvelshift	0
+	chunkyvelshift	0
+	chunkzvelshift	0
+	chunkbasezvel	0
+	sound			world/sludgegloop
+	NoAlert
+}
+
+terrain Blood
+{
+	splash		Blood
+	footclip	6
+	liquid
+}
+
+splash Nuke
+{
+	smallclass		SludgeSplash
+	smallclip		6
+	smallsound		world/lavasizzlesmall
+
+	baseclass		SludgeSplash
+	chunkclass		LavaSmoke
+	chunkxvelshift	-1
+	chunkyvelshift	-1
+	chunkzvelshift	7
+	chunkbasezvel	1
+	sound			world/lavasizzle
+	NoAlert
+}
+
+terrain Nuke
+{
+	splash		Nuke
+	footclip	6
+	liquid
+}
+
+splash Lava
+{
+	smallclass		LavaSplash
+	smallclip		4
+	smallsound		world/lavasizzlesmall
+
+	baseclass		LavaSplash
+	chunkclass		LavaSmoke
+	chunkxvelshift	-1
+	chunkyvelshift	-1
+	chunkzvelshift	7
+	chunkbasezvel	1
+	sound			world/lavasizzle
+	NoAlert
+}
+
+terrain Lava
+{
+	splash		Nuke
+	footclip	6
+	liquid
+}
+
+
+splash Lav2
+{
+	smallclass		BloodSplash
+	smallclip		4
+	smallsound		world/lavasizzlesmall
+
+	baseclass		BloodSplash
+	chunkclass		LavaSmoke
+	chunkxvelshift	-1
+	chunkyvelshift	-1
+	chunkzvelshift	7
+	chunkbasezvel	1
+	sound			world/lavasizzle
+	NoAlert
+}
+
+terrain Lav2
+{
+	splash		Lav2
+	footclip	6
+	liquid
+}
+
+splash Lav3
+{
+	smallclass		LavaSmoke
+	smallclip		4
+	smallsound		world/lavsiz2
+
+	baseclass		LavaSmoke
+	chunkclass		LavaSmoke
+	chunkxvelshift	-1
+	chunkyvelshift	-1
+	chunkzvelshift	7
+	chunkbasezvel	1
+	sound			world/lavsiz2
+	NoAlert
+}
+
+terrain Lav3
+{
+	splash		Lav3
+	footclip	6
+	liquid
+}
+
+splash Slime
+{
+	smallclass		SlimeSplash
+	smallclip		6
+	smallsound		world/sludgegloopsmall
+
+	baseclass		SlimeSplash
+	chunkclass		SlimeChunk
+	chunkxvelshift	8
+	chunkyvelshift	8
+	chunkzvelshift	8
+	chunkbasezvel	1
+	sound			world/sludgegloop
+	NoAlert
+}
+
+terrain Slime
+{
+	splash		Slime
+	footclip	6
+	liquid
+}
+
+splash Grey
+{
+	smallclass		BloodSplashBase
+	smallclip		4
+	smallsound		world/watersplashsmall
+	
+	baseclass		BloodSplashBase
+	chunkclass		SludgeChunk
+	chunkxvelshift	8
+	chunkyvelshift	8
+	chunkzvelshift	8
+	chunkbasezvel	2
+	sound			world/watersplash
+	NoAlert
+}
+
+terrain Grey
+{
+	splash		Grey
+	footclip	6
+	liquid
+}
+
+
+splash Sludge
+{
+	smallclass		SludgeSplash
+	smallclip		8
+	smallsound		world/sludgegloopsmall
+
+	baseclass		SludgeSplash
+	chunkclass		SlimeChunk
+	chunkxvelshift	6
+	chunkyvelshift	6
+	chunkzvelshift	6
+	chunkbasezvel	1
+	sound			world/sludgegloop
+	NoAlert
+}
+
+terrain Sludge
+{
+	splash		Sludge
+	footclip	6
+	liquid
+}
+
+ifdoom
+//Splash floors first
+floor optional BLOOD1 Blood
+floor optional BLOOD2 Blood
+floor optional BLOOD3 Blood
+floor optional BLOOD01 Blood
+floor optional BLOOD02 Blood
+floor optional BLOOD03 Blood
+floor optional FWATER1 Water
+floor optional FWATER2 Water
+floor optional FWATER3 Water
+floor optional FWATER4 Water
+floor optional FWATER01 Water
+floor optional FWATER02 Water
+floor optional FWATER03 Water
+floor optional FWATER04 Water
+floor optional LAVA1 Lava
+floor optional LAVA2 Lava
+floor optional LAVA3 Lava
+floor optional LAVA4 Lava
+floor optional LAVA01 Lava
+floor optional LAVA02 Lava
+floor optional LAVA03 Lava
+floor optional LAVA04 Lava
+floor optional NUKAGE1 Nuke
+floor optional NUKAGE2 Nuke
+floor optional NUKAGE3 Nuke
+floor optional NUKAGE01 Nuke
+floor optional NUKAGE02 Nuke
+floor optional NUKAGE03 Nuke
+floor optional SLIME001 Slime
+floor optional SLIME02 Slime
+floor optional SLIME03 Slime
+floor optional SLIME04 Slime
+floor optional SLIME05 Slime
+floor optional SLIME06 Slime
+floor optional SLIME07 Slime
+floor optional SLIME08 Slime
+floor optional SLIME09 Lav3
+floor optional SLIME10 Lav3
+floor optional SLIME11 Lav3
+floor optional SLIME12 Lav3
+floor optional RROCK01 Lav3
+floor optional RROCK02 Lav3
+floor optional RROCK05 Lav3
+floor optional RROCK06 Lav3
+floor optional RROCK07 Lav3
+floor optional RROCK08 Lav3
+endif

@@ -1,0 +1,2 @@
+STARTUPTITLE="Beautiful Doom ver. 6.4.0 || "
+STARTUPCOLORS="0000FF","000000"

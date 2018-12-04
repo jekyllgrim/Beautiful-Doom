@@ -1,0 +1,55 @@
+Class BDoomWeapon : DoomWeapon
+{
+override void DoEffect()
+	{
+		if (owner)
+			{
+			if(bdoom_weapons == 2)
+				{
+					BobRangeX = 0.2;
+					BobRangeY = 0.2;
+					BobStyle = 5;
+					BobSpeed = 2.0;
+				}
+			else
+				{
+					BobRangeX = 1.0;
+					BobRangeY = 1.0;
+					BobStyle = 0;
+					BobSpeed = 1.0;
+				}
+			}
+		Super.DoEffect();
+	}
+
+action void BD_WeaponReady(bool allowsecondary = false)
+	{
+	if (invoker.ammo2 && invoker.ammo2.amount > 0 && invoker.ammo1.amount < invoker.ammo1.maxamount) 
+		{
+		if (allowsecondary)	
+			A_WeaponReady(WRF_ALLOWRELOAD);
+		else
+			A_WeaponReady(WRF_NOSECONDARY|WRF_ALLOWRELOAD);
+		}
+	else 
+		{
+		if (allowsecondary)	
+			A_WeaponReady();
+		else
+			A_WeaponReady(WRF_NOSECONDARY);
+		}
+	
+	}
+
+action void BD_Reload()
+	{
+	if (invoker.ammo2)
+		{
+		while (invoker.ammo2.amount > 0 && invoker.ammo1.amount < invoker.ammo1.maxamount)
+			{
+			TakeInventory(invoker.ammo2.GetClass(),1);
+			GiveInventory(invoker.ammo1.GetClass(),1);
+			}
+		}
+	}
+}

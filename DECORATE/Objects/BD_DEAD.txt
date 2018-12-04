@@ -1,0 +1,585 @@
+//***************************\\
+//***************************\\
+//****** V I C T I M S ******\\
+//***************************\\
+//***************************\\
+
+Actor BD_SmallBloodpool : BD_Bloodpool replaces SmallBloodPool
+{
+scale .35
+}
+
+
+
+
+// ********************
+// A head impaled on a stick
+// ********************
+
+Actor BD_HeadOnAStick : HeadOnAStick replaces HeadOnAStick
+{
++SHOOTABLE
++DONTBLAST
++NOPAIN +DONTFALL
+health 20
+mass 9999999
+Deathheight 56
+states
+	{
+	Spawn:
+		TNT1 AAAA 0 NoDelay A_SpawnItemEx("BD_Bloodpool", random(-4,4),random(-4,4),0,	0,0,0,	0,0,64)
+		POL4 A 1
+		wait
+	Death:
+		POL4 B 1 A_SpawnItemEx("HeadFromPole",random(-4,4),random(-4,4),56,random(3,7),0,random(0,5),random(0,360))
+		POL4 B -1
+		stop
+	}
+}
+	
+actor HeadFromPole : Gibs_general
+{
++NOBLOCKMAP
+mass 1
+states
+	{
+	spawn:
+		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
+		PL4P ABCDEFGH 2 A_SpawnItemEx("BloodDrop",random(-1,1),random(-1,1),random(-1,1),	random(1,3),0,random(0,1),random(-165,195),0,80)
+		goto spawn+1
+	Death:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE",1)
+		TNT1 A 0 A_ChangeFlag("NOBLOCKMAP",0)
+		TNT1 A 0 A_jump(256,1,2)
+		PL4P A 1
+		wait
+		PL4P E 1
+		wait
+	 }
+}
+
+// ********************
+// Several heads impaled on a stick
+// ********************
+
+actor BD_HeadsOnAStick : HeadsOnAStick replaces HeadsOnAStick
+{
++DONTBLAST
++SHOOTABLE
+mass 9999999
+-NOPAIN
+-NOBLOOD
++NODAMAGE
+painchance 230
+states
+	{
+	Spawn:
+		TNT1 AAAA 0 NoDelay A_SpawnItemEx("BD_SmallBloodpool", random(-4,4),random(-4,4),0,	0,0,0,	0,0,64)
+		TNT1 A 0 A_GiveInventory("DummyChecker",5)
+		POL2 A 1
+		wait
+	Spawn1:
+		POL2 B 1
+		loop
+	Spawn2:
+		POL2 C 1
+		loop
+	Spawn3:
+		POL2 D 1
+		loop
+	Spawn4:
+		POL2 E 1
+		loop
+	Spawn5:
+		TNT1 A 0
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE",0)
+		TNT1 A 0 A_ChangeFlag("NOPAIN",1)
+		TNT1 A 0 A_ChangeFlag("NOBLOOD",1)
+		POL2 F 1
+		wait
+	Pain:
+		TNT1 A 0 A_JumpIfInventory("DummyChecker",5,"Head1")
+		TNT1 A 0 A_JumpIfInventory("DummyChecker",4,"Head2")
+		TNT1 A 0 A_JumpIfInventory("DummyChecker",3,"Head3")
+		TNT1 A 0 A_JumpIfInventory("DummyChecker",2,"Head4")
+		TNT1 A 0 A_JumpIfInventory("DummyChecker",1,"Head5")
+		goto Spawn5 //unnecessary though
+	Head1:
+		TNT1 A 0
+		TNT1 A 0 A_TakeInventory("DummyChecker",1)
+		POL2 B 1 A_SpawnItemEx("HeadFromPole",random(-4,4),random(-4,4),64,random(3,7),0,random(0,5),random(0,360))
+		goto spawn1
+	Head2:
+		TNT1 A 0
+		TNT1 A 0 A_TakeInventory("DummyChecker",1)
+		POL2 C 1 A_SpawnItemEx("HeadFromPole",random(-4,4),random(-4,4),54,random(3,7),0,random(0,5),random(0,360))
+		goto spawn2
+	Head3:
+		TNT1 A 0
+		TNT1 A 0 A_TakeInventory("DummyChecker",1)
+		POL2 D 1 A_SpawnItemEx("HeadFromPole",random(-4,4),random(-4,4),44,random(3,7),0,random(0,5),random(0,360))
+		goto spawn3
+	Head4:
+		TNT1 A 0
+		TNT1 A 0 A_TakeInventory("DummyChecker",1)
+		POL2 E 1 A_SpawnItemEx("HeadFromPole",random(-4,4),random(-4,4),34,random(3,7),0,random(0,5),random(0,360))
+		goto spawn4
+	Head5:
+		TNT1 A 0
+		TNT1 A 0 A_TakeInventory("DummyChecker",1)
+		POL2 F 1 A_SpawnItemEx("HeadFromPole",random(-4,4),random(-4,4),24,random(3,7),0,random(0,5),random(0,360))
+		goto spawn5
+	}
+}
+
+
+
+// *****************************
+// Hanging body without brains
+// *****************************
+
+Actor BD_HangBNoBrain : HangBNoBrain replaces HangBNoBrain
+{
++DONTBLAST
++SHOOTABLE
+deathheight 88
+health 30
+mass 9999999
++NOPAIN +DONTFALL
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
+		TNT1 A 0 A_CheckSight(2)
+		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
+		HDB2 A 10
+		goto spawn+1
+	Death:
+		HDB2 B 1 A_spawnitemEx("BodyNoBrain",0,0,0,0,0,0,0,SXF_TRANSFERSCALE)
+		HDB2 B -1
+		stop
+	}
+}
+
+actor BodyNoBrain : Gibs_General
+{
+-DOOMBOUNCE
+Seesound ""
+Deathsound "gibs/splash"
+height 8
+radius 16
+states
+	{
+	Spawn:
+		HDD2 ABCD 3
+		wait
+	Death:
+		HDD2 E 1 A_scream
+		HDD2 E -1
+		stop
+	}
+}
+
+// ********************
+// Hanging body without guts
+// ********************
+
+Actor BD_HangNoGuts : HangNoGuts replaces HangNoGuts
+{
++DONTBLAST
++SHOOTABLE
+deathheight 88
+health 30
+mass 9999999
++NOPAIN +DONTFALL
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
+		TNT1 A 0 A_CheckSight(2)
+		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
+		HDB1 A 10
+		goto spawn+1
+	Death:
+		HDB2 B 1 A_spawnitemEx("BodyNoGuts",0,0,0,0,0,0,0,SXF_TRANSFERSCALE)
+		HDB2 B -1
+		stop
+	}
+}
+
+
+actor BodyNoGuts : BodyNoBrain
+{
+states
+	{
+	Spawn:
+		HDD1 ABCD 3
+		wait
+	Death:
+		HDD1 E 1 A_scream
+		HDD1 E -1
+		stop
+	}
+}
+
+// ********************
+// Hanging torso looking down
+// ********************
+
+Actor BD_HangTLookingDown : HangTLookingDown replaces HangTLookingDown
+{
++DONTBLAST
++SHOOTABLE
+deathheight 64
+health 30
+mass 9999999
++NOPAIN +DONTFALL
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
+		TNT1 A 0 A_CheckSight(2)
+		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
+		HDB3 A 10
+		goto spawn+1
+	Death:
+		HDB3 B 1 A_spawnitemEx("TorsoLookingDown",0,0,0,0,0,0,0,SXF_TRANSFERSCALE)
+		HDB3 B -1
+		stop
+	}
+}
+
+
+actor TorsoLookingDown : BodyNoBrain
+{
+radius 8
+states
+	{
+	Spawn:
+		HDD3 ABCD 3
+		wait
+	Death:
+		HDD3 E 1 A_scream
+		HDD3 E -1
+		stop
+	}
+}
+
+// ********************
+// Hanging body
+// ********************
+
+Actor BD_HangTSkull : HangTSkull replaces HangTSkull
+{
++SHOOTABLE
++DONTBLAST
+deathheight 64
+health 30
+mass 9999999
++NOPAIN +DONTFALL
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
+		TNT1 A 0 A_CheckSight(2)
+		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
+		HDB4 A 10
+		goto spawn+1
+	Death:
+		HDB3 B 1 A_spawnitemEx("TorsoSkull",0,0,0,0,0,0,0,SXF_TRANSFERSCALE)
+		HDB3 B -1
+		stop
+	}
+}
+
+
+actor TorsoSkull : TorsoLookingDown
+{
+states
+	{
+	Spawn:
+		HDD4 ABCD 3
+		wait
+	}
+}
+
+// ********************
+// Hanging torso looking up
+// ********************
+
+Actor BD_HangTLookingUp : HangTLookingUp replaces HangTLookingUp
+{
++DONTBLAST
++SHOOTABLE
+deathheight 64
+health 30
+mass 9999999
++NOPAIN +DONTFALL
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
+		TNT1 A 0 A_CheckSight(2)
+		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
+		HDB5 A 10
+		goto spawn+1
+	Death:
+		HDB3 B 1 A_spawnitemEx("TorsoLookingUp",0,0,0,0,0,0,0,SXF_TRANSFERSCALE)
+		HDB3 B -1
+		stop
+	}
+}
+
+actor TorsoLookingUp : TorsoLookingDown
+{
+states
+	{
+	Spawn:
+		HDD5 ABCD 3
+		wait
+	}
+}
+
+// ********************
+// Hanging torso without brains
+// ********************
+
+Actor BD_HangTNoBrain : HangTNoBrain replaces HangTNoBrain
+{
++SHOOTABLE
+deathheight 64
+health 30
+mass 9999999
++NOPAIN +DONTFALL
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
+		TNT1 A 0 A_CheckSight(2)
+		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
+		HDB6 A 10
+		goto spawn+1
+	Death:
+		HDB3 B 1 A_spawnitemEx("TorsoNoBrain",0,0,0,0,0,0,0,SXF_TRANSFERSCALE)
+		HDB3 B -1
+		stop
+	}
+}
+
+actor TorsoNoBrain : TorsoLookingDown
+{
+states
+	{
+	Spawn:
+		HDD6 ABCD 3
+		wait
+	}
+}
+
+// *********************************
+// Hanging twitching bleeding body
+// *********************************
+
+actor BD_BloodyTwitch : BloodyTwitch replaces BloodyTwitch
+{
++DONTBLAST
++SHOOTABLE
+deathheight 68
+health 60
+mass 9999999
++NOPAIN +DONTFALL
+painsound "shotguy/pain"
+Deathsound "shotguy/Death"
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
+		TNT1 A 0 A_CheckSight(2)
+		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
+		GOR1 A 12
+		GOR1 B 10
+		GOR1 C 12
+		GOR1 B 10
+		goto spawn+1
+	Death:
+		GOR1 A 5 A_scream
+		GOR1 DEF 6
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
+		TNT1 A 0 A_CheckSight(2)
+		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
+		GOR1 G 12
+		goto Death+4
+	}
+}
+
+// **********************************
+// Hanging chained bodies and body parts
+// They cannot be shot down (due to being chained) so I decided to remove shootable property
+// **********************************
+
+//Meat2 removed due to having no meaningful interaction
+
+Actor BD_Meat3 : Meat3 replaces Meat3
+{
++LOOKALLAROUND
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
+		TNT1 A 0 A_CheckSight(2)
+		TNT1 A 0 A_Look
+		GOR3 A 10
+		goto spawn+1
+	See:
+		TNT1 A 0 A_FaceTarget
+		GOR3 A 10 A_SpawnitemEx("BloodSpill",6,random(13,15),28,0,0,0,0,0,230)
+		goto spawn+1
+	}
+}
+
+Actor BD_Meat4 : Meat4 replaces Meat4
+{
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
+		TNT1 A 0 A_CheckSight(2)
+		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
+		GOR4 A 10
+		goto spawn+1
+	}
+}
+
+
+Actor BD_Meat5 : Meat5 replaces Meat5
+{
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
+		TNT1 A 0 A_CheckSight(2)
+		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
+		GOR5 A 10
+		goto spawn+1
+	}
+}
+
+// ********************
+// Impaled dead body
+// ********************
+
+
+actor BD_DeadStick : DeadStick replaces DeadStick
+{
++DONTBLAST
++SHOOTABLE
++LOOKALLAROUND
+mass 9999999
+health 60
+Deathheight 64
++NOPAIN +DONTFALL
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
+		TNT1 AAAA 0 A_SpawnItemEx("BD_SmallBloodpool", random(-4,4),random(-4,4),0,	0,0,0,	0,0,64)
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
+		TNT1 A 0 A_CheckSight(2)
+		TNT1 A 0 A_Look
+		POl1 A 10
+		goto spawn+5
+	Normal:
+		POl1 A 10
+		goto spawn+5
+	See:
+		TNT1 A 0
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_Jump(80,3)
+		POl1 A 10 A_SpawnitemEx("BloodSpill",0,random(10,12),30,0,0,0,0,0,230) //blood from the stump
+		goto spawn+5
+		TNT1 A 0
+		POl1 A 10 A_SpawnitemEx("BloodSpill",-15,random(-3,-5),30,0,0,0,0,0,230) // blood from the back falling behind it
+		goto spawn+5
+	Death:
+		POL1 BCDEFGHIJKLMN 5
+		POL1 N -1
+		stop
+	}
+}
+
+// ****************************
+// Impaled living twitching killable body
+// ****************************
+
+
+actor BD_LiveStick : LiveStick replaces LiveStick
+{
++DONTBLAST
+health 40
+painsound "grunt/pain"
+Deathsound "grunt/Death"
+painchance 255
+Deathheight 64
++SHOOTABLE
+mass 9999999
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
+		TNT1 AAAA 0 A_SpawnItemEx("BD_SmallBloodpool", random(-4,4),random(-4,4),0,	0,0,0,	0,0,64)
+		POL6 A 6
+		POL6 B 8
+		goto spawn+5
+	Pain:
+		POL6 B 4 A_Pain
+		goto spawn+5
+	Death:
+		POL6 B 50 A_Scream
+		POL6 CDEFGHIJKL 5
+		POL6 L -1
+		stop
+	}
+}
+
+// ********************
+// Non-solid versions of the bodies
+// ********************
+
+
+Actor BD_NonsolidTwitch : BD_BloodyTwitch replaces NonsolidTwitch
+{
+radius 20
+-SOLID
+-SHOOTABLE
+}
+
+Actor BD_NonsolidMeat3 : BD_Meat3 replaces NonsolidMeat3
+{
+radius 20
+-SOLID
+-SHOOTABLE
+}
+
+Actor BD_NonsolidMeat4 : BD_Meat4 replaces NonsolidMeat4
+{
+radius 20
+-SOLID
+-SHOOTABLE
+}
+
+Actor BD_NonsolidMeat5 : BD_Meat5 replaces NonsolidMeat5
+{
+radius 20
+-SOLID
+-SHOOTABLE
+}

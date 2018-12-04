@@ -1,0 +1,143 @@
+
+
+AddOptionMenu "OptionsMenu"
+{
+	StaticText ""
+	Submenu "Beautiful Doom Credits", "BDoom_Credits"
+}
+
+AddOptionMenu "OptionsMenu"
+{
+	StaticText ""
+	Submenu "BEAUTIFUL DOOM Settings",	"BDoom_Settings"
+}
+
+ListMenu "BDoom_Credits"
+{
+	Font "SmallFont"
+
+	StaticText -16,	0, "Idea, main code", 					yellow
+	StaticText 180,	0, "Jekyll Grim Payne", 	green
+
+	StaticText -16,	12, "Smooth Doom animations", 		yellow
+	StaticText 180,	12, "Gifty", 			green
+
+	StaticText -16,	24, "Original HD weapons art", 	yellow
+	StaticText 180,	24, "FrancoTieppo", 				green
+
+	StaticText -16,	36, "Sprite fixing", 	yellow
+	StaticText 180,	36, "Revenant100", 				green
+
+	StaticText -16,	48, "Assault rifle sprites", 	yellow
+	StaticText 180,	48, "Mike12", 				green
+
+	StaticText -16,	60, "Smooth guns, HD sounds", 	yellow
+	StaticText 180,	60, "perkristian", 				green
+
+	StaticText -16,	72, "Splashes and switches", 	yellow
+	StaticText 180,	72, "Enjay", 				green
+	
+	StaticText -16,	84, "Original gibs", 	yellow
+	StaticText 180,	84, "Nash", 				green
+
+	StaticText -16,	96, "HD item sprites", 	yellow
+	StaticText 180,	96, "Death Egg", 				green
+
+	StaticText -16,	108, "Footstep scripting", 	yellow
+	StaticText 180,	108, "The ZombieKiller", 				green
+
+	StaticText -16,	120, "Heavy Laser sound", 	yellow
+	StaticText 180,	120, "Michael Henderson", 				green
+
+	StaticText -16,	132, "Alt death sprites", 	yellow
+	StaticText 180,	132, "Death Egg", 				green
+	StaticText 180,	140, "David G.", 				green
+	StaticText 180,	148, "DenisBelmondo", 				green
+	StaticText 180,	156, "alando1", 				green
+
+	StaticText -16,	168, "Bug reports", 	blue
+	StaticText -16,	176, "BurningCadavre", 				green
+	StaticText -16,	184, "Someone64", 				green
+	StaticText -16,	192, "Grigori", 				green
+	StaticText -16,	200, "drfrag", 				green
+	StaticText -16,	208, "Yutrzenika", 				green
+	StaticText -16,	216, "Zhs2", 				green
+
+	StaticText 110,	176, "Kombine", 				green
+	StaticText 110,	184, "TheCamaleonMaligno", 				green
+	StaticText 110,	192, "MasterMind", 				green
+	StaticText 110,	200, "DabbingSquidward", 				green
+	StaticText 110,	208, "3saster", 				green
+}
+
+
+OptionMenu "BDoom_Settings"
+{
+
+	Option "Player Weapons",					"bdoom_weapons", "bdoom_weapons", "", 1
+	StaticText " "
+
+	Option "Muzzle Flashes", 					"bdoom_muzzle", "bdoom_muzzle", "", 1
+	StaticText " "
+
+	Option "Bullet Tracers",					"bdoom_tracers", "OnOff", "", 1
+	StaticText " "
+
+	Option "Enhanced gibs & deaths",					"bdoom_gibs", "OnOff", "", 1
+	StaticText " "
+
+	Option "Enhanced blood",					"bdoom_blood", "OnOff", "", 1
+	StaticText " "
+
+	Option "Halos & particle flames",			"bdoom_flames", "OnOff", "", 1
+	StaticText " "
+
+	Option "Casings, smoke, trails, debris",	"bdoom_debris", "OnOff", "", 1
+	StaticText " "
+
+	Option "Maximum blood/gibs/debris",		"sv_corpsequeuesize", "bdoom_bloodnum", "", 1
+	StaticText " "
+
+	Option "Ricochet & spark sounds", 			"bdoom_sparks", "OnOff", "", 1
+	StaticText " "
+	
+	Option "Flies over corpses", 				"bdoom_flies", "OnOff", "", 1
+	StaticText " "
+
+	Option "Explosion shakes", 					"bdoom_shakes", "OnOff", "", 1
+	
+	Option "Monster shadows", 					"bdoom_shadows", "OnOff", "", 1
+}
+
+OptionValue "OnOff"
+{
+	0, "Off"
+	1, "On"
+}
+
+OptionValue "bdoom_weapons"
+{
+	0, "Vanilla"
+	1, "Enhanced (Info: F1)"
+	2, "Modern"
+}
+
+OptionValue "bdoom_muzzle"
+{
+	0, "Vanilla"
+	1, "Enhanced"
+}
+
+OptionValue "bdoom_bloodnum"
+{
+	100, "100"
+	300, "300"
+	500, "500"
+	1000, "1000"
+	1500, "1500"
+	2000, "2000"
+	2500, "2500"
+	3000, "3000"
+	5000, "5000"
+	10000, "10,000"
+}

@@ -1,0 +1,256 @@
+Class BD_Shotgun : BDoomWeapon replaces Shotgun
+{
+Default
+	{
+	Weapon.AmmoType2	"Shell";
+	Weapon.AmmoGive2	8;
+	Inventory.PickupMessage "$GOTSHOTGUN";
+	Obituary "$OB_MPSHOTGUN";
+	Tag "$TAG_SHOTGUN";
+	weapon.selectionorder 130;
+	+WEAPON.NOALERT //for melee
+	weapon.slotnumber 3;
+	weapon.slotpriority 0;
+	}
+override void Tick()
+	{
+	If (Owner)
+		return;
+	else
+		{
+		if(bdoom_weapons == 2)
+			{
+			pickupsound = "Mweapons/shotgun/pump";
+			AmmoGive1 = 0;
+			if (bDROPPED == true)
+				AmmoGive2 = 4;
+			else
+				AmmoGive2 = 8;
+			}
+		else
+			{
+			pickupsound = "weapons/shotgun/pump";
+			if (bDROPPED == true)
+				AmmoGive1 = 4;
+			else
+				AmmoGive1 = 8;
+			}
+		}
+	Super.Tick();
+	}
+override void DoEffect()
+	{
+	if (owner)
+		{
+		if(bdoom_weapons == 2)
+			{
+			Ammo1 = ammo(Owner.FindInventory("ShotgunClip") );
+			AmmoUse1 = 1;
+			Ammo2 = ammo(Owner.FindInventory("Shell"));
+			AmmoUse2 = 0;
+			bNOAUTOFIRE = true;
+			bAMMO_OPTIONAL = true;
+			}
+		else
+			{
+			Ammo1 = ammo(Owner.FindInventory("Shell"));
+			AmmoUse1 = 1;
+			Ammo2 = null;
+			bNOAUTOFIRE = false;
+			bAMMO_OPTIONAL = false;
+			}
+		}
+	Super.DoEffect();
+	}
+States
+{
+	Spawn:
+		SHOT A 1 NoDelay A_JumpIf(bdoom_weapons == 2,1);
+		loop;
+		SHOT B 1;
+		loop;
+	Ready:
+		TNT1 A 0 A_JumpIf(bdoom_weapons== 2,"Ready.Modern");
+		TNT1 A 0 A_JumpIf(bdoom_weapons== 1,2);
+		SHOG A 1 A_WeaponReady(WRF_NOSECONDARY);
+		loop;
+		SHOG A 1 A_WeaponReady();
+		loop;
+	Deselect:
+		TNT1 A 0 A_JumpIf(bdoom_weapons> 0,"Deselect.Enhanced");
+		SHOG A 1 A_Lower();
+		wait;
+	Select:
+		TNT1 A 0 { if (bdoom_weapons > 0)
+					A_PlaySound("weapons/shotgun/draw");
+				}
+		TNT1 AAAAAAAA 0 A_Raise();
+		SHOS FEDCBA 1 A_WeaponReady(WRF_NOFIRE);
+		goto ready;
+	Fire: //fire 37 tics, refire 7 tics;
+		TNT1 A 0 A_JumpIf(bdoom_weapons==2,"Fire.Modern");
+		SHOG A 3 { 
+				A_AlertMonsters();
+				if(bdoom_weapons == 1) {
+					A_PlaySound("weapons/shotgun/fire"); }
+				else {
+					A_PlaySound("weapons/shotgf");}
+				
+				}
+		SHOF A 3 {
+				A_gunflash();
+				If(bdoom_tracers==1) {
+					A_FireBullets (5.6, 0, 7, 5, "EnShotPuff",FBF_USEAMMO,0,"BulletTracer",0,0); }
+				else {
+					A_FireBullets (5.6, 0, 7, 5, "EnShotPuff"); }
+				}
+		SHOG BDFHIJKL 1;
+		SHOG M 2 {
+				if (bdoom_weapons == 1) {
+					 A_playsound("weapons/shotgun/pump",5); }
+				}
+		SHOG N 3 { If(bdoom_debris==1) {
+				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-3,-4),sin(-pitch)*25+random(39,40),		0,0,1,0); }
+				}
+		SHOG O 3  { If(bdoom_debris==1) {
+				A_SpawnItemEx("ShotgunCasing",random(-7,-9),cos(pitch)*-25,sin(-pitch)*25+random(26,28),		random(3,5),0,random(4,6),	random(-80,-90)); }
+				}
+		SHOG NLKJIHGFE 1;
+		TNT1 A 0 A_JumpIf(bdoom_weapons==1,5);
+		SHOG DCB 2;
+		SHOG A 7 A_ReFire();
+		Goto Ready;
+		
+		SHOG DC 2;
+		SHOG BB 1 A_WeaponReady(WRF_NOPRIMARY);
+		TNT1 A 0 A_ReFire();
+		SHOG AAAAAAA 1 A_WeaponReady(WRF_NOPRIMARY);
+		goto ready;
+	Flash:
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_muzzle")==1,3);
+		SHOF L 3 bright A_Light2();
+		TNT1 A 2 A_light1();
+		goto lightdone;
+		TNT1 A 0 A_Jump(256,1,3,5,7);
+		SHOL A 3 bright A_Light2();
+		TNT1 A 1 A_light1();
+		goto lightdone;
+		SHOL B 3 bright A_Light2();
+		TNT1 A 1 A_light1();
+		goto lightdone;
+		SHOL C 3 bright A_Light2();
+		TNT1 A 1 A_light1();
+		goto lightdone;
+		SHOL D 3 bright A_Light2();
+		TNT1 A 1 A_light1();
+		goto lightdone;
+	Deselect.Enhanced:
+		SHOG A 1 A_Lower();
+		TNT1 A 0 A_Lower();
+		loop;
+	Altfire:
+		SHOS ABCDEF 1;
+	AltHold:
+		TNT1 A 0 A_JumpIfInventory("PowerStrength",1,"AltHoldStrong");
+		TNT1 A 0 A_playsound("weapons/fist/swing");
+		SHOM ABC 1;
+		SHOM D 3 A_CustomPunch(6*random(2,6),TRUE,CPF_NOTURN,"ShotgunMeleePuff",72);
+		SHOM EF 2;
+		SHOM GHI 2 A_WeaponReady(WRF_NOSECONDARY);
+		SHOM JJ 1 A_WeaponReady(WRF_NOSECONDARY);
+		TNT1 AAA 1 A_WeaponReady(WRF_NOSECONDARY);
+		TNT1 A 0 A_ReFire();
+		SHOS FEDCBA 1 A_WeaponReady(WRF_NOSECONDARY);
+		goto ready;
+	AltHoldStrong:
+		TNT1 A 0 A_playsound("weapons/fist/swing");
+		SHOM ABC 1;
+		SHOM D 1 A_CustomPunch(42*random(1,6),TRUE,CPF_NOTURN,"FistPuffStrong",72);
+		SHOM D 1 A_WeaponOffset(0.0,32.0,WOF_INTERPOLATE);
+		SHOM D 1 A_WeaponOffset(-1.0,33.0,WOF_INTERPOLATE);
+		SHOM D 1 A_WeaponOffset(1.0,34.0,WOF_INTERPOLATE);
+		SHOM D 1 A_WeaponOffset(2.0,32.0,WOF_INTERPOLATE);
+		SHOM EF 2;
+		SHOM GHI 2 A_WeaponReady(WRF_NOSECONDARY);
+		SHOM JJ 1 A_WeaponReady(WRF_NOSECONDARY);
+		TNT1 A 1 A_WeaponReady(WRF_NOSECONDARY);
+		TNT1 A 0 A_ReFire();
+		SHOS FEDCBA 1 A_WeaponReady(WRF_NOSECONDARY);
+		goto ready;
+
+// MODERN GUNS
+
+	Ready.Modern:
+		SHOG A 1 BD_WeaponReady(1);
+		goto ready;
+	Fire.Modern:
+		TNT1 A 0 A_JumpIfNoAmmo("DryReload");
+		SHOF A 2 bright { 
+				A_FireBullets (4.1, 3.0, 8, 0, "NullPuff",FBF_USEAMMO,0,"BD_ShotgunPellet",0,0);
+				A_AlertMonsters();
+				A_gunflash();
+				A_PlaySound("Mweapons/shotgun/fire");
+				}
+		TNT1 A 0 A_SetPitch(pitch-frandom(1.4,1.7),SPF_INTERPOLATE);
+		SHOF A 2 bright ;
+		SHOG BCBA 1;
+		TNT1 A 0 { If(bdoom_debris==1) {
+				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-3,-4),sin(-pitch)*25+random(39,40),		0,0,1,0); }
+				}
+		SHOP ABCD 1;
+		TNT1 A 0 A_playsound("Mweapons/shotgun/pump",6);
+		SHOP EFG 2;
+		TNT1 A 0 { If(bdoom_debris==1) {
+			A_SpawnItemEx("ShotgunCasing",random(6,8),cos(pitch)*-25,sin(-pitch)*25+random(26,28),		random(4,6),0,random(2,4),	random(-80,-90)); }
+			}
+		SHOP GFE 2;
+		SHOP DCBA 1;
+		Goto Ready	;
+	DryReload:
+		SHOG A 10 A_PlaySound("Mweapons/dry");
+	Reload:
+		TNT1 A 0 A_JumpIf(CountInv("Shell") == 0, "Ready");
+		SHOG BDFH 1;
+		SHOG I 1 A_WeaponOffset(0.0,36.0,WOF_INTERPOLATE);
+		SHOG J 1 A_WeaponOffset(0.0,39.0,WOF_INTERPOLATE);
+		SHOG K 1 A_WeaponOffset(0.0,43.0,WOF_INTERPOLATE);
+		SHOG L 4 A_WeaponOffset(0.0,47.0,WOF_INTERPOLATE);
+	Reload1:
+		TNT1 A 0 {
+			If(CountInv("ShotgunClip") == 8 || CountINv("Shell") == 0 )
+				return ResolveState("ReloadEnd");
+			TakeInventory("Shell",1);
+			GiveInventory("ShotgunClip",1); 
+			return ResolveState(null);
+			}
+		TNT1 A 0 A_PlaySound("Mweapons/shotgun/shellin",0);
+		SHOG LL 3 A_Weaponoffset(0.0,-1.0,WOF_ADD);
+		SHOG LL 3 {
+			A_Weaponoffset(0.0,1.0,WOF_ADD);
+			A_WeaponReady(WRF_NOBOB);
+			}
+		TNT1 A 0 A_JumpIfInventory("ShotgunClip",2,"Reload1");
+		TNT1 A 0 A_playsound("Mweapons/shotgun/pump",0);
+		SHOG KLMNO 2;
+		SHOG NM 2 A_WeaponReady(WRF_NOBOB);
+		loop;
+	ReloadEnd:
+		SHOG L 1 A_WeaponOffset(0.0,47.0,WOF_INTERPOLATE);
+		SHOG K 1 A_WeaponOffset(0.0,43.0,WOF_INTERPOLATE);
+		SHOG J 1 A_WeaponOffset(0.0,39.0,WOF_INTERPOLATE);
+		SHOG I 1 A_WeaponOffset(0.0,36.0,WOF_INTERPOLATE);
+		SHOG HFDBA 1;
+		goto ready;
+	}
+}
+
+Class ShotgunClip : ammo
+{
+Default {
+	inventory.icon "HSHLZ0";
+	inventory.amount 1;
+	inventory.maxamount 8;
+	ammo.backpackamount 0;
+	ammo.backpackmaxamount 8;
+	}
+}

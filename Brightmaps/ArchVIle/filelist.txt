@@ -1,0 +1,936 @@
+NVILA1 {
+map "brightmaps/archvile/6VILA1.png"
+disablefullbright
+}
+brightmap sprite NVILa2 {
+map "brightmaps/archvile/6VILa2.png"
+disablefullbright
+}
+brightmap sprite NVILa3 {
+map "brightmaps/archvile/6VILa3.png"
+disablefullbright
+}
+brightmap sprite NVILa4 {
+map "brightmaps/archvile/6VILa4.png"
+disablefullbright
+}
+brightmap sprite NVILa5 {
+map "brightmaps/archvile/6VILa5.png"
+disablefullbright
+}
+brightmap sprite NVILa6 {
+map "brightmaps/archvile/6VILa6.png"
+disablefullbright
+}
+brightmap sprite NVILa7 {
+map "brightmaps/archvile/6VILa7.png"
+disablefullbright
+}
+brightmap sprite NVILa8 {
+map "brightmaps/archvile/6VILa8.png"
+disablefullbright
+}
+brightmap sprite NVILB1 {
+map "brightmaps/archvile/6VILB1.png"
+disablefullbright
+}
+brightmap sprite NVILb2 {
+map "brightmaps/archvile/6VILb2.png"
+disablefullbright
+}
+brightmap sprite NVILb3 {
+map "brightmaps/archvile/6VILb3.png"
+disablefullbright
+}
+brightmap sprite NVILb4 {
+map "brightmaps/archvile/6VILb4.png"
+disablefullbright
+}
+brightmap sprite NVILb5 {
+map "brightmaps/archvile/6VILb5.png"
+disablefullbright
+}
+brightmap sprite NVILb6 {
+map "brightmaps/archvile/6VILb6.png"
+disablefullbright
+}
+brightmap sprite NVILb7 {
+map "brightmaps/archvile/6VILb7.png"
+disablefullbright
+}
+brightmap sprite NVILb8 {
+map "brightmaps/archvile/6VILb8.png"
+disablefullbright
+}
+brightmap sprite NVILC1 {
+map "brightmaps/archvile/6VILC1.png"
+disablefullbright
+}
+brightmap sprite NVILc2 {
+map "brightmaps/archvile/6VILc2.png"
+disablefullbright
+}
+brightmap sprite NVILc3 {
+map "brightmaps/archvile/6VILc3.png"
+disablefullbright
+}
+brightmap sprite NVILc4 {
+map "brightmaps/archvile/6VILc4.png"
+disablefullbright
+}
+brightmap sprite NVILc5 {
+map "brightmaps/archvile/6VILc5.png"
+disablefullbright
+}
+brightmap sprite NVILc6 {
+map "brightmaps/archvile/6VILc6.png"
+disablefullbright
+}
+brightmap sprite NVILc7 {
+map "brightmaps/archvile/6VILc7.png"
+disablefullbright
+}
+brightmap sprite NVILc8 {
+map "brightmaps/archvile/6VILc8.png"
+disablefullbright
+}
+brightmap sprite NVILD1 {
+map "brightmaps/archvile/6VILD1.png"
+disablefullbright
+}
+brightmap sprite NVILd2 {
+map "brightmaps/archvile/6VILd2.png"
+disablefullbright
+}
+brightmap sprite NVILd3 {
+map "brightmaps/archvile/6VILd3.png"
+disablefullbright
+}
+brightmap sprite NVILd4 {
+map "brightmaps/archvile/6VILd4.png"
+disablefullbright
+}
+brightmap sprite NVILd5 {
+map "brightmaps/archvile/6VILd5.png"
+disablefullbright
+}
+brightmap sprite NVILd6 {
+map "brightmaps/archvile/6VILd6.png"
+disablefullbright
+}
+brightmap sprite NVILd7 {
+map "brightmaps/archvile/6VILd7.png"
+disablefullbright
+}
+brightmap sprite NVILd8 {
+map "brightmaps/archvile/6VILd8.png"
+disablefullbright
+}
+brightmap sprite NVILE1 {
+map "brightmaps/archvile/6VILE1.png"
+disablefullbright
+}
+brightmap sprite NVILe2 {
+map "brightmaps/archvile/6VILe2.png"
+disablefullbright
+}
+brightmap sprite NVILe3 {
+map "brightmaps/archvile/6VILe3.png"
+disablefullbright
+}
+brightmap sprite NVILe4 {
+map "brightmaps/archvile/6VILe4.png"
+disablefullbright
+}
+brightmap sprite NVILe5 {
+map "brightmaps/archvile/6VILe5.png"
+disablefullbright
+}
+brightmap sprite NVILe6 {
+map "brightmaps/archvile/6VILe6.png"
+disablefullbright
+}
+brightmap sprite NVILe7 {
+map "brightmaps/archvile/6VILe7.png"
+disablefullbright
+}
+brightmap sprite NVILe8 {
+map "brightmaps/archvile/6VILe8.png"
+disablefullbright
+}
+brightmap sprite NVILF1 {
+map "brightmaps/archvile/6VILF1.png"
+disablefullbright
+}
+brightmap sprite NVILf2 {
+map "brightmaps/archvile/6VILf2.png"
+disablefullbright
+}
+brightmap sprite NVILf3 {
+map "brightmaps/archvile/6VILf3.png"
+disablefullbright
+}
+brightmap sprite NVILf4 {
+map "brightmaps/archvile/6VILf4.png"
+disablefullbright
+}
+brightmap sprite NVILf5 {
+map "brightmaps/archvile/6VILf5.png"
+disablefullbright
+}
+brightmap sprite NVILf6 {
+map "brightmaps/archvile/6VILf6.png"
+disablefullbright
+}
+brightmap sprite NVILf7 {
+map "brightmaps/archvile/6VILf7.png"
+disablefullbright
+}
+brightmap sprite NVILf8 {
+map "brightmaps/archvile/6VILf8.png"
+disablefullbright
+}
+brightmap sprite NVILG1 {
+map "brightmaps/archvile/6VILG1.png"
+disablefullbright
+}
+brightmap sprite NVILg2 {
+map "brightmaps/archvile/6VILg2.png"
+disablefullbright
+}
+brightmap sprite NVILG3 {
+map "brightmaps/archvile/6VILG3.png"
+disablefullbright
+}
+brightmap sprite NVILg4 {
+map "brightmaps/archvile/6VILg4.png"
+disablefullbright
+}
+brightmap sprite NVILg5 {
+map "brightmaps/archvile/6VILg5.png"
+disablefullbright
+}
+brightmap sprite NVILg6 {
+map "brightmaps/archvile/6VILg6.png"
+disablefullbright
+}
+brightmap sprite NVILg7 {
+map "brightmaps/archvile/6VILg7.png"
+disablefullbright
+}
+brightmap sprite NVILg8 {
+map "brightmaps/archvile/6VILg8.png"
+disablefullbright
+}
+brightmap sprite NVILH1 {
+map "brightmaps/archvile/6VILH1.png"
+disablefullbright
+}
+brightmap sprite NVILh2 {
+map "brightmaps/archvile/6VILh2.png"
+disablefullbright
+}
+brightmap sprite NVILh3 {
+map "brightmaps/archvile/6VILh3.png"
+disablefullbright
+}
+brightmap sprite NVILh4 {
+map "brightmaps/archvile/6VILh4.png"
+disablefullbright
+}
+brightmap sprite NVILh5 {
+map "brightmaps/archvile/6VILh5.png"
+disablefullbright
+}
+brightmap sprite NVilh6 {
+map "brightmaps/archvile/6Vilh6.png"
+disablefullbright
+}
+brightmap sprite NVILh7 {
+map "brightmaps/archvile/6VILh7.png"
+disablefullbright
+}
+brightmap sprite NVILh8 {
+map "brightmaps/archvile/6VILh8.png"
+disablefullbright
+}
+brightmap sprite NVILI1 {
+map "brightmaps/archvile/6VILI1.png"
+disablefullbright
+}
+brightmap sprite NVILi2 {
+map "brightmaps/archvile/6VILi2.png"
+disablefullbright
+}
+brightmap sprite NVILi3 {
+map "brightmaps/archvile/6VILi3.png"
+disablefullbright
+}
+brightmap sprite NVILi4 {
+map "brightmaps/archvile/6VILi4.png"
+disablefullbright
+}
+brightmap sprite NVILi5 {
+map "brightmaps/archvile/6VILi5.png"
+disablefullbright
+}
+brightmap sprite NVILi6 {
+map "brightmaps/archvile/6VILi6.png"
+disablefullbright
+}
+brightmap sprite NVIli7 {
+map "brightmaps/archvile/6VIli7.png"
+disablefullbright
+}
+brightmap sprite NVILi8 {
+map "brightmaps/archvile/6VILi8.png"
+disablefullbright
+}
+brightmap sprite NVILJ1 {
+map "brightmaps/archvile/6VILJ1.png"
+disablefullbright
+}
+brightmap sprite NVILj2 {
+map "brightmaps/archvile/6VILj2.png"
+disablefullbright
+}
+brightmap sprite NVILJ3 {
+map "brightmaps/archvile/6VILJ3.png"
+disablefullbright
+}
+brightmap sprite NVILj4 {
+map "brightmaps/archvile/6VILj4.png"
+disablefullbright
+}
+brightmap sprite NVILj5 {
+map "brightmaps/archvile/6VILj5.png"
+disablefullbright
+}
+brightmap sprite NVILj6 {
+map "brightmaps/archvile/6VILj6.png"
+disablefullbright
+}
+brightmap sprite NVILj7 {
+map "brightmaps/archvile/6VILj7.png"
+disablefullbright
+}
+brightmap sprite NVILj8 {
+map "brightmaps/archvile/6VILj8.png"
+disablefullbright
+}
+brightmap sprite NVILK1 {
+map "brightmaps/archvile/6VILK1.png"
+disablefullbright
+}
+brightmap sprite NVILk2 {
+map "brightmaps/archvile/6VILk2.png"
+disablefullbright
+}
+brightmap sprite NVILk3 {
+map "brightmaps/archvile/6VILk3.png"
+disablefullbright
+}
+brightmap sprite NVILk4 {
+map "brightmaps/archvile/6VILk4.png"
+disablefullbright
+}
+brightmap sprite NVILk5 {
+map "brightmaps/archvile/6VILk5.png"
+disablefullbright
+}
+brightmap sprite NVILk6 {
+map "brightmaps/archvile/6VILk6.png"
+disablefullbright
+}
+brightmap sprite NVILk7 {
+map "brightmaps/archvile/6VILk7.png"
+disablefullbright
+}
+brightmap sprite NVILk8 {
+map "brightmaps/archvile/6VILk8.png"
+disablefullbright
+}
+brightmap sprite NVILL1 {
+map "brightmaps/archvile/6VILL1.png"
+disablefullbright
+}
+brightmap sprite NVILl2 {
+map "brightmaps/archvile/6VILl2.png"
+disablefullbright
+}
+brightmap sprite NVILl3 {
+map "brightmaps/archvile/6VILl3.png"
+disablefullbright
+}
+brightmap sprite NVILl4 {
+map "brightmaps/archvile/6VILl4.png"
+disablefullbright
+}
+brightmap sprite NVILl5 {
+map "brightmaps/archvile/6VILl5.png"
+disablefullbright
+}
+brightmap sprite NVILl6 {
+map "brightmaps/archvile/6VILl6.png"
+disablefullbright
+}
+brightmap sprite NVILl7 {
+map "brightmaps/archvile/6VILl7.png"
+disablefullbright
+}
+brightmap sprite NVILl8 {
+map "brightmaps/archvile/6VILl8.png"
+disablefullbright
+}
+brightmap sprite NVILM1 {
+map "brightmaps/archvile/6VILM1.png"
+disablefullbright
+}
+brightmap sprite NVILm2 {
+map "brightmaps/archvile/6VILm2.png"
+disablefullbright
+}
+brightmap sprite NVILm3 {
+map "brightmaps/archvile/6VILm3.png"
+disablefullbright
+}
+brightmap sprite NVILm4 {
+map "brightmaps/archvile/6VILm4.png"
+disablefullbright
+}
+brightmap sprite NVILm5 {
+map "brightmaps/archvile/6VILm5.png"
+disablefullbright
+}
+brightmap sprite NVILm6 {
+map "brightmaps/archvile/6VILm6.png"
+disablefullbright
+}
+brightmap sprite NVILm7 {
+map "brightmaps/archvile/6VILm7.png"
+disablefullbright
+}
+brightmap sprite NVILm8 {
+map "brightmaps/archvile/6VILm8.png"
+disablefullbright
+}
+brightmap sprite NVILN1 {
+map "brightmaps/archvile/6VILN1.png"
+disablefullbright
+}
+brightmap sprite NVILn2 {
+map "brightmaps/archvile/6VILn2.png"
+disablefullbright
+}
+brightmap sprite NVILn3 {
+map "brightmaps/archvile/6VILn3.png"
+disablefullbright
+}
+brightmap sprite NVILn4 {
+map "brightmaps/archvile/6VILn4.png"
+disablefullbright
+}
+brightmap sprite NVILn5 {
+map "brightmaps/archvile/6VILn5.png"
+disablefullbright
+}
+brightmap sprite NVILn6 {
+map "brightmaps/archvile/6VILn6.png"
+disablefullbright
+}
+brightmap sprite NVILn7 {
+map "brightmaps/archvile/6VILn7.png"
+disablefullbright
+}
+brightmap sprite NViln8 {
+map "brightmaps/archvile/6Viln8.png"
+disablefullbright
+}
+brightmap sprite NVILO1 {
+map "brightmaps/archvile/6VILO1.png"
+disablefullbright
+}
+brightmap sprite NVILo2 {
+map "brightmaps/archvile/6VILo2.png"
+disablefullbright
+}
+brightmap sprite NVILo3 {
+map "brightmaps/archvile/6VILo3.png"
+disablefullbright
+}
+brightmap sprite NVILo4 {
+map "brightmaps/archvile/6VILo4.png"
+disablefullbright
+}
+brightmap sprite NVILo5 {
+map "brightmaps/archvile/6VILo5.png"
+disablefullbright
+}
+brightmap sprite NVILo6 {
+map "brightmaps/archvile/6VILo6.png"
+disablefullbright
+}
+brightmap sprite NVILo7 {
+map "brightmaps/archvile/6VILo7.png"
+disablefullbright
+}
+brightmap sprite NVILo8 {
+map "brightmaps/archvile/6VILo8.png"
+disablefullbright
+}
+brightmap sprite NVILP1 {
+map "brightmaps/archvile/6VILP1.png"
+disablefullbright
+}
+brightmap sprite NVILp2 {
+map "brightmaps/archvile/6VILp2.png"
+disablefullbright
+}
+brightmap sprite NVILp3 {
+map "brightmaps/archvile/6VILp3.png"
+disablefullbright
+}
+brightmap sprite NVILp4 {
+map "brightmaps/archvile/6VILp4.png"
+disablefullbright
+}
+brightmap sprite NVILp5 {
+map "brightmaps/archvile/6VILp5.png"
+disablefullbright
+}
+brightmap sprite NVILp6 {
+map "brightmaps/archvile/6VILp6.png"
+disablefullbright
+}
+brightmap sprite NVILp7 {
+map "brightmaps/archvile/6VILp7.png"
+disablefullbright
+}
+brightmap sprite NVILp8 {
+map "brightmaps/archvile/6VILp8.png"
+disablefullbright
+}
+brightmap sprite NVILQ1 {
+map "brightmaps/archvile/6VILQ1.png"
+disablefullbright
+}
+brightmap sprite NVILq2 {
+map "brightmaps/archvile/6VILq2.png"
+disablefullbright
+}
+brightmap sprite NVILq3 {
+map "brightmaps/archvile/6VILq3.png"
+disablefullbright
+}
+brightmap sprite NVILq4 {
+map "brightmaps/archvile/6VILq4.png"
+disablefullbright
+}
+brightmap sprite NVILq5 {
+map "brightmaps/archvile/6VILq5.png"
+disablefullbright
+}
+brightmap sprite NVILq6 {
+map "brightmaps/archvile/6VILq6.png"
+disablefullbright
+}
+brightmap sprite NVILq7 {
+map "brightmaps/archvile/6VILq7.png"
+disablefullbright
+}
+brightmap sprite NVILq8 {
+map "brightmaps/archvile/6VILq8.png"
+disablefullbright
+}
+brightmap sprite NVILR1 {
+map "brightmaps/archvile/6VILR1.png"
+disablefullbright
+}
+brightmap sprite NVILr2 {
+map "brightmaps/archvile/6VILr2.png"
+disablefullbright
+}
+brightmap sprite NVILr3 {
+map "brightmaps/archvile/6VILr3.png"
+disablefullbright
+}
+brightmap sprite NVILr4 {
+map "brightmaps/archvile/6VILr4.png"
+disablefullbright
+}
+brightmap sprite NVILr5 {
+map "brightmaps/archvile/6VILr5.png"
+disablefullbright
+}
+brightmap sprite NVILr6 {
+map "brightmaps/archvile/6VILr6.png"
+disablefullbright
+}
+brightmap sprite NVILr7 {
+map "brightmaps/archvile/6VILr7.png"
+disablefullbright
+}
+brightmap sprite NVILr8 {
+map "brightmaps/archvile/6VILr8.png"
+disablefullbright
+}
+brightmap sprite VIL1x1 {
+map "brightmaps/archvile/6IL1x1.png"
+disablefullbright
+}
+brightmap sprite VIL1x2 {
+map "brightmaps/archvile/6IL1x2.png"
+disablefullbright
+}
+brightmap sprite VIL1x3 {
+map "brightmaps/archvile/6IL1x3.png"
+disablefullbright
+}
+brightmap sprite VIL1x4 {
+map "brightmaps/archvile/6IL1x4.png"
+disablefullbright
+}
+brightmap sprite VIL1x5 {
+map "brightmaps/archvile/6IL1x5.png"
+disablefullbright
+}
+brightmap sprite VIL1x6 {
+map "brightmaps/archvile/6IL1x6.png"
+disablefullbright
+}
+brightmap sprite VIL1x7 {
+map "brightmaps/archvile/6IL1x7.png"
+disablefullbright
+}
+brightmap sprite VIL1x8 {
+map "brightmaps/archvile/6IL1x8.png"
+disablefullbright
+}
+brightmap sprite VIL1y1 {
+map "brightmaps/archvile/6IL1y1.png"
+disablefullbright
+}
+brightmap sprite VIL1y2 {
+map "brightmaps/archvile/6IL1y2.png"
+disablefullbright
+}
+brightmap sprite VIL1y3 {
+map "brightmaps/archvile/6IL1y3.png"
+disablefullbright
+}
+brightmap sprite VIL1y4 {
+map "brightmaps/archvile/6IL1y4.png"
+disablefullbright
+}
+brightmap sprite VIL1y5 {
+map "brightmaps/archvile/6IL1y5.png"
+disablefullbright
+}
+brightmap sprite VIL1y6 {
+map "brightmaps/archvile/6IL1y6.png"
+disablefullbright
+}
+brightmap sprite VIL1y7 {
+map "brightmaps/archvile/6IL1y7.png"
+disablefullbright
+}
+brightmap sprite VIL1y8 {
+map "brightmaps/archvile/6IL1y8.png"
+disablefullbright
+}
+brightmap sprite VIL1z1 {
+map "brightmaps/archvile/6IL1z1.png"
+disablefullbright
+}
+brightmap sprite VIL1z2 {
+map "brightmaps/archvile/6IL1z2.png"
+disablefullbright
+}
+brightmap sprite VIL1z3 {
+map "brightmaps/archvile/6IL1z3.png"
+disablefullbright
+}
+brightmap sprite VIL1z4 {
+map "brightmaps/archvile/6IL1z4.png"
+disablefullbright
+}
+brightmap sprite VIL1z5 {
+map "brightmaps/archvile/6IL1z5.png"
+disablefullbright
+}
+brightmap sprite VIL1z6 {
+map "brightmaps/archvile/6IL1z6.png"
+disablefullbright
+}
+brightmap sprite VIL1z7 {
+map "brightmaps/archvile/6IL1z7.png"
+disablefullbright
+}
+brightmap sprite VIL1z8 {
+map "brightmaps/archvile/6IL1z8.png"
+disablefullbright
+}
+brightmap sprite VILIA1 {
+map "brightmaps/archvile/6ILIA1.png"
+disablefullbright
+}
+brightmap sprite VILIA2A8 {
+map "brightmaps/archvile/6ILIA2A8.png"
+disablefullbright
+}
+brightmap sprite VILIA3A7 {
+map "brightmaps/archvile/6ILIA3A7.png"
+disablefullbright
+}
+brightmap sprite VILIA4A6 {
+map "brightmaps/archvile/6ILIA4A6.png"
+disablefullbright
+}
+brightmap sprite VILIA5 {
+map "brightmaps/archvile/6ILIA5.png"
+disablefullbright
+}
+brightmap sprite VILIB1 {
+map "brightmaps/archvile/6ILIB1.png"
+disablefullbright
+}
+brightmap sprite VILIB2B8 {
+map "brightmaps/archvile/6ILIB2B8.png"
+disablefullbright
+}
+brightmap sprite VILIB3B7 {
+map "brightmaps/archvile/6ILIB3B7.png"
+disablefullbright
+}
+brightmap sprite VILIB4B6 {
+map "brightmaps/archvile/6ILIB4B6.png"
+disablefullbright
+}
+brightmap sprite VILIB5 {
+map "brightmaps/archvile/6ILIB5.png"
+disablefullbright
+}
+brightmap sprite VILPa1 {
+map "brightmaps/archvile/6ILPa1.png"
+disablefullbright
+}
+brightmap sprite VILPa2 {
+map "brightmaps/archvile/6ILPa2.png"
+disablefullbright
+}
+brightmap sprite VILPa3 {
+map "brightmaps/archvile/6ILPa3.png"
+disablefullbright
+}
+brightmap sprite VILPa4 {
+map "brightmaps/archvile/6ILPa4.png"
+disablefullbright
+}
+brightmap sprite VILPa5 {
+map "brightmaps/archvile/6ILPa5.png"
+disablefullbright
+}
+brightmap sprite VILPa6 {
+map "brightmaps/archvile/6ILPa6.png"
+disablefullbright
+}
+brightmap sprite VILPa7 {
+map "brightmaps/archvile/6ILPa7.png"
+disablefullbright
+}
+brightmap sprite VILPa8 {
+map "brightmaps/archvile/6ILPa8.png"
+disablefullbright
+}
+brightmap sprite VILPb1 {
+map "brightmaps/archvile/6ILPb1.png"
+disablefullbright
+}
+brightmap sprite VILPb2 {
+map "brightmaps/archvile/6ILPb2.png"
+disablefullbright
+}
+brightmap sprite VILPb3 {
+map "brightmaps/archvile/6ILPb3.png"
+disablefullbright
+}
+brightmap sprite VILPb4 {
+map "brightmaps/archvile/6ILPb4.png"
+disablefullbright
+}
+brightmap sprite VILPb5 {
+map "brightmaps/archvile/6ILPb5.png"
+disablefullbright
+}
+brightmap sprite VILPb6 {
+map "brightmaps/archvile/6ILPb6.png"
+disablefullbright
+}
+brightmap sprite VILPb7 {
+map "brightmaps/archvile/6ILPb7.png"
+disablefullbright
+}
+brightmap sprite VILPb8 {
+map "brightmaps/archvile/6ILPb8.png"
+disablefullbright
+}
+brightmap sprite VILWa1f1 {
+map "brightmaps/archvile/6ILWa1f1.png"
+disablefullbright
+}
+brightmap sprite VILWa2f8 {
+map "brightmaps/archvile/6ILWa2f8.png"
+disablefullbright
+}
+brightmap sprite VILWA3f7 {
+map "brightmaps/archvile/6ILWA3f7.png"
+disablefullbright
+}
+brightmap sprite VILWa4f6 {
+map "brightmaps/archvile/6ILWa4f6.png"
+disablefullbright
+}
+brightmap sprite VILWa5f5 {
+map "brightmaps/archvile/6ILWa5f5.png"
+disablefullbright
+}
+brightmap sprite VILWa6f4 {
+map "brightmaps/archvile/6ILWa6f4.png"
+disablefullbright
+}
+brightmap sprite VILWa7f3 {
+map "brightmaps/archvile/6ILWa7f3.png"
+disablefullbright
+}
+brightmap sprite VILWa8f2 {
+map "brightmaps/archvile/6ILWa8f2.png"
+disablefullbright
+}
+brightmap sprite VILWb1g1 {
+map "brightmaps/archvile/6ILWb1g1.png"
+disablefullbright
+}
+brightmap sprite VILWb2g8 {
+map "brightmaps/archvile/6ILWb2g8.png"
+disablefullbright
+}
+brightmap sprite VILWb3g7 {
+map "brightmaps/archvile/6ILWb3g7.png"
+disablefullbright
+}
+brightmap sprite VILWb4g6 {
+map "brightmaps/archvile/6ILWb4g6.png"
+disablefullbright
+}
+brightmap sprite VILWb5g5 {
+map "brightmaps/archvile/6ILWb5g5.png"
+disablefullbright
+}
+brightmap sprite VILWb6g4 {
+map "brightmaps/archvile/6ILWb6g4.png"
+disablefullbright
+}
+brightmap sprite VILWb7g3 {
+map "brightmaps/archvile/6ILWb7g3.png"
+disablefullbright
+}
+brightmap sprite VILWb8g2 {
+map "brightmaps/archvile/6ILWb8g2.png"
+disablefullbright
+}
+brightmap sprite VILWc1h1 {
+map "brightmaps/archvile/6ILWc1h1.png"
+disablefullbright
+}
+brightmap sprite VILWc2h8 {
+map "brightmaps/archvile/6ILWc2h8.png"
+disablefullbright
+}
+brightmap sprite VILWc3h7 {
+map "brightmaps/archvile/6ILWc3h7.png"
+disablefullbright
+}
+brightmap sprite VILWc4h6 {
+map "brightmaps/archvile/6ILWc4h6.png"
+disablefullbright
+}
+brightmap sprite VILWc5h5 {
+map "brightmaps/archvile/6ILWc5h5.png"
+disablefullbright
+}
+brightmap sprite VILWc6h4 {
+map "brightmaps/archvile/6ILWc6h4.png"
+disablefullbright
+}
+brightmap sprite VILWc7h3 {
+map "brightmaps/archvile/6ILWc7h3.png"
+disablefullbright
+}
+brightmap sprite VILWc8h2 {
+map "brightmaps/archvile/6ILWc8h2.png"
+disablefullbright
+}
+brightmap sprite VILWd1i1 {
+map "brightmaps/archvile/6ILWd1i1.png"
+disablefullbright
+}
+brightmap sprite VILWD2i8 {
+map "brightmaps/archvile/6ILWD2i8.png"
+disablefullbright
+}
+brightmap sprite VILWd3i7 {
+map "brightmaps/archvile/6ILWd3i7.png"
+disablefullbright
+}
+brightmap sprite VILWd4i6 {
+map "brightmaps/archvile/6ILWd4i6.png"
+disablefullbright
+}
+brightmap sprite VILWd5i5 {
+map "brightmaps/archvile/6ILWd5i5.png"
+disablefullbright
+}
+brightmap sprite VILWd6i4 {
+map "brightmaps/archvile/6ILWd6i4.png"
+disablefullbright
+}
+brightmap sprite VILWd7i3 {
+map "brightmaps/archvile/6ILWd7i3.png"
+disablefullbright
+}
+brightmap sprite VILWd8i2 {
+map "brightmaps/archvile/6ILWd8i2.png"
+disablefullbright
+}
+brightmap sprite VILWe1j1 {
+map "brightmaps/archvile/6ILWe1j1.png"
+disablefullbright
+}
+brightmap sprite VILWe2j8 {
+map "brightmaps/archvile/6ILWe2j8.png"
+disablefullbright
+}
+brightmap sprite VILWe3j7 {
+map "brightmaps/archvile/6ILWe3j7.png"
+disablefullbright
+}
+brightmap sprite VILWe4j6 {
+map "brightmaps/archvile/6ILWe4j6.png"
+disablefullbright
+}
+brightmap sprite VILWe5j5 {
+map "brightmaps/archvile/6ILWe5j5.png"
+disablefullbright
+}
+brightmap sprite VILWe6j4 {
+map "brightmaps/archvile/6ILWe6j4.png"
+disablefullbright
+}
+brightmap sprite VILWe7j3 {
+map "brightmaps/archvile/6ILWe7j3.png"
+disablefullbright
+}
+brightmap sprite VILWe8j2 {
+map "brightmaps/archvile/6ILWe8j2.png"
+disablefullbright
+}

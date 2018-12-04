@@ -1,0 +1,772 @@
+///////////////////////
+// Fist & Kick decal //
+///////////////////////
+
+
+decal FistScorch
+{
+	pic WCRACK
+	add .8
+	shade "00 00 00"
+	x-scale 0.1
+	y-scale 0.08
+	randomflipx
+	randomflipy
+}
+
+decal KickScorch1
+{
+	pic WKICK
+	add .1
+	shade "00 00 00"
+	x-scale 0.08
+	y-scale 0.065
+}
+
+decal KickScorch2
+{
+	pic WKICK
+	add .2
+	shade "00 00 00"
+	x-scale 0.08
+	y-scale 0.065
+}
+
+decal KickScorch3
+{
+	pic WKICK
+	add .3
+	shade "00 00 00"
+	x-scale 0.08
+	y-scale 0.065
+}
+
+decalgroup KickScorch
+{
+	KickScorch1	1
+	KickScorch2	1
+	KickScorch3	1
+}
+
+decal KickScorchBerserk
+{
+	pic WKICK
+	shade "00 00 00"
+	x-scale 0.1
+	y-scale 0.075
+}
+
+
+////////////////////
+// Chainsaw Decal //
+////////////////////
+
+
+decal SawMark1
+{
+	pic SAWMARK1
+	x-scale 0.04
+	y-scale 0.04
+	randomflipx
+	randomflipy
+	add 0.3
+	shade "00 00 00"
+}
+
+decal SawMark2
+{
+	pic SAWMARK2
+	x-scale 0.04
+	y-scale 0.04
+	randomflipx
+	randomflipy
+	add 0.3
+	shade "00 00 00"
+}
+
+decal SawMark3
+{
+	pic SAWMARK3
+	x-scale 0.04
+	y-scale 0.04
+	randomflipx
+	randomflipy
+	add 0.3
+	shade "00 00 00"
+}
+
+decal SawMark4
+{
+	pic SAWMARK4
+	x-scale 0.04
+	y-scale 0.04
+	randomflipx
+	randomflipy
+	add 0.3
+	shade "00 00 00"
+}
+
+decalgroup SawMark
+{
+	SawMark1	1
+	SawMark2	1
+	SawMark3	1
+	SawMark4	1
+}
+
+///////////////////////
+//// Bullet decals ////
+///////////////////////
+
+decal BulletChip1
+{
+	pic CHIP1
+	translucent 0.85
+	shade "00 00 00"
+	x-scale 0.07
+	y-scale 0.07
+	randomflipx
+	randomflipy
+}
+
+decal BulletChip2
+{
+	pic CHIP2
+	translucent 0.85
+	shade "00 00 00"
+	x-scale 0.07
+	y-scale 0.07
+	randomflipx
+	randomflipy
+}
+
+decal BulletChip3
+{
+	pic CHIP3
+	translucent 0.85
+	shade "00 00 00"
+	x-scale 0.07
+	y-scale 0.07
+	randomflipx
+	randomflipy
+}
+
+decal BulletChip4
+{
+	pic CHIP4
+	translucent 0.85
+	shade "00 00 00"
+	x-scale 0.07
+	y-scale 0.07
+	randomflipx
+	randomflipy
+}
+
+decal BulletChip5
+{
+	pic CHIP5
+	translucent 0.85
+	shade "00 00 00"
+	x-scale 0.07
+	y-scale 0.07
+	randomflipx
+	randomflipy
+}
+
+decal ShotChip1
+{
+	pic CHIP1
+	translucent 0.85
+	shade "00 00 00"
+	x-scale 0.03
+	y-scale 0.03
+	randomflipx
+	randomflipy
+}
+
+decal ShotChip2
+{
+	pic CHIP2
+	translucent 0.85
+	shade "00 00 00"
+	x-scale 0.03
+	y-scale 0.03
+	randomflipx
+	randomflipy
+}
+
+decal ShotChip3
+{
+	pic CHIP3
+	translucent 0.85
+	shade "00 00 00"
+	x-scale 0.03
+	y-scale 0.03
+	randomflipx
+	randomflipy
+}
+
+decal ShotChip4
+{
+	pic CHIP4
+	translucent 0.85
+	shade "00 00 00"
+	x-scale 0.03
+	y-scale 0.03
+	randomflipx
+	randomflipy
+}
+
+decal ShotChip5
+{
+	pic CHIP5
+	translucent 0.85
+	shade "00 00 00"
+	x-scale 0.03
+	y-scale 0.03
+	randomflipx
+	randomflipy
+}
+
+decalgroup ShotChip
+{
+	ShotChip1	1
+	ShotChip2	1
+	ShotChip3	1
+	ShotChip4	1
+	ShotChip5	1
+}
+
+/// +++++++++++++++++////
+/// +++++++++++++++++////
+/// SCORCHES
+/// +++++++++++++++++////
+/// +++++++++++++++++////
+
+decal Scorch1
+{
+	pic SCORCH1
+	shade "00 00 00"
+	x-scale 0.2
+	y-scale 0.2
+	randomflipx
+	randomflipy
+}
+
+decal Scorch2
+{
+	pic SCORCH2
+	shade "00 00 00"
+	x-scale 0.2
+	y-scale 0.2
+	randomflipx
+	randomflipy
+}
+
+decal Scorch3
+{
+	pic SCORCH3
+	shade "00 00 00"
+	x-scale 0.2
+	y-scale 0.2
+	randomflipx
+	randomflipy
+}
+
+decalgroup Scorch
+{
+	Scorch1	1
+	Scorch2	1
+	Scorch3	1
+}
+
+decal BigScorch1
+{
+	pic SCORCH1
+	shade "00 00 00"
+	x-scale 0.5
+	y-scale 0.5
+	randomflipx
+	randomflipy
+}
+
+decal BigScorch2
+{
+	pic SCORCH2
+	shade "00 00 00"
+	x-scale 0.5
+	y-scale 0.5
+	randomflipx
+	randomflipy
+}
+
+decal BigScorch3
+{
+	pic SCORCH3
+	shade "00 00 00"
+	x-scale 0.5
+	y-scale 0.5
+	randomflipx
+	randomflipy
+}
+
+decalgroup BigScorch
+{
+	BigScorch1	1
+	BigScorch2	1
+	BigScorch3	1
+}
+
+/// +++++++++++++++++////
+/// +++++++++++++++++////
+/// PLASMA DECALS
+/// +++++++++++++++++////
+/// +++++++++++++++++////
+
+
+// plasma fade
+
+fader PFade
+{
+DecayStart 0
+DecayTime 3
+}
+
+decal BluePlasmaSplat1
+{
+lowerdecal Scorch
+add 0.7
+	fullbright
+animator PFade
+pic PSPLAT01
+randomflipx
+randomflipy
+x-scale 0.5
+y-scale 0.5
+}
+
+decal BluePlasmaSplat2
+{
+lowerdecal Scorch
+add 0.7
+	fullbright
+animator PFade
+pic PSPLAT02
+randomflipx
+randomflipy
+x-scale 0.5
+y-scale 0.5
+}
+
+decal BluePlasmaSplat3
+{
+lowerdecal Scorch
+add 0.7
+	fullbright
+animator PFade
+pic PSPLAT03
+randomflipx
+randomflipy
+x-scale 0.5
+y-scale 0.5
+}
+
+decal BluePlasmaSplat4
+{
+lowerdecal Scorch
+add 0.7
+	fullbright
+animator PFade
+pic PSPLAT04
+randomflipx
+randomflipy
+x-scale 0.5
+y-scale 0.5
+}
+
+decal BluePlasmaSplat5
+{
+lowerdecal Scorch
+add 0.7
+	fullbright
+animator PFade
+pic PSPLAT05
+randomflipx
+randomflipy
+x-scale 0.5
+y-scale 0.5
+}
+
+decal BluePlasmaSplat6
+{
+lowerdecal Scorch
+add 0.7
+	fullbright
+animator PFade
+pic PSPLAT06
+randomflipx
+randomflipy
+x-scale 0.5
+y-scale 0.5
+}
+
+decalgroup BluePlasmaSplat
+{
+BluePlasmaSplat1 6
+BluePlasmaSplat2 6
+BluePlasmaSplat3 6
+BluePlasmaSplat4 6
+BluePlasmaSplat5 6
+BluePlasmaSplat6 6
+}
+
+
+
+decal ArachnotronPlasmaSplat1
+{
+lowerdecal Scorch
+add 1.0
+	fullbright
+animator PFade
+pic GSPLAT01
+randomflipx
+randomflipy
+x-scale 0.5
+y-scale 0.5
+}
+
+decal ArachnotronPlasmaSplat2
+{
+lowerdecal Scorch
+add 1.0
+	fullbright
+animator PFade
+pic GSPLAT02
+randomflipx
+randomflipy
+x-scale 0.5
+y-scale 0.5
+}
+
+decal ArachnotronPlasmaSplat3
+{
+lowerdecal Scorch
+add 1.0
+	fullbright
+animator PFade
+pic GSPLAT03
+randomflipx
+randomflipy
+x-scale 0.5
+y-scale 0.5
+}
+
+decal ArachnotronPlasmaSplat4
+{
+lowerdecal Scorch
+add 1.0
+	fullbright
+animator PFade
+pic GSPLAT04
+randomflipx
+randomflipy
+x-scale 0.5
+y-scale 0.5
+}
+
+decal ArachnotronPlasmaSplat5
+{
+lowerdecal Scorch
+add 1.0
+	fullbright
+animator PFade
+pic GSPLAT05
+randomflipx
+randomflipy
+x-scale 0.5
+y-scale 0.5
+}
+
+decal ArachnotronPlasmaSplat6
+{
+lowerdecal Scorch
+add 1.0
+	fullbright
+animator PFade
+pic GSPLAT06
+randomflipx
+randomflipy
+x-scale 0.5
+y-scale 0.5
+}
+
+decalgroup ArachnotronPlasmaSplat
+{
+ArachnotronPlasmaSplat1 6
+ArachnotronPlasmaSplat2 6
+ArachnotronPlasmaSplat3 6
+ArachnotronPlasmaSplat4 6
+ArachnotronPlasmaSplat5 6
+ArachnotronPlasmaSplat6 6
+}
+
+
+/// +++++++++++++++++////
+/// +++++++++++++++++////
+/// PLASMA RAILGUN
+/// +++++++++++++++++////
+/// +++++++++++++++++////
+
+fader RailFade
+{
+DecayStart 3
+DecayTime 9
+}
+
+decal PlasmaRailSplat1
+{
+lowerdecal BigScorch
+add 1.0
+	fullbright
+animator RailFade
+pic PLSPLAT1
+randomflipx
+randomflipy
+x-scale 0.45
+y-scale 0.45
+}
+
+decal PlasmaRailSplat2
+{
+lowerdecal BigScorch
+add 1.0
+	fullbright
+animator RailFade
+pic PLSPLAT2
+randomflipx
+randomflipy
+x-scale 0.45
+y-scale 0.45
+}
+
+decal PlasmaRailSplat3
+{
+lowerdecal BigScorch
+add 1.0
+	fullbright
+animator RailFade
+pic PLSPLAT3
+randomflipx
+randomflipy
+x-scale 0.45
+y-scale 0.45
+}
+
+decal PlasmaRailSplat4
+{
+lowerdecal BigScorch
+add 1.0
+	fullbright
+animator RailFade
+pic PLSPLAT4
+randomflipx
+randomflipy
+x-scale 0.45
+y-scale 0.45
+}
+
+decal PlasmaRailSplat5
+{
+lowerdecal BigScorch
+add 1.0
+	fullbright
+animator RailFade
+pic PLSPLAT5
+randomflipx
+randomflipy
+x-scale 0.45
+y-scale 0.45
+}
+
+decal PlasmaRailSplat6
+{
+lowerdecal BigScorch
+add 1.0
+	fullbright
+animator RailFade
+pic PLSPLAT6
+randomflipx
+randomflipy
+x-scale 0.45
+y-scale 0.45
+}
+
+decalgroup PlasmaRailSplat
+{
+PlasmaRailSplat1 6
+PlasmaRailSplat2 6
+PlasmaRailSplat3 6
+PlasmaRailSplat4 6
+PlasmaRailSplat5 6
+PlasmaRailSplat6 6
+}
+
+/// +++++++++++++++++////
+/// +++++++++++++++++////
+/// BFG DECALS
+/// +++++++++++++++++////
+/// +++++++++++++++++////
+
+fader BFGFade
+{
+	Decaystart 3
+	Decaytime 10
+}
+
+decal BFGScorch1
+{
+	pic BFGSCRC1
+	shade "00 00 00"
+	randomflipx
+	randomflipy
+}
+
+decal BFGScorch2
+{
+	pic BFGSCRC2
+	shade "00 00 00"
+	randomflipx
+	randomflipy
+}
+
+decalgroup BFGScorch
+{
+	BFGScorch1	1
+	BFGScorch2	1
+}
+
+decal BFGLightning1
+{
+	pic BFGLITE1
+	shade "80 ff 80"
+	fullbright
+	randomflipx
+	randomflipy
+	animator BFGFade
+	lowerdecal BFGScorch
+}
+
+decal BFGLightning2
+{
+	pic BFGLITE2
+	shade "80 ff 80"
+	fullbright
+	randomflipx
+	randomflipy
+	animator BFGFade
+	lowerdecal BFGScorch
+}
+
+decal BFGLightning3
+{
+	pic BFGLITE3
+	shade "80 ff 80"
+	fullbright
+	randomflipx
+	randomflipy
+	animator BFGFade
+	lowerdecal BFGScorch
+}
+
+decalgroup BFGLightning
+{
+	BFGLightning1	1
+	BFGLightning2	1
+	BFGLightning3	1
+}
+
+decal BFGScorch
+{
+	pic BFGSCRC7
+	animator ToBlack
+	shade "80 ff 80"
+	randomflipx
+	randomflipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BFGScorch2
+{
+	pic BFGSCRC2
+	animator ToBlack
+	shade "80 ff 80"
+	randomflipx
+	randomflipy
+	x-scale 0.8
+	y-scale 0.8
+}
+
+decal BFGScorch3
+{
+	pic BFGSCRC3
+	animator ToBlack
+	shade "50 ff 50"
+	randomflipx
+	randomflipy
+	x-scale 0.8
+	y-scale 0.8
+}
+
+colorchanger BFGScorchFade
+{
+	color "ff ff ff"
+	Fadestart 0.5
+	FadeTime 3.5
+}
+
+decalgroup BFGScorch_
+{
+	BFGScorch1	1
+	BFGScorch2	1
+	BFGScorch3	1
+}
+
+
+
+
+// EXPLOSIVE BARREL SCORCH
+
+decal BarrelScorch1
+{
+	pic BSCORCH1
+	shade "00 00 00"
+	x-scale 0.5
+	y-scale 0.7
+	randomflipx
+}
+
+decal BarrelScorch2
+{
+	pic BSCORCH2
+	shade "00 00 00"
+	x-scale 0.5
+	y-scale 0.7
+	randomflipx
+}
+
+decal BarrelScorch3
+{
+	pic BSCORCH3
+	shade "00 00 00"
+	x-scale 0.5
+	y-scale 0.7
+	randomflipx
+}
+
+decalgroup BarrelScorch
+{
+	BarrelScorch1	1
+	BarrelScorch2	1
+	BarrelScorch3	1
+}

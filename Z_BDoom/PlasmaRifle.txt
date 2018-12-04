@@ -1,0 +1,664 @@
+//***********
+// PLASMAGUN
+//***********
+
+Class BD_PlasmaRifle : BDoomWeapon replaces Plasmarifle
+{
+double HeatCounter;
+Default {
+	Weapon.SelectionOrder 10;
+	Inventory.PickupMessage "$GOTPLASMA";
+	Tag "$TAG_PLASMARIFLE";
+	inventory.pickupsound "pickups/plasmarifle";
+	attacksound "weapons/plasma/railgun";
+	Weapon.AmmoType 	"Cell";
+	Weapon.AmmoUse 		1;
+	Weapon.AmmoGive 		40;
+	Weapon.ammotype2 		"Cell";
+	weapon.ammouse2		20;
+	weapon.ammogive2 	0;
+	decal "PlasmaRailSplat";
+	weapon.slotnumber 6;
+	}
+
+states
+	{
+	Spawn:
+		PLAS A 1 NoDelay A_JumpIf(bdoom_weapons == 2, "Spawn.Modern");
+		loop;
+	Spawn.Modern:
+		PLAZ ABCDEFGHIJKLMNO 1 A_JumpIf(bdoom_weapons != 2, "Spawn");
+		goto spawn;
+	Select:
+		TNT1 A 0 A_JumpIf(bdoom_weapons == 2,"Select.Modern");
+		TNT1 A 0 A_JumpIf(bdoom_weapons == 1,2);
+		TNT1 A 0 A_PlaySound("weapons/plasma/draw");
+		TNT1 AAAAAAAA 0 A_Raise;
+		PLGS ABCDEF 1 A_WeaponReady(WRF_NOFIRE);
+		goto ready;
+	Deselect:
+		TNT1 A 0 {
+			A_ClearRefire();
+			A_StopSound(6);
+			}
+		TNT1 A 0 A_JumpIf(bdoom_weapons == 2,"DeSelect.Modern");
+		TNT1 A 0 A_JumpIf(bdoom_weapons == 1,"Deselect.Enhanced");
+		PLGG A 1 A_lower;
+		loop;
+	Ready:
+		TNT1 A 0 A_JumpIf(bdoom_weapons == 2,"Ready.Modern");
+		TNT1 A 0 A_JumpIf(bdoom_weapons == 1,2);
+		PLGG A 1 A_WeaponReady(WRF_NOSECONDARY);
+		loop;
+		PLGG A 1 A_WeaponReady;
+		loop;
+	fire:
+		TNT1 A 0 A_JumpIf(bdoom_weapons == 2,"Fire.Modern");
+		PLGF A 3 {
+			A_FireProjectile("BD_Plasmaball",0,1);
+			A_GunFlash("Flash1");
+			}
+		TNT1 A 0 A_refire("fire2");
+		goto FireEnd;
+	fire2:
+		PLGF B 3 {
+			A_FireProjectile("BD_Plasmaball",0,1);
+			A_GunFlash("Flash2");
+			}
+		TNT1 A 0 A_refire("fire3");
+		goto FireEnd;
+	fire3:
+		PLGF C 3 {
+			A_FireProjectile("BD_Plasmaball",0,1);
+			A_GunFlash("Flash3");
+			}
+		TNT1 A 0 A_refire("fire");
+	FireEnd:
+		PLGC BCD 1;
+		TNT1 A 0 {
+			If(bdoom_weapons == 1)
+				A_PlaySound("weapons/plasma/cool");
+			}
+		PLGC EEEEEEEEEEEEE 1 {
+			If(bdoom_debris == 1)
+				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-8,-16),sin(-pitch)*25+random(32,40),0,0,1,0);
+			}
+		PLGC DCBA 1;
+		goto ready;
+	Flash1:
+		TNT1 A 0 A_Jump(256,1,4,7,10);
+		PLZ1 ABC 1 bright A_light1();
+		goto lightdone;
+		PLZ1 BCD 1 bright A_light1();
+		goto lightdone;
+		PLZ1 CDE 1 bright A_light1();
+		goto lightdone;
+		PLZ1 DEF 1 bright A_light1();
+		goto lightdone;
+	Flash2:
+		TNT1 A 0 A_Jump(256,1,4,7,10);
+		PLZ2 ABC 1 bright A_light1();
+		goto lightdone;
+		PLZ2 BCD 1 bright A_light1();
+		goto lightdone;
+		PLZ2 CDE 1 bright A_light1();
+		goto lightdone;
+		PLZ2 DEF 1 bright A_light1();
+		goto lightdone;
+	Flash3:
+		TNT1 A 0 A_Jump(256,1,4,7,10);
+		PLZ3 ABC 1 bright A_light1();
+		goto lightdone;
+		PLZ3 BCD 1 bright A_light1();
+		goto lightdone;
+		PLZ3 CDE 1 bright A_light1();
+		goto lightdone;
+		PLZ3 DEF 1 bright A_light1();
+		goto lightdone;
+
+// ENHANCED
+	Deselect.Enhanced:
+		PLGG A 1 A_lower;
+		TNT1 A 0 A_lower;
+		loop;
+	AltFire:
+		TNT1 A 0 A_JumpIf(bdoom_weapons == 2,"Altfire.Modern");
+		PLGG A 6 A_PlaySound("weapons/plasma/charge");
+		PLGF AB 4 bright;
+		PLGF C 5 bright {
+			A_GunFlash("Flash3");
+			A_RailAttack(25*random(10,25),0,1,"none","0",RGF_NOPIERCING,2,"PlasmaRailPuff",0,0,0,0,0,0,"PlasmaRailBall");
+			}
+		PLGC BCD 1 {
+			If(bdoom_weapons == 1)
+				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(0,-6),sin(-pitch)*25+random(24,36),		0,0,1,0);
+			}
+		TNT1 A 0 A_Playsound("weapons/plasma/cool");
+		PLGC EEEEEEEEEEEEEEE 1 {
+			If(bdoom_weapons == 1)
+				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-8,-16),sin(-pitch)*25+random(32,40),		0,0,1,0);
+			}
+		PLGC DDCCBBAA 1 {
+			If(bdoom_weapons == 1)
+				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(0,-10),sin(-pitch)*25+random(24,36),		0,0,1,0);
+			}
+		PLGG AAA 1 {
+			If(bdoom_weapons == 1)
+				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(3,-3),sin(-pitch)*25+random(24,36),		0,0,1,0);
+			}
+		goto ready;
+
+// MODERN
+	Select.Modern:
+		TNT1 A 0 A_PlaySound("Mweapons/plasma/select");
+		TNT1 AAAAAAAA 0 A_Raise;
+		PLGS ABCDEF 1 A_WeaponReady;
+		goto ready;
+	Deselect.Modern:
+		PLGG A 1 A_lower;
+		TNT1 A 0 A_lower;
+		loop;
+	Ready.Modern:
+		PLGG A 10 {
+			A_Overlay(6,"Heat",0);
+			if (invoker.heatcounter > 0.0)
+				A_WeaponReady(WRF_ALLOWRELOAD);
+			else
+				A_WeaponReady(WRF_NOSECONDARY);
+			}
+		TNT1 A 0 { 
+			if (invoker.heatcounter > 0.0)
+				invoker.heatcounter -= 0.2; 
+			else
+				invoker.heatcounter == 0.0; 
+			}
+		goto ready;
+	HeatScreenReady:
+		PLHE YXWV 2;
+		wait;
+	HeatUnderlay:
+		PLHE Z 1;
+		loop;
+	Heat:
+		TNT1 A 0 A_Overlay(5,"HeatUnderlay",0);
+		TNT1 A 0 A_JumpIf(invoker.heatcounter <= 0.0,"HeatScreenReady");
+		TNT1 A 0 A_Jump(256, clamp(ceil(invoker.heatcounter), 1, 10));
+		TNT1 A 10;
+		PLHE ABCDEFGHI 10 bright;
+		stop;
+	Reload:
+	AltFire.Modern:
+		TNT1 A 0 A_JumpIf(invoker.HeatCounter == 0.0, "Ready");
+		TNT1 A 0 {
+			A_Overlay(7,"SteamFast",0);
+			A_OverlayAlpha(7,0.4);
+			A_OverlayFlags(7,PSPF_ALPHA,1);
+			A_Overlay(6,"HeatCoolFast",0);
+			A_PlaySound("Mweapons/plasma/steamfast");
+			}
+		PLGG A 20;
+		goto ready;
+	SteamFast:
+		PSTM ABCDEFGHIJKLMNOPQRSTUVWX 1 bright;
+		stop;
+	SteamSlow:
+		PSTM ABCDEFGHIJKLMNOPQRSTUVWX 2 bright;
+		stop;
+	HeatCoolFast:
+		TNT1 A 0 A_Overlay(5,"HeatUnderlay",0);
+		TNT1 A 0 A_Jump(256, clamp(int(10-invoker.heatcounter), 1, 10));
+		PLHE IHGFEDCBA 2 bright;
+		TNT1 A 0 { invoker.HeatCounter = 0.0; }
+		TNT1 A 2 A_WeaponReady(WRF_NOSECONDARY);
+		stop;
+	HeatCoolSlow:
+		TNT1 A 0 A_Overlay(5,"HeatUnderlay",0);
+		TNT1 A 0 A_Jump(256, clamp(int(10-invoker.heatcounter), 1, 10));
+		PLHE IHGFEDCBA 4 bright;
+		TNT1 A 2 { invoker.HeatCounter = 0.0; }
+		stop;
+	ForcedCool:
+		PLGG A 8 {
+			A_PlaySound("Mweapons/plasma/alarm");
+			A_Overlay(6,"Heat",0);
+			A_ClearRefire();
+			}
+		TNT1 A 0 {
+			A_Overlay(7,"SteamSlow",0);
+			A_OverlayAlpha(7,0.4);
+			A_OverlayFlags(7,PSPF_ALPHA,1);
+			A_Overlay(6,"HeatCoolSlow",0);
+			A_PlaySound("Mweapons/plasma/steamslow");
+			}
+		PLGG A 50;
+		goto ready;
+	fire.Modern:
+		TNT1 A 0 A_JumpIf(ceil(invoker.heatcounter) == 10, "ForcedCool");
+		PLGF A 2 { 
+			invoker.HeatCounter+=0.5;
+			A_Overlay(6,"Heat",0);
+			A_FireProjectile("ModernPlasmaball",0,1);
+			A_SetPitch(pitch - 0.35,SPF_INTERPOLATE);
+			A_OverlayOffset(5,0.0,0.0,WOF_INTERPOLATE);
+			A_OverlayOffset(6,0.0,0.0,WOF_INTERPOLATE);
+			A_GunFlash("Flash.Modern");
+			}
+		PLGF B 2 {
+			A_OverlayOffset(5,0.0,2.2,WOF_INTERPOLATE);
+			A_OverlayOffset(6,0.0,2.2,WOF_INTERPOLATE);
+			}
+		PLGF C 1 {
+			A_OverlayOffset(5,0.0,1.7,WOF_INTERPOLATE);
+			A_OverlayOffset(6,0.0,1.7,WOF_INTERPOLATE);
+			}
+		PLGF B 1{
+			A_OverlayOffset(5,0.0,3.2,WOF_INTERPOLATE);
+			A_OverlayOffset(6,0.0,3.2,WOF_INTERPOLATE);
+			}
+		TNT1 A 0 A_ReFire;
+		PLGG AAA 1 {
+			A_OverlayOffset(5,0.0,0.0,WOF_INTERPOLATE);
+			A_OverlayOffset(6,0.0,0.0,WOF_INTERPOLATE);
+			if (bdoom_debris == 1)
+				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-2,2),sin(-pitch)*25+random(33,36),		0,0,1,0);
+			}
+		goto ready;
+	Flash.Modern:
+		TNT1 A 0 A_Jump(256,1,2,3,4,5,6);
+		PLZ1 A 2 bright A_light1();
+		goto flash2;
+		PLZ1 B 2 bright A_light1();
+		goto flash2;
+		PLZ1 C 2 bright A_light1();
+		goto flash2;
+		PLZ1 D 2 bright A_light1();
+		goto flash2;
+		PLZ1 E 2 bright A_light1();
+		goto flash2;
+		PLZ1 F 2 bright A_light1();
+		goto flash2;
+	Flash2.Modern:
+		TNT1 A 0 A_Jump(256,1,2,3,4,5,6);
+		PLZ2 A 2 bright A_light0;
+		goto lightdone;
+		PLZ2 B 2 bright A_light0;
+		goto lightdone;
+		PLZ2 C 2 bright A_light0;
+		goto lightdone;
+		PLZ2 D 2 bright A_light0;
+		goto lightdone;
+		PLZ2 E 2 bright A_light0;
+		goto lightdone;
+		PLZ2 F 2 bright A_light0;
+		goto lightdone;
+	Flash3.Modern:
+		TNT1 A 0 A_Jump(256,1,2,3,4,5,6);
+		PLZ3 A 1 bright A_light1();
+		goto lightdone;
+		PLZ3 B 1 bright A_light1();
+		goto lightdone;
+		PLZ3 C 1 bright A_light1();
+		goto lightdone;
+		PLZ3 D 1 bright A_light1();
+		goto lightdone;
+		PLZ3 E 1 bright A_light1();
+		goto lightdone;
+		PLZ3 F 1 bright A_light1();
+		goto lightdone;
+	}
+}
+
+Class BD_Plasmaball : FastProjectile  replaces Plasmaball
+{
+Default {
+	Radius 13;
+	Height 8;
+	Speed 25;
+	Damage 5;
+	Obituary "$OB_MPPLASMARIFLE"; // "%o was melted by %k's plasma gun.";
+	missiletype "BlueFlarePlasmaTrail";
+	missileheight 8;
+	damagetype "PlasmaDamage";
+	+FORCEXYBILLBOARD
+	+THRUGHOST
+	+NOEXTREMEDEATH
+	+BLOODLESSIMPACT
+	decal "BluePlasmaSplat";
+	renderstyle "Add";
+	scale 0.045;
+	alpha 1.0;
+	SeeSound "none";
+	DeathSound "weapons/plasmax";
+	}
+States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay {
+			A_SetScale(scale.x*randompick(-1,1),scale.y*randompick(-1,1));
+			if(bdoom_weapons == 0)
+				A_PlaySound("weapons/plasmaf",5,1.0);
+			if(bdoom_weapons == 1)
+				A_PlaySound("weapons/plasma/fire",5,1.0);
+			if (bdoom_debris == 1)
+				A_SpawnItemEx("BlueFlarePlasma",0,0,0,vel.x,vel.y,vel.z,0,SXF_SETMASTER|SXF_ORIGINATOR|SXF_ABSOLUTEVELOCITY);
+			}
+		COIL ABCDEFGHIJKLMNO 1 bright;
+		goto spawn+1;
+	Death:
+		TNT1 A 0 {
+			A_RemoveChildren(1,RMVF_EVERYTHING);
+			if (bdoom_debris == 1)
+				A_SpawnItem("WeaponSmoke");
+			}
+		TNT1 AAAAAAAAAAAA 0 {
+			if (bdoom_debris == 1)
+				A_SpawnProjectile("BluePlasmaPiece",0,0,random(-360,360),2,random(-50,50));
+			}
+		TNT1 A 0 A_SetScale(0.2*randompick(-1,1),0.2*randompick(-1,1));
+		PEXP ABCDEFGHIJKLM 2 bright A_FadeOut(0.05);
+		stop;
+	}
+}
+
+Class BlueFlarePlasma : Flare_General
+{
+Default {
+	renderstyle "Add";
+	alpha 0.4;
+	scale 0.1;
+	}
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Warp(AAPTR_MASTER);
+		LENB A 30 bright A_JumpIf(GetCVAR("Bdoom_debris")==0,"Null");
+		TNT1 A 0 A_JumpIfMasterCloser(1,"Spawn");
+		LENB A 1 bright A_Fadeout(0.1);
+		wait;
+	}
+}
+
+Class BlueFlarePlasmaTrail : Flare_General //appears behind the plasmaball as a fading out trail
+{
+Default {
++FORCEXYBILLBOARD
+alpha 0.4;
+scale 0.07;
+	}
+states
+	{
+	Spawn:
+		TNT1 A 2 NoDelay;
+		LENB A 1 bright {
+			A_FadeOut(0.15);
+			A_SetScale(scale.x*0.9,scale.y*0.9);
+			}
+		wait;
+	}
+}
+
+Class BluePlasmaPiece : DebrisGeneral
+{
+Default {
++DONTSPLASH
+-NOGRAVITY
+renderstyle "Add";
+alpha 1.0;
+scale 0.08;
+speed 6;
+gravity 0.8;
+	}
+states
+	{
+	Spawn:
+		PLBS A 1 bright {
+			A_FadeOut(0.03);
+			if (Bdoom_debris==0)
+				return ResolveState("Null");
+			return ResolveState(null);
+			}
+		loop;
+	}
+}
+
+Class BluePlasmaShred : DebrisGeneral
+{
+Default {
++NOINTERACTION
+renderstyle "Add";
+speed 5;
+scale 0.05;
+alpha 0.6;
+	}
+states
+{
+	Spawn:
+		PLSE ABCDE 1 bright A_SpawnItem("BluePlasmaShredTrail");
+		stop;
+	}
+}
+
+Class BluePlasmaShredTrail : BluePlasmaShred
+{
+Default {
+speed 0;
+alpha 0.5;
+	}
+states
+{
+	Spawn:
+		PLSE ABCDE 2 bright;
+		stop;
+	}
+}
+
+// railgun (enhanced alt attack)
+
+Class PlasmaRailBall : Flare_General
+{
+//int fcounter;
+Default {
++NOINTERACTION
+renderstyle "Add";
+alpha 0.8;
+scale 0.03;
+translation "9:12=242:245", "112:127=192:207","152:159=200:207";
+	}
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay {
+			If(Bdoom_debris == 1)
+				{
+				//fcounter++;
+				//if (fcounter < 250)
+					A_SpawnItemEx("PlamaRailFlare",0,0,0,0,0,0,0,SXF_SETMASTER);
+				}
+			}
+		PEXP ABCDEF 1 bright A_FadeOut(0.0025);
+		PEXP GHIJKLM 2 bright A_FadeOut(0.0025);
+		stop;
+	}
+}
+
+Class PlamaRailFlare : BlueFlarePlasmaTrail
+{
+Default {
+alpha 0.1;
+scale 0.07;
+	}
+
+states
+	{
+	Spawn:
+		/*TNT1 A 1 NoDelay ;
+		TNT1 A 0 {	
+			if(master)
+				{
+				let prail = PlasmaRailBall(master);
+				if (prail)
+					prail.fcounter--; 
+				}
+			}*/
+		LENB A 1 bright A_FadeOut(0.0025);
+		wait;
+	}
+}
+
+Class PlasmaRailPuff : Actor
+{
+Default {
++BLOODLESSIMPACT
++NOGRAVITY 
++NOINTERACTION
++NOEXTREMEDEATH
++ALWAYSPUFF
+damagetype "PlasmaDamage";
+renderstyle "Add";
+alpha 0.8;
+scale 0.2;
+	}
+states
+	{
+	Spawn:
+		TNT1 AAA 0 NoDelay {
+			if (bdoom_debris == 1)
+				A_SpawnItemEx("WeaponSmoke",random(-2,2),random(-2,2),random(0,6),0,0,1,0);
+			}
+		PEXP ABCDEFGHIJKLM 1 bright;
+		stop;
+	}
+}
+
+
+
+Class ModernPlasmaBall : FastProjectile
+{
+Default {
+Radius 8;
+Height 8;
+Speed 50;
+Damage 0;
+Obituary "$OB_MPPLASMARIFLE"; // "%o was melted by %k's plasma gun.";
+missiletype "MPlasmaBallTrail";
+missileheight 4  ;
+damagetype "PlasmaDamage";
+decal "Scorch";
++DONTTHRUST
++FORCEXYBILLBOARD
++THRUGHOST
++NOEXTREMEDEATH
++BLOODLESSIMPACT
++FORCERADIUSDMG
+renderstyle "Add";
+scale 0.03;
+alpha 1.0;
+SeeSound "Mweapons/plasma/fire";
+DeathSound "weapons/plasmax";
+	}
+States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay {
+			if (bdoom_debris == 1)
+				A_SpawnItemEx("BlueFlarePlasma",0,0,0,vel.x,vel.y,vel.z,0,SXF_SETMASTER|SXF_ORIGINATOR|SXF_ABSOLUTEVELOCITY);
+			}
+		COIL ABCDEFGHIJKLMNO 1 bright;
+		goto spawn+1;
+	Death:
+		TNT1 A 0 {
+			A_RemoveChildren(1,RMVF_EVERYTHING);
+			A_Explode(30,40,0,0,40,0,0,"none");
+			A_SetScale(0.14*randompick(-1,1),0.14*randompick(-1,1));
+			}
+		PEXP CDEFGH 1 bright {
+			A_CustomRailGun(0,0,"none","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"MPlasmaBallRayPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
+			A_CustomRailGun(0,0,"none","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"MPlasmaBallRayPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
+			A_CustomRailGun(0,0,"none","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"MPlasmaBallRayPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
+			}
+		PEXP IJKLM 1 bright;
+		stop;
+	}
+}
+
+Class ModernPlasmaTracer : Flare_General
+{
+Default {
+alpha 0.7;
+	}
+states
+	{
+		Spawn:
+			PUFF A 1 bright;
+			loop;
+	}
+}
+
+Class MPlasmaBallTrail : Actor
+{
+Default {
++NOINTERACTION
+renderstyle "none";
+	}
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_CustomRailGun(0,0,"none","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ|RGF_EXPLICITANGLE,0,3.0,"MPlasmaBallRayPuff",180,0,4,0,0,0,"MPlasmaBallTrailRay");
+		stop;
+	}
+}
+
+Class MPlasmaBallTrailRay : PlasmaRailBall
+{
+Default {
+alpha 0.5;
+scale 0.025;
+	}
+states
+	{
+	Spawn:
+		PEXP ABCDEFGHIJKLM 1 bright A_FadeOut(0.1);
+		stop;
+	}
+}
+		
+
+Class MPlasmaBallRay : PlasmaRailBall
+{
+Default {
+alpha 0.5;
+scale 0.015;
+	}
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_JumpIf(GetCVAR("Bdoom_debris")==0,2);
+		TNT1 A 0 A_SpawnItem("MPlasmaBallRayFlare");
+		PEXP ABCDEFGHIJKLM 1 bright A_FadeOut(0.02);
+		stop;
+	}
+}
+
+Class MPlasmaBallRayFlare : Flare_General
+{
+Default {
+renderstyle "Add";
+alpha 0.07;
+scale 0.04;
+	}
+states
+	{
+	Spawn:
+		LENB A 1 bright A_FadeOut(0.005);
+		wait;
+	}
+}
+
+Class MPlasmaBallRayPuff : Actor
+{
+Default {
+damagetype "none";
++BLOODLESSIMPACT
++PAINLESS
+	}
+}

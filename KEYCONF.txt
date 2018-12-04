@@ -1,0 +1,3 @@
+addkeysection "Beautiful Doom" beautifuldoomkeys
+addmenukey "Quick kick" +user1
+defaultbind Q "+user1"
