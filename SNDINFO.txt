@@ -36,6 +36,11 @@ $alias gibs/splash 	gibs/blooddrop
 
 HeartBeat	HARTBEAT
 
+$random gibs/bloodspurt { gibs/bloodspurt1 gibs/bloodspurt2 gibs/bloodspurt3 }
+gibs/bloodspurt1 "sounds/gore/bloodspurt1.ogg"
+gibs/bloodspurt2 "sounds/gore/bloodspurt2.ogg"
+gibs/bloodspurt3 "sounds/gore/bloodspurt3.ogg"
+
 //gib landing sound
 gibs/meatland1	DSMEAT1
 gibs/meatland2	DSMEAT2
