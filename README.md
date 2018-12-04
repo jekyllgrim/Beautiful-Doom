@@ -8,6 +8,7 @@ Repo is here!
 Progress so far:
 
 MODERN WEAPON SET
+
 I added the third weapon set (only partly functional for now). All weapons require reloading, weapons that aren't automatic require pressing trigger manually. All bullet weapons use projectile bullets instead of hitscans. Weapons have different sway and recoil.
 * Fist: has a combo system with finishers and stuff
 * Pistol: pretty darn fast
