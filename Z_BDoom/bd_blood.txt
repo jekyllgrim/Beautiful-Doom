@@ -117,9 +117,9 @@ states
 			bFlatsprite = true;
 			A_SetScale(frandom(0.1,0.18),frandom(0.1,0.18));
 			if (bcolor == "blue")
-				A_SprayDecal("BloodSplatGreen",32);
-			if (bcolor == "green")
 				A_SprayDecal("BloodSplatBlue",32);
+			if (bcolor == "green")
+				A_SprayDecal("BloodSplatGreen",32);
 			if (bcolor == "red")
 				A_SprayDecal("BloodSplatRed",32);
 			//no way to transfer shade to decals, so specially shaded blood particles won't produce decals
