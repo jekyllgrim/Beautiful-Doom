@@ -12,7 +12,6 @@ bool bpunch; //(with Berserk) used left punch?
 int targetdistance;
 int jangle; //jump angle
 Default {
-	inventory.icon "none";
 	weapon.selectionorder 370;
 	+WEAPON.NOALERT
 	weapon.slotnumber 1;
@@ -1081,7 +1080,7 @@ Class ModernBerserk_Speed : PowerSpeed
 Default {
 	powerup.duration -40;
 	speed 1.3;
-	powerup.color "none";
+	powerup.color "00 00 00";
 	}
 }
 
@@ -1091,6 +1090,6 @@ Default {
 	+NOPAIN;
 	powerup.duration -40;
 	Damagefactor 0.5;
-	powerup.color "none";
+	powerup.color "00 00 00";
 	}
 }

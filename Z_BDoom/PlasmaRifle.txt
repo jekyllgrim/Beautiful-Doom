@@ -127,7 +127,7 @@ states
 		PLGF AB 4 bright;
 		PLGF C 5 bright {
 			A_GunFlash("Flash3");
-			A_RailAttack(25*random(10,25),0,1,"none","0",RGF_NOPIERCING,2,"PlasmaRailPuff",0,0,0,0,0,0,"PlasmaRailBall");
+			A_RailAttack(25*random(10,25),0,1,"","0",RGF_NOPIERCING,2,"PlasmaRailPuff",0,0,0,0,0,0,"PlasmaRailBall");
 			}
 		PLGC BCD 1 {
 			If(bdoom_weapons == 1)
@@ -572,9 +572,9 @@ States
 			A_SetScale(0.14*randompick(-1,1),0.14*randompick(-1,1));
 			}
 		PEXP CDEFGH 1 bright {
-			A_CustomRailGun(0,0,"none","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"MPlasmaBallRayPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
-			A_CustomRailGun(0,0,"none","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"MPlasmaBallRayPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
-			A_CustomRailGun(0,0,"none","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"MPlasmaBallRayPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
+			A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"MPlasmaBallRayPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
+			A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"MPlasmaBallRayPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
+			A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"MPlasmaBallRayPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
 			}
 		PEXP IJKLM 1 bright;
 		stop;
@@ -603,7 +603,7 @@ renderstyle "none";
 states
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_CustomRailGun(0,0,"none","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ|RGF_EXPLICITANGLE,0,3.0,"MPlasmaBallRayPuff",180,0,4,0,0,0,"MPlasmaBallTrailRay");
+		TNT1 A 0 NoDelay A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ|RGF_EXPLICITANGLE,0,3.0,"MPlasmaBallRayPuff",180,0,4,0,0,0,"MPlasmaBallTrailRay");
 		stop;
 	}
 }

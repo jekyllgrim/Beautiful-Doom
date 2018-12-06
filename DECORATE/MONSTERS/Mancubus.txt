@@ -85,10 +85,11 @@ states
 		MANM cde 3
 		MANM f 3 a_noblocking
 		MANM ghijklmnop 3 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1)
+		TNT1 A 0 a_bossdeath
 		MANM QQQQQ 6 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1)
 		MANM QQQQQ 9 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1)
 		MANM QQQQQ 12 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1)
-		MANM Q -1 a_bossdeath
+		MANM Q -1
 		stop
 	Death.PlasmaDamage1:
 		TNT1 A 0 A_GiveINventory("BD_KillChecker",2)
@@ -97,10 +98,11 @@ states
 		MANO cd 4
 		MANO E 4 a_noblocking
 		MANO Fghi 4 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1)
+		TNT1 A 0 a_bossdeath
 		MANO JJJJJ 6 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1)
 		MANO JJJJJ 9 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1)
 		MANO JJJJJ 12 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1)
-		MANO J -1 a_bossdeath
+		MANO J -1
 		stop
 	Raise:
 		TNT1 A 0 A_GiveToChildren("WasGibbed",1)

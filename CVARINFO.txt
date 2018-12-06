@@ -1,5 +1,6 @@
 server bool bdoom_blood 		= true;
 server bool bdoom_gibs 			= true;
+server bool bdoom_bossgibs		= true;
 server bool bdoom_flames 		= true;
 server bool bdoom_debris 		= true;
 server bool bdoom_sparks 		= true;
@@ -10,6 +11,7 @@ user bool 	bdoom_muzzle		= true;
 server bool bdoom_tracers		= true;
 server bool bdoom_flies			= true;
 user bool	bdoom_shadows		= true;
+user bool	bdoom_hudface		= true;
 
 
 server float fs_volume_mul = 1.0;
