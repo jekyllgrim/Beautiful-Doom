@@ -107,6 +107,8 @@ OptionMenu "BDoom_Settings"
 	Option "Explosion shakes", 					"bdoom_shakes", "OnOff", "", 1
 	
 	Option "Monster shadows", 					"bdoom_shadows", "OnOff", "", 1
+	
+	Option "Face on Standard HUD", 				"bdoom_hudface", "OnOff", "", 1
 }
 
 OptionValue "OnOff"
