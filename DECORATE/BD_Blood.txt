@@ -47,6 +47,127 @@ states
 	}
 }
 
+// This replaces blood so that the blood drop flies forward.
+// If BloodDrop replaced Blood directly, it'd just follow Blood's 
+// default behavior and fall down on the ground.
+Actor BloodSpatter : Blood replaces Blood
+{
++PUFFGETSOWNER
+-NOGRAVITY
++FORCEXYBILLBOARD
+-ALLOWPARTICLES
++THRUACTORS
+-MISSILE
+radius 1
+height 1
+mass 1
+gravity 0.5
+scale .45
+alpha .75
+states
+	{
+	Spawn:
+		TNT1 AAA 0 //overrides vanilla frame-switching/damage-dependent behavior
+		TNT1 A 0 A_SetScale(scalex*randompick(-1,1),scaley)
+		TNT1 A 0 A_JumpIf(GetCvar("bdoom_blood")==0,"Animation")
+		TNT1 A 0 A_FaceTarget
+
+		TNT1 A 0 A_JumpIf(CheckClass("BlueBloodSpatter",	AAPTR_DEFAULT),3)
+		TNT1 A 0 A_JumpIf(CheckClass("GreenBloodSpatter",	AAPTR_DEFAULT),3)
+
+		TNT1 A 0 A_SpawnItemEx("BloodDrop",16,0,		random(4,8),random(1,3),0,random(1,3),random(-150,-210),SXF_TRANSFERPOINTERS)
+		goto Animation
+		TNT1 A 0 A_SpawnItemEx("BlueBloodDrop",16,0,	random(4,8),random(1,3),0,random(1,3),random(-150,-210),SXF_TRANSFERPOINTERS)
+		goto Animation
+		TNT1 A 0 A_SpawnItemEx("GreenBloodDrop",16,0,	random(4,8),random(1,3),0,random(1,3),random(-150,-210),SXF_TRANSFERPOINTERS)
+		goto Animation
+
+	Animation:
+		BLOD ABCDEF 2 A_FadeOut(0.05)
+		stop
+	}
+}
+
+Actor BloodSpatter_Saw : BloodSpatter replaces AxeBlood
+{
++NOGRAVITY
+scale .3
+alpha .5
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
+		TNT1 A 0 A_JumpIf(GetCvar("bdoom_blood")==0,"Animation")
+		TNT1 A 0 A_FaceTarget
+
+		TNT1 A 0 A_JumpIf(CheckClass("BlueBloodSpatter_Saw",	AAPTR_DEFAULT),5)
+		TNT1 A 0 A_JumpIf(CheckClass("GreenBloodSpatter_Saw",	AAPTR_DEFAULT),7)
+
+		TNT1 AAA 0 A_SpawnItemEx("BloodDrop",		random(-2,2),random(-2,2),random(4,6),random(0,1),0,random(6,9),random(-150,-210),SXF_TRANSFERPOINTERS,64)
+		goto Animation
+		TNT1 AAA 0 A_SpawnItemEx("BlueBloodDrop",	random(-2,2),random(-2,2),random(4,6),random(0,1),0,random(6,9),random(-150,-210),SXF_TRANSFERPOINTERS,64)
+		goto Animation
+		TNT1 AAA 0 A_SpawnItemEx("GreenBloodDrop",	random(-2,2),random(-2,2),random(4,6),random(0,1),0,random(6,9),random(-150,-210),SXF_TRANSFERPOINTERS,64)
+		goto Animation
+	}
+}
+
+// ********************
+// Colored blood
+// ********************
+
+
+
+actor BlueBloodDrop : BloodDrop
+{
+translation "169:191=196:207", "16:31=196:207", "32:47=240:246" //"168:191=192:207","16:47=240:247"
+stencilcolor "00 00 90"
+decal CacoBloodSplat
+}
+
+actor BlueBloodSpurt : BloodSpurt
+{
+translation "169:191=196:207", "16:31=196:207", "32:47=240:246" //"168:191=192:207","16:47=240:247"
+stencilcolor "00 00 90"
+decal CacoBloodSplat
+}
+
+Actor GreenBloodDrop : BloodDrop
+{	
+translation "169:191=112:127", "16:31=152:159", "32:47=152:159"
+stencilcolor "00 80 00"
+decal BaronBloodSplat
+}
+
+actor GreenBloodSpurt : BloodSpurt
+{
+translation "169:191=112:127", "16:31=152:159", "32:47=152:159"
+stencilcolor "00 80 00"
+decal BaronBloodSplat
+}
+
+// Additional Blood Spatters for non-red blood
+
+
+Actor BlueBloodSpatter : BloodSpatter
+{
+translation "169:191=196:207", "16:31=196:207", "32:47=240:246" //"168:191=192:207","16:47=240:247"
+}
+
+Actor BlueBloodSpatter_Saw : BloodSpatter_Saw
+{
+translation "169:191=196:207", "16:31=196:207", "32:47=240:246" //"168:191=192:207","16:47=240:247"
+}
+
+Actor GreenBloodSpatter : BloodSpatter
+{
+translation "169:191=112:127", "16:31=152:159", "32:47=152:159"
+}
+
+Actor GreenBloodSpatter_Saw : BloodSpatter_Saw
+{
+translation "169:191=112:127", "16:31=152:159", "32:47=152:159"
+}
 
 
 
