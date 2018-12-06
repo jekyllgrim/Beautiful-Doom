@@ -66,7 +66,8 @@ states
 		goto see
 	
 	death:
-		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_Gibs")==1,"Death.Particles")
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_Gibs")==0,2)
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_bossgibs")==1,"Death.Particles")
 		SDMA a 20 a_scream
 		SDMA b 5 a_noblocking
 		SDMA c 5

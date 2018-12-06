@@ -85,6 +85,9 @@ OptionMenu "BDoom_Settings"
 
 	Option "Enhanced gibs & deaths",					"bdoom_gibs", "OnOff", "", 1
 	StaticText " "
+	
+	Option "Enhanced boss deaths",					"bdoom_bossgibs", "OnOff", "", 1
+	StaticText " "
 
 	Option "Enhanced blood",					"bdoom_blood", "OnOff", "", 1
 	StaticText " "
