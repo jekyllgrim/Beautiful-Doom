@@ -428,7 +428,7 @@ double bspeed;
 Default {
 	+NOGRAVITY
 	+NOINTERACTION
-	seesound "gibs/bloodspurt";
+	seesound "gibs/bloodtrickle";
 	}
 states
 	{
@@ -440,7 +440,6 @@ states
 			A_FaceTarget(0,270,0,0);
 			bpitch = frandom(1.0,5.0);
 			bspeed = frandom(4.0,6.0);
-			//A_PlaySound("gibs/bloodspurt",4);
 			}
 		TNT1 A 0 A_Jump(256,random(1,6));
 		TNT1 AAAAAAAAAAAA 1 { 
