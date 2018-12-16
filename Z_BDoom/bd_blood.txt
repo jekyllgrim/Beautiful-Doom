@@ -1,10 +1,13 @@
 Class BloodGeneral : Actor
 {
 Default {
+	+FLOORCLIP
 	+FIXMAPTHINGPOS
 	+NOBLOCKMAP 
 	+MOVEWITHSECTOR
+	+RELATIVETOFLOOR
 	+MISSILE
+	+PUFFGETSOWNER
 	-NOGRAVITY
 	+DROPOFF
 	+NOTELEPORT
@@ -25,9 +28,10 @@ Default {
 
 Class BloodDrop : BloodGeneral replaces Blood
 {
+string bloodfloor;
+string bloodceiling;
 string bcolor;
 Default {
-	+PUFFGETSOWNER
 	scale 0.35;
 	gravity 0.5;
 	renderstyle "Translucent";
@@ -70,45 +74,43 @@ states
 			A_SetScale(scale.x*randompick(-1,1)*frandom(0.7,1.2),scale.y*randompick(-1,1)*frandom(0.7,1.2));
 			A_SetRoll(random(0,359));
 			}
-		TNT1 a 0 A_Jump(256,"blood1","blood2","blood3");
-	blood1:
-		YBL7 ABCDEFGHIJKLMNOPQRS 1 {
-			if (bdoom_blood == 0 || waterlevel > 0)
+		TNT1 a 0 A_Jump(256,1,2,3);
+		YBL7 A 0 A_Jump(256,"BloodDrop");
+		YBL8 A 0 A_Jump(256,"BloodDrop");
+		YBL9 A 0 A_Jump(256,"BloodDrop");
+	BloodDrop:
+		#### ABCDEFGHIJKLMNOPQRS 1 {
+			if (bdoom_blood == 0)
 				self.destroy();
-			}
-		stop;
-	blood2:
-		YBL8 ABCDEFGHIJKLMNOPQR 1 {
-			if (bdoom_blood == 0 || waterlevel > 0)
-				self.destroy();
-			}
-		stop;
-	blood3:
-		YBL9 ABCDEFGHIJKLM 1 {
-			if (bdoom_blood == 0 || waterlevel > 0)
-				self.destroy();
+			if (waterlevel > 0)
+				return ResolveState("Raise");
+			/*if (vel.z == 0)
+				return ResolveState("Death");*/
+			return ResolveState(null);
 			}
 		stop;
 	Death:
 		TNT1 A 0 { 
-			if (bdoom_blood == 0)
-				self.destroy();
 			A_Stop();
-			bFLATSPRITE = true;
-			A_SetScale(frandom(0.1,0.18)*randompick(1,-1),frandom(0.1,0.18)*randompick(1,-1));
 			if (bcolor == "blue")
 				A_SprayDecal("BloodSplatBlue",32);
-			if (bcolor == "green")
+			else if (bcolor == "green")
 				A_SprayDecal("BloodSplatGreen",32);
-			if (bcolor == "red")
+			else if (bcolor == "red")
 				A_SprayDecal("BloodSplatRed",32);
 			//no way to transfer shade to decals, so specially shaded blood particles won't produce decals
+			bloodfloor = TexMan.GetName(floorpic);
+			bloodceiling = TexMan.GetName(ceilingpic);
+			bFLATSPRITE = true;
+			A_SetScale(frandom(0.1,0.18)*randompick(1,-1),frandom(0.1,0.18)*randompick(1,-1));
 			}
 		TNT1 A 0 A_CheckCeiling("Ceiling");
 		TNT1 A 0 {
+			if (bloodfloor ==  "F_SKY1")
+				self.destroy();
+			if (pos.z != floorz)
+				self.destroy();
 			A_QueueCorpse();
-			ACS_NamedExecuteAlways("BD_BloodRemoval",0);
-			bFloorClip = true;
 			if (GetZAt(24,0) != floorz || GetZAt(-24,0) != floorz || GetZAt(0,24) != floorz || GetZAt(0,-24) != floorz) 
 				A_SetScale(scale.x*0.7,scale.y*0.7);
 			if (GetZAt(18,0) != floorz || GetZAt(-18,0) != floorz || GetZAt(0,18) != floorz || GetZAt(0,-18) != floorz)
@@ -117,14 +119,15 @@ states
 				A_SetScale(scale.x*0.4,scale.y*0.4);
 			if (GetZAt(6,0) != floorz || GetZAt(-6,0) != floorz || GetZAt(0,6) != floorz || GetZAt(0,-6) != floorz)
 				self.destroy();
+			bNOINTERACTION = true;
 			}
 		TNT1 A 0 A_Jump(256,random(1,17));
 		2PLT ABCDEFGHIJKLMNOPQ 0 A_Jump(256,"Crash");
 	Crash:
-		#### # 50 {
-			if (bdoom_blood == 0 || waterlevel > 0)
+		#### # 30 {
+			if (bdoom_blood == 0)
 				self.destroy();
-			if (CountInv("WasGibbed") > 0)
+			if (CountInv("WasGibbed") > 0 || waterlevel > 0 || GetFloorTerrain().isLiquid == true || bloodfloor == "BLOOD1" || bloodfloor ==  "BLOOD2" || bloodfloor ==  "BLOOD3" || bloodfloor ==  "FWATER1" || bloodfloor ==  "FWATER2" || bloodfloor ==  "FWATER3" || bloodfloor ==  "FWATER4" || bloodfloor ==  "LAVA1" || bloodfloor ==  "LAVA2" || bloodfloor ==  "LAVA3" || bloodfloor ==  "LAVA4" || bloodfloor ==  "NUKAGE1" || bloodfloor ==  "NUKAGE2" || bloodfloor ==  "NUKAGE3" || bloodfloor ==  "SLIME01" || bloodfloor ==  "SLIME02" || bloodfloor ==  "SLIME03" || bloodfloor ==  "SLIME04" || bloodfloor ==  "SLIME05" || bloodfloor ==  "SLIME06" || bloodfloor ==  "SLIME07" || bloodfloor ==  "SLIME08" || bloodfloor ==  "SLIME09" || bloodfloor ==  "SLIME10" || bloodfloor ==  "SLIME11" || bloodfloor ==  "SLIME12")
 				return ResolveState("Raise");
 			return ResolveState(null);
 			}
@@ -134,7 +137,8 @@ states
 		loop;
 	Ceiling:
 		TNT1 A 0 {
-			ACS_NamedExecuteAlways("BloodSkyRemoval",0);
+			if (bloodceiling == "F_SKY1")
+				self.destroy();
 			if (GetZAt(24,0,0,GZF_CEILING) > ceilingz || GetZAt(-24,0,0,GZF_CEILING) > ceilingz || GetZAt(0,24,0,GZF_CEILING) > ceilingz || GetZAt(0,-24,0,GZF_CEILING) > ceilingz) 
 				A_SetScale(scale.x*0.7,scale.y*0.7);
 			if (GetZAt(18,0,0,GZF_CEILING) > ceilingz || GetZAt(-18,0,0,GZF_CEILING) > ceilingz || GetZAt(0,18,0,GZF_CEILING) > ceilingz || GetZAt(0,-18,0,GZF_CEILING) > ceilingz)
@@ -149,12 +153,48 @@ states
 	}
 }
 
+//particles for initial gib explosion
+Class BFountainSpray : BloodGeneral
+{
+Default {
+	-MISSILE
+	+NOINTERACTION
+	scale 0.45;
+	renderstyle "Translucent";
+	alpha 0.6;
+	}
+states
+	{
+	spawn:
+		TNT1 A 0 NoDelay A_CheckSight("Null");
+		TNT1 A 0 {
+			A_FaceTarget(0,270,180,0);
+			A_SetScale(scale.x*randompick(-1,1)*frandom(0.7,1.2),scale.y*randompick(-1,1)*frandom(0.7,1.2));
+			A_SetRoll(random(0,359));
+			}
+		TNT1 a 0 A_Jump(256,1,2,3);
+		YBL7 A 0 A_Jump(256,"BloodDrop");
+		YBL8 A 0 A_Jump(256,"BloodDrop");
+		YBL9 A 0 A_Jump(256,"BloodDrop");
+	BloodDrop:
+		#### ABCDEFGHIJKKLLMMNNOOOPPPQQQRRRSSS 1 {
+			if (bdoom_blood == 0 || waterlevel > 0)
+				self.destroy();
+			vel.z = clamp(vel.z - 0.3,-2.0,10.0);
+			a_Setscale(clamp(scale.x * 1.05,0.0,1.0),clamp(scale.y * 1.05,0.0,1.0));
+			a_fadeout(0.02);
+			}
+		stop;
+	}
+}
+
 Class CeilingSplat : BloodGeneral
 {
 Default {
-	-MISSILE	
+	-MISSILE
 	+NOGRAVITY
 	+FLATSPRITE
+	+NOINTERACTION
 	height 1;
 	}
 states
@@ -167,50 +207,43 @@ states
 		#### # 5 {
 			if (bdoom_blood == 0)
 				self.destroy();
-			if (GetZAt(24,0,0,GZF_CEILING) > ceilingz || GetZAt(-24,0,0,GZF_CEILING) > ceilingz || GetZAt(0,24,0,GZF_CEILING) > ceilingz || GetZAt(0,-24,0,GZF_CEILING) > ceilingz) 
-				A_SetScale(scale.x*0.7,scale.y*0.7);
-			if (GetZAt(18,0,0,GZF_CEILING) > ceilingz || GetZAt(-18,0,0,GZF_CEILING) > ceilingz || GetZAt(0,18,0,GZF_CEILING) > ceilingz || GetZAt(0,-18,0,GZF_CEILING) > ceilingz)
-				A_SetScale(scale.x*0.6,scale.y*0.6);
-			if (GetZAt(12,0,0,GZF_CEILING) > ceilingz || GetZAt(-12,0,0,GZF_CEILING) > ceilingz || GetZAt(0,12,0,GZF_CEILING) > ceilingz || GetZAt(0,-12,0,GZF_CEILING) > ceilingz)
-				A_SetScale(scale.x*0.4,scale.y*0.4);
-			if (GetZAt(6,0,0,GZF_CEILING) > ceilingz || GetZAt(-6,0,0,GZF_CEILING) > ceilingz || GetZAt(0,6,0,GZF_CEILING) > ceilingz || GetZAt(0,-6,0,GZF_CEILING) > ceilingz)
-				self.destroy();
-			A_SpawnitemEx("CeilingBloodDrop",frandom(-2.0,2.0),frandom(-2.0,2.0),-1,0,0,0,0,SXF_TRANSFERTRANSLATION|SXF_TRANSFERRENDERSTYLE|SXF_TRANSFERSTENCILCOL,250);
+			SetOrigin((pos.x,pos.y,ceilingz-0.3),0);
+			A_SpawnitemEx("CeilingBloodDrop",frandom(-2.0,2.0),frandom(-2.0,2.0),-1.,0,0,0,0,SXF_TRANSFERTRANSLATION|SXF_TRANSFERSTENCILCOL|SXF_TRANSFERRENDERSTYLE|SXF_NOPOINTERS,250);
 			A_FadeTo(0.1,0.001,1);
 			}
 		loop;
 	}
 }
 
-Class CeilingBloodDrop : BloodDrop
+Class CeilingBloodDrop : Actor
 {
 Default {
 	+FORCEYBILLBOARD
-	+FLOORCLIP
-	deathsound "none";
-	height 1;
+	+NOINTERACTION
 	scale 0.1;
-	+NOGRAVITY;
 	alpha 0.75;
-}
+	height 1;
+	radius 1;
+	}
 states
 	{
 	spawn:
 		TNT1 A 0 NoDelay A_CheckSight("Null");
 		TNT1 A 0 A_SetScale(scale.x*randompick(-1,1)*frandom(1.0,1.3),scale.y*frandom(1.0,1.3));
 		BLOD UVWWXXYYY 2;
-		TNT1 A 0 {
-			bNOGRAVITY = false;
-			A_SetGravity(0.6);
-			}
-		BLOD ZZZZ 5 {
+		TNT1 A 0 { vel.z = -3.7; }
+		BLOD ZZZZZZZZZZZZZZZZZZZZZZZZZ 1 {
 			if (bdoom_blood == 0 || waterlevel > 0)
 				self.destroy();
+			if (pos.z <= floorz)
+				return ResolveState("Death");
+			return ResolveState(null);
 			}
 		stop;
 	Death:
 		TNT1 A 0 {
-			A_Stop();
+			vel.z = 0.0;
+			SetOrigin((pos.x,pos.y,floorz),0);
 			A_SetScale(frandom(0.22,0.25)*randompick(-1,1));
 			}
 		BLOD GHIJK 3;
@@ -223,19 +256,19 @@ Class AniBloodPool : BloodDrop
 {
 double psize;
 Default {
-	-PUFFGETSOWNER
+	+NOINTERACTION
+	+RELATIVETOFLOOR
 	-MISSILE
-	+FLOORCLIP
 	+FLATSPRITE
 	height 1;
-	alpha 1.0;
+	renderstyle "Normal";
 	decal "none";
 	scale 0.2;
 	}
 override void PostBeginPlay() {
 	if (bdoom_blood == 0 || waterlevel > 0)
 		self.destroy();
-double pscale;
+	double pscale;
 	pscale = frandom(0.23,0.35);
 	psize = pscale*22;
 	A_SetScale(pscale*frandom(0.8,1.1)*randompick(-1,1),pscale*frandom(0.8,1.1)*randompick(-1,1));
@@ -245,68 +278,68 @@ states
 	{
 	Spawn:
 		TNT1 A 0 NoDelay {
-			A_QueueCorpse();
-			if (GetZAt(psize,0) != floorz || GetZAt(-psize,0) != floorz || GetZAt(0,psize) != floorz || GetZAt(0,-psize) != floorz)
+			if (GetZAt(psize,0) < floorz || GetZAt(-psize,0) < floorz || GetZAt(0,psize) < floorz || GetZAt(0,-psize) < floorz)
 				self.destroy();
-			if (random(0,256) > 128)
-				return ResolveState("Spawn1");
-			return ResolveState(null);
+			SetOrigin((pos.x,pos.y,floorz+0.5),0);
+			A_QueueCorpse();
 			}
-		PUL1 ABCDEFGHI 1 {
-			if (GetZAt(psize,0) != floorz || GetZAt(-psize,0) != floorz || GetZAt(0,psize) != floorz || GetZAt(0,-psize) != floorz)
+		TNT1 A 0 A_Jump(128,"Spawn1");
+		0000 ABCDEFGHI 2 {
+			if (GetZAt(psize,0) < floorz || GetZAt(-psize,0) < floorz || GetZAt(0,psize) < floorz || GetZAt(0,-psize) < floorz)
 				return ResolveState("Rest");
 			psize+=2.0;
 			return ResolveState(null);
 			}
-		PUL1 JKLMNOPQRSTU 1 {
-			if (GetZAt(psize,0) != floorz || GetZAt(-psize,0) != floorz || GetZAt(0,psize) != floorz || GetZAt(0,-psize) != floorz)
+		0000 JKLMNOPQRSTU 2 {
+			if (GetZAt(psize,0) < floorz || GetZAt(-psize,0) < floorz || GetZAt(0,psize) < floorz || GetZAt(0,-psize) < floorz)
 				return ResolveState("Rest");
 			psize+=1.2;
 			return ResolveState(null);
 			}
-		PUL1 VWXYZ 2 {
-			if (GetZAt(psize,0) != floorz || GetZAt(-psize,0) != floorz || GetZAt(0,psize) != floorz || GetZAt(0,-psize) != floorz)
+		0000 VWXYZ 3 {
+			if (GetZAt(psize,0) < floorz || GetZAt(-psize,0) < floorz || GetZAt(0,psize) < floorz || GetZAt(0,-psize) < floorz)
 				return ResolveState("Rest");
 			psize+=1.0;
 			return ResolveState(null);
 			}
-		PUL2 ABCD 2 {
-			if (GetZAt(psize,0) != floorz || GetZAt(-psize,0) != floorz || GetZAt(0,psize) != floorz || GetZAt(0,-psize) != floorz)
+		0001 ABCD 3 {
+			if (GetZAt(psize,0) < floorz || GetZAt(-psize,0) < floorz || GetZAt(0,psize) < floorz || GetZAt(0,-psize) < floorz)
 				return ResolveState("Rest");
 			psize+=1.0;
 			return ResolveState(null);
 			}
 		goto rest;
 	Spawn1:
-		PUM1 ABCDEFGHI 1 {
-			if (GetZAt(psize,0) != floorz || GetZAt(-psize,0) != floorz || GetZAt(0,psize) != floorz || GetZAt(0,-psize) != floorz)
+		1000 ABCDEFGHI 2 {
+			if (GetZAt(psize,0) < floorz || GetZAt(-psize,0) < floorz || GetZAt(0,psize) < floorz || GetZAt(0,-psize) < floorz)
 				return ResolveState("Rest");
 			psize+=2.0;
 			return ResolveState(null);
 			}
-		PUM1 JKLMNOPQRSTU 1 {
-			if (GetZAt(psize,0) != floorz || GetZAt(-psize,0) != floorz || GetZAt(0,psize) != floorz || GetZAt(0,-psize) != floorz)
+		1000 JKLMNOPQRSTU 2 {
+			if (GetZAt(psize,0) < floorz || GetZAt(-psize,0) < floorz || GetZAt(0,psize) < floorz || GetZAt(0,-psize) < floorz)
 				return ResolveState("Rest");
 			psize+=1.2;
 			return ResolveState(null);
 			}
-		PUM1 VWXYZ 2 {
-			if (GetZAt(psize,0) != floorz || GetZAt(-psize,0) != floorz || GetZAt(0,psize) != floorz || GetZAt(0,-psize) != floorz)
+		1000 VWXYZ 3 {
+			if (GetZAt(psize,0) < floorz || GetZAt(-psize,0) < floorz || GetZAt(0,psize) < floorz || GetZAt(0,-psize) < floorz)
 				return ResolveState("Rest");
 			psize+=1.0;
 			return ResolveState(null);
 			}
-		PUM2 ABCD 2 {
-			if (GetZAt(psize,0) != floorz || GetZAt(-psize,0) != floorz || GetZAt(0,psize) != floorz || GetZAt(0,-psize) != floorz)
+		1001 ABCD 3 {
+			if (GetZAt(psize,0) < floorz || GetZAt(-psize,0) < floorz || GetZAt(0,psize) < floorz || GetZAt(0,-psize) < floorz)
 				return ResolveState("Rest");
 			psize+=1.0;
 			return ResolveState(null);
 			}
 		goto rest;
 	Rest:
-		#### # 50 {
+		#### # 1 {
 			if (bdoom_blood == 0 || waterlevel > 0)
 				self.destroy();
+			//SetOrigin((pos.x,pos.y,floorz+0.5),0); //RELATIVETOFLOOR actually does this. How cool!
 			}
 		wait;
 	}
@@ -343,7 +376,7 @@ states
 	}
 }
 
-//for projectiles
+//for projectile bullets
 Class BD_BloodSplatter : BloodDrop replaces BloodSplatter {}
 
 //thinner and faster version for spurts
@@ -362,65 +395,37 @@ states
 			A_SetGravity(frandom(0.4,0.6));
 			A_SetScale(scale.x*randompick(-1,1),scale.y*randompick(-1,1));
 			A_SetRoll(random(0,359));
-			}
-		TNT1 a 0 A_Jump(256,"blood1","blood2","blood3");
-	blood1:
-		YBL7 ABCDEFGHIJKLMNOPQRS 1 {
-			A_FadeOut(0.001);
-			if (bdoom_blood == 0 || waterlevel > 0)
+			}		
+		TNT1 a 0 A_Jump(256,1,2,3);
+		YBL7 A 0 A_Jump(256,"BloodDrop");
+		YBL8 A 0 A_Jump(256,"BloodDrop");
+		YBL9 A 0 A_Jump(256,"BloodDrop");
+	BloodDrop:
+		#### ABCDEFGHIJKLMNOPQRS 1 {
+			if (bdoom_blood == 0)
 				self.destroy();
-			}
-		stop;
-	blood2:
-		YBL8 ABCDEFGHIJKLMNOPQR 1 {
+			if (waterlevel > 0)
+				return ResolveState("Raise");
 			A_FadeOut(0.001);
-			if (bdoom_blood == 0 || waterlevel > 0)
-				self.destroy();
-			}
-		stop;
-	blood3:
-		YBL9 ABCDEFGHIJKLM 1 {
-			A_FadeOut(0.001);
-			if (bdoom_blood == 0 || waterlevel > 0)
-				self.destroy();
+			return ResolveState(null);
 			}
 		stop;
 	Death:
-		TNT1 A 0 { 
-			if (bdoom_blood == 0)
-				self.destroy();
-			A_Stop();
-			bFLATSPRITE = true;
-			A_SetScale(frandom(0.1,0.18)*randompick(1,-1),frandom(0.1,0.18)*randompick(1,-1));
+		TNT1 A 1 { 
 			if (bcolor == "blue")
 				A_SprayDecal("BloodSprayBlue",32);
 			if (bcolor == "green")
 				A_SprayDecal("BloodSprayGreen",32);
 			if (bcolor == "red")
 				A_SprayDecal("BloodSprayRed",32);
-			//no way to transfer shade to decals, so specially shaded blood particles won't produce decals
 			}
-		TNT1 A 0 A_CheckCeiling("Ceiling");
-		TNT1 A 0 {
-			A_QueueCorpse();
-			ACS_NamedExecuteAlways("BD_BloodRemoval",0);
-			bFloorClip = true;
-			if (GetZAt(24,0) != floorz || GetZAt(-24,0) != floorz || GetZAt(0,24) != floorz || GetZAt(0,-24) != floorz) 
-				A_SetScale(scale.x*0.7,scale.y*0.7);
-			if (GetZAt(18,0) != floorz || GetZAt(-18,0) != floorz || GetZAt(0,18) != floorz || GetZAt(0,-18) != floorz)
-				A_SetScale(scale.x*0.6,scale.y*0.6);
-			if (GetZAt(12,0) != floorz || GetZAt(-12,0) != floorz || GetZAt(0,12) != floorz || GetZAt(0,-12) != floorz)
-				A_SetScale(scale.x*0.4,scale.y*0.4);
-			if (GetZAt(6,0) != floorz || GetZAt(-6,0) != floorz || GetZAt(0,6) != floorz || GetZAt(0,-6) != floorz)
-				self.destroy();
-			}
-		TNT1 A 0 A_Jump(256,random(1,17));
-		2PLT ABCDEFGHIJKLMNOPQ 0 A_Jump(256,"Super::Crash");
-		goto crash;
+		stop;
 	}
 }
 
-//spurts spawner
+// spurts spawner — temporary, for backwards compatibility with existing decorate stuff
+Class BloodSpurt : Bloodsprayer {}
+
 Class BloodSprayer : BloodDrop
 {
 double bpitch;
@@ -465,7 +470,7 @@ Default {
 	+MOVEWITHSECTOR
 	-NOGRAVITY
 	renderstyle "Add";
-	alpha 0.85;
+	alpha 0.5;
 	scale 1.0;
 	}
 override void PostBeginPlay() {
@@ -486,8 +491,8 @@ override void PostBeginPlay() {
 states
 	{
 	Spawn:
-		SPUR ABCDEFGHIJKL 1 ;
-		SPUR MNOPQRSTUVWXYZ 2 ;
+		SPUR ABCDEFGHIJKL 1 A_fadeout(0.01);
+		SPUR MNOPQRSTUVWXYZ 2 A_fadeout(0.01);
 		stop;
 	}
 }

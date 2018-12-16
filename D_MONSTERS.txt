@@ -2,7 +2,7 @@
 		NEW MONSTERS
 -----------------------------------------------------------*/
 
-#include "DECORATE/MONSTERS/Zombieman.txt"
+//#include "DECORATE/MONSTERS/Zombieman.txt"
 #include "DECORATE/MONSTERS/ShotgunGuy.txt"
 #include "DECORATE/MONSTERS/ChaingunGuy.txt"
 #include "DECORATE/MONSTERS/WolfensteinSS.txt"

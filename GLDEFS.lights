@@ -19,10 +19,10 @@ object ChainsawPuff
 frame BPUF { light BPUFF1 }
 }
 
-object RicochetSpark
+/*object RicochetSpark
 {
 frame SPRK { light BPUFF1 }
-}
+}*/
 
 flickerlight2 ZOMBIEATK
 {
