@@ -10,7 +10,7 @@ Progress so far:
 MODERN WEAPON SET
 
 I added the third weapon set (only partly functional for now). All weapons require reloading, weapons that aren't automatic require pressing trigger manually. All bullet weapons use projectile bullets instead of hitscans. Weapons have different sway and recoil. Also all of them use varied and realistic sounds, mostly from real weapons.
-* Fist: has a combo system with finishers and stuff. Supports quick kick (see controls) which will later be supported by all weapons.
+* Fist: has a combo system with finishers and stuff. Supports quick kick (see controls) which will later be supported by all weapons. Berserk Pack adds new moveset but for now only the basic version is implemented.
 * Chainsaw: very powerful but gets clogged with blood while used and may jam (chances increases with clogging). Needs to be restarted manually. The more clogged it is, the harder it is to restart. Alt fire pushes blood out, unclogging it.
 * Pistol: pretty darn fast
 * Shotgun: faster and altered animation
@@ -18,13 +18,14 @@ I added the third weapon set (only partly functional for now). All weapons requi
 * Assault Rifle: you know how Doom has a chaingun that fires pistol ammo, with 6 barrels, but pretty slow... in other words, a chaingun that makes no sense? Yeah, I replaced it. Assault Rifle does basically the same things but it has a magazine. Also alt fire allows to aim down sights for decreased fire speed and bullet spread.
 * Rocket Launcher: basically faster and can also work as a grenade launcher.
 * Plasma Rifle: similar to original but builds up heat that needs to be dissipated manually. Also deals AOE damage (similar to how, I think, it works in Doom Eternal, judging from trailers).
+* BFG: currently not implemented. Eventually it'll fire an orb that will then fire secondary rays on enemies; the power of the orb will be adjustable by holding Fire button.
 
 ADDED/IMPROVED
 * A lot of stuff moved to Zscript
-* Added Modern weaponset (BFGs currently inaccessible; both Chainsaws accessible; neither is in ZScript yet)
-* Completely revamped blood graphics and physics (still a lot to be done yet)
+* Added Modern weaponset (see above)
+* Completely revamped blood graphics and physics (a lot of work to be done on gibs yet)
 * Bullet tracers now aim exactly at the same place where the hitscan bullet hits (thanks A_D_M_E_R_A_L for the suggestion) 
-* Added SpriteShadow mod by Nash Muhandes
+* Added SpriteShadow mod by Nash Muhandes (toggleable, thanks to 3caster)
 * The red 'overheat' tint of the Enhanced Chaingun now has several degrees of intensity that fade in and out gradually
 
 FIXED
