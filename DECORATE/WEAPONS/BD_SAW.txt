@@ -2,29 +2,6 @@
 // CHAINSAW
 //**********
 
-/*Actor BD_ChainsawSpawner : CustomInventory replaces Chainsaw
-{
-Inventory.PickupMessage "$GOTCHAINSAW"
-inventory.pickupsound "weapons/chainsaw/draw"
-states
-	{
-	Spawn:
-		CSAW A -1
-		Stop
-	Pickup:
-		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_weapons")==2,"ModernPickup")
-		TNT1 A 0 A_GiveInventory("BD_Chainsaw",1)
-		TNT1 A 0 A_JumpIfInventory("BD_Chainsaw",1,2)
-		TNT1 A 0 A_SelectWeapon("BD_Chainsaw")
-		stop
-	ModernPickup:
-		TNT1 A 0 A_GiveInventory("ModernChainsaw",1)
-		TNT1 A 0 A_JumpIfInventory("ModernChainsaw",1,2)
-		TNT1 A 0 A_SelectWeapon("ModernChainsaw")
-		TNT1 A 0
-		stop
-	}
-}*/
 
 
 actor SawSmoke : Smoke_General
@@ -44,61 +21,3 @@ states
 
 
 
-
-
-
-
-Actor ChainsawBloodSpill : BloodSpill
-{
-deathsound "gibs/blooddrop"
-scale 0.13
-gravity 0.7
-scale .14
--NOGRAVITY
-states
-	{
-	spawn:
-		TNT1 A 0 NoDelay A_JumpIf(GetCVAR("bdoom_blood")==0,"Null")
-		TNT1 A 0 A_SetScale(scalex*randompick(-1,1),scaley)
-		BLOD XY 1
-		BLOD ZZZZZZZ 2 A_FadeOut(0.01)
-		stop
-	Death:
-		TNT1 A 0 A_Stop
-		TNT1 A 0 A_ChangeFLag("FLATSPRITE",1)
-		TNT1 A 0 A_GiveInventory("DummyChecker",random(1,12))
-		TNT1 A 0 A_SetRenderstyle(0.85,STYLE_Shaded)
-	Crash:
-		TNT1 A 0 A_JumpIf(GetZAt(20,0) != floorz || GetZAt(-20,0) != floorz || GetZAt(0,20) != floorz || GetZAt(0,-20) != floorz, "Null")
-		TNT1 A 0 ACS_NamedExecuteAlways("BD_BloodRemoval",0)
-		TNT1 A 0 A_SetFloorClip
-	Crash1:
-		TNT1 A 0 A_JumpIf(GetCvar("bdoom_blood")==0,"Null")
-		TNT1 A 0 A_JumpIfInventory("WasGibbed",1,"Raise")
-		TNT1 A 0 A_Jump(256,CountInv("DummyChecker"))
-		SPLT A 1 A_FadeOUt(0.05)
-		wait
-		SPLT B 1 A_FadeOUt(0.05)
-		wait
-		SPLT C 1 A_FadeOUt(0.05)
-		wait
-		SPLT D 1 A_FadeOUt(0.05)
-		wait
-		SPLT E 1 A_FadeOUt(0.05)
-		wait
-		SPLT F 1 A_FadeOUt(0.05)
-		wait
-		SPLT G 1 A_FadeOUt(0.05)
-		wait
-		SPLT H 1 A_FadeOUt(0.05)
-		wait
-		SPLT I 1 A_FadeOUt(0.05)
-		wait
-		SPLT J 1 A_FadeOUt(0.05)
-		wait
-		SPLT K 1 A_FadeOUt(0.05)
-		wait
-		SPLT L 1 A_FadeOUt(0.05)
-		wait
-	}
-}

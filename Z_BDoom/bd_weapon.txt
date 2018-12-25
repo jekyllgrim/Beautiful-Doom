@@ -1,25 +1,61 @@
 Class BDoomWeapon : DoomWeapon
 {
+int offsetTics; // current camera sway timer
+double maxOffsetTics; // starting point for the timer
+double offsetAngle; // the target angle for the camera sway
+double offsetPitch;
+double currentAngleOffset; // how much has the camera already been offset?
+double currentPitchOffset;
+property maxOffsetTics : maxOffsetTics;
+property offsetTics : offsetTics;
+
+Default {  //required default values for A_CameraSway. Otherwise it'll crash due to division by zero
+	BDoomWeapon.maxOffsetTics 1;
+	BDoomWeapon.offsetTics -1;
+	}
+
+// Camera sway function by josh771
+action void A_CameraSway(double aoffset, double poffset, int tics)
+{
+    invoker.offsetTics = tics;
+    invoker.maxOffsetTics = tics;
+    
+    invoker.offsetAngle = aoffset;
+    invoker.offsetPitch = poffset;
+
+    invoker.currentAngleOffset = 0.0;
+    invoker.currentPitchOffset = 0.0;
+}
+
 override void DoEffect()
 	{
-		if (owner)
-			{
-			if(bdoom_weapons == 2)
-				{
+		Super.DoEffect();
+		if (owner) {
+			if(bdoom_weapons == 2) {
 					BobRangeX = 0.2;
 					BobRangeY = 0.2;
 					BobStyle = 5;
 					BobSpeed = 2.0;
 				}
-			else
-				{
+			else {
 					BobRangeX = 1.0;
 					BobRangeY = 1.0;
 					BobStyle = 0;
 					BobSpeed = 1.0;
 				}
+			if (offsetTics >= 0) {
+				double phase = (offsetTics / maxOffsetTics) * 90.0;
+				double newAngleOffset = (cos(phase) * offsetAngle);
+				double newPitchOffset = (cos(phase) * offsetPitch);
+				double finalAngle = (owner.angle - currentAngleOffset) + newAngleOffset;
+				double finalPitch = (owner.pitch - currentPitchOffset) + newPitchOffset;
+				currentAngleOffset = newAngleOffset;
+				currentPitchOffset = newPitchOffset;
+				owner.A_SetAngle(finalAngle, SPF_INTERPOLATE);
+				owner.A_SetPitch(finalPitch, SPF_INTERPOLATE);
+				offsetTics--;
+				}
 			}
-		Super.DoEffect();
 	}
 
 action void BD_WeaponReady(bool allowsecondary = false)
@@ -51,6 +87,17 @@ action void BD_Reload()
 			GiveInventory(invoker.ammo1.GetClass(),1);
 			}
 		}
+	}
+
+//Casing spawn function with cool math by Marisa Kirisame
+action void A_Eject(class<Actor> itemtype, double xofs = 0, double yofs = 0, double zofs = 0, double xvel = 0, double yvel = 0, double zvel = 0)
+	{
+		Vector3 ofs = player.mo.pos+(0,0,player.viewheight);
+		Vector3 x, y, z;
+		[x, y, z] = Matrix4.getaxes(player.mo.pitch,player.mo.angle,player.mo.roll);
+		let c = Spawn(itemtype,ofs+x*xofs+y*yofs-z*zofs);
+		c.vel = x*xvel+y*yvel+z*zvel;
+		c.target = self;
 	}
 }
 
@@ -138,14 +185,14 @@ states
 Class BD_PistolBullet : RealBullet
 {
 Default {
-	DamageFunction (3 * random(4,8));
+	DamageFunction (3 * frandom(4,8));
 	}
 }
 
 Class BD_ShotgunPellet : RealBullet
 {
 Default {
-	DamageFunction (3 * random(2,5));
+	DamageFunction (3 * frandom(2,5));
 	decal "ShotChip";
 	}
 }

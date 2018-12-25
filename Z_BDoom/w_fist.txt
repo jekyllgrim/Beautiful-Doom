@@ -9,6 +9,7 @@ int lcombo; // # of light hits IN A ROW (at 5th goes to Light Finisher); reset b
 int tcombo; // total # of hits, i.e. length of combo. Increased by puffs (i.e. actually hitting  the enemy)
 int hurtchance; // % chance of FORCEPAINing the enemy with light punches (increased with tcombo, clamped at 15-85%)
 bool bpunch; //(with Berserk) used left punch?
+//int pconnected; // (unused) how many times the punch actually hit something
 int targetdistance;
 int jangle; //jump angle
 Default {
@@ -22,14 +23,6 @@ Default {
 	+WEAPON.WIMPY_WEAPON
 	+WEAPON.MELEEWEAPON
 }
-/*override void Tick() // debug
-	{
-	If (Owner)
-		{
-		Console.PrintF("total combo: "..tcombo);
-		}
-	Super.Tick();
-	}*/
 override void BeginPlay() //required default values for A_CameraSway
 	{
 	maxOffsetTics = 1;
@@ -50,40 +43,10 @@ override void DoEffect()
 				bNOAUTOFIRE = false;
 				bWIMPY_WEAPON = false;
 			}
-		}
-	if (offsetTics >= 0) {
-		double phase = (offsetTics / maxOffsetTics) * 90.0;
-		double newAngleOffset = (cos(phase) * offsetAngle);
-		double newPitchOffset = (cos(phase) * offsetPitch);
-		double finalAngle = (owner.angle - currentAngleOffset) + newAngleOffset;
-		double finalPitch = (owner.pitch - currentPitchOffset) + newPitchOffset;
-		currentAngleOffset = newAngleOffset;
-		currentPitchOffset = newPitchOffset;
-		owner.A_SetAngle(finalAngle, SPF_INTERPOLATE);
-		owner.A_SetPitch(finalPitch, SPF_INTERPOLATE);
-		offsetTics--;
+		//Console.Printf("tcombo "..tcombo);
 		}
 	Super.DoEffect();
 	}
-int offsetTics; // current camera sway timer
-double maxOffsetTics; // starting point for the timer
-double offsetAngle; // the target angle for the camera sway
-double offsetPitch;
-double currentAngleOffset; // how much has the camera already been offset?
-double currentPitchOffset;
-
-// Camera sway function by josh771
-action void A_CameraSway(double aoffset, double poffset, int tics)
-{
-    invoker.offsetTics = tics;
-    invoker.maxOffsetTics = tics;
-    
-    invoker.offsetAngle = aoffset;
-    invoker.offsetPitch = poffset;
-
-    invoker.currentAngleOffset = 0.0;
-    invoker.currentPitchOffset = 0.0;
-}
 
 states
 	{
@@ -296,7 +259,7 @@ states
 			invoker.fcombo = 0;	
 			invoker.lcombo = 0;	
 			invoker.tcombo = 0;
-			TakeInventory("BD_PunchConnected",10000);
+			//invoker.pconnected = 0;
 			}
 		goto ready;
 	Ready.Left:
@@ -337,7 +300,7 @@ states
 		NUKL FGH 1 {
 			A_OverlayOffset(2,-1.75,-1.75,WOF_ADD);
 			}
-		TNT1 A 0 { invoker.tcombo = CountInv("BD_PunchConnected"); }
+		//TNT1 A 0 { invoker.tcombo = invoker.pconnected; }
 		NUKL IIJJAAA 2 {
 			A_WeaponReady(WRF_DISABLESWITCH|WRF_ALLOWUSER1);
 			A_OverlayOffset(2,-1.75,-1.75,WOF_ADD);
@@ -364,7 +327,7 @@ states
 			A_OverlayOffset(2,-2.0,-2.0,WOF_ADD);
 			//A_SetAngle(angle+0.31,SPF_INTERPOLATE);
 			}
-		TNT1 A 0 { invoker.tcombo = CountInv("BD_PunchConnected"); }
+		//TNT1 A 0 { invoker.tcombo = invoker.pconnected; }
 		NUKL IJAA 2 {
 			A_WeaponReady(WRF_NOBOB|WRF_NOPRIMARY|WRF_ALLOWUSER1);
 			A_OverlayOffset(2,-2.0,-2.0,WOF_ADD);
@@ -450,7 +413,7 @@ states
 		NUKR IJK 1 {
 			A_OverlayOffset(2,2.9,-3.1,WOF_ADD);
 			}
-		TNT1 A 0 { invoker.tcombo = CountInv("BD_PunchConnected"); }
+		//TNT1 A 0 { invoker.tcombo = invoker.pconnected; }
 		NUKR LM 2 {
 			A_WeaponReady(WRF_DISABLESWITCH|WRF_NOPRIMARY|WRF_NOBOB|WRF_ALLOWUSER1);
 			A_OverlayOffset(2,2.9,-3.1,WOF_ADD);
@@ -478,7 +441,7 @@ states
 			if (invoker.fcombo >= 3 && invoker.lcombo > 0)
 				return ResolveState("Uppercut");
 			invoker.tcombo = 0;
-			TakeInventory("BD_PunchConnected",10000);
+			//invoker.pconnected = 0;
 			return ResolveState(null);
 			}
 		NUKR AB 2;
@@ -507,7 +470,7 @@ states
 		NUKR IJK 1 {
 			A_OverlayOffset(2,2.9,-3.1,WOF_ADD);
 			}
-		TNT1 A 0 { invoker.tcombo = CountInv("BD_PunchConnected"); }
+		//TNT1 A 0 { invoker.tcombo = invoker.pconnected; }
 		NUKR LM 2 {
 			A_WeaponReady(WRF_DISABLESWITCH|WRF_NOSECONDARY|WRF_NOBOB|WRF_ALLOWUSER1);
 			A_OverlayOffset(2,2.9,-3.1,WOF_ADD);
@@ -543,7 +506,7 @@ states
 		NUKR IJ 2 {
 			A_OverlayOffset(2,3.4,-3.9,WOF_ADD);
 			}
-		TNT1 A 0 { invoker.tcombo = CountInv("BD_PunchConnected"); }
+		//TNT1 A 0 { invoker.tcombo = invoker.pconnected; }
 		NUKR KLM 2 {
 			A_WeaponReady(WRF_DISABLESWITCH|WRF_NOSECONDARY|WRF_NOBOB|WRF_ALLOWUSER1);
 			A_OverlayOffset(2,3.4,-3.9,WOF_ADD);
@@ -579,7 +542,7 @@ states
 		NUKU EFG 2 {
 			A_OverlayOffset(2,3.14,-3.6,WOF_ADD);
 			}
-		TNT1 A 0 { invoker.tcombo = CountInv("BD_PunchConnected"); }
+		//TNT1 A 0 { invoker.tcombo = invoker.pconnected; }
 		NUKU HIJK 2 {
 			//if (CountInv("Modernberserk_Regen") > 0) 
 				//A_SetTics(1);
@@ -686,7 +649,7 @@ states
 			A_OverlayOffset(2,3.0,-2.0,WOF_ADD);
 			A_OverlayOffset(3,-3.0,-2.0,WOF_ADD);
 			}
-		TNT1 A 0 { invoker.tcombo = CountInv("BD_PunchConnected"); }
+		//TNT1 A 0 { invoker.tcombo = invoker.pconnected; }
 		KICK BA 3 {
 			A_WeaponReady(WRF_DISABLESWITCH|WRF_NOSECONDARY|WRF_NOBOB);
 			A_OverlayOffset(2,3.0,-2.0,WOF_ADD);
@@ -723,8 +686,11 @@ states
 		stop;
 	melee:
 		TNt1 A 0 {
-			if(target)
-				target.GiveInventory("BD_PunchConnected",1);
+			if(target) {
+				let bdfist = BD_Fist (target.player.readyweapon);
+				if (bdfist)
+					bdfist.tcombo++; //bdfist.pconnected++;
+				}
 			A_SetPitch(target.pitch+frandom(-1.0,1.0),SPF_INTERPOLATE,AAPTR_TARGET);
 			}
 		stop;
@@ -779,8 +745,11 @@ states
 		stop;
 	melee:
 		TNT1 A 0 {
-			if(target)
-				target.GiveInventory("BD_PunchConnected",1);
+			if(target) {
+				let bdfist = BD_Fist (target.player.readyweapon);
+				if (bdfist)
+					bdfist.tcombo++; //bdfist.pconnected++;
+				}
 			if (tracer) {
 				if (tracer.bISMONSTER == false || tracer.bNOBLOOD == true)
 					return ResolveState("Crash");
@@ -815,8 +784,11 @@ states
 		stop;
 	melee:
 		TNT1 A 0 {
-			if(target)
-				target.GiveInventory("BD_PunchConnected",1);
+			if(target) {
+				let bdfist = BD_Fist (target.player.readyweapon);
+				if (bdfist)
+					bdfist.tcombo++; //bdfist.pconnected++;
+				}
 			A_AlertMonsters(256,AMF_EMITFROMTARGET);
 			A_RadiusThrust(512,80,RTF_NOIMPACTDAMAGE,64);
 			if (tracer) {
@@ -852,8 +824,11 @@ states
 	{
 	melee:
 		TNT1 A 0 {
-			if(target)
-				target.GiveInventory("BD_PunchConnected",1);
+			if(target) {
+				let bdfist = BD_Fist (target.player.readyweapon);
+				if (bdfist)
+					bdfist.tcombo++; //bdfist.pconnected++;
+				}
 			A_AlertMonsters(256,AMF_EMITFROMTARGET);
 			A_RadiusThrust(512,80,RTF_NOIMPACTDAMAGE,64);
 			if (tracer) {
@@ -894,8 +869,11 @@ states
 		stop;
 	Melee:
 		TNT1 A 0 {
-			if(target)
-				target.GiveInventory("BD_PunchConnected",1);
+			if(target) {
+				let bdfist = BD_Fist (target.player.readyweapon);
+				if (bdfist)
+					bdfist.tcombo++; //bdfist.pconnected++;
+				}
 			A_AlertMonsters(196,AMF_EMITFROMTARGET);
 			if (tracer) {
 				if (tracer.bISMONSTER == false || tracer.bNOBLOOD == true)
@@ -936,8 +914,11 @@ states
 		stop;
 	Melee:
 		TNT1 A 0 {
-			if(target)
-				target.GiveInventory("BD_PunchConnected",1);
+			if(target) {
+				let bdfist = BD_Fist (target.player.readyweapon);
+				if (bdfist)
+					bdfist.tcombo++; //bdfist.pconnected++;
+				}
 			A_AlertMonsters(196,AMF_EMITFROMTARGET);
 			if (tracer) {
 				if (tracer.bISMONSTER == false || tracer.bNOBLOOD == true)

@@ -5,6 +5,7 @@ version "3.3"
 #include "Z_Bdoom/bd_gibs.txt"
 
 #include "Z_Bdoom/bd_weapon.txt"
+#include "Z_Bdoom/mk_matrix.zsc"
 #include "Z_Bdoom/w_fist.txt"
 #include "Z_Bdoom/w_chainsaw.txt"
 #include "Z_Bdoom/w_pistol.txt"

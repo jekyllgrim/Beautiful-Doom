@@ -1,0 +1,73 @@
+Class BDoomMonster : Actor
+{
+Default {
+	Monster;
+	}
+bool wasgibbed; //checked by gibs after XDeath in Raise; if true, they'll play the "assmebling" aniatmion when raised
+int deathtype; //recorded at Death and checked in Raise to show matching animation
+int monsterclip; //used by monsters with guns when bdoom_weapons == 2
+property monsterclip : monsterclip;
+
+//Zombie came up with this nice little snippet to execute stuff at state change without actually editing states
+private State prevState;
+    override void Tick()
+    {
+        super.Tick();
+        if (prevState != curState)
+            OnStateChanged();
+
+        prevState = curState;
+    }
+
+    virtual void OnStateChanged()
+    {
+        if (curState == FindState("XDeath") && bdoom_gibs == 1) {
+			if (self is "Zombieman" || self is "ShotgunGuy" || self is "Doomimp" || self is "ChaingunGuy" || self is "WolfensteinSS") {
+				for (int i = 18; i > 0; i--)
+					A_SpawnItemEx("BFountainSpray",frandom(-5.0,5.0),frandom(-5.0,5.0),random(8,28),vel.x*frandom(0.05,0.15),vel.y*frandom(0.05,0.15),frandom(4.5,6.5),0,SXF_ABSOLUTEVELOCITY | SXF_SETTARGET,36);
+				for (int i = 7; i > 0; i--)
+					A_SpawnItemEx("MeatPiece",random(-4,4),random(-4,4),random(10,48),		vel.x*frandom(0.35,1.2),vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET, 80);
+				A_SpawnItemEx("Heart",			random(-4,4),random(-4,4),random(24,32),	vel.x*frandom(0.35,1.2),vel.y*frandom(0.35,1.2),random(1,3),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET, 220);
+				}
+			if (self is "Zombieman") {
+				A_SpawnItemEx("PossTorso1",	random(-4,4),random(-4,4),random(5,48),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(1,2),	random(-45,-135),	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET);
+				A_SpawnItemEx("PossTorso2",	random(-4,4),random(-4,4),random(5,48),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(1,2),	random(45,135),		SXF_ABSOLUTEVELOCITY | SXF_SETTARGET);
+				A_SpawnItemEx("PossHand",	random(-6,-4),random(-4,4),random(35,40),vel.x*frandom(0.35,1.2),vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET, 48);
+				A_SpawnItemEx("PossHand",	random(6,4),random(-4,4),random(35,40),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET, 48);
+				A_SpawnItemEx("PossLeg1",	random(-6,-4),random(-4,4),random(10,12),vel.x*frandom(0.35,1.2),vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET, 48);
+				A_SpawnItemEx("PossLeg2",	random(6,4),random(-4,4),random(10,12),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET, 48);
+				A_SpawnItemEx("PossHead",	random(-2,2),random(-2,2),random(42,48),vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET, 48);
+				}
+			wasgibbed = 1;
+			}
+        if (bdoom_gibs == 1 && curState == FindState("Death.Telefrag") || curState == FindState("Death.Massacre")) {
+			if (self is "Zombieman" || self is "ShotgunGuy" || self is "Doomimp" || self is "ChaingunGuy" || self is "WolfensteinSS") {
+				for (int i = 18; i > 0; i--)
+					A_SpawnItemEx("BFountainSpray",frandom(-5.0,5.0),frandom(-5.0,5.0),random(8,28),vel.x*frandom(0.05,0.15),vel.y*frandom(0.05,0.15),frandom(4.5,6.5),0,SXF_ABSOLUTEVELOCITY | SXF_SETTARGET,36);
+				}
+			}
+		if (curState == FindState("See")) {
+			A_SetScale(1.0,1.0);
+			}
+			
+    }
+	
+
+states
+	{
+	Deathbleed: //for spawning animated blood pool
+		#### # random(35,55) A_Jumpif(bdoom_blood == 0,"DeathbleedRest");
+		#### # 0 {
+			if (vel.x != 0 || vel.y != 0 || vel.z != 0)
+				return ResolveState("Deathbleed");
+			else {
+				A_SpawnItemEx("CorpseFlySpawner",0,0,0,0,0,0,0,SXF_SETMASTER);
+				A_SpawnItemEx("AniBloodPool",0,0,0,0,0,0,0,SXF_SETTARGET);
+				}
+			return ResolveState(null);
+			}
+	DeathbleedRest:
+		#### # -1;
+		stop;
+	}
+}

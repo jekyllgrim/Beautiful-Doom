@@ -3,6 +3,7 @@ Class BD_ZombieMan : ZombieMan replaces Zombieman
 int monsterclip;
 int deathtype;
 bool wasgibbed;
+
 Default {
 	+DOHARMSPECIES
 	dropitem "BD_Pistol",40,1;
@@ -186,8 +187,7 @@ states
 		TNT1 A 0 {
 			A_PlaySound("gibs/gibbed");
 			wasgibbed = 1;
-			A_SpawnItemEx("BD_GibsSpawner",0,0,8,vel.x,vel.y,vel.z,0,SXF_SETTARGET|SXF_ABSOLUTEMOMENTUM|SXF_TRANSFERTRANSLATION);
-			}
+			A_SpawnItemEx("BD_GibsSpawner",0,0,8,vel.x,vel.y,vel.z,0,SXF_SETTARGET|SXF_ABSOLUTEMOMENTUM|SXF_TRANSFERTRANSLATION);			}
 		POSX AB 2;
 		POSX C 2 A_XScream();
 		POSX D 2 A_NoBlocking();
