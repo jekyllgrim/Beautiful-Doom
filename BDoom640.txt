@@ -16,40 +16,40 @@ Additional Credits		:
 https://forum.zdoom.org/viewtopic.php?t=45550	
 
 * Death Egg - for all the really sweet HD item sprites
+
+* phantombeta, Marisa Kirisame, Accensus, josh771, Caligari87, Nash, Zombie — Zscript help and contributions
+
+* 3saster — code contributions, various fixes and minor improvements
 						
 * Mike12 - for original assault rifle sprites
 
-* Revenant100 - for Minor Sprite Fixing project
+* Revenant100 - Minor Sprite Fixing project
 https://www.doomworld.com/vb/wads-mods/62403-doom-2-minor-sprite-fixing-project-v1-2-release-updated-1-1-13/
 				
-* perkistan — for Doom HD sound pack which is included
+* perkistan — Doom HD sound pack which is included
 https://www.doomworld.com/vb/wads-mods/58879-the-hi-res-doom-sound-pack-is-updated/
 For older Smooth Weapon Animation mod
 						
-* The Zombie Killer - for ACS footsteps
+* The Zombie Killer - ACS footsteps
 http://forum.zdoom.org/viewtopic.php?f=37&t=35388
 	
-* Michael Henderson - for Ultra Heavy Laser sound effect
+* Michael Henderson - Ultra Heavy Laser sound effect
 
-* Enjay - for new switches and splashes, help with footsteps and about sound bugs
+* Enjay - new switches and splashes, various help
 
-* D2JK — for helping with proper blood pool collision
+* Nash - Nashgore and SpriteShadows
+
+* D2JK — helping with proper blood pool collision
 	
 * David G. - Doom Guy alt. death sprites
 						
-* Accensus, phantombeta, josh771, Caligari87 — Zscript help and advice
-
-* josh771 — camera sway function for Modern Fists
-
 * DenisBelmondo - Doom Guy alt. death sprites
 
 * WildWeasel - for cool ww-diaz.wad and inspiration
-
-* Nash - for Nashgore and SpriteShadows
 						  
-* alando1 - for some of the additional death  sprites.
+* alando1 - some of the additional death  sprites
 
-* BurningCadavre - lots of useful bug reports.
+* BurningCadavre - bug reports
 
 			  
 Description             : Beautiful Doom is the grandfather of enhancement mods,
@@ -110,13 +110,15 @@ They also use smooth animations from Smooth Doom with Gifty's blessing.
 
  ** MINOR VERSIONS CHANGELOG **
 ---------------------------------
-NEXT VERSION TDB || TBD
+NEXT VERSION TBD || TBD
 * ADDED/IMPROVED *
 -- Added Modern weaponset
 -- Completely revamped blood graphics and physics
+-- Brightmaps for vanilla Doom textures by Reikall
 -- Bullet tracers now aim exactly at the same place where the hitscan bullet hits (thanks A_D_M_E_R_A_L for the suggestion) 
 -- Added SpriteShadow mod by Nash Muhandes
 -- The red 'overheat' tint of the Enhanced Chaingun now has several degrees of intensity that fade in and out gradually
+-- BFG ball's decorative lightning now does lag behind the ball itself
 
 * FIXED *
 -- Empty casings now spawn at the corret position when using Vanilla Pistol

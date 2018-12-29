@@ -127,8 +127,10 @@ states
 				A_weaponready(WRF_NOSECONDARY);
 			}
 		TNT1 A 0 {
-			A_SpawnItemEx("SawSmoke",cos(pitch)*15,random(8,10),sin(-pitch)*25+random(22,26),0,0,1,0,SXF_ABSOLUTEVELOCITY,80);
-			A_SpawnItemEx("SawSmoke",cos(pitch)*15,random(8,10),sin(-pitch)*25+random(22,26),0,0,1,0,SXF_ABSOLUTEVELOCITY,210);
+			if (bdoom_debris == 1) {
+				A_SpawnItemEx("SawSmoke",cos(pitch)*15,random(8,10),sin(-pitch)*25+random(22,26),0,0,1,0,SXF_ABSOLUTEVELOCITY,80);
+				A_SpawnItemEx("SawSmoke",cos(pitch)*15,random(8,10),sin(-pitch)*25+random(22,26),0,0,1,0,SXF_ABSOLUTEVELOCITY,210);
+				}
 			}
 		loop;
 	Fire: //should be 8 tics with no refire frames
@@ -425,7 +427,7 @@ states
 		TNT1 A 0 {
 			If (bdoom_debris == 1) {
 				for (int i = 5; i > 0; i--)
-					A_SpawnItemEx("Wallpart",0,0,0,	random(6,9),0,random(6,15),	random(0,360),0,64);
+					A_SpawnItemEx("Wallpart",0,0,0,	frandom(2,3),frandom(2,3),frandom(4,10),	random(0,360),0,64);
 				A_SpawnItemEx("ShotSmoke",0,0,0,0,0,frandom(0.2,0.5));
 				}
 			if (random(1,100) <= 70) {
@@ -524,6 +526,20 @@ states
 				return ResolveState("Death");
 			return ResolveState(null);
 			}
+		stop;
+	}
+}
+
+class SawSmoke : Smoke_General
+{
+Default {
+	alpha 0.3;
+	scale 0.22;
+	}
+states
+	{
+	Spawn:
+		SMK1 AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRR 1 A_FadeOut(0.01);
 		stop;
 	}
 }

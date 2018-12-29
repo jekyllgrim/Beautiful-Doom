@@ -2,8 +2,7 @@
 		MAIN FILE
 NEVER COMMENT THIS even if you comment some other parts of the mod
 -----------------------------------------------------------*/
-//#include "DECORATE/BD_MAIN.txt"
-#include "DECORATE/BD_WEAP.txt"
+
 #include "DECORATE/BD_MONST.txt"
 #include "DECORATE/BD_GORE.txt"
 #include "DECORATE/BD_Blood.txt"

@@ -5,22 +5,21 @@
 
 Class DebrisGeneral : Actor
 {
+int sfxtype; //0 = debris, 1 = flames/smoke
 Default {
 	+BLOODLESSIMPACT
 	+FIXMAPTHINGPOS
-	+LOOKALLAROUND
 	+NOTAUTOAIMED
 	+MISSILE
 	+NOBLOCKMAP 
 	+MOVEWITHSECTOR
+	+RELATIVETOFLOOR
 	+NOGRAVITY
 	+DROPOFF
 	+NOTELEPORT
 	+FORCEXYBILLBOARD
-	+GHOST
 	+THRUACTORS
 	+FLOORCLIP
-	+RANDOMIZE
 	-ALLOWPARTICLES
 	renderstyle "Translucent";
 	alpha 1.0;
@@ -29,13 +28,39 @@ Default {
 	mass 1;
 	damage 0;
 	}
-	
 override void PostBeginPlay()
 	{
-	if (bdoom_debris == 0)
-		self.destroy();
-	A_SetScale(scale.x*randompick(-1,1),scale.y*randompick(-1,1));
+//if the type is "debris" (default), check against bdoom_debris variable and flip x and y randomly
+		if (sfxtype == 0) {
+			if (bdoom_debris == 0)
+				self.destroy();
+			else
+				A_SetScale(scale.x*randompick(-1,1),scale.y*randompick(-1,1));
+		}
+//if the type is "flames", check against bdoom_flames and don't touch scale
+		else if (sfxtype == 1) {
+			if (bdoom_flames == 0)
+				self.destroy();
+		}
 	super.PostBeginPlay();
+	}
+}
+
+Class SmallDebris : DebrisGeneral
+{
+double dgravity;
+property dgravity : dgravity;
+Default {
+	-MISSILE
+	-RELATIVETOFLOOR
+	+NOINTERACTION
+	smalldebris.dgravity 0.8;
+	}
+override void Tick() {
+	super.tick();
+	vel.z-=dgravity;
+	if (pos.z <= floorz)
+		self.destroy();
 	}
 }
 
@@ -44,7 +69,7 @@ Class BdoomPuff : Actor
 Default {
 	+NOBLOCKMAP
 	+NOGRAVITY
-	+RANDOMIZE
+	+FORCEXYBILLBOARD
 	-ALLOWPARTICLES
 	+DONTSPLASH
 	}
@@ -53,14 +78,22 @@ Default {
 Class Flare_General : DebrisGeneral
 {
 Default {
+	-MOVEWITHSECTOR
+	-RELATIVETOFLOOR
 	+NOINTERACTION
 	-MISSILE
 	renderstyle "Add";
 	alpha 0.4;
 	scale 0.4;
 	}
+override void PostBeginPlay()
+	{
+	sfxtype = 1;
+	super.PostBeginPlay();
+	}
 }
 
+//used for flares that are launched from the weapon alongside the projectile, e.g. grenades
 Class ProjectileFlare : Actor
 {
 Default {
@@ -85,6 +118,11 @@ Default {
 	alpha 0.5;
 	+NOINTERACTION
 	}
+override void PostBeginPlay()
+	{
+	sfxtype = 1;
+	super.PostBeginPlay();
+	}
 }
 
 Class FirePiece : DebrisGeneral
@@ -94,6 +132,12 @@ Default {
 	scale 0.2;
 	alpha 0.5;
 	+NOINTERACTION
+	}
+override void PostBeginPlay()
+	{
+	A_SetScale(scale.x*randompick(-1,1),scale.y*randompick(-1,1));
+	sfxtype = 1;
+	super.PostBeginPlay();
 	}
 states
 	{
@@ -141,6 +185,7 @@ states
 	}
 }
 
+//spawned by puffs
 class ShotSmoke : Smoke_General
 { 
 Default {
@@ -171,6 +216,7 @@ states
 	}
 }
 
+//spawned over weapon barrels after shooting
 class WeaponSmoke : Smoke_General
 {
 Default {
@@ -202,7 +248,7 @@ states
 	}
 }
 
-
+//big dark smoke used for some explosions
 class BlackSmoke : Smoke_General
 {
 Default {
@@ -228,6 +274,7 @@ Default {
 	}
 }
 
+//basic smoke behind a rocket
 Class Rocket1Trail : Smoke_General
 {
 Default {
@@ -250,11 +297,11 @@ Default {
 	}
 }
 
-Class SmokingPiece : DebrisGeneral
+//a bouncing particle that spawns thin smoke behind itself
+Class SmokingPiece : SmallDebris
 {
 Default {
-	-NOGRAVITY;
-	gravity 0.7;
+	smalldebris.dgravity 0.7;
 	alpha 1.0;
 	}
 states
@@ -265,9 +312,6 @@ states
 				A_FadeOut(0.025);
 				}
 			loop;
-		Death:
-			TNT1 A 1;
-			stop;
 		}
 }
 
@@ -283,11 +327,14 @@ Default {
 //// BULLET PUFF ////
 /////////////////////
 
+//used by stuff like decorative rails spawned by BFGball
 Class NullPuff : BulletPuff
 {
 Default {
+	damagetype "none";
 	+NOINTERACTION
 	+BLOODLESSIMPACT
+	+PAINLESS
 	}
 states
 	{
@@ -297,13 +344,9 @@ states
 	}
 }
 
-Class EnBulletPuff : Actor
+Class EnBulletPuff : BDoomPuff
 {
 Default {
-	+NOGRAVITY
-	+FORCEXYBILLBOARD
-	-DONTSPLASH
-	-ALLOWPARTICLES
 	decal "bulletchip";
 	renderstyle "Add";
 	scale 0.1;
@@ -317,7 +360,7 @@ states
 			if (bdoom_debris == 1) {
 				A_SpawnItemEx("ShotSmoke",0,0,0,0,0,frandom(0.2,0.5));
 				for (int i = 0; i <= 6; i++)
-					A_SpawnItemEx("Wallpart",0,0,0,	random(1,5),0,random(2,6),	random(0,360),0,64);
+					A_SpawnItemEx("Wallpart",0,0,0,	frandom(1,4),frandom(1,4),frandom(2,5),	random(0,360),0,64);
 				}
 			}
 		BPUF ABCD 1 bright;
@@ -334,18 +377,18 @@ Default {
 	}
 }
 
+//a very small dark piece of debris spawned by hitting a wall
 Class WallPart : DebrisGeneral
 {
 Default {
 	bouncetype "Doom";
 	-NOGRAVITY
 	+DONTSPLASH
-	speed 8;
 	bouncefactor 0.4;
 	Renderstyle "Translucent";
 	alpha 1.0;
 	scale 0.1;
-	translation "0:4=5:8","5:8=5:8","9:12=5:8","13:15=5:8","16:47=5:8","48:79=5:8","80:111=5:8","112:127=5:8","128:151=5:8","152:159=5:8","160:167=5:8","168:191=5:8","192:207=5:8","208:223=5:8","224:231=5:8","232:235=5:8","236:239=5:8","240:247=5:8","248:249=5:8","250:254=5:8","255:255=5:8";
+	translation "Scorched";
 	}
 states
 	{
@@ -365,6 +408,7 @@ states
 	 }
 }
 
+//spawns sparks for chainsaw
 Class Spark_Spawner : DebrisGeneral
 {
 Default {
@@ -380,13 +424,9 @@ states
 	}
 }
 
-Class RicochetSpark : DebrisGeneral
+Class RicochetSpark : SmallDebris
 {
 Default {
-	bouncetype "None";
-	+NOINTERACTION
-	-NOGRAVITY
-	+DONTSPLASH
 	renderstyle "ADD";
 	alpha 1.0;
 	radius 3;
@@ -396,26 +436,17 @@ Default {
 states
 	{
 	Spawn:
-		SPRK A 1 bright {
-			A_FadeOut(0.05);
-			vel.z = clamp(vel.z-0.8,-4.0,10.0);
-			}
+		SPRK A 1 bright	A_FadeOut(0.05);
 		loop;
 	}
 }
 
-Class RicochetBullet : Actor
+//fake bullet that ricochets from bulletpuffs
+Class RicochetBullet : DebrisGeneral
 {
 Default {
-	-ACTIVATEIMPACT
-	-ACTIVATEPCROSS
-	+FORCEXYBILLBOARD
 	+THRUACTORS
 	bouncetype "Hexen";
-	mass 1;
-	damage 0;
-	radius 1;
-	height 1;
 	speed 30;
 	seesound "none";
 	renderstyle "Add";
@@ -433,7 +464,7 @@ states
 	}
 }
 
-
+//for backwards compatibility, will be removed after full transition to zscript
 Class DummyChecker : Inventory
 {
 Default {

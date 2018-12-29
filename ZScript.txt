@@ -14,6 +14,7 @@ version "3.3"
 #include "Z_Bdoom/w_chaingun.txt"
 #include "Z_Bdoom/w_rocketlauncher.txt"
 #include "Z_Bdoom/w_plasmarifle.txt"
+#include "Z_Bdoom/w_bfg.txt"
 
 #include "Z_Bdoom/SpriteShadow.zc"
 

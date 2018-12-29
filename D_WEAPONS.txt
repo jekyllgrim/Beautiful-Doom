@@ -7,7 +7,7 @@
 // Don't use player class without weapons or vice versa.
 #include "DECORATE/WEAPONS/BD_AMMO.txt"
 //#include "DECORATE/WEAPONS/BD_FIST.txt"
-#include "DECORATE/WEAPONS/BD_SAW.txt"
+//#include "DECORATE/WEAPONS/BD_SAW.txt"
 //#include "DECORATE/WEAPONS/BD_PIST.txt"
 #include "DECORATE/WEAPONS/BD_SHOT.txt"
 //#include "DECORATE/WEAPONS/BD_SSG.txt"

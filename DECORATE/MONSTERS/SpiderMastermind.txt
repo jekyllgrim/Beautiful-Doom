@@ -26,7 +26,7 @@ states
 
 		TNT1 A 0 A_PlaySoundEx("spiderdemon/fire","weapon")
 		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_Debris")==0,2)
-		TNT1 A 0 A_SpawnItemEx("MonsterChaingunCasing",random(12,14),-15,random(40,42),		random(2,3),0,random(4,6),	random(-85,-95))
+		TNT1 A 0 A_SpawnItemEx("ChaingunCasing",random(12,14),-15,random(40,42),		random(2,3),0,random(4,6),	random(-85,-95),SXF_SETTARGET)
 		TNT1 A 0 A_JumpIf(GetCVAR("Bdoom_tracers")==0,2)
 		TNT1 A 0 A_SpawnProjectile("BulletTracer",44,7,frandom(-2.5,2.5))
 		SSMA B 1  A_CustomBulletAttack(22.5, 0, 3, random(1,5)*3, "EnBulletPuff", 0, CBAF_NORANDOM) //ATTACK HERE!
@@ -34,7 +34,7 @@ states
 
 		TNT1 A 0 A_PlaySoundEx("spiderdemon/fire","weapon")
 		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_Debris")==0,2)
-		TNT1 A 0 A_SpawnItemEx("MonsterChaingunCasing",random(12,14),-15,random(40,42),		random(2,3),0,random(4,6),	random(-85,-95))
+		TNT1 A 0 A_SpawnItemEx("ChaingunCasing",random(12,14),-15,random(40,42),		random(2,3),0,random(4,6),	random(-85,-95),SXF_SETTARGET)
 		TNT1 A 0 A_JumpIf(GetCVAR("Bdoom_tracers")==0,2)
 		TNT1 A 0 A_SpawnProjectile("BulletTracer",44,7,frandom(-2.5,2.5))
 		SSMA B 1  //just animation no attack
@@ -42,7 +42,7 @@ states
 
 		TNT1 A 0 A_PlaySoundEx("spiderdemon/fire","weapon")
 		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_Debris")==0,2)
-		TNT1 A 0 A_SpawnItemEx("MonsterChaingunCasing",random(12,14),-15,random(40,42),		random(2,3),0,random(4,6),	random(-85,-95))
+		TNT1 A 0 A_SpawnItemEx("ChaingunCasing",random(12,14),-15,random(40,42),		random(2,3),0,random(4,6),	random(-85,-95),SXF_SETTARGET)
 		TNT1 A 0 A_JumpIf(GetCVAR("Bdoom_tracers")==0,2)
 		TNT1 A 0 A_SpawnProjectile("BulletTracer",44,7,frandom(-2.5,2.5))
 		SSMA B 1  A_CustomBulletAttack(22.5, 0, 3, random(1,5)*3, "EnBulletPuff", 0, CBAF_NORANDOM) //ATTACK HERE!
@@ -50,7 +50,7 @@ states
 
 		TNT1 A 0 A_PlaySoundEx("spiderdemon/fire","weapon")
 		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_Debris")==0,2)
-		TNT1 A 0 A_SpawnItemEx("MonsterChaingunCasing",random(12,14),-15,random(40,42),		random(2,3),0,random(4,6),	random(-85,-95))
+		TNT1 A 0 A_SpawnItemEx("ChaingunCasing",random(12,14),-15,random(40,42),		random(2,3),0,random(4,6),	random(-85,-95),SXF_SETTARGET)
 		TNT1 A 0 A_JumpIf(GetCVAR("Bdoom_tracers")==0,2)
 		TNT1 A 0 A_SpawnProjectile("BulletTracer",44,7,frandom(-2.5,2.5))
 		SSMA B 1  //just animation no attack

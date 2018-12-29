@@ -89,7 +89,7 @@ action void BD_Reload()
 		}
 	}
 
-//Casing spawn function with cool math by Marisa Kirisame
+//Casing spawn function with cool math by Marisa Kirisame (see mk_matrix)
 action void A_Eject(class<Actor> itemtype, double xofs = 0, double yofs = 0, double zofs = 0, double xvel = 0, double yvel = 0, double zvel = 0)
 	{
 		Vector3 ofs = player.mo.pos+(0,0,player.viewheight);
@@ -97,7 +97,8 @@ action void A_Eject(class<Actor> itemtype, double xofs = 0, double yofs = 0, dou
 		[x, y, z] = Matrix4.getaxes(player.mo.pitch,player.mo.angle,player.mo.roll);
 		let c = Spawn(itemtype,ofs+x*xofs+y*yofs-z*zofs);
 		c.vel = x*xvel+y*yvel+z*zvel;
-		c.target = self;
+		c.target = self; //if spawned by monster it'll disappear after bouncing
+		c.angle = angle;
 	}
 }
 
@@ -121,6 +122,7 @@ Default {
 	seesound "null";
 	deathsound "null";
 	}    
+//override snippet by phantombeta
 override void Tick () {
         Super.Tick ();
 
@@ -202,5 +204,98 @@ Class BD_RifleBullet : BD_PistolBullet
 {
 Default {
 	DamageFunction (3 * frandom(6.5,8.0));
+	}
+}
+
+
+//***************
+// EMPTY CASINGS
+//***************
+
+
+
+Class Casing_General : Actor
+{
+Default {
+	+BLOODLESSIMPACT
+	+BOUNCEONACTORS
+	+NOTAUTOAIMED
+	+MISSILE
+	+NOBLOCKMAP 
+	+MOVEWITHSECTOR
+	+DROPOFF
+	+NOTELEPORT
+	+FORCEXYBILLBOARD
+	+FLOORCLIP
+	-NOGRAVITY
+	bouncetype "doom";
+	seesound "none";
+	Radius 1;
+	Height 1;
+	bouncefactor 0.5;
+	Scale 0.15;
+	}
+override void Tick() {
+	if (bdoom_debris == 0)
+		self.destroy();
+	super.Tick();
+	}
+states
+	{
+	Spawn:
+		CAS1 A 0 NoDelay {
+			if (self is "PistolCasing")
+				self.sprite = GetSpriteIndex("CAS1");
+			else if (self is "ShotgunCasing")
+				self.sprite = GetSpriteIndex("CAS2");
+			else if (self is "ChaingunCasing")
+				self.sprite = GetSpriteIndex("CAS3");
+			}
+	Fly:
+		#### A 0 A_Jump(256,1,2,3,4,5,6,7,8);
+		#### ABCDEFGH 2 {
+			if (waterlevel > 0)
+				return ResolveState("Death");
+			return ResolveState(null);	
+			}
+		goto fly+1;
+	Death:
+		#### A 0 {
+			if (target.bISMONSTER)
+				self.destroy();
+			A_QueueCorpse();
+			A_Stop();
+			ClearBounce();
+			self.frame = random(8,10);
+			}
+		#### # -1;
+		stop;
+	loadsprites:
+		CAS1 A 0;	CAS2 A 0;	CAS3 A 0;
+	}
+}
+
+
+Class PistolCasing : Casing_General
+{
+Default {
+	Scale 0.11;
+	bouncesound "weapons/casing";
+	}
+}
+
+Class ShotgunCasing : Casing_General
+{ 
+Default {
+	Scale 0.2;
+	bouncesound "weapons/shotgunshells";
+	}
+}
+
+Class ChaingunCasing : Casing_General
+{ 
+Default {
+	Scale 0.15;
+	bouncesound "chaingun/casing";
 	}
 }

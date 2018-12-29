@@ -102,13 +102,14 @@ Model BD_ZombieBullet
 
 ////////// BLOOD POOL
 
+//the actual model by Nash, textures/animation by me
 Model AniBloodPool
 {
 	UseActorPitch
 	UseActorRoll
 	zoffset 1.0
 	Scale 100.0 100.0 100.0
-	// mesh
+
 	Path "models/bloodpool"
 	Model 0 "BloodPool.md3"
 

@@ -171,7 +171,7 @@ warp2 texture NUKAGE03
 
 
 
-// Thanks to Enjay for all this great stuff
+// Switches by Enjay
 
 //First the Doom Share Ware Switches
 

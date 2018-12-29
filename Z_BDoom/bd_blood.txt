@@ -26,6 +26,15 @@ Default {
 	decal "none";
 	height 1;
 	}
+states
+	{
+	LoadSprites:
+		2PLT ABCDEFGHIJKLMNOPQ 0;
+		YBL7 ABCDEFGHIJKLMNOPQRS 0;
+		YBL8 ABCDEFGHIJKLMNOPQRS 0;
+		YBL9 ABCDEFGHIJKLMNOPQRS 0;
+		stop;
+	}
 }
 
 
@@ -428,41 +437,7 @@ Default {
 	}
 }
 
-Class BloodFountain : Actor
-{
-Default {
-	+NOBLOCKMAP
-	+MOVEWITHSECTOR
-	-NOGRAVITY
-	renderstyle "Add";
-	alpha 0.5;
-	scale 1.0;
-	}
-override void PostBeginPlay() {
-	if (target) {
-		if (target.bloodcolor.G > 4*(target.bloodcolor.R  + target.bloodcolor.B)) {
-			A_SetTranslation("GreenBlood");
-			}
-		else if (target.bloodcolor.B > 4*(target.bloodcolor.R  + target.bloodcolor.G)) {
-			A_SetTranslation("BlueBlood");
-			}
-		else if (target.bloodcolor.R > 4*(target.bloodcolor.B  + target.bloodcolor.G) || target.bloodcolor == 0) {}
-		else {
-			self.destroy();
-			}
-		}
-	Super.PostBeginPlay();
-	}
-states
-	{
-	Spawn:
-		SPUR ABCDEFGHIJKL 1 A_fadeout(0.01);
-		SPUR MNOPQRSTUVWXYZ 2 A_fadeout(0.01);
-		stop;
-	}
-}
-
-//unused particles for initial gib explosion
+//large quickly disappearing spray creating a "bloody mist" upon xdeath
 Class BFountainSpray : BloodGeneral
 {
 Default {
