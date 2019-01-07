@@ -231,10 +231,8 @@ Default {
 override void GibBeginPlay()
 	{
 	if (target){
-		if (target is "BD_Zombieman") {
+		if (target is "BD_Zombieman")
 			self.sprite = GetSpriteIndex("HND1");
-			console.printf("zombie");
-			}
 		else if (target is "BD_ShotgunGuy")
 			self.sprite = GetSpriteIndex("HND2");
 		else if (target is "BD_ChaingunGuy")
