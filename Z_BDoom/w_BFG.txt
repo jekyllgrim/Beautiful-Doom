@@ -141,7 +141,7 @@ Default {
 	+BLOODLESSIMPACT
 	+FORCEXYBILLBOARD
 	+THRUGHOST
-	+SKYEXPLODE
+	//+SKYEXPLODE
 	renderstyle "ADD";
 	alpha 0.7;
 	decal "none"; //so that decorative railguns won't leave decals
@@ -205,18 +205,21 @@ Default {
 	scale 0.38;
 	+WALLSPRITE
 	+ROLLSPRITE
+	+ROLLCENTER
 	}
 states
 	{
 	Spawn:
 		TNT1 A 0 NoDelay {
+			if (!master)
+				self.destroy();
 			SetOrigin(master.pos,0);
 			if (angle == 0) {
 				//Console.Printf("True");
 				bWALLSPRITE = false;
 				bFLATSPRITE = true;
 				}
-			A_SetRoll(random(0,359));
+			roll = random(0,359);
 			}
 	Spawn1:
 		BLIT ABCDEFGHIJKLMNO 3 bright {
@@ -238,7 +241,10 @@ states
 	{	
 	Spawn:
 		TNT1 A 0 NoDelay A_Warp(AAPTR_MASTER);
-		LENG A 1 bright;
+		LENG A 1 bright {
+			if (!master)
+				self.destroy();
+			}
 		wait;
 	}
 }
@@ -277,7 +283,8 @@ states
 				A_SpawnItemEx("BFGBallRayFlare",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS);
 //did you know that the actor who fires the railgun is also the target of the railgun particles? phantombeta knew
 //transfer velocity so that the lightning is always next to the bfg orb and not lagging behind
-			vel = target.vel;
+			if (target)
+				vel = target.vel;
 				}
 		PEXP ABCDEFGHIJKLM 1 bright A_FadeOut(0.08);
 		stop;
@@ -296,7 +303,8 @@ states
 	{
 	Spawn:
 		TNT1 A 0 NoDelay {
-			vel = target.vel;
+			if (target)
+				vel = target.vel;
 			}
 		LENG A 1 bright A_FadeOut(0.01);
 		loop;

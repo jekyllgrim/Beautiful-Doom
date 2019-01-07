@@ -3,6 +3,16 @@ Beautiful Doom mod for GZDoom Forum thread:
 
 https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752ec93aed
 
+
+
+07.01.2019:
+
+Added the new gibbing code which will be soon used for all monsters. For now it's only implemented for zombieman. 
+Updated casing animations.
+Better BFG ball lightning.
+Slightly updated smoke used by modern rockets.
+Temporarily implemented a test smoke coming out of walls when shot. Will be removed/reworked later since it doesn't look that great yet.
+
 Repo is here!
 
 Progress so far:

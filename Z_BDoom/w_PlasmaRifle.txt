@@ -377,13 +377,11 @@ Default {
 states
 	{
 	Spawn:
-		LENB A 30 bright NoDelay {
-			if (bdoom_debris == 0)
+		TNT1 A 0 NoDelay A_Warp(AAPTR_MASTER);
+		LENB A 1 bright {
+			if (!master)
 				self.destroy();
-			A_Warp(AAPTR_MASTER);
 			}
-		TNT1 A 0 A_JumpIfMasterCloser(1,"Spawn");
-		LENB A 1 bright A_Fadeout(0.1);
 		wait;
 	}
 }

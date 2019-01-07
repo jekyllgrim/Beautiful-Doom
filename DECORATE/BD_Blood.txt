@@ -82,21 +82,6 @@ alpha 0.4
 
 
 
-// This dummy item has two uses:
-// 1. it's given to gibbed monsters and later checked for to show correct gibbed-raise animation when resurrected
-// 2. it's given to monster gibs and blood when the gibbed monster is resurrected;
-// upon finding this item in their inventory, gibs and blood enter their own Raise states 
-// in which they are thrown towards the point of resurrection while fading out, imitating the 'stitching back' sequence
-
-Actor WasGibbed : Inventory 
-{
-+UNDROPPABLE +UNTOSSABLE
--COUNTITEM
--INVBAR
-inventory.maxamount 1
-}
-
-
 Actor BD_Bloodpool //for decorative purposes
 {
 +NOBLOCKMAP

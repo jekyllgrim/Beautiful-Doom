@@ -5,8 +5,11 @@
 
 Class DebrisGeneral : Actor
 {
-int sfxtype; //0 = debris, 1 = flames/smoke
+int sfxtype; //0 = debris, 1 = flames/smoke, 2 = blood, 3 = gibs
+property sfxtype : sfxtype;
 Default {
+	DebrisGeneral.sfxtype 0;
+	+ROLLSPRITE
 	+BLOODLESSIMPACT
 	+FIXMAPTHINGPOS
 	+NOTAUTOAIMED
@@ -30,19 +33,21 @@ Default {
 	}
 override void PostBeginPlay()
 	{
-//if the type is "debris" (default), check against bdoom_debris variable and flip x and y randomly
-		if (sfxtype == 0) {
-			if (bdoom_debris == 0)
-				self.destroy();
-			else
-				A_SetScale(scale.x*randompick(-1,1),scale.y*randompick(-1,1));
-		}
-//if the type is "flames", check against bdoom_flames and don't touch scale
-		else if (sfxtype == 1) {
-			if (bdoom_flames == 0)
-				self.destroy();
-		}
+	if (!level.IsPointInMap(pos))
+		self.destroy();
 	super.PostBeginPlay();
+	}
+override void Tick()
+	{
+	if (	(sfxtype == 0 && bdoom_debris == 0)	||
+			(sfxtype == 1 && bdoom_flames == 0)	||
+			(sfxtype == 2 && bdoom_blood == 0)	||
+			(sfxtype == 3 && bdoom_gibs == 0)	)
+		{
+			A_DeQueueCorpse();
+			self.destroy();
+		}
+	super.Tick();
 	}
 }
 
@@ -78,6 +83,7 @@ Default {
 Class Flare_General : DebrisGeneral
 {
 Default {
+	DebrisGeneral.sfxtype 1;
 	-MOVEWITHSECTOR
 	-RELATIVETOFLOOR
 	+NOINTERACTION
@@ -85,11 +91,6 @@ Default {
 	renderstyle "Add";
 	alpha 0.4;
 	scale 0.4;
-	}
-override void PostBeginPlay()
-	{
-	sfxtype = 1;
-	super.PostBeginPlay();
 	}
 }
 
@@ -112,32 +113,23 @@ Default {
 Class ParticleFire_General : DebrisGeneral
 {
 Default {
+	DebrisGeneral.sfxtype 1;
 	speed 2;
 	renderstyle "Add";
 	scale 0.5;
 	alpha 0.5;
 	+NOINTERACTION
 	}
-override void PostBeginPlay()
-	{
-	sfxtype = 1;
-	super.PostBeginPlay();
-	}
 }
 
 Class FirePiece : DebrisGeneral
 {
 Default {
+	DebrisGeneral.sfxtype 1;
 	renderstyle "Add";
 	scale 0.2;
 	alpha 0.5;
 	+NOINTERACTION
-	}
-override void PostBeginPlay()
-	{
-	A_SetScale(scale.x*randompick(-1,1),scale.y*randompick(-1,1));
-	sfxtype = 1;
-	super.PostBeginPlay();
 	}
 states
 	{
@@ -155,16 +147,20 @@ Class Smoke_General : DebrisGeneral
 {
 Default {
 	+NOINTERACTION
-	vspeed 1;
 	renderstyle "Add";
 	alpha 0.3;
 	scale 0.1;
+	}
+override void PostBeginPlay() {
+	super.PostbeginPlay();
+	A_SetScale(scale.x*randompick(-1,1),scale.y*randompick(-1,1));
+	roll = random(0,359);
 	}
 states
 	{
 	Spawn:
 		SMOK ABCDEFGHIJKLMNOPQ 1 {
-			A_SpawnItemEx("BasicSmokeTrail",random(-2,2),random(-2,2),random(-2,2),0,0,0,0,SXF_SETMASTER);
+			A_SpawnItemEx("BasicSmokeTrail",frandom(-2,2),frandom(-2,2),frandom(-2,2),0,0,0,0,SXF_SETMASTER);
 			A_Fadeout(0.01);
 			}
 		stop;
@@ -181,6 +177,39 @@ states
 	{
 	Spawn:
 		SMOK DEFGHIJKLMNOPQ 1 A_Fadeout(0.01);
+		stop;
+	}
+}
+
+Class WallSmoke : Smoke_General
+{
+Default {
+	scale 0.03;
+	alpha 0.25;
+	}
+states
+	{
+	Spawn:
+		SMOK ABCDEFGHIJKLMNOPQ 1 {
+			if (!master)
+				A_SpawnItemEx("WallSmokeTrail",0,0,0,0,0,0,0,SXF_SETMASTER);
+			A_Fadeout(0.005);
+			a_Setscale(clamp(scale.x*1.03,0.01,0.3),clamp(scale.y*1.03,0.01,0.3));
+			vel*=0.9;
+			}
+		stop;
+	}
+}
+
+Class WallSmokeTrail : WallSmoke
+{
+states
+	{
+	Spawn:
+		SMOK ABCDEFGHIJKLMNOPQ 2 {
+			A_Fadeout(0.002);
+			a_Setscale(clamp(scale.x*1.03,0.01,0.3),clamp(scale.y*1.03,0.01,0.3));
+			}
 		stop;
 	}
 }
@@ -258,9 +287,28 @@ Default {
 states
 	{
 	Spawn:
-		SMOK ABCDEFGHIJKLMNOPQ 1 {
+		SMOK ABCDEFGHIJKLMNOPQ 2 {
 			A_SpawnItemEx("BlackSmokeTrail",random(-2,2),random(-2,2),random(-2,2),0,0,0,0);
 			A_FadeOut(0.01);
+			}
+		wait;
+	}
+}
+
+class BigBlackSmoke : BlackSmoke
+{
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay {
+			double scl = frandom(0.22,28);
+			A_SetScale(scl*randompick(-1,1),scl*randompick(-1,1));
+			}
+		SMOK ABCDEFGHIJKLMNOPQ 2 {
+			if (!master)
+				A_SpawnItemEx("BigBlackSmoke",frandom(-2,2),frandom(-2,2),frandom(-2,2),0,0,0,0,SXF_SETMASTER);
+			A_FadeOut(0.01);
+			a_Setscale(clamp(scale.x*1.03,0.25,0.4),clamp(scale.y*1.03,0.25,0.4));
 			}
 		wait;
 	}
@@ -347,6 +395,7 @@ states
 Class EnBulletPuff : BDoomPuff
 {
 Default {
+	//+PUFFGETSOWNER
 	decal "bulletchip";
 	renderstyle "Add";
 	scale 0.1;
@@ -357,10 +406,14 @@ states
 	{
 	Spawn:
 		TNT1 A 0 NoDelay {
+			if (target)
+				angle = target.angle;
 			if (bdoom_debris == 1) {
-				A_SpawnItemEx("ShotSmoke",0,0,0,0,0,frandom(0.2,0.5));
-				for (int i = 0; i <= 6; i++)
-					A_SpawnItemEx("Wallpart",0,0,0,	frandom(1,4),frandom(1,4),frandom(2,5),	random(0,360),0,64);
+				//A_SpawnItemEx("ShotSmoke",0,0,0,0,0,frandom(0.2,0.5));
+				for (int i = 0; i <= 5; i++)
+					A_SpawnItemEx("WallSmoke",0,0,0,frandom(1.5,1.9),0,0,random(179,181),0,64);
+				//for (int i = 0; i <= 6; i++)
+					//A_SpawnItemEx("Wallpart",0,0,0,	frandom(1,4),frandom(1,4),frandom(2,5),	random(0,360),0,64);
 				}
 			}
 		BPUF ABCD 1 bright;
@@ -393,14 +446,33 @@ Default {
 states
 	{
 	Spawn:
-		BPRT ACDEFGH 2 {
+		BPRT AAAAAAAAAAAAAAAA 1 {
 			if (vel.z == 0)
 				self.destroy();
+			A_SetRoll(roll+10,SPF_INTERPOLATE);
 			}
-		BPRT ACDEFGH 3 {
-			if (vel.z == 0)
-				self.destroy();
-			}
+		stop;
+	 Death:
+		TNT1 A 1;
+	 	stop;
+	 }
+}
+
+Class RocketDebris : SmallDebris
+{
+Default {
+	smalldebris.dgravity 0.6;
+	-NOGRAVITY
+	+DONTSPLASH
+	+ROLLSPRITE
+	scale 0.2;
+	translation "Scorched";
+	}
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Setscale(scale.x*frandom(0.9,1.1)*randompick(-1,1),scale.y*frandom(0.9,1.1)*randompick(-1,1));
+		BPRT AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SetRoll(roll+10,SPF_INTERPOLATE);
 		stop;
 	 Death:
 		TNT1 A 1;

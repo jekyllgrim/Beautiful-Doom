@@ -18,4 +18,5 @@ version "3.3"
 
 #include "Z_Bdoom/SpriteShadow.zc"
 
+#include "Z_Bdoom/BD_Monster.txt"
 #include "Z_Bdoom/m_zombieman.txt"

@@ -1,21 +1,23 @@
-Class BD_ZombieMan : ZombieMan replaces Zombieman
+Class BD_ZombieMan : BDoomMonster replaces Zombieman
 {
-int monsterclip;
-int deathtype;
-bool wasgibbed;
-
 Default {
+		Health 20;
+		Radius 20;
+		Height 56;
+		Speed 8;
+		PainChance 200;
+		SeeSound "grunt/sight";
+		PainSound "grunt/pain";
+		DeathSound "grunt/death";
+		ActiveSound "grunt/active";
+		Obituary "$OB_ZOMBIE";
+		Tag "$FN_ZOMBIE";
+	BdoomMonster.monsterclip 15;
 	+DOHARMSPECIES
 	dropitem "BD_Pistol",40,1;
 	dropitem "Clip",256;
-	attacksound "none";
 	}
-Override void PostBeginPlay() {
-	monsterclip = 15;
-	deathtype = 0;
-	wasgibbed = 0;
-	super.PostBeginPlay();
-	}
+	
 states
 	{
 	Spawn:
@@ -81,59 +83,63 @@ states
 		goto see;
 	Death:
 		TNT1 A 0 {
-			if (bdoom_gibs == 1 && health < -10)
+			if (bdoom_gibs == 1 && health < -10 && !burning)
 				return ResolveState("DecapDeath");
 			return ResolveState(null);
 			}
 		TNT1 A 0 A_Jump(256,"Death.Vanilla","Death1","Death2");
-	Deathbleed: //for spawning animated blood pool
-		#### # random(35,55) A_Jumpif(bdoom_blood == 0,"DeathbleedRest");
-		#### # 0 {
-			if (vel.x != 0 || vel.y != 0 || vel.z != 0)
-				return ResolveState("Deathbleed");
-			else {
-				A_SpawnItemEx("CorpseFlySpawner",0,0,0,0,0,0,0,SXF_SETMASTER);
-				A_SpawnItemEx("AniBloodPool",0,0,0,0,0,0,0,SXF_SETTARGET);
-				}
-			return ResolveState(null);
-			}
-	DeathbleedRest:
-		#### # -1;
-		stop;
 	Death.Vanilla:
 		POSM A 3 {
 			A_Scream();
-			A_SpawnItemEx("Blood",frandom(-5.0,5.0),frandom(-5.0,5.0),random(16,20),0,0,0,SXF_SETTARGET);
+			if (!burning)
+				A_SpawnItemEx("Blood",frandom(-5.0,5.0),frandom(-5.0,5.0),random(16,20),0,0,0,SXF_SETTARGET);
 			}
 		POSM B 3 {
 			A_NoBlocking();
-			A_SpawnItemEx("Blood",frandom(-5.0,5.0),frandom(-5.0,5.0),random(16,20),0,0,0,SXF_SETTARGET);
+			if (!burning)
+				A_SpawnItemEx("Blood",frandom(-5.0,5.0),frandom(-5.0,5.0),random(16,20),0,0,0,SXF_SETTARGET);
 			}
 		POSM CDEFG 3;
 		POSM H 3;
 		POSM I 1;
 		goto deathbleed;
 	Death1: //fall forward
-		TNT1 A 0 { deathtype = 1; }
-		POSO A 3 A_SpawnItemEx("Blood",frandom(-5.0,5.0),frandom(-5.0,5.0),random(16,20),0,0,0,SXF_SETTARGET);
+		POSO A 3 {
+			if (!burning)
+				A_SpawnItemEx("Blood",frandom(-5.0,5.0),frandom(-5.0,5.0),random(16,20),0,0,0,SXF_SETTARGET);
+			}
 		POSO B 3 A_Scream();
-		TNT1 A 0 A_SpawnItemEx("Blood",frandom(-5.0,5.0),frandom(-5.0,5.0),random(16,20),0,0,0,SXF_SETTARGET);
+		TNT1 A 0 {
+			if (!burning)
+				A_SpawnItemEx("Blood",frandom(-5.0,5.0),frandom(-5.0,5.0),random(16,20),0,0,0,SXF_SETTARGET);
+			}
 		POSO C 3 A_NoBlocking();
-		POSO D 3 A_SpawnItemEx("Blood",frandom(-5.0,5.0),frandom(-5.0,5.0),random(16,20),0,0,0,SXF_SETTARGET);
+		POSO D 3 {
+			if (!burning)
+				A_SpawnItemEx("Blood",frandom(-5.0,5.0),frandom(-5.0,5.0),random(16,20),0,0,0,SXF_SETTARGET);
+			}
 		POSO EFGHI 3;
 		POSO JK 4;
 		POSO L 1;
 		goto deathbleed;
 	Death2: //fall left/right
 		TNT1 A 0 { 
-			deathtype = 2;
 			A_SetScale(scale.x*randompick(-1,1),scale.y);
 			A_Scream();
 			}
-		POSN ABC 2 A_SpawnItemEx("Blood",random(-2,2),0,random(32,34),	random(4,6),0,random(3,5),random(-70,-90)*scale.x,SXF_SETMASTER);
+		POSN ABC 2 {
+			if (!burning)
+				A_SpawnItemEx("Blood",random(-2,2),0,random(32,34),	random(4,6),0,random(3,5),random(-70,-90)*scale.x,SXF_SETTARGET);
+			}
 		TNT1 A 0 A_NoBlocking();
-		POSN DEF 3 A_SpawnItemEx("Blood",random(-2,2),0,random(24,26),	random(4,6),0,random(3,5),random(-70,-90)*scale.x,SXF_SETMASTER);
-		POSN GHI 3 A_SpawnItemEx("Blood",random(-2,2),0,random(10,16),	random(4,6),0,random(3,5),random(-70,-90)*scale.x,SXF_SETMASTER);
+		POSN DEF 3 {
+			if (!burning)
+				A_SpawnItemEx("Blood",random(-2,2),0,random(24,26),	random(4,6),0,random(3,5),random(-70,-90)*scale.x,SXF_SETTARGET);
+			}
+		POSN GHI 3 {
+			if (!burning)
+				A_SpawnItemEx("Blood",random(-2,2),0,random(10,16),	random(4,6),0,random(3,5),random(-70,-90)*scale.x,SXF_SETTARGET);
+			}
 		POSN KLM 3;
 		POSN N 1;
 		goto deathbleed;
@@ -141,7 +147,6 @@ states
 		TNT1 A 0 A_JumpIf(bdoom_gibs==0,"Death");
 		TNT1 A 0 A_Jump(128,"Death");
 		TNT1 A 0 { 
-			deathtype = 3;
 			A_SetScale(scale.x*randompick(-1,1),scale.y);
 			A_FaceTarget();
 			A_Pain();
@@ -161,9 +166,8 @@ states
 		POSY K 1;
 		goto deathbleed;
 	DecapDeath:
-		TNT1 A 0 { deathtype = 4; }
-		TNT1 A 0 A_SpawnItemEx("PossHead",random(-2,2),random(-2,2),random(50,54),random(2,5),0,random(1,5),random(150,210),SXF_SETMASTER);
-		TNT1 A 0 A_SpawnItemEx("PossHand",0,random(4,8),random(40,45),random(2,5),0,random(1,5),random(-80,-100),SXF_SETMASTER);
+		TNT1 A 0 A_SpawnItemEx("PossHead",random(-2,2),random(-2,2),random(50,54),random(2,5),0,random(1,5),random(150,210),SXF_SETTARGET);
+		TNT1 A 0 A_SpawnItemEx("PossHand",0,random(4,8),random(40,45),random(2,5),0,random(1,5),random(-80,-100),SXF_SETTARGET);
 		POSD A 2 A_spawnitemEx("BloodSprayer",0,0,random(16,20),0,0,0,0,SXF_SETTARGET);
 		POSD B 2;
 		TNT1 A 0 A_spawnitemEx("BloodSprayer",0,0,random(16,20),0,0,0,0,SXF_SETTARGET);
@@ -172,11 +176,8 @@ states
 		POSD FG 2;
 		POSD H 1;
 		goto deathbleed;
-	Death.BFGSplash:
-		TNT1 A 0 A_SetTranslation("BloodyScorched");
 	XDeath:
 		TNT1 A 0 A_JumpIf(bdoom_gibs==1,"XDeath.Particles");
-		TNT1 A 0 { deathtype = 5; }
 		ZGIB ab 2;
 		ZGIB cd 2 A_XScream();
 		ZGIB e 2 A_NoBlocking();
@@ -184,143 +185,12 @@ states
 		ZGIB ghijklmnopq 2;
 		goto deathbleed;
 	XDeath.Particles:
-		TNT1 A 0 {
-			A_PlaySound("gibs/gibbed");
-			wasgibbed = 1;
-			A_SpawnItemEx("BD_GibsSpawner",0,0,8,vel.x,vel.y,vel.z,0,SXF_SETTARGET|SXF_ABSOLUTEMOMENTUM|SXF_TRANSFERTRANSLATION);			}
+		TNT1 A 0 BD_Gibs();
 		POSX AB 2;
 		POSX C 2 A_XScream();
 		POSX D 2 A_NoBlocking();
 		POSX EFGHIJKLMNO 2;
 		goto deathbleed;
-	Death.Massacre:
-	Death.Telefrag:
-		TNT1 A 0 A_JumpIf(bdoom_gibs==0,"XDeath");
-		TNT1 A 0 {
-			A_PlaySound("gibs/gibbed");
-			wasgibbed = 1;
-			for (int i = 14; i > 0; i--)
-				A_SpawnItemEx("BFountainSpray",frandom(-5.0,5.0),frandom(-5.0,5.0),random(8,28),vel.x*frandom(0.05,0.15),vel.y*frandom(0.05,0.15),frandom(4.5,6.5),0,SXF_TRANSFERPOINTERS|SXF_ABSOLUTEMOMENTUM|SXF_TRANSFERTRANSLATION,36);
-			}
-		POSX AB 2;
-		POSX C 2 A_XScream();
-		POSX D 2 A_NoBlocking();
-		POSX EFGHIJKLMN 2;
-		POSX O -1;
-		stop;
-	Death.PlasmaDamage:
-		TNT1 A 0 A_JumpIf(bdoom_gibs==0,"Death");
-		TNT1 A 0 {
-			A_SetTranslation("Scorched");
-			A_SetScale(scale.x*randompick(-1,1),scale.y);
-			}
-
-		TNT1 A 0  A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1);
-		POSM A 3 A_Scream();
-		TNT1 A 0  A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1);
-		POSM B 3 A_NoBlocking();
-		TNT1 A 0  A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1);
-		POSM CDE 2;
-		TNT1 A 0  A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1);
-		POSM FG 2;
-		POSM H 3;
-		POSM IIIII 6 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1);
-		POSM IIIII 9 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1);
-		POSM IIIII 12 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1);
-		POSM I -1;
-		Stop;
-	Death.Fire:
-		TNT1 A 0 A_JumpIf(bdoom_gibs==0,"Death");
-		TNT1 A 0 A_SetScale(scale.x*randompick(-1,1),scale.y);
-
-		TNT1 A 0 Thing_SetTranslation(0,8); //translation to scorched orange-red
-		TNT1 A 0 A_PlaySoundEx("world/torch","Body",1,-1);
-
-		POSM A 1 A_Scream();
-		POSM AA 1 A_SpawnItemEx("ParticleFire_Yellow",random(-16,16),random(-16,16),random(8,16),0,0,2);
-		POSM B 1 A_NoBlocking();
-		POSM BB 1 A_SpawnItemEx("ParticleFire_Yellow",random(-16,16),random(-16,16),random(8,16),0,0,2);
-		POSM CCDDEEFFGG 1 A_SpawnItemEx("ParticleFire_Yellow",random(-16,16),random(-16,16),random(8,16),0,0,2);
-		POSM HHH 1 A_SpawnItemEx("ParticleFire_Yellow",random(-16,16),random(-16,16),random(8,16),0,0,2);
-		POSM IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII 1 A_SpawnItemEx("ParticleFire_Yellow",random(-16,16),random(-16,16),random(8,16),0,0,2);
-		TNT1 A 0 A_StopSoundEx("Body");
-		TNT1 A 0 A_SetTranslation("Scorched"); //translation to grey
-		POSM IIIII 6 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1);
-		POSM IIIII 9 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1);
-		POSM IIIII 12 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1);
-		POSM I -1;
-		Stop;
-	Death.GreenFire:
-		TNT1 A 0 A_JumpIf(bdoom_gibs==0,"Death");
-		TNT1 A 0 A_SetScale(scale.x*randompick(-1,1),scale.y);
-		TNT1 A 0 Thing_SetTranslation(0,14); //translation to scorched green
-		TNT1 A 0 A_PlaySoundEx("world/torch","Body",1,-1);
-
-		POSM A 1 A_Scream();
-		POSM AA 1 A_SpawnItemEx("ParticleFire_Green",random(-16,16),random(-16,16),random(8,16),0,0,2);
-		POSM B 1 A_NoBlocking();
-		POSM BB 1 A_SpawnItemEx("ParticleFire_Green",random(-16,16),random(-16,16),random(8,16),0,0,2);
-		POSM CCDDEEFFGG 1 A_SpawnItemEx("ParticleFire_Green",random(-16,16),random(-16,16),random(8,16),0,0,2);
-		POSM HHH 1 A_SpawnItemEx("ParticleFire_Green",random(-16,16),random(-16,16),random(8,16),0,0,2);
-		POSM IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII 1 A_SpawnItemEx("ParticleFire_Green",random(-16,16),random(-16,16),random(8,16),0,0,2);
-		TNT1 A 0 A_StopSoundEx("Body");
-		TNT1 A 0 A_SetTranslation("Scorched"); //translation to grey
-		POSM IIIII 6 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1);
-		POSM IIIII 9 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1);
-		POSM IIIII 12 A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,1);
-		POSM I -1;
-		Stop;
-	Raise:
-		TNT1 A 0 {
-			A_SetTranslation("vanilla");
-			if (wasgibbed) {
-				wasgibbed = 0;
-				return ResolveState("XRaise.Particles");
-				}
-			if (deathtype == 5) {
-				deathtype = 0;
-				return ResolveState("XRaise");
-				}
-			if (deathtype == 4) {
-				deathtype = 0;
-				return ResolveState("DecapRaise");
-				}
-			if (deathtype == 3) {
-				deathtype = 0;
-				return ResolveState("SawRaise");
-				}
-			if (deathtype == 2) {
-				deathtype = 0;
-				return ResolveState("Raise3");
-				}
-			if (deathtype == 1) {
-				deathtype = 0;
-				return ResolveState("Raise2");
-				}
-			deathtype = 0;
-			return ResolveState(null);
-			}
-		POSM HGFEDCBA 2;
-		Goto See;
-	Raise2: //fell forward
-		POSO KJIHGFEDCBA 2;
-		goto See;
-	Raise3: //fell to the side
-		POSN MLKJIHGFEDCBA 2;
-		goto See;
-	SawRaise:
-		POSY JIHGFEDCBA 2;
-		goto See;
-	DecapRaise:
-		POSD FEDCBA 3;
-		goto See;
-	XRaise:
-		ZGIB PONMLKJIHQFEDCBA 1;
-		goto See;
-	XRaise.Particles:
-		POSX NMLKJ 1 ;
-		POSX IHQFEDCBA 2;
-		goto See;
 		}
 }
 
