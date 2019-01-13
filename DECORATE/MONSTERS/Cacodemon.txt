@@ -144,14 +144,14 @@ states
 		Stop
 
 	Raise:
-		TNT1 A 0 A_GiveToChildren("WasGibbed",1)
+		TNT1 A 0 //A_GiveToChildren("WasGibbed",1)
 		TNT1 A 0 Thing_SetTranslation(0,10)
 		TNT1 A 0 A_UnSetFloorClip
 		TNT1 A 0 A_ChangeFlag("FORCEXYBILLBOARD",1)
-		TNT1 A 0 A_JumpIfInventory("BD_KillChecker",4,"XRaise")
-		TNT1 A 0 A_JumpIfInventory("BD_KillChecker",3,"SawRaise")
-		TNT1 A 0 A_JumpIfInventory("BD_KillChecker",2,"Raise2")
-		TNT1 A 0 A_JumpIfInventory("BD_KillChecker",1,"Raise1")
+		TNT1 A 0 //A_JumpIfInventory("BD_KillChecker",4,"XRaise")
+		TNT1 A 0 //A_JumpIfInventory("BD_KillChecker",3,"SawRaise")
+		TNT1 A 0 //A_JumpIfInventory("BD_KillChecker",2,"Raise2")
+		TNT1 A 0 //A_JumpIfInventory("BD_KillChecker",1,"Raise1")
 		
 		HEAM IHGFEDCBA 3
 		TNT1 A 0 A_SetScale(1.0,1.0)

@@ -79,10 +79,10 @@ states
 		CRS3 G -1
 		stop
 	Raise:
-		TNT1 A 0 A_GiveToChildren("WasGibbed",1)
-		TNT1 A 0 A_JumpIfInventory("BD_KillChecker",3,"Raise3")
-		TNT1 A 0 A_JumpIfInventory("BD_KillChecker",2,"Raise2")
-		TNT1 A 0 A_JumpIfInventory("BD_KillChecker",1,"Raise1")
+		TNT1 A 0 //A_GiveToChildren("WasGibbed",1)
+		TNT1 A 0 //A_JumpIfInventory("BD_KillChecker",3,"Raise3")
+		TNT1 A 0 //A_JumpIfInventory("BD_KillChecker",2,"Raise2")
+		TNT1 A 0 //A_JumpIfInventory("BD_KillChecker",1,"Raise1")
 		BS2M LKJIHGFEDCBA 2
 		TNT1 A 0 A_SetScale(1.0,1.0)
 		Goto See

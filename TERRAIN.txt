@@ -140,6 +140,11 @@ terrain Lav3
 	liquid
 }
 
+terrain HotRock
+{
+	splash		Lav3
+}
+
 splash Slime
 {
 	smallclass		SlimeSplash
@@ -248,14 +253,14 @@ floor optional SLIME05 Slime
 floor optional SLIME06 Slime
 floor optional SLIME07 Slime
 floor optional SLIME08 Slime
-floor optional SLIME09 Lav3
-floor optional SLIME10 Lav3
-floor optional SLIME11 Lav3
-floor optional SLIME12 Lav3
-floor optional RROCK01 Lav3
-floor optional RROCK02 Lav3
-floor optional RROCK05 Lav3
-floor optional RROCK06 Lav3
-floor optional RROCK07 Lav3
-floor optional RROCK08 Lav3
+floor optional SLIME09 HotRock
+floor optional SLIME10 HotRock
+floor optional SLIME11 HotRock
+floor optional SLIME12 HotRock
+floor optional RROCK01 HotRock
+floor optional RROCK02 HotRock
+floor optional RROCK05 HotRock
+floor optional RROCK06 HotRock
+floor optional RROCK07 HotRock
+floor optional RROCK08 HotRock
 endif

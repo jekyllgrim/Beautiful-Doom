@@ -16,6 +16,24 @@ weapons/ricochet5	RICO5
 weapons/ricochet6	RICO6
 weapons/ricochet7	RICO7
 
+$random bullet/metal { bmetal1 bmetal2 bmetal3 bmetal4 bmetal5 }
+bmetal1		"sounds/impacts/bullet-metal1.ogg"
+bmetal2		"sounds/impacts/bullet-metal2.ogg"
+bmetal3		"sounds/impacts/bullet-metal3.ogg"
+bmetal4		"sounds/impacts/bullet-metal4.ogg"
+bmetal5		"sounds/impacts/bullet-metal5.ogg"
+$random bullet/stone { bstone1 bstone2 bstone3 bstone4 }
+bstone1		"sounds/impacts/bullet-stone1.ogg"
+bstone2		"sounds/impacts/bullet-stone2.ogg"
+bstone3		"sounds/impacts/bullet-stone3.ogg"
+bstone4		"sounds/impacts/bullet-stone4.ogg"
+$random bullet/wood { bwood1 bwood2 bwood3 }
+bwood1		"sounds/impacts/bullet-wood1.ogg"
+bwood2		"sounds/impacts/bullet-wood2.ogg"
+bwood3		"sounds/impacts/bullet-wood3.ogg"
+$random bullet/body { bbody1 bbody2 }
+bbody1		"sounds/impacts/bullet-body1.ogg"
+bbody2		"sounds/impacts/bullet-body2.ogg"
 
 $playersound	player male *land DSPLAND
 $playersound	player female *land DSPLAND
@@ -36,9 +54,11 @@ $alias gibs/splash 	gibs/blooddrop
 
 HeartBeat	HARTBEAT
 
-$random gibs/bloodtrickle { gibs/bloodtrickle1 gibs/bloodtrickle2 }
-gibs/bloodtrickle1 "sounds/gore/bloodtricke1.ogg"
-gibs/bloodtrickle2 "sounds/gore/bloodtricke2.ogg"
+$random gibs/bloodspurt { gibs/bloodspurt1 gibs/bloodspurt2 gibs/bloodspurt3 gibs/bloodspurt4 }
+gibs/bloodspurt1 "sounds/gore/bloodspurt1.ogg"
+gibs/bloodspurt2 "sounds/gore/bloodspurt2.ogg"
+gibs/bloodspurt3 "sounds/gore/bloodspurt3.ogg"
+gibs/bloodspurt4 "sounds/gore/bloodspurt4.ogg"
 
 //gib landing sound
 gibs/meatland1	DSMEAT1

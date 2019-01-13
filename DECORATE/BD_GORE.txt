@@ -13,7 +13,7 @@
 ///// BASIC GIBS ////////
 /////////////////////////
 
-/*actor Gibs_General : DebrisGeneral
+actor OldGibs_General : DebrisGeneral
 {
 	bouncetype Doom
 	+EXPLODEONWATER
@@ -33,10 +33,10 @@
 	renderstyle Translucent // in case I need to fade this out
 	alpha 1.0
 	translation "0:255=0:255"
-}*/
+}
 
 
-Actor OldMeatPiece : Gibs_General
+Actor OldMeatPiece : OldGibs_General
 {
 scale 0.45
 states
@@ -151,28 +151,28 @@ states
 		TNT1 A 0 A_Jump(256,"Spawn2","Spawn3","Spawn4","Spawn5","Spawn6")
 	spawn2:
 		TNT1 A 0 A_GiveInventory("DummyChecker",2)
-		GIB2 ABCDEFGH 2 A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
-		GIB2 ABCDEFGH 3 A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
+		GIB2 ABCDEFGH 2 //A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
+		GIB2 ABCDEFGH 3 //A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
 		goto death
 	spawn3:
 		TNT1 A 0 A_GiveInventory("DummyChecker",3)
-		GIB3 ABCDEFGH 2 A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
-		GIB3 ABCDEFGH 3 A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
+		GIB3 ABCDEFGH 2 //A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
+		GIB3 ABCDEFGH 3 //A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
 		goto death
 	spawn4:
 		TNT1 A 0 A_GiveInventory("DummyChecker",4)
-		GIB4 ABCDEFGH 2 A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
-		GIB4 ABCDEFGH 3 A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
+		GIB4 ABCDEFGH 2 //A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
+		GIB4 ABCDEFGH 3 //A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
 		goto death
 	spawn5:
 		TNT1 A 0 A_GiveInventory("DummyChecker",5)
-		GIB5 ABCDEFGH 2 A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
-		GIB5 ABCDEFGH 3 A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
+		GIB5 ABCDEFGH 2 //A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
+		GIB5 ABCDEFGH 3 //A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
 		goto death
 	spawn6:
 		TNT1 A 0 A_GiveInventory("DummyChecker",6)
-		GIB6 ABCDEFGH 2 A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
-		GIB6 ABCDEFGH 3 A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
+		GIB6 ABCDEFGH 2 //A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
+		GIB6 ABCDEFGH 3 //A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
 		goto death
 	Death:
 		TNT1 A 0 A_SetMass(30)
@@ -221,7 +221,7 @@ states
 ////// BODY PARTS //////
 ////////////////////////
 
-actor Heart : Gibs_general
+actor Heart : OldGibs_General
 {
 radius 4
 height 4
@@ -251,7 +251,7 @@ states
 
 ////// ZOMBIEMAN BODY PARTS //////
 
-actor PossHand : Gibs_general
+actor PossHand : OldGibs_General
 {
 states
 	{
@@ -297,7 +297,7 @@ states
 	}
 }
 
-actor PossLeg1 : Gibs_general
+actor PossLeg1 : OldGibs_General
 {
 states
 	{
@@ -369,7 +369,7 @@ states
 	}
 }
 
-actor PossHead : Gibs_general
+actor PossHead : OldGibs_General
 {
 states
 	{
@@ -425,7 +425,7 @@ states
 	}
 }
 
-Actor PossTorso1 : Gibs_General
+Actor PossTorso1 : OldGibs_General
 {
 bouncetype none
 mass 50
@@ -498,7 +498,7 @@ states
 
 ////// SHOTGUNGUY BODY PARTS //////
 
-actor SPosHand : Gibs_general
+actor SPosHand : OldGibs_General
 {
 states
 	{
@@ -542,7 +542,7 @@ states
 	}
 }
 
-actor SPosLeg1 : Gibs_general
+actor SPosLeg1 : OldGibs_General
 {
 states
 	{
@@ -611,7 +611,7 @@ states
 	}
 }
 
-actor SPosHead : Gibs_general
+actor SPosHead : OldGibs_General
 {
 states
 	{
@@ -721,7 +721,7 @@ states
 
 ////// CHAUNGUNGUY BODY PARTS //////
 
-actor CPosHand : Gibs_general
+actor CPosHand : OldGibs_General
 {
 states
 	{
@@ -765,7 +765,7 @@ states
 	}
 }
 
-actor CPosLeg : Gibs_general
+actor CPosLeg : OldGibs_General
 {
 states
 	{
@@ -810,7 +810,7 @@ states
 }
 
 
-actor CPosHead : Gibs_general
+actor CPosHead : OldGibs_General
 {
 states
 	{
@@ -918,7 +918,7 @@ states
 
 ////// IMP BODY PARTS //////
 
-actor ImpHand : Gibs_general
+actor ImpHand : OldGibs_General
 {
 states
 	{
@@ -962,7 +962,7 @@ states
 	}
 }
 
-actor ImpLeg1 : Gibs_general
+actor ImpLeg1 : OldGibs_General
 {
 states
 	{
@@ -1022,7 +1022,7 @@ states
 }
 
 
-actor ImpHead : Gibs_general
+actor ImpHead : OldGibs_General
 {
 states
 	{
@@ -1130,7 +1130,7 @@ states
 
 ////// WOLFENSTEINSS BODY PARTS //////
 
-actor SSHand : Gibs_general
+actor SSHand : OldGibs_General
 {
 states
 	{
@@ -1174,7 +1174,7 @@ states
 	}
 }
 
-actor SSLeg : Gibs_general
+actor SSLeg : OldGibs_General
 {
 states
 	{
@@ -1218,7 +1218,7 @@ states
 	}
 }
 
-actor SSHead : Gibs_general
+actor SSHead : OldGibs_General
 {
 states
 	{
@@ -1262,7 +1262,7 @@ states
 	}
 }
 
-actor SSCap : Gibs_General
+actor SSCap : OldGibs_General
 {
 +NOBLOOD
 seesound ""
@@ -1356,7 +1356,7 @@ states
 
 ////// PINKY BODY PARTS //////
 
-actor DemonHand : Gibs_general
+actor DemonHand : OldGibs_General
 {
 states
 	{
@@ -1389,7 +1389,7 @@ states
 	}
 }
 
-actor DemonHead : Gibs_general
+actor DemonHead : OldGibs_General
 {
 radius 8
 height 8
@@ -1440,7 +1440,7 @@ alpha 0.5
 
 ////// LOSTSOUL BODY PARTS //////
 
-actor LS_horn : Gibs_general
+actor LS_horn : OldGibs_General
 {
 +NOBLOOD
 radius 1
@@ -1528,7 +1528,7 @@ states
 
 ////// PAIN ELEMENTAL PARTS //////
 
-Actor PainHand : Gibs_General
+Actor PainHand : OldGibs_General
 {
 states
 	{
@@ -1553,7 +1553,7 @@ states
 	}
 }
 
-Actor PainJaw : Gibs_General
+Actor PainJaw : OldGibs_General
 {
 height 10
 radius 16
@@ -1580,7 +1580,7 @@ states
 	}
 }
 
-Actor PainHorn : Gibs_General
+Actor PainHorn : OldGibs_General
 {
 states
 	{
@@ -1609,7 +1609,7 @@ states
 
 ////// CACODEMON BODY PARTS //////
 
-actor CacoEye : Gibs_general
+actor CacoEye : OldGibs_General
 {
 bloodtype BlueBloodSpatter
 bloodcolor "00 00 FF"
@@ -1620,8 +1620,8 @@ states
 		TNT1 A 0 A_Jump(128,2)
 		TNT1 A 0 A_SetScale(scalex*(-1),scaley)
 		TNT1 A 0 A_Jump(256,1,2,3)
-		EYE1 ABCDEFGH 2 A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
-		EYE1 ABCDEFGH 3 A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
+		EYE1 ABCDEFGH 2 //A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
+		EYE1 ABCDEFGH 3 //A_SpawnItemEx("BlueBloodDrop",random(-2,2),random(-2,2),random(0,2),0,random(0,1),random(0,1),random(175,185),SXF_SETMASTER)
 		goto death
 	Death:
 		TNT1 A 0
@@ -1710,7 +1710,7 @@ states
 
 ////// SPIDERMASTERMIND BODY PARTS //////
 
-actor SpiderBrain_right : Gibs_general
+actor SpiderBrain_right : OldGibs_General
 {
 radius 32
 height 32
@@ -2003,7 +2003,7 @@ states
 
 ////// CYBDERDEMON BODY PARTS //////
 
-actor CyberHand_right : Gibs_general
+actor CyberHand_right : OldGibs_General
 {
 gravity .5
 radius 32

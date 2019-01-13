@@ -1,0 +1,786 @@
+////////////////////////////////////////////////////////////;
+////////////// ALL BASIC BEAUTIFUL DOOM OBJECTS ////////////;
+////////////////////////////////////////////////////////////
+
+
+Class DebrisGeneral : Actor
+{
+int sfxtype; //0 = debris, 1 = flames/smoke, 2 = blood, 3 = gibs
+property sfxtype : sfxtype;
+Default {
+	DebrisGeneral.sfxtype 0;
+	+ROLLSPRITE
+	+BLOODLESSIMPACT
+	+FIXMAPTHINGPOS
+	+NOTAUTOAIMED
+	+MISSILE
+	+NOBLOCKMAP 
+	+MOVEWITHSECTOR
+	+RELATIVETOFLOOR
+	+NOGRAVITY
+	+DROPOFF
+	+NOTELEPORT
+	+FORCEXYBILLBOARD
+	+THRUACTORS
+	+FLOORCLIP
+	-ALLOWPARTICLES
+	renderstyle "Translucent";
+	alpha 1.0;
+	radius 1;
+	height 1;
+	mass 1;
+	damage 0;
+	}
+override void PostBeginPlay()
+	{
+	if (!level.IsPointInMap(pos))
+		self.destroy();
+	super.PostBeginPlay();
+	}
+override void Tick()
+	{
+	if (	(sfxtype == 0 && bdoom_debris == 0)	||
+			(sfxtype == 1 && bdoom_flames == 0)	||
+			(sfxtype == 2 && bdoom_blood == 0)	||
+			(sfxtype == 3 && bdoom_gibs == 0)	)
+		{
+			A_DeQueueCorpse();
+			self.destroy();
+		}
+	super.Tick();
+	}
+}
+
+Class SmallDebris : DebrisGeneral
+{
+double dgravity;
+property dgravity : dgravity;
+Default {
+	-MISSILE
+	-RELATIVETOFLOOR
+	+NOINTERACTION
+	smalldebris.dgravity 0.8;
+	}
+override void Tick() {
+	super.tick();
+	vel.z-=dgravity;
+	if (pos.z <= floorz)
+		self.destroy();
+	}
+/*int timepassed;
+override void Tick() {
+	super.tick();
+	if (timepassed == 0)
+		vel.z-=dgravity;
+	if (pos.z <= floorz || timepassed != 0)
+		{
+		SetOrigin((pos.x,pos.y,floorz+1),0);
+		timepassed++;
+		A_Stop();
+		if(timePassed >= 123)
+			A_FadeOut(0.01);
+		}
+	}*/
+}
+
+Class Flare_General : DebrisGeneral
+{
+Default {
+	DebrisGeneral.sfxtype 1;
+	-MOVEWITHSECTOR
+	-RELATIVETOFLOOR
+	+NOINTERACTION
+	-MISSILE
+	renderstyle "Add";
+	alpha 0.4;
+	scale 0.4;
+	}
+}
+
+//used for flares that are launched from the weapon alongside the projectile, e.g. grenades
+Class ProjectileFlare : Actor
+{
+Default {
+	+FORCEXYBILLBOARD
+	+MISSILE
+	+NOBLOCKMAP
+	+NOTELEPORT
+	+DROPOFF
+	+NOGRAVITY
+	+BLOODLESSIMPACT
+	damage 0;
+	renderstyle "Add";
+	}
+}
+
+Class ParticleFire_General : DebrisGeneral
+{
+Default {
+	DebrisGeneral.sfxtype 1;
+	speed 2;
+	renderstyle "Add";
+	scale 0.5;
+	alpha 0.5;
+	+NOINTERACTION
+	}
+}
+
+Class FirePiece : DebrisGeneral
+{
+Default {
+	DebrisGeneral.sfxtype 1;
+	renderstyle "Add";
+	scale 0.2;
+	alpha 0.5;
+	+NOINTERACTION
+	}
+states
+	{
+	Spawn:		
+		FIRP ABCDEFGHIJ 2 bright A_FadeOut(0.05);
+		stop;
+	}
+}
+
+///////////////;
+//// SMOKE ////;
+///////////////
+
+Class Smoke_General : DebrisGeneral
+{
+Default {
+	+NOINTERACTION
+	renderstyle "Add";
+	alpha 0.3;
+	scale 0.1;
+	}
+override void PostBeginPlay() {
+	super.PostbeginPlay();
+	//A_SetScale(scale.x*randompick(-1,1),scale.y*randompick(-1,1));
+	roll = random(0,359);
+	}
+states
+	{
+	Spawn:
+		SMOK ABCDEFGHIJKLMNOPQ 1 {
+			A_SpawnItemEx("BasicSmokeTrail",frandom(-2,2),frandom(-2,2),frandom(-2,2),0,0,0,0,SXF_SETMASTER);
+			A_Fadeout(0.01);
+			}
+		stop;
+	}
+}
+
+Class BasicSmokeTrail : Smoke_General
+{
+Default {
+	vspeed 0;
+	alpha 0.15;
+	}
+states
+	{
+	Spawn:
+		SMOK DEFGHIJKLMNOPQ 1 A_Fadeout(0.01);
+		stop;
+	}
+}
+
+
+
+//old smoke used by puffs
+class ShotSmoke : Smoke_General
+{ 
+Default {
+	alpha 0.4;
+	scale 0.18;
+	}
+states
+	{
+	Spawn:
+		SMK1 ABCDEFGHIJKLMNOPQR 1 {
+			A_SpawnItemEx("ShotSmokeTrail",frandom(-1.5,1.5),frandom(-1.5,1.5),frandom(-1.5,1.5),0,0,0,0,SXF_SETMASTER);
+			A_Fadeout(0.01);
+			}
+		stop;
+	}
+}
+
+Class ShotSmokeTrail : BasicSmokeTrail
+{
+Default {
+	alpha 0.15;
+	}
+states
+	{
+	Spawn:
+		SMK1 DEFGHIJKLMNOPQR 1 A_Fadeout(0.01);
+		stop;
+	}
+}
+
+//spawned over weapon barrels after shooting
+class BarrelSmoke : Smoke_General
+{
+Default {
+	alpha 0.05;
+	scale 0.02;
+	}
+states
+	{
+	Spawn:
+		SMK1 ABCDEF 2 A_FadeIn(0.025);
+		SMK1 GHIJKLMNOPQR 2 {
+			vel.z = clamp(vel.z*0.6,0.04,0.1);
+			A_FadeOut(0.005);
+			roll+-8;
+			}
+		stop;
+	}
+}
+
+//bigger smoke to spawn over heated weapon body
+class WeaponSmoke : Smoke_General
+{
+Default {
+	alpha 0.25;
+	scale 0.15;
+	}
+states
+	{
+	Spawn:		
+		SMK1 ABCDEFGHIJKLMNOPQR 1 {
+			A_SpawnItemEx("WeaponSmokeTrail",random(-2,2),random(-2,2),random(-2,2),0,0,0,0);
+			A_FadeOut(0.01);
+			}
+		stop;
+	}
+}
+
+Class WeaponSmokeTrail : BasicSmokeTrail
+{
+Default {
+	alpha 0.1;
+	scale 0.12;
+	}
+states
+	{
+	Spawn:
+		SMK1 DEFGHIJKLMNOPQR 1 A_Fadeout(0.01);
+		stop;
+	}
+}
+
+//big dark smoke used for some explosions
+class BlackSmoke : Smoke_General
+{
+Default {
+	renderstyle "Translucent";
+	alpha 0.15;
+	}
+states
+	{
+	Spawn:
+		SMOK ABCDEFGHIJKLMNOPQ 2 {
+			A_SpawnItemEx("BlackSmokeTrail",random(-2,2),random(-2,2),random(-2,2),0,0,0,0);
+			A_FadeOut(0.01);
+			}
+		wait;
+	}
+}
+
+//even bigger smoke for bigger explosions
+class BigBlackSmoke : BlackSmoke
+{
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay {
+			A_SetScale(frandom(0.22,28)*randompick(-1,1),frandom(0.22,28)*randompick(-1,1));
+			}
+		SMOK ABCDEFGHIJKLMNOPQ 2 {
+			if (!master)
+				A_SpawnItemEx("BigBlackSmoke",frandom(-2,2),frandom(-2,2),frandom(-2,2),0,0,0,0,SXF_SETMASTER);
+			A_FadeOut(0.01);
+			a_Setscale(clamp(scale.x*1.03,0.25,0.4),clamp(scale.y*1.03,0.25,0.4));
+			}
+		wait;
+	}
+}
+
+Class BlackSmokeTrail : BasicSmokeTrail
+{
+Default {
+	renderstyle "Translucent";
+	alpha 0.08;
+	}
+}
+
+//basic smoke behind a rocket
+Class Rocket1Trail : Smoke_General
+{
+Default {
+	scale 0.1;
+	renderstyle "Translucent";
+	alpha 0.3;
+	}
+states
+	{
+	Spawn:
+		SMOK ABCDEFGHIJKLMNOPQ 1 A_FadeOut(0.01);
+		stop;
+	}
+}
+
+Class SmokeBallTrail : Rocket1Trail
+{
+Default {
+	alpha 0.15;
+	}
+}
+
+//a bouncing particle that spawns thin smoke behind itself
+Class SmokingPiece : SmallDebris
+{
+Default {
+	smalldebris.dgravity 0.7;
+	alpha 1.0;
+	}
+states
+		{
+		Spawn:
+			TNT1 A 1 {
+				A_SpawnItem("SmokingPieceSmoke");
+				A_FadeOut(0.025);
+				}
+			loop;
+		}
+}
+
+Class SmokingPieceSmoke : BasicSmokeTrail
+{
+Default {
+	scale 0.04;
+	alpha 0.3;
+	}
+}
+
+///////////////
+//// PUFFS ////
+///////////////
+
+//smoke coming out of wood walls
+Class WallSmoke : Smoke_General
+{
+int wrot;
+Default {
+	+ROLLCENTER
+	scale 0.015;
+	renderstyle "Add";
+	alpha 0.4;
+	}
+override void PostBeginPlay()
+	{
+	super.PostBeginPlay();
+	A_SetScale(frandom(0.028,0.032),frandom(0.028,0.032));
+	wrot = (random(3,10)*randompick(-1,1));
+	}
+states
+	{
+	Spawn:
+		/*SMOK AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQ 1 NoDelay {
+			A_Fadeout(0.005);
+			a_Setscale(clamp(scale.x*1.05,0.01,0.12),clamp(scale.y*1.05,0.01,0.12));
+			vel*=0.9;
+			roll+=wrot;
+			}
+		wait;*/
+		SM21 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 NoDelay {
+			A_Fadeout(0.006);
+			a_Setscale(clamp(scale.x*1.02,0.01,0.1),clamp(scale.y*1.02,0.01,0.1));
+			vel*=0.95;
+			roll+=wrot;
+			}
+		SM22 ABCDEFGHIJK 1 {
+			A_Fadeout(0.006);
+			a_Setscale(clamp(scale.x*1.02,0.01,0.1),clamp(scale.y*1.02,0.01,0.1));
+			vel*=0.95;
+			roll+=wrot;
+			}
+		wait;
+	}
+}
+
+//circular puff of smoke for hard walls (stone, brick)
+Class RingSmoke : WallSmoke
+{
+Default {
+	alpha 0.2;
+	}
+states
+	{
+	Spawn:
+		SM21 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 NoDelay {
+			A_Fadeout(0.005);
+			a_Setscale(clamp(scale.x*1.03,0.01,0.1),clamp(scale.y*1.03,0.01,0.1));
+			vel*=0.9;
+			roll+=wrot;
+			}
+		SM22 ABCDEFGHIJK 1 {
+			A_Fadeout(0.005);
+			a_Setscale(clamp(scale.x*1.03,0.01,0.1),clamp(scale.y*1.03,0.01,0.1));
+			vel*=0.9;
+			roll+=wrot;
+			}
+		wait;
+	}
+}
+
+Class BdoomPuff : Actor
+{
+Default {
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+FORCEXYBILLBOARD
+	-ALLOWPARTICLES
+	+DONTSPLASH
+	}
+}
+
+//used by stuff like decorative rails spawned by BFGball
+Class NullPuff : BulletPuff
+{
+Default {
+	damagetype "none";
+	+NOINTERACTION
+	+BLOODLESSIMPACT
+	+PAINLESS
+	}
+states
+	{
+		Spawn:
+			TNT1 A 1 Nodelay;
+			stop;
+	}
+}
+
+Class EnBulletPuff : BDoomPuff
+{
+//int hitangle;
+string hittex;
+string dtype;
+int rchance;
+bool debris;
+int  smoke; //0 - none, 1 - directional, 2 - radial along the wall
+int sparkchance;
+string decaltype;
+Default {
+	+NOINTERACTION
+	+PUFFGETSOWNER
+	decal "none";
+	renderstyle "Add";
+	scale 0.075;
+	alpha 0.8;
+	mass 1;
+	height 1;
+	radius 1;
+	}
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay {
+			if (target)
+				angle = target.angle;
+				pitch = target.pitch;
+			int tracepitch;
+			int traceheight;
+			if (pos.z <= floorz+8) {
+				tracepitch = 90;
+				traceheight = floorz+8;
+				}
+			else if (pos.z >= ceilingz-8) {
+				tracepitch = -90;
+				traceheight = ceilingz-8;
+				}
+			else {
+				tracepitch = 0;
+				traceheight = pos.z;
+				}
+			FLineTraceData puffdata;
+			LineTrace(angle,10,tracepitch,TRF_THRUACTORS|TRF_NOSKY|TRF_ABSPOSITION,traceheight,pos.x,pos.y,puffdata);	
+			if (puffdata.HitType == TRACE_HitFloor)
+				hittex = texman.GetName(floorpic);
+			else if (puffdata.HitType == TRACE_HitCeiling)
+				hittex = texman.GetName(ceilingpic);
+			else if (puffdata.HitType == TRACE_HitWall) {
+				hittex = texman.GetName(puffdata.HitTexture);
+				//line li = puffdata.Hitline;
+				//hitangle = (atan2(li.delta.Y, li.delta.X) - 90);
+				}
+			
+			if (hittex.IndexOf("WATER") >= 0 || hittex.IndexOf("FALL") >= 0 || hittex.IndexOf("BLOOD") >= 0) {
+				A_PlaySound("world/watersplashsmall",0,1.0,0,3);
+				self.destroy();
+				}				
+			else if (hittex.IndexOf("LAVA") >= 0 || hittex.IndexOf("FIRE") >= 0 || hittex.IndexOf("NUKAGE") >= 0) {
+				A_PlaySound("world/lavasizzlesmall",0,1.0,0,3);
+				self.destroy();
+				}
+			else if (	hittex.IndexOf("WOOD") >= 0		|| hittex.IndexOf("PAN") >= 0		|| hittex.IndexOf("CRAT") >= 0	
+				|| 		hittex.IndexOf("STUCCO") >= 0 	|| hittex.IndexOf("FLAT5_1") >= 0 	|| hittex.IndexOf("FLAT5_2") >= 0 
+				|| 		hittex.IndexOf("CEIL1_1") >= 0 	|| hittex.IndexOf("FLOOR0_1") >= 0 	|| hittex.IndexOf("FLOOR0_2") >= 0 
+				|| 		hittex.IndexOf("FLOOR0_3") >= 0 || hittex.IndexOf("FLOOR7_1") >= 0	|| hittex.IndexOf("FLAT5_5") >= 0
+				||		hittex.IndexOf("TANROCK2") >= 0	|| hittex.IndexOf("TANROCK3") >= 0	|| hittex.IndexOf("TANROCK8") >= 0
+				||		hittex.IndexOf("ZZWOLF5") >= 0	|| hittex.IndexOf("ZZWOLF6") >= 0	|| hittex.IndexOf("ZZWOLF7") >= 0
+						) {
+				decaltype = "BulletWchip";
+				dtype = "wood";
+				debris = true;
+				smoke = 1;
+				A_Playsound("bullet/wood",0,1.0,0,3);				
+				}
+			else if (	hittex.IndexOf("MARB") >= 0 	|| hittex.IndexOf("GST") >= 0 		|| hittex.IndexOf("DEM") >= 0
+				||		hittex.IndexOf("FLOOR7_2") >= 0
+						) {
+				decaltype = "BulletSchip";
+				dtype = "marble";
+				rchance = 20;
+				debris = true;
+				smoke = 2;
+				A_Playsound("bullet/stone",0,1.0,0,3);				
+				}
+			else if (	hittex.IndexOf("BRICK") >= 0 	|| hittex.IndexOf("BIGBRIK1") >= 0 	|| hittex.IndexOf("BIGBRIK3") >= 0) {
+				decaltype = "BulletSchip";
+				dtype = "brick";
+				rchance = 15;
+				debris = true;
+				smoke = 2;
+				A_Playsound("bullet/stone",0,1.0,0,3);				
+				}
+			else if (	hittex.IndexOf("METAL") >= 0 	|| hittex.IndexOf("DOOR") >= 0 
+				||		hittex.IndexOf("SHAWN") >= 0 	|| hittex.IndexOf("SILVER") >= 0	|| hittex.IndexOf("BRONZ") >= 0
+				||		hittex.IndexOf("PIPE") >= 0 	|| hittex.IndexOf("SUPPORT") >= 0 	|| hittex.IndexOf("TEK") >= 0
+				||		hittex.IndexOf("ZZZFACE6") >= 0 || hittex.IndexOf("ZZZFACE7") >= 0 	|| hittex.IndexOf("ZZZFACE8") >= 0 
+				||		hittex.IndexOf("ZZZFACE9") >= 0 || hittex.IndexOf("FLOOR0_6") >= 0 	|| hittex.IndexOf("FLOOR0_7") >= 0
+				||		hittex.IndexOf("FLOOR3_3") >= 0 || hittex.IndexOf("FLOOR4_1") >= 0 	|| hittex.IndexOf("FLOOR4_5") >= 0
+				||		hittex.IndexOf("FLOOR4_8") >= 0	|| hittex.IndexOf("FLOOR5_1") >= 0	|| hittex.IndexOf("STEP") >= 0	
+				|| 		hittex.IndexOf("CEIL5_2") >= 0	|| hittex.IndexOf("FLAT22") >= 0	|| hittex.IndexOf("FLAT23") >= 0
+				||		hittex.IndexOf("CONS") >= 0		|| hittex.IndexOf("CEIL1_1") >= 0	|| hittex.IndexOf("CEIL1_2") >= 0
+				||		hittex.IndexOf("CEIL1_1") >= 0	|| hittex.IndexOf("SLIME14") >= 0	|| hittex.IndexOf("SLIME15") >= 0
+				||		hittex.IndexOf("SLIME16") >= 0	|| hittex.IndexOf("LITE") >= 0		|| hittex.IndexOf("COMP") >= 0
+				||		hittex.IndexOf("COMM") >= 0		|| hittex.IndexOf("SW2MET") >= 0
+						) {
+				decaltype = "BulletMchip";
+				rchance = 40;
+				sparkchance = 50;
+				debris = false;
+				smoke = false;
+				A_Playsound("bullet/metal",0,1.0,0,3);				
+				}
+			else if (	hittex.IndexOf("SK_") >= 0		|| hittex.IndexOf("SKIN2") >= 0		|| hittex.IndexOf("SKINCUT") >= 0
+				||		hittex.IndexOf("SKINEDGE") >= 0	|| hittex.IndexOf("SKINFACE") >= 0	|| hittex.IndexOf("SFLR") >= 0
+				||		hittex.IndexOf("SPINE") >= 0	|| hittex.IndexOf("SNAKE") >= 0		|| hittex.IndexOf("SLOPPY") >= 0
+				||		hittex.IndexOf("SP_FACE") >= 0
+						) {
+				decaltype = "Bulletchip";
+				dtype = "bloody";
+				debris = true;
+				smoke = false;
+				A_Playsound("bullet/body",0,1.0,0,3);				
+				}
+			else if (hittex.IndexOf("SKIN") >= 0 	|| hittex.IndexOf("ZFACE") >= 0	) {
+				decaltype = "Bulletchip";
+				dtype = "skin";
+				debris = false;
+				smoke = false;
+				A_Playsound("bullet/body",0,1.0,0,3);				
+				}
+			else if (puffdata.HitType != TRACE_HitNone) { //BROWN GRAY CEMENT and the rest, stone seems like a good generic type
+				decaltype = "Bulletchip";
+				dtype = "stone";
+				rchance = 25;
+				debris = true;
+				smoke = 2;
+				A_Playsound("bullet/stone",0,1.0,0,3);				
+				}
+			if (bdoom_debris == 1) {
+				if (random(0,100) < rchance)
+					A_SpawnProjectile("RicochetBullet",0,0,random(0,359),CMF_AIMDIRECTION,random(-45,45));
+				if (smoke == 1) {
+					for (int i = 0; i <= 10; i++) {
+						double ws = frandom(0.1,1.2);
+						A_SpawnItemEx("WallSmoke",		0,0,0,	cos(-pitch)*ws,		0,					sin(pitch)*ws,		random(175,185),0,				48);
+						}
+					}
+				else if (smoke == 2) {
+					if (pos.z > floorz+8 && pos.z < ceilingz-8) {
+						for (int i = 0; i <= 15; i++)
+							A_SpawnItemEx("RingSmoke",	0,0,0,	frandom(-0.7,0.7),frandom(-0.7,0.7),frandom(-0.7,0.7),	0,		0 ,				64);
+						}
+					else {
+						for (int i = 0; i <= 15; i++)
+							A_SpawnItemEx("RingSmoke",	0,0,0,		frandom(-0.7,0.7),frandom(-0.7,0.7),0,		0,	SXF_ABSOLUTEVELOCITY,				64);
+						}
+					}
+				if (debris) {
+					for (int i = 0; i <= 5; i++)
+						A_SpawnItemEx("Wallpart",		0,0,0,	frandom(2,5),		0,					frandom(1,4),		random(150,210),SXF_SETTARGET,	64);
+					}
+				if (random(0,100) < sparkchance) {
+					for (int i = 0; i <= 6; i++)
+						A_SpawnItemEx("RicochetSpark",	0,0,0,	frandom(-1.5,1.5),	frandom(-1.5,1.5),	frandom(1,4),		0,				0,				72);
+					}
+				}
+			if (pos.z > floorz+8 && pos.z < ceilingz-8)
+				A_SprayDecal(decaltype,8);
+			//Console.PrintF("z %d, wallangle %d, %s - %s",traceheight,hitangle,hittex,dtype);
+			}
+		BPUF ABCD 1 bright;
+		stop;
+	}
+}
+
+//a very small dark piece of debris spawned by hitting a wall
+Class WallPart : SmallDebris
+{
+int wrot;
+Default {
+	-NOGRAVITY
+	Renderstyle "Translucent";
+	alpha 1.0;
+	scale 0.1;
+	smalldebris.dgravity 0.4;
+	}
+override void PostBeginPlay()
+	{
+	super.PostBeginPlay();
+	wrot = randompick(-10,10);
+	A_setScale(frandom(0.04,0.11),frandom(0.04,0.11));
+	if (target && target is "EnBulletPuff") {
+		let puff = EnBulletPuff(target);
+		if (puff.dtype ~== "wood") {
+			A_SetTranslation("DebrisWood");
+			A_setScale(frandom(0.07,0.18),frandom(0.04,0.08));
+			}
+		else if (puff.dtype ~== "marble") {
+			if (random(0,1) == 1)
+				A_SetTranslation("DebrisMarble1");
+			else
+				A_SetTranslation("DebrisMarble2");
+			}
+		else if (puff.dtype ~== "brick")
+			A_SetTranslation("DebrisBrick");
+		else if (puff.dtype ~== "bloody")
+			{}
+		else
+			A_SetTranslation("DebrisStone");
+		}
+	else
+		A_SetTranslation("DebrisStone");
+	}
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay {
+			if (target && target is "EnBulletPuff") {
+				let puff = EnBulletPuff(target);
+				if (puff.dtype ~== "bloody")
+				return ResolveState("Bloody");
+				}
+			return ResolveState(null);
+			}
+		BPRT AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 {
+			roll+=wrot;
+			}
+		stop;
+	Bloody:
+		TNT1 A 0 {
+			A_SetScale(0.1,0.1);
+			static const string bsprite[] =
+			{
+				"YBL7","YBL8","YBL9"
+			};
+			self.sprite = GetSpriteIndex(bsprite[random(0,2)]);
+			}
+		#### ABCDEFGHIJKLMNOPQRS 1 A_Fadeout(0.08);
+		stop;		
+	 }
+}
+
+Class EnShotPuff : EnBulletPuff
+{
+Default {
+	-NOEXTREMEDEATH
+	decal "ShotChip";
+	}
+}
+
+
+Class RocketDebris : WallPart
+{
+Default {
+	smalldebris.dgravity 0.6;
+	}
+override void PostBeginPlay()
+	{
+	super.PostBeginPlay();
+	wrot = randompick(-10,10);
+	A_Setscale(frandom(0.19,0.22)*randompick(-1,1),frandom(0.19,0.22)*randompick(-1,1));
+	}
+}
+
+//small spark spawned by chainsaw, knuckle, bullets on metal
+Class RicochetSpark : SmallDebris
+{
+Default {
+	renderstyle "ADD";
+	alpha 1.0;
+	radius 3;
+	height 3;
+	scale 0.03;
+	}
+states
+	{
+	Spawn:
+		SPRK A 1 bright	A_FadeOut(0.05);
+		loop;
+	}
+}
+
+//fake bullet that ricochets from bulletpuffs
+Class RicochetBullet : DebrisGeneral
+{
+Default {
+	+NOINTERACTION
+	//+THRUACTORS
+	//+DONTSPLASH
+	//bouncetype "Hexen";
+	speed 40;
+	seesound "none";
+	deathsound "none";
+	renderstyle "Add";
+	alpha 0.8;
+	}
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay {
+			//if (bdoom_sparks == 1)
+				//A_PlaySound("weapons/ricochet");
+			}
+		PUFF A 2;
+		stop;
+	}
+}
+
+//for backwards compatibility, will be removed after full transition to zscript
+Class DummyChecker : Inventory
+{
+Default {
+	+INVENTORY.UNDROPPABLE 
+	+INVENTORY.UNTOSSABLE
+	-COUNTITEM
+	-INVENTORY.INVBAR
+	+INVENTORY.PERSISTENTPOWER
+	inventory.amount 1;
+	inventory.maxamount 9999;
+	}
+}

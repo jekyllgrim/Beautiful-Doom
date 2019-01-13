@@ -99,9 +99,9 @@ states
 		stop
 	Raise:
 		TNT1 A 0 Thing_SetTranslation(0,10)
-		TNT1 A 0 A_GiveToChildren("WasGibbed",1)
-		TNT1 A 0 A_JumpIfInventory("BD_KillChecker",2,"Raise2")
-		TNT1 A 0 A_JumpIfInventory("BD_KillChecker",1,"Raise1")
+		TNT1 A 0 //A_GiveToChildren("WasGibbed",1)
+		TNT1 A 0 //A_JumpIfInventory("BD_KillChecker",2,"Raise2")
+		TNT1 A 0 //A_JumpIfInventory("BD_KillChecker",1,"Raise1")
 		REVM HGFEDCBA 3
 		goto see
 	Raise1:

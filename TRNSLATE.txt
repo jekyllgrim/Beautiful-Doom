@@ -26,3 +26,11 @@ GreenBlood = "16:47=112:127", "168:191=115:127", "232:235=152:159"
 BluePlasma = "9:12=242:245", "112:127=192:207","152:159=200:207"
 //blue to green
 GreenPlasma = "192:207=112:127", "240:247=122:127"
+
+
+//debris 
+DebrisStone 	= "0:255 = 105:111" //dark-grey
+DebrisWood 		= "0:255 = 73:79" //brown
+DebrisMarble1 	= "0:255 = 152:159" //pale green
+DebrisMarble1 	= "0:255 = 96:105" //medium grey
+DebrisBrick 	= "0:255 = 236:239" //dark brown

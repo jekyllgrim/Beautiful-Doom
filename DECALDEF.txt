@@ -173,6 +173,197 @@ decal BulletChip5
 	randomflipy
 }
 
+decalgroup BulletChip
+{
+	BulletChip1	1
+	BulletChip2	1
+	BulletChip3	1
+	BulletChip4	1
+	BulletChip5	1
+}
+
+decal BulletMChip1
+{
+	pic MChip1
+	translucent 0.55
+	shade "00 00 00"
+	x-scale 0.07
+	y-scale 0.07
+	randomflipx
+	randomflipy
+}
+
+decal BulletMChip2
+{
+	pic MChip2
+	translucent 0.55
+	shade "00 00 00"
+	x-scale 0.07
+	y-scale 0.07
+	randomflipx
+	randomflipy
+}
+
+decal BulletMChip3
+{
+	pic MChip3
+	translucent 0.55
+	shade "00 00 00"
+	x-scale 0.07
+	y-scale 0.07
+	randomflipx
+	randomflipy
+}
+
+decal BulletMChip4
+{
+	pic MChip4
+	translucent 0.55
+	shade "00 00 00"
+	x-scale 0.07
+	y-scale 0.07
+	randomflipx
+	randomflipy
+}
+
+decal BulletMChip5
+{
+	pic MChip5
+	translucent 0.55
+	shade "00 00 00"
+	x-scale 0.07
+	y-scale 0.07
+	randomflipx
+	randomflipy
+}
+
+decalgroup BulletMChip
+{
+	BulletMChip1	1
+	BulletMChip2	1
+	BulletMChip3	1
+	BulletMChip4	1
+	BulletMChip5	1
+}
+
+decal BulletWChip1
+{
+	pic WChip1
+	translucent 1.0
+	shade "00 00 00"
+	x-scale 0.08
+	y-scale 0.08
+	randomflipx
+	randomflipy
+}
+
+decal BulletWChip2
+{
+	pic WChip2
+	translucent 1.0
+	shade "00 00 00"
+	x-scale 0.08
+	y-scale 0.08
+	randomflipx
+	randomflipy
+}
+
+decal BulletWChip3
+{
+	pic WChip3
+	translucent 1.0
+	shade "00 00 00"
+	x-scale 0.08
+	y-scale 0.08
+	randomflipx
+	randomflipy
+}
+
+decal BulletWChip4
+{
+	pic WChip4
+	translucent 1.0
+	shade "00 00 00"
+	x-scale 0.08
+	y-scale 0.08
+	randomflipx
+	randomflipy
+}
+
+decal BulletWChip5
+{
+	pic WChip5
+	translucent 1.0
+	shade "00 00 00"
+	x-scale 0.08
+	y-scale 0.08
+	randomflipx
+	randomflipy
+}
+
+decalgroup BulletWChip
+{
+	BulletWChip1	1
+	BulletWChip2	1
+	BulletWChip3	1
+	BulletWChip4	1
+	BulletWChip5	1
+}
+
+decal BulletSChip1
+{
+	pic SChip1
+	translucent 0.75
+	shade "00 00 00"
+	x-scale 0.13
+	y-scale 0.13
+	randomflipx
+	randomflipy
+}
+
+decal BulletSChip2
+{
+	pic SChip2
+	translucent 0.75
+	shade "00 00 00"
+	x-scale 0.13
+	y-scale 0.13
+	randomflipx
+	randomflipy
+}
+
+decal BulletSChip3
+{
+	pic SChip3
+	translucent 0.75
+	shade "00 00 00"
+	x-scale 0.13
+	y-scale 0.13
+	randomflipx
+	randomflipy
+}
+
+decal BulletSChip4
+{
+	pic SChip4
+	translucent 0.75
+	shade "00 00 00"
+	x-scale 0.13
+	y-scale 0.13
+	randomflipx
+	randomflipy
+}
+
+decalgroup BulletSChip
+{
+	BulletSChip1	1
+	BulletSChip2	1
+	BulletSChip3	1
+	BulletSChip4	1
+}
+
+// shotgun chip
+
 decal ShotChip1
 {
 	pic CHIP1
@@ -623,28 +814,6 @@ fader BFGFade
 	Decaytime 10
 }
 
-decal BFGScorch1
-{
-	pic BFGSCRC1
-	shade "00 00 00"
-	randomflipx
-	randomflipy
-}
-
-decal BFGScorch2
-{
-	pic BFGSCRC2
-	shade "00 00 00"
-	randomflipx
-	randomflipy
-}
-
-decalgroup BFGScorch
-{
-	BFGScorch1	1
-	BFGScorch2	1
-}
-
 decal BFGLightning1
 {
 	pic BFGLITE1
@@ -685,9 +854,9 @@ decalgroup BFGLightning
 	BFGLightning3	1
 }
 
-decal BFGScorch
+decal BFGScorch1
 {
-	pic BFGSCRC7
+	pic BFGSCRC1
 	animator ToBlack
 	shade "80 ff 80"
 	randomflipx
@@ -703,19 +872,19 @@ decal BFGScorch2
 	shade "80 ff 80"
 	randomflipx
 	randomflipy
-	x-scale 0.8
-	y-scale 0.8
+	x-scale 0.5
+	y-scale 0.5
 }
 
 decal BFGScorch3
 {
 	pic BFGSCRC3
 	animator ToBlack
-	shade "50 ff 50"
+	shade "80 ff 80"
 	randomflipx
 	randomflipy
-	x-scale 0.8
-	y-scale 0.8
+	x-scale 0.5
+	y-scale 0.5
 }
 
 colorchanger BFGScorchFade
@@ -725,7 +894,7 @@ colorchanger BFGScorchFade
 	FadeTime 3.5
 }
 
-decalgroup BFGScorch_
+decalgroup BFGScorch
 {
 	BFGScorch1	1
 	BFGScorch2	1

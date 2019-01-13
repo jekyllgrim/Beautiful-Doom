@@ -1,0 +1,309 @@
+Class BDoomWeapon : DoomWeapon
+{
+int offsetTics; // current camera sway timer
+double maxOffsetTics; // starting point for the timer
+double offsetAngle; // the target angle for the camera sway
+double offsetPitch;
+double currentAngleOffset; // how much has the camera already been offset?
+double currentPitchOffset;
+property maxOffsetTics : maxOffsetTics;
+property offsetTics : offsetTics;
+
+Default {  //required default values for A_CameraSway. Otherwise it'll crash due to division by zero
+	BDoomWeapon.maxOffsetTics 1;
+	BDoomWeapon.offsetTics -1;
+	}
+
+// Camera sway function by josh771
+action void A_CameraSway(double aoffset, double poffset, int tics)
+{
+    invoker.offsetTics = tics;
+    invoker.maxOffsetTics = tics;
+    
+    invoker.offsetAngle = aoffset;
+    invoker.offsetPitch = poffset;
+
+    invoker.currentAngleOffset = 0.0;
+    invoker.currentPitchOffset = 0.0;
+}
+
+override void DoEffect()
+	{
+		Super.DoEffect();
+		if (owner) {
+			if(bdoom_weapons == 2) {
+					BobRangeX = 0.2;
+					BobRangeY = 0.2;
+					BobStyle = 5;
+					BobSpeed = 2.0;
+				}
+			else {
+					BobRangeX = 1.0;
+					BobRangeY = 1.0;
+					BobStyle = 0;
+					BobSpeed = 1.0;
+				}
+			if (offsetTics >= 0) {
+				double phase = (offsetTics / maxOffsetTics) * 90.0;
+				double newAngleOffset = (cos(phase) * offsetAngle);
+				double newPitchOffset = (cos(phase) * offsetPitch);
+				double finalAngle = (owner.angle - currentAngleOffset) + newAngleOffset;
+				double finalPitch = (owner.pitch - currentPitchOffset) + newPitchOffset;
+				currentAngleOffset = newAngleOffset;
+				currentPitchOffset = newPitchOffset;
+				owner.A_SetAngle(finalAngle, SPF_INTERPOLATE);
+				owner.A_SetPitch(finalPitch, SPF_INTERPOLATE);
+				offsetTics--;
+				}
+			}
+	}
+
+action void BD_WeaponReady(bool allowsecondary = false)
+	{
+	if (invoker.ammo2 && invoker.ammo2.amount > 0 && invoker.ammo1.amount < invoker.ammo1.maxamount) 
+		{
+		if (allowsecondary)	
+			A_WeaponReady(WRF_ALLOWRELOAD);
+		else
+			A_WeaponReady(WRF_NOSECONDARY|WRF_ALLOWRELOAD);
+		}
+	else 
+		{
+		if (allowsecondary)	
+			A_WeaponReady();
+		else
+			A_WeaponReady(WRF_NOSECONDARY);
+		}
+	
+	}
+
+action void BD_Reload()
+	{
+	if (invoker.ammo2)
+		{
+		while (invoker.ammo2.amount > 0 && invoker.ammo1.amount < invoker.ammo1.maxamount)
+			{
+			TakeInventory(invoker.ammo2.GetClass(),1);
+			GiveInventory(invoker.ammo1.GetClass(),1);
+			}
+		}
+	}
+
+//Casing spawn function with cool math by Marisa Kirisame (see mk_matrix)
+action void A_Eject(class<Actor> itemtype, double xofs = 0, double yofs = 0, double zofs = 0, double xvel = 0, double yvel = 0, double zvel = 0)
+	{
+		Vector3 ofs = player.mo.pos+(0,0,player.viewheight);
+		Vector3 x, y, z;
+		[x, y, z] = Matrix4.getaxes(player.mo.pitch,player.mo.angle,player.mo.roll);
+		let c = Spawn(itemtype,ofs+x*xofs+y*yofs-z*zofs);
+		c.vel = x*xvel+y*yvel+z*zvel;
+		c.target = self; //if spawned by monster it'll disappear after bouncing
+		c.angle = angle;
+	}
+}
+
+
+//////////////
+
+Class BulletTracer : FastProjectile
+{
+Default {
+	-ACTIVATEIMPACT;
+	-ACTIVATEPCROSS;
+	+NOTELEPORT;
+	+BLOODLESSIMPACT;
+	+THRUGHOST;
+	alpha 0.75;
+	renderstyle "add";
+	damage 0;
+	speed 150;
+	radius 4;
+	height 4;
+	seesound "null";
+	deathsound "null";
+	}    
+//override snippet by phantombeta
+override void Tick () {
+        Super.Tick ();
+
+        if (!playeringame [consolePlayer])
+            return;
+        
+        let curCamera = players [consolePlayer].camera;
+        if (!curCamera) // If the player's "camera" variable is null, set it to their PlayerPawn
+            curCamera = players [consolePlayer].mo;
+        if (!curCamera) // If the player's PlayerPawn is null too, just stop trying
+            return;
+
+        if (CheckIfCloser (curCamera, 192))
+            A_PlaySound("weapons/tracerwhizz",1,1.0,0,8);
+    }
+states
+	{
+	Spawn:
+		PUFF A 1 bright {
+			if (bdoom_tracers == 0)
+				self.destroy();
+			}
+		loop;
+	Xdeath:
+		TNT1 A 1;
+		stop;
+	Death:
+		TNT1 A 1 {
+			if (frandom(0.0,1.0) > 0.8)
+				A_SpawnProjectile("RicochetBullet",0,0,random(0,360),2,random(-40,40));
+			}
+		stop;
+	}
+}
+
+Class RealBullet : BulletTracer
+{
+int bulletspeed;
+int hitangle;
+property bulletspeed : bulletspeed;
+Default {
+	RealBullet.bulletspeed 150;
+	+ACTIVATEIMPACT
+	+ACTIVATEPCROSS
+	+NOTELEPORT
+	-BLOODLESSIMPACT
+	+BLOODSPLATTER
+	+THRUGHOST
+	decal "none";
+	speed 1;
+	radius 1;
+	height 1;
+	}
+override void PostBeginPlay()
+	{
+	super.PostBeginPlay();
+	vel = vel.Unit () * bulletspeed;
+	}
+states
+	{
+	Death:
+		TNT1 A 1 {
+			//if (blockingline)
+			//	hitangle = (atan2(blockingline.delta.Y, blockingline.delta.X) - 90);
+			A_SpawnItemEx("EnBulletPuff",0,0,0,0,0,0,0,SXF_SETTARGET|SXF_ORIGINATOR);
+			//Console.PrintF("hitangle %d",hitangle);
+			}
+		stop;
+	}
+}
+
+Class BD_PistolBullet : RealBullet
+{
+Default {
+	RealBullet.bulletspeed 170;
+	DamageFunction (3 * frandom(4,8));
+	}
+}
+
+Class BD_ShotgunPellet : RealBullet
+{
+Default {
+	RealBullet.bulletspeed 130;
+	DamageFunction (3 * frandom(2,5));
+	//decal "ShotChip";
+	}
+}
+
+
+Class BD_RifleBullet : BD_PistolBullet
+{
+Default {
+	RealBullet.bulletspeed 230;
+	DamageFunction (3 * frandom(6.5,8.0));
+	}
+}
+
+
+//***************
+// EMPTY CASINGS
+//***************
+
+
+
+Class Casing_General : DebrisGeneral
+{
+Default {
+	-FLOORCLIP
+	-THRUACTORS
+	-NOGRAVITY
+	-THRUACTORS
+	+ROLLCENTER
+	+BOUNCEONACTORS
+	renderstyle "normal";
+	bouncetype "doom";
+	seesound "none";
+	mass 1;
+	Radius 1;
+	Height 1;
+	bouncefactor 0.5;
+	Scale 0.15;
+	}
+states
+	{
+	Spawn:
+		CAS1 A 0 NoDelay {
+			if (self is "PistolCasing")
+				self.sprite = GetSpriteIndex("CAS1");
+			else if (self is "ShotgunCasing")
+				self.sprite = GetSpriteIndex("CAS2");
+			else if (self is "ChaingunCasing")
+				self.sprite = GetSpriteIndex("CAS3");
+			roll = random(88,92);
+			}
+	Fly:
+		#### AABBCCBB 1 {
+			roll+=22;
+			if (waterlevel > 0)
+				return ResolveState("Death");
+			return ResolveState(null);	
+			}
+		loop;
+	Death:
+		#### # 1 {
+			bNOINTERACTION = true;
+			roll = (randompick(0,180) + random(-8,8));
+			if (target && target.bISMONSTER)
+				self.destroy();
+			A_QueueCorpse();
+			A_Stop();
+			ClearBounce();
+			}
+		#### # -1;
+		stop;
+	loadsprites:
+		CAS1 ABC 0;	CAS2 ABC 0;	CAS3 ABC 0;
+		stop;
+	}
+}
+
+
+Class PistolCasing : Casing_General
+{
+Default {
+	Scale 0.11;
+	bouncesound "weapons/casing";
+	}
+}
+
+Class ShotgunCasing : Casing_General
+{ 
+Default {
+	Scale 0.2;
+	bouncesound "weapons/shotgunshells";
+	}
+}
+
+Class ChaingunCasing : Casing_General
+{ 
+Default {
+	Scale 0.15;
+	bouncesound "chaingun/casing";
+	}
+}
