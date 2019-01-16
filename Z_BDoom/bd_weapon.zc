@@ -29,33 +29,33 @@ action void A_CameraSway(double aoffset, double poffset, int tics)
 
 override void DoEffect()
 	{
-		Super.DoEffect();
-		if (owner) {
-			if(bdoom_weapons == 2) {
-					BobRangeX = 0.2;
-					BobRangeY = 0.2;
-					BobStyle = 5;
-					BobSpeed = 2.0;
-				}
-			else {
-					BobRangeX = 1.0;
-					BobRangeY = 1.0;
-					BobStyle = 0;
-					BobSpeed = 1.0;
-				}
-			if (offsetTics >= 0) {
-				double phase = (offsetTics / maxOffsetTics) * 90.0;
-				double newAngleOffset = (cos(phase) * offsetAngle);
-				double newPitchOffset = (cos(phase) * offsetPitch);
-				double finalAngle = (owner.angle - currentAngleOffset) + newAngleOffset;
-				double finalPitch = (owner.pitch - currentPitchOffset) + newPitchOffset;
-				currentAngleOffset = newAngleOffset;
-				currentPitchOffset = newPitchOffset;
-				owner.A_SetAngle(finalAngle, SPF_INTERPOLATE);
-				owner.A_SetPitch(finalPitch, SPF_INTERPOLATE);
-				offsetTics--;
-				}
+	Super.DoEffect();
+	if (owner) {
+		if(bdoom_weapons == 2) {
+				BobRangeX = 0.2;
+				BobRangeY = 0.2;
+				BobStyle = 5;
+				BobSpeed = 2.0;
 			}
+		else {
+				BobRangeX = 1.0;
+				BobRangeY = 1.0;
+				BobStyle = 0;
+				BobSpeed = 1.0;
+			}
+		if (offsetTics >= 0) {
+			double phase = (offsetTics / maxOffsetTics) * 90.0;
+			double newAngleOffset = (cos(phase) * offsetAngle);
+			double newPitchOffset = (cos(phase) * offsetPitch);
+			double finalAngle = (owner.angle - currentAngleOffset) + newAngleOffset;
+			double finalPitch = (owner.pitch - currentPitchOffset) + newPitchOffset;
+			currentAngleOffset = newAngleOffset;
+			currentPitchOffset = newPitchOffset;
+			owner.A_SetAngle(finalAngle, SPF_INTERPOLATE);
+			owner.A_SetPitch(finalPitch, SPF_INTERPOLATE);
+			offsetTics--;
+			}
+		}
 	}
 
 action void BD_WeaponReady(bool allowsecondary = false)

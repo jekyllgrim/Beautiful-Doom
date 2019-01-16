@@ -8,6 +8,15 @@ bool burning; //is showing burning or smoking animation
 int burntimer;
 int firetype; //0 = only smoke; 1 = regular yellow; 2 = baron green
 
+bool highfall;
+/*void BD_CheckFall() {
+	if (pos.z >= floorz+128)
+		highfall = true;
+	}
+void BD_Drop() {
+	if (highfall)
+		A_PlaySound("body/fall");
+	}*/
 Default {
 	Monster;
 	BDoomMonster.monsterclip 10;
@@ -65,78 +74,50 @@ override void Tick() {
 
 void BD_Gibs()
     {
-		if (bdoom_gibs == 0)
-			return;
+	if (bdoom_gibs == 0)
+		return;
 
-		A_PlaySound("gibs/gibbed");
-		for (int i = 18; i > 0; i--)
-			A_SpawnItemEx("BFountainSpray",frandom(-5.0,5.0),frandom(-5.0,5.0),random(8,28),vel.x*frandom(0.05,0.15),vel.y*frandom(0.05,0.15),frandom(4.5,6.5),0,SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION,36);
-		for (int i = 6; i > 0; i--)
-			A_SpawnItemEx("BasicMeatPiece",random(-4,4),random(-4,4),random(10,48),		vel.x*frandom(0.35,1.2),vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 64);
+	A_PlaySound("gibs/gibbed");
+	for (int i = 18; i > 0; i--)
+		A_SpawnItemEx("BFountainSpray",frandom(-5.0,5.0),frandom(-5.0,5.0),random(8,28),vel.x*frandom(0.05,0.15),vel.y*frandom(0.05,0.15),frandom(4.5,6.5),0,SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION,36);
+	for (int i = 6; i > 0; i--)
+		A_SpawnItemEx("BasicMeatPiece",random(-4,4),random(-4,4),random(10,48),		vel.x*frandom(0.35,1.2),vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 64);
 
-		A_SpawnItemEx("Gib_Intestine",	frandom(-4,4),frandom(-4,4),frandom(8,28),vel.x*frandom(0.3,1),vel.y*frandom(0.3,1),frandom(3,5),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 92);
-		A_SpawnItemEx("Gib_Intestine",	frandom(-4,4),frandom(-4,4),frandom(8,28),vel.x*frandom(0.3,1),vel.y*frandom(0.3,1),frandom(3,5),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 170);
-		A_SpawnItemEx("Gib_Lung",	frandom(-4,4),frandom(-4,4),frandom(8,28),vel.x*frandom(0.3,1),vel.y*frandom(0.3,1),frandom(3,5),	0,		SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 144);
-		A_SpawnItemEx("Gib_Lung",	frandom(-4,4),frandom(-4,4),frandom(8,28),vel.x*frandom(0.3,1),vel.y*frandom(0.3,1),frandom(3,5),	0,		SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 144);
-		A_SpawnItemEx("Gib_liver",	frandom(-4,4),frandom(-4,4),frandom(8,28),vel.x*frandom(0.3,1),vel.y*frandom(0.3,1),frandom(3,5),	0,		SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 128);
-		A_SpawnItemEx("Gib_kidneys",	frandom(-4,4),frandom(-4,4),frandom(8,28),vel.x*frandom(0.3,1),vel.y*frandom(0.3,1),frandom(3,5),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 128);
-		
-		A_SpawnItemEx("Gib_Hand",	frandom(6,4),frandom(-4,4),frandom(35,40),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-		A_SpawnItemEx("Gib_Hand",	frandom(6,4),frandom(-4,4),frandom(35,40),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-		A_SpawnItemEx("Gib_Leg",	frandom(6,4),frandom(-4,4),frandom(10,12),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-		A_SpawnItemEx("Gib_Leg",	frandom(6,4),frandom(-4,4),frandom(10,12),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-		A_SpawnItemEx("Gib_head",	frandom(-2,2),frandom(-2,2),frandom(42,48),vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-				
-/*		if (self is "BD_Zombieman") {
-			A_SpawnItemEx("PossTorso1",	random(-4,4),random(-4,4),random(5,48),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(1,2),	random(-45,-135),	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION);
-			A_SpawnItemEx("PossTorso2",	random(-4,4),random(-4,4),random(5,48),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(1,2),	random(45,135),		SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION);
-			A_SpawnItemEx("PossHand",	random(-6,-4),random(-4,4),random(35,40),vel.x*frandom(0.35,1.2),vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			A_SpawnItemEx("PossHand",	random(6,4),random(-4,4),random(35,40),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			A_SpawnItemEx("PossLeg1",	random(-6,-4),random(-4,4),random(10,12),vel.x*frandom(0.35,1.2),vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			A_SpawnItemEx("PossLeg2",	random(6,4),random(-4,4),random(10,12),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			A_SpawnItemEx("PossHead",	random(-2,2),random(-2,2),random(42,48),vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			}
-		else if (self is "BD_DoomImp") {
-			A_SpawnItemEx("ImpTorso1",	random(-4,4),random(-4,4),random(5,48),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(1,2),	random(-45,-135),	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION);
-			A_SpawnItemEx("ImpTorso2",	random(-4,4),random(-4,4),random(5,48),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(1,2),	random(45,135),		SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION);
-			A_SpawnItemEx("ImpHand",	random(-6,-4),random(-4,4),random(35,40),vel.x*frandom(0.35,1.2),vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			A_SpawnItemEx("ImpHand",	random(6,4),random(-4,4),random(35,40),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			A_SpawnItemEx("ImpLeg1",	random(-6,-4),random(-4,4),random(10,12),vel.x*frandom(0.35,1.2),vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			A_SpawnItemEx("ImpLeg2",	random(6,4),random(-4,4),random(10,12),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			A_SpawnItemEx("ImpHead",	random(-2,2),random(-2,2),random(42,48),vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			}
-		else if (self is "BD_ShotgunGuy") {
-			A_SpawnItemEx("SposTorso1",	random(-4,4),random(-4,4),random(5,48),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(1,2),	random(-45,-135),	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION);
-			A_SpawnItemEx("SposTorso2",	random(-4,4),random(-4,4),random(5,48),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(1,2),	random(45,135),		SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION);
-			A_SpawnItemEx("SposHand",	random(-6,-4),random(-4,4),random(35,40),vel.x*frandom(0.35,1.2),vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			A_SpawnItemEx("SposHand",	random(6,4),random(-4,4),random(35,40),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			A_SpawnItemEx("SposLeg1",	random(-6,-4),random(-4,4),random(10,12),vel.x*frandom(0.35,1.2),vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			A_SpawnItemEx("SposLeg2",	random(6,4),random(-4,4),random(10,12),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			A_SpawnItemEx("SposHead",	random(-2,2),random(-2,2),random(42,48),vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			}
-		else if (self is "BD_ChaingunGuy") {
-			A_SpawnItemEx("CPosTorso1",	random(-4,4),random(-4,4),random(5,48),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(1,2),	random(-45,-135),	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION);
-			A_SpawnItemEx("CPosTorso2",	random(-4,4),random(-4,4),random(5,48),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(1,2),	random(45,135),		SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION);
-			A_SpawnItemEx("CPosHand",	random(-6,-4),random(-4,4),random(35,40),vel.x*frandom(0.35,1.2),vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			A_SpawnItemEx("CPosHand",	random(6,4),random(-4,4),random(35,40),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			A_SpawnItemEx("CPosLeg",	random(-6,-4),random(-4,4),random(10,12),vel.x*frandom(0.35,1.2),vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			A_SpawnItemEx("CPosLeg",	random(6,4),random(-4,4),random(10,12),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			A_SpawnItemEx("CPosHead",	random(-2,2),random(-2,2),random(42,48),vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			}
-		else if (self is "BD_WolfenSteinSS") {
-			A_SpawnItemEx("SSTorso1",	random(-4,4),random(-4,4),random(5,48),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(1,2),	random(-45,-135),	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION);
-			A_SpawnItemEx("SSTorso2",	random(-4,4),random(-4,4),random(5,48),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(1,2),	random(45,135),		SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION);
-			A_SpawnItemEx("SSHand",	random(-6,-4),random(-4,4),random(35,40),vel.x*frandom(0.35,1.2),vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			A_SpawnItemEx("SSHand",	random(6,4),random(-4,4),random(35,40),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			A_SpawnItemEx("SSLeg",	random(-6,-4),random(-4,4),random(10,12),vel.x*frandom(0.35,1.2),vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			A_SpawnItemEx("SSLeg",	random(6,4),random(-4,4),random(10,12),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			A_SpawnItemEx("SSHead",	random(-2,2),random(-2,2),random(42,48),vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			A_SpawnItemEx("SSCap",	random(-2,2),random(-2,2),random(42,48),vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-			}*/
+	A_SpawnItemEx("Gib_Intestine",	frandom(-4,4),frandom(-4,4),frandom(8,28),vel.x*frandom(0.3,0.8),vel.y*frandom(0.3,0.8),frandom(3,5),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 92);
+	A_SpawnItemEx("Gib_Intestine",	frandom(-4,4),frandom(-4,4),frandom(8,28),vel.x*frandom(0.3,0.8),vel.y*frandom(0.3,0.8),frandom(3,5),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 170);
+	A_SpawnItemEx("Gib_Lung",		frandom(-4,4),frandom(-4,4),frandom(8,28),vel.x*frandom(0.3,0.8),vel.y*frandom(0.3,0.8),frandom(3,5),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 144);
+	A_SpawnItemEx("Gib_Lung",		frandom(-4,4),frandom(-4,4),frandom(8,28),vel.x*frandom(0.3,0.8),vel.y*frandom(0.3,0.8),frandom(3,5),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 144);
+	A_SpawnItemEx("Gib_liver",		frandom(-4,4),frandom(-4,4),frandom(8,28),vel.x*frandom(0.3,0.8),vel.y*frandom(0.3,0.8),frandom(3,5),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 128);
+	A_SpawnItemEx("Gib_kidneys",	frandom(-4,4),frandom(-4,4),frandom(8,28),vel.x*frandom(0.3,0.8),vel.y*frandom(0.3,0.8),frandom(3,5),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 128);
+	
+	A_SpawnItemEx("Gib_Hand",		frandom(6,4),frandom(-4,4),frandom(35,40),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
+	A_SpawnItemEx("Gib_Hand",		frandom(6,4),frandom(-4,4),frandom(35,40),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
+	A_SpawnItemEx("Gib_Leg",		frandom(6,4),frandom(-4,4),frandom(10,12),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
+	A_SpawnItemEx("Gib_Leg",		frandom(6,4),frandom(-4,4),frandom(10,12),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
+	A_SpawnItemEx("Gib_head",		frandom(-2,2),frandom(-2,2),frandom(42,48),vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
+	
+	actor torso1 = Spawn("Gib_Torso1",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),pos.z+frandom(18,28)));
+	torso1.vel.x = vel.x*frandom(0.7,0.95);
+	torso1.vel.y = vel.y*frandom(0.7,0.95);
+	torso1.vel.z = vel.z*frandom(0.7,0.95);
+	torso1.target = self;
+	torso1.scale.x = randompick(-1,1);
+	actor torso2 = Spawn("Gib_Torso2",(pos.x,pos.y+frandom(-8,8),pos.z+frandom(12,24)));
+	torso2.vel.x = vel.x*frandom(0.7,0.95);
+	torso2.vel.y = vel.y*frandom(0.7,0.95);
+	torso2.vel.z = vel.z*frandom(0.7,0.95);
+	torso2.target = self;
+	if (torso1.scale.x == -1) //horizontal scale is randomized but synced between pieces of the same body
+		torso2.scale.x = -1;
+	//A_SpawnItemEx("Gib_Torso1",	0,frandom(-8,8),frandom(12,24),	vel.x*frandom(0.7,0.95),vel.y*frandom(0.7,0.95),vel.z*frandom(0.7,0.95), 0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION);
+	//A_SpawnItemEx("Gib_Torso2",	0,frandom(-8,8),frandom(12,24),	vel.x*frandom(0.7,0.95),vel.y*frandom(0.7,0.95),vel.z*frandom(0.7,0.95), 0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION);
     }
 	
 states
 	{
+	Crush:
+		CRS1 A -1;
+		stop;
 	Deathbleed: //for spawning animated blood pool and flies
 		#### # random(35,55) {
 			if (burning)
@@ -227,5 +208,13 @@ states
 			return ResolveState(null);
 			}
 		stop;
+	XDeath.Particles:
+		TNT1 A 1 {
+			A_XScream();
+			A_NoBlocking();
+			BD_Gibs();
+			}
+		TNT1 ABCDEFGHIJKLMN 2;
+		goto deathend;
 	}
 }

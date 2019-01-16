@@ -27,9 +27,6 @@ states
 		TNT1 A 0 A_SetScale(1.0,1.0);
 	    POS1 ABCDDCBA 4 A_Chase();
 		loop; 	
-	Crush:
-		CRS1 A -1;
-		stop;
 	Missile:
 		TNT1 A 0 A_Jumpif(bdoom_weapons==2,"MissileModern");
 		PSSA A 5 A_FaceTarget();
@@ -92,9 +89,11 @@ states
 		goto see;
 	Death:
 		TNT1 A 0 {
+			BD_CheckFall();
 			if (bdoom_gibs == 1 && health < -10 && !burning)
 				return ResolveState("DecapDeath");
 			else
+				//return A_Jump(256,"Death1");
 				return A_Jump(256,"Death.Vanilla","Death1","Death2");
 			return ResolveState(null);
 			}
@@ -114,12 +113,15 @@ states
 	Death1: //fall forward
 		POSO A 3 BD_Bleed();
 		POSO B 3 A_Scream();
-		POSO C 3 {
-			A_NoBlocking();
-			BD_Bleed();
+		POSO C 3;
+		POSO DDDMMD random(4,7) {
+			if (random(0,100) < 40) {
+				A_PlaySound("gibs/bloodspurt");
+				A_SpawnItemEx("FrontalSpurt",2,frandom(-0.1,0.1),29.5,0,0,0,random(-87,93),SXF_SETTARGET);
+				}
 			}
-		POSO D 3 BD_Bleed();
-		POSO EFGHI 3;
+		POSO EFGH 3;
+		POSO I 3 A_PlaySound("body/fall");
 		POSO JK 4;
 		POSO L 1;
 		goto deathbleed;
@@ -146,18 +148,18 @@ states
 		goto deathbleed;
 	Death.Saw:
 		TNT1 A 0 A_JumpIf(bdoom_gibs==0,"Death");
-		//TNT1 A 0 A_Jump(128,"Death");
+		TNT1 A 0 A_Jump(128,"Death");
 		TNT1 A 0 { 
 			A_SetScale(scale.x*randompick(-1,1),scale.y);
 			A_FaceTarget();
 			A_Pain();
 			}
-		POSY AZ 18 	A_SpawnItemEx("BloodSprayer",	0,0,42,0,0,0,0,SXF_SETTARGET,144);
+		POSY AAZZ random(8,10) A_SpawnItemEx("BloodSpurt",	1,0,frandom(30,38),0,0,0,random(-40,40),SXF_SETTARGET,96);
 		POSY Z 5 {
 			A_Pain();
 			A_NoBlocking();
 			}
-		POSY AZ 20 	A_SpawnItemEx("BloodSprayer",	frandom(-4,4),random(-4,-4),random(24,26),0,0,0,0,SXF_SETTARGET,144);
+		POSY AAZZ random(8,10) A_SpawnItemEx("BloodSpurt", 1,0,frandom(30,38),0,0,0,random(-40,40),SXF_SETTARGET,96);
 		POSY Z 5 A_Scream();
 		POSY BCDEFG 3 A_SpawnItemEx("Blood",	frandom(-4,4),frandom(0,6),	frandom(12,18),	frandom(2,4),0,frandom(4,6),	random(-20,20),SXF_SETTARGET,128);
 		TNT1 A 0 A_PlaySound("gibs/meatland");
@@ -182,13 +184,6 @@ states
 		ZGIB e 2 A_NoBlocking();
 		ZGIB f 2;
 		ZGIB ghijklmnopq 2;
-		goto deathbleed;
-	XDeath.Particles:
-		TNT1 A 0 BD_Gibs();
-		POSX AB 2;
-		POSX C 2 A_XScream();
-		POSX D 2 A_NoBlocking();
-		POSX EFGHIJKLMNO 2;
 		goto deathbleed;
 		}
 }

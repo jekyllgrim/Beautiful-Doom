@@ -142,7 +142,7 @@ states
 			}
 		loop;
 	BarrelSmoke:
-		TNT1 A random(30,35);
+		TNT1 A 12;
 		TNT1 AAAAAAAAAAAAAAA 	random(1,2) {
 			let s = player.GetPSprite(PSP_Weapon);
 			if (invoker.InStateSequence(s.curstate,invoker.FindState("Ready"))			||
@@ -151,7 +151,7 @@ states
 			}
 		stop;
 	BarrelSmokeFull:
-		TNT1 A random(20,25);
+		TNT1 A 4;
 		TNT1 AAAAAAAAAAAAAAA 	random(1,2) {
 			let s = player.GetPSprite(PSP_Weapon);
 			if (invoker.InStateSequence(s.curstate,invoker.FindState("Ready"))			||
@@ -211,7 +211,7 @@ states
 			A_WeaponReady(WRF_NOSECONDARY);
 			A_WeaponOffset(0.0,-0.75,WOF_ADD);
 			}
-		MGGG AABBCCDDAAABBBCCCDDD 1 A_WeaponReady(WRF_NOSECONDARY);
+		MGGG ABCDAABBCCDD 1 A_WeaponReady(WRF_NOSECONDARY);
 		goto ready;
 	Flash:
 		TNT1 A 0 { 
@@ -402,7 +402,7 @@ states
 			}
 		goto ready;		
 	BarrelSmoke.Modern:
-		TNT1 A random(10,15);
+		TNT1 A 8;
 		TNT1 AAAAAAAAAAAAAAA 	random(1,2) {
 			let s = player.GetPSprite(PSP_Weapon);
 			if (invoker.InStateSequence(s.curstate,invoker.FindState("Ready"))			||
@@ -411,7 +411,7 @@ states
 			}
 		stop;
 	BarrelSmoke.Sights:
-		TNT1 A random(20,25);
+		TNT1 A 8;
 		TNT1 AAAAAAAAAAAAAAA 	random(1,2) {
 			let s = player.GetPSprite(PSP_Weapon);
 			if (invoker.InStateSequence(s.curstate,invoker.FindState("ReadySights")))
@@ -444,7 +444,7 @@ states
 				A_overlay(20,"BarrelSmoke.Modern");
 				}
 			}
-		TNT1 A 0 A_ReFire("Hold.Modern");
+		TNT1 A 0 A_ReFire("Fire.Modern");
 		TNT1 A 0 A_JumpIfNoAmmo(2);
 		RIFN A 2;
 		goto ready;

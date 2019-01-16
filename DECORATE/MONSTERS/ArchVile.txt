@@ -144,10 +144,10 @@ states
 		Goto See
 	Death:
 		TNT1 A 0 A_SetScale(scalex*randompick(-1,1),scaley)
-		VILM A 3 A_spawnitemEx("BloodSprayer",0,0,random(16,32),0,0,0,0,SXF_SETTARGET)
+		VILM A 3 A_spawnitemEx("BloodSpurt",0,0,random(16,32),0,0,0,0,SXF_SETTARGET)
 		VILM B 3 A_Scream
 		VILM C 3 A_NoBlocking
-		VILM DEFGHIJKLM 3 A_spawnitemEx("BloodSprayer",0,0,random(16,32),0,0,0,0,SXF_SETTARGET)
+		VILM DEFGHIJKLM 3 A_spawnitemEx("BloodSpurt",0,0,random(16,32),0,0,0,0,SXF_SETTARGET)
 		VILM M -1
 		Stop
 	XDeath:

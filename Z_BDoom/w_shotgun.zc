@@ -130,7 +130,7 @@ States
 			}
 		Goto Ready;
 	BarrelSmoke:
-		TNT1 A random(5,10);
+		//TNT1 A 1;
 		TNT1 AAAAAAAAAAAAAAA 	random(1,2) {
 			let s = player.GetPSprite(PSP_Weapon);
 			if (invoker.InStateSequence(s.curstate,invoker.FindState("Ready"))			||

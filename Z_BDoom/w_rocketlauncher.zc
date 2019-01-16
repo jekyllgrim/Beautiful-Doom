@@ -217,7 +217,7 @@ states
 		TNT1 A 0 A_TakeInventory("RLClip",1);
 		RORN A 1;
 		RORN B 1;
-		TNT1 A 0 A_FireProjectile("ModernGrenadeFlare",0,0,0,0,0,-5);
+		//TNT1 A 0 A_FireProjectile("ModernGrenadeFlare",0,0,0,0,0,-5);
 		RORN C 1 A_FireProjectile("ModernGrenade",0,0,0,0,0,-5);
 		TNT1 A 0 A_SetPitch(pitch - 0.25,SPF_INTERPOLATE);
 		RORN D 2;
@@ -230,7 +230,7 @@ states
 		TNT1 A 0 A_TakeInventory("RLClip",1);
 		RORN A 1;
 		RORN B 1;
-		TNT1 A 0 A_FireProjectile("ModernGrenadeFlare",0,0,0,0,0,-5);
+		//TNT1 A 0 A_FireProjectile("ModernGrenadeFlare",0,0,0,0,0,-5);
 		RORN C 1 A_FireProjectile("ModernGrenade",0,0,0,0,0,-5);
 		TNT1 A 0 A_SetPitch(pitch - 0.25,SPF_INTERPOLATE);
 		RORN D 2;
@@ -243,7 +243,7 @@ states
 		TNT1 A 0 A_TakeInventory("RLClip",1);
 		RORE A 1;
 		RORE B 1;
-		TNT1 A 0 A_FireProjectile("ModernGrenadeFlare",0,0,0,0,0,-5);
+		//TNT1 A 0 A_FireProjectile("ModernGrenadeFlare",0,0,0,0,0,-5);
 		RORN C 1 A_FireProjectile("ModernGrenade",0,0,0,0,0,-5);
 		TNT1 A 0 A_SetPitch(pitch - 0.25,SPF_INTERPOLATE);
 		RORN D 2;
@@ -256,7 +256,7 @@ states
 		TNT1 A 0 A_TakeInventory("RLClip",1);
 		RORE C 1;
 		RORE D 1;
-		TNT1 A 0 A_FireProjectile("ModernGrenadeFlare",0,0,0,0,0,-5);
+		//TNT1 A 0 A_FireProjectile("ModernGrenadeFlare",0,0,0,0,0,-5);
 		RORE E 2 A_FireProjectile("ModernGrenade",0,0,0,0,0,-5);
 		TNT1 A 0 A_SetPitch(pitch - 0.25,SPF_INTERPOLATE);
 		RORN D 2;
@@ -271,14 +271,11 @@ states
 		TNT1 A 0 A_Overlay(-3,"ReloadMag");
 		TNT1 A 1 {
 			let ws = player.FindPSprite (PSP_Weapon);
-			if (countinv("RLCLip") >= 1) {
-				ws.sprite = GEtSpriteIndex("RORR");
+			ws.sprite = GEtSpriteIndex("RORR");
+			if (countinv("RLCLip") > 0)
 				ws.frame = 0;
-				}
-			else {
-				ws.sprite = GEtSpriteIndex("RORR");
+			else
 				ws.frame = 1;
-				}
 			}
 		#### ####### 1 A_WeaponOffset(-1.1,0.5,WOF_ADD);
 		#### # 8 A_WeaponOffset(0.0,0.0,WOF_ADD);
@@ -297,11 +294,11 @@ states
 		goto ready;
 	ReloadMag:
 		RORT A 1 {
-			let ws = player.FindPSprite (PSP_Weapon);
+			let ws = player.FindPSprite (-3);
 			ws.sprite = GEtSpriteIndex("RORT");
-			if (countinv("RLCLip") >= 3)
+			if (countinv("RLCLip") > 2)
 				ws.frame = 0;
-			else if (countinv("RLCLip") >= 2)
+			else if (countinv("RLCLip") > 1)
 				ws.frame = 1;
 			else
 				ws.frame = 2;
@@ -312,10 +309,10 @@ states
 		#### # 13 BD_Reload();
 
 		RORT A 1 {
-			let ws = player.FindPSprite (PSP_Weapon);
-			if (countinv("RLCLip") >= 3)
+			let ws = player.FindPSprite (-3);
+			if (countinv("RLCLip") > 2)
 				ws.frame = 0;
-			else if (countinv("RLCLip") >= 2)
+			else if (countinv("RLCLip") > 1)
 				ws.frame = 1;
 			else
 				ws.frame = 2;
@@ -534,40 +531,63 @@ default
 	+EXPLODEONWATER;
 	-ALLOWBOUNCEONACTORS;
 	+FORCEXYBILLBOARD;
+	-FLOORCLIP
 	seesound "Mweapons/grenade/fire";
 	bouncesound "Mweapons/grenade/bounce";
 	}
+override void PostBeginPlay() {
+	super.PostBeginPlay();
+	 A_SPawnItemEx("ModernGrenadeFlare",	0,0,0,	0,0,0,	0,SXF_SETMASTER|SXF_ORIGINATOR);
+	 }
 states
 	{
 	Spawn:
-		MROG AABBCCDD 1 bright A_SPawnItemEx("ModernGrenadeTrail",0,0,0,0,0,0,0,SXF_SETMASTER);
+		MROG AABBCCDD 1 bright NoDelay A_SPawnItemEx("ModernGrenadeTrail",0,0,0,0,0,0,0,SXF_SETMASTER|SXF_ORIGINATOR);
 		loop;
 	Death:
-		TNT1 A 0 { bNOGRAVITY = true; }
+		MROG # 35 bright;
+		goto super::Death;
+	XDeath:
+		TNT1 A 0;
 		goto super::Death;
 	}
 }
 
-Class ModernGrenadeFlare : ModernGrenade
+Class ModernGrenadeFlare : Flare_General
 {
 Default 
 	{
-	damage 0;
-	seesound "";
 	renderstyle "Add";
-	alpha .4;
-	scale .05;
+	alpha 0.4;
+	scale 0.05;
 	}
+override void Tick()
+	{
+	super.Tick();
+	if (master)
+		SetOrigin(master.pos,1);
+	else
+		self.destroy();
+	} 
 states
 	{
 	Spawn:
-		LENY A 1 bright A_Warp(AAPTR_MASTER,0,0,0,0);
+		LENY A 1 bright NoDelay {
+			if (master && master.InStateSequence(master.curstate,master.FindState("Death")))
+				return ResolveState("Death");
+			return ResolveState(null);
+			}
 		loop;
 	Death:
-		TNT1 A 1;
-		stop;
-	Death.Sky:
-		TNT1 A 1;
+		LENR A 4 bright;
+		TNT1 A 3;
+		LENR A 4 bright;
+		TNT1 A 3;
+		LENR A 4 bright;
+		TNT1 A 3;
+		LENR A 4 bright;
+		TNT1 A 3;
+		LENR A 4 bright;
 		stop;
 	}
 }

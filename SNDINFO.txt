@@ -16,12 +16,6 @@ weapons/ricochet5	RICO5
 weapons/ricochet6	RICO6
 weapons/ricochet7	RICO7
 
-$random bullet/metal { bmetal1 bmetal2 bmetal3 bmetal4 bmetal5 }
-bmetal1		"sounds/impacts/bullet-metal1.ogg"
-bmetal2		"sounds/impacts/bullet-metal2.ogg"
-bmetal3		"sounds/impacts/bullet-metal3.ogg"
-bmetal4		"sounds/impacts/bullet-metal4.ogg"
-bmetal5		"sounds/impacts/bullet-metal5.ogg"
 $random bullet/stone { bstone1 bstone2 bstone3 bstone4 }
 bstone1		"sounds/impacts/bullet-stone1.ogg"
 bstone2		"sounds/impacts/bullet-stone2.ogg"
@@ -34,6 +28,23 @@ bwood3		"sounds/impacts/bullet-wood3.ogg"
 $random bullet/body { bbody1 bbody2 }
 bbody1		"sounds/impacts/bullet-body1.ogg"
 bbody2		"sounds/impacts/bullet-body2.ogg"
+$random bullet/metal { bmetal1 bmetal2 bmetal3 bmetal4 bmetal5 }
+bmetal1		"sounds/impacts/bullet-metal1.ogg"
+bmetal2		"sounds/impacts/bullet-metal2.ogg"
+bmetal3		"sounds/impacts/bullet-metal3.ogg"
+bmetal4		"sounds/impacts/bullet-metal4.ogg"
+bmetal5		"sounds/impacts/bullet-metal5.ogg"
+
+$limit bmetal1 1 512
+$limit bmetal2 1 512
+$limit bmetal3 1 512
+$limit bmetal4 1 512
+$limit bmetal5 1 512
+
+$random body/fall { bodyfall1 bodyfall2 bodyfall3 }
+bodyfall1	"sounds/bodyfalls/bodyfall1.ogg"
+bodyfall2	"sounds/bodyfalls/bodyfall2.ogg"
+bodyfall3	"sounds/bodyfalls/bodyfall3.ogg"
 
 $playersound	player male *land DSPLAND
 $playersound	player female *land DSPLAND
