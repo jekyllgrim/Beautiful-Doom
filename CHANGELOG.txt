@@ -1,124 +1,15 @@
-===========================================================================
-Advanced engine needed  : GZDoom 3.2.5 or newer
-Primary purpose         : No levels included
-===========================================================================
-Title                   : Beautiful Doom (version 6.4.0)
-Filename                : BDoom633.pk3
-Release date            : 
-Authors                 : Agent_Ash aka Jekyll Grim Payne, Gifty
-Email Address           : jekyllgrim@gmail.com
-Other Files By Author   : runngun2.wad, wizardr2.wad (aka wizard2.wad),
-                          equilibr.wad, painkill.wad, badguns.wad, 
-						  virtus.wad, rusars.wad, rusarsR.wad
-Additional Credits		: 
+TBA
 
-* Gifty - for Smooth Doom where most of smooth monsters come from. Check out his mod:
-https://forum.zdoom.org/viewtopic.php?t=45550	
-
-* Death Egg - for all the really sweet HD item sprites
-
-* phantombeta, Marisa Kirisame, Accensus, josh771, Caligari87, Nash, Zombie — Zscript help and contributions
-
-* 3saster — code contributions, various fixes and minor improvements
-						
-* Mike12 - for original assault rifle sprites
-
-* Revenant100 - Minor Sprite Fixing project
-https://www.doomworld.com/vb/wads-mods/62403-doom-2-minor-sprite-fixing-project-v1-2-release-updated-1-1-13/
-				
-* perkistan — Doom HD sound pack which is included
-https://www.doomworld.com/vb/wads-mods/58879-the-hi-res-doom-sound-pack-is-updated/
-For older Smooth Weapon Animation mod
-						
-* The Zombie Killer - ACS footsteps
-http://forum.zdoom.org/viewtopic.php?f=37&t=35388
-	
-* Michael Henderson - Ultra Heavy Laser sound effect
-
-* Enjay - new switches and splashes, various help
-
-* Nash - Nashgore and SpriteShadows
-
-* D2JK — helping with proper blood pool collision
-	
-* David G. - Doom Guy alt. death sprites
-						
-* DenisBelmondo - Doom Guy alt. death sprites
-
-* WildWeasel - for cool ww-diaz.wad and inspiration
-						  
-* alando1 - some of the additional death  sprites
-
-* BurningCadavre - bug reports
-
-			  
-Description             : Beautiful Doom is the grandfather of enhancement mods,
-						  born in 2008, updated multiple times, and finally
-						  updated again in 2015, after a long silence. Version 6.0
-						  was an ultimate update that took it to the next level.
-						
-						  It's a mod that keeps original Doom gameplay unchanged 
-						  but introduces lots of special effects and visual 
-						  enhancements for deeper and more thrilling Doom 
-						  experience. Practically every single object in Doom was
-						  remade and updated, and many effects can be controlled
-						  while using the mod.
-
-Known Issues			: "Smarter" sprite clipping mode is recommended. If you
-						  notice some issues like sprites bouncing up and down or
-						  clipping through the floor, use "Smart" clipping.
-				
-						  Sometimes using kick (Enhanced Fist's alt. attack) may
-						  kick back some decorative objects like projectile
-						  trails.
-
-						  If you play the mod with another wad that contains its own
-						  animated textures which use parts of the Doom vanilla
-						  textures (such as water, lava), the texture may freeze 
-						  without showing any animation or special effects.
-
-						  If you suffer from performance issues or don't like 
-						  some of the new effects, you can use options under 
-						  'Beautiful Doom Settings', which let you turn on and
-						  off advanced gibbing, blood, smoke and plasma trails
-						  and debris, weapon empty casings and weapon smoke,
-						  as well as set up the maximum amount of debris and blood.
-
-===========================================================================
-
-YOUTUBE TRAILER: https://www.youtube.com/watch?v=axs1rA4KdaQ
-
-WHAT'S NEW IN 6.x compared to the earlier generation of the mod:
-
-* It's inside a properly-structured pk3
-* All weapons carefully imitate vanilla behavior
-* Added an option to switch between Vanilla and Enhanced weapons; the latter are 
-slightly rebalanced and have alternative attacks and new SFX.
-* Added Beautiful Doom Options menu that allows toggling various SFX.
-* Monsters also have fully vanilla behavior. For example Arch-Vile can now
-properly resurrect gibbed monsters, and Spider-Mastermind shoots at proper
-speed (although it looks like she's shooting faster, it's just for show).
-* Most sprites have been redrawn, with better detail and more variations.
-They also use smooth animations from Smooth Doom with Gifty's blessing.
-* Gibs have improved and optimized physics
-* LOTS of new deaths, including dismemberment (when you deal more damage than needed
-  for regular death but not enough to gib the monster), lots of regular deaths
-  plus a chainsaw death for some enemies
-* New footsteps code by The Zombie Killer
-* Tons of code optimizations and bug fixes
-
-
- ** MINOR VERSIONS CHANGELOG **
----------------------------------
-NEXT VERSION TBD || TBD
 * ADDED/IMPROVED *
--- Added Modern weaponset
--- Completely revamped blood graphics and physics
+-- Code ported to ZScript (in progress)
+-- Added Modern weaponset (in progress)
+-- Completely revamped blood and gibs graphics and physics
 -- Brightmaps for vanilla Doom textures by Reikall
 -- Bullet tracers now aim exactly at the same place where the hitscan bullet hits (thanks A_D_M_E_R_A_L for the suggestion) 
 -- Added SpriteShadow mod by Nash Muhandes
 -- The red 'overheat' tint of the Enhanced Chaingun now has several degrees of intensity that fade in and out gradually
 -- BFG ball's decorative lightning now does lag behind the ball itself
+-- Brightmaps for vanilla Doom textures (in progress)
 
 * FIXED *
 -- Empty casings now spawn at the corret position when using Vanilla Pistol
@@ -134,7 +25,7 @@ NEXT VERSION TBD || TBD
 -- The statusbar kill count now caps at 9999 monsters instead of 999
 -- You can no longer fire 3 shots using dual Pistols if you only have 2 pistol ammo left
 -- When using Enhanced Chaingun alt. attack the first three bullets will no longer have 0 spread
--- Icon of Sin's and Arch Vile summoning pentagrams will no longer fall down if they were created in the air
+-- Icon of Sin's and Arch-Vile's summoning pentagrams will no longer fall down if they were created in the air
 
 
 * CHANGED *
@@ -486,34 +377,6 @@ VERSION 6.1.0.0
 	- Decorative dead bodies don't spawn decorative blood as often
 	- Changed the font and the position of the SFX-toggle on-screen messages
 	- Added improved HD sprites for Medikit, Stimpack, Berserk, Health Bonus, Green Armor and Blue Armor
-
-
-SEE THE EARLIER CHANGELOG ENTRIES AT THE BOTTOM OF THE DOCUMENT
-
-****************************************************************************
-
-* Copyright / Permissions *                                  
-
-Authors MAY use the contents of this file as a base for modification or
-reuse.  Permissions have been obtained from original authors for any of
-their resources modified or included in this file.
-
-You MAY distribute this file, provided you include this text file, with no
-modifications.  You may distribute this file in any electronic format (BBS,
-Diskette, CD, etc) as long as you include this file intact.  I have
-received permission from the original authors of any modified or included
-content in this file to allow further distribution.
-
-* Where to get the file that this text file describes *
-
-You can always find the latest version here: 
-https://www.dropbox.com/sh/4pwb7f4p841u26i/AAAGw7DUlbbCp2vzu-1tn3pka?dl=0
-
-****************************************************************************
-
-
-
-
 
 
 VERSION 6.0.9.9
