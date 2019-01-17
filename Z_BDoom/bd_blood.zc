@@ -133,11 +133,8 @@ states
 		#### # 1 {
 			if (waterlevel > 0 || GetFloorTerrain().isLiquid == true || bloodfloor ~== "BLOOD1" || bloodfloor ~==  "BLOOD2" || bloodfloor ~==  "BLOOD3" || bloodfloor ~==  "FWATER1" || bloodfloor ~==  "FWATER2" || bloodfloor ~==  "FWATER3" || bloodfloor ~==  "FWATER4" || bloodfloor ~==  "LAVA1" || bloodfloor ~==  "LAVA2" || bloodfloor ~==  "LAVA3" || bloodfloor ~==  "LAVA4" || bloodfloor ~==  "NUKAGE1" || bloodfloor ~==  "NUKAGE2" || bloodfloor ~==  "NUKAGE3" || bloodfloor ~==  "SLIME01" || bloodfloor ~==  "SLIME02" || bloodfloor ~==  "SLIME03" || bloodfloor ~==  "SLIME04" || bloodfloor ~==  "SLIME05" || bloodfloor ~==  "SLIME06" || bloodfloor ~==  "SLIME07" || bloodfloor ~==  "SLIME08" || bloodfloor ~==  "SLIME09" || bloodfloor ~==  "SLIME10" || bloodfloor ~==  "SLIME11" || bloodfloor ~==  "SLIME12")
 				return ResolveState("Fade");
-			if(target && target is "BDoomMonster") {
-				let bleeder = BDoomMonster(target);
-				if (bleeder.raised)
-					return ResolveState("Raise");
-				}
+			if(target && target is "BDoomMonster" && target.InStateSequence(target.curstate,target.FindState("Raise")))
+				return ResolveState("Raise");
 			return ResolveState(null);
 			}
 		wait;
@@ -218,11 +215,8 @@ states
 	Drip:
 		#### # 5 {
 			SetOrigin((pos.x,pos.y,ceilingz-0.3),0);
-			if(target && target is "BDoomMonster") {
-				let bleeder = BDoomMonster(target);
-				if (bleeder.raised)
-					return ResolveState("Fade");
-				}
+			if(target && target is "BDoomMonster" && target.InStateSequence(target.curstate,target.FindState("Raise")))
+				return ResolveState("Fade");
 			A_SpawnitemEx("CeilingBloodDrop",frandom(-2.0,2.0),frandom(-2.0,2.0),-1.,0,0,0,0,SXF_TRANSFERTRANSLATION|SXF_TRANSFERSTENCILCOL|SXF_TRANSFERRENDERSTYLE|SXF_NOPOINTERS,250);
 			A_FadeTo(0.1,0.001,1);
 			return ResolveState(null);
@@ -352,11 +346,8 @@ states
 		#### # 1 {
 			if (waterlevel > 0)
 				self.destroy();
-			if(target && target is "BDoomMonster") {
-				let bleeder = BDoomMonster(target);
-				if (bleeder.raised)
-					return ResolveState("Fade");
-				}
+			if(target && target is "BDoomMonster" && target.InStateSequence(target.curstate,target.FindState("Raise")))
+				return ResolveState("Fade");
 			return ResolveState(null);
 			}
 		wait;

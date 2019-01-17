@@ -159,11 +159,8 @@ states
 		#### # 0 GibFall();
 		#### # 1  {
 			//console.printf("%s, %s",self.GetClassName(),target.GetClassName());
-			if(target && target is "BDoomMonster") {
-				let bleeder = BDoomMonster(target);
-				if (bleeder.raised)
-					return ResolveState("Raise");
-				}
+			if(target && target is "BDoomMonster" && target.InStateSequence(target.curstate,target.FindState("Raise")))
+				return ResolveState("Raise");
 			if (vel.length() > 2)
 				A_SpawnItemEx("BD_GibBloodPool",frandom(-2,2),frandom(-2,2),0,	0,0,0,	0,SXF_TRANSFERPOINTERS,80);
 			return ResolveState(null);
@@ -417,12 +414,8 @@ states
 		loop;
 	Rest:
 		#### # 1 {
-			if(target && target is "BDoomMonster") {
-				let bleeder = BDoomMonster(target);
-				if (bleeder.raised) {
-					return ResolveState("Raise");
-					}
-				}
+			if(target && target is "BDoomMonster" && target.InStateSequence(target.curstate,target.FindState("Raise")))
+				return ResolveState("Raise");
 			return ResolveState(null);
 			}
 		loop;

@@ -153,14 +153,14 @@ states
 		stop;
 	Raise:
 		#### # 2 {
-			raised = true;
+			//raised = true;
 			if (self.frame > 0)
 				self.frame-=1;
 			else
 				{
 				A_SetTranslation("vanilla");
 				A_SetScale(1.0,1.0);
-				raised = false;
+				//raised = false;
 				burning = false;
 				burntimer = 0;
 				return ResolveState("See");

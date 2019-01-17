@@ -96,11 +96,13 @@ override void Tick() {
 }
 
 //base subclass for flares and flame effects
-Class Flare_General : SmallDebris
+Class Flare_General : DebrisGeneral
 {
 Default {
 	DebrisGeneral.sfxtype 1;
-	smalldebris.dgravity 0;
+	-MISSILE
+	-RELATIVETOFLOOR
+	+NOINTERACTION
 	renderstyle "Add";
 	alpha 0.4;
 	scale 0.4;
