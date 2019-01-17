@@ -4,6 +4,11 @@ Beautiful Doom mod for GZDoom Forum thread:
 https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752ec93aed
 
 
+17.01.2019:
+
+Thanks to Gutawer, finally implemented proper resurrection animation. Look at them gibs fly.
+Also updated readme to clearly state how I view permissions.
+Also earlier: texture-dependent puffs and much better smoke over gun barrels.
 
 07.01.2019:
 
