@@ -20,20 +20,19 @@ double bmass;
 bool bflat;
 int restframe; //last frame used in death animation
 Default {
+	+ROLLSPRITE
 	DebrisGeneral.sfxtype 3;
 	-NOBLOCKMAP 
 	-FLOORCLIP
-	-THRUACTORS
-	-NOGRAVITY
 	+EXPLODEONWATER
 	+DROPPED
-	+BUDDHA
-	+NOPAIN
+	-NOGRAVITY
 	bouncetype "Doom";
 	bouncefactor 0.3;
 	seesound "gibs/rip";
 	Bouncesound "gibs/meatland";
 	Deathsound "gibs/meatland";
+	+BUDDHA
 	gravity 0.6;
 	mass 1;
 	radius 8;
@@ -42,7 +41,7 @@ Default {
 	translation "0:255=0:255";
 	}
 virtual void GibBeginPlay() {}
-virtual void GibFall() 
+virtual void GibRest() 
 	{
 	if (bflat)
 		bFLATSPRITE = true;
@@ -51,6 +50,19 @@ virtual void GibFall()
 	bVULNERABLE = true;
 	bFLOORCLIP = true;
 	self.frame = restframe;
+	}
+virtual void GibThrow() {
+	if (target) {
+		bFLATSPRITE = false;
+		bNOGRAVITY = false;
+		bNOINTERACTION = false;
+		bRELATIVETOFLOOR = false;
+		gravity = 1.0;
+		A_FaceTarget();
+		double tdistance = Distance3D(target);
+		Thrust(tdistance * 0.04, angle);
+		vel.z = tdistance * 0.05;
+		}
 	}
 states
 	{
@@ -102,26 +114,9 @@ states
 	}
 }
 
-//smaller version of BloodDrop that spawns behind flying gibs
-Class BD_GibBlood : BloodDrop {
+Class BDGibBlood : BloodDrop {
 Default {
-	Scale 0.15;
-	}
-override void PostBeginPlay() {
-	super.PostBeginPlay();
-	restscale = frandom(0.07,0.11);
-	}
-}
-
-//smaller versions of resting blood pool that spawns by resting gibs when they're pushed by explosions, leaving trails of blood on the floor
-Class BD_GibBloodPool : BloodPoolRest
-{
-Default {
-	scale 0.1;
-	}
-override void PostBeginPlay() {
-	super.PostBeginPlay();
-	restscale = frandom(0.06,0.085);
+	Scale 0.2;
 	}
 }
 
@@ -142,6 +137,11 @@ override void GibBeginPlay()
 	A_QueueCorpse();
 	restframe = 25;
 	}
+override int DamageMobj(Actor inf, Actor src, int dmg, name mod, int flags, double angle) 
+	{
+	A_SpawnItemEx("BDGibBlood",frandom(-2,2),frandom(-2,2),frandom(0,2),0,frandom(0,1),frandom(0,1),random(175,185),SXF_TRANSFERPOINTERS,144);
+	return super.DamageMobj(inf, src, dmg, mod, flags, angle);        
+	}
 states
 	{
 	spawn:
@@ -151,31 +151,42 @@ states
 			roll = random(0,359);
 			}
 		#### A 1 {
-			A_SpawnItemEx("BD_GibBlood",frandom(-2,2),frandom(-2,2),frandom(0,2),0,frandom(0,1),frandom(0,1),random(175,185),SXF_TRANSFERPOINTERS,144);
+			A_SpawnItemEx("BDGibBlood",frandom(-2,2),frandom(-2,2),frandom(0,2),0,frandom(0,1),frandom(0,1),random(175,185),SXF_TRANSFERPOINTERS,144);
 			A_SetRoll(roll+=brot,SPF_INTERPOLATE);
 			}
 		wait;
 	Death:
-		#### # 0 GibFall();
+		#### # 0 GibRest();
 		#### # 1  {
-			//console.printf("%s, %s",self.GetClassName(),target.GetClassName());
 			if(target && target is "BDoomMonster") {
 				let bleeder = BDoomMonster(target);
 				if (bleeder.raised)
 					return ResolveState("Raise");
 				}
-			if (vel.length() > 2)
-				A_SpawnItemEx("BD_GibBloodPool",frandom(-2,2),frandom(-2,2),0,	0,0,0,	0,SXF_TRANSFERPOINTERS,80);
 			return ResolveState(null);
 			}
 		wait;
 	Raise:
-		#### # 0 FlyBack();
+		#### # 0 GibThrow();
 		#### A 1 {
 			A_SetRoll(roll-=brot,SPF_INTERPOLATE);
-			A_FadeOut(0.05);
-			if (target &&  Distance3D(target) < 16)
+			A_FadeOut(0.04);
+			if (target &&  Distance2D(target) < 64)
 				self.destroy();
+				//return ResolveState("raiseanim");
+			//return ResolveState(null);
+			}
+		wait;
+	raiseanim:
+		#### # 1 {
+			bNOGRAVITY = true;
+			bNOINTERACTION = true;
+			SetOrigin(target.pos,1);
+			}
+		#### # 1 {
+			A_Warp(AAPTR_TARGET,12,12,24,15,WARPF_USECALLERANGLE);
+			A_FadeOut(0.02);
+			roll++;
 			}
 		wait;
 	}
@@ -427,13 +438,13 @@ states
 			}
 		loop;
 	Raise:
-		#### # 0 FlyBack();
+		#### # 0 GibThrow();
 		#### # 3 {
 			if (self.frame > 0)
 				self.frame--;
 			A_FadeOut(0.06);
-			if (target &&  Distance3D(target) < 16)
-				self.destroy();
+			if (target &&  Distance2D(target) < 64)
+				A_Stop();
 			}
 		wait;
 	loadsprites:

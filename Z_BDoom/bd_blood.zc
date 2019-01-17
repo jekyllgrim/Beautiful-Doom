@@ -33,7 +33,6 @@ states
 
 Class BloodDrop : BloodGeneral replaces Blood
 {
-double restscale;
 Default {
 	scale 0.35;
 	gravity 0.5;
@@ -65,7 +64,6 @@ override void PostBeginPlay() {
 			bcolor = "shade";
 			}
 		}
-	restscale = frandom(0.1,0.18);
 	Super.PostBeginPlay();
 	}
 virtual void BD_BloodDecal()
@@ -98,6 +96,8 @@ states
 		#### ABCDEFGHIJKLMNOPQRS 1 {
 			if (waterlevel > 0)
 				return ResolveState("Fade");
+			/*if (vel.z == 0)
+				return ResolveState("Death");*/
 			return ResolveState(null);
 			}
 		stop;
@@ -108,8 +108,7 @@ states
 			bloodfloor = TexMan.GetName(floorpic);
 			bloodceiling = TexMan.GetName(ceilingpic);
 			bFLATSPRITE = true;
-			A_SetScale(restscale*randompick(1,-1),restscale*randompick(1,-1));
-			//A_SetScale(frandom(0.1,0.18)*randompick(1,-1),frandom(0.1,0.18)*randompick(1,-1));
+			A_SetScale(frandom(0.1,0.18)*randompick(1,-1),frandom(0.1,0.18)*randompick(1,-1));
 			}
 		TNT1 A 0 A_CheckCeiling("Ceiling");
 		TNT1 A 0 {
@@ -162,7 +161,12 @@ states
 			bFLATSPRITE = false;
 			bRELATIVETOFLOOR = false;
 			roll = random(0,359);
-			FlyBack();
+			if (target) {
+				A_FaceTarget();
+				int tdistance = Distance3D(target);
+				Thrust(tdistance * 0.04, angle);
+				vel.z = tdistance * 0.05;
+				}
 			}
 		TNT1 a 0 A_Jump(256,1,2,3);
 		YBL7 A 0 A_Jump(256,"BloodDrop");
@@ -171,33 +175,13 @@ states
 	Raise1:
 		#### SRQPONMLKJIHGFEDCBA 1 {
 			A_FadeOut(0.07);
-			if (target &&  Distance3D(target) < 16)
+			if (target &&  Distance2D(target) < 32)
 				self.destroy();
 			}
 		stop;
 	}
 }
 
-//resting version of blood drop without any animation
-Class BloodPoolRest : BloodDrop
-{
-Default {
-	gravity 1.0;
-	+NOINTERACTION
-	}
-override void BD_BloodDecal() {}
-states
-	{
-	spawn:
-		TNT1 A 1 NoDelay {
-			A_SetScale(scale.x*randompick(-1,1)*frandom(0.7,1.2),scale.y*randompick(-1,1)*frandom(0.7,1.2));
-			SetOrigin((pos.x,pos.y,floorz),0);
-			return resolvestate("Death");
-			return resolvestate(null);
-			}
-		stop;
-	}
-}
 
 
 Class CeilingSplat : BloodGeneral
@@ -362,8 +346,6 @@ states
 		wait;
 	}
 }
-
-
 
 //decorative blood for gory decorations
 Class BloodSpill : CeilingBloodDrop

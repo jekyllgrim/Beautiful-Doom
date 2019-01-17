@@ -2,20 +2,19 @@
 ////////////// ALL BASIC BEAUTIFUL DOOM OBJECTS ////////////;
 ////////////////////////////////////////////////////////////
 
-//base class for most debris
+
 Class DebrisGeneral : Actor
 {
 int sfxtype; //0 = debris, 1 = flames/smoke, 2 = blood, 3 = gibs
 property sfxtype : sfxtype;
 Default {
 	DebrisGeneral.sfxtype 0;
-	+NOTARGETSWITCH		//so that gibs pushed by explosions don't switch their target field to player
 	+ROLLSPRITE
-	+BLOODLESSIMPACT	//for debris that can bump into actors
-	+FIXMAPTHINGPOS		//not sure it even does anything, hence the override
+	+BLOODLESSIMPACT
+	+FIXMAPTHINGPOS
 	+NOTAUTOAIMED
-	+MISSILE			//enters Death when it hits the floor
-	+NOBLOCKMAP
+	+MISSILE
+	+NOBLOCKMAP 
 	+MOVEWITHSECTOR
 	+RELATIVETOFLOOR
 	+NOGRAVITY
@@ -32,30 +31,6 @@ Default {
 	mass 1;
 	damage 0;
 	}
-// thanks Gutawer for explaning the math and helping this function come to life
-virtual void FlyBack() {
-	if (!target)
-		return;
-	bFLATSPRITE = false;
-	bNOGRAVITY = false;
-	bNOINTERACTION = false;
-	bRELATIVETOFLOOR = false;
-	bTHRUACTORS = true;
-	gravity = 1.0;
-	A_FaceTarget();
-	
-	double dist = Distance2D(target);							//horizontal distance to target
-	double vdisp = target.pos.z - pos.z + frandom(8,32);		//height difference between gib and target + randomized height
-	double ftime = 20;											//time of flight
-	
-	double vvel = (vdisp + 0.5 * ftime*ftime) / ftime;
-	double hvel = dist / ftime;
-	
-	Thrust(hvel,angle);
-	vel.z = vvel;
-	}
-virtual void CheckTargetRaise() {}
-	
 override void PostBeginPlay()
 	{
 	if (!level.IsPointInMap(pos))
@@ -76,10 +51,9 @@ override void Tick()
 	}
 }
 
-//base class for less expensive version for small debris
 Class SmallDebris : DebrisGeneral
 {
-double dgravity; //fake gravity
+double dgravity;
 property dgravity : dgravity;
 Default {
 	-MISSILE
@@ -93,14 +67,30 @@ override void Tick() {
 	if (pos.z <= floorz)
 		self.destroy();
 	}
+/*int timepassed;
+override void Tick() {
+	super.tick();
+	if (timepassed == 0)
+		vel.z-=dgravity;
+	if (pos.z <= floorz || timepassed != 0)
+		{
+		SetOrigin((pos.x,pos.y,floorz+1),0);
+		timepassed++;
+		A_Stop();
+		if(timePassed >= 123)
+			A_FadeOut(0.01);
+		}
+	}*/
 }
 
-//base subclass for flares and flame effects
-Class Flare_General : SmallDebris
+Class Flare_General : DebrisGeneral
 {
 Default {
 	DebrisGeneral.sfxtype 1;
-	smalldebris.dgravity 0;
+	-MOVEWITHSECTOR
+	-RELATIVETOFLOOR
+	+NOINTERACTION
+	-MISSILE
 	renderstyle "Add";
 	alpha 0.4;
 	scale 0.4;
@@ -123,21 +113,26 @@ Default {
 	}
 }
 
-Class ParticleFire_General : Flare_General
+Class ParticleFire_General : DebrisGeneral
 {
 Default {
+	DebrisGeneral.sfxtype 1;
+	speed 2;
 	renderstyle "Add";
 	scale 0.5;
 	alpha 0.5;
+	+NOINTERACTION
 	}
 }
 
-Class FirePiece : Flare_General
+Class FirePiece : DebrisGeneral
 {
 Default {
+	DebrisGeneral.sfxtype 1;
 	renderstyle "Add";
 	scale 0.2;
 	alpha 0.5;
+	+NOINTERACTION
 	}
 states
 	{
@@ -151,24 +146,24 @@ states
 //// SMOKE ////;
 ///////////////
 
-Class Smoke_General : SmallDebris
+Class Smoke_General : DebrisGeneral
 {
 Default {
-	smalldebris.dgravity 0;
+	+NOINTERACTION
 	renderstyle "Add";
 	alpha 0.3;
 	scale 0.1;
 	}
 override void PostBeginPlay() {
 	super.PostbeginPlay();
+	//A_SetScale(scale.x*randompick(-1,1),scale.y*randompick(-1,1));
 	roll = random(0,359);
 	}
 states
 	{
 	Spawn:
 		SMOK ABCDEFGHIJKLMNOPQ 1 {
-			if (!master)
-				A_SpawnItemEx("BasicSmokeTrail",frandom(-2,2),frandom(-2,2),frandom(-2,2),0,0,0,0,SXF_SETMASTER);
+			A_SpawnItemEx("BasicSmokeTrail",frandom(-2,2),frandom(-2,2),frandom(-2,2),0,0,0,0,SXF_SETMASTER);
 			A_Fadeout(0.01);
 			}
 		stop;
@@ -178,6 +173,7 @@ states
 Class BasicSmokeTrail : Smoke_General
 {
 Default {
+	vspeed 0;
 	alpha 0.15;
 	}
 states
@@ -187,6 +183,8 @@ states
 		stop;
 	}
 }
+
+
 
 //old smoke used by puffs
 class ShotSmoke : Smoke_General
@@ -289,14 +287,6 @@ states
 	}
 }
 
-Class BlackSmokeTrail : BasicSmokeTrail
-{
-Default {
-	renderstyle "Translucent";
-	alpha 0.08;
-	}
-}
-
 //even bigger smoke for bigger explosions
 class BigBlackSmoke : BlackSmoke
 {
@@ -307,8 +297,8 @@ states
 			A_SetScale(frandom(0.22,28)*randompick(-1,1),frandom(0.22,28)*randompick(-1,1));
 			}
 		SMOK ABCDEFGHIJKLMNOPQ 2 {
-			if (self.GetClassName() == "BigBlackSmoke")
-				A_SpawnItemEx("BigBlackSmokeTrail",frandom(-2,2),frandom(-2,2),frandom(-2,2),0,0,0,0,SXF_SETMASTER);
+			if (!master)
+				A_SpawnItemEx("BigBlackSmoke",frandom(-2,2),frandom(-2,2),frandom(-2,2),0,0,0,0,SXF_SETMASTER);
 			A_FadeOut(0.01);
 			a_Setscale(clamp(scale.x*1.03,0.25,0.4),clamp(scale.y*1.03,0.25,0.4));
 			}
@@ -316,7 +306,13 @@ states
 	}
 }
 
-Class BigBlackSmokeTrail : BigBlackSmoke {}
+Class BlackSmokeTrail : BasicSmokeTrail
+{
+Default {
+	renderstyle "Translucent";
+	alpha 0.08;
+	}
+}
 
 //basic smoke behind a rocket
 Class Rocket1Trail : Smoke_General
@@ -341,7 +337,7 @@ Default {
 	}
 }
 
-//a particle that spawns thin smoke behind itself
+//a bouncing particle that spawns thin smoke behind itself
 Class SmokingPiece : SmallDebris
 {
 Default {
