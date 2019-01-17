@@ -40,6 +40,20 @@ void BD_Burn() {
 	else if (firetype == 2)
 		A_SetTranslation("GreenFiredeath");
 	}
+
+void BD_BulletAttack(double horz_spread, double vert_spread, int numbullets, int damageperbullet, string OldSound, string NewSound, string Casing, double CasingX = 0, double CasingY = 0, double CasingZ = 0)
+	{		
+	if (bdoom_debris == 1)
+		A_SpawnItemEx(Casing,CasingX,CasingY,CasingZ,		frandom(2,4),0,random(2,4),	random(-85,-95),SXF_SETTARGET);
+	If(bdoom_weapons == 1)
+		A_PlaySound(newsound);
+	else			
+		A_PlaySound(oldsound);
+	if (bdoom_tracers == 1)
+		A_CustomBulletAttack(horz_spread, vert_spread, numbullets, damageperbullet, "EnBulletPuff", 0, CBAF_NORANDOM,AAPTR_TARGET,"BulletTracer",30,32);
+	else
+		A_CustomBulletAttack(horz_spread, vert_spread, numbullets, damageperbullet, "EnBulletPuff", 0, CBAF_NORANDOM);
+	}
 	
 override void Tick() {
 	super.Tick();

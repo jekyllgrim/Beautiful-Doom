@@ -32,7 +32,7 @@ states
 		CPAS ABCEE 2 A_FaceTarget();
 		CPAS F 2 {
 			if (bdoom_debris == 1)
-				A_SpawnItemEx("ChaingunCasing",random(14,15),-15,random(32,33),		random(1,2),0,random(4,6),	random(-85,-95),SXF_SETTARGET)
+				A_SpawnItemEx("ChaingunCasing",frandom(14,15),-15,frandom(32,33),		frandom(1,2),0,frandom(4,6),	random(-85,-95),SXF_SETTARGET)
 			If(bdoom_weapons == 1)
 				A_PlaySound("weapons/chaingun/fire")
 			else			

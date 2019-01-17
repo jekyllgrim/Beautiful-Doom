@@ -497,7 +497,7 @@ states
 			}
 		BOM4 ABCDEFGHIJKLMNOPQ 1 bright {
 			if (bdoom_debris == 1)
-				A_SpawnItemEx("BigBlackSmoke",random(-12,12),random(-12,12),random(10,20),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(0.7,1.3),0,0,200);
+				A_SpawnItemEx("BigBlackSmoke",random(-12,12),random(-12,12),random(10,20),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(0.7,1.3),0,SXF_ORIGINATOR,200);
 			}
 		BOM5 ABCDEFGHIJKLMN 1 bright A_Fadeout(0.04);
 		stop;

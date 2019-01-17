@@ -24,7 +24,7 @@ actor OldGibs_General : DebrisGeneral
 	seesound "gibs/rip"
 	Bouncesound "gibs/meatland"
 	Deathsound "gibs/meatland"
-	bloodtype BloodSpatter
+	//bloodtype BloodSpatter
 	health 99999
 	gravity 0.6
 	mass 1
@@ -138,7 +138,7 @@ states
 
 Actor CacoMeatPiece : OldMeatPiece //they have fleshy yellow-brownish color but blue blood
 {
-bloodtype BlueBloodSpatter
+//bloodtype BlueBloodSpatter
 bloodcolor "00 00 FF"
 translation "0:4=48:79","5:8=48:79","9:12=48:79","13:15=48:79","16:47=48:79","48:79=48:79","80:111=48:79","112:127=48:79","128:151=48:79","152:159=48:79","160:167=48:79","168:191=48:79","208:223=48:79","224:231=48:79","232:235=48:79","236:239=48:79","248:249=48:79","250:254=48:79","255:255=48:79"
 states
@@ -1611,7 +1611,7 @@ states
 
 actor CacoEye : OldGibs_General
 {
-bloodtype BlueBloodSpatter
+//bloodtype BlueBloodSpatter
 bloodcolor "00 00 FF"
 states
 	{
