@@ -1022,8 +1022,8 @@ States
 				A_GiveInventory("Modernberserk_Speed");
 				A_GiveInventory("Modernberserk_Protection");
 				}
-			//else 
-				//A_GiveInventory("PowerStrength");
+			else 
+				A_GiveInventory("PowerStrength");
 			HealThing(100, 0);
 			A_SelectWeapon("BD_Fist");
 			}
