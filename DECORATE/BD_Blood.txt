@@ -82,50 +82,5 @@ alpha 0.4
 
 
 
-Actor BD_Bloodpool //for decorative purposes
-{
-+NOBLOCKMAP
-+MOVEWITHSECTOR
-+FLOORCLIP
-renderstyle Shaded
-Stencilcolor "BB 00 00"
-scale .45
-alpha .85
-height 1
-states
-	{
-	Spawn:
-		TNT1 A 0 NoDelay A_JumpIf(GetZAt(12,0) != floorz && GetZAt(-12,0) != floorz && GetZAt(0,12) != floorz && GetZAt(0,-12) != floorz, "Super::Spawn")
-		TNT1 A 0 ACS_NamedExecuteAlways("BD_BloodRemoval",0)
-		TNT1 A 0 A_ChangeFlag("FLATSPRITE",1)
-		TNT1 A 0 A_QueueCorpse
-		TNT1 A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10,11,12)
-		SPLT A -1
-		stop
-		SPLT B -1
-		stop
-		SPLT C -1
-		stop
-		SPLT D -1
-		stop
-		SPLT E -1
-		stop
-		SPLT F -1
-		stop
-		SPLT G -1
-		stop
-		SPLT H -1
-		stop
-		SPLT I -1
-		stop
-		SPLT J -1
-		stop
-		SPLT K -1
-		stop
-		SPLT L -1
-		stop
-	}
-}
-
 Actor BD_BlueBloodPool : BD_Bloodpool { stencilcolor "00 00 90" }
 

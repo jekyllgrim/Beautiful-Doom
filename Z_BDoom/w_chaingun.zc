@@ -109,7 +109,7 @@ states
 		TNT1 A 0 { If(bdoom_weapons == 1) 
 			A_PlaySound("weapons/chaingun/draw");
 			}
-		TNT1 AAAAAAAA 0 A_Raise();
+		//TNT1 AAAAAAAA 0 A_Raise();
 		MGGS ABCDEF 1 A_WeaponReady(WRF_NOFIRE);
 		goto ready;
 	Deselect:
@@ -321,19 +321,19 @@ states
 		TNT1 A 0 A_playsound("weapons/chaingun/stop",5);
 		MGGG ABCDA 1 {
 			A_WeaponOffset(0.0,-0.6,WOF_ADD);
-			If(bdoom_debris==1)
+			If(bdoom_debris && invoker.HeatStacks >= 60)
 				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-3,3),sin(-pitch)*25+random(33,37),		0,0,frandom(0.2,0.4),0);
 			}
 		MGGG BCDABC 2 {
-			If(bdoom_debris==1)
+			If(bdoom_debris && invoker.HeatStacks >= 60)
 				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-3,3),sin(-pitch)*25+random(33,37),		0,0,frandom(0.2,0.4),0);
 			}
 		MGGG DABCD 3 {
-			If(bdoom_debris==1)
+			If(bdoom_debris && invoker.HeatStacks >= 60)
 				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-3,3),sin(-pitch)*25+random(33,37),		0,0,frandom(0.2,0.4),0);
 			}
 		TNT1 A 0 {
-			If(bdoom_debris==1)
+			If(bdoom_debris)
 				A_Overlay(20,"BarrelSmokeFull");
 			}
 		TNT1 A 0 {
@@ -347,11 +347,15 @@ states
 				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-3,3),sin(-pitch)*25+random(33,37),		0,0,frandom(0.2,0.4),0);
 			A_WeaponReady(WRF_NOFIRE);
 			}
+		TNT1 A 0 {
+			If(bdoom_debris)
+				A_Overlay(20,"BarrelSmokeFull");
+			}
 		goto ready;
 
 	//MODERN
 	Select.Modern:
-		TNT1 AAAAAAAA 0 A_Raise();
+		//TNT1 AAAAAAAA 0 A_Raise();
 		TNT1 A 0 {
 			A_PlaySound("MWeapons/rifle/select");
 			A_Weaponoffset(30.0,67.0);
@@ -376,13 +380,16 @@ states
 			}
 		RIFA CBA 3;
 	Deselect1.Modern:
-		TNT1 A 0 A_jumpIfNoammo(3);
-		TNT1 A 0 A_Lower();
-		RIFN A 1 A_Lower();
-		goto deselect1.Modern+1;
-		TNT1 A 0 A_Lower();
-		RIFN D 1 A_Lower();
-		goto deselect1.Modern+3;
+		RIFN A 1 {			
+			if (countinv("RifleClip") <= 0) {
+				let po = player.FindPSprite (PSP_Weapon);
+				po.frame = 3;
+				}
+			}
+		#### # 1 A_Lower(12);
+		wait;
+		RIFN D 0;
+		stop;
 	Ready.Modern:
 		RIFN A 1 {
 			let s = player.findPSprite(PSP_Weapon);

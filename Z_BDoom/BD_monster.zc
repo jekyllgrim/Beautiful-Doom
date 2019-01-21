@@ -41,18 +41,29 @@ void BD_Burn() {
 		A_SetTranslation("GreenFiredeath");
 	}
 
-void BD_BulletAttack(double horz_spread, double vert_spread, int numbullets, int damageperbullet, string OldSound, string NewSound, string Casing, double CasingX = 0, double CasingY = 0, double CasingZ = 0)
+void BD_BulletAttack(double horz_spread, double vert_spread, int numbullets, int damageperbullet, string OldSound, string NewSound, string Casing, double CasingX = 0, double CasingY = 0, double CasingZ = 0, double TracerHeight = 32, double Tracerofs_xy = 0)
 	{		
 	if (bdoom_debris == 1)
-		A_SpawnItemEx(Casing,CasingX,CasingY,CasingZ,		frandom(2,4),0,random(2,4),	random(-85,-95),SXF_SETTARGET);
+		A_SpawnItemEx(Casing,CasingX,CasingY,CasingZ,		frandom(2,4),0,frandom(2,4),	random(-85,-95),SXF_SETTARGET);
 	If(bdoom_weapons == 1)
 		A_PlaySound(newsound);
 	else			
 		A_PlaySound(oldsound);
 	if (bdoom_tracers == 1)
-		A_CustomBulletAttack(horz_spread, vert_spread, numbullets, damageperbullet, "EnBulletPuff", 0, CBAF_NORANDOM,AAPTR_TARGET,"BulletTracer",30,32);
+		A_CustomBulletAttack(horz_spread, vert_spread, numbullets, damageperbullet, "EnBulletPuff", 0, CBAF_NORANDOM,AAPTR_TARGET,"BulletTracer",TracerHeight,Tracerofs_xy);
 	else
 		A_CustomBulletAttack(horz_spread, vert_spread, numbullets, damageperbullet, "EnBulletPuff", 0, CBAF_NORANDOM);
+	}
+
+state BD_Refire(int ChanceToEnd = 128, statelabel endstate = "See") 
+	{ 
+	if (bdoom_weapons < 2)
+		return ResolveState("See");
+	else if (monsterclip == 0)
+		return ResolveState("Reload");
+	else
+		return A_MonsterRefire(ChanceToEnd,endstate);
+	return ResolveState(null);
 	}
 	
 override void Tick() {
@@ -121,10 +132,8 @@ void BD_Gibs()
 	torso2.vel.y = vel.y*frandom(0.7,0.95);
 	torso2.vel.z = vel.z*frandom(0.7,0.95);
 	torso2.target = self;
-	if (torso1.scale.x == -1) //horizontal scale is randomized but synced between pieces of the same body
+	if (torso1.scale.x == -1) //horizontal scale is randomized but synced between pieces of the same torso
 		torso2.scale.x = -1;
-	//A_SpawnItemEx("Gib_Torso1",	0,frandom(-8,8),frandom(12,24),	vel.x*frandom(0.7,0.95),vel.y*frandom(0.7,0.95),vel.z*frandom(0.7,0.95), 0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION);
-	//A_SpawnItemEx("Gib_Torso2",	0,frandom(-8,8),frandom(12,24),	vel.x*frandom(0.7,0.95),vel.y*frandom(0.7,0.95),vel.z*frandom(0.7,0.95), 0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION);
     }
 	
 states
@@ -160,7 +169,6 @@ states
 				{
 				A_SetTranslation("vanilla");
 				A_SetScale(1.0,1.0);
-				//raised = false;
 				burning = false;
 				burntimer = 0;
 				return ResolveState("See");
@@ -230,5 +238,21 @@ states
 			}
 		TNT1 ABCDEFGHIJKLMN 2;
 		goto deathend;
+	}
+}
+
+
+
+Class BD_ZombieBullet : RealBullet
+{
+Default {
+	damageFunction (3 * random(1,5));
+	}
+}
+
+Class BD_ZombiePellet : RealBullet
+{
+Default {
+	damageFunction (2 * random(3,4));
 	}
 }

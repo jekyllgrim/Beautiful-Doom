@@ -89,7 +89,6 @@ states
 			else
 				A_PlaySound("weapons/sawup",5);
 			}
-		TNT1 AAAAAAAA 0 A_Raise();
 		SAWS ABCDEF 1 A_WeaponReady(WRF_NOFIRE);
 		goto ready;
 	Deselect:
@@ -163,9 +162,8 @@ states
 //// ENHANCED
 	Deselect.Enhanced:
 		TNT1 A 0 A_Stopsound(4);
-		SAWN A 1 A_Lower();
-		SAWN A 0 A_Lower();
-		goto deselect.Enhanced+1;
+		SAWN A 1 A_Lower(12);
+		wait;
 	Fire.Enhanced:
 		TNT1 A 0 {
 			A_PlaySound("weapons/chainsaw/start",4);
@@ -236,7 +234,6 @@ states
 /////////// MODERN
 
 	Select.Modern:
-		TNT1 AAAAAAAA 0 A_Raise();
 		SAWN A 0 {
 			A_Overlay(3,"BloodOverlay");
 			A_WeaponOffset(-35.0,74.0);
@@ -256,8 +253,7 @@ states
 			A_Stopsound(5);
 			}
 	Deselect1.Modern:
-		SAWN A 1 A_Lower();
-		SAWN A 0 A_Lower();
+		SAWN A 1 A_Lower(12);
 		loop;
 
 	Ready.Modern:

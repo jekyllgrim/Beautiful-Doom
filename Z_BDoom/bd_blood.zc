@@ -176,10 +176,9 @@ states
 }
 
 //resting version of blood drop without any animation
-Class BloodPoolRest : BloodDrop
+Class BD_BloodPool : BloodDrop
 {
 Default {
-	gravity 1.0;
 	+NOINTERACTION
 	}
 override void BD_BloodDecal() {}

@@ -53,7 +53,7 @@ states
 	Select:
 		TNT1 A 0 A_JumpIf(bdoom_weapons == 2, "Select.Modern");
 		TNT1 A 0 A_JumpIf(bdoom_weapons == 1, "Select.Enhanced");
-		TNT1 AAAAAAAA 0 A_Raise;
+		//TNT1 AAAAAAAA 0 A_Raise;
 		TNT1 A 0 A_WeaponOffset(35.0,60.0,WOF_INTERPOLATE);
 		FIS0 AAAAAA 1 {
 			A_WeaponOffset(-5.0,-5.0,WOF_ADD);
@@ -126,7 +126,7 @@ states
 		goto FireEnd;
 
 	Select.Enhanced:
-		TNT1 AAAAAAAA 0 A_Raise;
+		//TNT1 AAAAAAAA 0 A_Raise;
 			TNT0 A 0 A_WeaponReady(WRF_NOPRIMARY);
 			FIST A 1 A_WeaponOffset(-40.0,60.0,WOF_INTERPOLATE);
 			TNT0 A 0 A_WeaponReady(WRF_NOPRIMARY);
@@ -136,13 +136,8 @@ states
 			TNT0 A 0 A_WeaponReady(WRF_NOPRIMARY);
 			FIST A 1 A_WeaponOffset(-10.0,35.0,WOF_INTERPOLATE);
 		goto ready;
-
-		FIST A 1 A_Raise;
-		TNT1 A 0 A_Raise;
-		loop;
 	Deselect.Enhanced:
-		FIST A 1 A_Lower;
-		TNT1 A 0 A_Lower;
+		FIST A 1 A_Lower(12);
 		loop;
 	Ready.Enhanced:
 		FIST A 1 A_WeaponReady;
@@ -229,7 +224,7 @@ states
 
 //modern
 	Select.Modern:
-		TNT1 AAAAAAAA 0 A_Raise();
+		//TNT1 AAAAAAAA 0 A_Raise();
 		TNT1 A 0 {
 			A_WeaponOffset(0.0,42.0);
 			A_PLaysound("mweapons/fist/wear");

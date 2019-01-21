@@ -35,7 +35,7 @@ states
 			If(bdoom_weapons == 1)
 				A_PlaySound("weapons/plasma/draw");
 			}
-		TNT1 AAAAAAAA 0 A_Raise;
+		//TNT1 AAAAAAAA 0 A_Raise;
 		PLGS ABCDEF 1 A_WeaponReady(WRF_NOFIRE);
 		goto ready;
 	Deselect:
@@ -124,8 +124,7 @@ states
 
 // ENHANCED
 	Deselect.Enhanced:
-		PLGG A 1 A_lower;
-		TNT1 A 0 A_lower;
+		PLGG A 1 A_lower(12);
 		loop;
 	AltFire:
 		TNT1 A 0 A_JumpIf(bdoom_weapons == 2,"Altfire.Modern");
@@ -157,12 +156,11 @@ states
 // MODERN
 	Select.Modern:
 		TNT1 A 0 A_PlaySound("Mweapons/plasma/select");
-		TNT1 AAAAAAAA 0 A_Raise;
+		//TNT1 AAAAAAAA 0 A_Raise;
 		PLGS ABCDEF 1 A_WeaponReady;
 		goto ready;
 	Deselect.Modern:
-		PLGG A 1 A_lower;
-		TNT1 A 0 A_lower;
+		PLGG A 1 A_lower(12);
 		loop;
 	Ready.Modern:
 		PLGG A 10 {

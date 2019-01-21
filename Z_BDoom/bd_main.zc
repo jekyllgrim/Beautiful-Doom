@@ -144,7 +144,7 @@ Default {
 states
 	{
 	Spawn:		
-		FIRP ABCDEFGHIJ 2 bright A_FadeOut(0.05);
+		FIRP ABCDEFGHIJ 2 bright NoDelay A_FadeOut(0.05);
 		stop;
 	}
 }
@@ -392,13 +392,6 @@ override void PostBeginPlay()
 states
 	{
 	Spawn:
-		/*SMOK AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQ 1 NoDelay {
-			A_Fadeout(0.005);
-			a_Setscale(clamp(scale.x*1.05,0.01,0.12),clamp(scale.y*1.05,0.01,0.12));
-			vel*=0.9;
-			roll+=wrot;
-			}
-		wait;*/
 		SM21 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 NoDelay {
 			A_Fadeout(0.006);
 			a_Setscale(clamp(scale.x*1.02,0.01,0.1),clamp(scale.y*1.02,0.01,0.1));

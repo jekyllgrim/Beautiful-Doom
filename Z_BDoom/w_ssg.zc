@@ -95,7 +95,7 @@ states
 	Select:
 		TNT1 A 0 A_JumpIf(bdoom_weapons==2,"Select.Modern");
 		TNT1 A 0 A_JumpIf(bdoom_weapons==1,"Select.Enhanced");
-		TNT1 AAAAAAAA 0 A_Raise();
+		//TNT1 AAAAAAAA 0 A_Raise();
 		SH21 ABCDEF 1 A_WeaponReady(WRF_NOFIRE);
 		goto ready;
 	Deselect:
@@ -203,7 +203,7 @@ states
 	Select.Enhanced:
 		TNT1 A 0 A_PlaySound("weapons/ssg/draw");
 		TNT1 A 0 A_JumpIf(invoker.ShotFired == true,"Select1");
-		TNT1 AAAAAAAA 0 A_Raise();
+		//TNT1 AAAAAAAA 0 A_Raise();
 		SH21 ABCDE 1 A_WeaponReady(WRF_NOFIRE);
 		SH21 F 1 {
 			A_WeaponReady(WRF_NOFIRE);
@@ -222,9 +222,8 @@ states
 			else
 				s.frame = 0;
 			}
-		#### # 1 A_Lower();
-		#### # 0 A_Lower();
-		goto Deselect.Enhanced+1;
+		#### # 1 A_Lower(12);
+		wait;
 	Ready.Enhanced:
 		SH2N A 1 {
 			A_WeaponReady();
@@ -374,7 +373,7 @@ states
 		goto lightdone;
 	Select.Modern:
 		TNT1 A 0 A_PlaySound("weapons/ssg/draw");
-		TNT1 AAAAAAAA 0 A_Raise();
+		//TNT1 AAAAAAAA 0 A_Raise();
 		TNT1 A 0 A_WeaponOffset(-18.0,68.0);
 		ASGN AAAAAAA 1 {
 			A_WeaponReady(WRF_NOFIRE|WRF_NOBOB);
@@ -382,8 +381,7 @@ states
 			}
 		goto ready;
 	Deselect.Modern:
-		TNT1 A 0 A_Lower();
-		ASGN A 1 A_Lower();
+		ASGN A 1 A_Lower(12);
 		loop;
 	Ready.Modern:
 		ASGN A 1 BD_WeaponReady();
