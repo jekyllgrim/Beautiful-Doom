@@ -3,6 +3,11 @@ Beautiful Doom mod for GZDoom Forum thread:
 
 https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752ec93aed
 
+22.01.2019:
+
+Added gibs for all zombies (including Wolf SS soldiers), Imp and Pinky/Spectre. (Pinkies don't really have gibs but there are some animations where they lose a hand or a head.)
+Just for fun, added glowing night sights on the Modern Pistol. Maybe I'll add them on other weapons too, to emphasize their modern look.
+Added thick, slowly dissipating smoke for modern Rockets, as well as a smoke trail for modern Grenades (instead of previous light trail). (Thanks to Arctangent for explaining the math behind the function that allowed me to do that properly.)
 
 17.01.2019:
 

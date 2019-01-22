@@ -106,8 +106,9 @@ states
 	Select:
 		TNT1 A 0 A_StopSound(5);
 		TNT1 A 0 A_JumpIf(bdoom_weapons==2,"Select.Modern");
-		TNT1 A 0 { If(bdoom_weapons == 1) 
-			A_PlaySound("weapons/chaingun/draw");
+		TNT1 A 0 { 
+			If(bdoom_weapons == 1) 
+				A_PlaySound("weapons/chaingun/draw");
 			}
 		//TNT1 AAAAAAAA 0 A_Raise();
 		MGGS ABCDEF 1 A_WeaponReady(WRF_NOFIRE);
