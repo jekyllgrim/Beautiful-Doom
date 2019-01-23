@@ -1,4 +1,4 @@
-Class BloodGeneral : DebrisGeneral
+Class BloodGeneral : DebrisGeneral abstract
 {
 string bloodfloor;
 string bloodceiling;
@@ -15,6 +15,15 @@ Default {
 	Deathsound "none";
 	decal "none";
 	height 1;
+	}
+bool CheckWater() {
+	return (GetFloorTerrain().isLiquid == true || bloodfloor == "BLOOD1" || bloodfloor ==  "BLOOD2" || bloodfloor ==  "BLOOD3" || bloodfloor.IndexOf("WATER") >= 0 || bloodfloor.IndexOf("LAVA") >= 0 || bloodfloor.IndexOf("NUKAGE") >= 0 || bloodfloor ==  "SLIME01" || bloodfloor ==  "SLIME02" || bloodfloor ==  "SLIME03" || bloodfloor ==  "SLIME04" || bloodfloor ==  "SLIME05" || bloodfloor ==  "SLIME06" || bloodfloor ==  "SLIME07" || bloodfloor ==  "SLIME08" || bloodfloor ==  "SLIME09" || bloodfloor ==  "SLIME10" || bloodfloor ==  "SLIME11" || bloodfloor ==  "SLIME12");
+	}
+bool CheckLandingSize (int cradius = 0, bool checkceiling = 0) {
+	if (checkceiling == 0)
+		return (GetZAt(cradius,0) != floorz || GetZAt(-cradius,0) != floorz || GetZAt(0,cradius) != floorz || GetZAt(0,-cradius) != floorz);
+	else
+		return (GetZAt(cradius,0,0,GZF_CEILING) > ceilingz || GetZAt(-cradius,0,0,GZF_CEILING) > ceilingz || GetZAt(0,cradius,0,GZF_CEILING) > ceilingz || GetZAt(0,-cradius,0,GZF_CEILING) > ceilingz);
 	}
 states
 	{
@@ -68,6 +77,9 @@ override void PostBeginPlay() {
 	restscale = frandom(0.1,0.18);
 	Super.PostBeginPlay();
 	}
+
+static const string bsprite[] = { "YBL7","YBL8","YBL9" };
+
 virtual void BD_BloodDecal()
 	{
 	if (bcolor ~== "blue")
@@ -86,10 +98,6 @@ states
 			A_FaceTarget(0,270,180,0);
 			A_SetScale(scale.x*randompick(-1,1)*frandom(0.7,1.2),scale.y*randompick(-1,1)*frandom(0.7,1.2));
 			roll = random(0,359);
-			static const string bsprite[] =
-			{
-				"YBL7","YBL8","YBL9"
-			};
 			self.sprite = GetSpriteIndex(bsprite[random(0,2)]);
 			return resolvestate("BloodDrop");
 			return resolvestate(null);
@@ -97,7 +105,7 @@ states
 	BloodDrop:
 		#### ABCDEFGHIJKLMNOPQRS 1 {
 			if (waterlevel > 0)
-				return ResolveState("Fade");
+				return ResolveState("Water");
 			return ResolveState(null);
 			}
 		stop;
@@ -109,30 +117,29 @@ states
 			bloodceiling = TexMan.GetName(ceilingpic);
 			bFLATSPRITE = true;
 			A_SetScale(restscale*randompick(1,-1),restscale*randompick(1,-1));
-			//A_SetScale(frandom(0.1,0.18)*randompick(1,-1),frandom(0.1,0.18)*randompick(1,-1));
-			}
-		TNT1 A 0 A_CheckCeiling("Ceiling");
-		TNT1 A 0 {
-			if (bloodfloor ~==  "F_SKY1")
-				self.destroy();
-			if (pos.z != floorz)
+			return A_CheckCeiling("Ceiling");
+			
+			if (floorpic == skyflatnum || pos.z != floorz)
 				self.destroy();
 			A_QueueCorpse();
-			if (GetZAt(24,0) != floorz || GetZAt(-24,0) != floorz || GetZAt(0,24) != floorz || GetZAt(0,-24) != floorz) 
+			if (CheckLandingSize(24)) 
 				A_SetScale(scale.x*0.7,scale.y*0.7);
-			if (GetZAt(18,0) != floorz || GetZAt(-18,0) != floorz || GetZAt(0,18) != floorz || GetZAt(0,-18) != floorz)
+			if (CheckLandingSize(18))
 				A_SetScale(scale.x*0.6,scale.y*0.6);
-			if (GetZAt(12,0) != floorz || GetZAt(-12,0) != floorz || GetZAt(0,12) != floorz || GetZAt(0,-12) != floorz)
+			if (CheckLandingSize(12))
 				A_SetScale(scale.x*0.4,scale.y*0.4);
-			if (GetZAt(6,0) != floorz || GetZAt(-6,0) != floorz || GetZAt(0,6) != floorz || GetZAt(0,-6) != floorz)
+			if (CheckLandingSize(16))
 				self.destroy();
 			bNOINTERACTION = true;
+			return ResolveState(null);
 			}
 		2PLT A 0 { self.frame = random(0,16); }
 
 		#### # 1 {
-			if (waterlevel > 0 || GetFloorTerrain().isLiquid == true || bloodfloor ~== "BLOOD1" || bloodfloor ~==  "BLOOD2" || bloodfloor ~==  "BLOOD3" || bloodfloor ~==  "FWATER1" || bloodfloor ~==  "FWATER2" || bloodfloor ~==  "FWATER3" || bloodfloor ~==  "FWATER4" || bloodfloor ~==  "LAVA1" || bloodfloor ~==  "LAVA2" || bloodfloor ~==  "LAVA3" || bloodfloor ~==  "LAVA4" || bloodfloor ~==  "NUKAGE1" || bloodfloor ~==  "NUKAGE2" || bloodfloor ~==  "NUKAGE3" || bloodfloor ~==  "SLIME01" || bloodfloor ~==  "SLIME02" || bloodfloor ~==  "SLIME03" || bloodfloor ~==  "SLIME04" || bloodfloor ~==  "SLIME05" || bloodfloor ~==  "SLIME06" || bloodfloor ~==  "SLIME07" || bloodfloor ~==  "SLIME08" || bloodfloor ~==  "SLIME09" || bloodfloor ~==  "SLIME10" || bloodfloor ~==  "SLIME11" || bloodfloor ~==  "SLIME12")
-				return ResolveState("Fade");
+			if (waterlevel > 0)
+				self.destroy();
+			if (CheckWater())
+				return ResolveState("Water");
 			if(target && target is "BDoomMonster" && target.InStateSequence(target.curstate,target.FindState("Raise")))
 				return ResolveState("Raise");
 			return ResolveState(null);
@@ -140,15 +147,15 @@ states
 		wait;
 	Ceiling:
 		TNT1 A 0 {
-			if (bloodceiling ~== "F_SKY1")
+			if (ceilingpic == skyflatnum)
 				self.destroy();
-			if (GetZAt(24,0,0,GZF_CEILING) > ceilingz || GetZAt(-24,0,0,GZF_CEILING) > ceilingz || GetZAt(0,24,0,GZF_CEILING) > ceilingz || GetZAt(0,-24,0,GZF_CEILING) > ceilingz) 
+			if (CheckLandingSize(24,1))
 				A_SetScale(scale.x*0.7,scale.y*0.7);
-			if (GetZAt(18,0,0,GZF_CEILING) > ceilingz || GetZAt(-18,0,0,GZF_CEILING) > ceilingz || GetZAt(0,18,0,GZF_CEILING) > ceilingz || GetZAt(0,-18,0,GZF_CEILING) > ceilingz)
+			if (CheckLandingSize(18,1))
 				A_SetScale(scale.x*0.6,scale.y*0.6);
-			if (GetZAt(12,0,0,GZF_CEILING) > ceilingz || GetZAt(-12,0,0,GZF_CEILING) > ceilingz || GetZAt(0,12,0,GZF_CEILING) > ceilingz || GetZAt(0,-12,0,GZF_CEILING) > ceilingz)
+			if (CheckLandingSize(12,1))
 				A_SetScale(scale.x*0.4,scale.y*0.4);
-			if (GetZAt(6,0,0,GZF_CEILING) > ceilingz || GetZAt(-6,0,0,GZF_CEILING) > ceilingz || GetZAt(0,6,0,GZF_CEILING) > ceilingz || GetZAt(0,-6,0,GZF_CEILING) > ceilingz)
+			if (CheckLandingSize(6,1))
 				self.destroy();
 			}
 		TNT1 A 0 A_SpawnItemEx("CeilingSplat",0,0,7,0,0,0,0,SXF_TRANSFERTRANSLATION|SXF_TRANSFERSTENCILCOL|SXF_TRANSFERRENDERSTYLE|SXF_TRANSFERSCALE|SXF_TRANSFERPOINTERS);
@@ -172,6 +179,12 @@ states
 				self.destroy();
 			}
 		stop;
+	Water:
+		#### # 1 {
+			A_FadeOut(0.04);
+			scale*=1.03;
+			}
+		loop;
 	}
 }
 
@@ -280,63 +293,82 @@ override void PostBeginPlay() {
 	A_SetScale(pscale*frandom(0.8,1.1)*randompick(-1,1),pscale*frandom(0.8,1.1)*randompick(-1,1));
 	super.PostBeginPlay();
 	}
+bool InvalidFloor() {
+	return (GetZAt(psize,0) < floorz || GetZAt(-psize,0) < floorz || GetZAt(0,psize) < floorz || GetZAt(0,-psize) < floorz);
+	}
 states
 	{
 	Spawn:
 		TNT1 A 0 NoDelay {
-			if (GetZAt(psize,0) < floorz || GetZAt(-psize,0) < floorz || GetZAt(0,psize) < floorz || GetZAt(0,-psize) < floorz)
+			if (InvalidFloor())
 				self.destroy();
 			SetOrigin((pos.x,pos.y,floorz+0.5),0);
 			A_QueueCorpse();
+			return A_Jump(128,"Spawn1");
 			}
-		TNT1 A 0 A_Jump(128,"Spawn1");
 		0000 ABCDEFGHI 2 {
-			if (GetZAt(psize,0) < floorz || GetZAt(-psize,0) < floorz || GetZAt(0,psize) < floorz || GetZAt(0,-psize) < floorz)
+			if (InvalidFloor())
 				return ResolveState("Rest");
+			if (Checkwater())
+				A_FadeOut(0.01);
 			psize+=2.0;
 			return ResolveState(null);
 			}
 		0000 JKLMNOPQRSTU 2 {
-			if (GetZAt(psize,0) < floorz || GetZAt(-psize,0) < floorz || GetZAt(0,psize) < floorz || GetZAt(0,-psize) < floorz)
+			if (InvalidFloor())
 				return ResolveState("Rest");
+			if (Checkwater())
+				A_FadeOut(0.01);
 			psize+=1.2;
 			return ResolveState(null);
 			}
 		0000 VWXYZ 3 {
-			if (GetZAt(psize,0) < floorz || GetZAt(-psize,0) < floorz || GetZAt(0,psize) < floorz || GetZAt(0,-psize) < floorz)
+			if (InvalidFloor())
 				return ResolveState("Rest");
+			if (Checkwater())
+				A_FadeOut(0.01);
 			psize+=1.0;
 			return ResolveState(null);
 			}
 		0001 ABCD 3 {
-			if (GetZAt(psize,0) < floorz || GetZAt(-psize,0) < floorz || GetZAt(0,psize) < floorz || GetZAt(0,-psize) < floorz)
+			if (InvalidFloor())
 				return ResolveState("Rest");
+			if (Checkwater())
+				A_FadeOut(0.01);
 			psize+=1.0;
 			return ResolveState(null);
 			}
 		goto rest;
 	Spawn1:
 		1000 ABCDEFGHI 2 {
-			if (GetZAt(psize,0) < floorz || GetZAt(-psize,0) < floorz || GetZAt(0,psize) < floorz || GetZAt(0,-psize) < floorz)
+			if (InvalidFloor())
 				return ResolveState("Rest");
+			if (Checkwater())
+				A_FadeOut(0.01);
 			psize+=2.0;
 			return ResolveState(null);
 			}
 		1000 JKLMNOPQRSTU 2 {
-			if (GetZAt(psize,0) < floorz || GetZAt(-psize,0) < floorz || GetZAt(0,psize) < floorz || GetZAt(0,-psize) < floorz)
+			if (InvalidFloor())
 				return ResolveState("Rest");
+			if (Checkwater())
+				A_FadeOut(0.01);
 			psize+=1.2;
 			return ResolveState(null);
 			}
 		1000 VWXYZ 3 {
-			if (GetZAt(psize,0) < floorz || GetZAt(-psize,0) < floorz || GetZAt(0,psize) < floorz || GetZAt(0,-psize) < floorz)
+			if (InvalidFloor())
 				return ResolveState("Rest");
+			if (Checkwater())
+				A_FadeOut(0.01);
 			psize+=1.0;
 			return ResolveState(null);
 			}
 		1001 ABCD 3 {
-			if (GetZAt(psize,0) < floorz || GetZAt(-psize,0) < floorz || GetZAt(0,psize) < floorz || GetZAt(0,-psize) < floorz)
+			if (InvalidFloor())
 				return ResolveState("Rest");
+			if (Checkwater())
+				A_FadeOut(0.01);
 			psize+=1.0;
 			return ResolveState(null);
 			}
@@ -345,6 +377,8 @@ states
 		#### # 1 {
 			if (waterlevel > 0)
 				self.destroy();
+			if (Checkwater())
+				A_FadeOut(0.01);
 			if(target && target is "BDoomMonster" && target.InStateSequence(target.curstate,target.FindState("Raise")))
 				return ResolveState("Fade");
 			return ResolveState(null);

@@ -1,4 +1,4 @@
-Class BDoomMonster : Actor
+Class BDoomMonster : Actor abstract
 {
 bool raised; //checked by gibs and blood; if true they'll show special animations
 int monsterclip; //used by monsters with guns when bdoom_weapons == 2

@@ -465,7 +465,7 @@ override void Tick () {
     Vector3 oldPos = self.pos;
     
     Super.Tick();
-    if (bdoom_debris) {
+    if (bdoom_debris && !level.frozen && !globalfreeze) {
 		Vector3 path = level.vec3Diff( self.pos, oldPos );
 		double distance = path.length() / 4; //this determines how far apart the particles are
 		Vector3 direction = path / distance;

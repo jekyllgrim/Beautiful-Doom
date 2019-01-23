@@ -13,11 +13,11 @@
 ///// BASIC GIBS ////////
 /////////////////////////
 
-class Gibs_General : DebrisGeneral
+class Gibs_General : DebrisGeneral abstract
 {
-double brot;
-double bmass;
-bool bflat;
+double brot; //how much to adjust rotation during flight
+double bmass; //the mass the gib gains after it lands
+bool bflat; //whether it needs to get FLATSPRITE when resting
 int restframe; //last frame used in death animation
 Default {
 	DebrisGeneral.sfxtype 3;
@@ -26,7 +26,6 @@ Default {
 	-THRUACTORS
 	-NOGRAVITY
 	+EXPLODEONWATER
-	+DROPPED
 	+BUDDHA
 	+NOPAIN
 	bouncetype "Doom";
@@ -49,7 +48,8 @@ virtual void GibFall()
 	A_SetMass(bmass);
 	roll = 0;
 	bVULNERABLE = true;
-	bFLOORCLIP = true;
+	bDROPPED = true;
+	//bFLOORCLIP = true;
 	self.frame = restframe;
 	}
 states
@@ -147,7 +147,7 @@ states
 	spawn:
 		#### A 0 NoDelay {
 			GibBeginPlay();
-			A_SetScale(scale.x*randompick(-1,1),scale.y);
+			scale.x*=randompick(-1,1);
 			roll = random(0,359);
 			}
 		#### A 1 {
@@ -365,7 +365,6 @@ class Gib_Torso1 : BasicMeatPiece
 int finalframe; //last frame used in the flying animation
 Default {
 	-MISSILE
-	+FLOORCLIP
 	bouncetype "none";
 	gravity 1.0;
 	scale 1.0;
@@ -385,7 +384,7 @@ override void GibBeginPlay()
 			}	
 		else if (target is "BD_ChainGunGuy") {
 			self.sprite = GetSpriteIndex("TR31");
-			finalframe = 3; 
+			finalframe = 4; 
 			restframe =  8; 
 			}	
 		else if (target is "BD_DoomImp") {

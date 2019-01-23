@@ -238,7 +238,7 @@ States
 			}
 		TNT1 A 0 A_PlaySound("Mweapons/shotgun/shellin",0);
 		SHOG LL 3 A_Weaponoffset(0.0,-1.0,WOF_ADD);
-		SHOG LL 3 {
+		SHOG LL 4 {
 			A_Weaponoffset(0.0,1.0,WOF_ADD);
 			A_WeaponReady(WRF_NOBOB);
 			}

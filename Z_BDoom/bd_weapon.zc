@@ -1,4 +1,4 @@
-Class BDoomWeapon : DoomWeapon
+Class BDoomWeapon : DoomWeapon abstract
 {
 int offsetTics; // current camera sway timer
 double maxOffsetTics; // starting point for the timer

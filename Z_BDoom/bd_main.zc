@@ -3,7 +3,7 @@
 ////////////////////////////////////////////////////////////
 
 //base class for most debris
-Class DebrisGeneral : Actor
+Class DebrisGeneral : Actor abstract
 {
 int sfxtype; //0 = debris, 1 = flames/smoke, 2 = blood, 3 = gibs
 property sfxtype : sfxtype;
@@ -77,7 +77,7 @@ override void Tick()
 }
 
 //base class for less expensive version for small debris
-Class SmallDebris : DebrisGeneral
+Class SmallDebris : DebrisGeneral abstract
 {
 double dgravity; //fake gravity
 property dgravity : dgravity;
@@ -85,6 +85,7 @@ Default {
 	-MISSILE
 	-RELATIVETOFLOOR
 	+NOINTERACTION
+	-FLOORCLIP //this flag can screw up pos.z detection
 	smalldebris.dgravity 0.8;
 	}
 override void Tick() {
@@ -96,7 +97,7 @@ override void Tick() {
 }
 
 //base subclass for flares and flame effects
-Class Flare_General : DebrisGeneral
+Class Flare_General : DebrisGeneral abstract
 {
 Default {
 	DebrisGeneral.sfxtype 1;
@@ -110,7 +111,7 @@ Default {
 }
 
 //used for flares that are launched from the weapon alongside the projectile, e.g. grenades
-Class ProjectileFlare : Actor
+Class ProjectileFlare : Actor abstract
 {
 Default {
 	+FORCEXYBILLBOARD
@@ -125,7 +126,7 @@ Default {
 	}
 }
 
-Class ParticleFire_General : Flare_General
+Class ParticleFire_General : Flare_General abstract
 {
 Default {
 	renderstyle "Add";
@@ -134,7 +135,7 @@ Default {
 	}
 }
 
-Class FirePiece : Flare_General
+Class FirePiece : Flare_General abstract
 {
 Default {
 	renderstyle "Add";
@@ -153,7 +154,7 @@ states
 //// SMOKE ////;
 ///////////////
 
-Class Smoke_General : SmallDebris
+Class Smoke_General : SmallDebris abstract
 {
 Default {
 	smalldebris.dgravity 0;
@@ -177,7 +178,7 @@ states
 	}
 }
 
-Class BasicSmokeTrail : Smoke_General
+Class BasicSmokeTrail : Smoke_General abstract
 {
 Default {
 	alpha 0.15;
@@ -433,7 +434,7 @@ states
 	}
 }
 
-Class BdoomPuff : Actor
+Class BdoomPuff : Actor abstract
 {
 Default {
 	+NOBLOCKMAP
@@ -441,14 +442,16 @@ Default {
 	+FORCEXYBILLBOARD
 	-ALLOWPARTICLES
 	+DONTSPLASH
+	-FLOORCLIP
 	}
 }
 
 //used by stuff like decorative rails spawned by BFGball
-Class NullPuff : BulletPuff
+Class NullPuff : Actor
 {
 Default {
 	damagetype "none";
+	decal "none";
 	+NOINTERACTION
 	+BLOODLESSIMPACT
 	+PAINLESS
@@ -488,7 +491,6 @@ states
 		TNT1 A 0 NoDelay {
 			if (target)
 				angle = target.angle;
-				pitch = target.pitch;
 			int tracepitch;
 			int traceheight;
 			if (pos.z <= floorz+8) {
@@ -511,8 +513,6 @@ states
 				hittex = texman.GetName(ceilingpic);
 			else if (puffdata.HitType == TRACE_HitWall) {
 				hittex = texman.GetName(puffdata.HitTexture);
-				//line li = puffdata.Hitline;
-				//hitangle = (atan2(li.delta.Y, li.delta.X) - 90);
 				}
 			
 			if (hittex.IndexOf("WATER") >= 0 || hittex.IndexOf("FALL") >= 0 || hittex.IndexOf("BLOOD") >= 0) {
@@ -571,7 +571,7 @@ states
 				rchance = 40;
 				sparkchance = 50;
 				debris = false;
-				smoke = false;
+				smoke = 0;
 				A_Playsound("bullet/metal",0,1.0,0,3);				
 				}
 			else if (	hittex.IndexOf("SK_") >= 0		|| hittex.IndexOf("SKIN2") >= 0		|| hittex.IndexOf("SKINCUT") >= 0
@@ -582,14 +582,14 @@ states
 				decaltype = "Bulletchip";
 				dtype = "bloody";
 				debris = true;
-				smoke = false;
+				smoke = 0;
 				A_Playsound("bullet/body",0,1.0,0,3);				
 				}
 			else if (hittex.IndexOf("SKIN") >= 0 	|| hittex.IndexOf("ZFACE") >= 0	) {
 				decaltype = "Bulletchip";
 				dtype = "skin";
 				debris = false;
-				smoke = false;
+				smoke = 0;
 				A_Playsound("bullet/body",0,1.0,0,3);				
 				}
 			else if (puffdata.HitType != TRACE_HitNone) { //BROWN GRAY CEMENT and the rest, stone seems like a good generic type
