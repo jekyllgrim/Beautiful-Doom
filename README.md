@@ -7,6 +7,7 @@ https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752
 
 Minor optimizations. Gibs will now properly land on terrain water. Improved animation of blood landing on water.
 The Modern Shotgun reloading animation was sliiighly slowed down in preparation of my plans to try out a more traditional SSG replacement instead of Riot Gun.
+Modern Shotgun now has a new set of sprites: darkened, longer barrel, night sights. Still very similar to original.
 
 22.01.2019:
 

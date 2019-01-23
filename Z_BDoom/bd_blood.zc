@@ -242,6 +242,7 @@ Class CeilingBloodDrop : BloodGeneral
 Default {
 	+FORCEYBILLBOARD
 	+NOINTERACTION
+	-FLOORCLIP
 	scale 0.1;
 	alpha 0.75;
 	}
@@ -393,28 +394,20 @@ states
 Class BloodSpill : CeilingBloodDrop
 {
 Default {
-	height 1;
-	scale 0.2;
-	gravity 0.1;
-	alpha 0.75;
+	scale 0.15;
 	}
-states	
+states
 	{
 	spawn:
-		TNT1 A 0 NoDelay {
-			A_CheckSight("Null");
-			if (waterlevel > 0)
-				self.destroy();
-			}
-		TNT1 A 0 A_SetScale(scale.x*randompick(-1,1)*frandom(1.0,1.3),scale.y*frandom(1.0,1.3));
+		TNT1 A 0 NoDelay A_SetScale(scale.x*randompick(-1,1)*frandom(1.0,1.3),scale.y);
 		BLOD XYZ 3;
-		TNT1 A 0 {
-			bNOGRAVITY = false;
-			A_SetGravity(0.7);
-			}
-		BLOD ZZZZ 5 {
+		TNT1 A 0 { vel.z = -3.7; }
+		BLOD ZZZZZZZZZZZZZZZZZZZZZZZZZ 1 {
 			if (waterlevel > 0)
 				self.destroy();
+			if (pos.z <= floorz)
+				return ResolveState("Death");
+			return ResolveState(null);
 			}
 		stop;
 	}
@@ -448,10 +441,6 @@ states
 			A_SetGravity(frandom(0.4,0.6));
 			A_SetScale(scale.x*randompick(-1,1),scale.y*randompick(-1,1));
 			roll = random(0,359);
-			static const string bsprite[] =
-			{
-				"YBL7","YBL8","YBL9"
-			};
 			self.sprite = GetSpriteIndex(bsprite[random(0,2)]);
 			}
 	BloodDrop:
@@ -465,6 +454,7 @@ states
 	}
 }
 
+//long "arterial" spurts
 Class BloodSpurt : BloodGeneral replaces AxeBlood
 {
 double bpitch;
@@ -525,6 +515,7 @@ override void PostBeginPlay() {
 	}
 }
 
+//shorter and smaller version of bloodspurt
 Class NeckSpray : SmallDebris
 {
 Default {
@@ -532,13 +523,13 @@ Default {
 	scale 0.12;
 	alpha 0.7;
 	}
+static const string bsprite[] =	{ "YBL7","YBL8","YBL9" };
 states
 	{
 	spawn:
 		TNT1 A 0 NoDelay {
 			A_SetScale(scale.x*randompick(-1,1),scale.y*randompick(-1,1));
 			roll = random(0,359);
-			static const string bsprite[] =	{ "YBL7","YBL8","YBL9" };
 			self.sprite = GetSpriteIndex(bsprite[random(0,2)]);
 			}
 		#### ABCDEFGHIJKLMNOPQRS 2 {
