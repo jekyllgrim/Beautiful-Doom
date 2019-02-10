@@ -69,8 +69,8 @@ override void Tick()
 			(sfxtype == 2 && bdoom_blood == 0)	||
 			(sfxtype == 3 && bdoom_gibs == 0)	)
 		{
-			A_DeQueueCorpse();
-			self.destroy();
+		A_DeQueueCorpse();
+		self.destroy();
 		}
 	super.Tick();
 	}

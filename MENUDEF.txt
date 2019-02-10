@@ -104,12 +104,13 @@ OptionMenu "BDoom_Settings"
 	Option "Ricochet & spark sounds", 			"bdoom_sparks", "OnOff", "", 1
 	StaticText " "
 	
+	SpriteShadowSlider "$SPRITESHADOWMNU_MAXSHADOWDISTANCE",	"$SPRITESHADOWMNU_HELPTEXT_MAXSHADOWDISTANCE",	"cl_spriteshadowdistance",	0, 10000, 1, 0
+	StaticText " "
+	
 	Option "Flies over corpses", 				"bdoom_flies", "OnOff", "", 1
 	StaticText " "
 
 	Option "Explosion shakes", 					"bdoom_shakes", "OnOff", "", 1
-	
-	Option "Monster shadows", 					"bdoom_shadows", "OnOff", "", 1
 	
 	Option "Face on Standard HUD", 				"bdoom_hudface", "OnOff", "", 1
 }

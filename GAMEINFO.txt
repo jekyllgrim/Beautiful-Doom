@@ -1,2 +1,2 @@
-STARTUPTITLE="Beautiful Doom ver. 6.4.0 || "
+STARTUPTITLE="Beautiful Doom dev build 190210"
 STARTUPCOLORS="0000FF","000000"

@@ -70,7 +70,7 @@ override void Tick() {
 	super.Tick();
 
 	//burning activated, CVAR allows flames, is not in See state, hasn't been burning long
-	if (burning && bdoom_flames == 1 && InStateSequence(curstate,ResolveState("See")) == false && burntimer < 220 ) 
+	if (burning && bdoom_flames == 1 && !InStateSequence(curstate,ResolveState("See")) && burntimer < 220 ) 
 		{
 		burntimer++;
 	//burn, baby, burn	
@@ -243,16 +243,20 @@ states
 
 
 
-Class BD_ZombieBullet : RealBullet
+Class BD_ZombieBullet : BD_PistolBullet
 {
-Default {
-	damageFunction (3 * random(1,5));
+override void PostBeginPlay()
+	{
+	super.PostBeginPlay();
+	BulletDamage = 3 * random(1,5);
 	}
 }
 
-Class BD_ZombiePellet : RealBullet
+Class BD_ZombiePellet : BD_ShotgunPellet
 {
-Default {
-	damageFunction (2 * random(3,4));
+override void PostBeginPlay()
+	{
+	super.PostBeginPlay();
+	BulletDamage = 2 * random(3,4);
 	}
 }

@@ -1,4 +1,14 @@
-TBA
+10.02.2019
+
+-- Replaced Riot Gun with more classical SSG: it's slower but more powerful than the vanilla one. Very fast drawing. Reloaded manually by pressing "Reload" (in contrast to Enhanced version).
+-- Added new sprites for Modern Shotgun: darker colors, night sights.
+-- Added new sprites for Modern  Pistol: darker colors, night sights, two-handed grip.
+-- Ceiling blood will no longer move with the floor.
+-- SSG and Chaingun will now properly give ammo when picked up for the first time.
+-- Updated sprite shadows to Nash's sprite shadows 1.85 (original mod found here https://forum.zdoom.org/viewtopic.php?p=971348).
+
+
+23.01.2019
 
 * ADDED/IMPROVED *
 -- Code ported to ZScript (in progress)

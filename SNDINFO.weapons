@@ -210,6 +210,25 @@ Mweapons/assg/cock			"sounds/modern/assg/assg_cock.ogg"
 Mweapons/assg/trigger		"sounds/modern/assg/assg_trigger.ogg"
 Mweapons/assg/open		"sounds/modern/assg/assg_open.ogg"
 
+$random Mweapons/ssg/fire1 { ssgf1 ssgf2 ssgf3 ssgf4 }
+$random Mweapons/ssg/firedual { ssgdual1 ssgdual2 ssgdual3 ssgdual4 }
+ssgf1		"sounds/modern/ssg/2barrel_fire1.wav"
+ssgf2		"sounds/modern/ssg/2barrel_fire2.wav"
+ssgf3		"sounds/modern/ssg/2barrel_fire3.wav"
+ssgf4		"sounds/modern/ssg/2barrel_fire4.wav"
+ssgdual1		"sounds/modern/ssg/2barrel_fireST1.wav"
+ssgdual2		"sounds/modern/ssg/2barrel_fireST2.wav"
+ssgdual3		"sounds/modern/ssg/2barrel_fireST3.wav"
+ssgdual4		"sounds/modern/ssg/2barrel_fireST4.wav"
+$random Mweapons/ssg/in { ssgin1 ssgin2 }
+ssgin1		"sounds/modern/ssg/ssg_in1.ogg"
+ssgin2		"sounds/modern/ssg/ssg_in2.ogg"
+$random Mweapons/ssg/open { ssgopen1 ssgopen2 }
+ssgopen1	"sounds/modern/ssg/ssg_open1.ogg"
+ssgopen2	"sounds/modern/ssg/ssg_open2.ogg"
+Mweapons/ssg/close	"sounds/modern/ssg/ssg_close.ogg"
+
+
 Mweapons/rocket/raise		"sounds/modern/launcher/rock_raise.wav"
 $random Mweapons/rocket/fire { rocket1 rocket2 rocket3 }
 rocket1			"sounds/modern/launcher/rocket1.ogg"

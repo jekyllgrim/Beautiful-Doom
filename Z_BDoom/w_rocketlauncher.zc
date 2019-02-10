@@ -116,7 +116,7 @@ states
 			}
 		#### # 0 A_WeaponOffset(-35.0,74.0);
 		#### ####### 1 {
-			A_WeaponOffset(5.0,-6.0,WOF_ADD);
+			A_WeaponOffset(5.0,-6.0,WOF_ADD|WOF_INTERPOLATE);
 			A_WeaponReady(WRF_NOFIRE|WRF_NOBOB);
 			}
 		goto ready;
@@ -289,20 +289,20 @@ states
 			else
 				ws.frame = 1;
 			}
-		#### ####### 1 A_WeaponOffset(-1.1,0.5,WOF_ADD);
-		#### # 8 A_WeaponOffset(0.0,0.0,WOF_ADD);
+		#### ####### 1 A_WeaponOffset(-1.1,0.5,WOF_ADD|WOF_INTERPOLATE);
+		#### # 8 A_WeaponOffset(0.0,0.0,WOF_ADD|WOF_INTERPOLATE);
 		#### # 0 A_PlaySound("Mweapons/rocket/clipout",5);
-		#### # 1 A_WeaponOffset(1.5,0.0,WOF_ADD);
-		#### ### 1 A_WeaponOffset(-0.5,0.0,WOF_ADD);
+		#### # 1 A_WeaponOffset(1.5,0.0,WOF_ADD|WOF_INTERPOLATE);
+		#### ### 1 A_WeaponOffset(-0.5,0.0,WOF_ADD|WOF_INTERPOLATE);
 		
-		#### # 30 A_WeaponOffset(0.0,0.0,WOF_ADD);
+		#### # 30 A_WeaponOffset(0.0,0.0,WOF_ADD|WOF_INTERPOLATE);
 		
 		#### # 0 A_PlaySound("Mweapons/rocket/clipin",5);
 		
-		#### # 1 A_WeaponOffset(-3.0,0.0,WOF_ADD);
-		#### ### 1 A_WeaponOffset(1.0,0.0,WOF_ADD);
+		#### # 1 A_WeaponOffset(-3.0,0.0,WOF_ADD|WOF_INTERPOLATE);
+		#### ### 1 A_WeaponOffset(1.0,0.0,WOF_ADD|WOF_INTERPOLATE);
 		
-		#### ####### 1 A_WeaponOffset(1.1,-0.5,WOF_ADD);
+		#### ####### 1 A_WeaponOffset(1.1,-0.5,WOF_ADD|WOF_INTERPOLATE);
 		goto ready;
 	ReloadMag:
 		RORT A 1 {
@@ -317,7 +317,7 @@ states
 			}
 		#### ######## 1;
 		#### # 8;
-		#### ########## 1 A_Overlayoffset(-3,1.8,2.3,WOF_ADD);
+		#### ########## 1 A_Overlayoffset(-3,1.8,2.3,WOF_ADD|WOF_INTERPOLATE);
 		#### # 13 BD_Reload();
 
 		RORT A 1 {
@@ -329,7 +329,7 @@ states
 			else
 				ws.frame = 2;
 			}
-		#### ########## 1 A_Overlayoffset(-3,-1.8,-2.3,WOF_ADD);
+		#### ########## 1 A_Overlayoffset(-3,-1.8,-2.3,WOF_ADD|WOF_INTERPOLATE);
 		#### #### 1;
 		#### ####### 1;
 		stop;
@@ -539,7 +539,7 @@ states
 Class RLClip : ammo
 {
 Default {
-	inventory.icon "HDRMZ0";
+	inventory.icon "HROKZ0";
 	inventory.amount 1;
 	inventory.maxamount 6;
 	ammo.backpackamount 0;

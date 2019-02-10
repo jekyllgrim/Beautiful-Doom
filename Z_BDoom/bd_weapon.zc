@@ -100,21 +100,6 @@ action void A_Eject(class<Actor> itemtype, double xofs = 0, double yofs = 0, dou
 		c.target = self; //if spawned by monster it'll disappear after bouncing
 		c.angle = angle;
 	}
-/*action statelabel BD_Ready(statelabel ready1 = "Idle.Vanilla", statelabel ready2 = "Idle.Enhanced", statelabel ready3 = "Idle.Modern") {
-	if (bdoom_weapons == 0)
-		return ResolveState(ready1);
-	if (bdoom_weapons == 1)
-		return ResolveState(ready2);
-	if (bdoom_weapons == 2)
-		return ResolveState(ready3);
-	return ResolveState(null);
-	}
-States
-	{
-	Select:
-		TNT1 A 0 A_Raise;
-		loop;
-	}*/
 }
 
 
@@ -175,11 +160,21 @@ states
 
 Class RealBullet : BulletTracer
 {
+double bulletdamage;
+double falloffstrength;
+double mindamage;
+int falloffdistance;
 int bulletspeed;
 int hitangle;
 property bulletspeed : bulletspeed;
+property falloffstrength : falloffstrength;
+property falloffdistance : falloffdistance;
+property mindamage : mindamage;
 Default {
-	RealBullet.bulletspeed 150;
+	//RealBullet.bulletspeed 200;
+	RealBullet.FalloffDistance 1024;
+	RealBullet.falloffstrength 0.3;
+	RealBullet.mindamage 1;
 	+ACTIVATEIMPACT
 	+ACTIVATEPCROSS
 	+NOTELEPORT
@@ -187,24 +182,27 @@ Default {
 	+BLOODSPLATTER
 	+THRUGHOST
 	decal "none";
-	speed 1;
+	speed 170;
 	radius 1;
 	height 1;
+	DamageFunction bulletdamage;
 	}
 override void PostBeginPlay()
 	{
 	super.PostBeginPlay();
-	vel = vel.Unit () * bulletspeed;
+	//vel = vel.Unit () * bulletspeed;
+	BulletDamage = 3 * frandom(4,8);
+	}
+override void Tick() {
+	super.Tick();
+	if (target && distance3d(target) > falloffdistance)
+		bulletdamage = clamp(bulletdamage*falloffstrength,mindamage,100);
+	//console.printf("Damage %f",bulletdamage);
 	}
 states
 	{
 	Death:
-		TNT1 A 1 {
-			//if (blockingline)
-			//	hitangle = (atan2(blockingline.delta.Y, blockingline.delta.X) - 90);
-			A_SpawnItemEx("EnBulletPuff",0,0,0,0,0,0,0,SXF_SETTARGET|SXF_ORIGINATOR);
-			//Console.PrintF("hitangle %d",hitangle);
-			}
+		TNT1 A 1 A_SpawnItemEx("EnBulletPuff",0,0,0,0,0,0,0,SXF_SETTARGET|SXF_ORIGINATOR);
 		stop;
 	}
 }
@@ -212,26 +210,88 @@ states
 Class BD_PistolBullet : RealBullet
 {
 Default {
-	RealBullet.bulletspeed 170;
-	DamageFunction (3 * frandom(4,8));
+	//RealBullet.bulletspeed 170;
+	speed 170;
+	RealBullet.FalloffDistance 512;
+	RealBullet.falloffstrength 0.9;
+	}
+override void PostBeginPlay()
+	{
+	super.PostBeginPlay();
+	BulletDamage = 15; //3 * frandom(4,8);
+	}
+}
+
+Class BD_RifleBullet : RealBullet
+{
+Default {
+	//RealBullet.bulletspeed 230;
+	speed 230;
+	RealBullet.FalloffDistance 640;
+	RealBullet.falloffstrength 0.93;
+	}
+override void PostBeginPlay()
+	{
+	super.PostBeginPlay();
+	BulletDamage = 15; //3 * frandom(6.5,8.0);
 	}
 }
 
 Class BD_ShotgunPellet : RealBullet
 {
 Default {
-	RealBullet.bulletspeed 130;
-	DamageFunction (3 * frandom(2,5));
-	//decal "ShotChip";
+	//RealBullet.bulletspeed 140;
+	speed 140;
+	RealBullet.FalloffDistance 400;
+	RealBullet.falloffstrength 0.85;
+	RealBullet.mindamage 0.4;
+	}
+override void PostBeginPlay()
+	{
+	super.PostBeginPlay();
+	BulletDamage = 12; //3 * frandom(3,5);
 	}
 }
 
-
-Class BD_RifleBullet : BD_PistolBullet
+Class BD_SSGPellet : RealBullet
 {
+private int ripdepth; //how much health it can pierce through
+private actor hitvictim;
 Default {
-	RealBullet.bulletspeed 230;
-	DamageFunction (3 * frandom(6.5,8.0));
+	//RealBullet.bulletspeed 140;
+	damage 0;
+	speed 140;
+	RealBullet.FalloffDistance 300;
+	RealBullet.falloffstrength 0.8;
+	RealBullet.mindamage 0.5;
+	+RIPPER
+	//+NOBOSSRIP
+	}
+override void Tick() {
+	super.Tick();
+	if (ripdepth <= 0)
+		self.destroy();
+	}
+override int specialmissilehit(actor victim) {
+	if (victim && !victim.player) {
+		ripdepth = ripdepth - victim.health; //reduce ripping ability before anything else
+		if (victim != hitvictim) { //deal damage only ONCE even if the pellet rips through
+			hitvictim = victim;
+			victim.DamageMobj(self,target,bulletdamage,"Normal");
+			//console.PrintF("Ripdepth %d, Health %d",ripdepth,victim.health);
+			}
+		}
+	if (ripdepth <= 0)
+		return -1;
+	else
+		return 1;
+	//bulletdamage*= 0.5;
+	}
+override void PostBeginPlay()
+	{
+	super.PostBeginPlay();
+	BulletDamage = 12;
+	ripdepth = 200;
 	}
 }
 
@@ -251,6 +311,8 @@ Default {
 	-THRUACTORS
 	+ROLLCENTER
 	+BOUNCEONACTORS
+	-FLOORCLIP
+	-RELATIVETOFLOOR
 	renderstyle "normal";
 	bouncetype "doom";
 	seesound "none";
@@ -284,13 +346,14 @@ states
 		goto death;
 	Death:
 		#### # 1 {
-			bNOINTERACTION = true;
 			roll = (randompick(0,180) + random(-8,8));
 			if (target && target.bISMONSTER)
 				self.destroy();
 			A_QueueCorpse();
 			A_Stop();
 			ClearBounce();
+			//bNOINTERACTION = true;
+			//bRELATIVETOFLOOR = true;
 			}
 		#### # -1;
 		stop;

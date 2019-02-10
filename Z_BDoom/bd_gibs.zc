@@ -22,10 +22,11 @@ int restframe; //last frame used in death animation
 Default {
 	DebrisGeneral.sfxtype 3;
 	-NOBLOCKMAP 
-	-FLOORCLIP
+	+FLOORCLIP
 	-THRUACTORS
 	-NOGRAVITY
-	+EXPLODEONWATER
+	-MISSILE
+	+CORPSE
 	+BUDDHA
 	+NOPAIN
 	bouncetype "Doom";
@@ -70,26 +71,26 @@ states
 		HED1 ABCD 0;
 		HND1 ABC 0;
 		LEG1 ABCDE 0;
-		TR11 ABCDE 0;
-		TR12 ABCDE 0;
+		TR11 ABCDEFG 0;
+		TR12 ABCDEFG 0;
 		//shotgunguy
 		HED2 ABC 0;
 		HND2 AB 0;
 		LEG2 ABCDE 0;
-		TR21 ABCDE 0;
-		TR22 ABCDE 0;
+		TR21 ABCDEFGH 0;
+		TR22 ABCDEFGH 0;
 		//chaingunguy
 		HED3 ABC 0;
 		HND3 ABC 0;
 		LEG3 ABC 0;
-		TR31 ABCDE 0;
-		TR32 ABCDE 0;
+		TR31 ABCDEFGHI 0;
+		TR32 ABCDEFGH 0;
 		//imp
 		HED4 ABC 0;
 		HND4 ABC 0;
 		LEG4 ABCD 0;
-		TR41 ABCDE 0;
-		TR42 ABCDE 0;
+		TR41 ABCDEFGH 0;
+		TR42 ABCDEFGH 0;
 		//ss
 		HED5 ABC 0;
 		HND5 AB 0;
@@ -155,7 +156,7 @@ states
 			A_SetRoll(roll+=brot,SPF_INTERPOLATE);
 			}
 		wait;
-	Death:
+	Crash:
 		#### # 0 GibFall();
 		#### # 1  {
 			//console.printf("%s, %s",self.GetClassName(),target.GetClassName());
@@ -365,6 +366,7 @@ class Gib_Torso1 : BasicMeatPiece
 int finalframe; //last frame used in the flying animation
 Default {
 	-MISSILE
+	+CORPSE
 	bouncetype "none";
 	gravity 1.0;
 	scale 1.0;
@@ -400,28 +402,22 @@ override void GibBeginPlay()
 states
 	{
 	Spawn:
-		#### A 1 NoDelay {
+		/*#### A 1 NoDelay {
 			if (!target)
 				console.printf("I'm here but have no target");
-			}
-		#### A 1 GibBeginPlay();
+			}*/
+		#### A 1 NoDelay GibBeginPlay();
 		#### # 3 {
 			A_SpawnItemEx("BloodDrop",frandom(-2,2),frandom(-2,2),frandom(8,22),0,frandom(0,1),frandom(0,1),random(175,185),SXF_TRANSFERPOINTERS,144);
-			if (self.frame < finalframe)
+			if (self.frame < finalframe) //animate flying until the last flying frame
 				self.frame++;
-			if (pos.z <= floorz+1) {
-				A_SetMass(bmass);
-				A_Playsound("gibs/meatland");
-				return ResolveState("Land");
-				}
-			return ResolveState(null);
 			}
 		wait;
-	Land:
+	Crash:
 		#### # 4 {
-			if (self.frame < restframe)
+			if (self.frame < restframe) //landing ainmation (usually blood comes out of the torso,etc.)
 				self.frame++;
-			if (vel == (0,0,0)) {
+			if (vel == (0,0,0) && self.frame == restframe) { //disable interaction once it comes to rest completely
 				bNOINTERACTION = true;
 				bRELATIVETOFLOOR = true;
 				return ResolveState("Rest");
@@ -430,16 +426,19 @@ states
 			}
 		loop;
 	Rest:
-		#### # 1 {
+		#### # 0 {
+			self.frame = restframe; //in case for SOME reason the animation didn't finish
+			}
+		#### # 1 { //prepare for resurrection
 			if(target && target is "BDoomMonster" && target.InStateSequence(target.curstate,target.FindState("Raise")))
 				return ResolveState("Raise");
 			return ResolveState(null);
 			}
-		loop;
+		wait;
 	Raise:
 		#### # 0 FlyBack();
 		#### # 3 {
-			if (self.frame > 0)
+			if (self.frame > 0) //reverse animation
 				self.frame--;
 			A_FadeOut(0.06);
 			if (target &&  Distance3D(target) < 16)

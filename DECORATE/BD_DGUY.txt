@@ -10,7 +10,7 @@ player.startitem "BD_Fist"
 player.startitem "PistolClip", 15
 player.startitem "ShotgunClip", 8
 player.startitem "RifleClip", 40
-player.startitem "SSGClip", 12
+player.startitem "SSGClip", 2
 player.startitem "RLClip", 8
 player.displayname "Beautiful Marine"
 

@@ -10,8 +10,10 @@ server 	int		bdoom_weapons 		= 1;
 user 	bool 	bdoom_muzzle		= true;
 server 	bool 	bdoom_tracers		= true;
 server 	bool 	bdoom_flies			= true;
-user 	bool 	bdoom_shadows		= true;
 user 	bool 	bdoom_hudface		= true;
+
+user int cl_spriteshadowdistance = 1500;
+user int cl_maxspriteshadows = 200;
 
 
 server float fs_volume_mul = 1.0;

@@ -2,8 +2,8 @@
 Advanced engine needed  : GZDoom 3.7.0 or newer
 Primary purpose         : No levels included
 ===========================================================================
-Title                   : Beautiful Doom (version 7.0.0)
-Filename                : BDoom700.pk3
+Title                   : Beautiful Doom
+Filename                : BDoom***.pk3
 Release date            : TBA
 Authors                 : Agent_Ash aka Jekyll Grim Payne, Gifty
 Email Address           : jekyllgrim@gmail.com
@@ -86,7 +86,7 @@ Known Issues			: "Smarter" sprite clipping mode is recommended. If you
 
 ** CHANGELOG **
 
-See CHANGELOG.txt for changelog.
+See CHANGELOG.txt for changelog of releases.
  
 
 ****************************************************************************
