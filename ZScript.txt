@@ -17,7 +17,6 @@ version "3.3"
 #include "Z_Bdoom/w_bfg.zc"
 
 #include "Z_Bdoom/SpriteShadow.zc"
-#include "Z_Bdoom/SpriteShadowMenu.zc"
 
 #include "Z_Bdoom/BD_Monster.zc"
 #include "Z_Bdoom/m_zombieman.zc"

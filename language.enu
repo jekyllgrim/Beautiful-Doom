@@ -1,8 +1,0 @@
-[enu default]
-
-OPTMNU_SPRITESHADOW = "Customize SpriteShadow";
-SPRITESHADOWMNU_TITLE = "SpriteShadow Options";
-SPRITESHADOWMNU_MAXSHADOWDISTANCE = "Max Shadow Distance";
-SPRITESHADOWMNU_MAXSHADOWS = "Max Shadows";
-SPRITESHADOWMNU_HELPTEXT_MAXSHADOWDISTANCE = "Maximum distance to show shadows beneath Actors.";
-SPRITESHADOWMNU_HELPTEXT_MAXSHADOWS = "Maximum number of shadows to show (regardless of distance).";

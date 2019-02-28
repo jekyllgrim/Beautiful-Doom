@@ -13,7 +13,6 @@ server 	bool 	bdoom_flies			= true;
 user 	bool 	bdoom_hudface		= true;
 
 user int cl_spriteshadowdistance = 1500;
-user int cl_maxspriteshadows = 200;
 
 
 server float fs_volume_mul = 1.0;

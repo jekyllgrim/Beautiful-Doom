@@ -104,7 +104,7 @@ OptionMenu "BDoom_Settings"
 	Option "Ricochet & spark sounds", 			"bdoom_sparks", "OnOff", "", 1
 	StaticText " "
 	
-	SpriteShadowSlider "$SPRITESHADOWMNU_MAXSHADOWDISTANCE",	"$SPRITESHADOWMNU_HELPTEXT_MAXSHADOWDISTANCE",	"cl_spriteshadowdistance",	0, 10000, 1, 0
+	ScaleSlider  "Maximum Shadow Distance", "cl_spriteshadowdistance",	0, 10000, 1, "Shadows are Disabled"
 	StaticText " "
 	
 	Option "Flies over corpses", 				"bdoom_flies", "OnOff", "", 1
