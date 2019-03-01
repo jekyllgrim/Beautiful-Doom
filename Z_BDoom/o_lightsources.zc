@@ -1,0 +1,221 @@
+//Blue translated for other torches
+
+Class TorchFireParticle_Red : Flare_General
+{
+Default {
+	alpha 0.5;
+	scale 0.04;
+	}
+override void PostBeginPlay() {
+	super.PostBeginPlay();
+	if (master && master is "ShortTorch_Green")
+		scale *= 0.45;
+	}
+states
+	{
+	Spawn:
+		SPRK A 1 bright Nodelay {
+			A_FadeOut(0.01);
+			scale*=0.95;
+			}
+		wait;
+	}
+}
+
+Class TorchFireParticle_Green : TorchFireParticle_Red
+{
+states
+	{
+	Spawn:
+		SPRK B 1 bright Nodelay {
+			A_FadeOut(0.01);
+			scale*=0.95;
+			}
+		wait;
+	}
+}
+
+Class TorchFireParticle_Blue : TorchFireParticle_Red
+{
+states
+	{
+	Spawn:
+		SPRK C 1 bright Nodelay {
+			A_FadeOut(0.01);
+			scale*=0.95;
+			}
+		wait;
+	}
+}
+
+Class BD_LightFlare : Flare_General
+{
+name fcolor;
+Default {
+	alpha 0.6;
+	scale 0.4;
+	+RELATIVETOFLOOR
+	}
+override void Tick() {
+	super.tick();
+	if (bdoom_flames)
+		A_SetRenderStyle(alpha,Style_Add);	
+	else
+		A_SetRenderStyle(alpha,Style_None);
+	}
+states
+	{
+	Loadsprites:
+		LENR A 0;
+		LENB A 0;
+		LENG A 0;
+		LENY A 0;
+		stop;
+	Spawn:
+		LENY A 0 NoDelay {
+			if (fcolor == "red")
+				self.sprite = GetSpriteIndex("LENR");
+			else if (fcolor == "green")
+				self.sprite = GetSpriteIndex("LENG");
+			else if (fcolor == "blue")
+				self.sprite = GetSpriteIndex("LENB");
+			else if (fcolor == "yellow")
+				self.sprite = GetSpriteIndex("LENY");
+			/*else
+				self.destroy();*/
+			}
+		#### # 4 bright {
+			if (bdoom_Flames)
+				alpha = frandom(0.45,0.6);
+			}
+		wait;
+	}
+}
+
+Class BD_Torch : RedTorch abstract
+{
+int fspawnheight;
+name fcolor;
+double fscale;
+Class<Actor> fparticle;
+property fspawnheight : fspawnheight;
+property fcolor : fcolor;
+property fscale : fscale;
+Default {
+	BD_torch.fspawnheight 60;
+	BD_torch.fscale 0.38;
+	BD_torch.fcolor "none";
+	scale 0.5;
+	}
+override void PostBeginPlay() {
+	super.PostBeginPlay();
+	actor flr = Spawn("BD_LightFlare",(pos.x,pos.y,floorz+fspawnheight));
+	flr.master = self;
+	let tflare = BD_LightFlare (flr);
+	if (tflare) {
+		tflare.fcolor = fcolor;
+		tflare.scale.x = fscale;
+		tflare.scale.y = fscale;
+		}
+	if (fcolor == "red")
+		fparticle = "TorchFireParticle_Red";
+	else if (fcolor == "green")
+		fparticle = "TorchFireParticle_Green";
+	else if (fcolor == "blue")
+		fparticle = "TorchFireParticle_blue";
+	}
+static const name TSPRITE[] = { "TTRR", "TTRG", "TTRB" };
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay {
+			if (fcolor == "red")
+				self.sprite = GetSpriteIndex(TSPRITE[0]);
+			else if (fcolor == "green")
+				self.sprite = GetSpriteIndex(TSPRITE[1]);
+			else if (fcolor == "blue")
+				self.sprite = GetSpriteIndex(TSPRITE[2]);
+			}
+		#### A 0 A_Jump(256,random(0,25));
+		#### ABCDEFGHIJKLMNOPQRSTUVWXYZ 2 {
+			if (bdoom_flames)
+				A_SpawnItemEx(fparticle,frandom(-3,3),frandom(-3,3),frandom(73,78),frandom(-0.15,0.15),frandom(-0.15,0.15),frandom(0.2,0.5),0,SXF_SETMASTER,220);
+			}
+		goto spawn+2;
+	Loadsprites:
+		TTRG ABCDEFGHIJKLMNOPQRSTUVWXYZ 0;
+		TTRB ABCDEFGHIJKLMNOPQRSTUVWXYZ 0;
+		TTRR ABCDEFGHIJKLMNOPQRSTUVWXYZ 0;
+		STRG ABCDEFGHIJKLMNOPQRSTUVWXYZ 0;
+		STRB ABCDEFGHIJKLMNOPQRSTUVWXYZ 0;
+		STRR ABCDEFGHIJKLMNOPQRSTUVWXYZ 0;
+		stop;
+	}
+}
+
+Class TallTorch_Green : BD_Torch replaces GreenTorch
+{
+Default {
+	BD_torch.fcolor "green";
+	}
+}
+
+Class TallTorch_Red : BD_Torch replaces RedTorch
+{
+Default {
+	BD_torch.fcolor "red";
+	}
+}
+
+Class TallTorch_Blue : BD_Torch replaces BlueTorch
+{
+Default {
+	BD_torch.fcolor "blue";
+	}
+}
+
+
+Class ShortTorch_Green : BD_Torch replaces ShortGreenTorch
+{
+Default {
+	radius 16;
+	height 37;
+	BD_torch.fspawnheight 30;
+	BD_torch.fscale 0.18;
+	scale 0.25;
+	BD_torch.fcolor "green";
+	}
+static const name TSPRITE[] = { "STRR", "STRG", "STRB" };
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay {
+			if (fcolor == "red")
+				self.sprite = GetSpriteIndex(TSPRITE[0]);
+			else if (fcolor == "green")
+				self.sprite = GetSpriteIndex(TSPRITE[1]);
+			else if (fcolor == "blue")
+				self.sprite = GetSpriteIndex(TSPRITE[2]);
+			}
+		#### A 0 A_Jump(256,random(0,25));
+		#### ABCDEFGHIJKLMNOPQRSTUVWXYZ 2 {
+			if (bdoom_flames)
+				A_SpawnItemEx(fparticle,frandom(-1.5,1.5),frandom(-1.5,1.5),frandom(35,38),frandom(-0.15,0.15),frandom(-0.15,0.15),frandom(0.15,0.35),0,SXF_SETMASTER,230);
+			}
+		goto spawn+2;
+	}
+}
+
+Class ShortTorch_Red : ShortTorch_Green replaces ShortRedTorch
+{
+Default {
+	BD_torch.fcolor "red";
+	}
+}
+
+Class ShortTorch_Blue : ShortTorch_Green replaces ShortBlueTorch
+{
+Default {
+	BD_torch.fcolor "blue";
+	}
+}

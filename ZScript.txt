@@ -26,3 +26,5 @@ version "3.3"
 #include "Z_Bdoom/m_DoomImp.zc"
 #include "Z_Bdoom/m_WolfSS.zc"
 #include "Z_Bdoom/m_Demon.zc"
+
+#include "Z_Bdoom/o_lightsources.zc"

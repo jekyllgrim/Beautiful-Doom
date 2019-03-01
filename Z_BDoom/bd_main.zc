@@ -5,7 +5,7 @@
 //base class for most debris
 Class DebrisGeneral : Actor abstract
 {
-int sfxtype; //0 = debris, 1 = flames/smoke, 2 = blood, 3 = gibs
+int sfxtype; //0 = debris, 1 = flames/smoke, 2 = blood, 3 = gibs, 4 = flares
 property sfxtype : sfxtype;
 Default {
 	DebrisGeneral.sfxtype 0;
@@ -100,7 +100,7 @@ override void Tick() {
 Class Flare_General : DebrisGeneral abstract
 {
 Default {
-	DebrisGeneral.sfxtype 1;
+	DebrisGeneral.sfxtype 4;
 	-MISSILE
 	-RELATIVETOFLOOR
 	+NOINTERACTION

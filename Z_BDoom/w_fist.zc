@@ -36,12 +36,12 @@ override void DoEffect()
 		if(bdoom_weapons == 2)
 			{
 				bNOAUTOFIRE = true;
-				bWIMPY_WEAPON = true;
+				bWIMPY_WEAPON = false;
 			}
 		else
 			{
 				bNOAUTOFIRE = false;
-				bWIMPY_WEAPON = false;
+				bWIMPY_WEAPON = true;
 			}
 		//Console.Printf("tcombo "..tcombo);
 		}

@@ -1,6 +1,644 @@
 // ------------------------------------------------
 // ------------------ BRIGHTMAPS ------------------
 // ------------------------------------------------
+
+// TALL TORCH
+brightmap sprite TTRGA0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGB0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGC0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGD0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGE0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGF0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGG0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGH0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGI0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGJ0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGK0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGL0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGM0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGN0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGO0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGP0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGQ0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGR0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGS0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGT0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGU0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGV0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGW0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGX0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGY0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRGZ0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+
+//blue
+brightmap sprite TTRBA0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBB0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBC0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBD0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBE0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBF0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBG0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBH0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBI0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBJ0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBK0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBL0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBM0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBN0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBO0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBP0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBQ0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBR0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBS0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBT0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBU0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBV0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBW0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBX0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBY0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRBZ0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+
+//red
+brightmap sprite TTRRA0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRB0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRC0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRD0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRE0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRF0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRG0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRH0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRI0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRJ0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRK0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRL0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRM0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRN0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRO0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRP0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRQ0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRR0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRS0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRT0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRU0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRV0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRW0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRX0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRY0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+brightmap sprite TTRRZ0 {
+map "brightmaps/talltorch.png"
+disablefullbright
+}
+
+// SHORT TORCH
+//green
+brightmap sprite STRGA0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGB0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGC0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGD0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGE0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGF0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGG0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGH0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGI0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGJ0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGK0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGL0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGM0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGN0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGO0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGP0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGQ0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGR0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGS0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGT0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGU0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGV0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGW0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGX0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGY0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRGZ0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+
+//blue
+brightmap sprite STRBA0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBB0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBC0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBD0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBE0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBF0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBG0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBH0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBI0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBJ0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBK0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBL0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBM0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBN0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBO0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBP0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBQ0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBR0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBS0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBT0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBU0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBV0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBW0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBX0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBY0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRBZ0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+
+//red
+brightmap sprite STRRA0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRB0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRC0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRD0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRE0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRF0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRG0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRH0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRI0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRJ0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRK0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRL0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRM0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRN0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRO0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRP0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRQ0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRR0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRS0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRT0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRU0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRV0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRW0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRX0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRY0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+brightmap sprite STRRZ0 {
+map "brightmaps/shorttorch.png"
+disablefullbright
+}
+
 /*
 // BARON OF HELL
 
