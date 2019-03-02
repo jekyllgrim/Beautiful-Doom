@@ -3,6 +3,25 @@ Beautiful Doom mod for GZDoom Forum thread:
 
 https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752ec93aed
 
+*** HOW TO PLAY THE DEVELOPMENT VERSION: ***
+
+* Click the green "Cone or download" button in the top right side of the page.
+* Click "Download ZIP". You do NOT need to unpack the resulting archive!
+* (Optional) Rename the downloaded .zip to .pk3 to remember that you don't need to unpack it.
+* Run the archive as you would run any mod; from command line or a bat file in the GZDoom directory, run:
+gzdoom.exe -file Beautiful-Doom-master.zip 
+(or, if you renamed it: gzdoom.exe -file Beautiful-Doom-master.pk3)
+* Enjoy!
+
+
+** Dev updates log (dd.mm.yyyy) **
+
+02.03.2019
+- New torches with cooler, smoother animations and particle effects
+- Modern Plasma Rifle is now yellow, faster, has randomized spread, different firing sounds and a different look
+- Modern Plasma Rifle's heat indicator optimized and is a bit more consistent now
+- Modern Rocket Launcher's grenade now properly makes a bouncing sound when landing; it also beeps a few times before exploding (if it landed on the floor without hitting anyone)
+
 23.01.2019:
 
 Minor optimizations. Gibs will now properly land on terrain water. Improved animation of blood landing on water.

@@ -255,8 +255,9 @@ gbounce2		"sounds/modern/launcher/gbounce2.ogg"
 gbounce3		"sounds/modern/launcher/gbounce3.ogg"
 gbounce4		"sounds/modern/launcher/gbounce4.ogg"
 gbounce5		"sounds/modern/launcher/gbounce5.ogg"
+Mweapons/rocket/beep	"sounds/modern/launcher/warnbeep.ogg"
 
-$random Mweapons/plasma/fire { plasma1 plasma2 plasma3 plasma4 }
+Mweapons/plasma/fire "sounds/modern/plasma/plasmafire.ogg" //{ plasma1 plasma2 plasma3 plasma4 }
 plasma1 "sounds/modern/plasma/plasma1.ogg"
 plasma2 "sounds/modern/plasma/plasma2.ogg"
 plasma3 "sounds/modern/plasma/plasma3.ogg"
@@ -267,6 +268,7 @@ Mweapons/plasma/hum	"sounds/modern/plasma/plasma_hum.ogg"
 Mweapons/plasma/steamfast	"sounds/modern/plasma/plasma_steamfast.ogg"
 Mweapons/plasma/steamslow	"sounds/modern/plasma/plasma_steamslow.ogg"
 Mweapons/plasma/alarm	"sounds/modern/plasma/plasma_alarm.ogg"
+Mweapons/plasma/loop	"sounds/modern/plasma/plasmaloop.ogg"
 
 Mweapons/bfg/raise			"sounds/modern/bfg/bfg_raise.ogg"
 Mweapons/bfg/charge			"sounds/modern/bfg/bfg_charge.ogg"

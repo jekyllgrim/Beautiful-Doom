@@ -32,7 +32,7 @@ states
 		loop;
 	Spawn.Modern:
 		PLAZ ABCDEFGHIJKLMNO 1 A_JumpIf(bdoom_weapons != 2, "Spawn");
-		goto spawn;
+		loop;
 	Select:
 		TNT1 A 0 A_JumpIf(bdoom_weapons == 2,"Select.Modern");
 		TNT1 A 0 {
@@ -162,8 +162,6 @@ states
 		TNT1 A 0 A_PlaySound("Mweapons/plasma/select");
 		//TNT1 AAAAAAAA 0 A_Raise;
 		PLGS ABCDEF 1 A_WeaponReady;
-		TNT1 A 0 A_Overlay(5,"HeatUnderlay",0);
-		TNT1 A 0 A_Overlay(6,"Heat",0);
 		goto ready;
 	Deselect.Modern:
 		TNT1 A 0 A_ClearOverlays(5,7);
@@ -171,6 +169,12 @@ states
 		loop;
 	Ready.Modern:
 		PLGG A 1 {
+			let p1 = Player.FindPSprite(5);
+			let p2 = Player.FindPSprite(6);
+			if (!p1)
+				A_Overlay(5,"HeatUnderlay",0);
+			if (!p2)
+				A_Overlay(6,"Heat",0);
 			if (invoker.heatcounter > 0)
 				A_WeaponReady(WRF_ALLOWRELOAD);
 			else
@@ -178,7 +182,7 @@ states
 			}
 		goto ready;
 	HeatScreenReady: //smooth blueish glow showing there's no heat
-		PLHE YXWV 2 A_JumpIf(invoker.heatcounter > 0, "Heat");
+		PLHE YXWVWX 2 bright A_JumpIf(invoker.heatcounter > 0, "Heat");
 		loop;
 	HeatUnderlay: //the background of the heat screen
 		PLHE Z 1;
@@ -215,10 +219,10 @@ states
 			}
 		wait;
 	SteamFast:
-		PSTM ABCDEFGHIJKLMNOPQRSTUVWX 1 bright;
+		PSTM ABCDEFGHIJKLMNOPQRSTUVWX 1;
 		stop;
 	SteamSlow:
-		PSTM ABCDEFGHIJKLMNOPQRSTUVWX 2 bright;
+		PSTM ABCDEFGHIJKLMNOPQRSTUVWX 2;
 		stop;
 	ForcedCool:
 		PLGG A 8 {
@@ -243,16 +247,16 @@ states
 		wait;
 	fire.Modern:
 		TNT1 A 0 A_JumpIf(invoker.heatcounter >= 10, "ForcedCool");
-		PLGF A 2 { 
+		PLGF A 1 { 
 			invoker.HeatCounter+=0.5;
-			//A_Overlay(6,"Heat",0);
-			A_FireProjectile("ModernPlasmaball",0,1);
-			A_SetPitch(pitch - 0.35,SPF_INTERPOLATE);
+			A_PlaySound("Mweapons/plasma/fire",5);
+			A_FireProjectile("ModernPlasmaball",frandom(-1.8,1.8),1,0,0,0,frandom(-1.5,1.5));
+			//A_SetPitch(pitch - 0.1,SPF_INTERPOLATE);
 			A_OverlayOffset(5,0.0,0.0,WOF_INTERPOLATE);
 			A_OverlayOffset(6,0.0,0.0,WOF_INTERPOLATE);
 			A_GunFlash("Flash.Modern");
 			}
-		PLGF B 2 {
+		PLGF B 1 {
 			A_OverlayOffset(5,0.0,2.2,WOF_INTERPOLATE);
 			A_OverlayOffset(6,0.0,2.2,WOF_INTERPOLATE);
 			}
@@ -273,46 +277,21 @@ states
 			}
 		goto ready;
 	Flash.Modern:
-		TNT1 A 0 A_Jump(256,1,2,3,4,5,6);
-		PLZ1 A 2 bright A_light1();
-		goto flash2;
-		PLZ1 B 2 bright A_light1();
-		goto flash2;
-		PLZ1 C 2 bright A_light1();
-		goto flash2;
-		PLZ1 D 2 bright A_light1();
-		goto flash2;
-		PLZ1 E 2 bright A_light1();
-		goto flash2;
-		PLZ1 F 2 bright A_light1();
-		goto flash2;
-	Flash2.Modern:
-		TNT1 A 0 A_Jump(256,1,2,3,4,5,6);
-		PLZ2 A 2 bright A_light0;
-		goto lightdone;
-		PLZ2 B 2 bright A_light0;
-		goto lightdone;
-		PLZ2 C 2 bright A_light0;
-		goto lightdone;
-		PLZ2 D 2 bright A_light0;
-		goto lightdone;
-		PLZ2 E 2 bright A_light0;
-		goto lightdone;
-		PLZ2 F 2 bright A_light0;
-		goto lightdone;
-	Flash3.Modern:
-		TNT1 A 0 A_Jump(256,1,2,3,4,5,6);
-		PLZ3 A 1 bright A_light1();
-		goto lightdone;
-		PLZ3 B 1 bright A_light1();
-		goto lightdone;
-		PLZ3 C 1 bright A_light1();
-		goto lightdone;
-		PLZ3 D 1 bright A_light1();
-		goto lightdone;
-		PLZ3 E 1 bright A_light1();
-		goto lightdone;
-		PLZ3 F 1 bright A_light1();
+		YLZ1 A 1 bright {
+			A_light1();
+			let po = player.FindPSprite(PSP_FLash);
+			po.frame = random (0,5);
+			}
+		YLZ2 A 1 bright {
+			A_light1();
+			let po = player.FindPSprite(PSP_FLash);
+			po.frame = random (0,5);
+			}
+		YLZ3 A 1 bright {
+			A_light1();
+			let po = player.FindPSprite(PSP_FLash);
+			po.frame = random (0,5);
+			}
 		goto lightdone;
 	}
 }
@@ -421,11 +400,7 @@ Default {
 states
 	{
 	Spawn:
-		PLBS A 1 bright NoDelay {
-			if (Bdoom_debris==0)
-				self.destroy();
-			A_FadeOut(0.03);
-			}
+		PLBS A 1 bright NoDelay A_FadeOut(0.03);
 		loop;
 	}
 }
@@ -540,31 +515,36 @@ Default {
 	Height 8;
 	Speed 50;
 	Damage 0;
-	missiletype "MPlasmaBallTrail";
-	missileheight 12 ;
-	decal "Scorch";
+	missiletype "YellowFlarePlasmaTrail";
+	missileheight 8 ;
+	decal "none";
 	+DONTTHRUST
 	+FORCERADIUSDMG
 	renderstyle "Add";
 	scale 0.03;
 	alpha 1.0;
-	SeeSound "Mweapons/plasma/fire";
+	SeeSound "none";
 	DeathSound "weapons/plasmax";
+	translation "YellowPlasma";
 	}
 States
 	{
 	Spawn:
 		TNT1 A 0 NoDelay {
 			if (bdoom_debris == 1)
-				A_SpawnItemEx("BlueFlarePlasma",0,0,0,vel.x,vel.y,vel.z,0,SXF_SETMASTER|SXF_ORIGINATOR|SXF_ABSOLUTEVELOCITY);
+				A_SpawnItemEx("YellowFlarePlasma",0,0,0,vel.x,vel.y,vel.z,0,SXF_SETMASTER|SXF_ORIGINATOR|SXF_ABSOLUTEVELOCITY);
+			A_PlaySound("Mweapons/plasma/loop",5,0.6,1,3);
 			}
-		COIL ABCDEFGHIJKLMNO 1 bright;
+		COIS ABCDEFGHIJKLMNO 1 bright;
 		goto spawn+1;
 	Death:
 		TNT1 A 0 {
+			A_StopSound(5);
 			A_RemoveChildren(1,RMVF_EVERYTHING);
 			A_Explode(30,40,0,0,40,0,0,"none");
 			A_SetScale(0.14*randompick(-1,1),0.14*randompick(-1,1));
+			for (int i = 0; i <= 8; i++)
+				A_SpawnItemEx("YellowPlasmaPiece",0,0,0,frandom(-3,3),frandom(-3,3),frandom(3,8),0,0,32);
 			}
 		PEXP CDEFGH 1 bright {
 			A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"NullPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
@@ -576,6 +556,63 @@ States
 	}
 }
 
+
+
+Class YellowFlarePlasma : Flare_General
+{
+Default {
+	renderstyle "Add";
+	alpha 0.5;
+	scale 0.06;
+	}
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Warp(AAPTR_MASTER);
+		LENY A 1 bright {
+			if (!master)
+				self.destroy();
+			}
+		wait;
+	}
+}
+
+Class YellowPlasmaPiece : SmallDebris
+{
+Default {
+	renderstyle "Add";
+	alpha 1.0;
+	scale 0.023;
+	smalldebris.dgravity 0.5;
+	}
+states
+	{
+	Spawn:
+		SPRK D 1 bright NoDelay A_FadeOut(0.03);
+		loop;
+	}
+}
+
+Class YellowFlarePlasmaTrail : Flare_General
+{
+Default {
+	+FORCEXYBILLBOARD
+	alpha 0.5;
+	scale 0.04;
+	}
+states
+	{
+	Spawn:
+		TNT1 A 2 nodelay;
+		LENY A 1 bright  {
+			A_FadeOut(0.2);
+			scale*=0.9;
+			}
+		wait;
+	}
+}
+
+//old trail with a railgun effect
 Class MPlasmaBallTrail : DebrisGeneral
 {
 Default {
@@ -610,6 +647,7 @@ Class MPlasmaBallRay : PlasmaRailBall
 Default {
 alpha 0.5;
 scale 0.015;
+translation "YellowPlasma";
 	}
 states
 	{
@@ -633,7 +671,7 @@ scale 0.04;
 states
 	{
 	Spawn:
-		LENB A 1 bright A_FadeOut(0.005);
+		LENY A 1 bright A_FadeOut(0.005);
 		wait;
 	}
 }

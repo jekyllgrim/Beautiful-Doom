@@ -1069,46 +1069,61 @@ disablefullbright
 
 brightmap sprite PLAZA0 {
 map "brightmaps/PLAZZ0.png"
+disablefullbright
 }
 brightmap sprite PLAZB0 {
 map "brightmaps/PLAZZ0.png"
+disablefullbright
 }
 brightmap sprite PLAZC0 {
 map "brightmaps/PLAZZ0.png"
+disablefullbright
 }
 brightmap sprite PLAZD0 {
 map "brightmaps/PLAZZ0.png"
+disablefullbright
 }
 brightmap sprite PLAZE0 {
 map "brightmaps/PLAZZ0.png"
+disablefullbright
 }
 brightmap sprite PLAZF0 {
 map "brightmaps/PLAZZ0.png"
+disablefullbright
 }
 brightmap sprite PLAZG0 {
 map "brightmaps/PLAZZ0.png"
+disablefullbright
 }
 brightmap sprite PLAZH0 {
 map "brightmaps/PLAZZ0.png"
+disablefullbright
 }
 brightmap sprite PLAZI0 {
 map "brightmaps/PLAZZ0.png"
+disablefullbright
 }
 brightmap sprite PLAZJ0 {
 map "brightmaps/PLAZZ0.png"
+disablefullbright
 }
 brightmap sprite PLAZK0 {
 map "brightmaps/PLAZZ0.png"
+disablefullbright
 }
 brightmap sprite PLAZL0 {
 map "brightmaps/PLAZZ0.png"
+disablefullbright
 }
 brightmap sprite PLAZM0 {
 map "brightmaps/PLAZZ0.png"
+disablefullbright
 }
 brightmap sprite PLAZN0 {
 map "brightmaps/PLAZZ0.png"
+disablefullbright
 }
 brightmap sprite PLAZO0 {
 map "brightmaps/PLAZZ0.png"
+disablefullbright
 }

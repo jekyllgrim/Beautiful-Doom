@@ -580,7 +580,11 @@ states
 		MROG ABCD 2; 
 		loop;
 	Death:
-		MROG # 35 bright;
+		MROG # 35 bright {
+			A_PlaySound("Mweapons/grenade/bounce");
+			A_PlaySound("MWeapons/rocket/beep",7,1.0,1,4);
+			}
+		TNT1 A 0 A_StopSound(7);
 		goto super::Death;
 	XDeath:
 		TNT1 A 0;

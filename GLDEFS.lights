@@ -274,26 +274,58 @@ pulselight PLASMARAIL
 
 pointlight MPLASMABALL
 {
-    color 0.0 0.0 1.0
+    color 1.0 1.0 0.0
     size 48
 }
 
 object ModernPlasmaball
 {
-    frame COIL { light MPLASMABALL }
-frame PEXPA { light PLASMA_X1 }
-frame PEXPB { light PLASMA_X1 }
-frame PEXPC { light PLASMA_X1 }
-frame PEXPD { light PLASMA_X2 }
-frame PEXPE { light PLASMA_X2 }
-frame PEXPF { light PLASMA_X2 }
-frame PEXPG { light PLASMA_X2 }
-frame PEXPH { light PLASMA_X3 }
-frame PEXPI { light PLASMA_X3 }
-frame PEXPJ { light PLASMA_X3 }
-frame PEXPK { light PLASMA_X4 }
-frame PEXPL { light PLASMA_X4 }
-frame PEXPM { light PLASMA_X4 }
+frame COIS { light MPLASMABALL }
+frame PEXPA { light YPLASMA_1 }
+frame PEXPB { light YPLASMA_1 }
+frame PEXPC { light YPLASMA_1 }
+frame PEXPD { light YPLASMA_2 }
+frame PEXPE { light YPLASMA_2 }
+frame PEXPF { light YPLASMA_2 }
+frame PEXPG { light YPLASMA_2 }
+frame PEXPH { light YPLASMA_3 }
+frame PEXPI { light YPLASMA_3 }
+frame PEXPJ { light YPLASMA_3 }
+frame PEXPK { light YPLASMA_4 }
+frame PEXPL { light YPLASMA_4 }
+frame PEXPM { light YPLASMA_4 }
+}
+
+flickerlight YPLASMA_1
+{
+    color 1.0 1.0 0.2
+    size 64
+    secondarySize 72
+    chance 0.4
+}
+
+flickerlight YPLASMA_2
+{
+    color 0.8 0.8 0.2
+    size 80
+    secondarySize 88
+    chance 0.4
+}
+
+flickerlight YPLASMA_3
+{
+    color 0.5 0.5 0.1
+    size 64
+    secondarySize 72
+    chance 0.4
+}
+
+flickerlight YPLASMA_4
+{
+    color 0.2 0.2 0.0
+    size 8
+    secondarySize 16
+    chance 0.4
 }
 
 object PlasmaRailBall
