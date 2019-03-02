@@ -5,12 +5,13 @@ https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752
 
 *** HOW TO PLAY THE DEVELOPMENT VERSION: ***
 
-* Click the green "Cone or download" button in the top right side of the page.
-* Click "Download ZIP". You do NOT need to unpack the resulting archive!
+* Click the green "Clone or download" button in the top right part of the page.
+* Click "Download ZIP". You do NOT need to unpack the downloaded archive!
 * (Optional) Rename the downloaded .zip to .pk3 to remember that you don't need to unpack it.
-* Run the archive as you would run any mod; from command line or a bat file in the GZDoom directory, run:
-gzdoom.exe -file Beautiful-Doom-master.zip 
-(or, if you renamed it: gzdoom.exe -file Beautiful-Doom-master.pk3)
+* Run the archive as you would run any mod; from command line or a bat file in the GZDoom directory:
+		gzdoom.exe -file Beautiful-Doom-master.zip 
+	Or, if you renamed it: 
+		gzdoom.exe -file Beautiful-Doom-master.pk3
 * Enjoy!
 
 
