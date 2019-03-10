@@ -450,8 +450,8 @@ Default {
 Class NullPuff : Actor
 {
 Default {
-	damagetype "none";
 	decal "none";
+	+NODECAL
 	+NOINTERACTION
 	+BLOODLESSIMPACT
 	+PAINLESS

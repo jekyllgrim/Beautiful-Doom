@@ -171,10 +171,14 @@ states
 		PLGG A 1 {
 			let p1 = Player.FindPSprite(5);
 			let p2 = Player.FindPSprite(6);
-			if (!p1)
+			if (!p1) {
 				A_Overlay(5,"HeatUnderlay",0);
-			if (!p2)
+				A_OverlayOffset(5,0.0,0.0,WOF_INTERPOLATE);
+				}
+			if (!p2) {
 				A_Overlay(6,"Heat",0);
+				A_OverlayOffset(6,0.0,0.0,WOF_INTERPOLATE);
+				}
 			if (invoker.heatcounter > 0)
 				A_WeaponReady(WRF_ALLOWRELOAD);
 			else
@@ -203,11 +207,13 @@ states
 	AltFire.Modern:
 		TNT1 A 0 A_JumpIf(invoker.HeatCounter == 0.0, "Ready");
 		TNT1 A 0 {
+			A_OverlayOffset(5,0.0,0.0,WOF_INTERPOLATE);
+			A_OverlayOffset(6,0.0,0.0,WOF_INTERPOLATE);
 			if (invoker.heatcounter > 10)
 				invoker.heatcounter = 10;
 			A_Overlay(7,"SteamFast",0);
-			A_OverlayAlpha(7,0.4);
 			A_OverlayFlags(7,PSPF_ALPHA,1);
+			A_OverlayAlpha(7,0.25);
 			A_PlaySound("Mweapons/plasma/steamfast");
 			}
 		PLGG A 2 { 
@@ -226,6 +232,8 @@ states
 		stop;
 	ForcedCool:
 		PLGG A 8 {
+			A_OverlayOffset(5,0.0,0.0,WOF_INTERPOLATE);
+			A_OverlayOffset(6,0.0,0.0,WOF_INTERPOLATE);
 			A_PlaySound("Mweapons/plasma/alarm");
 			A_ClearRefire();
 			}
@@ -233,8 +241,8 @@ states
 			if (invoker.heatcounter > 10)
 				invoker.heatcounter = 10;
 			A_Overlay(7,"SteamSlow",0);
-			A_OverlayAlpha(7,0.4);
 			A_OverlayFlags(7,PSPF_ALPHA,1);
+			A_OverlayAlpha(7,0.25);
 			A_PlaySound("Mweapons/plasma/steamslow");
 			}
 		PLGG A 5 { 
@@ -484,6 +492,7 @@ states
 Class PlasmaRailPuff : Actor
 {
 Default {
++NODECAL
 +BLOODLESSIMPACT
 +NOGRAVITY 
 +NOINTERACTION
@@ -515,9 +524,9 @@ Default {
 	Height 8;
 	Speed 50;
 	Damage 0;
-	missiletype "YellowFlarePlasmaTrail";
+	missiletype "ModernFlarePlasmaTrail";
 	missileheight 8 ;
-	decal "none";
+	decal "ArachnotronPlasmaSplat";
 	+DONTTHRUST
 	+FORCERADIUSDMG
 	renderstyle "Add";
@@ -525,14 +534,13 @@ Default {
 	alpha 1.0;
 	SeeSound "none";
 	DeathSound "weapons/plasmax";
-	translation "YellowPlasma";
 	}
 States
 	{
 	Spawn:
 		TNT1 A 0 NoDelay {
 			if (bdoom_debris == 1)
-				A_SpawnItemEx("YellowFlarePlasma",0,0,0,vel.x,vel.y,vel.z,0,SXF_SETMASTER|SXF_ORIGINATOR|SXF_ABSOLUTEVELOCITY);
+				A_SpawnItemEx("ModernFlarePlasma",0,0,0,vel.x,vel.y,vel.z,0,SXF_SETMASTER|SXF_ORIGINATOR|SXF_ABSOLUTEVELOCITY);
 			A_PlaySound("Mweapons/plasma/loop",5,0.6,1,3);
 			}
 		COIS ABCDEFGHIJKLMNO 1 bright;
@@ -540,16 +548,17 @@ States
 	Death:
 		TNT1 A 0 {
 			A_StopSound(5);
+			A_SetTranslation("GreenPlasma");
 			A_RemoveChildren(1,RMVF_EVERYTHING);
 			A_Explode(30,40,0,0,40,0,0,"none");
 			A_SetScale(0.14*randompick(-1,1),0.14*randompick(-1,1));
 			for (int i = 0; i <= 8; i++)
-				A_SpawnItemEx("YellowPlasmaPiece",0,0,0,frandom(-3,3),frandom(-3,3),frandom(3,8),0,0,32);
+				A_SpawnItemEx("ModernPlasmaPiece",0,0,0,frandom(-3,3),frandom(-3,3),frandom(3,8),0,0,32);
 			}
 		PEXP CDEFGH 1 bright {
-			A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"NullPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
-			A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"NullPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
-			A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"NullPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
+			A_CustomRailGun(0,0,"null","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"NullPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
+			A_CustomRailGun(0,0,"null","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"NullPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
+			A_CustomRailGun(0,0,"null","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"NullPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
 			}
 		PEXP IJKLM 1 bright;
 		stop;
@@ -558,7 +567,7 @@ States
 
 
 
-Class YellowFlarePlasma : Flare_General
+Class ModernFlarePlasma : Flare_General
 {
 Default {
 	renderstyle "Add";
@@ -569,7 +578,7 @@ states
 	{
 	Spawn:
 		TNT1 A 0 NoDelay A_Warp(AAPTR_MASTER);
-		LENY A 1 bright {
+		LENG A 1 bright {
 			if (!master)
 				self.destroy();
 			}
@@ -577,7 +586,7 @@ states
 	}
 }
 
-Class YellowPlasmaPiece : SmallDebris
+Class ModernPlasmaPiece : SmallDebris
 {
 Default {
 	renderstyle "Add";
@@ -588,12 +597,12 @@ Default {
 states
 	{
 	Spawn:
-		SPRK D 1 bright NoDelay A_FadeOut(0.03);
+		SPRK B 1 bright NoDelay A_FadeOut(0.03);
 		loop;
 	}
 }
 
-Class YellowFlarePlasmaTrail : Flare_General
+Class ModernFlarePlasmaTrail : Flare_General
 {
 Default {
 	+FORCEXYBILLBOARD
@@ -604,7 +613,7 @@ states
 	{
 	Spawn:
 		TNT1 A 2 nodelay;
-		LENY A 1 bright  {
+		LENG A 1 bright  {
 			A_FadeOut(0.2);
 			scale*=0.9;
 			}
@@ -622,7 +631,7 @@ Default {
 states
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ|RGF_EXPLICITANGLE,0,3.0,"NullPuff",180,0,4,0,0,0,"MPlasmaBallTrailRay");
+		TNT1 A 0 NoDelay A_CustomRailGun(0,0,"null","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ|RGF_EXPLICITANGLE,0,3.0,"NullPuff",180,0,4,0,0,0,"MPlasmaBallTrailRay");
 		stop;
 	}
 }
@@ -630,8 +639,8 @@ states
 Class MPlasmaBallTrailRay : PlasmaRailBall
 {
 Default {
-alpha 0.5;
-scale 0.025;
+	alpha 0.5;
+	scale 0.025;
 	}
 states
 	{
@@ -645,9 +654,9 @@ states
 Class MPlasmaBallRay : PlasmaRailBall
 {
 Default {
-alpha 0.5;
-scale 0.015;
-translation "YellowPlasma";
+	alpha 0.5;
+	scale 0.015;
+	translation "GreenPlasma";
 	}
 states
 	{
@@ -671,7 +680,7 @@ scale 0.04;
 states
 	{
 	Spawn:
-		LENY A 1 bright A_FadeOut(0.005);
+		LENG A 1 bright A_FadeOut(0.005);
 		wait;
 	}
 }

@@ -272,7 +272,7 @@ pulselight PLASMARAIL
 	interval 1.0
 }
 
-pointlight MPLASMABALL
+pointlight YPLASMABALL
 {
     color 1.0 1.0 0.0
     size 48
@@ -280,20 +280,20 @@ pointlight MPLASMABALL
 
 object ModernPlasmaball
 {
-frame COIS { light MPLASMABALL }
-frame PEXPA { light YPLASMA_1 }
-frame PEXPB { light YPLASMA_1 }
-frame PEXPC { light YPLASMA_1 }
-frame PEXPD { light YPLASMA_2 }
-frame PEXPE { light YPLASMA_2 }
-frame PEXPF { light YPLASMA_2 }
-frame PEXPG { light YPLASMA_2 }
-frame PEXPH { light YPLASMA_3 }
-frame PEXPI { light YPLASMA_3 }
-frame PEXPJ { light YPLASMA_3 }
-frame PEXPK { light YPLASMA_4 }
-frame PEXPL { light YPLASMA_4 }
-frame PEXPM { light YPLASMA_4 }
+frame COIS { light ARACHPLAS }
+frame PEXPA { light ARACHPLAS_1 }
+frame PEXPB { light ARACHPLAS_1 }
+frame PEXPC { light ARACHPLAS_1 }
+frame PEXPD { light ARACHPLAS_2 }
+frame PEXPE { light ARACHPLAS_2 }
+frame PEXPF { light ARACHPLAS_2 }
+frame PEXPG { light ARACHPLAS_2 }
+frame PEXPH { light ARACHPLAS_3 }
+frame PEXPI { light ARACHPLAS_3 }
+frame PEXPJ { light ARACHPLAS_3 }
+frame PEXPK { light ARACHPLAS_4 }
+frame PEXPL { light ARACHPLAS_4 }
+frame PEXPM { light ARACHPLAS_4 }
 }
 
 flickerlight YPLASMA_1
@@ -385,17 +385,34 @@ object BD_BFGBall
     frame BFGB { light BFGBALL }
     frame BFGB { light BFGBALL }
 
-    frame BFGXA { light BFGBALL_X1 }
-    frame BFGXB { light BFGBALL_X2 }
-    frame BFGXC { light BFGBALL_X3 }
-    frame BFGXD { light BFGBALL_X4 }
-    frame BFGXE { light BFGBALL_X5 }
-	frame BFGXF { light BFGBALL_X4 }
-    frame BFGXG { light BFGBALL_X4 }
-    frame BFGXH { light BFGBALL_X3 }
-    frame BFGXI { light BFGBALL_X3 }
-    frame BFGXJ { light BFGBALL_X2 }
-    frame BFGXK { light BFGBALL_X1 }
+    frame COIXA { light BFGBALL_X1 }
+    frame COIXB { light BFGBALL_X2 }
+    frame COIXC { light BFGBALL_X3 }
+    frame COIXD { light BFGBALL_X4 }
+    frame COIXE { light BFGBALL_X5 }
+	frame COIXF { light BFGBALL_X4 }
+    frame COIXG { light BFGBALL_X4 }
+    frame COIXH { light BFGBALL_X3 }
+    frame COIXI { light BFGBALL_X3 }
+    frame COIXJ { light BFGBALL_X2 }
+    frame COIXK { light BFGBALL_X1 }
+}
+
+object ModernBFGBall
+{
+    frame COIR { light BFGBALL }
+
+    frame COIXA { light BFGBALL_X1 }
+    frame COIXB { light BFGBALL_X2 }
+    frame COIXC { light BFGBALL_X3 }
+    frame COIXD { light BFGBALL_X4 }
+    frame COIXE { light BFGBALL_X5 }
+	frame COIXF { light BFGBALL_X4 }
+    frame COIXG { light BFGBALL_X4 }
+    frame COIXH { light BFGBALL_X3 }
+    frame COIXI { light BFGBALL_X3 }
+    frame COIXJ { light BFGBALL_X2 }
+    frame COIXK { light BFGBALL_X1 }
 }
 
 // ALTBFG

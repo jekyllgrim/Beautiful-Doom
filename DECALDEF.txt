@@ -810,8 +810,8 @@ PlasmaRailSplat6 6
 
 fader BFGFade
 {
-	Decaystart 3
-	Decaytime 10
+	Decaystart 6
+	Decaytime 25
 }
 
 decal BFGLightning1

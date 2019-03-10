@@ -279,6 +279,7 @@ bfgshot2		"sounds/modern/bfg/bfg_shot2.ogg"
 bfgshot3		"sounds/modern/bfg/bfg_shot3.ogg"
 Mweapons/bfg/overcharge			"sounds/modern/bfg/bfg_overcharge.ogg"
 Mweapons/bfg/ready			"sounds/modern/bfg/bfg_readyloop.ogg"
+Mweapons/bfg/warning		"sounds/modern/wwarning.ogg"
 
 $random Mweapons/fist/punch { knuckle/punch1 knuckle/punch2 knuckle/punch3 knuckle/punch4 knuckle/punch5 }
 $random Mweapons/fist/heavypunch { knuckle/hpunch1 knuckle/hpunch2 knuckle/hpunch3 }

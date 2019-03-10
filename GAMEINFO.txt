@@ -1,2 +1,2 @@
-STARTUPTITLE="Beautiful Doom dev build 190210"
+STARTUPTITLE="Beautiful Doom dev build 20190310"
 STARTUPCOLORS="0000FF","000000"

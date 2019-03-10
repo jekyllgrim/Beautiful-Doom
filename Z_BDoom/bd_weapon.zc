@@ -160,12 +160,11 @@ states
 
 Class RealBullet : BulletTracer
 {
-double bulletdamage;
-double falloffstrength;
-double mindamage;
-int falloffdistance;
-int bulletspeed;
-int hitangle;
+double bulletdamage; 	//the actual damage value
+double falloffstrength; //how quickly the damage is reduced during travel
+double mindamage; 		//minimum damage value at any distance
+int falloffdistance; 	//at which distance the falloff begins
+int bulletspeed; 		//speed
 property bulletspeed : bulletspeed;
 property falloffstrength : falloffstrength;
 property falloffdistance : falloffdistance;
