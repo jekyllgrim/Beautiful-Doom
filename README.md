@@ -22,6 +22,7 @@ https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752
 ** Dev updates log (dd.mm.yyyy) **
 
 10.03.2019
+- Ran most graphics through PNG optimization reducing size.
 - Implemented Modern BFG9000. In contrast to classic BFG9000 this can be charged to achieve various levels of power, and secondary rays strike from the projectile, not the player.
   You can overcharge Modern BFG9000 for a couple of seconds; it does NOT increase the power and simply lets you hold off the shot.
   Beyond a couple of seconds of overcharge the orb will explode in your face. In case of normal shots neither orb nor the rays can hurt the shooter.
