@@ -632,7 +632,7 @@ states
 }
 
 
-Class ModernBFGBall : BD_BFGBall
+Class ModernBFGBall : BFGBall
 {
 //wcharge just transfers the charge value from the weapon. 1-8 is normal shot, 9-11 is overcharge (11 leads to self-destruct)
 double wcharge;
@@ -654,17 +654,18 @@ Default {
 	damage 0;
 	radius 14;
 	height 8;
-	missiletype "MBFGTrail";
+	//missiletype "MBFGTrail";
 	}
 Override void PostBeginPlay() {
 	super.PostBeginPlay();
 	if (target) {
+		//target.species = "MeAwesomespeciesyo";
 		species = target.species;
+		console.printf("%s",species);
 		let BFG = BD_BFG9000 (target.player.readyweapon);
 		wcharge = BFG.wcharge;
 		wpower = clamp(BFG.wcharge,1,8);
 		A_SetScale (0.06 + wcharge * 0.03);
-		//console.printf("%s",species);
 		}
 	}
 States
@@ -733,13 +734,11 @@ States
 				
 				if (targetActor != null) {
 					A_Face(targetActor,0,0,flags: FAF_MIDDLE);
-					A_CustomRailGun(30 + 22*wpower,0,"null","FFFFFF",RGF_FULLBRIGHT|RGF_CENTERZ|RGF_SILENT,aim:0,maxdiff:15,"MBFGRailPuff",range:rdistance,duration:64,sparsity:6.5,spawnclass:"MBFGRailParticle");
+					A_CustomRailGun(30 + 22*wpower,0,"null","FFFFFF",RGF_NOPIERCING|RGF_FULLBRIGHT|RGF_CENTERZ|RGF_SILENT,aim:0,maxdiff:15,"MBFGRailPuff",range:rdistance,duration:64,sparsity:6.5,spawnclass:"MBFGRailParticle");
 				}
 			}
 		COIX ABCDEFGHIJKLM 1 bright;
-		stop;
-				
-				
+		stop;				
 
 	SelfDestruct:
 		TNT1 A 0 {
@@ -780,16 +779,9 @@ Class MBFGRailPuff : BFGRailPuff
 {
 Default {
 	+ALLOWTHRUFLAGS
-	+THRUSPECIES //this will make the rails pass through the player who shot the projectile
+	+MTHRUSPECIES //this will make the rails pass through the player who shot the projectile
 	+PUFFGETSOWNER
 	+NODECAL
-	}
-Override void PostBeginPlay() {
-	super.PostBeginPlay();
-	if (target) {
-		species = target.species;
-		//console.printf("Species: %s",species);
-		}
 	}
 }
 
@@ -812,22 +804,6 @@ states
 		wait;
 	}
 }
-
-/*Class ModernBFGRailSpawner : BFGRailPuff
-{
-Default {
-	+PUFFGETSOWNER
-	}
-override void PostBeginPlay() {
-	super.PostBeginPlay();
-	if (master) {
-		double wrange = distance3D(master);
-		console.printf("%f",wrange);
-		A_Face(master,0,0,FAF_MIDDLE);		
-		A_CustomRailGun(0,0,"null","FFFFFF",RGF_FULLBRIGHT|RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,"NullPuff",range:wrange,duration:80,sparsity:6.5,spawnclass:"MBFGRailParticle");
-		}
-	}
-}*/
 
 Class MBFGRailParticle : Flare_General
 {

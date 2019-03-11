@@ -21,6 +21,10 @@ https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752
 
 ** Dev updates log (dd.mm.yyyy) **
 
+12.03.2019
+- Fixed Modern BFG9000 being able to hurt you with its rails. Now it shouldn't happen at any range (unless you overcharge it, obviously).
+- Added Quick Kick attack (default: Q) usable while any Modern weapon is equipped, except Chainsaw and BFG9000.
+
 10.03.2019
 - Ran most graphics through PNG optimization reducing size.
 - Implemented Modern BFG9000. In contrast to classic BFG9000 this can be charged to achieve various levels of power, and secondary rays strike from the projectile, not the player.

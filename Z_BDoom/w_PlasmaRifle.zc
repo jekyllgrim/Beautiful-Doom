@@ -180,9 +180,9 @@ states
 				A_OverlayOffset(6,0.0,0.0,WOF_INTERPOLATE);
 				}
 			if (invoker.heatcounter > 0)
-				A_WeaponReady(WRF_ALLOWRELOAD);
+				BD_WeaponReady(true,true,true);
 			else
-				A_WeaponReady(WRF_NOSECONDARY);
+				BD_WeaponReady(false,true,false);
 			}
 		goto ready;
 	HeatScreenReady: //smooth blueish glow showing there's no heat
