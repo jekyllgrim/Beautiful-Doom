@@ -1,2 +1,2 @@
-STARTUPTITLE="Beautiful Doom dev build 20190312"
+STARTUPTITLE="Beautiful Doom dev build 20190312 © Jekyll Grim Payne, 2008"
 STARTUPCOLORS="0000FF","000000"

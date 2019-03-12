@@ -5,7 +5,7 @@ Primary purpose         : No levels included
 Title                   : Beautiful Doom
 Filename                : BDoom***.pk3
 Release date            : TBA
-Authors                 : Agent_Ash aka Jekyll Grim Payne, Gifty
+Authors                 : Jekyll Grim Payne (aka Agent_Ash), Gifty
 Email Address           : jekyllgrim@gmail.com
 Other Files By Author   : runngun2.wad, wizardr2.wad (aka wizard2.wad),
                           equilibr.wad, painkill.wad, badguns.wad, 
@@ -18,16 +18,16 @@ Check out his mod: https://forum.zdoom.org/viewtopic.php?t=45550
 * Death Egg - for all the really sweet HD item sprites
 
 * phantombeta, Marisa Kirisame, Gutawer, josh771, Accensus, Caligari87, Nash, 
-Zombie — Zscript help and contributions
+Zombie, D2JK — Zscript help and contributions
 
-* 3saster — code contributions, various fixes and minor improvements
+* 3saster — code contributions, various fixes and improvements
 						
 * Mike12 - for original assault rifle sprites
 
 * Revenant100 - Minor Sprite Fixing project
 https://www.doomworld.com/vb/wads-mods/62403-doom-2-minor-sprite-fixing-project-v1-2-release-updated-1-1-13/
 				
-* perkistan — Doom HD sound pack which is included
+* perkristian — Doom HD sound pack which is included
 https://www.doomworld.com/vb/wads-mods/58879-the-hi-res-doom-sound-pack-is-updated/
 For older Smooth Weapon Animation mod
 
@@ -42,8 +42,6 @@ http://forum.zdoom.org/viewtopic.php?f=37&t=35388
 
 * Nash - Nashgore and SpriteShadows
 
-* D2JK — helping with proper blood pool collision
-	
 * David G. - Doom Guy alt. death sprites
 						
 * DenisBelmondo - Doom Guy alt. death sprites
@@ -75,12 +73,8 @@ Known Issues			: "Smarter" sprite clipping mode is recommended. If you
 						  textures (such as water, lava), the texture may freeze 
 						  without showing any animation or special effects.
 
-						  If you suffer from performance issues or don't like 
-						  some of the new effects, you can use options under 
-						  'Beautiful Doom Settings', which let you turn on and
-						  off advanced gibbing, blood, smoke and plasma trails
-						  and debris, weapon empty casings and weapon smoke,
-						  as well as set up the maximum amount of debris and blood.
+						  Performance issues can usually be mitigated by disablingIf
+						  some visual effects under Options > Beautiful Doom Settings.
 
 ===========================================================================
 
@@ -91,15 +85,16 @@ See CHANGELOG.txt for changelog of releases.
 
 ****************************************************************************
 
-* Copyright / Permissions *                                  
+* Copyright / Permissions *
 
-Authors MAY ONLY use the contents of this file as a base for modification or
-reuse IF a clear verbal PERMISSION has been granted by the author
-(Jekyll Grim Payne aka Agent_Ash). Any reuse or modification will invariably
-require the original author to be clearly credited.
+Beautiful Doom © 2008 Jekyll Grim Payne aka Agent_Ash                           
+
+Any reuse and/or modification of the contents of this file require clear
+verbal permission from the original author. Any reuse or modification will 
+invariably require the original author or authors to be clearly credited.
 
 You MAY distribute this file, provided you include this text file, with no
-modifications.  You may distribute this file in any electronic format 
+modifications. You may distribute this file in any electronic format 
 as long as you include this file intact. I have received permission from 
 the original authors of any modified or included content in this file
 to allow further distribution.

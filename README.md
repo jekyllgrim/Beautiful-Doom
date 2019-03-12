@@ -1,6 +1,8 @@
 # Beautiful-Doom
-Beautiful Doom mod for GZDoom Forum thread:
 
+Beautiful Doom © Jekyll Grim Payne, 2008
+
+Beautiful Doom mod thread at ZDoom Forums:
 https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752ec93aed
 
 *** HOW TO PLAY THE DEVELOPMENT VERSION: ***

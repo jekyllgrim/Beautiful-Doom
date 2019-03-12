@@ -1,0 +1,11 @@
+Any reuse and/or modification of the contents of this file require clear
+verbal permission from the original author. Any reuse or modification will 
+invariably require the original author or authors to be clearly credited.
+
+You MAY distribute this file, provided you include this text file, with no
+modifications. You may distribute this file in any electronic format 
+as long as you include this file intact. I have received permission from 
+the original authors of any modified or included content in this file
+to allow further distribution.
+
+Beautiful Doom © 2008 Jekyll Grim Payne aka Agent_Ash
