@@ -22,8 +22,6 @@ Default {
 	attacksound "none";
 	}
 	
-private State prevState;
-
 void BD_Bleed() {
 	if (!burning)
 		A_SpawnItemEx("Blood",frandom(-5.0,5.0),frandom(-5.0,5.0),frandom(16,20),0,0,0,SXF_SETTARGET);

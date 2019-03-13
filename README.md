@@ -23,6 +23,10 @@ https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752
 
 ** Dev updates log (dd.mm.yyyy) **
 
+13.03.2019
+- Updated Assault Rifle sprites with the spriting help from lumbo7332
+- Fixed Quick Kick always causing pain on monsters
+
 12.03.2019
 - Fixed Modern BFG9000 being able to hurt you with its rails. Now it shouldn't happen at any range (unless you overcharge it, obviously).
 - Added Quick Kick attack (default: Q) usable while any Modern weapon is equipped, except Chainsaw and BFG9000.
