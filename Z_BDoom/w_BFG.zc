@@ -567,6 +567,11 @@ Default {
 	scale 0.17;
 	translation "GreenPlasma";
 	}
+override void PostBeginPlay() {
+	super.PostBeginPlay();
+	if (target && distance3D(target) < 56)
+		self.destroy();
+	}
 states
 	{
 	Spawn:

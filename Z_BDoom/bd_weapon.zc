@@ -44,6 +44,7 @@ override void DoEffect()
 				BobStyle = 0;
 				BobSpeed = 1.0;
 			}
+			
 		if (offsetTics >= 0) {
 			double phase = (offsetTics / maxOffsetTics) * 90.0;
 			double newAngleOffset = (cos(phase) * offsetAngle);
@@ -56,25 +57,46 @@ override void DoEffect()
 			owner.A_SetPitch(finalPitch, SPF_INTERPOLATE);
 			offsetTics--;
 			}
-		/*if 	(	bdoom_weapons == 2
-			&&	( 	InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("Ready.Modern") )
-				||	InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("Reload") ) 
-				)
-			&& 	GetPlayerInput(-1, INPUT_BUTTONS) & BT_USER1
-			)*/
-		
+			
+		if 	(owner.player.cmd.buttons & BT_USER1) {
+			let psp = owner.player.FindPSprite(PSP_WEAPON);
+			if(!psp) 
+				return;
+			else if (bdoom_weapons != 2)
+				return;
+			else if (iskicking)
+				return;
+			else if (self is "BD_Fist" || self is "BD_BFG9000" || self is "BD_Chainsaw")
+				return;
+			else if	(InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("Ready.Modern")) ) {
+				owner.player.setPSprite(PSP_Weapon,ResolveState("QKick"));
+				iskicking = true;
+				}
+			else if (InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("Reload"))			||
+					InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("Reload.Modern"))		||
+					InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("Reload.Modern1"))		||
+					InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("Reload.ModernEnd"))	||
+					InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("Reload"))				||
+					InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("Reload1"))			||
+					InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("ReloadEnd"))			||
+					InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("ReloadDo")) 			)
+					{
+				owner.player.setPSprite(-10,FindState("QuickKick"));
+				iskicking = true;
+				}
+			}
 		}
 	}
 
 
-action void BD_WeaponReady (bool allowSecondary = false, bool allowKick = true, bool allowReload = true) {
-    int flags = 0;
+action void BD_WeaponReady (bool allowSecondary = false, bool allowReload = true, bool allowKick = true) {
+  	int flags = 0;
 
     if (allowReload && invoker.ammo2 && invoker.ammo2 != invoker.ammo1 && invoker.ammo2.amount > 0 && invoker.ammo1.amount < invoker.ammo1.maxamount)
         flags |= WRF_ALLOWRELOAD;
     if (!allowSecondary)
         flags |= WRF_NOSECONDARY;
-    if (allowKick && !invoker.iskicking)
+    if (allowKick)
         flags |= WRF_ALLOWUSER1;
     
     A_WeaponReady (flags);
@@ -105,33 +127,29 @@ action void A_Eject(class<Actor> itemtype, double xofs = 0, double yofs = 0, dou
 	}
 states
 	{
-	User1:
-		#### # 0 {
-			if (CountInv("Modernberserk_Regen") > 0)
-				speed = 0.25;
-			else
-				speed = 0.1;
-			A_Overlay(-10,"QuickKick");
-			A_OverlayFlags(-10,PSPF_ADDBOB,false);
-			A_OverlayFlags(-10,PSPF_FLIP|PSPF_MIRROR ,true);
-			}
+	QKick:
+		#### # 0 A_Overlay(-10,"QuickKick");
 		#### ###### 1 A_WeaponOffset(7,4,WOF_ADD);
 		#### ############ 1 A_WeaponOffset(-3.5,-2,WOF_ADD);
-		TNT1 A 0 {
-			speed = 1.0;
-			} 
 		#### # 0 A_jump(256,"Ready");
 		wait;
 	QuickKick:
 		TNT1 A 0 {
-			invoker.iskicking = true;
+			//invoker.iskicking = true;
+			A_OverlayOffset(-10,28,32);
+			A_OverlayFlags(-10,PSPF_ADDBOB|PSPF_ADDWEAPON,false);
+			A_OverlayFlags(-10,PSPF_FLIP|PSPF_MIRROR ,true);
+			if (CountInv("Modernberserk_Regen") > 0)
+				speed = 0.25;
+			else
+				speed = 0.1;
 			}
 		KICK AB 1;
 		TNT1 A 0 { 
 			if(CountInv("Modernberserk_Regen") > 0)
-				A_PlaySound("Mweapons/fist/heavyswing",5);
+				A_PlaySound("Mweapons/fist/heavyswing",0);
 			else
-				A_PlaySound("Mweapons/fist/swing",5);
+				A_PlaySound("Mweapons/fist/swing",0);
 			A_CameraSway(0.0,3.0,5);
 			}
 		KICK CD 1;
@@ -154,7 +172,9 @@ states
 		TNT1 A 0 A_CameraSway(0.0,-3.0,8);
 		KICK HDC 2;
 		KICK BA 3;
-		TNT1 A 5;
+		TNT1 A 7 {
+			speed = 1.0;
+			}
 		TNT1 A 0 {
 			invoker.iskicking = false;
 			}

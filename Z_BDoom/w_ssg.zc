@@ -361,7 +361,7 @@ states
 		SMT2 A 1 A_Lower(18);
 		loop;		
 	Ready.Modern:
-		SMT2 A 1 BD_WeaponReady(1);
+		SMT2 A 1 BD_WeaponReady(true);
 		goto ready;
 	Fire.Modern:
 		TNT1 A 0 {

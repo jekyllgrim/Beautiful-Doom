@@ -374,7 +374,7 @@ states
 				return ResolveState("FireEnd.Empty");
 			return ResolveState(null);
 			}
-		PIMN DEF 2 A_WeaponReady(WRF_NOSECONDARY);
+		PIMN DEF 2 BD_WeaponReady();
 		goto ready.Modern;
 	FireEnd.Empty:
 		PIMN DCB 2;

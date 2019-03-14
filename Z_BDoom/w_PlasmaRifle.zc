@@ -164,9 +164,10 @@ states
 		PLGS ABCDEF 1 A_WeaponReady;
 		goto ready;
 	Deselect.Modern:
+		PLGG AAA 1 A_lower(12);
 		TNT1 A 0 A_ClearOverlays(5,7);
 		PLGG A 1 A_lower(12);
-		loop;
+		wait;
 	Ready.Modern:
 		PLGG A 1 {
 			let p1 = Player.FindPSprite(5);
@@ -180,9 +181,9 @@ states
 				A_OverlayOffset(6,0.0,0.0,WOF_INTERPOLATE);
 				}
 			if (invoker.heatcounter > 0)
-				BD_WeaponReady(true,true,true);
+				A_WeaponReady(WRF_ALLOWUSER1|WRF_ALLOWRELOAD);
 			else
-				BD_WeaponReady(false,true,false);
+				A_WeaponReady(WRF_ALLOWUSER1|WRF_NOSECONDARY);
 			}
 		goto ready;
 	HeatScreenReady: //smooth blueish glow showing there's no heat
@@ -205,14 +206,13 @@ states
 		stop;
 	Reload:
 	AltFire.Modern:
-		TNT1 A 0 A_JumpIf(invoker.HeatCounter == 0.0, "Ready");
 		TNT1 A 0 {
 			A_OverlayOffset(5,0.0,0.0,WOF_INTERPOLATE);
 			A_OverlayOffset(6,0.0,0.0,WOF_INTERPOLATE);
 			if (invoker.heatcounter > 10)
 				invoker.heatcounter = 10;
 			A_Overlay(7,"SteamFast",0);
-			A_OverlayFlags(7,PSPF_ALPHA,1);
+			A_OverlayFlags(7,PSPF_ALPHA,true);
 			A_OverlayAlpha(7,0.25);
 			A_PlaySound("Mweapons/plasma/steamfast");
 			}
@@ -461,11 +461,7 @@ states
 	Spawn:
 		TNT1 A 0 NoDelay {
 			If(Bdoom_debris)
-				{
-				//fcounter++;
-				//if (fcounter < 250)
-					A_SpawnItemEx("PlamaRailFlare",0,0,0,0,0,0,0,SXF_SETMASTER);
-				}
+				A_SpawnItemEx("PlamaRailFlare",0,0,0,0,0,0,0,SXF_SETMASTER);
 			}
 		PEXP ABCDEF 1 bright A_FadeOut(0.0025);
 		PEXP GHIJKLM 2 bright A_FadeOut(0.0025);
@@ -474,7 +470,7 @@ states
 }
 
 //flare around railgun particles
-Class PlamaRailFlare : BlueFlarePlasmaTrail
+Class PlamaRailFlare : Flare_General
 {
 Default {
 alpha 0.1;
