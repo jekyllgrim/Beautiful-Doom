@@ -24,6 +24,7 @@ https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752
 ** Dev updates log (dd.mm.yyyy) **
 
 16.03.2019
+- Assault Rifle in ADS mode is now positioned higher and regular crosshair is disabled while using ADS
 - Added missing weapon pickup sprites
 - Added brightmaps to plasma rifle and BFG pickup sprites
 - Added missing brightmaps for Modern Pistol (night sights)
