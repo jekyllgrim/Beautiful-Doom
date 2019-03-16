@@ -56,16 +56,16 @@ virtual void GibFall()
 states
 	{
 	LoadSprites:
-		GIB1 ABCDEFGHZX 0;
-		GIB2 ABCDEFGHZX 0;
-		GIB3 ABCDEFGHZX 0;
-		GIB4 ABCDEFGHZX 0;
-		GIB5 ABCDEFGHZX 0;
+		GIB1 AXZ 0;
+		GIB2 AXZ 0;
+		GIB3 AXZ 0;
+		GIB4 AXZ 0;
+		GIB5 AXZ 0;
 		
-		GIX1 ABCDEFGHZ 0;
-		GIX2 ABCDEFGHZ 0;
-		GIX3 ABCDEFGHZ 0;
-		GIX4 ABCDEFGHZ 0;
+		GIX1 AZ 0;
+		GIX2 AZ 0;
+		GIX3 AZ 0;
+		GIX4 AXZ 0;
 		
 		//zombie
 		HED1 ABCD 0;
@@ -131,12 +131,12 @@ class BasicMeatPiece : Gibs_General
 Default {
 	scale 0.45;
 	}
-override void GibBeginPlay()
-	{
-	static const string GibSprite[] =
+static const string GibSprite[] =
 	{
 		"GIB1","GIB2","GIB3","GIB4","GIB5"
 	};
+override void GibBeginPlay()
+	{
 	self.sprite = GetSpriteIndex(GibSprite[random(0,4)]);
 	bmass = 50;
 	brot = randompick(17.0,-17.0);
@@ -176,6 +176,22 @@ states
 				self.destroy();
 			}
 		wait;
+	}
+}
+
+class CacodemonMeatPiece : BasicMeatPiece
+{
+Default {
+	bloodcolor "00 00 CC";
+	translation "CacoGibs";
+	}
+override void GibBeginPlay()
+	{
+	self.sprite = GetSpriteIndex(GibSprite[random(0,4)]);
+	bmass = 50;
+	brot = randompick(17.0,-17.0);
+	A_QueueCorpse();
+	restframe = 23;
 	}
 }
 
@@ -486,3 +502,82 @@ override void GibBeginPlay()
 }
 
 
+//// LOST SOUL pieces
+
+class LS_Horn : BasicMeatPiece
+{
+Default {
+	scale 1.0;
+	+NOBLOOD;
+	seesound "";
+	deathsound "";
+	bouncesound "";
+	}
+override void GibBeginPlay()
+	{
+	self.sprite = GetSpriteIndex("LGI1");
+	bmass = 40;
+	brot = randompick(17.0,-17.0);
+	A_QueueCorpse();
+	}
+override void GibFall() 
+	{
+	A_SetMass(bmass);
+	roll = 0;
+	bVULNERABLE = true;
+	bDROPPED = true;
+	}
+states
+	{
+	spawn:
+		#### A 0 NoDelay {
+			GibBeginPlay();
+			scale.x*=randompick(-1,1);
+			roll = random(0,359);
+			}
+		#### A 1 A_SetRoll(roll+=brot,SPF_INTERPOLATE);
+		wait;
+	Crash:
+		#### # 0 GibFall();
+		#### # -1;
+		stop;
+	Raise:
+		stop;
+	loadsprites:
+		LGI1 A 0;
+		LGI2 A 0;
+		LGI3 A 0;
+		stop;
+	}
+}
+
+Class LS_shard : LS_Horn
+{
+override void GibBeginPlay()
+	{
+	self.sprite = GetSpriteIndex("LGI3");
+	bmass = 30;
+	brot = randompick(17.0,-17.0);
+	A_QueueCorpse();
+	}
+}
+
+Class LS_Skull : LS_Horn
+{
+Default {
+	height 4;
+	radius 6;
+	}
+override void GibBeginPlay()
+	{
+	self.sprite = GetSpriteIndex("LGI2");
+	bmass = 50;
+	brot = randompick(17.0,-17.0);
+	A_QueueCorpse();
+	}
+override void GibFall() 
+	{
+	super.GibFall();
+	scale.y*=randompick(-1,1);
+	}
+}

@@ -2,7 +2,6 @@
 // Fist & Kick decal //
 ///////////////////////
 
-
 decal FistScorch
 {
 	pic WCRACK

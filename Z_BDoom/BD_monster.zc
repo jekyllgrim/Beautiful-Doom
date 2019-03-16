@@ -65,7 +65,8 @@ state BD_Refire(int ChanceToEnd = 128, statelabel endstate = "See")
 	
 override void Tick() {
 	super.Tick();
-
+	if (!bNoTimeFreeze && (globalfreeze || level.Frozen))
+		return;
 	//burning activated, CVAR allows flames, is not in See state, hasn't been burning long
 	if (burning && bdoom_flames == 1 && !InStateSequence(curstate,ResolveState("See")) && burntimer < 220 ) 
 		{
@@ -222,7 +223,10 @@ states
 		stop;
 	Death.BFGSplash:
 		TNT1 A 0 {
-			A_SetTranslation("BloodyScorched");
+			if (bloodcolor.B > 4*(bloodcolor.R  + bloodcolor.G))
+				A_SetTranslation("BlueBloodyScorched");
+			else
+				A_SetTranslation("BloodyScorched");
 			return ResolveState("XDeath");
 			return ResolveState(null);
 			}

@@ -132,6 +132,41 @@ Default {
 	renderstyle "Add";
 	scale 0.5;
 	alpha 0.5;
+	DebrisGeneral.sfxtype 1;
+	}
+Override void PostBeginPlay() {
+	super.PostBeginPlay();
+	scale.x*=randompick(-1,1);
+	}
+}
+
+Class ParticleFire_Red : ParticleFire_General
+{
+states
+	{
+	Spawn:
+		FIPR ABCDEFGHIJKLMNOPQRST 1 bright Nodelay A_FadeOut(0.03);
+		stop;
+	}
+}
+
+Class ParticleFire_Yellow : ParticleFire_General
+{
+Default {
+	alpha 0.6;
+	}
+states
+	{
+	Spawn:
+		FIPR ABCDEFGHIJKLMNOPQRST 1 bright Nodelay A_FadeOut(0.03);
+		stop;
+	}
+}
+
+Class ParticleFire_Green : ParticleFire_Red
+{
+Default {
+translation "0:3=112:127","5:8=112:127","9:12=112:127","13:15=112:127","16:47=112:127","48:79=112:127","96:111=112:127","112:127=112:127","128:151=112:127","152:159=112:127","160:167=112:127","169:191=112:127","193:207=112:127","208:223=112:127","224:231=112:127","232:235=112:127","236:239=112:127","240:247=112:127","248:249=112:127","250:254=112:127","255:255=112:127";
 	}
 }
 
@@ -450,17 +485,10 @@ Default {
 Class NullPuff : Actor
 {
 Default {
-	decal "none";
 	+NODECAL
 	+NOINTERACTION
 	+BLOODLESSIMPACT
 	+PAINLESS
-	}
-states
-	{
-		Spawn:
-			TNT1 A 1 Nodelay;
-			stop;
 	}
 }
 
@@ -707,7 +735,6 @@ states
 Class EnShotPuff : EnBulletPuff
 {
 Default {
-	-NOEXTREMEDEATH
 	decal "ShotChip";
 	}
 }

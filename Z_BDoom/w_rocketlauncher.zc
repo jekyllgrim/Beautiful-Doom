@@ -553,6 +553,7 @@ default
 	{
 	scale 0.45;
 	-NOGRAVITY;
+	+NODECAL;
 	gravity 0.3;
 	speed 25;
 	radius 8;

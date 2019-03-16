@@ -106,9 +106,9 @@ States
 		SHOF A 3 {
 				A_gunflash();
 				If(bdoom_tracers==1) {
-					A_FireBullets (5.6, 0, 7, 5, "EnShotPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0); }
+					A_FireBullets (5.6, 0, 7, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0); }
 				else {
-					A_FireBullets (5.6, 0, 7, 5, "EnShotPuff",FBF_NORANDOMPUFFZ); }
+					A_FireBullets (5.6, 0, 7, 5, "EnBulletPuff",FBF_NORANDOMPUFFZ); }
 				}
 		SHOG BDFHIJKL 1;
 		SHOG M 2 {

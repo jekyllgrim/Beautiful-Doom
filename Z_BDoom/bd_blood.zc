@@ -66,7 +66,9 @@ Default {
 	alpha 0.8;
 	height 8;
 	}
-// I'm only doing the crap below because we don't have direct control over decals, so while I can translate the blood particles created by enemies, I can't translate the decals created by said blood particles (only the decals automatically created behind monsters are translated). Hence the ugly math.
+/* I'm only doing the crap below because we don't have direct control over decals, so while I can translate the blood particles created by enemies, I can't translate the decals created by said blood particles (only the decals automatically created behind monsters are translated). Hence the ugly math.
+I could just use BloodTranslation directly for all cases, but that makes the sprite have only one color which diminishes the details (if blood if red, for example, it doesn't mean that the whole image is red, it'll have black and white parts as well). Hence I use manual translation for blue and green and then BloodTranslation for any other color (if it's used).
+ */
 override void PostBeginPlay() {
 	if (target) {
 	//obvious green prevalence
@@ -91,7 +93,6 @@ override void PostBeginPlay() {
 	Super.PostBeginPlay();
 	}
 
-
 virtual void BD_BloodDecal()
 	{
 	if (bcolor ~== "blue")
@@ -100,7 +101,7 @@ virtual void BD_BloodDecal()
 		A_SprayDecal("BloodSplatGreen",32);
 	else if (bcolor ~== "red")
 		A_SprayDecal("BloodSplatRed",32);
-	//no way to transfer shade to decals, so specially shaded blood particles won't produce decals
+	//no way to transfer shade to decals, so blood of colors other than red/blue/green won't produce decals
 	}
 states
 	{
