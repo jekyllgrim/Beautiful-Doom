@@ -1065,6 +1065,7 @@ map "brightmaps/MROKA5.png"
 disablefullbright
 }
 
+/*
 // modern plasma rifle
 
 brightmap sprite PLAZA0 {

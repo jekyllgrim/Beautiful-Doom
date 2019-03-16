@@ -4,6 +4,8 @@ bool ShotFired;
 Default
 	{
 	Tag "$TAG_SUPERSHOTGUN";
+	inventory.pickupmessage "$GOTSHOTGUN2"; 
+	Obituary "$OB_MPSSHOTGUN"; 
 	weapon.selectionorder 40;
 	Weapon.AmmoType		"Shell";
 	Weapon.AmmoUse		1;
@@ -14,20 +16,6 @@ Default
 	weapon.slotnumber 	3;
 	weapon.slotpriority 1;
 	}
-override string PickupMessage ()
-	{
-	if(bdoom_weapons == 2) 
-		return "You got the Riot Gun!"; 
-	else
-		return "$GOTSHOTGUN2"; 
-	}
-override string GetObituary (Actor victim, Actor inflictor, Name mod, bool playerattack)
-    {
-	if(bdoom_weapons == 2) 
-		return "%o was blasted by %k's riot gun."; 
-	else 
-		return "$OB_MPSSHOTGUN"; 
-    }
 override void Tick()
 	{
 	If (Owner)
@@ -35,7 +23,7 @@ override void Tick()
 	else
 		{
 		if(bdoom_weapons == 2)
-			pickupsound = "Mweapons/assg/clipin";
+			pickupsound = "Mweapons/ssg/close";
 		else
 			pickupsound = "weapons/ssg/close";
 		}
@@ -72,9 +60,12 @@ states
 		SH2O ABCDEF 0;
 		stop;
 	Spawn:
-		SGN2 A 1 NoDelay A_JumpIf(bdoom_weapons == 2,1);
-		loop;
-		ASSG Z 1;
+		SGN2 A 1 {
+			if (bdoom_weapons == 2)
+				self.frame = 1;
+			else
+				self.frame = 0;
+			}
 		loop;
 	Select:
 		TNT1 A 0 A_JumpIf(bdoom_weapons==2,"Select.Modern");

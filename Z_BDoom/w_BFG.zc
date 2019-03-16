@@ -48,6 +48,14 @@ override void DoEffect()
 	}
 states
 	{
+	Spawn:
+		BFUG A 1 {
+			if (bdoom_weapons == 2)
+				scale.x = -1;
+			else
+				scale.x = 1;
+			}
+		loop;
 	Select:
 		TNT1 A 0 {
 			If(bdoom_weapons==2)

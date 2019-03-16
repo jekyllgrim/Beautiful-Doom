@@ -23,6 +23,13 @@ https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752
 
 ** Dev updates log (dd.mm.yyyy) **
 
+16.03.2019
+- Added missing weapon pickup sprites
+- Added brightmaps to plasma rifle and BFG pickup sprites
+- Added missing brightmaps for Modern Pistol (night sights)
+- Added Quick Kick for Modern Guns
+- Removed texture brightmaps for now. Textures will likely be made into a separate addon, to avoid possible compatibility issues.
+
 13.03.2019
 - Updated Assault Rifle sprites with the spriting help from lumbo7332
 - Fixed Quick Kick always causing pain on monsters
