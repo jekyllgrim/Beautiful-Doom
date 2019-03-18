@@ -18,6 +18,7 @@ Default
 	HitObituary "$OB_IMPHIT";
 	Obituary "$OB_IMP";
 	Tag "$FN_IMP";
+	BdoomMonster.allowfiredeath false;
 	}
 states
 	{

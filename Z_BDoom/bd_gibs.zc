@@ -44,6 +44,7 @@ Default {
 virtual void GibBeginPlay() {}
 virtual void GibFall() 
 	{
+	A_Scream();
 	if (bflat)
 		bFLATSPRITE = true;
 	A_SetMass(bmass);

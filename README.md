@@ -23,6 +23,14 @@ https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752
 
 ** Dev updates log (dd.mm.yyyy) **
 
+19.03.2019
+- Converted Arachnotron and Revenant to zscript
+- Added halo for Revenant fireball
+- Arachnotron shoots faster plasma orbs when Modern Guns are used (similarly to Modern Plasma Rifle)
+- Modern rockets and grenades now deal explosive damage to bosses (otherwise their direct impact damage was too low)
+- Shortened the delay before reload when trying to fire with dry magazine on some weapons
+- Updated heat gauge on Modern Plasma Rifle
+
 16.03.2019
 - Assault Rifle in ADS mode is now positioned higher and regular crosshair is disabled while using ADS
 - Added missing weapon pickup sprites

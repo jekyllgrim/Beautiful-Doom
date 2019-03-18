@@ -212,8 +212,9 @@ states
 			if (invoker.heatcounter > 10)
 				invoker.heatcounter = 10;
 			A_Overlay(7,"SteamFast",0);
+			A_OverlayRenderstyle(7,STYLE_Add);
 			A_OverlayFlags(7,PSPF_ALPHA,true);
-			A_OverlayAlpha(7,0.25);
+			A_OverlayAlpha(7,0.1);
 			A_PlaySound("Mweapons/plasma/steamfast");
 			}
 		PLGG A 2 { 
@@ -241,8 +242,9 @@ states
 			if (invoker.heatcounter > 10)
 				invoker.heatcounter = 10;
 			A_Overlay(7,"SteamSlow",0);
-			A_OverlayFlags(7,PSPF_ALPHA,1);
-			A_OverlayAlpha(7,0.25);
+			A_OverlayRenderstyle(7,STYLE_Add);
+			A_OverlayFlags(7,PSPF_ALPHA,true);
+			A_OverlayAlpha(7,0.1);
 			A_PlaySound("Mweapons/plasma/steamslow");
 			}
 		PLGG A 5 { 
@@ -257,7 +259,6 @@ states
 		TNT1 A 0 A_JumpIf(invoker.heatcounter >= 10, "ForcedCool");
 		PLGF A 1 { 
 			invoker.HeatCounter+=0.5;
-			A_PlaySound("Mweapons/plasma/fire",5);
 			A_FireProjectile("ModernPlasmaball",frandom(-1.8,1.8),1,0,0,0,frandom(-1.5,1.5));
 			//A_SetPitch(pitch - 0.1,SPF_INTERPOLATE);
 			A_OverlayOffset(5,0.0,0.0,WOF_INTERPOLATE);
@@ -306,13 +307,16 @@ states
 
 Class BD_Plasmaball : FastProjectile  replaces Plasmaball
 {
+name pcolor;
+property pcolor : pcolor;
 Default {
+	BD_Plasmaball.pcolor "blue";
 	Radius 13;
 	Height 8;
 	Speed 25;
 	Damage 5;
 	Obituary "$OB_MPPLASMARIFLE"; // "%o was melted by %k's plasma gun.";
-	missiletype "BlueFlarePlasmaTrail";
+	missiletype "BD_PlasmaTrail";
 	missileheight 8;
 	damagetype "PlasmaDamage";
 	+FORCEXYBILLBOARD
@@ -335,8 +339,10 @@ States
 				A_PlaySound("weapons/plasmaf",5,1.0);
 			else if(bdoom_weapons == 1)
 				A_PlaySound("weapons/plasma/fire",5,1.0);
+			else if (bdoom_weapons == 2) //this is only used by Arachnotron, since the player uses a different plasmaball when using Modern guns
+				A_PlaySound("Mweapons/plasma/fire",5,1.0);
 			if (bdoom_debris)
-				A_SpawnItemEx("BlueFlarePlasma",0,0,0,vel.x,vel.y,vel.z,0,SXF_SETMASTER|SXF_ORIGINATOR|SXF_ABSOLUTEVELOCITY);
+				A_SpawnItemEx("BD_PlasmaFlare",0,0,0,vel.x,vel.y,vel.z,0,SXF_SETMASTER|SXF_ORIGINATOR|SXF_ABSOLUTEVELOCITY);
 			}
 		COIL ABCDEFGHIJKLMNO 1 bright;
 		goto spawn+1;
@@ -348,7 +354,7 @@ States
 			}
 		TNT1 AAAAAAAAAAAA 0 {
 			if (bdoom_debris == 1)
-				A_spawnItemEx("BluePlasmaPiece",0,0,0,frandom(-3,3),frandom(-3,3),frandom(3,6),random(0,360));
+				A_spawnItemEx("BluePlasmaPiece",0,0,0,frandom(-3,3),frandom(-3,3),frandom(3,6),random(0,360),SXF_TRANSFERTRANSLATION);
 			}
 		TNT1 A 0 A_SetScale(0.2*randompick(-1,1),0.2*randompick(-1,1));
 		PEXP ABCDEFGHIJKLM 2 bright A_FadeOut(0.05);
@@ -356,8 +362,14 @@ States
 	}
 }
 
+class BDPExtensions {
+    static int GetTranslationID (name transname) {
+        return Translation.GetID (transname);
+    }
+}
+
 //flare around the plasmaball
-Class BlueFlarePlasma : Flare_General
+Class BD_PlasmaFlare : Flare_General
 {
 Default {
 	renderstyle "Add";
@@ -367,8 +379,19 @@ Default {
 states
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_Warp(AAPTR_MASTER);
-		LENB A 1 bright {
+		LENB A 0 NoDelay {
+			A_Warp(AAPTR_MASTER);
+			if (master) {
+				let pls = BD_Plasmaball(master);
+				if (pls.pcolor == "green")
+					sprite = GetSpriteIndex("LENG");
+				else if (pls.pcolor == "red")
+					sprite = GetSpriteIndex("LENR");
+				else if (pls.pcolor == "yellow")
+					sprite = GetSpriteIndex("LENY");
+				}
+			}
+		#### A 1 bright {
 			if (!master)
 				self.destroy();
 			}
@@ -377,7 +400,7 @@ states
 }
 
 //appears behind the plasmaball as a fading out trail
-Class BlueFlarePlasmaTrail : Flare_General
+Class BD_PlasmaTrail : Flare_General
 {
 Default {
 	+FORCEXYBILLBOARD
@@ -388,7 +411,18 @@ states
 	{
 	Spawn:
 		TNT1 A 2 nodelay;
-		LENB A 1 bright {
+		LENB A 0 {
+			if (target) {
+				let pls = BD_Plasmaball(target);
+				if (pls.pcolor == "green")
+					sprite = GetSpriteIndex("LENG");
+				else if (pls.pcolor == "red")
+					sprite = GetSpriteIndex("LENR");
+				else if (pls.pcolor == "yellow")
+					sprite = GetSpriteIndex("LENY");
+				}
+			}
+		#### A 1 bright {
 			A_FadeOut(0.15);
 			scale*=0.9;
 			}
@@ -516,6 +550,7 @@ states
 Class ModernPlasmaBall : BD_Plasmaball
 {
 Default {
+	BD_Plasmaball.pcolor "green";
 	Radius 8;
 	Height 8;
 	Speed 50;
@@ -528,7 +563,7 @@ Default {
 	renderstyle "Add";
 	scale 0.03;
 	alpha 1.0;
-	SeeSound "none";
+	SeeSound "Mweapons/plasma/fire";
 	DeathSound "weapons/plasmax";
 	}
 States
@@ -536,7 +571,7 @@ States
 	Spawn:
 		TNT1 A 0 NoDelay {
 			if (bdoom_debris == 1)
-				A_SpawnItemEx("ModernFlarePlasma",0,0,0,vel.x,vel.y,vel.z,0,SXF_SETMASTER|SXF_ORIGINATOR|SXF_ABSOLUTEVELOCITY);
+				A_SpawnItemEx("BD_PlasmaFlare",0,0,0,vel.x,vel.y,vel.z,0,SXF_SETMASTER|SXF_ORIGINATOR|SXF_ABSOLUTEVELOCITY);
 			A_PlaySound("Mweapons/plasma/loop",5,0.6,1,3);
 			}
 		COIS ABCDEFGHIJKLMNO 1 bright;
@@ -544,7 +579,8 @@ States
 	Death:
 		TNT1 A 0 {
 			A_StopSound(5);
-			A_SetTranslation("GreenPlasma");
+			if (pcolor == "green")
+				A_SetTranslation("GreenPlasma");
 			A_RemoveChildren(1,RMVF_EVERYTHING);
 			A_Explode(30,40,0,0,40,0,0,"none");
 			A_SetScale(0.14*randompick(-1,1),0.14*randompick(-1,1));
@@ -561,26 +597,6 @@ States
 	}
 }
 
-
-
-Class ModernFlarePlasma : Flare_General
-{
-Default {
-	renderstyle "Add";
-	alpha 0.5;
-	scale 0.06;
-	}
-states
-	{
-	Spawn:
-		TNT1 A 0 NoDelay A_Warp(AAPTR_MASTER);
-		LENG A 1 bright {
-			if (!master)
-				self.destroy();
-			}
-		wait;
-	}
-}
 
 Class ModernPlasmaPiece : SmallDebris
 {
@@ -616,36 +632,6 @@ states
 		wait;
 	}
 }
-
-//old trail with a railgun effect
-Class MPlasmaBallTrail : DebrisGeneral
-{
-Default {
--MISSILE
-+NOINTERACTION
-	}
-states
-	{
-	Spawn:
-		TNT1 A 0 NoDelay A_CustomRailGun(0,0,"null","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ|RGF_EXPLICITANGLE,0,3.0,"NullPuff",180,0,4,0,0,0,"MPlasmaBallTrailRay");
-		stop;
-	}
-}
-
-Class MPlasmaBallTrailRay : PlasmaRailBall
-{
-Default {
-	alpha 0.5;
-	scale 0.025;
-	}
-states
-	{
-	Spawn:
-		PEXP ABCDEFGHIJKLM 1 bright A_FadeOut(0.1);
-		stop;
-	}
-}
-		
 
 Class MPlasmaBallRay : PlasmaRailBall
 {

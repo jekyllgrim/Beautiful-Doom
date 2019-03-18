@@ -1,11 +1,18 @@
 Class BDoomMonster : Actor abstract
 {
+double smokeheight;
+property smokeheight : smokeheight;
 int monsterclip; //used by monsters with guns when bdoom_weapons == 2
 property monsterclip : monsterclip;
 
 bool burning; //is showing burning or smoking animation
 int burntimer;
 int firetype; //0 = only smoke; 1 = regular yellow; 2 = baron green
+
+bool allowsmokedeath;
+bool allowfiredeath;
+property allowsmokedeath : allowsmokedeath;
+property allowfiredeath : allowfiredeath;
 
 bool highfall;
 /*void BD_CheckFall() {
@@ -19,23 +26,15 @@ void BD_Drop() {
 Default {
 	Monster;
 	BDoomMonster.monsterclip 10;
+	BDoomMonster.smokeheight 0;
+	BDoomMonster.allowsmokedeath true;
+	BDoomMonster.allowfiredeath true;
 	attacksound "none";
 	}
 	
 void BD_Bleed() {
 	if (!burning)
 		A_SpawnItemEx("Blood",frandom(-5.0,5.0),frandom(-5.0,5.0),frandom(16,20),0,0,0,SXF_SETTARGET);
-	}
-
-void BD_Burn() {
-	burning = 1;
-	burntimer = 0;
-	if (firetype == 0)
-		A_SetTranslation("Scorched");
-	else if (firetype == 1)
-		A_SetTranslation("Firedeath");
-	else if (firetype == 2)
-		A_SetTranslation("GreenFiredeath");
 	}
 
 void BD_BulletAttack(double horz_spread, double vert_spread, int numbullets, int damageperbullet, string OldSound, string NewSound, string Casing, double CasingX = 0, double CasingY = 0, double CasingZ = 0, double TracerHeight = 32, double Tracerofs_xy = 0)
@@ -67,24 +66,25 @@ override void Tick() {
 	super.Tick();
 	if (!bNoTimeFreeze && (globalfreeze || level.Frozen))
 		return;
-	//burning activated, CVAR allows flames, is not in See state, hasn't been burning long
-	if (burning && bdoom_flames == 1 && !InStateSequence(curstate,ResolveState("See")) && burntimer < 220 ) 
+	if (burntimer >= 256)
+		return;	
+	if (burning && !InStateSequence(curstate,ResolveState("See")))
 		{
 		burntimer++;
 	//burn, baby, burn	
 		if (burntimer < 100) {
 		//type 0 is just smoke (plasma death)
 			if (firetype == 0)
-				A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,frandom(0.4,0.9),0,0,80);
+				A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),smokeheight + random(8,16),0,0,frandom(0.4,0.9),0,0,80);
 			else if (firetype == 1)
-				A_SpawnItemEx("ParticleFire_Yellow",random(-16,16),random(-16,16),random(8,16),0,0,frandom(0.5,1.5));
+				A_SpawnItemEx("ParticleFire_Red",random(-16,16),random(-16,16),smokeheight + random(8,16),0,0,frandom(0.5,1.5),0,0,200);
 			else if (firetype == 2)
-				A_SpawnItemEx("ParticleFire_Green",random(-16,16),random(-16,16),random(8,16),0,0,frandom(0.5,1.5));
+				A_SpawnItemEx("ParticleFire_Green",random(-16,16),random(-16,16),smokeheight + random(8,16),0,0,frandom(0.5,1.5));
 			}
 	//enough burning, now spawn smoke for a while		
-		else {			
+		else {
 			A_SetTranslation("Scorched");
-			A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),random(8,16),0,0,frandom(0.4,0.9),0,0,burntimer);
+			A_SpawnItemEx("BlackSmoke",random(-16,16),random(-16,16),smokeheight + random(8,16),0,0,frandom(0.4,0.9),0,0,burntimer);
 			}
 		}
 		
@@ -193,29 +193,45 @@ states
 		stop;
 	Death.Fire:
 		TNT1 A 0 {
-			if (bdoom_gibs == 1) {
+			if (allowfiredeath)
 				firetype = 1;
-				BD_Burn();
-				}
-			return ResolveState("Death");
+			else if (allowsmokedeath)
+				firetype = 0;
+			return ResolveState("DoFireDeath");
 			return ResolveState(null);
 			}
 		stop;
 	Death.GreenFire:
 		TNT1 A 0 {
-			if (bdoom_gibs == 1) {
+			if (allowfiredeath)
 				firetype = 2;
-				BD_Burn();
-				}
-			return ResolveState("Death");
+			else if (allowsmokedeath)
+				firetype = 0;
+			return ResolveState("DoFireDeath");
 			return ResolveState(null);
 			}
 		stop;
 	Death.PlasmaDamage:
 		TNT1 A 0 {
-			if (bdoom_gibs == 1) {
+			if (allowsmokedeath)
 				firetype = 0;
-				BD_Burn();
+			return ResolveState("DoFireDeath");
+			return ResolveState(null);
+			}
+		stop;
+	DoFireDeath:
+		TNT1 A 0 {
+			if (bdoom_gibs) {
+				burning = 1;
+				burntimer = 0;
+				if (firetype == 0)
+					A_SetTranslation("Scorched");
+				else if (firetype == 1) {
+					A_SetTranslation("Firedeath");
+					A_SpawnItemEx("BurningBodyFlame",flags:SXF_SETTARGET);
+					}
+				else if (firetype == 2)
+					A_SetTranslation("GreenFiredeath");
 				}
 			return ResolveState("Death");
 			return ResolveState(null);
@@ -242,6 +258,36 @@ states
 	}
 }
 
+Class BurningBodyFlame : Actor
+{
+int burntimer;
+Default {
+	+NOINTERACTION
+	+MOVEWITHSECTOR
+	renderstyle "Add";
+	alpha 1.0;
+	xscale 1.0;
+	yscale 0.65;
+	}
+override void Tick () {
+	super.Tick();
+	if (!target)
+		self.destroy();
+	SetOrigin(target.pos,1);
+	burntimer++;
+	if (burntimer > 100) {
+		scale.y*=0.99;
+		A_FadeOut(0.01);
+		}
+	}
+states
+	{
+	Spawn:
+		BBR1 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 bright;
+		BBR2 ABCDEF 1 bright;
+		loop;
+	}
+}
 
 
 Class BD_ZombieBullet : BD_PistolBullet

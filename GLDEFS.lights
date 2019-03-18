@@ -782,9 +782,9 @@ flickerlight ARACHPLAS_X4
     chance 0.3
 }
 
-object GreenPlasmaball
+object BD_ArachnotronPlasma
 {
-    frame ARBA { light ARACHPLAS }
+frame COIL { light ARACHPLAS }
 frame PEXPA { light ARACHPLAS_X1 }
 frame PEXPB { light ARACHPLAS_X1 }
 frame PEXPC { light ARACHPLAS_X1 }

@@ -28,5 +28,7 @@ version "3.3"
 #include "Z_Bdoom/m_Demon.zc"
 #include "Z_Bdoom/m_LostSoul.zc"
 #include "Z_Bdoom/m_Cacodemon.zc"
+#include "Z_Bdoom/m_Arachnotron.zc"
+#include "Z_Bdoom/m_Revenant.zc"
 
 #include "Z_Bdoom/o_lightsources.zc"

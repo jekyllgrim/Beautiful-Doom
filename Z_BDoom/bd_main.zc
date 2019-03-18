@@ -110,8 +110,20 @@ Default {
 	}
 }
 
+//
+Class BD_ProjectileFlare : Flare_General
+{
+override void Tick() {
+	super.Tick();
+	if (bdoom_debris && master)
+		A_Warp(AAPTR_MASTER,0,0,0,0,WARPF_INTERPOLATE);
+	else
+		self.Destroy();
+	}
+}
+
 //used for flares that are launched from the weapon alongside the projectile, e.g. grenades
-Class ProjectileFlare : Actor abstract
+Class BD_GrenadeFlare : Actor abstract
 {
 Default {
 	+FORCEXYBILLBOARD
@@ -154,11 +166,12 @@ Class ParticleFire_Yellow : ParticleFire_General
 {
 Default {
 	alpha 0.6;
+	scale 0.35;
 	}
 states
 	{
 	Spawn:
-		FIPR ABCDEFGHIJKLMNOPQRST 1 bright Nodelay A_FadeOut(0.03);
+		FIPY ABCDEFGHIJKL 2 bright Nodelay A_FadeOut(0.06);
 		stop;
 	}
 }
@@ -485,7 +498,8 @@ Default {
 Class NullPuff : Actor
 {
 Default {
-	+NODECAL
+	decal "none";
+	//+NODECAL
 	+NOINTERACTION
 	+BLOODLESSIMPACT
 	+PAINLESS

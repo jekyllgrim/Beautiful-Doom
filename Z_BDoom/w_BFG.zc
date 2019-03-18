@@ -539,7 +539,7 @@ states
 		TNT1 A 0 NoDelay {
 			If(bdoom_debris == 1) {
 				for (int i = 16; i > 0; i--)
-					A_SpawnItemEx("BFGGreenPlasmaPiece",0,0,0,frandom(-2.5,2.5),frandom(-2.5,2.5),frandom(-2.5,2.5),random(0,360));
+					A_SpawnItemEx("BFGPlasmaPiece",0,0,0,frandom(-2.5,2.5),frandom(-2.5,2.5),frandom(-2.5,2.5),random(0,360));
 				}
 			}
 		PEXP AABBCCDDEEFFGGHHIIJJKKLLMM 1 bright;
@@ -548,7 +548,7 @@ states
 }
 
 //small particles spawned by BFG hits
-Class BFGGreenPlasmaPiece : BluePlasmaPiece
+Class BFGPlasmaPiece : BluePlasmaPiece
 {
 Default {
 	translation "GreenPlasma";
@@ -559,7 +559,7 @@ Default {
 }
 
 //large plasma shreds spawned by heavy laser
-Class BFGGreenPlasmaShred : BluePlasmaShred
+Class BFGPlasmaShred : BluePlasmaShred
 {
 Default {
 	translation "GreenPlasma";
@@ -649,9 +649,9 @@ states
 		TNT1 A 1 NoDelay {
 			if (bdoom_debris == 1) {
 				for (int i = 12; i > 0; i--)
-					A_SpawnItemEx("BFGGreenPlasmaPiece",0,0,0,frandom(-2.5,2.5),frandom(-2.5,2.5),frandom(-2.5,2.5),random(0,360));
+					A_SpawnItemEx("BFGPlasmaPiece",0,0,0,frandom(-2.5,2.5),frandom(-2.5,2.5),frandom(-2.5,2.5),random(0,360));
 				for (int i = 8; i > 0; i--)
-					A_SpawnItemEx("BFGGreenPlasmaShred",0,0,0,randompick(-5,5),randompick(-5,5),randompick(-5,5),random(0,360));
+					A_SpawnItemEx("BFGPlasmaShred",0,0,0,randompick(-5,5),randompick(-5,5),randompick(-5,5),random(0,360));
 				}
 			}
 		stop;

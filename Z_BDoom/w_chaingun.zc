@@ -431,13 +431,19 @@ states
 			if (invoker.tfired > 9)
 				invoker.tfired = 9;
 			}
-		RIFN C 1 {
+		RIFN B 1 {
 			A_WeaponOffset(frandom(-0.8,0.8),34.0,WOF_INTERPOLATE);
 			A_SetPitch(pitch - frandom(0.37,0.42),SPF_INTERPOLATE);
 			}
 		
-		RIFN CB 1 A_WeaponOffset(frandom(-0.4,0.4),33.0,WOF_INTERPOLATE);
-		RIFN B 1 A_WeaponOffset(0,32.0,WOF_INTERPOLATE);
+		RIFN CD 1 A_WeaponOffset(frandom(-0.4,0.4),33.0,WOF_INTERPOLATE);
+		RIFN E 1 {
+			A_WeaponOffset(0,32.0,WOF_INTERPOLATE);
+			if (CountInv("RifleClip") == 0) {
+				let po = Player.FindPsprite(PSP_Weapon);
+				po.frame = 3;
+				}
+			}
 		
 		TNT1 A 0 {
 			If(Bdoom_debris == 1) {
@@ -446,10 +452,12 @@ states
 				}
 			}
 		TNT1 A 0 A_ReFire("Fire.Modern");
-		TNT1 A 0 A_JumpIfNoAmmo(2);
-		RIFN A 2;
-		goto ready;
-		RIFN D 2;
+		RIFN A 2 {
+			if (CountInv("RifleClip") == 0) {
+				let po = Player.FindPsprite(PSP_Weapon);
+				po.frame = 3;
+				}
+			}
 		goto ready;
 	FireSights:
 		RIFS A 1 {
@@ -475,11 +483,17 @@ states
 		RIFS A 1 A_WeaponOffset(0.0,32.0,WOF_INTERPOLATE);
 		goto ready;
 	DryReload:
-		TNT1 A 0 { invoker.DryReload = 1; }
-		TNT1 A 0 A_JumpIf (invoker.RifleSights == true,2);
-		RIFN D 18 A_PlaySound("Mweapons/dry",7);
+		RIFN D 12 {
+			invoker.DryReload = 1;
+			A_PlaySound("Mweapons/dry",7);
+			if (invoker.RifleSights) {
+				let po = player.FindPSprite(psp_weapon);
+				po.sprite = GetSpriteIndex("RIFS");
+				po.frame = 0;
+				}
+			}
 		goto reload;
-		RIFS A 18 A_PlaySound("Mweapons/dry",7);
+		RIFS A 0;
 	Reload:
 		TNT1 A 0 { 
 			if (CountINv("Clip") == 0)
