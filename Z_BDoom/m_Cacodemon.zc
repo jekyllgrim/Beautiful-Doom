@@ -27,7 +27,7 @@ Default
 	}
 override void Tick() {
 	super.Tick();
-	if (target)
+	if (!InStateSequence(curstate,FindState("Spawn")))
 		bFLOATBOB = false;
 	}
 states

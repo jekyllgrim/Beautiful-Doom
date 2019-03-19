@@ -79,9 +79,13 @@ override void Tick()
 //base class for less expensive version for small debris
 Class SmallDebris : DebrisGeneral abstract
 {
+bool landed;
 double dgravity; //fake gravity
+bool removeonfall;
 property dgravity : dgravity;
+property removeonfall : removeonfall;
 Default {
+	SmallDebris.removeonfall true;
 	-MISSILE
 	-RELATIVETOFLOOR
 	+NOINTERACTION
@@ -90,9 +94,18 @@ Default {
 	}
 override void Tick() {
 	super.tick();
+	if (landed)
+		return;
 	vel.z-=dgravity;
-	if (pos.z <= floorz)
-		self.destroy();
+	if (pos.z <= floorz) {
+		if (removeonfall)
+			self.destroy();
+		else {
+			landed = true;
+			SetOrigin((pos.x,pos.y,floorz),0);
+			bRELATIVETOFLOOR = true;
+			}
+		}
 	}
 }
 

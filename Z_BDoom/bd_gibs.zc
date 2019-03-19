@@ -101,6 +101,11 @@ states
 		HED8 AB 0;
 		HND8 AB 0;
 		stop;
+		//pain elemental
+		HND6 AB 0;
+		PAPP AB 0;
+		PARP AB 0;
+		stop;
 	}
 }
 
@@ -188,10 +193,7 @@ Default {
 	}
 override void GibBeginPlay()
 	{
-	self.sprite = GetSpriteIndex(GibSprite[random(0,4)]);
-	bmass = 50;
-	brot = randompick(17.0,-17.0);
-	A_QueueCorpse();
+	super.GibBeginPlay();
 	restframe = 23;
 	}
 }
@@ -580,5 +582,35 @@ override void GibFall()
 	{
 	super.GibFall();
 	scale.y*=randompick(-1,1);
+	}
+}
+
+// PAIN ELEMENTAL
+
+class PainElementalHand : BasicMeatPiece
+{
+override void GibBeginPlay()
+	{
+	super.GibBeginPlay();
+	self.sprite = GetSpriteIndex("HND6");
+	restframe = 1;
+	}
+}
+
+class PainElementalJaw : PainElementalHand
+{
+override void GibBeginPlay()
+	{
+	super.GibBeginPlay();
+	self.sprite = GetSpriteIndex("PAPP");
+	}
+}
+
+class PainElementalHorn : PainElementalHand
+{
+override void GibBeginPlay()
+	{
+	super.GibBeginPlay();
+	self.sprite = GetSpriteIndex("PARP");
 	}
 }
