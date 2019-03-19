@@ -65,13 +65,16 @@ states
 		TNT1 A 0 {
 			A_SetRenderstyle(0.65,Style_ADD);
 			if (bdoom_gibs) {
-				A_SpawnItemEx("PainElementalHorn",	frandom(-4,4),frandom(-16,-18),frandom(32,36),	frandom(3,5),0,frandom(4,7),frandom(85,95),		SXF_SETTARGET,80);
-				A_SpawnItemEx("PainElementalHorn",	frandom(-4,4),frandom(16,18),frandom(32,36),	frandom(3,5),0,frandom(4,7),frandom(-85,-95),	SXF_SETTARGET,80);
-				A_SpawnItemEx("PainElementalJaw",	frandom(-4,4),frandom(-4,4),frandom(6,12),		frandom(3,5),0,frandom(3,5),frandom(0,360), 	SXF_SETTARGET,100);
-				A_SpawnItemEx("PainElementalHand",	frandom(-4,4),frandom(-20,-22),frandom(20,22),	frandom(3,4),0,frandom(4,7),frandom(85,95),		SXF_SETTARGET,80);
-				A_SpawnItemEx("PainElementalHand",	frandom(-4,4),frandom(20,22),frandom(20,22),	frandom(3,4),0,frandom(4,7),frandom(-85,-95),	SXF_SETTARGET,80);
-				for (int i = 0; i < 6; i++)
-					A_SpawnItemEx("BasicMeatPiece",	frandom(-10,10),frandom(-10,10),frandom(6,40),	frandom(-5,5),frandom(-5,5),frandom(3,6),0, 	SXF_SETTARGET,100);
+				for (int i = 16; i > 0; i--)
+					A_SpawnItemEx("BFountainSpray",frandom(-5.0,5.0),frandom(-5.0,5.0),random(8,28),vel.x*frandom(0.05,0.15),vel.y*frandom(0.05,0.15),frandom(4.5,6.5),0,SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION,36);
+				A_SpawnItemEx("PainElementalHorn",	frandom(-4,4),frandom(-16,-18),frandom(32,36),	frandom(3,5),0,frandom(4,7),frandom(85,95),		SXF_SETTARGET,32);
+				A_SpawnItemEx("PainElementalHorn",	frandom(-4,4),frandom(16,18),frandom(32,36),	frandom(3,5),0,frandom(4,7),frandom(-85,-95),	SXF_SETTARGET,32);
+				A_SpawnItemEx("PainElementalJaw",	frandom(-4,4),frandom(-4,4),frandom(6,12),		frandom(-5,5),frandom(-5,5),frandom(3,5),0, 	SXF_SETTARGET,64);
+				A_SpawnItemEx("PainElementalJaw",	frandom(-4,4),frandom(-4,4),frandom(6,12),		frandom(-5,5),frandom(-5,5),frandom(3,5),0, 	SXF_SETTARGET,64);
+				A_SpawnItemEx("PainElementalHand",	frandom(-4,4),frandom(-20,-22),frandom(20,22),	frandom(3,4),0,frandom(4,7),frandom(85,95),		SXF_SETTARGET,32);
+				A_SpawnItemEx("PainElementalHand",	frandom(-4,4),frandom(20,22),frandom(20,22),	frandom(3,4),0,frandom(4,7),frandom(-85,-95),	SXF_SETTARGET,32);
+				for (int i = 0; i < 8; i++)
+					A_SpawnItemEx("BasicMeatPiece",	frandom(-10,10),frandom(-10,10),frandom(6,40),	frandom(-5,5),frandom(-5,5),frandom(3,6),0, 	SXF_SETTARGET,32);
 				for (int i = 0; i < 5; i++)
 					A_SpawnItemEx("PEFlameDebris",	frandom(-6,6),frandom(-6,6),frandom(10,38),		frandom(-7,7),frandom(-7,7),frandom(2,6),0, 	SXF_SETTARGET,32);
 				}
