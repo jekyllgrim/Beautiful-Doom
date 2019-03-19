@@ -1,0 +1,172 @@
+Class BD_Fatso : BDoomMonster replaces Fatso
+{
+Default {
+	Health 600;
+	Radius 48;
+	Height 64;
+	Mass 1000;
+	Speed 8;
+	PainChance 80;
+	Monster;
+	+FLOORCLIP
+	+BOSSDEATH
+	SeeSound "fatso/sight";
+	PainSound "fatso/pain";
+	DeathSound "fatso/death";
+	ActiveSound "fatso/active";
+	Obituary "$OB_FATSO";
+	Tag "$FN_MANCU";
+	bloodcolor "DarkRed";
+	BDoomMonster.smokeheight 24;
+	}
+states
+	{
+	Spawn:
+		MANC I 15 A_Look;
+		loop;
+	see:
+		MANC abcdefghij 4 a_chase;
+		loop;
+	Crush:
+		CRS3 A -1;
+		stop;
+	missile:
+		FATA a 17 a_fatraise;
+		FATA b 3;
+		FATA c 3  a_fatattack1;
+		FATA d 3 ;
+		FATA e 4;
+		FATA a 5 A_FaceTarget;
+		FATA A 2 A_FaceTarget;
+		FATA b 3;
+		FATA c 3  a_fatattack2;
+		FATA d 3 ;
+		FATA e 4;
+		FATA a 5 A_FaceTarget;
+		FATA A 2 A_FaceTarget;
+		FATA b 3;
+		FATA c 3  a_fatattack3;
+		FATA d 3 ;
+		FATA e 4;
+		FATA AA 5 A_FaceTarget;
+		goto see;
+	pain:
+		FAPP a 3;
+		FAPP b 3 a_pain;
+		goto see;
+	Death:
+		TNT1 A 0 { scale.x = randompick(-1,1); }
+		TNT1 A 0 A_Jump(256,"Death.Vanilla","Death1","Death2");
+	Death.Vanilla: //vanilla
+		MANM a 3 {
+			if (bdoom_gibs && !burning) {
+				A_SpawnItemEx("BasicMeatPiece",frandom(-3,3),frandom(-3,3),frandom(44,47), frandom(-4,4),frandom(-4,4),frandom(2,4),0,SXF_SETTARGET,96);
+				A_SpawnItemEx("BasicMeatPiece",frandom(-3,3),frandom(-3,3),frandom(44,47), frandom(-4,4),frandom(-4,4),frandom(2,4),0,SXF_SETTARGET,96);
+				A_SpawnItemEx("BasicMeatPiece",frandom(-3,3),frandom(-3,3),frandom(44,47), frandom(-4,4),frandom(-4,4),frandom(2,4),0,SXF_SETTARGET,96);
+				}
+			}
+		MANM b 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("Blood",frandom(-3,3),frandom(-3,3),frandom(42,47), frandom(-4,4),frandom(-4,4),frandom(2,4));
+			a_Scream();
+			}
+		MANM cde 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("Blood",frandom(-3,3),frandom(-3,3),frandom(42,47), frandom(-4,4),frandom(-4,4),frandom(2,4));
+			}
+		MANM f 3 a_noblocking;
+		MANM ghijklmnop 3; 		
+		MANM q 1 a_bossdeath;
+		goto deathbleed;
+	Death1: //fall back
+		MANN a 4;
+		MANN b 4 a_Scream;
+		MANN cd 4;
+		MANN E 4 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("Blood",frandom(-3,3),frandom(-3,3),frandom(36,42), frandom(-4,4),frandom(-4,4),frandom(3,6));
+			a_noblocking();
+			}
+		MANN Fghi 4 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("Blood",frandom(-3,3),frandom(-3,3),frandom(36,42), frandom(-4,4),frandom(-4,4),frandom(3,6));
+			if (bdoom_gibs && !burning)
+				A_SpawnItemEx("BasicMeatPiece",frandom(-3,3),frandom(-3,3),frandom(20,40), frandom(-4,4),frandom(-4,4),frandom(2,4),0,SXF_SETTARGET,24);
+			}
+		MANN jk 4;
+		MANN L 1 a_bossdeath;
+		goto deathbleed;
+	Death2: //like vanilla but not exposing brain
+		MANO a 4;
+		MANO b 4 a_Scream();
+		MANO cd 4;
+		MANO E 4 {
+			BD_Bleed();
+			a_noblocking();
+			}
+		MANO Fghi 4 BD_Bleed();
+		MANO J 1 a_bossdeath;
+		goto deathbleed;
+		}
+}
+
+Class BD_FatShot : FatShot replaces FatShot
+{
+Default {
+	Damagetype "Fire";
+	decal "BigScorch";
+	renderstyle "Add";
+	}
+States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay {
+			if (bdoom_debris)
+				A_SpawnItemEx("BD_FatShotFlare",0,0,0,velx,vely,velz,0,SXF_SETMASTER|SXF_ORIGINATOR|SXF_ABSOLUTEVELOCITY);
+			}
+		MANF AABB 1 {
+			if (bdoom_debris) {
+				A_SpawnItemEx("Rocket1Trail",0,frandom(-7,7),frandom(-7,7),0,0,0,0);
+				A_SpawnItemEx("Rocket1Trail",0,frandom(-7,7),frandom(-7,7),0,0,0,0);
+				A_SpawnItemEx("Rocket1Trail",0,frandom(-7,7),frandom(-7,7),0,0,0,0);
+				}
+			}
+		goto spawn+1;
+	Death:
+		TNT1 A 0 {
+			A_RemoveChildren(1,RMVF_EVERYTHING);
+			bFORCEXYBILLBOARD = true;
+			alpha = 0.85;
+			if (bdoom_debris) {
+				for (int i = 20; i > 0; i--)
+					A_SpawnItemEx("Firepiece",0,0,0,	frandom(-4,4),frandom(-4,4),frandom(-4,4),0,0,92);
+				}
+			}
+		BOM0 ABCDEF 3 bright A_FadeOut(0.1);
+		stop;
+	}
+}
+
+Class BD_FatShotFlare : Flare_General
+{
+Default {
+	renderstyle "Add";
+	alpha 0.7;
+	scale 0.25;
+	}
+override void Tick() {
+	super.Tick();
+	if (!master)
+		self.Destroy();
+	}
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay {
+			if (master)
+				SetOrigin(master.pos,0);
+				}
+		LENY A 1 bright;
+		wait;
+	}
+}

@@ -56,9 +56,13 @@ states
 			A_SpawnItemEx("LS_skull",	frandom(-4,4),frandom(-4,4),frandom(5,24),	frandom(-4,4),frandom(-4,4),frandom(2,5),	0,	0, 128);
 			for (int i = 5; i > 0; i--)
 				A_SpawnItemEx("Ls_shard",	frandom(-4,4),frandom(-4,4),frandom(5,24),	frandom(-4,4),frandom(-4,4),frandom(2,5),	0,	0, 128);
+			for (int i = 4; i > 0; i--)
+				A_SpawnItemEx("LS_FlameShard",	frandom(-4,4),frandom(-4,4),frandom(5,24),	frandom(-4,4),frandom(-4,4),frandom(2,5),	0,	0, 128);
 			}
 		ssou f 3 bright A_noblocking();
 		ssou ghij 3 bright;
+		stop;
+	Raise:
 		stop;
 
 	SpawnVanilla:
@@ -90,5 +94,15 @@ states
 		ssou f 3 bright A_noblocking();
 		ssou ghij 3 bright;
 		stop;
+	}
+}
+
+Class LS_FlameShard : SmallDebris
+{
+states
+	{
+	Spawn:
+		TNT1 A 1 NoDelay A_SpawnItemEx("FirePiece",0,frandom(-3,3),frandom(-3,3),0,0,frandom(0.2,0.3));
+		loop;
 	}
 }

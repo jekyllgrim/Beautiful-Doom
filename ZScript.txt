@@ -31,5 +31,6 @@ version "3.3"
 #include "Z_Bdoom/m_Arachnotron.zc"
 #include "Z_Bdoom/m_Revenant.zc"
 #include "Z_Bdoom/m_PainElemental.zc"
+#include "Z_Bdoom/m_Mancubus.zc"
 
 #include "Z_Bdoom/o_lightsources.zc"

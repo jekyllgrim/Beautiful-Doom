@@ -666,9 +666,9 @@ object BD_BaronBall
 // Lost Soul
 flickerlight LOSTSOUL
 {
-    color 0.1 0.1 0.0
-    size 32
-    secondarysize 40
+    color 0.6 0.6 0.0
+    size 40
+    secondarysize 44
     chance 0.5
 }
 
@@ -706,13 +706,7 @@ flickerlight LOSTSOUL_X4
 
 object BD_LostSoul
 {
-    frame LOSLA { light LOSTSOUL    }
-    frame LOSLB { light LOSTSOUL    }
-    frame LOSLC { light LOSTSOUL    }
-    frame LOSLD { light LOSTSOUL    }
-    frame LOSLE { light LOSTSOUL    }
-    frame LOSLF { light LOSTSOUL    }
-    frame LOSLG { light LOSTSOUL    }
+    frame LOSL { light LOSTSOUL    }
 	
     frame ZKUL { light LOSTSOUL    }
     frame SSKU { light LOSTSOUL    }
@@ -728,6 +722,31 @@ object BD_LostSoul
     frame SSOUH { light LOSTSOUL_X4 }
     frame SSOUI { light LOSTSOUL_X4 }
     frame SSOUH { light LOSTSOUL_X4 }
+}
+
+// Pain Elemental fire particle
+
+object BD_PainElemental
+{
+	frame SPAI { light LOSTSOUL_X3 }
+}
+
+object PEExplosion
+{
+	frame BOM1 { light LOSTSOUL_X3 }
+}
+
+flickerlight PEPART
+{
+    color 0.6 0.6 0.0
+    size 12
+    secondarysize 10
+    chance 0.5
+}
+
+object PEFlameDebris
+{
+	frame FIRP { light PEPART }
 }
 
 // Mancubus Fireball

@@ -2,7 +2,6 @@
 		NEW MONSTERS
 -----------------------------------------------------------*/
 
-#include "DECORATE/MONSTERS/Mancubus.txt"
 #include "DECORATE/MONSTERS/HellKnight.txt"
 #include "DECORATE/MONSTERS/BaronOfHell.txt"
 #include "DECORATE/MONSTERS/ArchVile.txt"

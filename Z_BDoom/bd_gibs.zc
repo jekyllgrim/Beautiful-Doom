@@ -101,6 +101,8 @@ states
 		HED8 AB 0;
 		HND8 AB 0;
 		stop;
+		//caco
+		EYE1 AB 0;
 		//pain elemental
 		HND6 AB 0;
 		PAPP AB 0;
@@ -141,6 +143,10 @@ static const string GibSprite[] =
 	{
 		"GIB1","GIB2","GIB3","GIB4","GIB5"
 	};
+override void PostBeginPlay() {
+	Super.PostBeginPlay();
+	scale *= frandom(0.85,1.15);
+	}
 override void GibBeginPlay()
 	{
 	self.sprite = GetSpriteIndex(GibSprite[random(0,4)]);
@@ -159,7 +165,7 @@ states
 			}
 		#### A 1 {
 			A_SpawnItemEx("BD_GibBlood",frandom(-2,2),frandom(-2,2),frandom(0,2),0,frandom(0,1),frandom(0,1),random(175,185),SXF_TRANSFERPOINTERS,144);
-			A_SetRoll(roll+=brot,SPF_INTERPOLATE);
+			roll+=brot;
 			}
 		wait;
 	Crash:
@@ -185,16 +191,15 @@ states
 	}
 }
 
-class CacodemonMeatPiece : BasicMeatPiece
+class BasicMeatPiece_Heavy : BasicMeatPiece
 {
 Default {
-	bloodcolor "00 00 CC";
-	translation "CacoGibs";
+	scale 0.8;
 	}
 override void GibBeginPlay()
 	{
 	super.GibBeginPlay();
-	restframe = 23;
+	bmass = 80;
 	}
 }
 
@@ -504,6 +509,36 @@ override void GibBeginPlay()
 	}
 }
 
+//// CACODEMON
+
+
+class CacodemonMeatPiece : BasicMeatPiece
+{
+Default {
+	bloodcolor "00 00 CC";
+	translation "CacoGibs";
+	}
+override void GibBeginPlay()
+	{
+	super.GibBeginPlay();
+	restframe = 23;
+	}
+}
+
+Class CacodemonEye : BasicMeatPiece
+{
+Default {
+	bloodcolor "00 00 CC";
+	}
+override void GibBeginPlay()
+	{
+	self.sprite = GetSpriteIndex("EYE1");
+	bmass = 40;
+	brot = randompick(20.0,-20.0);
+	A_QueueCorpse();
+	restframe = 1;
+	}
+}
 
 //// LOST SOUL pieces
 
@@ -538,7 +573,9 @@ states
 			scale.x*=randompick(-1,1);
 			roll = random(0,359);
 			}
-		#### A 1 A_SetRoll(roll+=brot,SPF_INTERPOLATE);
+		#### A 1 {
+			roll+=brot;
+			}
 		wait;
 	Crash:
 		#### # 0 GibFall();
@@ -594,6 +631,31 @@ override void GibBeginPlay()
 	super.GibBeginPlay();
 	self.sprite = GetSpriteIndex("HND6");
 	restframe = 1;
+	}
+states
+	{
+	spawn:
+		#### A 0 NoDelay {
+			GibBeginPlay();
+			scale.x*=randompick(-1,1);
+			roll = random(0,359);
+			}
+		#### A 1 {
+			A_SpawnItemEx("BD_GibBlood",frandom(-2,2),frandom(-2,2),frandom(0,2),0,frandom(0,1),frandom(0,1),random(175,185),SXF_TRANSFERPOINTERS,144);
+			roll+=brot;
+			}
+		wait;
+	Crash:
+		#### # 0 GibFall();
+		#### # 1  {
+			//console.printf("%s, %s",self.GetClassName(),target.GetClassName());
+			if(target && target is "BDoomMonster" && target.InStateSequence(target.curstate,target.FindState("Raise")))
+				return ResolveState("Raise");
+			if (vel.length() > 2)
+				A_SpawnItemEx("BD_GibBloodPool",frandom(-2,2),frandom(-2,2),0,	0,0,0,	0,SXF_TRANSFERPOINTERS,80);
+			return ResolveState(null);
+			}
+		wait;
 	}
 }
 
