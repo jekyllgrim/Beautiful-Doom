@@ -426,6 +426,7 @@ Default {
 	-THRUACTORS
 	+ROLLCENTER
 	+BOUNCEONACTORS
+	+USEBOUNCESTATE
 	renderstyle "normal";
 	bouncetype "doom";
 	seesound "none";
@@ -448,7 +449,7 @@ states
 			roll = random(88,92);
 			}
 	Fly:
-		#### AABBCCBBAABBCCBBAABBCCBBAABBCCBB 1 {
+		#### AABBCCBBAABBCCBB 1 {
 			if(!target) {
 				self.destroy();
 				return ResolveState(null);
@@ -459,9 +460,18 @@ states
 			return ResolveState(null);	
 			}
 		goto death;
+	Bounce.Floor:
+		#### # 0 {			
+			if (Checkwater()) {
+				destroy();
+				return ResolveState(null);
+				}			
+			return ResolveState(null);
+			}
+		goto fly;
 	Death:
 		#### # 0 {
-			if (target && target.bISMONSTER) {
+			if (CheckWater() || (target && target.bISMONSTER)) {
 				self.destroy();
 				return ResolveState(null);
 				}
