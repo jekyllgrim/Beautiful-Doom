@@ -2,6 +2,7 @@ Class BD_Cacodemon : BDoomMonster  replaces Cacodemon
 {
 Default
 	{
+	species "Cacodemon";
 	Health 400;
 	Radius 31;
 	Height 56;

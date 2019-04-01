@@ -138,7 +138,7 @@ action void BD_Reload()
 //Casing spawn function with cool math by Marisa Kirisame (see mk_matrix)
 action void A_Eject(class<Actor> itemtype, double xofs = 0, double yofs = 0, double zofs = 0, double xvel = 0, double yvel = 0, double zvel = 0)
 	{
-		Vector3 ofs = player.mo.pos+(0,0,player.viewheight);
+		Vector3 ofs = player.mo.pos+(0,0,player.viewheight-GetFloorTerrain().footclip);
 		Vector3 x, y, z;
 		[x, y, z] = Matrix4.getaxes(player.mo.pitch,player.mo.angle,player.mo.roll);
 		let c = Spawn(itemtype,ofs+x*xofs+y*yofs-z*zofs);
@@ -253,8 +253,11 @@ states
 	{
 	Spawn:
 		PUFF A 1 bright {
-			if (bdoom_tracers == 0)
+			if (bdoom_tracers == 0) {
 				self.destroy();
+				return ResolveState(null);
+				}
+			return ResolveState(null);
 			}
 		loop;
 	Xdeath:
@@ -389,7 +392,7 @@ override int SpecialMissileHit(actor victim) {
 		ripdepth = ripdepth - victim.health; //reduce ripping ability before anything else
 		if (victim != hitvictim) { //deal damage only ONCE even if the pellet rips through
 			hitvictim = victim;
-			victim.DamageMobj(self,target,bulletdamage,"Normal");
+			victim.DamageMobj(self,target,bulletdamage,"SSG");
 			//console.PrintF("Ripdepth %d, Health %d",ripdepth,victim.health);
 			}
 		}
@@ -423,8 +426,7 @@ Default {
 	-THRUACTORS
 	+ROLLCENTER
 	+BOUNCEONACTORS
-	-FLOORCLIP
-	-RELATIVETOFLOOR
+	-MOVEWITHSECTOR
 	renderstyle "normal";
 	bouncetype "doom";
 	seesound "none";
@@ -448,8 +450,10 @@ states
 			}
 	Fly:
 		#### AABBCCBBAABBCCBBAABBCCBBAABBCCBB 1 {
-			if(!target)
+			if(!target) {
 				self.destroy();
+				return ResolveState(null);
+				}
 			roll+=22;
 			if (waterlevel > 0)
 				return ResolveState("Death");
@@ -459,13 +463,16 @@ states
 	Death:
 		#### # 1 {
 			roll = (randompick(0,180) + random(-8,8));
-			if (target && target.bISMONSTER)
+			if (target && target.bISMONSTER) {
 				self.destroy();
+				return ResolveState(null);
+				}
 			A_QueueCorpse();
 			A_Stop();
 			ClearBounce();
-			//bNOINTERACTION = true;
-			//bRELATIVETOFLOOR = true;
+			bNOINTERACTION = true;
+			bMOVEWITHSECTOR = true;
+			return ResolveState(null);
 			}
 		#### # -1;
 		stop;

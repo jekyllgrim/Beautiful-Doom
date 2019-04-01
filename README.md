@@ -23,6 +23,14 @@ https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752
 
 ** Dev updates log (dd.mm.yyyy) **
 
+01.04.2019
+- Added a chance to gib smaller enemies with a Super Shotgun, I know this has been requested for a long time.
+- Converted all mosnters except bosses to ZScript. 
+- Added nice particle effects for Arch-Vile. (Not very optimized for now.)
+- Added and optimized halos for all monster projectiles.
+- Various optimizations.
+- No April Fools! Everything is true.
+
 19.03.2019
 - Converted Arachnotron and Revenant to zscript
 - Added halo for Revenant fireball

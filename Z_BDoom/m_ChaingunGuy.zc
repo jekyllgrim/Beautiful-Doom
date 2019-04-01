@@ -21,6 +21,7 @@ Default
 	Tag "$FN_HEAVY";
 	Dropitem "Chaingun";
 	BdoomMonster.monsterclip 40;
+	+DOHARMSPECIES
 }
 states
 	{

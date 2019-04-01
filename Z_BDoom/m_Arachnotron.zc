@@ -2,23 +2,23 @@ Class BD_Arachnotron : BDoomMonster replaces Arachnotron
 {
 Default
 	{
-		Health 500;
-		Radius 64;
-		Height 64;
-		Mass 600;
-		Speed 12;
-		PainChance 128;
-		Monster;
-		+FLOORCLIP
-		+BOSSDEATH
-		SeeSound "baby/sight";
-		PainSound "baby/pain";
-		DeathSound "baby/death";
-		ActiveSound "baby/active";
-		Obituary "$OB_BABY";
-		Tag "$FN_ARACH";
+	species "Arachnotron";
+	Health 500;
+	Radius 64;
+	Height 64;
+	Mass 600;
+	Speed 12;
+	PainChance 128;
+	Monster;
+	+FLOORCLIP
+	+BOSSDEATH
+	SeeSound "baby/sight";
+	PainSound "baby/pain";
+	DeathSound "baby/death";
+	ActiveSound "baby/active";
+	Obituary "$OB_BABY";
+	Tag "$FN_ARACH";
 	BDoomMonster.allowfiredeath false;
-	+DONTHARMSPECIES
 	}
 states
 	{
@@ -71,6 +71,7 @@ Class BD_ArachnotronPlasma : BD_Plasmaball replaces ArachnotronPlasma
 {
 Default
 	{
+	BD_Plasmaball.pcolor "green";
 	decal "ArachnotronPlasmaSplat";
 	translation "GreenPlasma";
 	}
@@ -80,6 +81,7 @@ Class ModernArachnotronPlasma : BD_Plasmaball
 {
 Default
 	{
+	BD_Plasmaball.pcolor "blue";
 	speed 40;
 	SeeSound "Mweapons/plasma/fire";
 	}

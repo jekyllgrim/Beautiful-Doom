@@ -1,0 +1,233 @@
+Class BD_BaronOfHell : BDoomMonster replaces BaronOfHell
+{
+Default
+	{
+	species "Bruiser";
+	Health 1000;
+	Radius 24;
+	Height 64;
+	Mass 1000;
+	Speed 8;
+	PainChance 50;
+	Monster;
+	+FLOORCLIP
+	+BOSSDEATH
+	SeeSound "baron/sight";
+	PainSound "baron/pain";
+	DeathSound "baron/death";
+	ActiveSound "baron/active";
+	Obituary "$OB_BARON";
+	HitObituary "$OB_BARONHIT";
+	Tag "$FN_BARON";
+	bloodcolor "00 70 00";
+	gibhealth 60;
+	BDoomMonster.allowsmokedeath true;
+	BDoomMonster.allowfiredeath false;
+	}
+states
+	{
+	Spawn:
+		BARI ABB 10 A_Look;
+		loop;
+	See:
+		BARO ABCDCBA 3 A_Chase;
+		loop;
+	Melee:
+		ZBOS a 4 a_facetarget;
+		ZBOS bcde 3;
+		ZBOS f 8 A_bruisattack;
+		Goto See;
+	Missile:
+		TNT1 A 0 A_FaceTarget;
+		ZBOS AABB 2 A_SpawnItemEx("ParticleFire_Green",4,29,random(60,62),random(0,1),random(0,1),random(1,2),0);
+		TNT1 A 0 A_FaceTarget;
+		ZBOS CCDD 2 A_SpawnItemEx("ParticleFire_Green",4,31,random(46,48),random(0,1),random(0,1),random(1,2),0);
+		TNT1 A 0 A_BruisAttack;
+		ZBOS EEFF 2 A_SpawnItemEx("ParticleFire_Green",10,random(-4,-6),random(24,26),random(0,1),random(0,1),random(1,2),0);
+		Goto See;
+	Pain:
+		BS1P a 2;
+		BS1P b 2 A_Pain;
+		Goto See;		
+	Death:
+		TNT1 A 0 {
+			scale.x = randompick(-1,1);
+			return A_Jump(256,"Death.Vanilla","Death1","Death2");
+			}
+	Death.Vanilla:
+		BS1M A 3;
+		BS1M b 3 A_SpawnItemEx("BloodDrop",frandom(-4.0,4.0),frandom(-4.0,4.0),random(8,32),frandom(2.0,4.0),frandom(2.0,4.0),frandom(1.0,4.0),random(0,360),SXF_SETTARGET);
+		BS1M c 3 A_scream;
+		BS1M defg 3 A_SpawnItemEx("BloodDrop",frandom(-4.0,4.0),frandom(-4.0,4.0),random(8,32),frandom(2.0,4.0),frandom(2.0,4.0),frandom(1.0,4.0),random(0,360),SXF_SETTARGET,80);
+		BS1M h 3 A_NoBlocking;
+		BS1M ijkl 3 A_SpawnItemEx("BloodDrop",frandom(-4.0,4.0),frandom(-4.0,4.0),random(8,32),frandom(2.0,4.0),frandom(2.0,4.0),frandom(1.0,4.0),random(0,360),SXF_SETTARGET,100);
+		BS1M m 1 {
+			if (GetClassName() == "BD_BaronOfHell")
+				A_BossDeath();
+			}
+		goto deathbleed;
+	Death1: //in halves
+		BS1N A 3;
+		BS1N b 3 A_SpawnItemEx("BloodDrop",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,80);
+		BS1N c 3 {
+			A_scream();
+			A_SpawnItemEx("BloodDrop",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,80);
+			}
+		BS1N defg 3 A_SpawnItemEx("BloodDrop",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,80);
+		BS1N h 3 A_NoBlocking;
+		BS1N ijk 3 A_SpawnItemEx("BloodDrop",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,80);
+		BS1N L 1 {
+			if (GetClassName() == "BD_BaronOfHell")
+				A_BossDeath();
+			}
+		goto deathbleed;
+	Death2: //fall back
+		BS1O A 3;
+		BS1O b 3 A_SpawnItemEx("BloodDrop",frandom(-4.0,4.0),frandom(-4.0,4.0),random(18,40),frandom(3,5),frandom(-2,2),frandom(2,4),0,SXF_SETTARGET);
+		BS1O c 3 A_scream;
+		BS1O defg 3 A_SpawnItemEx("BloodDrop",frandom(-4.0,4.0),frandom(-4.0,4.0),random(18,40),frandom(3,5),frandom(-2,2),frandom(2,4),0,SXF_SETTARGET,64);
+		BS1O h 3 A_NoBlocking;
+		BS1O iJ 3;
+		BS1O K 1 {
+			if (GetClassName() == "BD_BaronOfHell")
+				A_BossDeath();
+			}
+		goto deathbleed;
+	XDeath:
+		//TNT1 A 0 A_Jump(128,"Death");
+		BS1X A 3;
+		BS1X b 3 A_SpawnItemEx("BloodDrop",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET);
+		BS1X c 3 A_scream;
+		BS1X defg 3 A_SpawnItemEx("BloodDrop",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET,80);
+		BS1X h 3 A_NoBlocking;
+		BS1X ijklMN 2  A_SpawnItemEx("BloodDrop",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET,80);
+		BS1X OP 2;
+		TNT1 A 0 A_Playsound("gibs/meatland");
+		BS1X Q 1 {
+			if (GetClassName() == "BD_BaronOfHell")
+				A_BossDeath();
+			}
+		goto deathbleed;
+	Crush:
+		CRS3 G -1;
+		stop;
+	}
+}
+
+Class BD_HellKnight : BD_BaronOfHell replaces HellKnight
+{
+Default {
+	Health 500;
+	-BOSSDEATH;
+	SeeSound "knight/sight";
+	ActiveSound "knight/active";
+	PainSound "knight/pain";
+	DeathSound "knight/death";
+	HitObituary "$OB_KNIGHTHIT";
+	Obituary "$OB_KNIGHT";
+	Tag "$FN_HELL";
+	bloodcolor "00 70 00";
+	gibhealth 60;
+	}
+override void Tick() {
+	super.tick();
+	if (sprite == GetSpriteIndex("BARI"))			sprite = GetSpriteIndex("KNII");
+	else if (sprite == GetSpriteIndex("BARO"))		sprite = GetSpriteIndex("KNIT");
+	else if (sprite == GetSpriteIndex("ZBOS"))		sprite = GetSpriteIndex("SBOS");
+	else if (sprite == GetSpriteIndex("BS1P"))		sprite = GetSpriteIndex("BS2P");
+	else if (sprite == GetSpriteIndex("BS1M"))		sprite = GetSpriteIndex("BS2M");
+	else if (sprite == GetSpriteIndex("BS1N"))		sprite = GetSpriteIndex("BS2N");
+	else if (sprite == GetSpriteIndex("BS1O"))		sprite = GetSpriteIndex("BS2O");
+	else if (sprite == GetSpriteIndex("BS1X"))		sprite = GetSpriteIndex("BS2X");
+	}
+States
+	{
+	loadsprites:
+		KNII AB 0;
+		KNIT ABCD 0;
+		SBOS ABCDEF 0;
+		BS2P AB 0;
+		BS2M ABCDEFGHIJKLM 0;
+		BS2N ABCDEFGHIJKL 0;
+		BS2O ABCDEFGHIJK 0;
+		BS2X ABCDEFGHIJKLMNOPQ 0;
+		stop;
+	}	
+}
+
+/*
+Class BD_BaronBall : BaronBall replaces BaronBall
+{
+Default  {
+	damagetype "GreenFire";
+	decal "BaronScorch"
+	renderstyle "Add"
+	scale "1.4"
+	}
+override void PostBeginPlay () {
+	super.PostBeginPlay();
+	if (bdoom_debris) {
+		actor f = Spawn("BD_ProjFlare",pos);
+		f.master = self;
+		f.alpha = 0.6;
+		f.scale = (0.12,0.12);
+		let flr = BD_ProjFlare(f);
+		flr.fcolor = "green";
+		}
+	}
+States
+	{
+	Spawn:
+	
+		TNT1 A 0 NoDelay A_JumpIf(GetCVAR("Bdoom_debris")==0,2)
+		TNT1 A 0 A_SpawnItemEx("BaronBallFlare",19,0,0,velx,vely,velz,0,SXF_SETMASTER|SXF_ORIGINATOR|SXF_ABSOLUTEVELOCITY)
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_Debris")==0,2)
+		TNT1 A 0 A_spawnitemEx("FirePiece_Baron",random(-8,-10),random(-4,4),random(4,-4),0,0,0,0)
+		BARB A 1 bright
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_Debris")==0,2)
+		TNT1 A 0 A_spawnitemEx("FirePiece_Baron",random(-8,-10),random(-4,4),random(4,-4),0,0,0,0)
+		BARB A 1 bright
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_Debris")==0,2)
+		TNT1 A 0 A_spawnitemEx("FirePiece_Baron",random(-8,-10),random(-4,4),random(4,-4),0,0,0,0)
+		BARB B 1 bright
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_Debris")==0,2)
+		TNT1 A 0 A_spawnitemEx("FirePiece_Baron",random(-8,-10),random(-4,4),random(4,-4),0,0,0,0)
+		BARB B 1 bright
+		goto spawn+2
+	Death.Sky:
+		TNT1 A 0 A_RemoveChildren(1,RMVF_EVERYTHING)
+		stop
+	Death:
+		TNT1 A 0 A_RemoveChildren(1,RMVF_EVERYTHING)
+		BARB CDEFGH 3 bright
+		stop
+		}
+}
+
+Actor BaronBallFlare : Flare_General
+{
+renderstyle Add
+alpha .5
+scale .12
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_JumpIf(GetCVAR("Bdoom_debris")==0,"Null")
+		TNT1 A 0 A_Warp(AAPTR_MASTER,7,0,0,0)
+		LENG A 1 bright
+		wait
+	}
+}
+
+Actor FirePiece_Baron : FirePiece
+{
+translation "169:191=112:127", "208:223=120:127", "48:63=9:12", "248:248=115:115", "160:167=112:120", "224:231=112:114", "0:0=0:0"
+scale 0.12
+states
+	{
+	Spawn:
+		FIRP ABCDEFGHIJ 2 bright A_FadeOut(0.1)
+		stop
+	}
+}
+

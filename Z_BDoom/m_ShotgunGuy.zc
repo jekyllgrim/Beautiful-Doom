@@ -17,8 +17,8 @@ Default {
 	Obituary "$OB_SHOTGUY";
 	Tag "$FN_SHOTGUN";
 	DropItem "Shotgun";
-+DOHARMSPECIES
-BDoomMonster.monsterclip 8;
+	+DOHARMSPECIES
+	BDoomMonster.monsterclip 8;
 	}
 states
 	{
@@ -184,20 +184,32 @@ states
 			}
 		SPOY AAZZ random(8,10) A_SpawnItemEx("BloodSpurt",	1,0,frandom(30,38),0,0,0,random(-40,40),SXF_SETTARGET,96);
 		SPOY Z 5 A_Scream();
-		SPOY BCDEFG 3 A_SpawnItemEx("Blood",	random(-4,4),random(0,6),	random(12,18),	random(2,4),0,random(4,6),	random(-20,20),SXF_SETTARGET,128);
+		SPOY BCDEFG 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("Blood",	random(-4,4),random(0,6),	random(12,18),	random(2,4),0,random(4,6),	random(-20,20),SXF_SETTARGET,128);
+			}
 		TNT1 A 0 A_PlaySound("gibs/meatland");
-		SPOY HI 2 		A_SpawnItemEx("Blood",	random(-4,4),random(0,6),	random(12,18),	random(2,4),0,random(4,6),	random(-20,20),SXF_SETTARGET,128);
+		SPOY HI 2 		{
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("Blood",	random(-4,4),random(0,6),	random(12,18),	random(2,4),0,random(4,6),	random(-20,20),SXF_SETTARGET,128);
+			}
 		TNT1 A 0 A_PlaySound("gibs/meatland");
-		SPOY JK 3 		A_SpawnItemEx("Blood",	random(-4,4),random(0,6),	random(12,18),	random(2,4),0,random(4,6),	random(-20,20),SXF_SETTARGET,128);
+		SPOY JK 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("Blood",	random(-4,4),random(0,6),	random(12,18),	random(2,4),0,random(4,6),	random(-20,20),SXF_SETTARGET,128);
+			}
 		SPOY L 1;
 		goto deathbleed;
 	DecapDeath:
 		SPOD A 3 A_SpawnItemEx("Gib_Head",frandom(-1,1),frandom(-1,1),52,frandom(2,5),0,frandom(1,5),random(150,210),SXF_SETTARGET);
 		SPOD B 3 BD_Bleed();
 		SPOD C 3 A_NoBlocking();
-		SPOD DE 3 A_SpawnItemEx("Blood",0,0,	random(48,52),	random(0,2),random(0,2),random(4,6),0,SXF_SETTARGET,96);
+		SPOD DE 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("Blood",0,0,	random(48,52),	random(0,2),random(0,2),random(4,6),0,SXF_SETTARGET,96);
+			}
 		SPOD LLMMLM random(7,11) {
-			if (random(0,100) < 40) {
+			if (random(0,100) < 40 && bdoom_blood) {
 				A_PlaySound("gibs/bloodspurt");
 				A_SpawnItemEx("NeckSpurt",frandom(-0.3,0.3),frandom(-0.3,0.3),33,0,0,0,random(0,359),SXF_SETTARGET);
 				}

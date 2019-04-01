@@ -123,9 +123,9 @@ states
 		SH2F Z 2 {
 				A_PlaySound("weapons/sshotf",5);
 				if (bdoom_tracers == 1)
-					A_FireBullets(11.2, 7.1, 20, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0);
+					A_FireBullets(11.2, 7.1, 20, 5, "EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0);
 				else
-					A_FireBullets(11.2, 7.1, 20, 5, "EnBulletPuff",FBF_NORANDOMPUFFZ);
+					A_FireBullets(11.2, 7.1, 20, 5, "EnSSGPuff",FBF_NORANDOMPUFFZ);
 				}
 		SH2F A 2;
 		SH2F B 2;
@@ -212,9 +212,9 @@ states
 		SH2F X 1 {
 				A_PlaySound("weapons/ssg/fire",5);
 				if (bdoom_tracers == 1)
-					A_FireBullets(11.2, 7.1, 20, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0);
+					A_FireBullets(11.2, 7.1, 20, 5, "EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0);
 				else
-					A_FireBullets(11.2, 7.1, 20, 5, "EnBulletPuff",FBF_NORANDOMPUFFZ);
+					A_FireBullets(11.2, 7.1, 20, 5, "EnSSGPuff",FBF_NORANDOMPUFFZ);
 				}
 		
 		SH2F X 1 A_Playsound("weapons/ssg/fire", 6);
@@ -236,9 +236,9 @@ states
 				invoker.ShotFired = true;
 				A_PlaySound("weapons/ssg/fire",5);
 				if (bdoom_tracers == 1)
-					A_FireBullets(10,6.5,10,5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,1);
+					A_FireBullets(10,6.5,10,5, "EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,1);
 				else
-					A_FireBullets(10,6.5,10,5,"EnBulletPuff",FBF_NORANDOMPUFFZ);
+					A_FireBullets(10,6.5,10,5,"EnSSGPuff",FBF_NORANDOMPUFFZ);
 				}
 		TNT1 A 0 { 
 			If(bdoom_debris)				
@@ -253,9 +253,9 @@ states
 				invoker.ShotFired = false;
 				A_PlaySound("weapons/ssg/fire",5);
 				if (bdoom_tracers == 1)
-					A_FireBullets(10,6.5,10,5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,1);
+					A_FireBullets(10,6.5,10,5, "EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,1);
 				else
-					A_FireBullets(10,6.5,10,5,"EnBulletPuff",FBF_NORANDOMPUFFZ);
+					A_FireBullets(10,6.5,10,5,"EnSSGPuff",FBF_NORANDOMPUFFZ);
 				}
 		TNT1 A 0 { 
 			If(bdoom_debris)	{

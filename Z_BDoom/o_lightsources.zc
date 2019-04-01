@@ -81,8 +81,6 @@ states
 				self.sprite = GetSpriteIndex("LENB");
 			else if (fcolor == "yellow")
 				self.sprite = GetSpriteIndex("LENY");
-			/*else
-				self.destroy();*/
 			}
 		#### # 4 bright {
 			if (bdoom_Flames)

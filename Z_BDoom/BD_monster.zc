@@ -30,11 +30,12 @@ Default {
 	BDoomMonster.allowsmokedeath true;
 	BDoomMonster.allowfiredeath true;
 	attacksound "none";
+	//+DOHARMSPECIES
 	}
 	
 void BD_Bleed() {
 	if (!burning && bdoom_blood)
-		A_SpawnItemEx("Blood",frandom(-5.0,5.0),frandom(-5.0,5.0),frandom(16,20),frandom(-2,2),frandom(-2,2),frandom(1,3),SXF_SETTARGET);
+		A_SpawnItemEx("Blood",frandom(-5.0,5.0),frandom(-5.0,5.0),frandom(16,height),frandom(-2,2),frandom(-2,2),frandom(1,3),SXF_SETTARGET);
 	}
 
 void BD_BulletAttack(double horz_spread, double vert_spread, int numbullets, int damageperbullet, string OldSound, string NewSound, string Casing, double CasingX = 0, double CasingY = 0, double CasingZ = 0, double TracerHeight = 32, double Tracerofs_xy = 0)
@@ -176,6 +177,15 @@ states
 			return ResolveState(null);
 			}
 		loop;
+	Death.SSG:
+		#### # 0 {			
+			if (random(1,4) == 4 && FindState("XDeath"))
+				return ResolveState("XDeath");
+			else
+				return ResolveState("Death");
+			return ResolveState(null);
+			}
+		stop;
 	Death.Telefrag:
 	Death.Massacre:
 		TNT1 A 0 {
@@ -242,6 +252,8 @@ states
 		TNT1 A 0 {
 			if (bloodcolor.B > 4*(bloodcolor.R  + bloodcolor.G))
 				A_SetTranslation("BlueBloodyScorched");
+			else if (bloodcolor.G > 4*(bloodcolor.R  + bloodcolor.B))
+				A_SetTranslation("GreenBloodyScorched");
 			else
 				A_SetTranslation("BloodyScorched");
 			if (FindState("Xdeath"))
@@ -274,8 +286,10 @@ Default {
 	}
 override void Tick () {
 	super.Tick();
-	if (!target)
+	if (!target) {
 		self.destroy();
+		return;
+		}
 	SetOrigin(target.pos,1);
 	burntimer++;
 	if (burntimer > 100) {

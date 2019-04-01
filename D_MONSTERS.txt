@@ -2,10 +2,5 @@
 		NEW MONSTERS
 -----------------------------------------------------------*/
 
-#include "DECORATE/MONSTERS/HellKnight.txt"
-#include "DECORATE/MONSTERS/BaronOfHell.txt"
-#include "DECORATE/MONSTERS/ArchVile.txt"
-#include "DECORATE/MONSTERS/Cyberdemon.txt"
 #include "DECORATE/MONSTERS/SpiderMastermind.txt"
 #include "DECORATE/MONSTERS/IconOfSin.txt"
-#include "DECORATE/MONSTERS/DeadBodies.txt" //these use new monster sprites

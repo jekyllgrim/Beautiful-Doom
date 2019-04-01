@@ -2,6 +2,7 @@ Class BD_Demon : BDoomMonster replaces Demon
 {
 Default
 	{
+	species "Demon";
 	Health 150;
 	gibhealth 40;
 	PainChance 180;

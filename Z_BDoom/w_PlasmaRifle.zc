@@ -369,33 +369,19 @@ class BDPExtensions {
 }
 
 //flare around the plasmaball
-Class BD_PlasmaFlare : Flare_General
+Class BD_PlasmaFlare : BD_ProjFlare
 {
 Default {
 	renderstyle "Add";
 	alpha 0.4;
 	scale 0.1;
 	}
-states
-	{
-	Spawn:
-		LENB A 0 NoDelay {
-			A_Warp(AAPTR_MASTER);
-			if (master) {
-				let pls = BD_Plasmaball(master);
-				if (pls.pcolor == "green")
-					sprite = GetSpriteIndex("LENG");
-				else if (pls.pcolor == "red")
-					sprite = GetSpriteIndex("LENR");
-				else if (pls.pcolor == "yellow")
-					sprite = GetSpriteIndex("LENY");
-				}
-			}
-		#### A 1 bright {
-			if (!master)
-				self.destroy();
-			}
-		wait;
+override void PostBeginPlay () {
+	super.PostBeginPlay();
+	if (master && master is "BD_PlasmaBall") {
+		let pls = BD_Plasmaball(master);
+		fcolor = pls.pcolor;
+		}
 	}
 }
 

@@ -1,6 +1,7 @@
 Class BD_Fatso : BDoomMonster replaces Fatso
 {
 Default {
+	species "Mancubus";
 	Health 600;
 	Radius 48;
 	Height 64;
@@ -117,21 +118,29 @@ Default {
 	decal "BigScorch";
 	renderstyle "Add";
 	}
+override void PostBeginPlay () {
+	super.PostBeginPlay();
+	if (bdoom_debris) {
+		actor f = Spawn("BD_ProjFlare",pos);
+		f.master = self;
+		f.alpha = 0.6;
+		f.scale = (0.25,0.25);
+		let flr = BD_ProjFlare(f);
+		flr.fcolor = "yellow";
+		}
+	}
 States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay {
-			if (bdoom_debris)
-				A_SpawnItemEx("BD_FatShotFlare",0,0,0,velx,vely,velz,0,SXF_SETMASTER|SXF_ORIGINATOR|SXF_ABSOLUTEVELOCITY);
-			}
-		MANF AABB 1 {
+		MANF AABB 1 NoDelay {
 			if (bdoom_debris) {
+				A_SpawnItemEx("BD_FatShotTrail");
 				A_SpawnItemEx("Rocket1Trail",0,frandom(-7,7),frandom(-7,7),0,0,0,0);
 				A_SpawnItemEx("Rocket1Trail",0,frandom(-7,7),frandom(-7,7),0,0,0,0);
 				A_SpawnItemEx("Rocket1Trail",0,frandom(-7,7),frandom(-7,7),0,0,0,0);
 				}
 			}
-		goto spawn+1;
+		loop;
 	Death:
 		TNT1 A 0 {
 			A_RemoveChildren(1,RMVF_EVERYTHING);
@@ -139,7 +148,7 @@ States
 			alpha = 0.85;
 			if (bdoom_debris) {
 				for (int i = 20; i > 0; i--)
-					A_SpawnItemEx("Firepiece",0,0,0,	frandom(-4,4),frandom(-4,4),frandom(-4,4),0,0,92);
+					A_SpawnItemEx("Firepiece",0,0,0,	frandom(-3,3),frandom(-3,3),frandom(-3,3),0,0,92);
 				}
 			}
 		BOM0 ABCDEF 3 bright A_FadeOut(0.1);
@@ -147,26 +156,23 @@ States
 	}
 }
 
-Class BD_FatShotFlare : Flare_General
+Class BD_FatShotTrail : Flare_General
 {
 Default {
-	renderstyle "Add";
-	alpha 0.7;
-	scale 0.25;
-	}
-override void Tick() {
-	super.Tick();
-	if (!master)
-		self.Destroy();
+	alpha 0.8;
+	scale 0.2;
 	}
 states
 	{
 	Spawn:
-		TNT1 A 0 NoDelay {
+		LENR A 0 NoDelay {
 			if (master)
 				SetOrigin(master.pos,0);
-				}
-		LENY A 1 bright;
+			}
+		LENR A 1 {
+			A_FadeOut(0.08);
+			scale*=0.95;
+			}
 		wait;
 	}
 }

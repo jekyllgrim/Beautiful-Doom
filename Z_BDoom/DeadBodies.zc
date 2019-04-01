@@ -1,0 +1,117 @@
+Class BD_DeadBody : Actor
+{
+Default {
+	+NOINTERACTION
+	+MOVEWITHSECTOR
+	}
+override void PostBeginPlay() {
+	super.PostBeginPlay();
+	scale.x *= randompick(-1,1);
+	if (!bdoom_blood)
+		return;
+	for (int i = 0; i < 5; i++)
+		A_SpawnItemEx("BD_Bloodpool",random(-48,48),random(-48,48),floorz,flags:SXF_SETTARGET,failchance:32);
+	}
+}
+
+Class BD_DeadZombieMan : BD_DeadBody replaces DeadZombieMan
+{
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Jump(256,1,2,3,4);
+		POSM I -1;
+		stop;
+		POSO L -1;
+		stop;
+		POSN N -1;
+		stop;
+		POSD H -1;
+		stop;
+	}
+}
+
+Class BD_DeadShotgunGuy : BD_DeadBody replaces DeadShotgunGuy
+{
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Jump(256,1,2,3,4);
+		SPOM I -1;
+		stop;
+		SPON M -1;
+		stop;
+		SPOO N -1;
+		stop;
+		SPOD K -1;
+		stop;
+	}
+}
+
+Class BD_DeadDoomImp : BD_DeadBody replaces DeadDoomImp
+{
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Jump(256,1,2,3,4);
+		TROM L -1;
+		stop;
+		TRON J -1;
+		stop;
+		TROP K -1;
+		stop;
+		TROD K -1;
+		stop;
+	}
+}
+
+Class BD_DeadDemon : BD_DeadBody replaces DeadDemon
+{
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Jump(256,1,2,3,4,5);
+		SSRM I -1;
+		stop;
+		SSRN J -1;
+		stop;
+		SSRX K -1;
+		stop;
+		SARD J -1;
+		stop;
+		SARY I -1;
+		stop;
+	}
+}
+
+Class BD_DeadCacodemon : BD_DeadBody replaces DeadCacodemon
+{
+Default {
+	bloodcolor "Blue";
+	}
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Jump(256,1,2,3,4,5);
+		HEAM I -1;
+		stop;
+		HEAN O -1;
+		stop;
+		HEAP L -1;
+		stop;
+		HEAO G -1;
+		stop;
+		HEAX S -1;
+		stop;
+	}
+}
+
+Class BD_DeadLostSoul : BD_DeadBody replaces DeadLostSoul
+{
+states
+	{
+	spawn:
+		LGI2 A -1;
+		stop;
+	}
+}

@@ -423,8 +423,10 @@ states
 	{
 	Spawn:
 		TNT1 A 0 NoDelay {
-			if (!master)
+			if (!master) {
 				self.destroy();
+				return;
+				}
 			SetOrigin(master.pos,0);
 			if (angle == 0) {
 				//Console.Printf("True");
@@ -443,21 +445,12 @@ states
 }*/
 
 //flare around the bfg orb
-Class BFGFlare : Flare_General
+Class BFGFlare : BD_ProjFlare
 {
 default {
+	BD_ProjFlare.fcolor "Green";
 	alpha 0.25;
-	scale 0.7;
-	}
-states
-	{	
-	Spawn:
-		TNT1 A 0 NoDelay A_Warp(AAPTR_MASTER);
-		LENG A 1 bright {
-			if (!master)
-				self.destroy();
-			}
-		wait;
+	scale 0.9;
 	}
 }
 
@@ -811,23 +804,15 @@ Default {
 	}
 }
 
-Class ModernBFGFlare : Flare_General
+Class ModernBFGFlare : BD_ProjFlare
 {
 Default {
+	BD_ProjFlare.fcolor "green";
 	alpha 0.4;
 	}
-states
-	{	
-	Spawn:
-		TNT1 A 0 NoDelay {
-				A_Warp(AAPTR_MASTER);
-				scale*=3; //initial scale is transferred from the projectile itself
-				}
-		LENG A 1 bright {
-			if (!master)
-				self.destroy();
-			}
-		wait;
+override void PostBeginPlay() {
+	super.PostBeginPlay();
+	scale *= 3;
 	}
 }
 

@@ -1,5 +1,5 @@
-////////////////////////////////////////////////////////////;
-////////////// ALL BASIC BEAUTIFUL DOOM OBJECTS ////////////;
+////////////////////////////////////////////////////////////
+////////////// ALL BASIC BEAUTIFUL DOOM OBJECTS ////////////
 ////////////////////////////////////////////////////////////
 
 //base class for most debris
@@ -58,19 +58,22 @@ virtual void CheckTargetRaise() {}
 	
 override void PostBeginPlay()
 	{
-	if (!level.IsPointInMap(pos))
+	if (!level.IsPointInMap(pos)) {
 		self.destroy();
+		return;
+		}
 	super.PostBeginPlay();
 	}
 override void Tick()
 	{
-	if (	(sfxtype == 0 && bdoom_debris == 0)	||
-			(sfxtype == 1 && bdoom_flames == 0)	||
-			(sfxtype == 2 && bdoom_blood == 0)	||
-			(sfxtype == 3 && bdoom_gibs == 0)	)
+	if (	(sfxtype == 0 && !bdoom_debris)	||
+			(sfxtype == 1 && !bdoom_flames)	||
+			(sfxtype == 2 && !bdoom_blood)	||
+			(sfxtype == 3 && !bdoom_gibs)	)
 		{
 		A_DeQueueCorpse();
 		self.destroy();
+		return;
 		}
 	super.Tick();
 	}
@@ -98,8 +101,10 @@ override void Tick() {
 		return;
 	vel.z-=dgravity;
 	if (pos.z <= floorz) {
-		if (removeonfall)
+		if (removeonfall) {
 			self.destroy();
+			return;
+			}
 		else {
 			landed = true;
 			SetOrigin((pos.x,pos.y,floorz),0);
@@ -123,15 +128,46 @@ Default {
 	}
 }
 
-//
-Class BD_ProjectileFlare : Flare_General
+// base glow to be spawned alongside projectiles
+Class BD_ProjFlare : Flare_General
 {
+name fcolor;
+property fcolor : fcolor;
+Default {
+	BD_ProjFlare.fcolor "Red";
+	renderstyle "Add";
+	alpha 0.8;
+	scale 0.11;
+	}
 override void Tick() {
 	super.Tick();
-	if (bdoom_debris && master)
-		A_Warp(AAPTR_MASTER,0,0,0,0,WARPF_INTERPOLATE);
-	else
+	if (!master || !bdoom_debris) {
 		self.Destroy();
+		return;
+		}
+	else if (master && (master.InstateSequence(master.curstate,master.FindState("Death")) 
+			|| master.InstateSequence(master.curstate,master.FindState("XDeath")))		) {
+		self.Destroy();
+		return;
+		}
+	}
+states
+	{
+	Spawn:
+		LENR A 0 NoDelay {
+			if (master) {
+				SetOrigin(master.pos,0);
+				vel = master.vel;
+				}
+			if (fcolor == "blue")
+				sprite = GetSpriteIndex("LENB");
+			else if (fcolor == "green")
+				sprite = GetSpriteIndex("LENG");
+			else if (fcolor == "yellow")
+				sprite = GetSpriteIndex("LENY");
+			}
+		#### # 1 bright;
+		wait;
 	}
 }
 
@@ -211,6 +247,8 @@ states
 	}
 }
 
+
+
 ///////////////;
 //// SMOKE ////;
 ///////////////
@@ -230,7 +268,7 @@ override void PostBeginPlay() {
 states
 	{
 	Spawn:
-		SMOK ABCDEFGHIJKLMNOPQ 1 {
+		SMOK ABCDEFGHIJKLMNOPQ 1 NoDelay {
 			if (!master)
 				A_SpawnItemEx("BasicSmokeTrail",frandom(-2,2),frandom(-2,2),frandom(-2,2),0,0,0,0,SXF_SETMASTER);
 			A_Fadeout(0.01);
@@ -247,7 +285,7 @@ Default {
 states
 	{
 	Spawn:
-		SMOK DEFGHIJKLMNOPQ 1 A_Fadeout(0.01);
+		SMOK DEFGHIJKLMNOPQ 1 NoDelay A_Fadeout(0.01);
 		stop;
 	}
 }
@@ -262,7 +300,7 @@ Default {
 states
 	{
 	Spawn:
-		SMK1 ABCDEFGHIJKLMNOPQR 1 {
+		SMK1 ABCDEFGHIJKLMNOPQR 1 NoDelay {
 			A_SpawnItemEx("ShotSmokeTrail",frandom(-1.5,1.5),frandom(-1.5,1.5),frandom(-1.5,1.5),0,0,0,0,SXF_SETMASTER);
 			A_Fadeout(0.01);
 			}
@@ -278,7 +316,7 @@ Default {
 states
 	{
 	Spawn:
-		SMK1 DEFGHIJKLMNOPQR 1 A_Fadeout(0.01);
+		SMK1 DEFGHIJKLMNOPQR 1 NoDelay A_Fadeout(0.01);
 		stop;
 	}
 }
@@ -293,7 +331,7 @@ Default {
 states
 	{
 	Spawn:
-		SMK1 ABCDEF 2 A_FadeIn(0.025);
+		SMK1 ABCDEF 2 NoDelay A_FadeIn(0.025);
 		SMK1 GHIJKLMNOPQR 2 {
 			vel.z = clamp(vel.z*0.6,0.04,0.1);
 			A_FadeOut(0.005);
@@ -313,7 +351,7 @@ Default {
 states
 	{
 	Spawn:		
-		SMK1 ABCDEFGHIJKLMNOPQR 1 {
+		SMK1 ABCDEFGHIJKLMNOPQR 1 NoDelay {
 			A_SpawnItemEx("WeaponSmokeTrail",random(-2,2),random(-2,2),random(-2,2),0,0,0,0);
 			A_FadeOut(0.01);
 			}
@@ -330,7 +368,7 @@ Default {
 states
 	{
 	Spawn:
-		SMK1 DEFGHIJKLMNOPQR 1 A_Fadeout(0.01);
+		SMK1 DEFGHIJKLMNOPQR 1 NoDelay A_Fadeout(0.01);
 		stop;
 	}
 }
@@ -345,7 +383,7 @@ Default {
 states
 	{
 	Spawn:
-		SMOK ABCDEFGHIJKLMNOPQ 2 {
+		SMOK ABCDEFGHIJKLMNOPQ 2 NoDelay {
 			A_SpawnItemEx("BlackSmokeTrail",random(-2,2),random(-2,2),random(-2,2),0,0,0,0);
 			A_FadeOut(0.01);
 			}
@@ -393,7 +431,7 @@ Default {
 states
 	{
 	Spawn:
-		SMOK ABCDEFGHIJKLMNOPQ 1 A_FadeOut(0.01);
+		SMOK ABCDEFGHIJKLMNOPQ 1 NoDelay A_FadeOut(0.01);
 		stop;
 	}
 }
@@ -415,7 +453,7 @@ Default {
 states
 		{
 		Spawn:
-			TNT1 A 1 {
+			TNT1 A 1 NoDelay {
 				A_SpawnItem("SmokingPieceSmoke");
 				A_FadeOut(0.025);
 				}
@@ -573,10 +611,12 @@ states
 			if (hittex.IndexOf("WATER") >= 0 || hittex.IndexOf("FALL") >= 0 || hittex.IndexOf("BLOOD") >= 0) {
 				A_PlaySound("world/watersplashsmall",0,1.0,0,3);
 				self.destroy();
+				return ResolveState(null);
 				}				
 			else if (hittex.IndexOf("LAVA") >= 0 || hittex.IndexOf("FIRE") >= 0 || hittex.IndexOf("NUKAGE") >= 0) {
 				A_PlaySound("world/lavasizzlesmall",0,1.0,0,3);
 				self.destroy();
+				return ResolveState(null);
 				}
 			else if (	hittex.IndexOf("WOOD") >= 0		|| hittex.IndexOf("PAN") >= 0		|| hittex.IndexOf("CRAT") >= 0	
 				|| 		hittex.IndexOf("STUCCO") >= 0 	|| hittex.IndexOf("FLAT5_1") >= 0 	|| hittex.IndexOf("FLAT5_2") >= 0 
@@ -659,33 +699,34 @@ states
 				if (random(0,100) < rchance)
 					A_SpawnProjectile("RicochetBullet",0,0,random(0,359),CMF_AIMDIRECTION,random(-45,45));
 				if (smoke == 1) {
-					for (int i = 0; i <= 10; i++) {
+					for (int i = 0; i < 10; i++) {
 						double ws = frandom(0.1,1.2);
 						A_SpawnItemEx("WallSmoke",		0,0,0,	cos(-pitch)*ws,		0,					sin(pitch)*ws,		random(175,185),0,				48);
 						}
 					}
 				else if (smoke == 2) {
 					if (pos.z > floorz+8 && pos.z < ceilingz-8) {
-						for (int i = 0; i <= 15; i++)
+						for (int i = 0; i < 15; i++)
 							A_SpawnItemEx("RingSmoke",	0,0,0,	frandom(-0.7,0.7),frandom(-0.7,0.7),frandom(-0.7,0.7),	0,		0 ,				64);
 						}
 					else {
-						for (int i = 0; i <= 15; i++)
+						for (int i = 0; i < 15; i++)
 							A_SpawnItemEx("RingSmoke",	0,0,0,		frandom(-0.7,0.7),frandom(-0.7,0.7),0,		0,	SXF_ABSOLUTEVELOCITY,				64);
 						}
 					}
 				if (debris) {
-					for (int i = 0; i <= 5; i++)
+					for (int i = 0; i < 5; i++)
 						A_SpawnItemEx("Wallpart",		0,0,0,	frandom(2,5),		0,					frandom(1,4),		random(150,210),SXF_SETTARGET,	64);
 					}
 				if (random(0,100) < sparkchance) {
-					for (int i = 0; i <= 6; i++)
+					for (int i = 0; i < 6; i++)
 						A_SpawnItemEx("RicochetSpark",	0,0,0,	frandom(-1.5,1.5),	frandom(-1.5,1.5),	frandom(1,4),		0,				0,				72);
 					}
 				}
 			if (pos.z > floorz+8 && pos.z < ceilingz-8)
 				A_SprayDecal(decaltype,8);
 			//Console.PrintF("z %d, wallangle %d, %s - %s",traceheight,hitangle,hittex,dtype);
+			return ResolveState(null);
 			}
 		BPUF ABCD 1 bright;
 		stop;
@@ -759,10 +800,10 @@ states
 	 }
 }
 
-Class EnShotPuff : EnBulletPuff
+Class EnSSGPuff : EnBulletPuff
 {
 Default {
-	decal "ShotChip";
+	damagetype "SSG";
 	}
 }
 
@@ -784,7 +825,7 @@ override void PostBeginPlay()
 Class RicochetSpark : SmallDebris
 {
 Default {
-	renderstyle "ADD";
+	renderstyle "Add";
 	alpha 1.0;
 	radius 3;
 	height 3;
@@ -793,7 +834,7 @@ Default {
 states
 	{
 	Spawn:
-		SPRK A 1 bright	A_FadeOut(0.05);
+		SPRK A 1 bright	NoDelay A_FadeOut(0.05);
 		loop;
 	}
 }

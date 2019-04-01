@@ -1,6 +1,6 @@
 server 	bool 	bdoom_blood 		= true;
 server 	bool 	bdoom_gibs 			= true;
-server 	bool 	bdoom_bossgibs		= true;
+server 	bool 	bdoom_nobossgibs	= false;
 server 	bool 	bdoom_flames 		= true;
 server 	bool 	bdoom_debris 		= true;
 server 	bool 	bdoom_sparks 		= true;

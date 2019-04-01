@@ -610,8 +610,10 @@ override void Tick()
 	super.Tick();
 	if (master)
 		SetOrigin(master.pos,1);
-	else
+	else {
 		self.destroy();
+		return;
+		}
 	} 
 states
 	{
@@ -688,8 +690,10 @@ override void PostBeginPlay() {
 	super.PostBeginPlay();
 	if (master && bdoom_debris)
 		A_Warp(AAPTR_MASTER,-36,0,6);
-	else
+	else {
 		self.destroy();
+		return;
+		}
 	}
 states
 	{
@@ -705,8 +709,10 @@ override void Tick() {
 	super.Tick();
 	if (bdoom_debris == 1 && master)
 		A_Warp(AAPTR_MASTER,-17,0,6,0,WARPF_INTERPOLATE);
-	else
+	else {
 		self.Destroy();
+		return;
+		}
 	}
 }
 
@@ -825,10 +831,12 @@ Default {
 	} 
 override void Tick() {
 	super.Tick();
-	if (bdoom_debris == 1 && master)
+	if (bdoom_debris && master)
 		A_Warp(AAPTR_MASTER,-7,0,0,0,WARPF_INTERPOLATE);
-	else
+	else {
 		self.Destroy();
+		return;
+		}
 	}
 states
 	{

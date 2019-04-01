@@ -2,6 +2,7 @@ Class BD_DoomImp : BDoomMonster replaces DoomImp
 {
 Default
 	{
+	species "DoomImp";
 	Health 60;
 	gibhealth 50;
 	Radius 20;
@@ -171,12 +172,19 @@ Class BD_DoomImpBall : DoomImpBall replaces DoomImpBall
 {
 Default {
 	Damagetype "Fire";
-	+NOEXTREMEDEATH
-	+DONTBLAST
 	scale 0.5;
 	decal "Scorch";
 	renderstyle "Add";
 	alpha 0.6;
+	}
+override void PostBeginPlay () {
+	super.PostBeginPlay();
+	if (bdoom_debris) {
+		actor f = Spawn("BD_ProjFlare",pos);
+		f.master = self;
+		let flr = BD_ProjFlare(f);
+		flr.fcolor = "yellow";
+		}
 	}
 States
 	{

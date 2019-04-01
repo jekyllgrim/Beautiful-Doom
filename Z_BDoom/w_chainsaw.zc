@@ -520,8 +520,10 @@ states
 		TNT1 A 0 NoDelay A_SetScale(scale.x*randompick(-1,1)*frandom(1.0,1.3),scale.y*frandom(1.0,1.3));
 		BLOD XXYYZZZZZZZZZZZZZZZZZZZZZZZZZ 1 {
 			vel.z = clamp(vel.z-0.25,-3.5,0.0);
-			if (bdoom_blood == 0 || waterlevel > 0)
+			if (bdoom_blood == 0 || waterlevel > 0) {
 				self.destroy();
+				return ResolveState(null);
+				}
 			if (pos.z <= floorz)
 				return ResolveState("Death");
 			return ResolveState(null);

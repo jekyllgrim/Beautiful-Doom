@@ -1,7 +1,8 @@
 Class BD_PainElemental : BDoomMonster replaces PainElemental		
 {
-	Default
+Default
 	{
+	species "PainElemental";
 	Health 400;
 	Radius 31;
 	Height 56;
@@ -84,7 +85,7 @@ states
 				A_SpawnItemEx("PainElementalJaw",	frandom(-4,4),frandom(-4,4),frandom(6,12),		frandom(-5,5),frandom(-5,5),frandom(3,5),0, 	SXF_SETTARGET,64);
 				A_SpawnItemEx("PainElementalHand",	frandom(-4,4),frandom(-20,-22),frandom(20,22),	frandom(3,4),0,frandom(4,7),frandom(85,95),		SXF_SETTARGET,32);
 				A_SpawnItemEx("PainElementalHand",	frandom(-4,4),frandom(20,22),frandom(20,22),	frandom(3,4),0,frandom(4,7),frandom(-85,-95),	SXF_SETTARGET,32);
-				for (int i = 0; i < 8; i++) {
+				for (int i = 0; i < 14; i++) {
 					A_SpawnItemEx("BasicMeatPiece",	frandom(-10,10),frandom(-10,10),frandom(6,40),	frandom(-5,5),frandom(-5,5),frandom(3,6),0, 	SXF_SETTARGET,32);
 					A_SpawnItemEx("BasicMeatPiece_Heavy",	frandom(-10,10),frandom(-10,10),frandom(6,40),	frandom(-5,5),frandom(-5,5),frandom(3,6),0, 	SXF_SETTARGET,160);
 					}
@@ -136,7 +137,7 @@ states
 			}
 		loop;
 	Death:
-		FIRP AABBCCBB 1 bright NoDelay {
+		FIRP AABBCCBB 1 bright {
 			A_SpawnItemEx("ParticleFire_PE",frandom(-3,3),frandom(-3,3),frandom(1,4),frandom(-0.2,0.2),frandom(-0.2,0.2),frandom(0.4,0.6),0,0,128);
 			A_FadeOut(fades);
 			}
