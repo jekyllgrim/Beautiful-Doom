@@ -474,6 +474,7 @@ states
 				SetOrigin((pos.x,pos.y,floorz),0);
 				roll = (randompick(0,180) + random(-8,8));
 				bNOINTERACTION = true;
+				bMOVEWITHSECTOR = true;
 				bRELATIVETOFLOOR = true;
 				return ResolveState("Rest");
 				}

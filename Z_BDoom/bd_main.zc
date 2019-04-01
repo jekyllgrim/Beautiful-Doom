@@ -107,6 +107,7 @@ override void Tick() {
 		else {
 			landed = true;
 			SetOrigin((pos.x,pos.y,floorz),0);
+			bMOVEWITHSECTOR = true;
 			bRELATIVETOFLOOR = true;
 			}
 		}

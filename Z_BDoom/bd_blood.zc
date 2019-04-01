@@ -159,7 +159,9 @@ states
 				}
 			A_QueueCorpse();
 			bFLATSPRITE = true;
-			bNOINTERACTION = true;
+			bNOINTERACTION = true;			
+			bMOVEWITHSECTOR = true;
+			bRELATIVETOFLOOR = true;
 			return ResolveState(null);
 			}
 		2PLT A 0 { self.frame = random(0,16); }
@@ -315,6 +317,7 @@ double psize;
 Default {
 	+NOINTERACTION
 	+RELATIVETOFLOOR
+	+MOVEWITHSECTOR
 	-MISSILE
 	+FLATSPRITE
 	height 1;
