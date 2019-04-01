@@ -16,8 +16,6 @@ Default {
 	+NOTAUTOAIMED
 	+MISSILE			//enters Death when it hits the floor
 	+NOBLOCKMAP
-	+MOVEWITHSECTOR
-	+RELATIVETOFLOOR
 	+NOGRAVITY
 	+DROPOFF
 	+NOTELEPORT
@@ -40,6 +38,7 @@ virtual void FlyBack() {
 	bNOGRAVITY = false;
 	bNOINTERACTION = false;
 	bRELATIVETOFLOOR = false;
+	bMOVEWITHSECTOR = false;
 	bTHRUACTORS = true;
 	gravity = 1.0;
 	A_FaceTarget();

@@ -426,7 +426,6 @@ Default {
 	-THRUACTORS
 	+ROLLCENTER
 	+BOUNCEONACTORS
-	-MOVEWITHSECTOR
 	renderstyle "normal";
 	bouncetype "doom";
 	seesound "none";
@@ -461,19 +460,27 @@ states
 			}
 		goto death;
 	Death:
-		#### # 1 {
-			roll = (randompick(0,180) + random(-8,8));
+		#### # 0 {
 			if (target && target.bISMONSTER) {
 				self.destroy();
 				return ResolveState(null);
 				}
 			A_QueueCorpse();
-			A_Stop();
 			ClearBounce();
-			bNOINTERACTION = true;
-			bMOVEWITHSECTOR = true;
 			return ResolveState(null);
 			}
+		#### # 1 {
+			if (pos.z <= floorz+1) {
+				SetOrigin((pos.x,pos.y,floorz),0);
+				roll = (randompick(0,180) + random(-8,8));
+				bNOINTERACTION = true;
+				bRELATIVETOFLOOR = true;
+				return ResolveState("Rest");
+				}
+			return ResolveState(null);
+			}
+		wait;
+	Rest:
 		#### # -1;
 		stop;
 	loadsprites:
