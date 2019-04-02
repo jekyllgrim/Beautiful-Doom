@@ -178,8 +178,9 @@ states
 			}
 		loop;
 	Death.SSG:
-		#### # 0 {			
-			if (random(1,4) == 4 && FindState("XDeath"))
+		#### # 0 {
+			console.printf("%d",health);
+			if (random(1,3) == 1 && FindState("XDeath"))
 				return ResolveState("XDeath");
 			else
 				return ResolveState("Death");

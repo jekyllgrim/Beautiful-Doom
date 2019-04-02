@@ -389,10 +389,16 @@ override void Tick() {
 	}
 override int SpecialMissileHit(actor victim) {
 	if (victim && !victim.player) {
+		if (target) {
+			int xchance = clamp(distance3D(target) * 0.15,5,90); //chance to gib based on distance, min 5%, max 90%
+			//console.printf("%d percent",100-xchance);
+			if (random(0,100) > xchance)
+				bEXTREMEDEATH = true;
+			}
 		ripdepth = ripdepth - victim.health; //reduce ripping ability before anything else
 		if (victim != hitvictim) { //deal damage only ONCE even if the pellet rips through
 			hitvictim = victim;
-			victim.DamageMobj(self,target,bulletdamage,"SSG");
+			victim.DamageMobj(self,target,bulletdamage,"normal");
 			//console.PrintF("Ripdepth %d, Health %d",ripdepth,victim.health);
 			}
 		}
@@ -423,9 +429,8 @@ Default {
 	-FLOORCLIP
 	-THRUACTORS
 	-NOGRAVITY
-	-THRUACTORS
+	+THRUACTORS
 	+ROLLCENTER
-	+BOUNCEONACTORS
 	+USEBOUNCESTATE
 	renderstyle "normal";
 	bouncetype "doom";
