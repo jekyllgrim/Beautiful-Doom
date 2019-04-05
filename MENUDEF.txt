@@ -55,19 +55,18 @@ ListMenu "BDoom_Credits"
 	StaticText 180,	148, "DenisBelmondo", 				green
 	StaticText 180,	156, "alando1", 				green
 
-	StaticText -16,	168, "Bug reports", 	blue
-	StaticText -16,	176, "BurningCadavre", 				green
-	StaticText -16,	184, "Someone64", 				green
-	StaticText -16,	192, "Grigori", 				green
-	StaticText -16,	200, "drfrag", 				green
-	StaticText -16,	208, "Yutrzenika", 				green
-	StaticText -16,	216, "Zhs2", 				green
+	StaticText -16,	168, "Scripting help", 	yellow
+	StaticText -16,	176, "phantombeta", 				green
+	StaticText -16,	184, "Marisa Kirisame", 				green
+	StaticText -16,	192, "Gutawer", 				green
+	StaticText -16,	200, "josh771", 				green
+	StaticText -16,	208, "Accensus", 				green
+	StaticText -16,	216, "Caligari87", 				green
 
-	StaticText 110,	176, "Kombine", 				green
-	StaticText 110,	184, "TheCamaleonMaligno", 				green
-	StaticText 110,	192, "MasterMind", 				green
-	StaticText 110,	200, "DabbingSquidward", 				green
-	StaticText 110,	208, "3saster", 				green
+	StaticText 110,	176, "Nash", 				green
+	StaticText 110,	184, "Zombie", 				green
+	StaticText 110,	192, "D2JK", 				green
+	StaticText 110,	200, "3saster", 				green
 }
 
 

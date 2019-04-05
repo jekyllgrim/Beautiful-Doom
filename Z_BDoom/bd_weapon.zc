@@ -61,32 +61,41 @@ override void DoEffect()
 //QUICK KICK
 		//if player presses +user1 (default Q and Mouse4)
 		if 	(owner.player.cmd.buttons & BT_USER1) {
-			let psp = owner.player.FindPSprite(PSP_WEAPON);	//do nothing if PSP_Weapon is null — in case player is dead
-			if(!psp) 
+			let psp = owner.player.FindPSprite(PSP_WEAPON);
+			let kicks = owner.player.FindPSprite(-10);
+			if(!psp) 	//do nothing if PSP_Weapon is null — in case player is dead
+				{ 
+				//console.printf("no active weapons (player probably dead)"); 
 				return;
+				}
 			else if (bdoom_weapons != 2)
+				{ 
+				//console.printf("not using modern weapons"); 
 				return;
-			else if (iskicking)	//do nothing if the kicking animation is in progress
+				}
+			else if (kicks)	//do nothing if the kicking animation is in progress
+				{ 
+				//console.printf("already kicking"); 
 				return;
+				}
 			else if (self is "BD_Fist" || self is "BD_BFG9000" || self is "BD_Chainsaw") //not available for Chainsaw and BFG; Fist has its own kicking animation
+				{ 
+				//console.printf("incompatible weapon"); 
 				return;
+				}
 			//do this if used from Ready: will not only kick in overlay but will also move the weapon aside
 			else if	(InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("Ready.Modern")) ) {
 				owner.player.setPSprite(PSP_Weapon,ResolveState("QKick"));
-				iskicking = true;
 				}
 			//do this if used during Reload: weapon sprite will stay the same, kick will be shown and executed independently in overlay
-			else if (InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("Reload"))			||
-					InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("Reload.Modern"))		||
+			else if (InStateSequence(owner.player.FindPsprite(psp_weapon).curstate,FindState("Reload.Modern"))		||
 					InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("Reload.Modern1"))		||
 					InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("Reload.ModernEnd"))	||
 					InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("Reload"))				||
 					InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("Reload1"))			||
 					InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("ReloadEnd"))			||
-					InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("ReloadDo")) 			)
-					{
+					InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("ReloadDo")) 			){
 				owner.player.setPSprite(-10,FindState("QuickKick"));
-				iskicking = true;
 				}
 			}
 		}
@@ -161,9 +170,9 @@ states
 			A_OverlayFlags(-10,PSPF_ADDBOB|PSPF_ADDWEAPON,false);
 			A_OverlayFlags(-10,PSPF_FLIP|PSPF_MIRROR ,true);
 			if (CountInv("Modernberserk_Regen") > 0)
-				speed = 0.25;
+				speed = 0.5;
 			else
-				speed = 0.1;
+				speed = 0.25;
 			}
 		KICK AB 1;
 		TNT1 A 0 { 
@@ -182,23 +191,21 @@ states
 			}
 		KICK G 3 {
 			if (CountInv("Modernberserk_Regen") > 0) {
-				A_Recoil(-6);
+				A_Recoil(-5);
 				A_CustomPunch(10.0*frandom(10.0,25.0), TRUE,CPF_NOTURN, "ModernKickPuff_Berserk",83);
 				}
 			else {
-				A_Recoil(-3);
+				A_Recoil(-1.5);
 				A_CustomPunch(10.0*frandom(3.0,5.5), TRUE,CPF_NOTURN, "QuickKickPuff",83);
 				}
 			}
 		TNT1 A 0 A_CameraSway(0.0,-3.0,8);
 		KICK HDC 2;
-		KICK BA 3;
-		TNT1 A 7 {
+		TNT1 A 0 {
 			speed = 1.0;
 			}
-		TNT1 A 0 {
-			invoker.iskicking = false;
-			}
+		KICK BA 3;
+		TNT1 A 7 ;
 		stop;
 	DryReload:
 		#### # 10 A_PlaySound("Mweapons/dry");
@@ -390,7 +397,7 @@ override void Tick() {
 override int SpecialMissileHit(actor victim) {
 	if (victim && !victim.player) {
 		if (target) {
-			int xchance = clamp(distance3D(target) * 0.15,5,90); //chance to gib based on distance, min 5%, max 90%
+			int xchance = clamp(distance3D(target) * 0.15,10,90); //chance to gib based on distance, min 10%, max 90%
 			//console.printf("%d percent",100-xchance);
 			if (random(0,100) > xchance)
 				bEXTREMEDEATH = true;

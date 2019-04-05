@@ -34,6 +34,7 @@ version "3.3"
 #include "Z_Bdoom/m_Mancubus.zc"
 #include "Z_Bdoom/m_Bruiser.zc"
 #include "Z_Bdoom/m_ArchVile.zc"
+#include "Z_Bdoom/m_CyberDemon.zc"
 
 #include "Z_Bdoom/DeadBodies.zc"
 #include "Z_Bdoom/o_lightsources.zc"

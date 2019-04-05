@@ -554,22 +554,29 @@ Class NullPuff : Actor
 {
 Default {
 	decal "none";
-	//+NODECAL
+	+NODECAL
 	+NOINTERACTION
 	+BLOODLESSIMPACT
 	+PAINLESS
+	+PUFFONACTORS
+	}
+states
+	{
+	Spawn:
+		TNT1 A 1;
+		stop;
 	}
 }
 
 Class EnBulletPuff : BDoomPuff
 {
 //int hitangle;
-string hittex;
-string dtype;
-int rchance;
-bool debris;
+string hittex; //texture that was hit
+string dtype; //debris type
+int rchance; //ricochet chance
+bool debris; //whether to spawn debris
 int  smoke; //0 - none, 1 - directional, 2 - radial along the wall
-int sparkchance;
+int sparkchance; //spark chance
 string decaltype;
 Default {
 	+NOINTERACTION
@@ -581,6 +588,7 @@ Default {
 	mass 1;
 	height 1;
 	radius 1;
+	vspeed 0;
 	}
 states
 	{

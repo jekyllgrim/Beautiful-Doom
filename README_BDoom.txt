@@ -50,8 +50,7 @@ http://forum.zdoom.org/viewtopic.php?f=37&t=35388
 						  
 * alando1 - some of the additional death sprites
 
-See more in game
-			  
+
 Description             : Beautiful Doom is the grandfather of enhancement mods,
 						  born in 2008, updated multiple times, and finally
 						  updated again in 2015, after a long silence. Version 6.0
@@ -89,7 +88,7 @@ See CHANGELOG.txt for changelog of releases.
 
 Beautiful Doom © 2008 Jekyll Grim Payne aka Agent_Ash                           
 
-Any reuse and/or modification of the contents of this file require clear
+Any reuse and/or modification of the contents of this file requires clear
 verbal permission from the original author. Any reuse or modification will 
 invariably require the original author or authors to be clearly credited.
 

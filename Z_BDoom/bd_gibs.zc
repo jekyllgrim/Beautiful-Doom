@@ -152,7 +152,7 @@ override void GibBeginPlay()
 	}
 override void Tick() {
 	Super.Tick();
-	if (bNOBLOOD || vel.length() <= 2)
+	if (bNOBLOOD || vel.length() <= 2 || !bdoom_blood)
 		return;
 	A_SpawnItemEx("BD_GibBloodPool",frandom(-2,2),frandom(-2,2),0,	0,0,0,	0,SXF_TRANSFERPOINTERS,80);
 	}
@@ -164,14 +164,22 @@ states
 			scale.x*=randompick(-1,1);
 			}
 		#### A 1 {
-			if (!bNOBLOOD)
+			if (!bNOBLOOD && bdoom_blood)
 				A_SpawnItemEx("BD_GibBlood",frandom(-2,2),frandom(-2,2),frandom(0,2),0,frandom(0,1),frandom(0,1),random(175,185),SXF_TRANSFERPOINTERS,144);
 			roll+=brot;
 			}
 		wait;
 	Crash:
 		#### # 0 GibFall();
-		#### # 1;
+	Rest:
+		#### # 0 {
+			self.frame = restframe; //in case for SOME reason the animation didn't finish
+			}
+		#### # 1 { //prepare for resurrection
+			if(target && target is "BDoomMonster" && target.InStateSequence(target.curstate,target.FindState("Raise")))
+				return ResolveState("Raise");
+			return ResolveState(null);
+			}
 		wait;
 	Raise:
 		#### # 0 FlyBack();
@@ -184,6 +192,49 @@ states
 				}
 			return ResolveState(null);
 			}
+		wait;
+	}
+}
+
+class Gib_MetalPiece : BasicMeatPiece
+{
+Default {
+	seesound "none";
+	bouncesound "gibs/metallic";
+	deathsound "gibs/metallic";
+	-CORPSE
+	+MISSILE
+	bouncetype "Doom";
+	bouncefactor 0.4;
+	+NOBLOOD
+	}
+override void GibBeginPlay()
+	{
+	frame = random (0,5);
+	bmass = 70;
+	brot = random(14,20)*randompick(-1,1);
+	A_QueueCorpse();
+	roll = random(0,359);
+	A_SetScale(frandom(0.3,0.8)*randompick(-1,1));
+	}
+override void GibFall() 
+	{
+	A_Scream();
+	A_SetMass(bmass);
+	roll = 0;
+	bVULNERABLE = true;
+	bCORPSE = true;
+	bMISSILE = false;
+	}
+states
+	{
+	spawn:
+		GMET A 0 NoDelay GibBeginPlay();
+		GMET # 1 { roll+=brot; }
+		wait;
+	Death:
+		#### # 0 GibFall();
+		#### # 1;
 		wait;
 	}
 }
@@ -438,7 +489,8 @@ states
 			}*/
 		#### A 1 NoDelay GibBeginPlay();
 		#### # 3 {
-			A_SpawnItemEx("BloodDrop",frandom(-2,2),frandom(-2,2),frandom(8,22),0,frandom(0,1),frandom(0,1),random(175,185),SXF_TRANSFERPOINTERS,144);
+			if (bdoom_blood)
+				A_SpawnItemEx("BloodDrop",frandom(-2,2),frandom(-2,2),frandom(8,22),0,frandom(0,1),frandom(0,1),random(175,185),SXF_TRANSFERPOINTERS,144);
 			if (self.frame < finalframe) //animate flying until the last flying frame
 				self.frame++;
 			}
@@ -450,21 +502,12 @@ states
 			if (vel == (0,0,0) && self.frame == restframe) { //disable interaction once it comes to rest completely
 				bNOINTERACTION = true;
 				bRELATIVETOFLOOR = true;
+				bMOVEWITHSECTOR = true;
 				return ResolveState("Rest");
 				}
 			return ResolveState(null);
 			}
 		loop;
-	Rest:
-		#### # 0 {
-			self.frame = restframe; //in case for SOME reason the animation didn't finish
-			}
-		#### # 1 { //prepare for resurrection
-			if(target && target is "BDoomMonster" && target.InStateSequence(target.curstate,target.FindState("Raise")))
-				return ResolveState("Raise");
-			return ResolveState(null);
-			}
-		wait;
 	Raise:
 		#### # 0 FlyBack();
 		#### # 3 {
@@ -627,20 +670,6 @@ override void GibBeginPlay()
 	self.sprite = GetSpriteIndex("HND6");
 	restframe = 1;
 	}
-states
-	{
-	Crash:
-		#### # 0 GibFall();
-		#### # 1  {
-			//console.printf("%s, %s",self.GetClassName(),target.GetClassName());
-			if(target && target is "BDoomMonster" && target.InStateSequence(target.curstate,target.FindState("Raise")))
-				return ResolveState("Raise");
-			if (vel.length() > 2)
-				A_SpawnItemEx("BD_GibBloodPool",frandom(-2,2),frandom(-2,2),0,	0,0,0,	0,SXF_TRANSFERPOINTERS,80);
-			return ResolveState(null);
-			}
-		wait;
-	}
 }
 
 class PainElementalJaw : PainElementalHand
@@ -664,21 +693,20 @@ override void GibBeginPlay()
 
 // CYBERDEMON
 
-class CyberHead : BasicMeatPiece_Heavy
+class CyberHead : BasicMeatPiece
 {
 int finalframe;
 Default {
-	-CORPSE
-	+MISSILE
-	bouncetype "Doom";
-	bouncefactor 0.5;
+	scale 0.8;
+	gravity 0.5;
 	}
 override void GibBeginPlay()
 	{
 	super.GibBeginPlay();
-	brot = 18;
+	brot = -10;
 	self.sprite = GetSpriteIndex("HED7"); 
 	bmass = 200;
+	roll = 0;
 	}
 override void GibFall ()
 	{
@@ -688,9 +716,19 @@ override void GibFall ()
 	}
 states
 	{
-	Death: Crash:
-		#### # 4 GibFall();
-		#### # 4 {
+	spawn:
+		#### A 0 NoDelay {
+			GibBeginPlay();
+			}
+		#### A 1 {
+			if (bdoom_blood)
+				A_SpawnItemEx("BloodDrop",frandom(-2,2),frandom(-2,2),frandom(0,2),0,frandom(0,1),frandom(0,1),random(175,185),SXF_TRANSFERPOINTERS,144);
+			roll+=brot;
+			}
+		wait;
+	Crash:
+		#### # 5 GibFall();
+		#### # 5 {
 			if (frame < finalframe)
 				frame++;
 			else
@@ -705,21 +743,23 @@ states
 		HED7 ABCDEFGHIJKLM 0;
 		HND7 ABCDEFGHIJ 0;
 		HND9 ABCDEFG 0;
+		LEG9 ABCDEFG 0;
+		LEG7 ABCDEFG 0;
+		TRC1 ABCDEFG 0;
+		TRC2 ABCDEFGHIJ 0;
+		TRC3 ABCDEFGHIJ 0;
 		stop;
 	}
 }
 
 Class CyberHandLeft : CyberHead
 {
-Default {
-	+CORPSE
-	-MISSILE
-	}
 override void GibBeginPlay()
 	{
 	super.GibBeginPlay();
-	brot = 14;
+	brot = -5;
 	self.sprite = GetSpriteIndex("HND7"); 
+	roll = 45;
 	}
 override void GibFall ()
 	{
@@ -727,17 +767,6 @@ override void GibFall ()
 	bNOBLOOD = true;
 	frame = randompick(1,4,7);
 	finalframe = frame+2;
-	}
-states
-	{
-	spawn:
-		#### A 0 NoDelay GibBeginPlay();
-		#### A 1 {
-			if (!bNOBLOOD)
-				A_SpawnItemEx("BD_GibBlood",frandom(-2,2),frandom(-2,2),frandom(0,2),0,frandom(0,1),frandom(0,1),random(175,185),SXF_TRANSFERPOINTERS,144);
-			roll+=brot;
-			}
-		wait;
 	}
 }
 
@@ -747,13 +776,15 @@ override void GibBeginPlay()
 	{
 	super.GibBeginPlay();
 	self.sprite = GetSpriteIndex("HND9"); 
-	brot = -14;
+	brot = 5;
+	roll = 0;
 	}
 override void GibFall ()
 	{
 	super.GibFall();
 	bNOBLOOD = false;
 	frame = randompick(1,4);
+	finalframe = frame+2;
 	}
 }
 
@@ -763,12 +794,64 @@ override void GibBeginPlay()
 	{
 	super.GibBeginPlay();
 	self.sprite = GetSpriteIndex("LEG9"); 
-	brot = -14;
+	brot = -5;
+	}
+}
+
+Class CyberLegRight : CyberHandLeft
+{
+override void GibBeginPlay()
+	{
+	super.GibBeginPlay();
+	self.sprite = GetSpriteIndex("LEG7"); 
+	brot = 5;
+	roll = 0;
 	}
 override void GibFall ()
 	{
 	super.GibFall();
 	bNOBLOOD = false;
 	frame = randompick(1,4);
+	finalframe = frame+2;
+	}
+}
+
+Class CyberTorso1 : CyberHandRight
+{
+override void GibBeginPlay()
+	{
+	super.GibBeginPlay();
+	self.sprite = GetSpriteIndex("TRC1"); 
+	brot = 8;
+	}
+}
+
+Class CyberTorso2 : Gib_Torso1
+{
+override void GibBeginPlay()
+	{
+	A_QueueCorpse();
+	self.sprite = GetSpriteIndex("TRC2");
+	finalframe = 4; 
+	restframe =  9; 
+	bmass = 600;
+	}
+states
+	{
+	Rest:
+		#### # 0 {
+			self.frame = restframe; //in case for SOME reason the animation didn't finish
+			}
+		#### # -1;
+		stop;
+	}
+}
+
+Class CyberTorso3 : CyberTorso2
+{
+override void GibBeginPlay()
+	{
+	Super.GibBeginPlay();
+	self.sprite = GetSpriteIndex("TRC3");
 	}
 }

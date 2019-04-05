@@ -63,6 +63,17 @@ $limit gibs/blooddrop 5
 $volume gibs/blooddrop 0.4
 $alias gibs/splash 	gibs/blooddrop
 
+$random gibs/metallic { mgib1 mgib2 mgib3 mgib4 mgib5 mgib6 mgib7 }
+mgib1	"sounds/metalfall1.ogg"
+mgib2	"sounds/metalfall2.ogg"
+mgib3	"sounds/metalfall3.ogg"
+mgib4	"sounds/metalfall4.ogg"
+mgib5	"sounds/metalfall5.ogg"
+mgib6	"sounds/metalfall6.ogg"
+mgib7	"sounds/metalfall7.ogg"
+$volume gibs/metallic 0.4
+$attenuation gibs/metallic 2
+
 HeartBeat	HARTBEAT
 
 $random gibs/bloodspurt { gibs/bloodspurt1 gibs/bloodspurt2 gibs/bloodspurt3 gibs/bloodspurt4 }

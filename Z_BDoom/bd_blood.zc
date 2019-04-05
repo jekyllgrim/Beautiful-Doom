@@ -308,7 +308,7 @@ states
 }
 
 
-Class AniBloodPool : BloodDrop
+Class AniBloodPool : BloodGeneral
 {
 double psize;
 Default {
@@ -319,6 +319,7 @@ Default {
 	+FLATSPRITE
 	height 1;
 	renderstyle "Normal";
+	//Alpha 0.9;
 	decal "none";
 	scale 0.2;
 	}

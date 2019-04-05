@@ -23,6 +23,12 @@ https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752
 
 ** Dev updates log (dd.mm.yyyy) **
 
+06.04.2019
+- Fixed an oversight that caused Modern Guns bullets to have zero spread when firing at enemies at certain (rather close) distances.
+- Converted Cyberdemon to zscript.
+- Updated Cyberdemon death animation and sprites.
+- Boss gibs menu option has been renamed to Force vanilla boss deaths. The effect is appropriately reversed: when true, bosses will show vanilla deaths even if enhanced gibbing is enabled. The related CVAR is now "bdoom_nobossgibs". False by default.
+
 01.04.2019
 - Added a chance to gib smaller enemies with a Super Shotgun, I know this has been requested for a long time.
 - Converted all mosnters except bosses to ZScript. 
