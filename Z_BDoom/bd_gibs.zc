@@ -29,7 +29,7 @@ Default {
 	+CORPSE
 	+BUDDHA
 	+NOPAIN
-	seesound "gibs/rip";
+	seesound "none";
 	Bouncesound "gibs/meatland";
 	Deathsound "gibs/meatland";
 	gravity 0.6;
@@ -113,6 +113,7 @@ states
 Class BD_GibBlood : BloodDrop {
 Default {
 	Scale 0.15;
+	deathsound "gibs/blooddrop";
 	}
 override void PostBeginPlay() {
 	super.PostBeginPlay();
@@ -693,26 +694,17 @@ override void GibBeginPlay()
 
 // CYBERDEMON
 
-class CyberHead : BasicMeatPiece
+Class BasicBossGib : BasicMeatPiece
 {
 int finalframe;
 Default {
-	scale 0.8;
-	gravity 0.5;
+	scale 1.0;
 	}
 override void GibBeginPlay()
 	{
 	super.GibBeginPlay();
-	brot = -10;
-	self.sprite = GetSpriteIndex("HED7"); 
 	bmass = 200;
 	roll = 0;
-	}
-override void GibFall ()
-	{
-	super.GibFall();
-	frame = randompick(1,5,9);
-	finalframe = frame+3;
 	}
 states
 	{
@@ -749,6 +741,26 @@ states
 		TRC2 ABCDEFGHIJ 0;
 		TRC3 ABCDEFGHIJ 0;
 		stop;
+	}
+}
+
+class CyberHead : BasicBossGib
+{
+Default {
+	scale 0.8;
+	gravity 0.5;
+	}
+override void GibBeginPlay()
+	{
+	super.GibBeginPlay();
+	brot = -10;
+	self.sprite = GetSpriteIndex("HED7"); 
+	}
+override void GibFall ()
+	{
+	super.GibFall();
+	frame = randompick(1,5,9);
+	finalframe = frame+3;
 	}
 }
 

@@ -53,15 +53,14 @@ $playersound	player other *land DSPLAND
 /// GIBS AND BLOOD
 
 //blood drops
-$random gibs/blooddrop { gibs/blood1 gibs/blood2 gibs/blood3 gibs/blood4 gibs/blood5 }
-gibs/blood1	DSBLOD1
-gibs/blood2	DSBLOD2
-gibs/blood3	DSBLOD3
-gibs/blood4	DSBLOD4
-gibs/blood5	DSBLOD5
+blooddr1	blooddr1
+blooddr2	blooddr2
+blooddr3	blooddr3
+blooddr4	blooddr4
+blooddr5	blooddr5
+$random gibs/blooddrop { blooddr1 blooddr2 blooddr3 blooddr4 blooddr5 }
 $limit gibs/blooddrop 5
-$volume gibs/blooddrop 0.4
-$alias gibs/splash 	gibs/blooddrop
+$volume gibs/blooddrop 0.5
 
 $random gibs/metallic { mgib1 mgib2 mgib3 mgib4 mgib5 mgib6 mgib7 }
 mgib1	"sounds/metalfall1.ogg"
@@ -83,11 +82,24 @@ gibs/bloodspurt3 "sounds/gore/bloodspurt3.ogg"
 gibs/bloodspurt4 "sounds/gore/bloodspurt4.ogg"
 
 //gib landing sound
-gibs/meatland1	DSMEAT1
-gibs/meatland2	DSMEAT2
-gibs/meatland3	DSMEAT3
-$random gibs/meatland { gibs/meatland1 gibs/meatland2 gibs/meatland3 }
-$limit gibs/meatland 5
+//old sounds
+meatland1	DSMEAT1
+meatland2	DSMEAT2
+meatland3	DSMEAT3
+//new sounds
+meatl1	meatl1
+meatl2	meatl2
+meatl3	meatl3
+meatl4	meatl4
+meatl5	meatl5
+meatl6	meatl6
+meatl7	meatl7
+meatl8	meatl8
+meatl9	meatl9
+//$random gibs/meatland { meatland1 meatland2 meatland3 }
+$limit gibs/meatland 10
+$random gibs/meatland { meatl1 meatl2 meatl3 meatl4 meatl5 meatl6 meatl7 meatl8 meatl9 }
+
 
 bounce		BOUNCE
 
