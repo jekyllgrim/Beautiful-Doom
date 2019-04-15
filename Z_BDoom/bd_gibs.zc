@@ -40,18 +40,7 @@ Default {
 	translation "0:255=0:255";
 	}
 virtual void GibBeginPlay() {}
-virtual void GibFall() 
-	{
-	A_Scream();
-	if (bflat)
-		bFLATSPRITE = true;
-	A_SetMass(bmass);
-	roll = 0;
-	bVULNERABLE = true;
-	bDROPPED = true;
-	//bFLOORCLIP = true;
-	frame = restframe;
-	}
+virtual void GibFall() {}
 states
 	{
 	LoadSprites:
@@ -151,6 +140,17 @@ override void GibBeginPlay()
 	restframe = 25;
 	roll = random(0,359);
 	}
+override void GibFall() {
+	A_Scream();
+	if (bflat)
+		bFLATSPRITE = true;
+	A_SetMass(bmass);
+	roll = 0;
+	bVULNERABLE = true;
+	bDROPPED = true;
+	//bFLOORCLIP = true;
+	frame = restframe;
+	}
 override void Tick() {
 	Super.Tick();
 	if (bNOBLOOD || vel.length() <= 2 || !bdoom_blood)
@@ -197,9 +197,10 @@ states
 	}
 }
 
-class Gib_MetalPiece : BasicMeatPiece
+class BasicMetalPiece : BasicMeatPiece
 {
 Default {
+	-ROLLCENTER
 	seesound "none";
 	bouncesound "gibs/metallic";
 	deathsound "gibs/metallic";
@@ -222,21 +223,48 @@ override void GibFall()
 	{
 	A_Scream();
 	A_SetMass(bmass);
-	roll = 0;
+	//roll = 0;
 	bVULNERABLE = true;
-	bCORPSE = true;
 	bMISSILE = false;
 	}
 states
 	{
 	spawn:
 		GMET A 0 NoDelay GibBeginPlay();
-		GMET # 1 { roll+=brot; }
+		#### # 1 { 
+			roll+=brot;
+			//A_SpawnItemEx("MetalPieceTrail");
+			}
 		wait;
 	Death:
-		#### # 0 GibFall();
-		#### # 1;
-		wait;
+		#### # -1 GibFall();
+		stop;
+	Crash:
+		stop;
+	Rest:
+		stop;
+	}
+}
+
+Class MetalPieceTrail : Flare_General
+{
+Default {
+	scale 0.06;
+	alpha 0.5;
+	+ROLLSPRITE
+	renderstyle "Add";
+	}
+override void PostBeginPlay() {
+	super.PostBeginPlay();
+	roll = random(0,359);
+	scale.x*randompick(-1,1);
+	scale.y*randompick(-1,1);
+	}
+states
+	{
+	Spawn:
+		BOM5 ABCDEFGHIJKLM 1 bright;
+		stop;
 	}
 }
 
@@ -702,16 +730,22 @@ Default {
 	}
 override void GibBeginPlay()
 	{
-	super.GibBeginPlay();
+	A_QueueCorpse();
 	bmass = 200;
+	}
+override void GibFall() {
+	A_Scream();
+	if (bflat)
+		bFLATSPRITE = true;
+	A_SetMass(bmass);
 	roll = 0;
+	bVULNERABLE = true;
+	bDROPPED = true;
 	}
 states
 	{
 	spawn:
-		#### A 0 NoDelay {
-			GibBeginPlay();
-			}
+		#### A 0 NoDelay GibBeginPlay();
 		#### A 1 {
 			if (bdoom_blood)
 				A_SpawnItemEx("BloodDrop",frandom(-2,2),frandom(-2,2),frandom(0,2),0,frandom(0,1),frandom(0,1),random(175,185),SXF_TRANSFERPOINTERS,144);
@@ -732,6 +766,7 @@ states
 		#### # -1;
 		stop;
 	loadsprites:
+		//cyberdemon
 		HED7 ABCDEFGHIJKLM 0;
 		HND7 ABCDEFGHIJ 0;
 		HND9 ABCDEFG 0;
@@ -739,7 +774,7 @@ states
 		LEG7 ABCDEFG 0;
 		TRC1 ABCDEFG 0;
 		TRC2 ABCDEFGHIJ 0;
-		TRC3 ABCDEFGHIJ 0;
+		TRC3 ABCDEFGHIJ 0;		
 		stop;
 	}
 }
@@ -865,5 +900,194 @@ override void GibBeginPlay()
 	{
 	Super.GibBeginPlay();
 	self.sprite = GetSpriteIndex("TRC3");
+	}
+}
+
+// SPIDER MASTERMIND
+
+
+
+Class SpiderBrainRight : BasicBossGib
+{
+Default {
+	scale 0.8;
+	}
+override void GibBeginPlay()
+	{
+	super.GibBeginPlay();
+	brot = 7;
+	self.sprite = GetSpriteIndex("SPP1"); 
+	finalframe = 3;
+	}
+override void GibFall() {
+	super.GibFall();
+	frame = 1;
+	finalframe = 3;
+	}
+states
+	{
+	loadsprites:
+		SPP1 ABCD 0;
+		SPP2 ABCD 0;
+		SPP3 A 0;
+		SPP4 AB 0;
+		SPP5 ABCD 0;
+		TRP1 ABC 0;
+		TRP2 AB 0;
+		stop;
+	}
+}
+
+Class SpiderBrainLeft : SpiderBrainRight
+{
+override void GibBeginPlay()
+	{
+	super.GibBeginPlay();
+	brot = -7;
+	self.sprite = GetSpriteIndex("SPP1"); 
+	scale.x *= -1;
+	}
+}
+
+Class SpiderBrainMid : SpiderBrainRight
+{
+override void GibBeginPlay()
+	{
+	super.GibBeginPlay();
+	brot = randompick(-6,6);
+	self.sprite = GetSpriteIndex("SPP2"); 
+	scale.x *= randompick(-1,1);
+	}
+}
+
+Class SpiderFace : SpiderBrainRight
+{
+override void GibBeginPlay()
+	{
+	super.GibBeginPlay();
+	brot = randompick(-5,5);
+	self.sprite = GetSpriteIndex("SPP3"); 
+	}
+override void GibFall() {
+	super.GibFall();
+	bFLATSPRITE = true;
+	frame = 0;
+	finalframe = 0;
+	}
+}
+
+class SpiderMetalPiece : BasicMetalPiece
+{
+override void GibBeginPlay()
+	{	
+	bmass = 100;
+	A_QueueCorpse();
+	roll = random(0,359);	
+	self.sprite = GetSpriteIndex("TRP1"); 
+	frame = random (0,2);
+	brot = randompick(8,-8);
+	A_SetScale(0.6);
+	scale.x *= randompick(-1,1);
+	}
+}
+
+class SpiderGunGib : SpiderMetalPiece
+{
+override void GibBeginPlay()
+	{
+	super.GibBeginPlay();
+	sprite = GetSpriteIndex("TRP2");
+	frame = 0;
+	brot = randompick(6,-6);
+	scale.x *= randompick(-1,1);
+	}
+override void GibFall() {
+	super.GibFall();
+	frame = 1;
+	}
+}
+
+class SpiderLegRight : BasicBossGib
+{
+int endroll;
+Default {
+	+NOBLOOD
+	seesound "none";
+	deathsound "gibs/metallic";
+	scale 1.0;
+	}
+override void GibBeginPlay()
+	{
+	Super.GibBeginPlay();
+	frame = random(0,3);
+	brot = 5;
+	endroll = 116;
+	}
+override void GibFall(){
+	super.GibFall();
+	roll = endroll;
+	}
+states
+	{
+	spawn:
+		SPP5 # 0 NoDelay GibBeginPlay();
+		SPP5 # 1 {
+			if (abs(roll) < abs(endroll))
+				roll+=brot;
+			}
+		wait;
+	Crash:
+		SPP5 # -1 GibFall();
+		stop;
+	}
+}
+
+class SpiderLegLeft : SpiderLegRight
+{
+override void GibBeginPlay()
+	{
+	super.GibBeginPlay();
+	scale.x *= -1;
+	brot = -5;
+	endroll = -116;
+	}
+}
+
+Class SpiderHandRight : BasicBossGib
+{
+Default {
+	xscale -1;
+	}
+override void GibBeginPlay() {
+	super.GibBeginPlay();
+	bmass = 50;
+	brot = 8;
+	restframe = 1;
+	}
+states
+	{
+	spawn:
+		SPP4 A 0 NoDelay {
+			GibBeginPlay();
+			}
+		SPP4 A 1 {
+			A_SpawnItemEx("BD_GibBlood",frandom(-2,2),frandom(-2,2),frandom(0,2),0,frandom(0,1),frandom(0,1),random(175,185),SXF_TRANSFERPOINTERS,144);
+			roll+=brot;
+			}
+		wait;
+	Crash:
+		SPP4 B -1 GibFall();
+		stop;
+	}
+}
+
+Class SpiderHandLeft : SpiderHandRight
+{
+Default {
+	xscale 1;
+	}
+override void GibBeginPlay() {
+	super.GibBeginPlay();
+	brot = -8;
 	}
 }

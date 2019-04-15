@@ -23,6 +23,9 @@ https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752
 
 ** Dev updates log (dd.mm.yyyy) **
 
+16.04.2019
+- Converted Spider Mastermind to zscript and updated her death animation.
+
 07.04.2019
 - Updated gib/blood sounds
 - Minor bug fixes

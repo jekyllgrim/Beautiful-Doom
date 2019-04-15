@@ -38,18 +38,18 @@ void BD_Bleed() {
 		A_SpawnItemEx("Blood",frandom(-5.0,5.0),frandom(-5.0,5.0),frandom(16,default.height),frandom(-2,2),frandom(-2,2),frandom(1,3),SXF_SETTARGET);
 	}
 
-void BD_BulletAttack(double horz_spread, double vert_spread, int numbullets, int damageperbullet, string OldSound, string NewSound, string Casing, double CasingX = 0, double CasingY = 0, double CasingZ = 0, double TracerHeight = 32, double Tracerofs_xy = 0)
+void BD_BulletAttack(double horz_spread, double vert_spread, int numbullets, int damageperbullet, string OldSound, string NewSound, string Casing, double CasingX = 0, double CasingY = 0, double CasingZ = 0, double TracerHeight = 32, double Tracerofs_xy = 0, class<Actor> puff = "EnBulletPuff")
 	{		
-	if (bdoom_debris == 1)
+	if (bdoom_debris)
 		A_SpawnItemEx(Casing,CasingX,CasingY,CasingZ,		frandom(2,4),0,frandom(2,4),	random(-85,-95),SXF_SETTARGET);
-	If(bdoom_weapons == 1)
+	If(bdoom_weapons)
 		A_PlaySound(newsound);
 	else			
 		A_PlaySound(oldsound);
-	if (bdoom_tracers == 1)
-		A_CustomBulletAttack(horz_spread, vert_spread, numbullets, damageperbullet, "EnBulletPuff", 0, CBAF_NORANDOM,AAPTR_TARGET,"BulletTracer",TracerHeight,Tracerofs_xy);
+	if (bdoom_tracers)
+		A_CustomBulletAttack(horz_spread, vert_spread, numbullets, damageperbullet, puff, 0, CBAF_NORANDOM,AAPTR_TARGET,"BulletTracer",TracerHeight,Tracerofs_xy);
 	else
-		A_CustomBulletAttack(horz_spread, vert_spread, numbullets, damageperbullet, "EnBulletPuff", 0, CBAF_NORANDOM);
+		A_CustomBulletAttack(horz_spread, vert_spread, numbullets, damageperbullet, puff, 0, CBAF_NORANDOM);
 	}
 
 state BD_Refire(int ChanceToEnd = 128, statelabel endstate = "See") 
@@ -179,7 +179,7 @@ states
 		loop;
 	Death.SSG:
 		#### # 0 {
-			console.printf("%d",health);
+			//console.printf("%d",health);
 			if (random(1,3) == 1 && FindState("XDeath"))
 				return ResolveState("XDeath");
 			else
@@ -323,5 +323,14 @@ override void PostBeginPlay()
 	{
 	super.PostBeginPlay();
 	BulletDamage = 2 * random(3,4);
+	}
+}
+
+Class BD_SpiderBullet : BD_PistolBullet
+{
+override void PostBeginPlay()
+	{
+	super.PostBeginPlay();
+	BulletDamage = 2 * random(2,4);
 	}
 }

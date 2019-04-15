@@ -32,7 +32,7 @@ override string GetObituary (Actor victim, Actor inflictor, Name mod, bool playe
     {
 	if(bdoom_weapons == 2) 
 		{
-		return "%o was penetrated by %k's machine gun."; 
+		return "%o was penetrated by %k's assault rifle."; 
 		}
 	else 
 		{

@@ -2,5 +2,4 @@
 		NEW MONSTERS
 -----------------------------------------------------------*/
 
-#include "DECORATE/MONSTERS/SpiderMastermind.txt"
 #include "DECORATE/MONSTERS/IconOfSin.txt"
