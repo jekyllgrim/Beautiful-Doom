@@ -84,17 +84,17 @@ override void DoEffect()
 				return;
 				}
 			//do this if used from Ready: will not only kick in overlay but will also move the weapon aside
-			else if	(InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("Ready.Modern")) ) {
+			else if	(InStateSequence(psp.curstate, FindState("Ready.Modern")) ) {
 				owner.player.setPSprite(PSP_Weapon,ResolveState("QKick"));
 				}
 			//do this if used during Reload: weapon sprite will stay the same, kick will be shown and executed independently in overlay
-			else if (InStateSequence(owner.player.FindPsprite(psp_weapon).curstate,FindState("Reload.Modern"))		||
-					InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("Reload.Modern1"))		||
-					InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("Reload.ModernEnd"))	||
-					InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("Reload"))				||
-					InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("Reload1"))			||
-					InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("ReloadEnd"))			||
-					InStateSequence(owner.player.FindPsprite(psp_weapon).curstate, FindState("ReloadDo")) 			){
+			else if (InStateSequence(psp.curstate,FindState("Reload.Modern"))	||
+					InStateSequence(psp.curstate, FindState("Reload.Modern1"))	||
+					InStateSequence(psp.curstate, FindState("Reload.ModernEnd"))||
+					InStateSequence(psp.curstate, FindState("Reload"))			||
+					InStateSequence(psp.curstate, FindState("Reload1"))			||
+					InStateSequence(psp.curstate, FindState("ReloadEnd"))		||
+					InStateSequence(psp.curstate, FindState("ReloadDo")) 		){
 				owner.player.setPSprite(-10,FindState("QuickKick"));
 				}
 			}
