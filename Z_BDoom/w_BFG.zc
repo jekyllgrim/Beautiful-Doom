@@ -3,7 +3,7 @@
 //**********
 
 
-class BD_BFG9000 : BDoomWeapon replaces BFG9000
+class BD_BFG9000 : BDoomWeapon //replaces BFG9000
 {
 int wcharge; //charge of the Modern BFG
 int railcounter; //used for Heavy Laser alt attack
@@ -58,10 +58,10 @@ states
 		loop;
 	Select:
 		TNT1 A 0 {
+			If(bdoom_weapons > 0)
+				A_PlaySound("weapons/bfg/draw");
 			If(bdoom_weapons==2)
 				return ResolveState("Select.Modern");
-			If(bdoom_weapons==1)
-				A_PlaySound("weapons/bfg/draw");
 			return ResolveState(null);
 			}
 		BBGN A 1 A_Raise();
@@ -346,7 +346,7 @@ states
 }
 
 
-Class BD_BFGBall : FastProjectile replaces BFGBall
+Class BD_BFGBall : FastProjectile //replaces BFGBall
 {
 Default {
 	Radius 13;
@@ -377,7 +377,7 @@ States
 	Spawn1:
 		BFGB ABCDEFGH 1 bright {
 			if (bdoom_debris == 1)
-				A_CustomRailGun(0,0,"null","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,4,"NullPuff",random(0,360),random(0,360),64,20,0,4,"BFGBallRay");
+				A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,4,"NullPuff",random(0,360),random(0,360),64,20,0,4,"BFGBallRay");
 			}
 		loop;
 	Death.Sky:
@@ -396,7 +396,7 @@ States
 				A_PlaySound("weapons/bfgx",6);
 			}
 		BFGX ABCD 4 bright;
-		BFGX E 4 bright A_BFGSpray();
+		BFGX E 4 bright A_BFGSpray("BD_BFGExtra");
 		BFGX FGHIJK 4 bright;
 		stop;
 	}
@@ -517,7 +517,7 @@ states
 }
 
 //the class that spawns on the targets hit by BFG ball tracers
-Class BD_BFGExtra : BFGExtra replaces BFGExtra
+Class BD_BFGExtra : BFGExtra //replaces BFGExtra
 {
 Default {
 	translation "GreenPlasma";
@@ -719,8 +719,8 @@ States
 		COIX AAAAAAAA 1 bright {
 			//visuals
 			roll+=10;
-			A_CustomRailGun(0,0,"null","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,15,"NullPuff",random(0,360),random(0,360),random(22,56),duration:56,sparsity:3.0,spawnclass:"MBFGRailParticle");
-			A_CustomRailGun(0,0,"null","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,15,"NullPuff",random(0,360),random(0,360),random(22,56),duration:56,sparsity:3.0,spawnclass:"MBFGRailParticle");
+			A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,15,"NullPuff",random(0,360),random(0,360),random(22,56),duration:56,sparsity:3.0,spawnclass:"MBFGRailParticle");
+			A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,15,"NullPuff",random(0,360),random(0,360),random(22,56),duration:56,sparsity:3.0,spawnclass:"MBFGRailParticle");
 			
 			double closestDist = double.infinity;
 			double rdistance = 144*wpower; //effective distance depends on charge
@@ -753,7 +753,7 @@ States
 				
 				if (targetActor != null) {
 					A_Face(targetActor,0,0,flags: FAF_MIDDLE);
-					A_CustomRailGun(30 + 22*wpower,0,"null","FFFFFF",RGF_NOPIERCING|RGF_FULLBRIGHT|RGF_CENTERZ|RGF_SILENT,aim:0,maxdiff:15,"MBFGRailPuff",range:rdistance,duration:64,sparsity:6.5,spawnclass:"MBFGRailParticle");
+					A_CustomRailGun(30 + 22*wpower,0,"","FFFFFF",RGF_NOPIERCING|RGF_FULLBRIGHT|RGF_CENTERZ|RGF_SILENT,aim:0,maxdiff:15,"MBFGRailPuff",range:rdistance,duration:64,sparsity:6.5,spawnclass:"MBFGRailParticle");
 				}
 			}
 		COIX ABCDEFGHIJKLM 1 bright;
@@ -767,7 +767,7 @@ States
 			A_PlaySound("Mweapons/bfg/overcharge",6);
 			A_Explode(10*wpower,250,flags:XF_HURTSOURCE|XF_NOSPLASH,alert:true,fulldamagedistance:250,damagetype:"BFGSplash");
 			}
-		COIX ABCDEFGHIJKLM 2 bright A_CustomRailGun(0,0,"null","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,15,"NullPuff",random(0,360),random(0,360),random(22,56),56,3.0,0,"MBFGRailParticle");
+		COIX ABCDEFGHIJKLM 2 bright A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,15,"NullPuff",random(0,360),random(0,360),random(22,56),56,3.0,0,"MBFGRailParticle");
 		stop;
 	}
 }

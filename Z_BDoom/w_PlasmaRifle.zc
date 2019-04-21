@@ -2,7 +2,7 @@
 // PLASMAGUN
 //***********
 
-Class BD_PlasmaRifle : BDoomWeapon replaces Plasmarifle
+Class BD_PlasmaRifle : BDoomWeapon //replaces Plasmarifle
 {
 double HeatCounter;
 Default {
@@ -305,7 +305,7 @@ states
 	}
 }
 
-Class BD_Plasmaball : FastProjectile  replaces Plasmaball
+Class BD_Plasmaball : FastProjectile  //replaces Plasmaball
 {
 name pcolor;
 property pcolor : pcolor;
@@ -549,17 +549,19 @@ Default {
 	renderstyle "Add";
 	scale 0.03;
 	alpha 1.0;
-	SeeSound "Mweapons/plasma/fire";
+	SeeSound "";
 	DeathSound "weapons/plasmax";
+	}
+override void PostBeginPlay() {
+	super.PostBeginPlay();
+	A_PlaySound("Mweapons/plasma/fire",6,1.0);
+	if (bdoom_debris == 1)
+		A_SpawnItemEx("BD_PlasmaFlare",0,0,0,vel.x,vel.y,vel.z,0,SXF_SETMASTER|SXF_ORIGINATOR|SXF_ABSOLUTEVELOCITY);
 	}
 States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay {
-			if (bdoom_debris == 1)
-				A_SpawnItemEx("BD_PlasmaFlare",0,0,0,vel.x,vel.y,vel.z,0,SXF_SETMASTER|SXF_ORIGINATOR|SXF_ABSOLUTEVELOCITY);
-			A_PlaySound("Mweapons/plasma/loop",5,0.6,1,3);
-			}
+		TNT1 A 0 NoDelay A_PlaySound("Mweapons/plasma/loop",5,0.6,1,3);
 		COIS ABCDEFGHIJKLMNO 1 bright;
 		goto spawn+1;
 	Death:

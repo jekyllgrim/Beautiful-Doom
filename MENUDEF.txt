@@ -72,45 +72,35 @@ ListMenu "BDoom_Credits"
 
 OptionMenu "BDoom_Settings"
 {
-
-	Option "Player Weapons",					"bdoom_weapons", "bdoom_weapons", "", 1
-	StaticText " "
-
-	Option "Muzzle Flashes", 					"bdoom_muzzle", "bdoom_muzzle", "", 1
-	StaticText " "
-
-	Option "Bullet Tracers",					"bdoom_tracers", "OnOff", "", 1
-	StaticText " "
-
-	Option "Enhanced gibs & deaths",					"bdoom_gibs", "OnOff", "", 1
+	Option "Allow Beautiful Doom weapons",		"bdoom_replaceweapons", "OnOff", "", 1
+	StaticText "Allows to completely disable modded weapons. (Requires level restart)", white
 	StaticText " "
 	
-	Option "Force vanilla boss deaths",					"bdoom_nobossgibs", "OnOff", "", 1
+	Option "Allow Beautiful Doom monsters",		"bdoom_replacemonsters", "OnOff", "", 1
+	StaticText "Allows to completely disable modded monsters. (Requires level restart)", white
 	StaticText " "
-
+	
+	Option "Player Weapons",					"bdoom_weapons", "bdoom_weapons", "", 1
+	Option "Muzzle Flashes", 					"bdoom_muzzle", "bdoom_muzzle", "", 1
+	Option "Bullet Tracers",					"bdoom_tracers", "OnOff", "", 1
+	StaticText " "
+	
+	Option "Enhanced gibs & deaths",			"bdoom_gibs", "OnOff", "", 1
 	Option "Enhanced blood",					"bdoom_blood", "OnOff", "", 1
+	Option "Force vanilla boss deaths",			"bdoom_nobossgibs", "OnOff", "", 1
 	StaticText " "
 
 	Option "Halos & particle flames",			"bdoom_flames", "OnOff", "", 1
-	StaticText " "
-
 	Option "Casings, smoke, trails, debris",	"bdoom_debris", "OnOff", "", 1
-	StaticText " "
-
 	Option "Maximum blood/gibs/debris",		"sv_corpsequeuesize", "bdoom_bloodnum", "", 1
-	StaticText " "
-
-	Option "Ricochet & spark sounds", 			"bdoom_sparks", "OnOff", "", 1
 	StaticText " "
 	
 	SpriteShadowSlider "$SPRITESHADOWMNU_MAXSHADOWDISTANCE",	"$SPRITESHADOWMNU_HELPTEXT_MAXSHADOWDISTANCE",	"cl_spriteshadowdistance",	0, 10000, 1, 0
 	StaticText " "
-	
-	Option "Flies over corpses", 				"bdoom_flies", "OnOff", "", 1
-	StaticText " "
 
+	Option "Ricochet & spark sounds", 			"bdoom_sparks", "OnOff", "", 1
+	Option "Flies over corpses", 				"bdoom_flies", "OnOff", "", 1
 	Option "Explosion shakes", 					"bdoom_shakes", "OnOff", "", 1
-	
 	Option "Face on Standard HUD", 				"bdoom_hudface", "OnOff", "", 1
 }
 

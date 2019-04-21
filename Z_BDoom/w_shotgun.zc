@@ -1,4 +1,4 @@
-Class BD_Shotgun : BDoomWeapon replaces Shotgun
+Class BD_Shotgun : BDoomWeapon //replaces Shotgun
 {
 Default
 	{
@@ -44,6 +44,8 @@ override void DoEffect()
 		{
 		if(bdoom_weapons == 2)
 			{
+			if (!ammo1)
+				Owner.GiveInventory("ShotgunClip",8);
 			Ammo1 = ammo(Owner.FindInventory("ShotgunClip") );
 			AmmoUse1 = 1;
 			Ammo2 = ammo(Owner.FindInventory("Shell"));
@@ -134,7 +136,7 @@ States
 	BarrelSmoke:
 		//TNT1 A 1;
 		TNT1 AAAAAAAAAAAAAAA 	random(1,2) {
-			let s = player.GetPSprite(PSP_Weapon);
+			let s = player.FindPSprite(PSP_Weapon);
 			if (invoker.InStateSequence(s.curstate,invoker.FindState("Ready"))			||
 				invoker.InStateSequence(s.curstate,invoker.FindState("Ready.Modern"))	)
 				A_Eject("BarrelSmoke",cos(pitch)*12,0,3.5,	frandom(0.015,-0.015),frandom(0.015,-0.015),0.1);
@@ -278,5 +280,54 @@ Default {
 	inventory.maxamount 8;
 	ammo.backpackamount 0;
 	ammo.backpackmaxamount 8;
+	}
+}
+
+
+Class ShotgunMeleePuff : FistPuff
+{
+Default {
+	attacksound "weapons/shotgun/melee";
+	}
+states
+	{
+	Crash:
+		TNT1 A 0 {
+			if (bdoom_debris) {
+				for (int i = 5; i > 0; i--)
+					A_SpawnItemEx("Wallpart",0,0,0,	random(1,3),0,random(6,12),	random(0,360),0,64);
+				}
+			}
+		stop;
+	Melee:
+		TNT1 A 0 {
+			A_AlertMonsters(256,AMF_EMITFROMTARGET);
+			A_RadiusThrust(3000,80,RTF_NOIMPACTDAMAGE,64);
+			}
+		stop;
+	}
+}
+
+
+Class ShotgunMeleePuffStrong : FistPuffStrong
+{
+states
+	{
+	Crash:
+		TNT1 A 0 {
+			if (bdoom_debris) {
+				for (int i = 6; i > 0; i--)
+					A_SpawnItemEx("ShotSmoke",random(-3,3),random(-3,3),random(-1,1),random(-1,1),random(-1,1),random(-1,1),0,0,32);
+				for (int i = 10; i > 0; i--)
+					A_SpawnItemEx("Wallpart",0,0,0,	random(1,3),0,random(6,12),	random(0,360),0,64);
+				}
+			}
+		stop;
+	Melee:
+		TNT1 A 0 {
+			A_AlertMonsters(256,AMF_EMITFROMTARGET);
+			A_RadiusThrust(3000,80,RTF_NOIMPACTDAMAGE,64);
+			}
+		stop;
 	}
 }

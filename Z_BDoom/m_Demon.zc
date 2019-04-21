@@ -1,4 +1,4 @@
-Class BD_Demon : BDoomMonster replaces Demon
+Class BD_Demon : BDoomMonster //replaces Demon
 {
 Default
 	{
@@ -124,7 +124,7 @@ states
 		}
 }
 
-Class BD_Spectre : BD_Demon replaces Spectre
+Class BD_Spectre : BD_Demon //replaces Spectre
 {
 Default
 	{

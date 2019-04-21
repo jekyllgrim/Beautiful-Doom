@@ -1,4 +1,4 @@
-Class BD_ShotgunGuy : BDoomMonster replaces ShotgunGuy
+Class BD_ShotgunGuy : BDoomMonster //replaces ShotgunGuy
 {
 Default {
 	Health 30;

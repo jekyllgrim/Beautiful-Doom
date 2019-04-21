@@ -1,4 +1,4 @@
-Class BD_Cacodemon : BDoomMonster  replaces Cacodemon
+Class BD_Cacodemon : BDoomMonster  //replaces Cacodemon
 {
 Default
 	{
@@ -42,14 +42,11 @@ states
 		loop;
 	See:
 		HEA1 AAAAAAAAAA 3 A_Chase();
-		HEA1 B 3 A_Chase();
-		HEA1 C 3 A_Chase();
-		HEA1 B 3 A_Chase();
-		HEA1 A 3 A_Chase();
+		HEA1 BCBA 3 A_Chase();
 		loop;
 	Missile:
 		HEAA ABCCDD 1 A_FaceTarget();
-		HEAA E 4  A_HeadAttack();
+		HEAA E 4 A_CustomComboAttack("BD_CacodemonBall", 32, 10 * random(1, 6));
 		HEAA CCA 1;
 		Goto See;
 	Pain:
@@ -64,7 +61,6 @@ states
 		TNT1 A 0 {
 			scale.x*=randompick(-1,1);
 			bFORCEXYBILLBOARD = false;
-			A_ChangeFlag("FLOATBOB",0);
 			if (burning)
 				return ResolveState("Death.Vanilla");
 			return A_jump(256,"Death.Vanilla","Death1", "Death2");
@@ -132,7 +128,7 @@ states
 			}
 		HEAO EFG 4;
 		goto deathbleed;
-	XDeath: //sprite gibbing from Smooth Doom
+	XDeath: //sprite gibbing from Smooth Doom with added particles
 		TNT1 A 0 A_Jump(128,"Death");
 		HEAX ABC 3 {
 			if (bdoom_gibs)
@@ -156,7 +152,7 @@ states
 	}
 }
 
-Class BD_CacodemonBall : CacodemonBall replaces CacodemonBall
+Class BD_CacodemonBall : CacodemonBall //replaces CacodemonBall
 {
 Default {
 	+FORCEXYBILLBOARD

@@ -1,4 +1,4 @@
-Class BD_Revenant : BDoomMonster replaces Revenant
+Class BD_Revenant : BDoomMonster //replaces Revenant
 {
 Default {
 	species "Revenant";
@@ -22,6 +22,19 @@ Default {
 	Tag "$FN_REVEN";
 	gibhealth 60;
 	BDoomMonster.allowfiredeath false;
+	}
+void BD_SkelMissile()
+	{
+		if (target == null) return;
+		A_FaceTarget();
+		AddZ(16);
+		Actor missile = SpawnMissile(target, "BD_RevenantTracer"); //spawn modded missile instead of vanilla
+		AddZ(-16);
+		if (missile != null)
+		{
+			missile.SetOrigin(missile.Vec3Offset(missile.Vel.X, missile.Vel.Y, 0.), false);
+			missile.tracer = target;
+		}
 	}
 states
 	{
@@ -47,14 +60,14 @@ states
 		TNT1 A 0 A_Jump(128,"MissileLeft");
 		RMIR b 3;
 		RMIR c 3;
-		RMIR d 3 a_skelmissile();
+		RMIR d 3 BD_SkelMissile();
 		RMIR e 3;
 		RMIR F 2;
 		goto MissileEnd;
 	MissileLeft:	
 		RMIL b 3;
 		RMIL c 3;
-		RMIL d 3 a_skelmissile();
+		RMIL d 3 BD_SkelMissile();
 		RMIL e 3;
 		RMIL F 2;
 		goto MissileEnd;
@@ -108,7 +121,7 @@ states
 }
 
 
-Class RevenantTracerSmokeTrail : Rocket1Trail replaces RevenantTracerSmoke //Bulletpuffs are still spawned behind the rocket because it's hardcoded in A_Tracer
+Class BD_RevenantTracerSmoke : Rocket1Trail //replaces RevenantTracerSmoke
 {
 Default {
 	alpha 0.45;
@@ -117,8 +130,24 @@ Default {
 }
 
 
-Class BD_RevenantTracer : RevenantTracer replaces RevenantTracer
+Class BD_RevenantTracer : RevenantTracer //replaces RevenantTracer
 {
+void BD_Tracer()
+	{
+		if (level.maptime & 3)	return;
+	
+		//This version won't forcefully spawn stupid BulletPuffs, only modded smoke
+		Actor smoke = Spawn ("BD_RevenantTracerSmoke", Vec3Offset(-Vel.X, -Vel.Y, 0.), ALLOW_REPLACE);
+	
+		if (smoke != null)
+		{
+			smoke.Vel.Z = 1.;
+			smoke.tics -= random[Tracer](0, 3);
+			if (smoke.tics < 1)
+				smoke.tics = 1;
+		}
+		A_Tracer2(16.875);
+	}
 states
 	{
 	Spawn:
@@ -127,7 +156,7 @@ states
 			if (bdoom_debris)
 				A_spawnItemEx("BD_RevenantTracerFlare",flags:SXF_SETMASTER|SXF_ORIGINATOR);
 			}
-		SKEB AB 2  A_Tracer();
+		SKEB AB 2  BD_Tracer();
 		goto spawn+1;
 	Death:
 		TNT1 A 0 {

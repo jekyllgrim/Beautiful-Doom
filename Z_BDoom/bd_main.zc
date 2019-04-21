@@ -57,7 +57,7 @@ virtual void CheckTargetRaise() {}
 	
 override void PostBeginPlay()
 	{
-	if (!level.IsPointInMap(pos)) {
+	if (!level.IsPointInLevel(pos)) {
 		self.destroy();
 		return;
 		}

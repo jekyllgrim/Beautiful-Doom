@@ -1,4 +1,4 @@
-Class BD_LostSoul : LostSoul replaces LostSoul
+Class BD_LostSoul : LostSoul //replaces LostSoul
 {
 Default {
 	species "LostSoul";

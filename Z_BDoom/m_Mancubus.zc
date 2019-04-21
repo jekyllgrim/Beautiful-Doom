@@ -1,4 +1,4 @@
-Class BD_Fatso : BDoomMonster replaces Fatso
+Class BD_Fatso : BDoomMonster //replaces Fatso
 {
 Default {
 	species "Mancubus";
@@ -34,19 +34,19 @@ states
 	missile:
 		FATA a 17 a_fatraise;
 		FATA b 3;
-		FATA c 3  a_fatattack1;
+		FATA c 3  a_fatattack1("BD_FatShot");
 		FATA d 3 ;
 		FATA e 4;
 		FATA a 5 A_FaceTarget;
 		FATA A 2 A_FaceTarget;
 		FATA b 3;
-		FATA c 3  a_fatattack2;
+		FATA c 3  a_fatattack2("BD_FatShot");
 		FATA d 3 ;
 		FATA e 4;
 		FATA a 5 A_FaceTarget;
 		FATA A 2 A_FaceTarget;
 		FATA b 3;
-		FATA c 3  a_fatattack3;
+		FATA c 3  a_fatattack3("BD_FatShot");
 		FATA d 3 ;
 		FATA e 4;
 		FATA AA 5 A_FaceTarget;
@@ -111,7 +111,7 @@ states
 		}
 }
 
-Class BD_FatShot : FatShot replaces FatShot
+Class BD_FatShot : FatShot //replaces FatShot
 {
 Default {
 	Damagetype "Fire";

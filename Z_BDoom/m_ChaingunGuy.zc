@@ -1,4 +1,4 @@
-Class BD_ChaingunGuy : BDoomMonster replaces ChaingunGuy
+Class BD_ChaingunGuy : BDoomMonster //replaces ChaingunGuy
 {
 bool attacking;
 Default

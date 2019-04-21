@@ -1,4 +1,4 @@
-Class BD_SpiderMastermind : BdoomMonster replaces SpiderMastermind
+Class BD_SpiderMastermind : BdoomMonster //replaces SpiderMastermind
 {
 Default
 	{

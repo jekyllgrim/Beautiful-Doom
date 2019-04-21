@@ -262,6 +262,7 @@ plasma1 "sounds/modern/plasma/plasma1.ogg"
 plasma2 "sounds/modern/plasma/plasma2.ogg"
 plasma3 "sounds/modern/plasma/plasma3.ogg"
 plasma4 "sounds/modern/plasma/plasma4.ogg"
+$limit Mweapons/plasma/fire 20
 Mweapons/plasma/charge "sounds/modern/plasma/plasma_charge.ogg"
 Mweapons/plasma/select	"sounds/modern/plasma/plasma_select.ogg"
 Mweapons/plasma/hum	"sounds/modern/plasma/plasma_hum.ogg"

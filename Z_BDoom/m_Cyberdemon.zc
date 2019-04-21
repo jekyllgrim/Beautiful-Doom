@@ -1,4 +1,4 @@
-Class BD_CyberDemon : BDoomMonster replaces CyberDemon
+Class BD_CyberDemon : BDoomMonster //replaces CyberDemon
 {
 Default
 	{

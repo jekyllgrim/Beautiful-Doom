@@ -1,4 +1,4 @@
-Class BD_ArchVile : BDoomMonster replaces Archvile
+Class BD_ArchVile : BDoomMonster //replaces Archvile
 {
 Default
 	{
@@ -65,7 +65,7 @@ states
 			}
 			
 		NVIL F 2 bright {
-			A_VileTarget();
+			A_VileTarget("BD_ArchvileFire");
 			if (bdoom_flames) {
 				A_SpawnItemEx("ParticleFire_Yellow",-8,-22,frandom(70,82),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
 				A_SpawnItemEx("ParticleFire_Yellow",-8, 22,frandom(70,82),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
@@ -163,7 +163,7 @@ states
 }
 	
 
-Class BD_ArchvileFire : ArchvileFire replaces ArchvileFire
+Class BD_ArchvileFire : ArchvileFire //replaces ArchvileFire
 {
 Default {
 	damagetype "Fire";

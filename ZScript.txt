@@ -1,8 +1,9 @@
-version "3.3"
+version "4.0.0"
 
 #include "Z_Bdoom/bd_main.zc"
 #include "Z_Bdoom/bd_blood.zc"
 #include "Z_Bdoom/bd_gibs.zc"
+#include "Z_BDoom/bd_events.zc"
 
 #include "Z_Bdoom/bd_weapon.zc"
 #include "Z_Bdoom/mk_matrix.zsc"

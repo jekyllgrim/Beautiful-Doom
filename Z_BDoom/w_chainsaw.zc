@@ -1,4 +1,4 @@
-Class BD_Chainsaw : BDoomWeapon replaces Chainsaw
+Class BD_Chainsaw : BDoomWeapon //replaces Chainsaw
 {
 string mblood; //enemy blood color
 int jamstacks; //chance to jam

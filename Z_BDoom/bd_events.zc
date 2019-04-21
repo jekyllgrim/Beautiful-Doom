@@ -1,0 +1,126 @@
+class WeaponOverrideHandler : EventHandler
+{
+// Replaces weapons on the map if the appropriate CVAR is true.
+override void CheckReplacement(ReplaceEvent e) {
+	if (!bdoom_replaceweapons)
+		return;
+	switch (e.Replacee.GetClassName()) {
+		case 'Fist' 			: e.Replacement = "BD_Fist"; 			break;
+		case 'Berserk' 			: e.Replacement = "BD_Berserk"; 		break;
+		case 'Chainsaw' 		: e.Replacement = "BD_Chainsaw"; 		break;
+		case 'Pistol' 			: e.Replacement = "BD_Pistol"; 			break;
+		case 'Shotgun'			: e.Replacement = "BD_Shotgun"; 		break;
+		case 'SuperShotgun' 	: e.Replacement = "BD_SuperShotgun";	break;
+		case 'Chaingun' 		: e.Replacement = "BD_Chaingun"; 		break;
+		case 'RocketLauncher'	: e.Replacement = "BD_RocketLauncher"; 	break;
+		case 'PlasmaRifle' 		: e.Replacement = "BD_PlasmaRifle"; 	break;
+		case 'BFG9000' 			: e.Replacement = "BD_BFG9000"; 		break;
+		}
+	e.IsFinal = true;
+	}
+	
+/* This override detect if the player received a vanilla weapon directly (e.g. via ACS script)
+and replaces them with modded ones. It also replaces starting weapon.
+
+The initial version provided by Zombie
+*/
+override void WorldTick() {		
+	for (int pn = 0; pn < MAXPLAYERS; pn++) {
+		if (!playerInGame[pn])
+			continue;
+
+		PlayerInfo player	= players[pn];
+		PlayerPawn mo		= player.mo;
+		
+		let oldweap = player.pendingWeapon.GetClassName(); //get the weapon that is being selected
+		let oldweapr = player.readyweapon.GetClassName(); //get the currently selected weapons
+		if (bdoom_replaceweapons) { //check if the replace weapons CVAR is true
+			switch (oldweap) { //if game attempts to SELECT a vanilla weapon, take it away and select a modded weapon (and give it, if it's missing)
+				case 'Fist' 			: player.pendingWeapon = GetWeapon(mo, "BD_Fist"); 			mo.TakeInventory(oldweap,1); break;
+				case 'Chainsaw' 		: player.pendingWeapon = GetWeapon(mo, "BD_Chainsaw"); 		mo.TakeInventory(oldweap,1); break;
+				case 'Pistol' 			: player.pendingWeapon = GetWeapon(mo, "BD_Pistol"); 		mo.TakeInventory(oldweap,1); break;
+				case 'Shotgun'			: player.pendingWeapon = GetWeapon(mo, "BD_Shotgun"); 		mo.TakeInventory(oldweap,1); break;
+				case 'SuperShotgun' 	: player.pendingWeapon = GetWeapon(mo, "BD_SuperShotgun"); 	mo.TakeInventory(oldweap,1); break;
+				case 'Chaingun' 		: player.pendingWeapon = GetWeapon(mo, "BD_Chaingun"); 		mo.TakeInventory(oldweap,1); break;
+				case 'RocketLauncher' 	: player.pendingWeapon = GetWeapon(mo, "BD_RocketLauncher");mo.TakeInventory(oldweap,1); break;
+				case 'PlasmaRifle' 		: player.pendingWeapon = GetWeapon(mo, "BD_PlasmaRifle"); 	mo.TakeInventory(oldweap,1); break;
+				case 'BFG9000' 			: player.pendingWeapon = GetWeapon(mo, "BD_BFG9000"); 		mo.TakeInventory(oldweap,1); break;
+				}
+			switch (oldweapr) { //if a vanilla weapon is READY (such as Pistol at vanilla map start), we also take it away and select the modded counterpart
+				case 'Fist' 			: player.pendingWeapon = GetWeapon(mo, "BD_Fist"); 			mo.TakeInventory(oldweapr,1); break;
+				case 'Chainsaw' 		: player.pendingWeapon = GetWeapon(mo, "BD_Chainsaw"); 		mo.TakeInventory(oldweapr,1); break;
+				case 'Pistol' 			: player.pendingWeapon = GetWeapon(mo, "BD_Pistol"); 		mo.TakeInventory(oldweapr,1); break;
+				case 'Shotgun'			: player.pendingWeapon = GetWeapon(mo, "BD_Shotgun"); 		mo.TakeInventory(oldweapr,1); break;
+				case 'SuperShotgun' 	: player.pendingWeapon = GetWeapon(mo, "BD_SuperShotgun"); 	mo.TakeInventory(oldweapr,1); break;
+				case 'Chaingun' 		: player.pendingWeapon = GetWeapon(mo, "BD_Chaingun"); 		mo.TakeInventory(oldweapr,1); break;
+				case 'RocketLauncher' 	: player.pendingWeapon = GetWeapon(mo, "BD_RocketLauncher");mo.TakeInventory(oldweapr,1); break;
+				case 'PlasmaRifle' 		: player.pendingWeapon = GetWeapon(mo, "BD_PlasmaRifle"); 	mo.TakeInventory(oldweapr,1); break;
+				case 'BFG9000' 			: player.pendingWeapon = GetWeapon(mo, "BD_BFG9000"); 		mo.TakeInventory(oldweapr,1); break;
+				}
+			}
+		else { //the reverse effect for when the player sets replace weapons CVAR to false (not very necessary, since officially a level start is required to take effect anyway)
+			switch (oldweap) {
+				case 'BD_Fist' 			: player.pendingWeapon = GetWeapon(mo, "Fist"); 			mo.TakeInventory(oldweap,1); break;
+				case 'BD_Chainsaw' 		: player.pendingWeapon = GetWeapon(mo, "Chainsaw"); 		mo.TakeInventory(oldweap,1); break;
+				case 'BD_Pistol' 		: player.pendingWeapon = GetWeapon(mo, "Pistol"); 			mo.TakeInventory(oldweap,1); break;
+				case 'BD_Shotgun'		: player.pendingWeapon = GetWeapon(mo, "Shotgun"); 			mo.TakeInventory(oldweap,1); break;
+				case 'BD_SuperShotgun' 	: player.pendingWeapon = GetWeapon(mo, "SuperShotgun"); 	mo.TakeInventory(oldweap,1); break;
+				case 'BD_Chaingun' 		: player.pendingWeapon = GetWeapon(mo, "Chaingun"); 		mo.TakeInventory(oldweap,1); break;
+				case 'BD_RocketLauncher': player.pendingWeapon = GetWeapon(mo, "RocketLauncher");	mo.TakeInventory(oldweap,1); break;
+				case 'BD_PlasmaRifle' 	: player.pendingWeapon = GetWeapon(mo, "PlasmaRifle"); 		mo.TakeInventory(oldweap,1); break;
+				case 'BD_BFG9000' 		: player.pendingWeapon = GetWeapon(mo, "BFG9000"); 			mo.TakeInventory(oldweap,1); break;
+				}
+			switch (oldweapr) {
+				case 'BD_Fist' 			: player.pendingWeapon = GetWeapon(mo, "Fist"); 			mo.TakeInventory(oldweapr,1); break;
+				case 'BD_Chainsaw' 		: player.pendingWeapon = GetWeapon(mo, "Chainsaw"); 		mo.TakeInventory(oldweapr,1); break;
+				case 'BD_Pistol' 		: player.pendingWeapon = GetWeapon(mo, "Pistol"); 			mo.TakeInventory(oldweapr,1); break;
+				case 'BD_Shotgun'		: player.pendingWeapon = GetWeapon(mo, "Shotgun"); 			mo.TakeInventory(oldweapr,1); break;
+				case 'BD_SuperShotgun' 	: player.pendingWeapon = GetWeapon(mo, "SuperShotgun"); 	mo.TakeInventory(oldweapr,1); break;
+				case 'BD_Chaingun' 		: player.pendingWeapon = GetWeapon(mo, "Chaingun"); 		mo.TakeInventory(oldweapr,1); break;
+				case 'BD_RocketLauncher': player.pendingWeapon = GetWeapon(mo, "RocketLauncher");	mo.TakeInventory(oldweapr,1); break;
+				case 'BD_PlasmaRifle' 	: player.pendingWeapon = GetWeapon(mo, "PlasmaRifle"); 		mo.TakeInventory(oldweapr,1); break;
+				case 'BD_BFG9000' 		: player.pendingWeapon = GetWeapon(mo, "BFG9000"); 			mo.TakeInventory(oldweapr,1); break;
+				}				
+			mo.speed = mo.default.speed; 	
+			}
+		}
+	}
+// Courtesy of Zombie
+private Weapon GetWeapon(PlayerPawn mo, Class<Weapon> type)
+	{
+		let weap = Weapon(mo.FindInventory(type));
+		return weap ? weap : Weapon(mo.GiveInventoryType(type));
+	}
+}
+
+/* Simply replaces monsters with modded ones if the appropriate CVAR is true.
+Helps to keep the mod compatible with monster mods. */
+
+class MonsterOverrideHandler : EventHandler
+{
+override void CheckReplacement(ReplaceEvent e) {
+	if (!bdoom_replacemonsters)
+		return;
+	switch (e.Replacee.GetClassName()) {
+		case 'Zombieman' 			: e.Replacement = "BD_Zombieman"; 		break;
+		case 'ShotgunGuy' 			: e.Replacement = "BD_ShotgunGuy"; 		break;
+		case 'ChaingunGuy' 			: e.Replacement = "BD_ChaingunGuy"; 	break;
+		case 'WolfensteinSS'		: e.Replacement = "BD_WolfensteinSS"; 	break;
+		case 'DoomImp' 				: e.Replacement = "BD_DoomImp"; 		break;
+		case 'Demon' 				: e.Replacement = "BD_Demon"; 			break;
+		case 'Spectre' 				: e.Replacement = "BD_Spectre"; 		break;
+		case 'Cacodemon' 			: e.Replacement = "BD_Cacodemon"; 		break;
+		case 'PainElemental'		: e.Replacement = "BD_PainElemental"; 	break;
+		case 'LostSoul'				: e.Replacement = "BD_LostSoul"; 		break;
+		case 'Revenant' 			: e.Replacement = "BD_Revenant"; 		break;
+		case 'Arachnotron' 			: e.Replacement = "BD_Arachnotron"; 	break;
+		case 'Fatso' 				: e.Replacement = "BD_Fatso"; 			break;
+		case 'HellKnight' 			: e.Replacement = "BD_HellKnight"; 		break;
+		case 'BaronOfHell' 			: e.Replacement = "BD_BaronOfHell"; 	break;
+		case 'ArchVile' 			: e.Replacement = "BD_ArchVile"; 		break;
+		case 'Cyberdemon' 			: e.Replacement = "BD_Cyberdemon"; 		break;
+		case 'SpiderMastermind' 	: e.Replacement = "BD_SpiderMastermind";break;
+		}
+	e.IsFinal = false; //disable further replacements, if any
+	}
+}

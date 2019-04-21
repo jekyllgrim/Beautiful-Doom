@@ -1,4 +1,4 @@
-Class BD_PainElemental : BDoomMonster replaces PainElemental		
+Class BD_PainElemental : BDoomMonster //replaces PainElemental		
 {
 Default
 	{

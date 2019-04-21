@@ -1,4 +1,4 @@
-Class BD_ZombieMan : BDoomMonster replaces Zombieman
+Class BD_ZombieMan : BDoomMonster //replaces Zombieman
 {
 Default {
 	Health 20;

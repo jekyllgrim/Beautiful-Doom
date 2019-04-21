@@ -1,4 +1,4 @@
-Class BD_Arachnotron : BDoomMonster replaces Arachnotron
+Class BD_Arachnotron : BDoomMonster //replaces Arachnotron
 {
 Default
 	{
@@ -67,7 +67,7 @@ states
 		}
 }
 
-Class BD_ArachnotronPlasma : BD_Plasmaball replaces ArachnotronPlasma
+Class BD_ArachnotronPlasma : BD_Plasmaball //replaces ArachnotronPlasma
 {
 Default
 	{

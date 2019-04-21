@@ -1,4 +1,4 @@
-Class BD_SuperShotgun : BDoomWeapon replaces Supershotgun
+Class BD_SuperShotgun : BDoomWeapon //replaces Supershotgun
 {
 bool ShotFired;
 Default
@@ -35,6 +35,8 @@ override void DoEffect()
 		{
 		if(bdoom_weapons == 2)
 			{
+			if (!ammo1)
+				Owner.GiveInventory("SSGClip",2);
 			Ammo1 = ammo(Owner.FindInventory("SSGClip") );
 			ammouse1 = 2;
 			ammouse2 = 0;
@@ -86,7 +88,7 @@ states
 	BarrelSmokeRight:
 		TNT1 A random(15,20);
 		TNT1 AAAAAAAAAAAAAAAAAAAA 	random(1,2) {
-			let s = player.GetPSprite(PSP_Weapon);
+			let s = player.FindPSprite(PSP_Weapon);
 			if (invoker.InStateSequence(s.curstate,invoker.FindState("Ready"))			||
 				invoker.InStateSequence(s.curstate,invoker.FindState("Ready.Enhanced"))	||
 				invoker.InStateSequence(s.curstate,invoker.FindState("Ready.Modern"))	)
@@ -96,7 +98,7 @@ states
 	BarrelSmokeLeft:
 		TNT1 A random(45,50);
 		TNT1 AAAAAAAAAAAAAAAAAAAA 	random(1,2) {
-			let s = player.GetPSprite(PSP_Weapon);
+			let s = player.FindPSprite(PSP_Weapon);
 			if (invoker.InStateSequence(s.curstate,invoker.FindState("Ready"))			||
 				invoker.InStateSequence(s.curstate,invoker.FindState("Ready.Enhanced"))	||
 				invoker.InStateSequence(s.curstate,invoker.FindState("Ready.Modern"))	)
@@ -106,7 +108,7 @@ states
 	BarrelSmokeBoth:
 		TNT1 A random(45,50);
 		TNT1 AAAAAAAAAAAAAAAAAAAA 	random(1,2) {
-			let s = player.GetPSprite(PSP_Weapon);
+			let s = player.FindPSprite(PSP_Weapon);
 			if (invoker.InStateSequence(s.curstate,invoker.FindState("Ready"))			||
 				invoker.InStateSequence(s.curstate,invoker.FindState("Ready.Enhanced"))	||
 				invoker.InStateSequence(s.curstate,invoker.FindState("Ready.Modern"))	) {
@@ -479,7 +481,7 @@ states
 	ModernSmokeRight:
 		TNT1 A random(1,3);
 		TNT1 AAAAAAAAAAAAAAAAAAAA 	random(1,2) {
-			let s = player.GetPSprite(PSP_Weapon);
+			let s = player.FindPSprite(PSP_Weapon);
 			if (invoker.InStateSequence(s.curstate,invoker.FindState("Ready.Modern"))	||
 				invoker.InStateSequence(s.curstate,invoker.FindState("AltFire.Modern"))	)
 				A_Eject("BarrelSmoke",cos(pitch)*12,0.5,3,	frandom(0.015,-0.015),frandom(0.015,-0.015),0.1);
@@ -488,7 +490,7 @@ states
 	ModernSmokeLeft:
 		TNT1 A random(1,3);
 		TNT1 AAAAAAAAAAAAAAAAAAAA 	random(1,2) {
-			let s = player.GetPSprite(PSP_Weapon);
+			let s = player.FindPSprite(PSP_Weapon);
 			if (invoker.InStateSequence(s.curstate,invoker.FindState("Ready.Modern"))	||
 				invoker.InStateSequence(s.curstate,invoker.FindState("AltFire.Modern"))	)
 				A_Eject("BarrelSmoke",cos(pitch)*12,-0.5,3,	frandom(0.015,-0.015),frandom(0.015,-0.015),0.1);

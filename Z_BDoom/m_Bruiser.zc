@@ -1,4 +1,4 @@
-Class BD_BaronOfHell : BDoomMonster replaces BaronOfHell
+Class BD_BaronOfHell : BDoomMonster //replaces BaronOfHell
 {
 Default
 	{
@@ -102,7 +102,7 @@ states
 	}
 }
 
-Class BD_HellKnight : BD_BaronOfHell replaces HellKnight
+Class BD_HellKnight : BD_BaronOfHell //replaces HellKnight
 {
 Default {
 	Health 500;

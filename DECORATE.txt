@@ -1,44 +1,18 @@
-/*-----------------------------------------------------------
-		MAIN FILE
-NEVER COMMENT THIS even if you comment some other parts of the mod
------------------------------------------------------------*/
 
 #include "DECORATE/BD_MONST.txt"
-#include "DECORATE/BD_GORE.txt"
-#include "DECORATE/BD_Blood.txt"
-
-
-// Any of the sections below can be commented in order to exclude a portion of the mod.
-// You can play this mod without new monsters or without new items, etc.
-
 
 // --------- ITEMS
 #include "DECORATE/BD_INV.txt"
 
 // --------- WEAPONS
-/*
-Comment this to play without weapons. Makes the mod largely compatible with other weapon mods.
-ATTENTION: if you do this, you ALSO have to go to MAPINFO.txt and comment ALL lines there.
-Otherwise it won't work because there will be no valid player class available
-or it'll conflict with the player class(es) from the other mod you're using.
-*/
 
-#include "D_WEAPONS.txt"
+//#include "DECORATE/BD_DGUY.txt"
+#include "DECORATE/WEAPONS/BD_AMMO.txt"
 
 
-// --------- MONSTERS
-/*
-Comment this to play without monsters. Makes the mod largely compatible with other monster mods.
-*/
-
-#include "D_MONSTERS.txt"
 
 // --------- OBJECTS
-/*
-Comment these to play without objects. Might be necessary if you're playing 
-with a WAD that contains its own decorations or replaces decoration sprites,
-like Deus Vult 2 with portals instead of burning barrels.
-*/
+
 #include "DECORATE/Objects/BD_OBJ.txt"	//decorative objects
 #include "DECORATE/Objects/BD_LIGHT.txt" //light sources
 #include "DECORATE/Objects/BD_DEAD.txt"	//impaled bodies and other gory decorations

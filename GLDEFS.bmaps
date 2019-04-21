@@ -639,383 +639,762 @@ map "brightmaps/shorttorch.png"
 disablefullbright
 }
 
-/*
+
 // BARON OF HELL
 
 brightmap sprite ZBOSa1 {
-map "brightmaps/auto/SBOSa1.png"
+map "brightmaps/Bruiser/SBOSa1.png"
 disablefullbright
 }
 brightmap sprite ZBOSa2 {
-map "brightmaps/auto/SBOSa2.png"
+map "brightmaps/Bruiser/SBOSa2.png"
 disablefullbright
 }
 brightmap sprite ZBOSa3 {
-map "brightmaps/auto/SBOSa3.png"
+map "brightmaps/Bruiser/SBOSa3.png"
 disablefullbright
 }
 brightmap sprite ZBOSa4 {
-map "brightmaps/auto/SBOSa4.png"
+map "brightmaps/Bruiser/SBOSa4.png"
 disablefullbright
 }
 brightmap sprite ZBOSa5 {
-map "brightmaps/auto/SBOSa5.png"
+map "brightmaps/Bruiser/SBOSa5.png"
 disablefullbright
 }
 brightmap sprite ZBOSa6 {
-map "brightmaps/auto/SBOSa6.png"
+map "brightmaps/Bruiser/SBOSa6.png"
 disablefullbright
 }
 brightmap sprite ZBOSa7 {
-map "brightmaps/auto/SBOSa7.png"
+map "brightmaps/Bruiser/SBOSa7.png"
 disablefullbright
 }
 brightmap sprite ZBOSa8 {
-map "brightmaps/auto/SBOSa8.png"
+map "brightmaps/Bruiser/SBOSa8.png"
 disablefullbright
 }
 brightmap sprite ZBOSb1 {
-map "brightmaps/auto/SBOSb1.png"
+map "brightmaps/Bruiser/SBOSb1.png"
 disablefullbright
 }
 brightmap sprite ZBOSb2 {
-map "brightmaps/auto/SBOSb2.png"
+map "brightmaps/Bruiser/SBOSb2.png"
 disablefullbright
 }
 brightmap sprite ZBOSb3 {
-map "brightmaps/auto/SBOSb3.png"
+map "brightmaps/Bruiser/SBOSb3.png"
 disablefullbright
 }
 brightmap sprite ZBOSb4 {
-map "brightmaps/auto/SBOSb4.png"
+map "brightmaps/Bruiser/SBOSb4.png"
 disablefullbright
 }
 brightmap sprite ZBOSb5 {
-map "brightmaps/auto/SBOSb5.png"
+map "brightmaps/Bruiser/SBOSb5.png"
 disablefullbright
 }
 brightmap sprite ZBOSb6 {
-map "brightmaps/auto/SBOSb6.png"
+map "brightmaps/Bruiser/SBOSb6.png"
 disablefullbright
 }
 brightmap sprite ZBOSb7 {
-map "brightmaps/auto/SBOSb7.png"
+map "brightmaps/Bruiser/SBOSb7.png"
 disablefullbright
 }
 brightmap sprite ZBOSb8 {
-map "brightmaps/auto/SBOSb8.png"
+map "brightmaps/Bruiser/SBOSb8.png"
 disablefullbright
 }
 brightmap sprite ZBOSc1 {
-map "brightmaps/auto/SBOSc1.png"
+map "brightmaps/Bruiser/SBOSc1.png"
 disablefullbright
 }
 brightmap sprite ZBOSc2 {
-map "brightmaps/auto/SBOSc2.png"
+map "brightmaps/Bruiser/SBOSc2.png"
 disablefullbright
 }
 brightmap sprite ZBOSc4 {
-map "brightmaps/auto/SBOSc4.png"
+map "brightmaps/Bruiser/SBOSc4.png"
 disablefullbright
 }
 brightmap sprite ZBOSc5 {
-map "brightmaps/auto/SBOSc5.png"
+map "brightmaps/Bruiser/SBOSc5.png"
 disablefullbright
 }
 brightmap sprite ZBOSc6 {
-map "brightmaps/auto/SBOSc6.png"
+map "brightmaps/Bruiser/SBOSc6.png"
 disablefullbright
 }
 brightmap sprite ZBOSc7 {
-map "brightmaps/auto/SBOSc7.png"
+map "brightmaps/Bruiser/SBOSc7.png"
 disablefullbright
 }
 brightmap sprite ZBOSc8 {
-map "brightmaps/auto/SBOSc8.png"
+map "brightmaps/Bruiser/SBOSc8.png"
 disablefullbright
 }
 brightmap sprite ZBOSd1 {
-map "brightmaps/auto/SBOSd1.png"
+map "brightmaps/Bruiser/SBOSd1.png"
 disablefullbright
 }
 brightmap sprite ZBOSd2 {
-map "brightmaps/auto/SBOSd2.png"
+map "brightmaps/Bruiser/SBOSd2.png"
 disablefullbright
 }
 brightmap sprite ZBOSd3 {
-map "brightmaps/auto/SBOSd3.png"
+map "brightmaps/Bruiser/SBOSd3.png"
 disablefullbright
 }
 brightmap sprite ZBOSd4 {
-map "brightmaps/auto/SBOSd4.png"
+map "brightmaps/Bruiser/SBOSd4.png"
 disablefullbright
 }
 brightmap sprite ZBOSd5 {
-map "brightmaps/auto/SBOSd5.png"
+map "brightmaps/Bruiser/SBOSd5.png"
 disablefullbright
 }
 brightmap sprite ZBOSd6 {
-map "brightmaps/auto/SBOSd6.png"
+map "brightmaps/Bruiser/SBOSd6.png"
 disablefullbright
 }
 brightmap sprite ZBOSd7 {
-map "brightmaps/auto/SBOSd7.png"
+map "brightmaps/Bruiser/SBOSd7.png"
 disablefullbright
 }
 brightmap sprite ZBOSd8 {
-map "brightmaps/auto/SBOSd8.png"
+map "brightmaps/Bruiser/SBOSd8.png"
 disablefullbright
 }
 brightmap sprite ZBOSe1 {
-map "brightmaps/auto/SBOSe1.png"
+map "brightmaps/Bruiser/SBOSe1.png"
 disablefullbright
 }
 brightmap sprite ZBOSe2 {
-map "brightmaps/auto/SBOSe2.png"
+map "brightmaps/Bruiser/SBOSe2.png"
 disablefullbright
 }
 brightmap sprite ZBOSe3 {
-map "brightmaps/auto/SBOSe3.png"
+map "brightmaps/Bruiser/SBOSe3.png"
 disablefullbright
 }
 brightmap sprite ZBOSe4 {
-map "brightmaps/auto/SBOSe4.png"
+map "brightmaps/Bruiser/SBOSe4.png"
 disablefullbright
 }
 brightmap sprite ZBOSe5 {
-map "brightmaps/auto/SBOSe5.png"
+map "brightmaps/Bruiser/SBOSe5.png"
 disablefullbright
 }
 brightmap sprite ZBOSe6 {
-map "brightmaps/auto/SBOSe6.png"
+map "brightmaps/Bruiser/SBOSe6.png"
 disablefullbright
 }
 brightmap sprite ZBOSe7 {
-map "brightmaps/auto/SBOSe7.png"
+map "brightmaps/Bruiser/SBOSe7.png"
 disablefullbright
 }
 brightmap sprite ZBOSe8 {
-map "brightmaps/auto/SBOSe8.png"
+map "brightmaps/Bruiser/SBOSe8.png"
 disablefullbright
 }
 brightmap sprite ZBOSf1 {
-map "brightmaps/auto/SBOSf1.png"
+map "brightmaps/Bruiser/SBOSf1.png"
 disablefullbright
 }
 brightmap sprite ZBOSf2 {
-map "brightmaps/auto/SBOSf2.png"
+map "brightmaps/Bruiser/SBOSf2.png"
 disablefullbright
 }
 brightmap sprite ZBOSf3 {
-map "brightmaps/auto/SBOSf3.png"
+map "brightmaps/Bruiser/SBOSf3.png"
 disablefullbright
 }
 brightmap sprite ZBOSf4 {
-map "brightmaps/auto/SBOSf4.png"
+map "brightmaps/Bruiser/SBOSf4.png"
 disablefullbright
 }
 brightmap sprite ZBOSf5 {
-map "brightmaps/auto/SBOSf5.png"
+map "brightmaps/Bruiser/SBOSf5.png"
 disablefullbright
 }
 brightmap sprite ZBOSf6 {
-map "brightmaps/auto/SBOSf6.png"
+map "brightmaps/Bruiser/SBOSf6.png"
 disablefullbright
 }
 brightmap sprite ZBOSf7 {
-map "brightmaps/auto/SBOSf7.png"
+map "brightmaps/Bruiser/SBOSf7.png"
 disablefullbright
 }
 brightmap sprite ZBOSf8 {
-map "brightmaps/auto/SBOSf8.png"
+map "brightmaps/Bruiser/SBOSf8.png"
 disablefullbright
 }
 brightmap sprite BARIA1 {
-map "brightmaps/auto/KNIIA1.png"
+map "brightmaps/Bruiser/KNIIA1.png"
 disablefullbright
 }
 brightmap sprite BARIA2A8 {
-map "brightmaps/auto/KNIIA2A8.png"
+map "brightmaps/Bruiser/KNIIA2A8.png"
 disablefullbright
 }
 brightmap sprite BARIA3A7 {
-map "brightmaps/auto/KNIIA3A7.png"
+map "brightmaps/Bruiser/KNIIA3A7.png"
 disablefullbright
 }
 brightmap sprite BARIA4A6 {
-map "brightmaps/auto/KNIIA4A6.png"
+map "brightmaps/Bruiser/KNIIA4A6.png"
 disablefullbright
 }
 brightmap sprite BARIA5 {
-map "brightmaps/auto/KNIIA5.png"
+map "brightmaps/Bruiser/KNIIA5.png"
 disablefullbright
 }
 brightmap sprite BARIB1 {
-map "brightmaps/auto/KNIIB1.png"
+map "brightmaps/Bruiser/KNIIB1.png"
 disablefullbright
 }
 brightmap sprite BARIB2B8 {
-map "brightmaps/auto/KNIIB2B8.png"
+map "brightmaps/Bruiser/KNIIB2B8.png"
 disablefullbright
 }
 brightmap sprite BARIB3B7 {
-map "brightmaps/auto/KNIIB3B7.png"
+map "brightmaps/Bruiser/KNIIB3B7.png"
 disablefullbright
 }
 brightmap sprite BARIB4B6 {
-map "brightmaps/auto/KNIIB4B6.png"
+map "brightmaps/Bruiser/KNIIB4B6.png"
 disablefullbright
 }
 brightmap sprite BARIB5 {
-map "brightmaps/auto/KNIIB5.png"
+map "brightmaps/Bruiser/KNIIB5.png"
 disablefullbright
 }
 brightmap sprite BAROA1 {
-map "brightmaps/auto/KNITA1.png"
+map "brightmaps/Bruiser/KNITA1.png"
 disablefullbright
 }
 brightmap sprite BAROA2D8 {
-map "brightmaps/auto/KNITA2D8.png"
+map "brightmaps/Bruiser/KNITA2D8.png"
 disablefullbright
 }
 brightmap sprite BAROA3D7 {
-map "brightmaps/auto/KNITA3D7.png"
+map "brightmaps/Bruiser/KNITA3D7.png"
 disablefullbright
 }
 brightmap sprite BAROA4D6 {
-map "brightmaps/auto/KNITA4D6.png"
+map "brightmaps/Bruiser/KNITA4D6.png"
 disablefullbright
 }
 brightmap sprite BAROA5D5 {
-map "brightmaps/auto/KNITA5D5.png"
+map "brightmaps/Bruiser/KNITA5D5.png"
 disablefullbright
 }
 brightmap sprite BAROB1 {
-map "brightmaps/auto/KNITB1.png"
+map "brightmaps/Bruiser/KNITB1.png"
 disablefullbright
 }
 brightmap sprite BAROB2C8 {
-map "brightmaps/auto/KNITB2C8.png"
+map "brightmaps/Bruiser/KNITB2C8.png"
 disablefullbright
 }
 brightmap sprite BAROB3C7 {
-map "brightmaps/auto/KNITB3C7.png"
+map "brightmaps/Bruiser/KNITB3C7.png"
 disablefullbright
 }
 brightmap sprite BAROB4C6 {
-map "brightmaps/auto/KNITB4C6.png"
+map "brightmaps/Bruiser/KNITB4C6.png"
 disablefullbright
 }
 brightmap sprite BAROB5C5 {
-map "brightmaps/auto/KNITB5C5.png"
+map "brightmaps/Bruiser/KNITB5C5.png"
 disablefullbright
 }
 brightmap sprite BAROC1 {
-map "brightmaps/auto/KNITC1.png"
+map "brightmaps/Bruiser/KNITC1.png"
 disablefullbright
 }
 brightmap sprite BAROC2B8 {
-map "brightmaps/auto/KNITC2B8.png"
+map "brightmaps/Bruiser/KNITC2B8.png"
 disablefullbright
 }
 brightmap sprite BAROC3B7 {
-map "brightmaps/auto/KNITC3B7.png"
+map "brightmaps/Bruiser/KNITC3B7.png"
 disablefullbright
 }
 brightmap sprite BAROC4B6 {
-map "brightmaps/auto/KNITC4B6.png"
+map "brightmaps/Bruiser/KNITC4B6.png"
 disablefullbright
 }
 brightmap sprite BAROC5B5 {
-map "brightmaps/auto/KNITC5B5.png"
+map "brightmaps/Bruiser/KNITC5B5.png"
 disablefullbright
 }
 brightmap sprite BAROD1 {
-map "brightmaps/auto/KNITD1.png"
+map "brightmaps/Bruiser/KNITD1.png"
 disablefullbright
 }
 brightmap sprite BAROD2A8 {
-map "brightmaps/auto/KNITD2A8.png"
+map "brightmaps/Bruiser/KNITD2A8.png"
 disablefullbright
 }
 brightmap sprite BAROD3A7 {
-map "brightmaps/auto/KNITD3A7.png"
+map "brightmaps/Bruiser/KNITD3A7.png"
 disablefullbright
 }
 brightmap sprite BAROD4A6 {
-map "brightmaps/auto/KNITD4A6.png"
+map "brightmaps/Bruiser/KNITD4A6.png"
 disablefullbright
 }
 brightmap sprite BAROD5A5 {
-map "brightmaps/auto/KNITD5A5.png"
+map "brightmaps/Bruiser/KNITD5A5.png"
 disablefullbright
 }
 brightmap sprite BS1MA0 {
-map "brightmaps/auto/BS2MA0.png"
+map "brightmaps/Bruiser/BS2MA0.png"
 disablefullbright
 }
 brightmap sprite BS1Pa1 {
-map "brightmaps/auto/BS2Pa1.png"
+map "brightmaps/Bruiser/BS2Pa1.png"
 disablefullbright
 }
 brightmap sprite BS1Pa2 {
-map "brightmaps/auto/BS2Pa2.png"
+map "brightmaps/Bruiser/BS2Pa2.png"
 disablefullbright
 }
 brightmap sprite BS1Pa3 {
-map "brightmaps/auto/BS2Pa3.png"
+map "brightmaps/Bruiser/BS2Pa3.png"
 disablefullbright
 }
 brightmap sprite BS1Pa4 {
-map "brightmaps/auto/BS2Pa4.png"
+map "brightmaps/Bruiser/BS2Pa4.png"
 disablefullbright
 }
 brightmap sprite BS1Pa5 {
-map "brightmaps/auto/BS2Pa5.png"
+map "brightmaps/Bruiser/BS2Pa5.png"
 disablefullbright
 }
 brightmap sprite BS1Pa6 {
-map "brightmaps/auto/BS2Pa6.png"
+map "brightmaps/Bruiser/BS2Pa6.png"
 disablefullbright
 }
 brightmap sprite BS1Pa7 {
-map "brightmaps/auto/BS2Pa7.png"
+map "brightmaps/Bruiser/BS2Pa7.png"
 disablefullbright
 }
 brightmap sprite BS1Pa8 {
-map "brightmaps/auto/BS2Pa8.png"
+map "brightmaps/Bruiser/BS2Pa8.png"
 disablefullbright
 }
 brightmap sprite BS1Pb1 {
-map "brightmaps/auto/BS2Pb1.png"
+map "brightmaps/Bruiser/BS2Pb1.png"
 disablefullbright
 }
 brightmap sprite BS1Pb2 {
-map "brightmaps/auto/BS2Pb2.png"
+map "brightmaps/Bruiser/BS2Pb2.png"
 disablefullbright
 }
 brightmap sprite BS1Pb3 {
-map "brightmaps/auto/BS2Pb3.png"
+map "brightmaps/Bruiser/BS2Pb3.png"
 disablefullbright
 }
 brightmap sprite BS1Pb4 {
-map "brightmaps/auto/BS2Pb4.png"
+map "brightmaps/Bruiser/BS2Pb4.png"
 disablefullbright
 }
 brightmap sprite BS1Pb5 {
-map "brightmaps/auto/BS2Pb5.png"
+map "brightmaps/Bruiser/BS2Pb5.png"
 disablefullbright
 }
 brightmap sprite BS1Pb6 {
-map "brightmaps/auto/BS2Pb6.png"
+map "brightmaps/Bruiser/BS2Pb6.png"
 disablefullbright
 }
 brightmap sprite BS1Pb7 {
-map "brightmaps/auto/BS2Pb7.png"
+map "brightmaps/Bruiser/BS2Pb7.png"
 disablefullbright
 }
 brightmap sprite BS1Pb8 {
-map "brightmaps/auto/BS2Pb8.png"
+map "brightmaps/Bruiser/BS2Pb8.png"
+disablefullbright
+}
+
+// HELL KNIGHT
+
+brightmap sprite SBOSa1 {
+map "brightmaps/Bruiser/SBOSa1.png"
+disablefullbright
+}
+brightmap sprite SBOSa2 {
+map "brightmaps/Bruiser/SBOSa2.png"
+disablefullbright
+}
+brightmap sprite SBOSa3 {
+map "brightmaps/Bruiser/SBOSa3.png"
+disablefullbright
+}
+brightmap sprite SBOSa4 {
+map "brightmaps/Bruiser/SBOSa4.png"
+disablefullbright
+}
+brightmap sprite SBOSa5 {
+map "brightmaps/Bruiser/SBOSa5.png"
+disablefullbright
+}
+brightmap sprite SBOSa6 {
+map "brightmaps/Bruiser/SBOSa6.png"
+disablefullbright
+}
+brightmap sprite SBOSa7 {
+map "brightmaps/Bruiser/SBOSa7.png"
+disablefullbright
+}
+brightmap sprite SBOSa8 {
+map "brightmaps/Bruiser/SBOSa8.png"
+disablefullbright
+}
+brightmap sprite SBOSb1 {
+map "brightmaps/Bruiser/SBOSb1.png"
+disablefullbright
+}
+brightmap sprite SBOSb2 {
+map "brightmaps/Bruiser/SBOSb2.png"
+disablefullbright
+}
+brightmap sprite SBOSb3 {
+map "brightmaps/Bruiser/SBOSb3.png"
+disablefullbright
+}
+brightmap sprite SBOSb4 {
+map "brightmaps/Bruiser/SBOSb4.png"
+disablefullbright
+}
+brightmap sprite SBOSb5 {
+map "brightmaps/Bruiser/SBOSb5.png"
+disablefullbright
+}
+brightmap sprite SBOSb6 {
+map "brightmaps/Bruiser/SBOSb6.png"
+disablefullbright
+}
+brightmap sprite SBOSb7 {
+map "brightmaps/Bruiser/SBOSb7.png"
+disablefullbright
+}
+brightmap sprite SBOSb8 {
+map "brightmaps/Bruiser/SBOSb8.png"
+disablefullbright
+}
+brightmap sprite SBOSc1 {
+map "brightmaps/Bruiser/SBOSc1.png"
+disablefullbright
+}
+brightmap sprite SBOSc2 {
+map "brightmaps/Bruiser/SBOSc2.png"
+disablefullbright
+}
+brightmap sprite SBOSc4 {
+map "brightmaps/Bruiser/SBOSc4.png"
+disablefullbright
+}
+brightmap sprite SBOSc5 {
+map "brightmaps/Bruiser/SBOSc5.png"
+disablefullbright
+}
+brightmap sprite SBOSc6 {
+map "brightmaps/Bruiser/SBOSc6.png"
+disablefullbright
+}
+brightmap sprite SBOSc7 {
+map "brightmaps/Bruiser/SBOSc7.png"
+disablefullbright
+}
+brightmap sprite SBOSc8 {
+map "brightmaps/Bruiser/SBOSc8.png"
+disablefullbright
+}
+brightmap sprite SBOSd1 {
+map "brightmaps/Bruiser/SBOSd1.png"
+disablefullbright
+}
+brightmap sprite SBOSd2 {
+map "brightmaps/Bruiser/SBOSd2.png"
+disablefullbright
+}
+brightmap sprite SBOSd3 {
+map "brightmaps/Bruiser/SBOSd3.png"
+disablefullbright
+}
+brightmap sprite SBOSd4 {
+map "brightmaps/Bruiser/SBOSd4.png"
+disablefullbright
+}
+brightmap sprite SBOSd5 {
+map "brightmaps/Bruiser/SBOSd5.png"
+disablefullbright
+}
+brightmap sprite SBOSd6 {
+map "brightmaps/Bruiser/SBOSd6.png"
+disablefullbright
+}
+brightmap sprite SBOSd7 {
+map "brightmaps/Bruiser/SBOSd7.png"
+disablefullbright
+}
+brightmap sprite SBOSd8 {
+map "brightmaps/Bruiser/SBOSd8.png"
+disablefullbright
+}
+brightmap sprite SBOSe1 {
+map "brightmaps/Bruiser/SBOSe1.png"
+disablefullbright
+}
+brightmap sprite SBOSe2 {
+map "brightmaps/Bruiser/SBOSe2.png"
+disablefullbright
+}
+brightmap sprite SBOSe3 {
+map "brightmaps/Bruiser/SBOSe3.png"
+disablefullbright
+}
+brightmap sprite SBOSe4 {
+map "brightmaps/Bruiser/SBOSe4.png"
+disablefullbright
+}
+brightmap sprite SBOSe5 {
+map "brightmaps/Bruiser/SBOSe5.png"
+disablefullbright
+}
+brightmap sprite SBOSe6 {
+map "brightmaps/Bruiser/SBOSe6.png"
+disablefullbright
+}
+brightmap sprite SBOSe7 {
+map "brightmaps/Bruiser/SBOSe7.png"
+disablefullbright
+}
+brightmap sprite SBOSe8 {
+map "brightmaps/Bruiser/SBOSe8.png"
+disablefullbright
+}
+brightmap sprite SBOSf1 {
+map "brightmaps/Bruiser/SBOSf1.png"
+disablefullbright
+}
+brightmap sprite SBOSf2 {
+map "brightmaps/Bruiser/SBOSf2.png"
+disablefullbright
+}
+brightmap sprite SBOSf3 {
+map "brightmaps/Bruiser/SBOSf3.png"
+disablefullbright
+}
+brightmap sprite SBOSf4 {
+map "brightmaps/Bruiser/SBOSf4.png"
+disablefullbright
+}
+brightmap sprite SBOSf5 {
+map "brightmaps/Bruiser/SBOSf5.png"
+disablefullbright
+}
+brightmap sprite SBOSf6 {
+map "brightmaps/Bruiser/SBOSf6.png"
+disablefullbright
+}
+brightmap sprite SBOSf7 {
+map "brightmaps/Bruiser/SBOSf7.png"
+disablefullbright
+}
+brightmap sprite SBOSf8 {
+map "brightmaps/Bruiser/SBOSf8.png"
+disablefullbright
+}
+brightmap sprite KNIIA1 {
+map "brightmaps/Bruiser/KNIIA1.png"
+disablefullbright
+}
+brightmap sprite KNIIA2A8 {
+map "brightmaps/Bruiser/KNIIA2A8.png"
+disablefullbright
+}
+brightmap sprite KNIIA3A7 {
+map "brightmaps/Bruiser/KNIIA3A7.png"
+disablefullbright
+}
+brightmap sprite KNIIA4A6 {
+map "brightmaps/Bruiser/KNIIA4A6.png"
+disablefullbright
+}
+brightmap sprite KNIIA5 {
+map "brightmaps/Bruiser/KNIIA5.png"
+disablefullbright
+}
+brightmap sprite KNIIB1 {
+map "brightmaps/Bruiser/KNIIB1.png"
+disablefullbright
+}
+brightmap sprite KNIIB2B8 {
+map "brightmaps/Bruiser/KNIIB2B8.png"
+disablefullbright
+}
+brightmap sprite KNIIB3B7 {
+map "brightmaps/Bruiser/KNIIB3B7.png"
+disablefullbright
+}
+brightmap sprite KNIIB4B6 {
+map "brightmaps/Bruiser/KNIIB4B6.png"
+disablefullbright
+}
+brightmap sprite KNIIB5 {
+map "brightmaps/Bruiser/KNIIB5.png"
+disablefullbright
+}
+brightmap sprite KNITA1 {
+map "brightmaps/Bruiser/KNITA1.png"
+disablefullbright
+}
+brightmap sprite KNITA2D8 {
+map "brightmaps/Bruiser/KNITA2D8.png"
+disablefullbright
+}
+brightmap sprite KNITA3D7 {
+map "brightmaps/Bruiser/KNITA3D7.png"
+disablefullbright
+}
+brightmap sprite KNITA4D6 {
+map "brightmaps/Bruiser/KNITA4D6.png"
+disablefullbright
+}
+brightmap sprite KNITA5D5 {
+map "brightmaps/Bruiser/KNITA5D5.png"
+disablefullbright
+}
+brightmap sprite KNITB1 {
+map "brightmaps/Bruiser/KNITB1.png"
+disablefullbright
+}
+brightmap sprite KNITB2C8 {
+map "brightmaps/Bruiser/KNITB2C8.png"
+disablefullbright
+}
+brightmap sprite KNITB3C7 {
+map "brightmaps/Bruiser/KNITB3C7.png"
+disablefullbright
+}
+brightmap sprite KNITB4C6 {
+map "brightmaps/Bruiser/KNITB4C6.png"
+disablefullbright
+}
+brightmap sprite KNITB5C5 {
+map "brightmaps/Bruiser/KNITB5C5.png"
+disablefullbright
+}
+brightmap sprite KNITC1 {
+map "brightmaps/Bruiser/KNITC1.png"
+disablefullbright
+}
+brightmap sprite KNITC2B8 {
+map "brightmaps/Bruiser/KNITC2B8.png"
+disablefullbright
+}
+brightmap sprite KNITC3B7 {
+map "brightmaps/Bruiser/KNITC3B7.png"
+disablefullbright
+}
+brightmap sprite KNITC4B6 {
+map "brightmaps/Bruiser/KNITC4B6.png"
+disablefullbright
+}
+brightmap sprite KNITC5B5 {
+map "brightmaps/Bruiser/KNITC5B5.png"
+disablefullbright
+}
+brightmap sprite KNITD1 {
+map "brightmaps/Bruiser/KNITD1.png"
+disablefullbright
+}
+brightmap sprite KNITD2A8 {
+map "brightmaps/Bruiser/KNITD2A8.png"
+disablefullbright
+}
+brightmap sprite KNITD3A7 {
+map "brightmaps/Bruiser/KNITD3A7.png"
+disablefullbright
+}
+brightmap sprite KNITD4A6 {
+map "brightmaps/Bruiser/KNITD4A6.png"
+disablefullbright
+}
+brightmap sprite KNITD5A5 {
+map "brightmaps/Bruiser/KNITD5A5.png"
+disablefullbright
+}
+brightmap sprite BS2MA0 {
+map "brightmaps/Bruiser/BS2MA0.png"
+disablefullbright
+}
+brightmap sprite BS2Pa1 {
+map "brightmaps/Bruiser/BS2Pa1.png"
+disablefullbright
+}
+brightmap sprite BS2Pa2 {
+map "brightmaps/Bruiser/BS2Pa2.png"
+disablefullbright
+}
+brightmap sprite BS2Pa3 {
+map "brightmaps/Bruiser/BS2Pa3.png"
+disablefullbright
+}
+brightmap sprite BS2Pa4 {
+map "brightmaps/Bruiser/BS2Pa4.png"
+disablefullbright
+}
+brightmap sprite BS2Pa5 {
+map "brightmaps/Bruiser/BS2Pa5.png"
+disablefullbright
+}
+brightmap sprite BS2Pa6 {
+map "brightmaps/Bruiser/BS2Pa6.png"
+disablefullbright
+}
+brightmap sprite BS2Pa7 {
+map "brightmaps/Bruiser/BS2Pa7.png"
+disablefullbright
+}
+brightmap sprite BS2Pa8 {
+map "brightmaps/Bruiser/BS2Pa8.png"
+disablefullbright
+}
+brightmap sprite BS2Pb1 {
+map "brightmaps/Bruiser/BS2Pb1.png"
+disablefullbright
+}
+brightmap sprite BS2Pb2 {
+map "brightmaps/Bruiser/BS2Pb2.png"
+disablefullbright
+}
+brightmap sprite BS2Pb3 {
+map "brightmaps/Bruiser/BS2Pb3.png"
+disablefullbright
+}
+brightmap sprite BS2Pb4 {
+map "brightmaps/Bruiser/BS2Pb4.png"
+disablefullbright
+}
+brightmap sprite BS2Pb5 {
+map "brightmaps/Bruiser/BS2Pb5.png"
+disablefullbright
+}
+brightmap sprite BS2Pb6 {
+map "brightmaps/Bruiser/BS2Pb6.png"
+disablefullbright
+}
+brightmap sprite BS2Pb7 {
+map "brightmaps/Bruiser/BS2Pb7.png"
+disablefullbright
+}
+brightmap sprite BS2Pb8 {
+map "brightmaps/Bruiser/BS2Pb8.png"
 disablefullbright
 }
 

@@ -1,4 +1,4 @@
-Class BD_RocketLauncher : BDoomWeapon replaces RocketLauncher
+Class BD_RocketLauncher : BDoomWeapon //replaces RocketLauncher
 {
 	Default
 	{
@@ -22,17 +22,19 @@ override void DoEffect()
 		{
 		if(bdoom_weapons == 2)
 			{
-				Ammo1 = ammo(Owner.FindInventory("RLClip"));
-				AmmoUse1 = 1;
-				AmmoUse2 = 0;
-				bAMMO_OPTIONAL = true;
+			if (!ammo1)
+				Owner.GiveInventory("RLClip",6);
+			Ammo1 = ammo(Owner.FindInventory("RLClip"));
+			AmmoUse1 = 1;
+			AmmoUse2 = 0;
+			bAMMO_OPTIONAL = true;
 			}
 		else
 			{
-				Ammo1 = ammo(Owner.FindInventory("RocketAmmo"));
-				AmmoUse1 = 1;
-				AmmoUse2 = 1;
-				bAMMO_OPTIONAL = false;
+			Ammo1 = ammo(Owner.FindInventory("RocketAmmo"));
+			AmmoUse1 = 1;
+			AmmoUse2 = 1;
+			bAMMO_OPTIONAL = false;
 			}
 		}
 	Super.DoEffect();
@@ -46,9 +48,13 @@ states
 		LAUN B 1;
 		loop;
 	Select:
-		TNT1 A 0 A_JumpIf(bdoom_weapons==2,"Select.Modern");
-		TNT1 A 0 { if(bdoom_weapons ==1)
-			A_PlaySound("weapons/rlan/draw");}
+		TNT1 A 0 { 
+			if(bdoom_weapons > 0)
+				A_PlaySound("weapons/rlan/draw");
+			If(bdoom_weapons == 2)
+				return ResolveState("Select.Modern");
+			return ResolveState(null);
+			}
 		//TNT1 AAAAAAAA 0 A_Raise();
 		RLAN DCBEFG 1 A_WeaponReady(WRF_NOFIRE);
 		goto ready;
@@ -338,7 +344,7 @@ states
 }
 
 
-Class BD_Rocket : Actor replaces Rocket
+Class BD_Rocket : Actor //replaces Rocket
 {
 Default {
 	Radius 11;
