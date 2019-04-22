@@ -27,7 +27,7 @@ Default
 	}
 override void Tick () {
 	super.Tick();
-	if (!bNoTimeFreeze && (globalfreeze || level.Frozen))
+	if (!level.isFrozen())
 		return;
 	else if (!bdoom_flames)
 		return;
@@ -170,7 +170,7 @@ Default {
 	}
 override void Tick() {
 	Super.Tick();
-	if (!bNoTimeFreeze && (globalfreeze || level.Frozen))
+	if (!level.isFrozen())
 		return;
 	else if (!bdoom_flames)
 		return;

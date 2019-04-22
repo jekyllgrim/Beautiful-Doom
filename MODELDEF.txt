@@ -23,7 +23,7 @@ Model ModernPlasmaTracer
 }*/
 
 
-Model BloodDrop //debug
+Model BD_Blood //debug
 {
 	Path "models"
 	Model 0 "tracer.md3"

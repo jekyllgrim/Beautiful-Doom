@@ -38,12 +38,12 @@ states
 	Death2: //turn around and fall to the right, like Shotgunguy alt.death 3;
 		TNT1 A 0 A_SetScale(scalex*(randompick(-1,1)),scaley);
 		PLA2 H 5;
-			TNT1 A 0 A_SpawnItemEx("BloodDrop",random(-2,2),0,random(32,34),	random(4,6),0,random(3,5),random(-70,-90)*scalex);
+			TNT1 A 0 A_SpawnItemEx("BD_Blood",random(-2,2),0,random(32,34),	random(4,6),0,random(3,5),random(-70,-90)*scalex);
 		PLA2 I 5 A_PlayerScream();
-			TNT1 A 0 A_SpawnItemEx("BloodDrop",random(-2,2),0,random(24,26),	random(4,6),0,random(3,5),random(-70,-90)*scalex);
+			TNT1 A 0 A_SpawnItemEx("BD_Blood",random(-2,2),0,random(24,26),	random(4,6),0,random(3,5),random(-70,-90)*scalex);
 		PLA2 J 5 A_NoBlocking();
-			TNT1 A 0 A_SpawnItemEx("BloodDrop",random(-2,2),0,random(10,16),	random(4,6),0,random(3,5),random(-70,-90)*scalex);
-		PLA2 KL 5 A_SpawnItemEx("BloodDrop",random(-14,-16),0,random(4,8),	random(4,6),0,random(3,5),random(-70,-90)*scalex);
+			TNT1 A 0 A_SpawnItemEx("BD_Blood",random(-2,2),0,random(10,16),	random(4,6),0,random(3,5),random(-70,-90)*scalex);
+		PLA2 KL 5 A_SpawnItemEx("BD_Blood",random(-14,-16),0,random(4,8),	random(4,6),0,random(3,5),random(-70,-90)*scalex);
 		PLA2 MN 5;
 		PLA2 O -1;
 		stop;
@@ -62,10 +62,10 @@ states
 		PLA4 H 5 A_SpawnItemEx("DoomguyHand",0,-10,24,random(1,2),0,random(1,2),random(70,90),0);
 		PLA4 I 15;
 		TNT1 A 0 A_PlaySound("grunt/pain");
-		PLA4 III random(15,25) A_spawnitemEx("BloodDrop",8,-18,24,random(3,4),0,random(1,2),random(45,60),64);
+		PLA4 III random(15,25) A_spawnitemEx("BD_Blood",8,-18,24,random(3,4),0,random(1,2),random(45,60),64);
 		TNT1 A 0 A_NoBlocking();
 		TNT1 A 0 A_PlaySound("grunt/pain");
-		PLA4 III random(15,25) A_spawnitemEx("BloodDrop",8,-18,24,random(3,4),0,random(1,2),random(45,60),64);
+		PLA4 III random(15,25) A_spawnitemEx("BD_Blood",8,-18,24,random(3,4),0,random(1,2),random(45,60),64);
 		TNT1 A 0 A_spawnitem("BloodSpatter",0,random(16,20));
 		PLA4 J 10 A_PlayerScream();
 		PLA4 K 10 A_spawnitem("BloodSpatter",0,random(16,20));
@@ -172,10 +172,10 @@ states
 			TNT1 A 0 A_Jump(80,2,3);
 		PLA5 YYYZZ 7 A_SpawnItemEx("BloodSpurt",8,random(-8,-10),random(24,26),random(3,5),0,random(5,10),	random(35,65),	0,80);
 		PLA5 Z 5 A_Scream();
-		PLA5 HHIIJJKK 2 A_SpawnItemEx("BloodDrop",0,random(0,6),random(12,18),random(3,5),0,random(5,10),	random(35,65),	0,80);
-		PLA5 LLMM 2 A_SpawnItemEx("BloodDrop",0,random(6,10),random(6,12),random(3,5),0,random(5,10),	random(35,65),	0,80);
+		PLA5 HHIIJJKK 2 A_SpawnItemEx("BD_Blood",0,random(0,6),random(12,18),random(3,5),0,random(5,10),	random(35,65),	0,80);
+		PLA5 LLMM 2 A_SpawnItemEx("BD_Blood",0,random(6,10),random(6,12),random(3,5),0,random(5,10),	random(35,65),	0,80);
 		TNT1 A 0 A_PlaySound("gibs/meatland");
-		PLA5 NNOO 2 A_SpawnItemEx("BloodDrop",0,random(10,12),random(2,6),random(3,5),0,random(5,10),	random(35,65),	0,100);
+		PLA5 NNOO 2 A_SpawnItemEx("BD_Blood",0,random(10,12),random(2,6),random(3,5),0,random(5,10),	random(35,65),	0,100);
 		PLA5 P -1;
 		stop;
 	}

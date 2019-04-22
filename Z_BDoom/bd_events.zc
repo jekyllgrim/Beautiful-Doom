@@ -102,6 +102,7 @@ override void CheckReplacement(ReplaceEvent e) {
 	if (!bdoom_replacemonsters)
 		return;
 	switch (e.Replacee.GetClassName()) {
+		case 'Blood'				: e.Replacement = "BD_Blood";			break;
 		case 'Zombieman' 			: e.Replacement = "BD_Zombieman"; 		break;
 		case 'ShotgunGuy' 			: e.Replacement = "BD_ShotgunGuy"; 		break;
 		case 'ChaingunGuy' 			: e.Replacement = "BD_ChaingunGuy"; 	break;

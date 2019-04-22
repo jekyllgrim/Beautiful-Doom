@@ -576,9 +576,9 @@ States
 				A_SpawnItemEx("ModernPlasmaPiece",0,0,0,frandom(-3,3),frandom(-3,3),frandom(3,8),0,0,32);
 			}
 		PEXP CDEFGH 1 bright {
-			A_CustomRailGun(0,0,"null","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"NullPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
-			A_CustomRailGun(0,0,"null","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"NullPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
-			A_CustomRailGun(0,0,"null","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"NullPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
+			A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"NullPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
+			A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"NullPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
+			A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"NullPuff",random(0,360),random(0,360),32,64,0,0,"MPlasmaBallRay");
 			}
 		PEXP IJKLM 1 bright;
 		stop;

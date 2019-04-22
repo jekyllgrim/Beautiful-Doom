@@ -193,7 +193,7 @@ states
 	}
 }
 
-Actor DecorativeBloodDrop : BloodDrop
+Actor DecorativeBloodDrop : BD_Blood
 {
 states	
 	{

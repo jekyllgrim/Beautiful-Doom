@@ -161,7 +161,7 @@ states
 				Radius_Quake(2,8,0,8,0);
 			if(bdoom_blood) {
 				for (int i = 6; i > 0; i--)
-					A_SpawnItemEx("BloodDrop",0,0,0,	frandom(-3,3),frandom(-3,3),frandom(3,6),flags:SXF_SETTARGET,failchance:92);
+					A_SpawnItemEx("BD_Blood",0,0,0,	frandom(-3,3),frandom(-3,3),frandom(3,6),flags:SXF_SETTARGET,failchance:92);
 				}
 			if(bdoom_debris && target)
 				A_SpawnItemEx("BasicMetalPiece",random(-4,4),random(-4,4),random(10,48),		frandom(5,8),frandom(-2,2),random(4,7),	AngleTo(target)*random(170,190),SXF_SETTARGET, 144);	

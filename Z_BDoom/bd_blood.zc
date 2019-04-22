@@ -53,7 +53,7 @@ states
 }
 
 
-Class BloodDrop : BloodGeneral replaces Blood
+Class BD_Blood : BloodGeneral replaces Blood
 {
 double restscale;
 Default {
@@ -121,10 +121,10 @@ states
 			A_SetScale(scale.x*randompick(-1,1)*frandom(0.7,1.2),scale.y*randompick(-1,1)*frandom(0.7,1.2));
 			roll = random(0,359);
 			self.sprite = GetSpriteIndex(bsprite[random(0,2)]);
-			return resolvestate("BloodDrop");
+			return resolvestate("BD_Blood");
 			return resolvestate(null);
 			}
-	BloodDrop:
+	BD_Blood:
 		#### ABCDEFGHIJKLMNOPQRS 1 {
 			if (waterlevel > 0)
 				return ResolveState("Water");
@@ -223,7 +223,7 @@ states
 }
 
 //resting version of blood drop without any animation
-Class BD_BloodPool : BloodDrop
+Class BD_BloodPool : BD_Blood
 {
 Default {
 	+NOINTERACTION
@@ -474,10 +474,10 @@ states
 }
 
 //for projectile bullets
-Class BD_BloodSplatter : BloodDrop replaces BloodSplatter {}
+Class BD_BloodSplatter : BD_Blood replaces BloodSplatter {}
 
 //thinner and faster version for spurts
-Class BloodSpray : BloodDrop
+Class BloodSpray : BD_Blood
 {
 Default {
 	+THRUACTORS
@@ -503,7 +503,7 @@ states
 			roll = random(0,359);
 			self.sprite = GetSpriteIndex(bsprite[random(0,2)]);
 			}
-	BloodDrop:
+	BD_Blood:
 		#### ABCDEFGHIJKLMNOPQRS 1 {
 			if (waterlevel > 0)
 				return ResolveState("Fade");
@@ -608,7 +608,7 @@ states
 
 
 //large quickly disappearing spray creating a "bloody mist" upon xdeath
-Class BFountainSpray : BloodDrop
+Class BFountainSpray : BD_Blood
 {
 Default {
 	-MISSILE
@@ -619,7 +619,7 @@ Default {
 	}
 states
 	{
-	BloodDrop:
+	BD_Blood:
 		#### ABCDEFGHIJKKLLMMNNOOOPPPQQQRRRSSS 1 {
 			if (waterlevel > 0) {
 				self.destroy();

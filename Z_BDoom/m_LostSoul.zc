@@ -12,7 +12,7 @@ Default {
 override void Tick() {
 	if (target)
 		bFLOATBOB = false;
-	if (!bNoTimeFreeze && (globalfreeze || level.Frozen))
+	if (!level.isFrozen())
 		return;
 	if (bdoom_flames == 1 && !InstateSequence(curstate,FindState("Death"))) {
 		if (InstateSequence(curstate,FindState("Missile")))

@@ -98,11 +98,11 @@ states
 	}
 }
 
-//smaller version of BloodDrop that spawns behind flying gibs
-Class BD_GibBlood : BloodDrop {
+//smaller version of BD_Blood that spawns behind flying gibs
+Class BD_GibBlood : BD_Blood {
 Default {
 	Scale 0.15;
-	deathsound "gibs/blooddrop";
+	deathsound "gibs/BD_Blood";
 	}
 override void PostBeginPlay() {
 	super.PostBeginPlay();
@@ -519,7 +519,7 @@ states
 		#### A 1 NoDelay GibBeginPlay();
 		#### # 3 {
 			if (bdoom_blood)
-				A_SpawnItemEx("BloodDrop",frandom(-2,2),frandom(-2,2),frandom(8,22),0,frandom(0,1),frandom(0,1),random(175,185),SXF_TRANSFERPOINTERS,144);
+				A_SpawnItemEx("BD_Blood",frandom(-2,2),frandom(-2,2),frandom(8,22),0,frandom(0,1),frandom(0,1),random(175,185),SXF_TRANSFERPOINTERS,144);
 			if (self.frame < finalframe) //animate flying until the last flying frame
 				self.frame++;
 			}
@@ -748,7 +748,7 @@ states
 		#### A 0 NoDelay GibBeginPlay();
 		#### A 1 {
 			if (bdoom_blood)
-				A_SpawnItemEx("BloodDrop",frandom(-2,2),frandom(-2,2),frandom(0,2),0,frandom(0,1),frandom(0,1),random(175,185),SXF_TRANSFERPOINTERS,144);
+				A_SpawnItemEx("BD_Blood",frandom(-2,2),frandom(-2,2),frandom(0,2),0,frandom(0,1),frandom(0,1),random(175,185),SXF_TRANSFERPOINTERS,144);
 			roll+=brot;
 			}
 		wait;

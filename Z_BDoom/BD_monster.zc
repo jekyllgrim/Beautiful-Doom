@@ -30,6 +30,7 @@ Default {
 	BDoomMonster.allowsmokedeath true;
 	BDoomMonster.allowfiredeath true;
 	attacksound "none";
+	bloodtype "BD_Blood", "BD_Blood", "BloodSpurt";
 	//+DOHARMSPECIES
 	}
 	
@@ -65,7 +66,7 @@ state BD_Refire(int ChanceToEnd = 128, statelabel endstate = "See")
 	
 override void Tick() {
 	super.Tick();
-	if (!bNoTimeFreeze && (globalfreeze || level.Frozen))
+	if (!level.isFrozen())
 		return;
 	if (burntimer >= 256)
 		return;	

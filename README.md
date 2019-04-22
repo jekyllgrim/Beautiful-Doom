@@ -23,6 +23,10 @@ https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752
 
 ** Dev updates log (dd.mm.yyyy) **
 
+22.04.2019
+- Added "Allow Beautiful Doom Weapons" and "Allow Beautiful Doom Monsters" options under Beautiful Doom Settings. They allow to completely remove modded weapons and monsters from the game. (Requires level restart.)
+- I'm in the process of updating how Modern Fist functions when Berserk is active. The jump attack is removed. With Berserk active you now can hold primary attack to punch continuously.
+
 16.04.2019
 - Converted Spider Mastermind to zscript and updated her death animation.
 

@@ -162,7 +162,7 @@ Default {
 states
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley);
+		TNT1 A 0 NoDelay A_SetScale(scale.x*randompick(-1,1),scale.y);
 		FIPR ABCDEFGHIJKLMNOPQRST 1  A_FadeOut(0.03);
 		stop;
 	}
