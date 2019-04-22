@@ -15,6 +15,15 @@ override void CheckReplacement(ReplaceEvent e) {
 		case 'RocketLauncher'	: e.Replacement = "BD_RocketLauncher"; 	break;
 		case 'PlasmaRifle' 		: e.Replacement = "BD_PlasmaRifle"; 	break;
 		case 'BFG9000' 			: e.Replacement = "BD_BFG9000"; 		break;
+		
+		case 'Clip' 			: e.Replacement = "BD_Clip"; 			break;
+		case 'ClipBox' 			: e.Replacement = "BD_ClipBox"; 		break;
+		case 'Shell' 			: e.Replacement = "BD_Shell"; 			break;
+		case 'ShellBox' 			: e.Replacement = "BD_ShellBox"; 	break;
+		case 'RocketAmmo' 			: e.Replacement = "BD_RocketAmmo"; 	break;
+		case 'RocketBox' 			: e.Replacement = "BD_RocketBox"; 	break;
+		case 'Cell' 			: e.Replacement = "BD_Cell"; 			break;
+		case 'CellPack' 			: e.Replacement = "BD_CellPack"; 	break;
 		}
 	e.IsFinal = true;
 	}

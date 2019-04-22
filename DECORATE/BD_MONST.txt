@@ -4,17 +4,6 @@
 //*****************************\\
 //*****************************\\
 
-Actor BD_KillChecker : DummyChecker
-{
-inventory.maxamount 10
-}
-
-Actor BD_MonsterClip : DummyChecker
-{
-inventory.maxamount 50
-}
-
-
 
 Actor CorpseFlySpawner
 {

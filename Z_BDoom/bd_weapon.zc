@@ -531,3 +531,65 @@ Default {
 	bouncesound "chaingun/casing";
 	}
 }
+
+
+//******
+// AMMO
+//******
+
+
+Class BD_Clip : Clip //replaces Clip
+{
+Default {
+	inventory.pickupsound "ammo/clip";
+	}
+}
+
+Class BD_ClipBox : ClipBox //replaces ClipBox
+{
+Default {
+	inventory.pickupsound "ammo/clipbox";
+	}
+}
+
+Class BD_Shell : Shell //replaces Shell
+{
+Default {
+	inventory.pickupsound "ammo/shells";
+	}
+}
+
+Class BD_ShellBox : ShellBox //replaces ShellBox
+{
+Default {
+	inventory.pickupsound "ammo/shells";
+	}
+}
+
+Class BD_RocketAmmo : RocketAmmo //replaces RocketAmmo
+{
+Default {
+	inventory.pickupsound "ammo/rockets";
+	}
+}
+
+Class BD_RocketBox : RocketBox //replaces RocketBox
+{
+Default {
+	inventory.pickupsound "ammo/rockets";
+	}
+}
+
+Class BD_Cell : Cell //replaces Cell
+{
+Default {
+	inventory.pickupsound "ammo/cells";
+	}
+}
+
+Class BD_CellPack : CellPack //replaces CellPack
+{
+Default {
+	inventory.pickupsound "ammo/cells";
+	}
+}
