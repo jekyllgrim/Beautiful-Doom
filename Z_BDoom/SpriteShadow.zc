@@ -58,7 +58,7 @@ class Z_SpriteShadow : Actor
 
 	override void Tick(void)
 	{
-		if (!level.isFrozen()) return;
+		if (level.isFrozen()) return;
 
 		if (!bStopTicking)
 		{
