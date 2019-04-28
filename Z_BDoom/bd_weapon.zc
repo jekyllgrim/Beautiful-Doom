@@ -79,9 +79,8 @@ override void DoEffect()
 				return;
 				}
 			//do this if used from Ready: will not only kick in overlay but will also move the weapon aside
-			else if	(InStateSequence(psp.curstate, FindState("Ready.Modern")) ) {
+			else if	(InStateSequence(psp.curstate, FindState("Ready.Modern")) )
 				owner.player.setPSprite(PSP_Weapon,ResolveState("QKick"));
-				}
 			//do this if used during Reload: weapon sprite will stay the same, kick will be shown and executed independently in overlay
 			else if (InStateSequence(psp.curstate,FindState("Reload.Modern"))	||
 					InStateSequence(psp.curstate, FindState("Reload.Modern1"))	||
@@ -89,9 +88,8 @@ override void DoEffect()
 					InStateSequence(psp.curstate, FindState("Reload"))			||
 					InStateSequence(psp.curstate, FindState("Reload1"))			||
 					InStateSequence(psp.curstate, FindState("ReloadEnd"))		||
-					InStateSequence(psp.curstate, FindState("ReloadDo")) 		){
+					InStateSequence(psp.curstate, FindState("ReloadDo")) 		)
 				owner.player.setPSprite(-10,FindState("QuickKick"));
-				}
 			}
 		}
 	}
@@ -453,7 +451,7 @@ states
 				self.sprite = GetSpriteIndex("CAS2");
 			else if (self is "ChaingunCasing")
 				self.sprite = GetSpriteIndex("CAS3");
-			roll = random(88,92);
+			roll = frandom(88,92);
 			}
 	Fly:
 		#### AABBCCBBAABBCCBB 1 {
@@ -489,7 +487,8 @@ states
 		#### # 1 {
 			if (pos.z <= floorz+1) {
 				SetOrigin((pos.x,pos.y,floorz),0);
-				roll = (randompick(0,180) + random(-8,8));
+				roll = random(-8,8);
+				scale.x*= randompick(-1,1);
 				bNOINTERACTION = true;
 				bMOVEWITHSECTOR = true;
 				bRELATIVETOFLOOR = true;

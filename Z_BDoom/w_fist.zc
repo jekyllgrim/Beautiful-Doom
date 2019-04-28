@@ -27,20 +27,25 @@ Default {
 override void DoEffect()
 	{
 	Super.DoEffect();
-	If (Owner)
+	If (!Owner)
+		return;
+	if(bdoom_weapons == 2)
 		{
-		if(bdoom_weapons == 2)
-			{
-				bNOAUTOFIRE = true;
-				bWIMPY_WEAPON = false;
-			}
-		else
-			{
-				bNOAUTOFIRE = false;
-				bWIMPY_WEAPON = true;
-			}
-		//Console.Printf("tcombo "..tcombo)
+			bNOAUTOFIRE = true;
+			bWIMPY_WEAPON = false;
 		}
+	else
+		{
+			bNOAUTOFIRE = false;
+			bWIMPY_WEAPON = true;
+		}
+	//Console.Printf("tcombo "..tcombo)
+	if (bdoom_weapons != 2 || owner.player.readyweapon != self) {
+			fcombo = 0;
+			lcombo = 0;
+			tcombo = 0;
+			hurtchance = 0;
+			}
 	}
 
 states
@@ -51,9 +56,9 @@ states
 				return ResolveState ("Select.Modern");
 			else if (bdoom_weapons == 1)
 				return ResolveState ("Select.Enhanced");
+			A_WeaponOffset(35.0,60.0,WOF_INTERPOLATE);
 			return ResolveState (null);
 			}
-		TNT1 A 0 A_WeaponOffset(35.0,60.0,WOF_INTERPOLATE);
 		FIS0 AAAAAA 1 {
 			A_WeaponOffset(-5.0,-5.0,WOF_ADD);
 			A_WeaponReady(WRF_NOFIRE|WRF_NOBOB);
@@ -62,10 +67,6 @@ states
 	Deselect:
 		TNT1 A 0 {
 			A_ClearOverlays(2,3);
-			invoker.fcombo = 0;
-			invoker.lcombo = 0;
-			invoker.tcombo = 0;
-			invoker.hurtchance = 0;
 			speed = default.speed;	
 			if (bdoom_weapons == 2)
 				return ResolveState ("Deselect.Modern");
@@ -80,10 +81,6 @@ states
 			if (bdoom_weapons == 2)
 				return ResolveState ("Ready.Modern");
 			A_ClearOverlays(2,3);
-			invoker.fcombo = 0;
-			invoker.lcombo = 0;
-			invoker.tcombo = 0;
-			invoker.hurtchance = 0;
 			speed = default.speed;	
 			if (bdoom_weapons == 1)
 				return ResolveState ("Ready.Enhanced");
@@ -92,16 +89,16 @@ states
 		FIS0 A 1 A_WeaponReady(WRF_NOSECONDARY);
 		loop;
 	Fire: //pre-fire 4 tics, fire 13 tics, refire 5 tics
-		TNT1 A 0 {
+		FIS0 A 1 {
 			if (bdoom_weapons == 2)
 				return ResolveState ("Fire.Modern");
 			else if (bdoom_weapons == 1)
 				return ResolveState ("Fire.Enhanced");
+			if (FindInventory("PowerStrength"))
+				return ResolveState ("FireStrong");
+			A_AlertMonsters();
 			return ResolveState (null);
 			}
-		TNT1 A 0 A_AlertMonsters;
-		TNT1 A 0 A_jumpifinventory("PowerStrength",1,"FireStrong");
-		FIS0 A 1;
 		FI10 BCD 1;
 		FIS0 E 3 A_CustomPunch(2*random(1,10), TRUE,0, "FistPuff_Vanilla");
 		FIS0 FGHIJ 2;
@@ -153,7 +150,11 @@ states
 		FIST A 1 A_WeaponReady;
 		goto ready;
 	Fire.Enhanced:
-		FIST A 1 A_jumpifinventory("PowerStrength",1,"FireStrong.Enhanced");
+		FIST A 1 {			
+			if (FindInventory("PowerStrength"))
+				return ResolveState ("FireStrong.Enhanced");
+			return ResolveState (null);
+			}
 		TNT1 A 0 A_playsound("weapons/fist/swing");
 		FIS1 BCD 1;
 		FIST E 1 A_CustomPunch(2*random(1,10), TRUE,0, "FistPuff");
@@ -167,8 +168,11 @@ states
 			}
 		goto ready.Enhanced;
 	Hold.Enhanced:
-		TNT1 A 0 A_jumpifinventory("PowerStrength",1,"HoldStrong.Enhanced");
-		TNT1 A 1;
+		TNT1 A 1 {			
+			if (FindInventory("PowerStrength"))
+				return ResolveState ("HoldStrong.Enhanced");
+			return ResolveState (null);
+			}
 		TNT1 A 0 A_playsound("weapons/fist/swing");
 		FIST BCD 1;
 		FIST E 1 A_CustomPunch(2*random(1,10), TRUE,0, "FistPuff");
@@ -217,8 +221,10 @@ states
 		goto ready;
 	AltHoldStrong:
 		KICK AB 1;
-		TNT1 A 0 { speed = default.speed *0.5; }
-		TNT1 A 0 A_playsound("weapons/kick/swing");
+		TNT1 A 0 { 
+			speed = default.speed *0.5;
+			A_playsound("weapons/kick/swing");
+			}
 		KICK CD 1;
 		TNT1 A 0 A_Recoil(-5);
 		KICK EF 1;

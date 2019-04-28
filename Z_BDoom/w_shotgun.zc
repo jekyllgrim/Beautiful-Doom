@@ -44,14 +44,14 @@ override void DoEffect()
 		{
 		if(bdoom_weapons == 2)
 			{
-			if (!ammo1)
-				Owner.GiveInventory("ShotgunClip",8);
 			Ammo1 = ammo(Owner.FindInventory("ShotgunClip") );
 			AmmoUse1 = 1;
 			Ammo2 = ammo(Owner.FindInventory("Shell"));
 			AmmoUse2 = 0;
 			bNOAUTOFIRE = true;
 			bAMMO_OPTIONAL = true;
+			if (!ammo1)
+				Owner.GiveInventory("ShotgunClip",8);
 			}
 		else
 			{
@@ -67,9 +67,10 @@ override void DoEffect()
 States
 {
 	Spawn:
-		SHOT A 1 NoDelay A_JumpIf(bdoom_weapons == 2,1);
-		loop;
-		SHOT B 1;
+		SHOT A 1 {
+			If(bdoom_weapons == 2)
+				frame = 1;
+			}
 		loop;
 	Ready:
 		SHOG A 1 {
@@ -83,45 +84,53 @@ States
 			}
 		loop;
 	Deselect:
-		TNT1 A 0 A_JumpIf(bdoom_weapons == 2,"Deselect.Modern");
-		TNT1 A 0 A_JumpIf(bdoom_weapons == 1,"Deselect.Enhanced");
-		SHOG A 1 A_Lower();
+		SHOG A 1 {
+			if(bdoom_weapons == 2)
+				return ResolveState("Deselect.Modern");
+			else if(bdoom_weapons == 1)
+				return ResolveState("Deselect.Enhanced");
+			A_Lower();
+			return ResolveState(null);
+			}
 		wait;
 	Select:
-		TNT1 A 0 { if (bdoom_weapons > 0)
-					A_PlaySound("weapons/shotgun/draw");
-				}
-		TNT1 A 0 A_JumpIf(bdoom_weapons == 2,"Select.Modern");
-		//TNT1 AAAAAAAA 0 A_Raise();
+		TNT1 A 0 { 
+			if (bdoom_weapons > 0)
+				A_PlaySound("weapons/shotgun/draw");
+			if(bdoom_weapons == 2)
+				return ResolveState("Select.Modern");
+			return ResolveState(null);
+			}
 		SHOS FEDCBA 1 A_WeaponReady(WRF_NOFIRE);
 		goto ready;
 	Fire: //fire 37 tics, refire 7 tics;
-		TNT1 A 0 A_JumpIf(bdoom_weapons==2,"Fire.Modern");
 		SHOG A 3 { 
-				A_AlertMonsters();
-				if(bdoom_weapons == 1) {
-					A_PlaySound("weapons/shotgun/fire"); }
-				else {
-					A_PlaySound("weapons/shotgf");}
-				
-				}
+			if(bdoom_weapons == 2)
+				return ResolveState("Fire.Modern");
+			A_AlertMonsters();
+			if(bdoom_weapons == 1)
+				A_PlaySound("weapons/shotgun/fire");
+			else
+				A_PlaySound("weapons/shotgf");
+			return ResolveState(null);
+			}
 		SHOF A 3 {
-				A_gunflash();
-				If(bdoom_tracers==1) {
-					A_FireBullets (5.6, 0, 7, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0); }
-				else {
-					A_FireBullets (5.6, 0, 7, 5, "EnBulletPuff",FBF_NORANDOMPUFFZ); }
-				}
+			A_gunflash();
+			If(bdoom_tracers)
+				A_FireBullets (5.6, 0, 7, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0);
+			else 
+				A_FireBullets (5.6, 0, 7, 5, "EnBulletPuff",FBF_NORANDOMPUFFZ);
+			}
 		SHOG BDFHIJKL 1;
 		SHOG M 2 {
-				if (bdoom_weapons == 1) {
-					 A_playsound("weapons/shotgun/pump",5); }
-				}
+			if (bdoom_weapons == 1)
+				 A_playsound("weapons/shotgun/pump",5);
+			}
 		SHOG N 3;
 		SHOG O 3 { 
-				If(bdoom_debris==1)
-					A_Eject("ShotgunCasing",20,frandom(-7,-8),6.5,frandom(0,1),FRandom(3,5),frandom(3,4));
-				}
+			If(bdoom_debris==1)
+				A_Eject("ShotgunCasing",20,frandom(-7,-8),6.5,frandom(0,1),FRandom(3,5),frandom(3,4));
+			}
 		SHOG NLKJIHGFE 1;
 		SHOG DCB 2 {
 			if (bdoom_weapons == 1)
@@ -129,7 +138,7 @@ States
 			}
 		SHOG A 7 A_ReFire();
 		TNT1 A 0 { 
-			If(bdoom_debris==1)				
+			If(bdoom_debris)				
 				A_Overlay(10,"BarrelSmoke");
 			}
 		Goto Ready;
@@ -137,28 +146,23 @@ States
 		//TNT1 A 1;
 		TNT1 AAAAAAAAAAAAAAA 	random(1,2) {
 			let s = player.FindPSprite(PSP_Weapon);
-			if (invoker.InStateSequence(s.curstate,invoker.FindState("Ready"))			||
-				invoker.InStateSequence(s.curstate,invoker.FindState("Ready.Modern"))	)
+			if (s && (invoker.InStateSequence(s.curstate,invoker.FindState("Ready"))			||
+				invoker.InStateSequence(s.curstate,invoker.FindState("Ready.Modern")))	)
 				A_Eject("BarrelSmoke",cos(pitch)*12,0,3.5,	frandom(0.015,-0.015),frandom(0.015,-0.015),0.1);
 			}
 		stop;
 	Flash:
-		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_muzzle")==1,3);
-		SHOF L 3 bright A_Light2();
+		SHOF L 3 bright {
+			A_Light2();
+			let s = player.FindPSprite(PSP_Flash);
+			if(GetCVAR("bdoom_muzzle")==1) {
+				s.sprite = GetSpriteIndex("SHOL");
+				s.frame = random(0,3);
+				}
+			}
 		TNT1 A 2 A_light1();
 		goto lightdone;
-		TNT1 A 0 A_Jump(256,1,3,5,7);
-		SHOL A 3 bright A_Light2();
-		TNT1 A 1 A_light1();
-		goto lightdone;
-		SHOL B 3 bright A_Light2();
-		TNT1 A 1 A_light1();
-		goto lightdone;
-		SHOL C 3 bright A_Light2();
-		TNT1 A 1 A_light1();
-		goto lightdone;
-		SHOL D 3 bright A_Light2();
-		TNT1 A 1 A_light1();
+		SHOL ABCD 0;
 		goto lightdone;
 	Deselect.Enhanced:
 		SHOG A 1 A_Lower(12);

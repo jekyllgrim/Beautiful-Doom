@@ -22,6 +22,18 @@ https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752
 
 
 ** Dev updates log (dd.mm.yyyy) **
+29.04.2019
+- Refactored some of the weapon code
+- Enhanced Chaingun's overheat redness is now applied and removed more smoothly
+- Fixed some potential issues in the Chaingun/Assault Rifle code
+- Added varied vanilla muzzle flashes to the Vanilla/Enhanced Chaingun
+- Added vanilla muzzle flashes to the Assault Rifle (WIP, colors require fixing)
+- Fixed/slightly nerfed Modern Plasma Rifle: accumulated heat now only decays while NOT firing it (previously decay happened while firing too, effectively slowing down accumulation)
+- Fixed a mistake that allowed to fire Modern Plasma Rifle immediately, skipping selection animation (this also used to disable heat indicator)
+- Buffed Modern Rocket Launcher: magazine size increased from 6 to 8; reload time slightly reduced
+- Rockets fired by Cyberdemon will now produce a sound when playing with Modern Guns
+- Fixed Assault Rifle's spread not increasing while firing in full automatic
+- Increased vertical recoil of the Modern SSG sprite (not the actual camera recoil)
 
 24.04.2019
 - Fixed a big issue that made some monsters or their SFX freeze at unintentended times

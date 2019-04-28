@@ -22,7 +22,10 @@ Default {
 	}
 override void DoEffect () {
 	super.DoEffect();
-	if (owner && bdoom_weapons == 2 && heatcounter > 0)
+	if (!owner)
+		return;
+	let psp = owner.player.FindPSprite(PSP_WEAPON);
+	if (psp && bdoom_weapons == 2 && heatcounter > 0 &&	!InStateSequence(psp.curstate,FindState("fire.Modern")))
 		heatcounter -= 0.02;
 	}
 states
@@ -34,12 +37,13 @@ states
 		PLAZ ABCDEFGHIJKLMNO 1 A_JumpIf(bdoom_weapons != 2, "Spawn");
 		loop;
 	Select:
-		TNT1 A 0 A_JumpIf(bdoom_weapons == 2,"Select.Modern");
 		TNT1 A 0 {
+			if (bdoom_weapons == 2)
+				return ResolveState("Select.Modern");
 			If(bdoom_weapons == 1)
 				A_PlaySound("weapons/plasma/draw");
+			return ResolveState(null);
 			}
-		//TNT1 AAAAAAAA 0 A_Raise;
 		PLGS ABCDEF 1 A_WeaponReady(WRF_NOFIRE);
 		goto ready;
 	Deselect:
@@ -47,26 +51,33 @@ states
 			A_ClearRefire();
 			A_StopSound(6);
 			A_ClearOverlays(5,7);
+			if (bdoom_weapons == 2)
+				return ResolveState("DeSelect.Modern");
+			if (bdoom_weapons == 21)
+				return ResolveState("Deselect.Enhanced");
+			return ResolveState(null);
 			}
-		TNT1 A 0 A_JumpIf(bdoom_weapons == 2,"DeSelect.Modern");
-		TNT1 A 0 A_JumpIf(bdoom_weapons == 1,"Deselect.Enhanced");
 		PLGG A 1 A_lower;
 		loop;
 	Ready:
-		TNT1 A 0 A_JumpIf(bdoom_weapons == 2,"Ready.Modern");
-		TNT1 A 0 A_ClearOverlays(5,7);
 		PLGG A 1 {
+			if (bdoom_weapons == 2)
+				return ResolveState("Ready.Modern");
+			A_ClearOverlays(5,7);
 			if (bdoom_weapons == 0)
 				A_WeaponReady(WRF_NOSECONDARY);
 			else
 				A_WeaponReady();
+			return ResolveState(null);
 			}
 		loop;
 	fire:
-		TNT1 A 0 A_JumpIf(bdoom_weapons == 2,"Fire.Modern");
 		PLGF A 3 {
+			if (bdoom_weapons == 2)
+				return ResolveState("Fire.Modern");
 			A_FireProjectile("BD_Plasmaball",0,1);
 			A_GunFlash("Flash1");
+			return ResolveState(null);
 			}
 		TNT1 A 0 A_refire("fire2");
 		goto FireEnd;
@@ -160,8 +171,7 @@ states
 // MODERN
 	Select.Modern:
 		TNT1 A 0 A_PlaySound("Mweapons/plasma/select");
-		//TNT1 AAAAAAAA 0 A_Raise;
-		PLGS ABCDEF 1 A_WeaponReady;
+		PLGS ABCDEF 1 A_WeaponReady(WRF_NOFIRE);
 		goto ready;
 	Deselect.Modern:
 		PLGG AAA 1 A_lower(12);
@@ -193,12 +203,13 @@ states
 		PLHE Z 1;
 		loop;
 	Heat:
-		TNT1 A 0 A_JumpIf(invoker.heatcounter <= 0,"HeatScreenReady");
 		PLHE A 1 bright {
+			if(invoker.heatcounter <= 0)
+				return ResolveState("HeatScreenReady");
 			let po = player.findPsprite(6);
 			int heat = clamp(invoker.heatcounter,1,9) - 1;
-			//po.sprite = GetSpriteIndex("PLHE");
 			po.frame = heat;
+			return ResolveState(null);
 			}
 		loop;
 	loadsprites:
@@ -207,14 +218,15 @@ states
 	Reload:
 	AltFire.Modern:
 		TNT1 A 0 {
+			A_ClearRefire();
 			A_OverlayOffset(5,0.0,0.0,WOF_INTERPOLATE);
 			A_OverlayOffset(6,0.0,0.0,WOF_INTERPOLATE);
 			if (invoker.heatcounter > 10)
 				invoker.heatcounter = 10;
 			A_Overlay(7,"SteamFast",0);
 			A_OverlayRenderstyle(7,STYLE_Add);
-			A_OverlayFlags(7,PSPF_ALPHA,true);
-			A_OverlayAlpha(7,0.1);
+			A_OverlayFlags(7,PSPF_ALPHA|PSPF_FORCEALPHA,true);
+			A_OverlayAlpha(7,0.5);
 			A_PlaySound("Mweapons/plasma/steamfast");
 			}
 		PLGG A 2 { 
@@ -226,10 +238,10 @@ states
 			}
 		wait;
 	SteamFast:
-		PSTM ABCDEFGHIJKLMNOPQRSTUVWX 1;
+		PSTM ABCDEFGHIJKLMNOPQRSTUVWX 1 bright;
 		stop;
 	SteamSlow:
-		PSTM ABCDEFGHIJKLMNOPQRSTUVWX 2;
+		PSTM ABCDEFGHIJKLMNOPQRSTUVWX 2 bright;
 		stop;
 	ForcedCool:
 		PLGG A 8 {
@@ -243,8 +255,8 @@ states
 				invoker.heatcounter = 10;
 			A_Overlay(7,"SteamSlow",0);
 			A_OverlayRenderstyle(7,STYLE_Add);
-			A_OverlayFlags(7,PSPF_ALPHA,true);
-			A_OverlayAlpha(7,0.1);
+			A_OverlayFlags(7,PSPF_ALPHA|PSPF_FORCEALPHA,true);
+			A_OverlayAlpha(7,0.5);
 			A_PlaySound("Mweapons/plasma/steamslow");
 			}
 		PLGG A 5 { 
@@ -446,7 +458,7 @@ alpha 0.6;
 states
 {
 	Spawn:
-		PLSE ABCDE 1 bright A_SpawnItemEx("BluePlasmaShredTrail",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION);
+		PLSE ABCDE 1 bright A_SpawnItemEx("BluePlasmaShredTrail",flags:SXF_TRANSFERTRANSLATION);
 		stop;
 	}
 }
@@ -481,7 +493,7 @@ states
 	Spawn:
 		TNT1 A 0 NoDelay {
 			If(Bdoom_debris)
-				A_SpawnItemEx("PlamaRailFlare",0,0,0,0,0,0,0,SXF_SETMASTER);
+				A_SpawnItemEx("PlamaRailFlare",flags:SXF_SETMASTER);
 			}
 		PEXP ABCDEF 1 bright A_FadeOut(0.0025);
 		PEXP GHIJKLM 2 bright A_FadeOut(0.0025);
@@ -524,7 +536,7 @@ states
 	Spawn:
 		TNT1 AAA 0 NoDelay {
 			if (bdoom_debris == 1)
-				A_SpawnItemEx("WeaponSmoke",random(-2,2),random(-2,2),random(0,6),0,0,1,0);
+				A_SpawnItemEx("WeaponSmoke",frandom(-2,2),frandom(-2,2),frandom(0,6),0,0,1,0);
 			}
 		PEXP ABCDEFGHIJKLM 1 bright;
 		stop;
