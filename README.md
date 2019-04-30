@@ -22,6 +22,15 @@ https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752
 
 
 ** Dev updates log (dd.mm.yyyy) **
+30.04.2019
+- Reverted the slight nerf of the Modern Plasma Rifle
+- Added altered behavior for the Chaingun Guy when using Modern Weapons, just like other zombies (projectile bullets, has to reload)
+- Slightly nerfed zombies when using Modern Guns: they now have a chance to stop attacking and continue moving
+- Increased the SS soldier firing speed when using Modern Guns
+- Changed Enhanced Shotgun melee sound when hitting wall and visual effects
+- It's now possible to disable item replacements, just like weapon and monster replacements
+- Re-added enhanced Baron fireball
+
 29.04.2019
 - Refactored some of the weapon code
 - Enhanced Chaingun's overheat redness is now applied and removed more smoothly

@@ -1,5 +1,5 @@
 ===========================================================================
-Advanced engine needed  : GZDoom 3.7.0 or newer
+Advanced engine needed  : GZDoom 4.0.0
 Primary purpose         : No levels included
 ===========================================================================
 Title                   : Beautiful Doom
@@ -15,8 +15,6 @@ Additional Credits		:
 * Gifty - for Smooth Doom where most of smooth monsters come from. 
 Check out his mod: https://forum.zdoom.org/viewtopic.php?t=45550	
 
-* Death Egg - for all the really sweet HD item sprites
-
 * phantombeta, Marisa Kirisame, Gutawer, josh771, Accensus, Caligari87, Nash, 
 Zombie, D2JK — Zscript help and contributions
 
@@ -31,16 +29,14 @@ https://www.doomworld.com/vb/wads-mods/62403-doom-2-minor-sprite-fixing-project-
 https://www.doomworld.com/vb/wads-mods/58879-the-hi-res-doom-sound-pack-is-updated/
 For older Smooth Weapon Animation mod
 
-* Reikall — texture brightmaps
-						
 * The Zombie Killer - ACS footsteps
 http://forum.zdoom.org/viewtopic.php?f=37&t=35388
 	
-* Michael Henderson - Ultra Heavy Laser sound effect
+* Nash - Nashgore and SpriteShadows
 
 * Enjay - new switches and splashes, various help
 
-* Nash - Nashgore and SpriteShadows
+* Michael Henderson - Ultra Heavy Laser sound effect
 
 * David G. - Doom Guy alt. death sprites
 						
@@ -88,9 +84,9 @@ See CHANGELOG.txt for changelog of releases.
 
 Beautiful Doom © 2008 Jekyll Grim Payne aka Agent_Ash                           
 
-Any reuse and/or modification of the contents of this file requires clear
+Any reuse and/or modification of the contents of this file requires explicit
 verbal permission from the original author. Any reuse or modification will 
-invariably require the original author or authors to be clearly credited.
+invariably require the original author or authors to be explicitly credited.
 
 You MAY distribute this file, provided you include this text file, with no
 modifications. You may distribute this file in any electronic format 

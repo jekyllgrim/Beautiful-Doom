@@ -72,14 +72,6 @@ ListMenu "BDoom_Credits"
 
 OptionMenu "BDoom_Settings"
 {
-	Option "Allow Beautiful Doom weapons",		"bdoom_replaceweapons", "OnOff", "", 1
-	StaticText "Allows to completely disable modded weapons. (Requires level restart)", white
-	StaticText " "
-	
-	Option "Allow Beautiful Doom monsters",		"bdoom_replacemonsters", "OnOff", "", 1
-	StaticText "Allows to completely disable modded monsters. (Requires level restart)", white
-	StaticText " "
-	
 	Option "Player Weapons",					"bdoom_weapons", "bdoom_weapons", "", 1
 	Option "Muzzle Flashes", 					"bdoom_muzzle", "bdoom_muzzle", "", 1
 	Option "Bullet Tracers",					"bdoom_tracers", "OnOff", "", 1
@@ -102,7 +94,16 @@ OptionMenu "BDoom_Settings"
 	Option "Flies over corpses", 				"bdoom_flies", "OnOff", "", 1
 	Option "Explosion shakes", 					"bdoom_shakes", "OnOff", "", 1
 	Option "Face on Standard HUD", 				"bdoom_hudface", "OnOff", "", 1
-}
+	
+	StaticText " "
+	StaticText "Options below allow to disable parts of the mod,", yellow
+	StaticText "which allows partial compatibility with other mods.", yellow
+	StaticText "(Any changes require a level restart to take effect)", white
+	StaticText " "
+	Option "Beautiful Doom weapons",		"bdoom_replaceweapons", "Toggle", "", 1
+	Option "Beautiful Doom monsters",		"bdoom_replacemonsters", "Toggle", "", 1
+	Option "Beautiful Doom items",			"bdoom_replaceitems", "Toggle", "", 1
+	}
 
 OptionValue "OnOff"
 {
@@ -110,10 +111,16 @@ OptionValue "OnOff"
 	1, "On"
 }
 
+OptionValue "Toggle"
+{
+	0, "Disable"
+	1, "Enable"
+}
+
 OptionValue "bdoom_weapons"
 {
 	0, "Vanilla"
-	1, "Enhanced (Info: F1)"
+	1, "Enhanced"
 	2, "Modern"
 }
 

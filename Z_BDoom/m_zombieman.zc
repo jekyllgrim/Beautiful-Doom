@@ -52,7 +52,7 @@ states
 			monsterclip--;
 			}
 		POS1 E 14;
-		TNT1 A 0 BD_Refire(80,"MissileModernEnd");
+		TNT1 A 0 BD_Refire(72,"MissileModernEnd");
 		goto MissileModern+3;
 	MissileModernEnd:
 		PSSA BA 4;

@@ -5,10 +5,10 @@
 //base class for most debris
 Class DebrisGeneral : Actor abstract
 {
-int sfxtype; //0 = debris, 1 = flames/smoke, 2 = blood, 3 = gibs, 4 = flares
+name sfxtype; //0 = debris, 1 = flames/smoke, 2 = blood, 3 = gibs, 4 = flares
 property sfxtype : sfxtype;
 Default {
-	DebrisGeneral.sfxtype 0;
+	DebrisGeneral.sfxtype "debris";
 	+NOTARGETSWITCH		//so that gibs pushed by explosions don't switch their target field to player
 	+ROLLSPRITE
 	+BLOODLESSIMPACT	//for debris that can bump into actors
@@ -65,10 +65,10 @@ override void PostBeginPlay()
 	}
 override void Tick()
 	{
-	if (	(sfxtype == 0 && !bdoom_debris)	||
-			(sfxtype == 1 && !bdoom_flames)	||
-			(sfxtype == 2 && !bdoom_blood)	||
-			(sfxtype == 3 && !bdoom_gibs)	)
+	if (	(sfxtype == "debris" && !bdoom_debris)	||
+			(sfxtype == "flames" && !bdoom_flames)	||
+			(sfxtype == "blood" && !bdoom_blood)	||
+			(sfxtype == "gibs" && !bdoom_gibs)	)
 		{
 		A_DeQueueCorpse();
 		self.destroy();
@@ -122,7 +122,7 @@ override void Tick() {
 Class Flare_General : DebrisGeneral abstract
 {
 Default {
-	DebrisGeneral.sfxtype 4;
+	DebrisGeneral.sfxtype "flames";
 	-MISSILE
 	-RELATIVETOFLOOR
 	+NOINTERACTION
@@ -197,7 +197,7 @@ Default {
 	renderstyle "Add";
 	scale 0.5;
 	alpha 0.5;
-	DebrisGeneral.sfxtype 1;
+	DebrisGeneral.sfxtype "flames";
 	}
 Override void PostBeginPlay() {
 	super.PostBeginPlay();
@@ -260,6 +260,7 @@ states
 Class Smoke_General : SmallDebris abstract
 {
 Default {
+	DebrisGeneral.sfxtype "debris";
 	smalldebris.dgravity 0;
 	renderstyle "Add";
 	alpha 0.3;

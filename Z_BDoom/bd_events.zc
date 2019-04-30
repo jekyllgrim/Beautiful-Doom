@@ -19,11 +19,11 @@ override void CheckReplacement(ReplaceEvent e) {
 		case 'Clip' 			: e.Replacement = "BD_Clip"; 			break;
 		case 'ClipBox' 			: e.Replacement = "BD_ClipBox"; 		break;
 		case 'Shell' 			: e.Replacement = "BD_Shell"; 			break;
-		case 'ShellBox' 			: e.Replacement = "BD_ShellBox"; 	break;
-		case 'RocketAmmo' 			: e.Replacement = "BD_RocketAmmo"; 	break;
-		case 'RocketBox' 			: e.Replacement = "BD_RocketBox"; 	break;
+		case 'ShellBox' 		: e.Replacement = "BD_ShellBox"; 	break;
+		case 'RocketAmmo' 		: e.Replacement = "BD_RocketAmmo"; 	break;
+		case 'RocketBox' 		: e.Replacement = "BD_RocketBox"; 	break;
 		case 'Cell' 			: e.Replacement = "BD_Cell"; 			break;
-		case 'CellPack' 			: e.Replacement = "BD_CellPack"; 	break;
+		case 'CellPack' 		: e.Replacement = "BD_CellPack"; 	break;
 		}
 	e.IsFinal = true;
 	}
@@ -131,6 +131,37 @@ override void CheckReplacement(ReplaceEvent e) {
 		case 'Cyberdemon' 			: e.Replacement = "BD_Cyberdemon"; 		break;
 		case 'SpiderMastermind' 	: e.Replacement = "BD_SpiderMastermind";break;
 		}
-	e.IsFinal = false; //disable further replacements, if any
+	e.IsFinal = true; //disable further replacements, if any
+	}
+}
+
+class ItemOverrideHandler : EventHandler
+{
+override void CheckReplacement(ReplaceEvent e) {
+	if (!bdoom_replaceitems)
+		return;
+	switch (e.Replacee.GetClassName()) {
+		case 'Blursphere' 				: e.Replacement = "BD_Blursphere"; break;
+		case 'Soulsphere' 				: e.Replacement = "BD_Soulsphere"; break;
+		case 'Megasphere' 				: e.Replacement = "BD_Megasphere"; break;
+		case 'InvulnerabilitySphere' 	: e.Replacement = "BD_InvulnerabilitySphere"; break;
+		case 'Allmap' 					: e.Replacement = "BD_Allmap"; break;
+		case 'Infrared' 				: e.Replacement = "BD_Infrared"; break;
+		case 'HealthBonus' 				: e.Replacement = "BD_HealthBonus"; break;
+		case 'ArmorBonus' 				: e.Replacement = "BD_ArmorBonus"; break;
+		case 'Stimpack' 				: e.Replacement = "BD_Stimpack"; break;
+		case 'Medikit' 					: e.Replacement = "BD_Medikit"; break;
+		case 'GreenArmor' 				: e.Replacement = "BD_GreenArmor"; break;
+		case 'BlueArmor' 				: e.Replacement = "BD_BlueArmor"; break;
+		case 'Backpack' 				: e.Replacement = "BD_Backpack"; break;
+		case 'Radsuit' 					: e.Replacement = "BD_Radsuit"; break;
+		case 'RedCard' 					: e.Replacement = "BD_RedCard"; break;
+		case 'BlueCard' 				: e.Replacement = "BD_BlueCard"; break;
+		case 'YellowCard' 				: e.Replacement = "BD_YellowCard"; break;
+		case 'RedSkull' 				: e.Replacement = "BD_RedSkull"; break;
+		case 'BlueSkull' 				: e.Replacement = "BD_BlueSkull"; break;
+		case 'YellowSkull' 				: e.Replacement = "BD_YellowSkull"; break;
+		}
+	e.IsFinal = true; //disable further replacements, if any
 	}
 }

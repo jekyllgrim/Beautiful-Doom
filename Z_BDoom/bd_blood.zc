@@ -6,7 +6,7 @@ string bcolor;
 
 static const name bsprite[] = { "YBL7","YBL8","YBL9" };
 Default {
-	DebrisGeneral.sfxtype 2;
+	DebrisGeneral.sfxtype "blood";
 	+PUFFGETSOWNER
 	-NOGRAVITY
 	+ROLLSPRITE

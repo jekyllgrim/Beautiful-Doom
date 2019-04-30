@@ -118,7 +118,7 @@ double fades;
 Default {
 	+ROLLSPRITE
 	-NOGRAVITY
-	DebrisGeneral.sfxtype 3;
+	DebrisGeneral.sfxtype "gibs";
 	renderstyle "Add";
 	alpha 0.8;
 	gravity 0.6;

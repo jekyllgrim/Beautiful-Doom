@@ -321,20 +321,20 @@ states
 			invoker.HeatDecay = invoker.heatStacks * 0.05;
 			}
 		MGGG ABCDA 1 {
-			invoker.heatStacks -= invoker.Heatdecay;
 			A_WeaponOffset(0.0,-0.6,WOF_ADD);
-			If(bdoom_debris && invoker.HeatStacks >= 60)
+			If(bdoom_debris && invoker.HeatStacks >= 10)
 				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-3,3),sin(-pitch)*25+random(33,37),		0,0,frandom(0.2,0.4),0);
+			invoker.heatStacks -= invoker.Heatdecay;
 			}
 		MGGG BCDABC 2 {
-			invoker.heatStacks -= invoker.Heatdecay;
-			If(bdoom_debris && invoker.HeatStacks >= 60)
+			If(bdoom_debris && invoker.HeatStacks >= 10)
 				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-3,3),sin(-pitch)*25+random(33,37),		0,0,frandom(0.2,0.4),0);
+			invoker.heatStacks -= invoker.Heatdecay;
 			}
 		MGGG DABCD 3 {
-			invoker.heatStacks -= invoker.Heatdecay;
-			If(bdoom_debris && invoker.HeatStacks >= 60)
+			If(bdoom_debris && invoker.HeatStacks >= 10)
 				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-3,3),sin(-pitch)*25+random(33,37),		0,0,frandom(0.2,0.4),0);
+			invoker.heatStacks -= invoker.Heatdecay;
 			}
 		TNT1 A 0 {
 			If(bdoom_debris)
@@ -347,9 +347,9 @@ states
 			return ResolveState(null);
 			}
 		MGGG ABCD 4 {
-			invoker.heatStacks -= invoker.Heatdecay;
-			If(bdoom_debris)
+			If(bdoom_debris && invoker.HeatStacks >= 10)
 				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-3,3),sin(-pitch)*25+random(33,37),		0,0,frandom(0.2,0.4),0);
+			invoker.heatStacks -= invoker.Heatdecay;
 			A_WeaponReady(WRF_NOFIRE);
 			}
 		TNT1 A 0 {

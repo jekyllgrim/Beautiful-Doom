@@ -25,7 +25,7 @@ override void DoEffect () {
 	if (!owner)
 		return;
 	let psp = owner.player.FindPSprite(PSP_WEAPON);
-	if (psp && bdoom_weapons == 2 && heatcounter > 0 &&	!InStateSequence(psp.curstate,FindState("fire.Modern")))
+	if (psp && bdoom_weapons == 2 && heatcounter > 0)
 		heatcounter -= 0.02;
 	}
 states

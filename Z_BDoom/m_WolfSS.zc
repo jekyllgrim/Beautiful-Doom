@@ -41,25 +41,25 @@ states
 		SSW1 F 1 A_CPosRefire();
 		goto Missile+6;
 	MissileModern:
-		SSW1 EEFFF 2 A_FaceTarget();
+		SSW1 EEFF 2 A_FaceTarget();
 	MissileModernDo:
-		SSW1 F 7 A_FaceTarget();
 		SSW1 G 4 {
-			if (bdoom_debris == 1)
+			if (bdoom_debris)
 				A_SpawnItemEx("ChaingunCasing",14,-15,32,		frandom(2,4),0,random(2,4),	random(-85,-95),SXF_SETTARGET);
 			A_PlaySound("Mweapons/rifle/fire");
 			A_CustomBulletAttack(20.0,1.3,1,0,"NullPuff",0,0,AAPTR_TARGET,"BD_ZombieBullet",30,4);
 			monsterclip--;
 			}
-		SSW1 F 7 A_FaceTarget();
+		SSW1 F 4 A_FaceTarget();
 		SSW1 G 4 {
-			if (bdoom_debris == 1)
+			if (bdoom_debris)
 				A_SpawnItemEx("ChaingunCasing",14,-15,32,		frandom(2,4),0,random(2,4),	random(-85,-95),SXF_SETTARGET);
 			A_PlaySound("Mweapons/rifle/fire");
 			A_CustomBulletAttack(20.0,1.3,1,0,"NullPuff",0,0,AAPTR_TARGET,"BD_ZombieBullet",30,4);
 			monsterclip--;
 			}
-		TNT1 A 0 BD_Refire(80,"MissileModernEnd");
+		SSW1 F 4 A_FaceTarget();
+		TNT1 A 0 BD_Refire(8,"MissileModernEnd");
 		goto MissileModernDo;
 	MissileModernEnd:
 		SSW1 FE 3;

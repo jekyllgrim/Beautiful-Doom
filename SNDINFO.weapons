@@ -81,11 +81,12 @@ weapons/shotgun/draw	STGNDRAW
 weapons/shotgun/fire	STGNSHOT
 weapons/shotgun/pump	STGNPUMP
 weapons/shotgun/in	STGNIN
-weapons/shotgun/melee1 FISTWAL1
-weapons/shotgun/melee2 FISTWAL2
-weapons/shotgun/melee3 FISTWAL3
-weapons/shotgun/melee4 FISTWAL4
-$random weapons/shotgun/melee { weapons/shotgun/melee1 weapons/shotgun/melee2 weapons/shotgun/melee3 weapons/shotgun/melee4 }
+shtghit1	shtghit1
+shtghit2	shtghit2
+shtghit3	shtghit3
+shtghit4	shtghit4
+shtghit5	shtghit5
+$random weapons/shotgun/melee { shtghit1 shtghit2 shtghit3 shtghit4 shtghit5 }
 
 // Supershotgun
 weapons/ssg/draw	SSGDRAW

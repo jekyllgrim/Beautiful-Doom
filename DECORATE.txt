@@ -1,11 +1,6 @@
 
 #include "DECORATE/BD_MONST.txt"
 
-// --------- ITEMS
-#include "DECORATE/BD_INV.txt"
-
-// --------- WEAPONS
-
 //#include "DECORATE/BD_DGUY.txt"
 
 

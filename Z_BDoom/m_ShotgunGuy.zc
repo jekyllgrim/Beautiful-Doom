@@ -82,7 +82,7 @@ states
 			return ResolveState(null);
 			}
 		SPO1 E 15;
-		TNT1 A 0 BD_Refire(80,"See");
+		TNT1 A 0 BD_Refire(96,"See");
 		goto MissileModern+3;
 	Reload:
 		TNT1 A 0 {

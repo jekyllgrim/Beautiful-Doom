@@ -60,7 +60,8 @@ state BD_Refire(int ChanceToEnd = 128, statelabel endstate = "See")
 	else if (monsterclip == 0)
 		return ResolveState("Reload");
 	else
-		return A_MonsterRefire(ChanceToEnd,endstate);
+		return A_Jump(ChanceToEnd,endstate);
+	return A_MonsterRefire(40,endstate);
 	return ResolveState(null);
 	}
 	
@@ -151,7 +152,7 @@ states
 			}
 		#### # 1 {
 			if (vel.length() ~== 0) {
-				if (bdoom_blood == 1)
+				if (bdoom_blood)
 					A_SpawnItemEx("AniBloodPool",0,0,0,0,0,0,0,SXF_SETTARGET|SXF_USEBLOODCOLOR);
 				A_SpawnItemEx("CorpseFlySpawner",0,0,0,0,0,0,0,SXF_SETMASTER);
 				return ResolveState("DeathEnd");
@@ -169,8 +170,10 @@ states
 				self.frame-=1;
 			else
 				{
-				A_SetTranslation("vanilla");
-				A_SetScale(1.0,1.0);
+				bFORCEXYBILLBOARD = default.bFORCEXYBILLBOARD;
+				translation = default.translation;
+				scale.x = default.scale.x;
+				scale.y = default.scale.y;
 				burning = false;
 				burntimer = 0;
 				return ResolveState("See");
@@ -183,9 +186,7 @@ states
 			//console.printf("%d",health);
 			if (random(1,3) == 1 && FindState("XDeath"))
 				return ResolveState("XDeath");
-			else
-				return ResolveState("Death");
-			return ResolveState(null);
+			return ResolveState("Death");
 			}
 		stop;
 	Death.Telefrag:
@@ -195,9 +196,7 @@ states
 				return ResolveState("XDeath.Vanilla");
 			else if (FindState("XDeath"))
 				return ResolveState("XDeath");
-			else
-				return ResolveState("Death");
-			return ResolveState(null);
+			return ResolveState("Death");
 			}
 		POSX AB 2;
 		POSX C 2 A_XScream();
@@ -211,7 +210,6 @@ states
 				return ResolveState("Death");
 			firetype = 1;
 			return ResolveState("DoFireDeath");
-			return ResolveState(null);
 			}
 		stop;
 	Death.GreenFire:
@@ -220,7 +218,6 @@ states
 				return ResolveState("Death");
 			firetype = 2;
 			return ResolveState("DoFireDeath");
-			return ResolveState(null);
 			}
 		stop;
 	Death.PlasmaDamage:
@@ -229,7 +226,6 @@ states
 				return ResolveState("Death");
 			firetype = 0;
 			return ResolveState("DoFireDeath");
-			return ResolveState(null);
 			}
 		stop;
 	DoFireDeath:
@@ -247,7 +243,6 @@ states
 					A_SetTranslation("GreenFiredeath");
 				}
 			return ResolveState("Death");
-			return ResolveState(null);
 			}
 		stop;
 	Death.BFGSplash:
@@ -261,7 +256,6 @@ states
 			if (FindState("Xdeath"))
 				return ResolveState("XDeath");
 			return ResolveState("Death");
-			return ResolveState(null);
 			}
 		stop;
 	XDeath.Particles:
@@ -314,7 +308,7 @@ Class BD_ZombieBullet : BD_PistolBullet
 override void PostBeginPlay()
 	{
 	super.PostBeginPlay();
-	BulletDamage = 3 * random(1,5);
+	BulletDamage = 3 * frandom(1,5);
 	}
 }
 
@@ -323,7 +317,7 @@ Class BD_ZombiePellet : BD_ShotgunPellet
 override void PostBeginPlay()
 	{
 	super.PostBeginPlay();
-	BulletDamage = 2 * random(3,4);
+	BulletDamage = 2 * frandom(3,4);
 	}
 }
 
@@ -332,6 +326,6 @@ Class BD_SpiderBullet : BD_PistolBullet
 override void PostBeginPlay()
 	{
 	super.PostBeginPlay();
-	BulletDamage = 2 * random(2,4);
+	BulletDamage = 2 * frandom(2,4);
 	}
 }

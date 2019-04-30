@@ -38,5 +38,6 @@ version "4.0.0"
 #include "Z_Bdoom/m_CyberDemon.zc"
 #include "Z_Bdoom/m_SpiderMastermind.zc"
 
-#include "Z_Bdoom/DeadBodies.zc"
+#include "Z_Bdoom/o_DeadBodies.zc"
 #include "Z_Bdoom/o_lightsources.zc"
+#include "Z_Bdoom/o_inventory.zc"
