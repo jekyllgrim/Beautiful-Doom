@@ -59,11 +59,11 @@ states
 		CPAS F 2 BD_BulletAttack(22.5, 0, 1, random(1,5)*3, "chainguy/attack", "weapons/chaingun/fire","ChaingunCasing",18,-20,34,32,12);
 		CPAS E 2 A_FaceTarget();
 		CPAS E 1 A_MonsterRefire(40,"AttackEnd");
-		goto Missile+5;
+		goto Missile+6;
 	MissileModern:
-		CPAS ABCE 2 A_FaceTarget();
+		CPAS ABCEE 2 A_FaceTarget();
 	MissileModernDo:
-		CPAS F 4 {
+		CPAS F 2 {
 			if (bdoom_debris)
 				A_SpawnItemEx("ChaingunCasing",14,-15,32,		frandom(2,4),0,random(2,4),	random(-85,-95),SXF_SETTARGET);
 			A_PlaySound("Mweapons/rifle/fire");
@@ -71,7 +71,7 @@ states
 			monsterclip--;
 			}
 		CPAS E 4 A_FaceTarget();
-		CPAS F 4 {
+		CPAS F 2 {
 			if (bdoom_debris)
 				A_SpawnItemEx("ChaingunCasing",14,-15,32,		frandom(2,4),0,random(2,4),	random(-85,-95),SXF_SETTARGET);
 			A_PlaySound("Mweapons/rifle/fire");
@@ -79,10 +79,10 @@ states
 			monsterclip--;
 			}
 		CPAS E 4 A_FaceTarget();
-		CPAS E 1 BD_Refire(8,"MissileModernEnd");
+		CPAS E 1 BD_Refire(0,"MissileModernEnd");
 		goto MissileModernDo;
 	MissileModernEnd:
-		CPAS CB 3;
+		CPAS CBA 3;
 		goto See;
 	Reload:
 		TNT1 A 0 {

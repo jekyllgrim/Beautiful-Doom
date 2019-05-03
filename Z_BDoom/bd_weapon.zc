@@ -9,8 +9,12 @@ double currentAngleOffset; // how much has the camera already been offset?
 double currentPitchOffset;
 property maxOffsetTics : maxOffsetTics;
 property offsetTics : offsetTics;
+int NonselTimer; //counts how long the weapon was deselected, used for automatic background reload
+int AutoReloadTime; //the value that NonselTimer is compared to
+property AutoReloadTime : AutoReloadTime;
 
 Default {  //required default values for A_CameraSway. Otherwise it'll crash due to division by zero
+	BDoomWeapon.AutoReloadTime 60;
 	BDoomWeapon.maxOffsetTics 1;
 	BDoomWeapon.offsetTics -1;
 	}
@@ -31,67 +35,85 @@ action void A_CameraSway(double aoffset, double poffset, int tics)
 override void DoEffect()
 	{
 	Super.DoEffect();
-	if (owner) {
-		if(bdoom_weapons == 2) {
-				BobRangeX = 0.2;
-				BobRangeY = 0.2;
-				BobStyle = 5;
-				BobSpeed = 2.0;
-			}
-		else {
-				BobRangeX = 1.0;
-				BobRangeY = 1.0;
-				BobStyle = 0;
-				BobSpeed = 1.0;
-			}
-		//CameraSway in action	
-		if (offsetTics >= 0) {
-			double phase = (offsetTics / maxOffsetTics) * 90.0;
-			double newAngleOffset = (cos(phase) * offsetAngle);
-			double newPitchOffset = (cos(phase) * offsetPitch);
-			double finalAngle = (owner.angle - currentAngleOffset) + newAngleOffset;
-			double finalPitch = (owner.pitch - currentPitchOffset) + newPitchOffset;
-			currentAngleOffset = newAngleOffset;
-			currentPitchOffset = newPitchOffset;
-			owner.A_SetAngle(finalAngle, SPF_INTERPOLATE);
-			owner.A_SetPitch(finalPitch, SPF_INTERPOLATE);
-			offsetTics--;
-			}
-		
-//QUICK KICK
-		//if player presses +user1 (default Q and Mouse4)
-		if 	(owner.player.cmd.buttons & BT_USER1) {
-			let psp = owner.player.FindPSprite(PSP_WEAPON);
-			let kicks = owner.player.FindPSprite(-10);
-			if(!psp)
-				{ 
-				//console.printf("no active weapons (player probably dead)"); 
-				return;
-				}
-			else if (bdoom_weapons != 2)
-				{ 
-				//console.printf("not using modern weapons"); 
-				return;
-				}
-			else if (kicks)	//do nothing if the kicking animation is in progress
-				{ 
-				//console.printf("already kicking"); 
-				return;
-				}
-			//do this if used from Ready: will not only kick in overlay but will also move the weapon aside
-			else if	(InStateSequence(psp.curstate, FindState("Ready.Modern")) )
-				owner.player.setPSprite(PSP_Weapon,ResolveState("QKick"));
-			//do this if used during Reload: weapon sprite will stay the same, kick will be shown and executed independently in overlay
-			else if (InStateSequence(psp.curstate,FindState("Reload.Modern"))	||
-					InStateSequence(psp.curstate, FindState("Reload.Modern1"))	||
-					InStateSequence(psp.curstate, FindState("Reload.ModernEnd"))||
-					InStateSequence(psp.curstate, FindState("Reload"))			||
-					InStateSequence(psp.curstate, FindState("Reload1"))			||
-					InStateSequence(psp.curstate, FindState("ReloadEnd"))		||
-					InStateSequence(psp.curstate, FindState("ReloadDo")) 		)
-				owner.player.setPSprite(-10,FindState("QuickKick"));
-			}
+	if (!owner)
+		return;
+	if(bdoom_weapons == 2) {
+			BobRangeX = 0.2;
+			BobRangeY = 0.2;
+			BobStyle = 5;
+			BobSpeed = 2.0;
 		}
+	else {
+			BobRangeX = 1.0;
+			BobRangeY = 1.0;
+			BobStyle = 0;
+			BobSpeed = 1.0;
+		}
+	//CameraSway in action	
+	if (offsetTics >= 0) {
+		double phase = (offsetTics / maxOffsetTics) * 90.0;
+		double newAngleOffset = (cos(phase) * offsetAngle);
+		double newPitchOffset = (cos(phase) * offsetPitch);
+		double finalAngle = (owner.angle - currentAngleOffset) + newAngleOffset;
+		double finalPitch = (owner.pitch - currentPitchOffset) + newPitchOffset;
+		currentAngleOffset = newAngleOffset;
+		currentPitchOffset = newPitchOffset;
+		owner.A_SetAngle(finalAngle, SPF_INTERPOLATE);
+		owner.A_SetPitch(finalPitch, SPF_INTERPOLATE);
+		offsetTics--;
+		}
+	
+//QUICK KICK
+	//if player presses +user1 (default Q and Mouse4)
+	if 	(owner.player.cmd.buttons & BT_USER1) {
+		let psp = owner.player.FindPSprite(PSP_WEAPON);
+		let kicks = owner.player.FindPSprite(-10);
+		if(!psp)
+			{ 
+			//console.printf("no active weapons (player probably dead)"); 
+			return;
+			}
+		else if (bdoom_weapons != 2)
+			{ 
+			//console.printf("not using modern weapons"); 
+			return;
+			}
+		else if (kicks)	//do nothing if the kicking animation is in progress
+			{ 
+			//console.printf("already kicking"); 
+			return;
+			}
+		//do this if used from Ready: will not only kick in overlay but will also move the weapon aside
+		else if	(InStateSequence(psp.curstate, FindState("Ready.Modern")) )
+			owner.player.setPSprite(PSP_Weapon,ResolveState("QKick"));
+		//do this if used during Reload: weapon sprite will stay the same, kick will be shown and executed independently in overlay
+		else if (InStateSequence(psp.curstate,FindState("Reload.Modern"))	||
+				InStateSequence(psp.curstate, FindState("Reload.Modern1"))	||
+				InStateSequence(psp.curstate, FindState("Reload.ModernEnd"))||
+				InStateSequence(psp.curstate, FindState("Reload"))			||
+				InStateSequence(psp.curstate, FindState("Reload1"))			||
+				InStateSequence(psp.curstate, FindState("ReloadEnd"))		||
+				InStateSequence(psp.curstate, FindState("ReloadDo")) 		)
+			owner.player.setPSprite(-10,FindState("QuickKick"));
+		}
+	
+	if (bdoom_weapons != 2 || !bdoom_autoreload || !ammo1 || !ammo2 || (ammo1 == ammo2))
+		return;
+	if (owner.player.readyweapon == self || ammo1.amount == ammo1.maxamount || ammo2.amount < 1) {
+		NonselTimer = 0;
+		return;
+		}
+	if (NonselTimer < AutoReloadTime)
+		NonselTimer++;
+	else {
+		while (ammo2.amount > 0 && ammo1.amount < ammo1.maxamount)	{
+			owner.TakeInventory(ammo2.GetClass(),1);
+			owner.GiveInventory(ammo1.GetClass(),1);
+			}
+		Console.Printf("%s reloaded",GetTag());
+		}
+			
+		
 	}
 
 
@@ -425,6 +447,7 @@ override void PostBeginPlay()
 
 Class Casing_General : DebrisGeneral
 {
+double brot;
 Default {
 	-FLOORCLIP
 	-THRUACTORS
@@ -440,6 +463,10 @@ Default {
 	Height 1;
 	bouncefactor 0.5;
 	Scale 0.15;
+	}
+Override Void PostBeginPlay() {
+	super.PostBeginPlay();
+	brot = frandom(18,24);
 	}
 states
 	{
@@ -459,9 +486,9 @@ states
 				self.destroy();
 				return ResolveState(null);
 				}
-			roll+=22;
+			roll += brot;
 			if (waterlevel > 0)
-				return ResolveState("Death");
+				return ResolveState("waterland");
 			return ResolveState(null);	
 			}
 		goto death;
@@ -482,26 +509,41 @@ states
 				}
 			A_QueueCorpse();
 			ClearBounce();
+			SetOrigin((pos.x,pos.y,floorz),0);
+			roll = random(-8,8);
+			scale.x*= randompick(-1,1);
+			bNOINTERACTION = true;
+			bMOVEWITHSECTOR = true;
+			bRELATIVETOFLOOR = true;
 			return ResolveState(null);
 			}
-		#### # 1 {
-			if (pos.z <= floorz+1) {
-				SetOrigin((pos.x,pos.y,floorz),0);
-				roll = random(-8,8);
-				scale.x*= randompick(-1,1);
-				bNOINTERACTION = true;
-				bMOVEWITHSECTOR = true;
-				bRELATIVETOFLOOR = true;
-				return ResolveState("Rest");
-				}
-			return ResolveState(null);
-			}
-		wait;
-	Rest:
 		#### # -1;
 		stop;
 	loadsprites:
 		CAS1 ABC 0;	CAS2 ABC 0;	CAS3 ABC 0;
+		stop;
+	WaterLand:
+		#### # 1 {
+			if (abs(brot) > 1)
+				brot *= 0.93;
+			if (pos.z > floorz) {
+				roll+=brot;
+				vel.z = -0.5;
+				vel.x *= 0.92;
+				vel.y *= 0.92;
+				}
+			else {
+				vel.z = 0;
+				if (vel.length() ~== 0) {
+					SetOrigin((pos.x,pos.y,floorz),false);
+					return ResolveState("WaterLandEnd");
+					}
+				}
+			return ResolveState(null);
+			}
+		loop;
+	WaterLandEnd:
+		#### # -1;
 		stop;
 	}
 }

@@ -77,9 +77,13 @@ OptionMenu "BDoom_Settings"
 	Option "Bullet Tracers",					"bdoom_tracers", "OnOff", "", 1
 	StaticText " "
 	
+	Option "Unselected weapons autoreload",					"bdoom_autoreload", "OnOff", "", 1
+	StaticText "(Modern Guns only)", white
+	StaticText " "
+	
 	Option "Enhanced gibs & deaths",			"bdoom_gibs", "OnOff", "", 1
 	Option "Enhanced blood",					"bdoom_blood", "OnOff", "", 1
-	Option "Force vanilla boss deaths",			"bdoom_nobossgibs", "OnOff", "", 1
+	Option "Force vanilla boss deaths",			"bdoom_nobossgibs", "OnOff", "", 1	
 	StaticText " "
 
 	Option "Halos & particle flames",			"bdoom_flames", "OnOff", "", 1

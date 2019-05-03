@@ -15,6 +15,7 @@ Default
 	Weapon.AmmoGive2	8;
 	weapon.slotnumber 	3;
 	weapon.slotpriority 1;
+	BDoomWeapon.AutoReloadTime 160;
 	}
 override void Tick()
 	{

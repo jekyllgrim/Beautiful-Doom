@@ -53,7 +53,6 @@ virtual void FlyBack() {
 	Thrust(hvel,angle);
 	vel.z = vvel;
 	}
-virtual void CheckTargetRaise() {}
 	
 override void PostBeginPlay()
 	{
@@ -67,8 +66,8 @@ override void Tick()
 	{
 	if (	(sfxtype == "debris" && !bdoom_debris)	||
 			(sfxtype == "flames" && !bdoom_flames)	||
-			(sfxtype == "blood" && !bdoom_blood)	||
-			(sfxtype == "gibs" && !bdoom_gibs)	)
+			(sfxtype == "blood" && 	!bdoom_blood)	||
+			(sfxtype == "gibs" && 	!bdoom_gibs)	)
 		{
 		A_DeQueueCorpse();
 		self.destroy();
@@ -267,6 +266,10 @@ Default {
 	scale 0.1;
 	}
 override void PostBeginPlay() {
+	if (waterlevel > 1) {
+		self.destroy();
+		return;
+		}
 	super.PostbeginPlay();
 	roll = random(0,359);
 	}
@@ -843,6 +846,13 @@ Default {
 	radius 3;
 	height 3;
 	scale 0.03;
+	}
+override Void PostBeginPlay() {
+	if (waterlevel > 1) {
+		self.destroy();
+		return;
+		}
+	super.PostbeginPlay();
 	}
 states
 	{

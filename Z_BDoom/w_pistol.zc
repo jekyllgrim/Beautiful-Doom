@@ -19,6 +19,7 @@ Default {
 	weapon.ammogive2		20;
 	inventory.amount		1;
 	inventory.maxamount		2;
+	BDoomWeapon.AutoReloadTime 120;
 }
 override void Tick()
 	{

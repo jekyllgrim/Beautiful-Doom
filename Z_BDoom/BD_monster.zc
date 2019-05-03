@@ -53,15 +53,16 @@ void BD_BulletAttack(double horz_spread, double vert_spread, int numbullets, int
 		A_CustomBulletAttack(horz_spread, vert_spread, numbullets, damageperbullet, puff, 0, CBAF_NORANDOM);
 	}
 
-state BD_Refire(int ChanceToEnd = 128, statelabel endstate = "See") 
+state BD_Refire(int ChanceToEnd = 0, statelabel endstate = "See") 
 	{ 
 	if (bdoom_weapons < 2)
 		return ResolveState("See");
 	else if (monsterclip == 0)
 		return ResolveState("Reload");
+	else if (ChanceToEnd > random(0,256))
+		return ResolveState(endstate);
 	else
-		return A_Jump(ChanceToEnd,endstate);
-	return A_MonsterRefire(40,endstate);
+		return A_MonsterRefire(40,endstate);
 	return ResolveState(null);
 	}
 	

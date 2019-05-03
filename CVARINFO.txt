@@ -10,6 +10,7 @@ server 	bool 	bdoom_sparks 		= true;
 server 	int  	bdoom_debrisnum 	= 300;
 server 	bool 	bdoom_shakes 		= true;
 server 	int		bdoom_weapons 		= 1;
+server bool		bdoom_autoreload	= true;
 user 	bool 	bdoom_muzzle		= true;
 server 	bool 	bdoom_tracers		= true;
 server 	bool 	bdoom_flies			= true;
@@ -21,3 +22,23 @@ user int cl_maxspriteshadows = 200;
 
 server float fs_volume_mul = 1.0;
 server float fs_delay_mul = 1.0;
+
+//per-monster replacements
+server bool bdoom_Zombieman = true;
+server bool bdoom_ShotgunGuy = true;
+server bool bdoom_ChaingunGuy = true;
+server bool bdoom_WolfensteinSS = true;
+server bool bdoom_DoomImp = true;
+server bool bdoom_Demon = true;
+server bool bdoom_Spectre = true;
+server bool bdoom_Cacodemon = true;
+server bool bdoom_PainElemental = true;
+server bool bdoom_LostSoul = true;
+server bool bdoom_Revenant = true;
+server bool bdoom_Arachnotron = true;
+server bool bdoom_Fatso = true;
+server bool bdoom_HellKnight = true;
+server bool bdoom_BaronOfHell = true;
+server bool bdoom_ArchVile = true;
+server bool bdoom_Cyberdemon = true;
+server bool bdoom_SpiderMastermind = true;

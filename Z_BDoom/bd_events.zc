@@ -103,7 +103,8 @@ private Weapon GetWeapon(PlayerPawn mo, Class<Weapon> type)
 }
 
 /* Simply replaces monsters with modded ones if the appropriate CVAR is true.
-Helps to keep the mod compatible with monster mods. */
+Helps to keep the mod compatible with monster mods. 
+Separate CVARs for each monsters are also supported. */
 
 class MonsterOverrideHandler : EventHandler
 {
@@ -111,27 +112,27 @@ override void CheckReplacement(ReplaceEvent e) {
 	if (!bdoom_replacemonsters)
 		return;
 	switch (e.Replacee.GetClassName()) {
-		case 'Blood'				: e.Replacement = "BD_Blood";			break;
-		case 'Zombieman' 			: e.Replacement = "BD_Zombieman"; 		break;
-		case 'ShotgunGuy' 			: e.Replacement = "BD_ShotgunGuy"; 		break;
-		case 'ChaingunGuy' 			: e.Replacement = "BD_ChaingunGuy"; 	break;
-		case 'WolfensteinSS'		: e.Replacement = "BD_WolfensteinSS"; 	break;
-		case 'DoomImp' 				: e.Replacement = "BD_DoomImp"; 		break;
-		case 'Demon' 				: e.Replacement = "BD_Demon"; 			break;
-		case 'Spectre' 				: e.Replacement = "BD_Spectre"; 		break;
-		case 'Cacodemon' 			: e.Replacement = "BD_Cacodemon"; 		break;
-		case 'PainElemental'		: e.Replacement = "BD_PainElemental"; 	break;
-		case 'LostSoul'				: e.Replacement = "BD_LostSoul"; 		break;
-		case 'Revenant' 			: e.Replacement = "BD_Revenant"; 		break;
-		case 'Arachnotron' 			: e.Replacement = "BD_Arachnotron"; 	break;
-		case 'Fatso' 				: e.Replacement = "BD_Fatso"; 			break;
-		case 'HellKnight' 			: e.Replacement = "BD_HellKnight"; 		break;
-		case 'BaronOfHell' 			: e.Replacement = "BD_BaronOfHell"; 	break;
-		case 'ArchVile' 			: e.Replacement = "BD_ArchVile"; 		break;
-		case 'Cyberdemon' 			: e.Replacement = "BD_Cyberdemon"; 		break;
-		case 'SpiderMastermind' 	: e.Replacement = "BD_SpiderMastermind";break;
+		case 'Blood'				: 								e.Replacement = "BD_Blood";				break;
+		case 'Zombieman' 			: if (bdoom_Zombieman) 			e.Replacement = "BD_Zombieman"; 		break;
+		case 'ShotgunGuy' 			: if (bdoom_ShotgunGuy) 		e.Replacement = "BD_ShotgunGuy"; 		break;
+		case 'ChaingunGuy' 			: if (bdoom_ChaingunGuy) 		e.Replacement = "BD_ChaingunGuy"; 		break;
+		case 'WolfensteinSS'		: if (bdoom_WolfensteinSS) 		e.Replacement = "BD_WolfensteinSS"; 	break;
+		case 'DoomImp' 				: if (bdoom_DoomImp) 			e.Replacement = "BD_DoomImp"; 			break;
+		case 'Demon' 				: if (bdoom_Demon) 				e.Replacement = "BD_Demon"; 			break;
+		case 'Spectre' 				: if (bdoom_Spectre) 			e.Replacement = "BD_Spectre"; 			break;
+		case 'Cacodemon' 			: if (bdoom_Cacodemon) 			e.Replacement = "BD_Cacodemon"; 		break;
+		case 'PainElemental'		: if (bdoom_PainElemental) 		e.Replacement = "BD_PainElemental"; 	break;
+		case 'LostSoul'				: if (bdoom_LostSoul) 			e.Replacement = "BD_LostSoul"; 			break;
+		case 'Revenant' 			: if (bdoom_Revenant) 			e.Replacement = "BD_Revenant"; 			break;
+		case 'Arachnotron' 			: if (bdoom_Arachnotron) 		e.Replacement = "BD_Arachnotron"; 		break;
+		case 'Fatso' 				: if (bdoom_Fatso) 				e.Replacement = "BD_Fatso"; 			break;
+		case 'HellKnight' 			: if (bdoom_HellKnight) 		e.Replacement = "BD_HellKnight"; 		break;
+		case 'BaronOfHell' 			: if (bdoom_BaronOfHell) 		e.Replacement = "BD_BaronOfHell"; 		break;
+		case 'ArchVile' 			: if (bdoom_ArchVile) 			e.Replacement = "BD_ArchVile"; 			break;
+		case 'Cyberdemon' 			: if (bdoom_Cyberdemon) 		e.Replacement = "BD_Cyberdemon"; 		break;
+		case 'SpiderMastermind' 	: if (bdoom_SpiderMastermind) 	e.Replacement = "BD_SpiderMastermind";	break;
 		}
-	e.IsFinal = true; //disable further replacements, if any
+	e.IsFinal = true;
 	}
 }
 
@@ -141,27 +142,27 @@ override void CheckReplacement(ReplaceEvent e) {
 	if (!bdoom_replaceitems)
 		return;
 	switch (e.Replacee.GetClassName()) {
-		case 'Blursphere' 				: e.Replacement = "BD_Blursphere"; break;
-		case 'Soulsphere' 				: e.Replacement = "BD_Soulsphere"; break;
-		case 'Megasphere' 				: e.Replacement = "BD_Megasphere"; break;
-		case 'InvulnerabilitySphere' 	: e.Replacement = "BD_InvulnerabilitySphere"; break;
-		case 'Allmap' 					: e.Replacement = "BD_Allmap"; break;
-		case 'Infrared' 				: e.Replacement = "BD_Infrared"; break;
-		case 'HealthBonus' 				: e.Replacement = "BD_HealthBonus"; break;
-		case 'ArmorBonus' 				: e.Replacement = "BD_ArmorBonus"; break;
-		case 'Stimpack' 				: e.Replacement = "BD_Stimpack"; break;
-		case 'Medikit' 					: e.Replacement = "BD_Medikit"; break;
-		case 'GreenArmor' 				: e.Replacement = "BD_GreenArmor"; break;
-		case 'BlueArmor' 				: e.Replacement = "BD_BlueArmor"; break;
-		case 'Backpack' 				: e.Replacement = "BD_Backpack"; break;
-		case 'Radsuit' 					: e.Replacement = "BD_Radsuit"; break;
-		case 'RedCard' 					: e.Replacement = "BD_RedCard"; break;
-		case 'BlueCard' 				: e.Replacement = "BD_BlueCard"; break;
-		case 'YellowCard' 				: e.Replacement = "BD_YellowCard"; break;
-		case 'RedSkull' 				: e.Replacement = "BD_RedSkull"; break;
-		case 'BlueSkull' 				: e.Replacement = "BD_BlueSkull"; break;
-		case 'YellowSkull' 				: e.Replacement = "BD_YellowSkull"; break;
+		case 'Blursphere' 				: e.Replacement = "BD_Blursphere"; 				break;
+		case 'Soulsphere' 				: e.Replacement = "BD_Soulsphere"; 				break;
+		case 'Megasphere' 				: e.Replacement = "BD_Megasphere"; 				break;
+		case 'InvulnerabilitySphere' 	: e.Replacement = "BD_InvulnerabilitySphere"; 	break;
+		case 'Allmap' 					: e.Replacement = "BD_Allmap"; 					break;
+		case 'Infrared' 				: e.Replacement = "BD_Infrared"; 				break;
+		case 'HealthBonus' 				: e.Replacement = "BD_HealthBonus"; 			break;
+		case 'ArmorBonus' 				: e.Replacement = "BD_ArmorBonus"; 				break;
+		case 'Stimpack' 				: e.Replacement = "BD_Stimpack"; 				break;
+		case 'Medikit' 					: e.Replacement = "BD_Medikit"; 				break;
+		case 'GreenArmor' 				: e.Replacement = "BD_GreenArmor"; 				break;
+		case 'BlueArmor' 				: e.Replacement = "BD_BlueArmor"; 				break;
+		case 'Backpack' 				: e.Replacement = "BD_Backpack"; 				break;
+		case 'Radsuit' 					: e.Replacement = "BD_Radsuit"; 				break;
+		case 'RedCard' 					: e.Replacement = "BD_RedCard"; 				break;
+		case 'BlueCard' 				: e.Replacement = "BD_BlueCard"; 				break;
+		case 'YellowCard' 				: e.Replacement = "BD_YellowCard"; 				break;
+		case 'RedSkull' 				: e.Replacement = "BD_RedSkull"; 				break;
+		case 'BlueSkull' 				: e.Replacement = "BD_BlueSkull"; 				break;
+		case 'YellowSkull' 				: e.Replacement = "BD_YellowSkull"; 			break;
 		}
-	e.IsFinal = true; //disable further replacements, if any
+	e.IsFinal = true;
 	}
 }

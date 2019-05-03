@@ -11,6 +11,7 @@ Default
 	+WEAPON.NOALERT //for melee
 	weapon.slotnumber 3;
 	weapon.slotpriority 0;
+	BDoomWeapon.AutoReloadTime 200;
 	}
 override void Tick()
 	{
@@ -250,9 +251,9 @@ States
 				return ResolveState("ReloadEnd");
 			TakeInventory("Shell",1);
 			GiveInventory("ShotgunClip",1); 
+			A_PlaySound("Mweapons/shotgun/shellin",0);
 			return ResolveState(null);
 			}
-		TNT1 A 0 A_PlaySound("Mweapons/shotgun/shellin",0);
 		SHOR LL 3 A_Weaponoffset(0.0,-1.0,WOF_ADD|WOF_INTERPOLATE);
 		SHOR LL 4 {
 			A_Weaponoffset(0.0,1.0,WOF_ADD|WOF_INTERPOLATE);

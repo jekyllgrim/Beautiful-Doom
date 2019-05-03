@@ -164,19 +164,19 @@ Mweapons/saw/stuck		"sounds/modern/saw/saw_stuck.ogg"
 $volume Mweapons/saw/loop 0.7
 $volume Mweapons/saw/highloop 0.7
 
-$random Mweapons/pistol/fire { rpistolfire1 rpistolfire2 rpistolfire3 }
-$volume Mweapons/pistol/fire 0.8
+$random Mweapons/pistol/fire { Mpistol1 Mpistol2 Mpistol3 }
+$volume Mweapons/pistol/fire 0.6
 $limit Mweapons/pistol/fire 10
-rpistolfire1	"sounds/modern/pistol/glock1.ogg"
-rpistolfire2	"sounds/modern/pistol/glock2.ogg"
-rpistolfire3	"sounds/modern/pistol/glock3.ogg"
+Mpistol1	glock1
+Mpistol2	glock2
+Mpistol3	glock3
 Mweapons/pistol/clipin		"sounds/modern/pistol/glock_clipin.ogg"
 Mweapons/pistol/clipout	"sounds/modern/pistol/glock_clipout.ogg"
 Mweapons/pistol/cock	"sounds/modern/pistol/glock_cock.ogg"
 
 
 $random Mweapons/shotgun/fire { rshotgun1 rshotgun2 rshotgun3 }
-$volume Mweapons/shotgun/fire 0.85
+$volume Mweapons/shotgun/fire 0.8
 $limit Mweapons/shotgun/fire 10
 rshotgun1		"sounds/modern/shotgun/mossberg1.ogg"
 rshotgun2		"sounds/modern/shotgun/mossberg2.ogg"
@@ -188,7 +188,7 @@ shellin2		"sounds/modern/shotgun/shell_in2.ogg"
 shellin3		"sounds/modern/shotgun/shell_in3.ogg"
 
 $random Mweapons/rifle/fire { rrifle1 rrifle2 rrifle3 }
-$volume Mweapons/rifle/fire 0.6
+$volume Mweapons/rifle/fire 0.5
 $limit	Mweapons/rifle/fire 40
 rrifle1			"sounds/modern/rifle/m4fire1.ogg"
 rrifle2			"sounds/modern/rifle/m4fire2.ogg"
@@ -212,7 +212,9 @@ Mweapons/assg/trigger		"sounds/modern/assg/assg_trigger.ogg"
 Mweapons/assg/open		"sounds/modern/assg/assg_open.ogg"
 
 $random Mweapons/ssg/fire1 { ssgf1 ssgf2 ssgf3 ssgf4 }
+$volume	Mweapons/ssg/fire1 0.5
 $random Mweapons/ssg/firedual { ssgdual1 ssgdual2 ssgdual3 ssgdual4 }
+$volume	Mweapons/ssg/firedual 0.6
 ssgf1		"sounds/modern/ssg/2barrel_fire1.wav"
 ssgf2		"sounds/modern/ssg/2barrel_fire2.wav"
 ssgf3		"sounds/modern/ssg/2barrel_fire3.wav"

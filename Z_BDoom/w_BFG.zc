@@ -670,7 +670,7 @@ Default {
 	renderstyle "Add";
 	scale 0.15;
 	alpha 0.9;
-	decal "BFGLightning";
+	decal "none"; //"BFGLightning";
 	damage 0;
 	radius 14;
 	height 8;
@@ -711,8 +711,8 @@ States
 				return ResolveState("SelfDestruct");
 			//A_StopSound(6);
 			A_PlaySound("weapons/bfg/explosion",6);
-			//A_SprayDecal("BFGLightning",32);
-			A_Explode(40*wpower,64,XF_NOSPLASH,alert:true,fulldamagedistance:64,damagetype:"BFGSplash");
+			A_SprayDecal("BFGLightning",radius+8);
+			A_Explode(60*wpower,64+28*wpower,XF_NOSPLASH,alert:true,fulldamagedistance:64+20*wpower,damagetype:"BFGSplash");
 			return ResolveState(null);
 			}
 			

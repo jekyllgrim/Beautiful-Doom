@@ -16,6 +16,7 @@ Default
 	Weapon.AmmoUse2		1;
 	Weapon.AmmoGive2	20;
 	weapon.slotnumber	4;
+	BDoomWeapon.AutoReloadTime 140;
 	}
 override string PickupMessage ()
 	{

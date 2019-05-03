@@ -555,7 +555,8 @@ Default {
 	Damage 0;
 	missiletype "ModernFlarePlasmaTrail";
 	missileheight 8 ;
-	decal "ArachnotronPlasmaSplat";
+	+NODECAL
+	decal "none";
 	+DONTTHRUST
 	+FORCERADIUSDMG
 	renderstyle "Add";
@@ -566,7 +567,7 @@ Default {
 	}
 override void PostBeginPlay() {
 	super.PostBeginPlay();
-	A_PlaySound("Mweapons/plasma/fire",6,1.0);
+	A_PlaySound("Mweapons/plasma/fire",6,0.7);
 	if (bdoom_debris == 1)
 		A_SpawnItemEx("BD_PlasmaFlare",0,0,0,vel.x,vel.y,vel.z,0,SXF_SETMASTER|SXF_ORIGINATOR|SXF_ABSOLUTEVELOCITY);
 	}
@@ -578,6 +579,7 @@ States
 		goto spawn+1;
 	Death:
 		TNT1 A 0 {
+			A_SprayDecal("ArachnotronPlasmaSplat",radius+8);
 			A_StopSound(5);
 			if (pcolor == "green")
 				A_SetTranslation("GreenPlasma");

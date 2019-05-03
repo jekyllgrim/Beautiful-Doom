@@ -38,6 +38,12 @@ bool CheckLandingSize (double cradius = 0, bool checkceiling = false) {
 			||	GetZAt(cradius,0,270,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
 			||	GetZAt(cradius,0,315,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz );
 	}
+override void Tick() {
+	Super.Tick();
+	//if for some reason the switch into raising animation failed, just fade out the gib
+	if (FindState("Raise") && target && (target is "BDoomMonster") && target.InStateSequence(target.curstate,target.FindState("Raise")) && !InStateSequence(curstate,FindState("Raise")))
+		A_FadeOut(0.05);
+	}
 states
 	{
 	LoadSprites:

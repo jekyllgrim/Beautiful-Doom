@@ -22,6 +22,10 @@ https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752
 
 
 ** Dev updates log (dd.mm.yyyy) **
+03.05.2019
+- Added "Background weapon reload" option: if enabled (while using Modern Guns), weapons will automatically reload their magazines if they have been unselected for a while. The duration after which the automatic reload happens is about x2 of the weapon's normal reload animation duration.
+- Adjusted the volume of some weapons
+
 30.04.2019
 - Reverted the slight nerf of the Modern Plasma Rifle
 - Added altered behavior for the Chaingun Guy when using Modern Weapons, just like other zombies (projectile bullets, has to reload)
