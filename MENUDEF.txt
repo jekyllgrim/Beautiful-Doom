@@ -91,7 +91,7 @@ OptionMenu "BDoom_Settings"
 	Option "Maximum blood/gibs/debris",		"sv_corpsequeuesize", "bdoom_bloodnum", "", 1
 	StaticText " "
 	
-	SpriteShadowSlider "$SPRITESHADOWMNU_MAXSHADOWDISTANCE",	"$SPRITESHADOWMNU_HELPTEXT_MAXSHADOWDISTANCE",	"cl_spriteshadowdistance",	0, 10000, 1, 0
+	ScaleSlider  "Maximum Shadow Distance", "cl_spriteshadowdistance",	0, 10000, 1, "Shadows are Disabled"
 	StaticText " "
 
 	Option "Ricochet & spark sounds", 			"bdoom_sparks", "OnOff", "", 1

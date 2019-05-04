@@ -224,14 +224,12 @@ class Z_ShadeMe : CustomInventory
 class SpriteShadowHandler : EventHandler
 {
 	transient CVar cvShadowDistance;
-	transient CVar cvMaxShadows;
 
 	double shadowDistOld, shadowDistNew;
 
 	override void OnRegister()
 	{
 		cvShadowDistance = CVar.FindCVar("cl_spriteshadowdistance");
-		cvMaxShadows = CVar.FindCVar("cl_maxspriteshadows");
 	}
 
 	//===========================================================================
@@ -370,20 +368,5 @@ class SpriteShadowHandler : EventHandler
 	{
 		if (!cvShadowDistance) return 0;
 		return cvShadowDistance.GetFloat();
-	}
-
-	int CountShadows(void)
-	{
-		if (!cvMaxShadows) return 0;
-
-		ThinkerIterator it = ThinkerIterator.Create("Z_SpriteShadow");
-		Z_SpriteShadow mo;
-		int count;
-		while (mo = Z_SpriteShadow(it.Next()))
-		{
-			count++;
-			if (count >= cvMaxShadows.GetInt()) break;
-		}
-		return count;
 	}
 }
