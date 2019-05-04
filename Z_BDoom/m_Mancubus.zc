@@ -76,8 +76,7 @@ states
 				A_SpawnItemEx("Blood",frandom(-3,3),frandom(-3,3),frandom(42,47), frandom(-4,4),frandom(-4,4),frandom(2,4));
 			}
 		MANM f 3 a_noblocking;
-		MANM ghijklmnop 3; 		
-		MANM q 1 a_bossdeath;
+		MANM ghijklmnopq 3;
 		goto deathbleed;
 	Death1: //fall back
 		MANN a 4;
@@ -94,8 +93,7 @@ states
 			if (bdoom_gibs && !burning)
 				A_SpawnItemEx("BasicMeatPiece",frandom(-3,3),frandom(-3,3),frandom(20,40), frandom(-4,4),frandom(-4,4),frandom(2,4),0,SXF_SETTARGET,24);
 			}
-		MANN jk 4;
-		MANN L 1 a_bossdeath;
+		MANN jkL 4;
 		goto deathbleed;
 	Death2: //like vanilla but not exposing brain
 		MANO a 4;
@@ -105,11 +103,14 @@ states
 			BD_Bleed();
 			a_noblocking();
 			}
-		MANO Fghi 4 BD_Bleed();
-		MANO J 1 a_bossdeath;
+		MANO FghiJ 4 BD_Bleed();
 		goto deathbleed;
+	XDeath:
+		stop;
 		}
 }
+
+
 
 Class BD_FatShot : FatShot //replaces FatShot
 {

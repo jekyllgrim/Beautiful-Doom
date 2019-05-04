@@ -19,6 +19,7 @@ Default {
 	height 1;
 	}
 bool CheckLandingSize (double cradius = 0, bool checkceiling = false) {
+	int aangle = 0;
 	if (checkceiling)
 		return (GetZAt(cradius,0,0,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
 			||	GetZAt(cradius,0,45,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz

@@ -60,8 +60,7 @@ states
 		BS1M c 3 A_scream;
 		BS1M defg 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(8,32),frandom(2.0,4.0),frandom(2.0,4.0),frandom(1.0,4.0),random(0,360),SXF_SETTARGET,80);
 		BS1M h 3 A_NoBlocking;
-		BS1M ijkl 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(8,32),frandom(2.0,4.0),frandom(2.0,4.0),frandom(1.0,4.0),random(0,360),SXF_SETTARGET,100);
-		BS1M m 1 A_BossDeath();
+		BS1M ijklm 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(8,32),frandom(2.0,4.0),frandom(2.0,4.0),frandom(1.0,4.0),random(0,360),SXF_SETTARGET,100);
 		goto deathbleed;
 	Death1: //in halves
 		BS1N A 3;
@@ -72,8 +71,7 @@ states
 			}
 		BS1N defg 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
 		BS1N h 3 A_NoBlocking;
-		BS1N ijk 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
-		BS1N L 1 A_BossDeath();
+		BS1N ijkl 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
 		goto deathbleed;
 	Death2: //fall back
 		BS1O A 3;
@@ -81,8 +79,7 @@ states
 		BS1O c 3 A_scream;
 		BS1O defg 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(18,40),frandom(3,5),frandom(-2,2),frandom(2,4),0,SXF_SETTARGET,64);
 		BS1O h 3 A_NoBlocking;
-		BS1O iJ 3;
-		BS1O K 1 A_BossDeath();
+		BS1O iJk 3;
 		goto deathbleed;
 	XDeath:
 		//TNT1 A 0 A_Jump(128,"Death");
@@ -94,7 +91,7 @@ states
 		BS1X ijklMN 2  A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET,80);
 		BS1X OP 2;
 		TNT1 A 0 A_Playsound("gibs/meatland");
-		BS1X Q 1 A_BossDeath();
+		BS1X Q 1;
 		goto deathbleed;
 	Crush:
 		CRS3 G -1;
@@ -165,8 +162,7 @@ states
 			}
 		BS2N defg 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
 		BS2N h 3 A_NoBlocking;
-		BS2N ijk 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
-		BS2N L 1;
+		BS2N ijkl 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
 		goto deathbleed;
 	Death2: //fall back
 		BS2O A 3;
@@ -174,8 +170,7 @@ states
 		BS2O c 3 A_scream;
 		BS2O defg 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(18,40),frandom(3,5),frandom(-2,2),frandom(2,4),0,SXF_SETTARGET,64);
 		BS2O h 3 A_NoBlocking;
-		BS2O iJ 3;
-		BS2O K 1;
+		BS2O iJk 3;
 		goto deathbleed;
 	XDeath:
 		BS2X A 3;

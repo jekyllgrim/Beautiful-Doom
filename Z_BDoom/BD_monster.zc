@@ -136,7 +136,7 @@ void BD_Gibs()
 	torso2.vel.z = vel.z*frandom(0.7,0.95);
 	torso2.target = self;
 	torso2.translation = translation;
-	if (torso1.scale.x == -1) //horizontal scale is randomized but synced between pieces of the same torso
+	if (torso1.scale.x == -1) //horizontal scale is randomized but synced between pieces of the same torso, so it doesn't look like 2 left halves or 2 right halves
 		torso2.scale.x = -1;
     }
 	
@@ -147,6 +147,8 @@ states
 		stop;
 	Deathbleed: //for spawning animated blood pool and flies
 		#### # random(35,55) {
+			if (bBOSSDEATH)
+				A_BossDeath();				
 			if (burning)
 				return ResolveState("DeathEnd");
 			return ResolveState(null);
@@ -266,7 +268,7 @@ states
 			BD_Gibs();
 			}
 		TNT1 ABCDEFGHIJKLMN 2;
-		goto deathend;
+		goto DeathEnd;
 	}
 }
 
