@@ -5,7 +5,7 @@
 //base class for most debris
 Class DebrisGeneral : Actor abstract
 {
-name sfxtype; //0 = debris, 1 = flames/smoke, 2 = blood, 3 = gibs, 4 = flares
+name sfxtype; //debris, flames, blood, gibs
 property sfxtype : sfxtype;
 Default {
 	DebrisGeneral.sfxtype "debris";
@@ -57,20 +57,20 @@ virtual void FlyBack() {
 override void PostBeginPlay()
 	{
 	if (!level.IsPointInLevel(pos)) {
-		self.destroy();
+		destroy();
 		return;
 		}
 	super.PostBeginPlay();
 	}
 override void Tick()
 	{
-	if (	(sfxtype == "debris" && !bdoom_debris)	||
-			(sfxtype == "flames" && !bdoom_flames)	||
-			(sfxtype == "blood" && 	!bdoom_blood)	||
-			(sfxtype == "gibs" && 	!bdoom_gibs)	)
+	if (	(sfxtype == 'debris' && !bdoom_debris)	||
+			(sfxtype == 'flames' && !bdoom_flames)	||
+			(sfxtype == 'blood' && 	!bdoom_blood)	||
+			(sfxtype == 'gibs' && 	!bdoom_gibs)	)
 		{
 		A_DeQueueCorpse();
-		self.destroy();
+		destroy();
 		return;
 		}
 	super.Tick();
@@ -118,39 +118,65 @@ override void Tick() {
 }
 
 //base subclass for flares and flame effects
-Class Flare_General : DebrisGeneral abstract
+Class Flare_General : DebrisGeneral
 {
+name fcolor;
 Default {
 	DebrisGeneral.sfxtype "flames";
 	-MISSILE
-	-RELATIVETOFLOOR
+	+RELATIVETOFLOOR
+	+MOVEWITHSECTOR
 	+NOINTERACTION
 	renderstyle "Add";
 	alpha 0.4;
 	scale 0.4;
+	}
+virtual void SetColor() {
+	if (fcolor == 'red')
+		sprite = GetSpriteIndex("LENR");
+	else if (fcolor == 'green')
+		sprite = GetSpriteIndex("LENG");
+	else if (fcolor == 'blue')
+		sprite = GetSpriteIndex("LENB");
+	else if (fcolor == 'yellow')
+		sprite = GetSpriteIndex("LENY");
+	else {
+		destroy();
+		return;
+		}
+	}
+states
+	{
+	Loadsprites:
+		LENR A 0;
+		LENB A 0;
+		LENG A 0;
+		LENY A 0;
+		LENC A 0;
+		LENS A 0;
+		SPRK ABC 0;
+		stop;
 	}
 }
 
 // base glow to be spawned alongside projectiles
 Class BD_ProjFlare : Flare_General
 {
-name fcolor;
 property fcolor : fcolor;
 Default {
+	DebrisGeneral.sfxtype "debris";
 	BD_ProjFlare.fcolor "Red";
 	renderstyle "Add";
 	alpha 0.8;
 	scale 0.11;
+	-RELATIVETOFLOOR
+	-MOVEWITHSECTOR
 	}
 override void Tick() {
 	super.Tick();
-	if (!master || !bdoom_debris) {
-		self.Destroy();
-		return;
-		}
-	else if (master && (master.InstateSequence(master.curstate,master.FindState("Death")) 
-			|| master.InstateSequence(master.curstate,master.FindState("XDeath")))		) {
-		self.Destroy();
+	if (!master || (master && (master.InstateSequence(master.curstate,master.FindState("Death")) 
+			|| master.InstateSequence(master.curstate,master.FindState("XDeath")))	)	) {
+		Destroy();
 		return;
 		}
 	}
@@ -162,33 +188,14 @@ states
 				SetOrigin(master.pos,0);
 				vel = master.vel;
 				}
-			if (fcolor == "blue")
-				sprite = GetSpriteIndex("LENB");
-			else if (fcolor == "green")
-				sprite = GetSpriteIndex("LENG");
-			else if (fcolor == "yellow")
-				sprite = GetSpriteIndex("LENY");
+			SetColor();
 			}
 		#### # 1 bright;
 		wait;
 	}
 }
 
-//used for flares that are launched from the weapon alongside the projectile, e.g. grenades
-Class BD_GrenadeFlare : Actor abstract
-{
-Default {
-	+FORCEXYBILLBOARD
-	+MISSILE
-	+NOBLOCKMAP
-	+NOTELEPORT
-	+DROPOFF
-	+NOGRAVITY
-	+BLOODLESSIMPACT
-	damage 0;
-	renderstyle "Add";
-	}
-}
+
 
 Class ParticleFire_General : Flare_General abstract
 {
@@ -404,6 +411,26 @@ Class BlackSmokeTrail : BasicSmokeTrail
 Default {
 	renderstyle "Translucent";
 	alpha 0.08;
+	}
+}
+
+//dark small piece of smoke with a hint of flame — for "dirty" fires like burning barrel
+Class BurnSmokePiece : Smoke_General
+{
+Default {
+	renderstyle "Translucent";
+	alpha 0.3;
+	scale 0.05;
+	}
+override void PostBeginPlay() {
+	super.PostBeginPlay();
+	scale*=randompick(0.6,1);
+	}
+states
+	{
+	Spawn:
+		BSMO ABCDEFGHIJKLMNOPQRSTU 1 NoDelay A_FadeOut(0.005);
+		stop;
 	}
 }
 
@@ -763,7 +790,7 @@ Default {
 override void PostBeginPlay()
 	{
 	super.PostBeginPlay();
-	wrot = randompick(-10,10);
+	wrot = random(8,14)*randompick(-1,1);
 	A_setScale(frandom(0.04,0.11),frandom(0.04,0.11));
 	if (target && target is "EnBulletPuff") {
 		let puff = EnBulletPuff(target);
@@ -816,6 +843,18 @@ states
 	 }
 }
 
+Class BD_GlassPiece : WallPart {
+Default {
+	renderstyle "Add";
+	alpha 0.4;
+	}
+states
+	{
+	Bloody:
+		stop;
+	}
+}
+
 Class EnSSGPuff : EnBulletPuff
 {
 Default {
@@ -832,7 +871,6 @@ Default {
 override void PostBeginPlay()
 	{
 	super.PostBeginPlay();
-	wrot = randompick(-10,10);
 	A_Setscale(frandom(0.19,0.22)*randompick(-1,1),frandom(0.19,0.22)*randompick(-1,1));
 	}
 }

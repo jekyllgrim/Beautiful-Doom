@@ -996,14 +996,33 @@ frame BOM1 { light ROCKET_X2 }
 ///// OBJECTS ///////
 /////////////////////
 
+flickerlight2 CANDELABRA
+{
+	color 1.0 1.0 0.5
+    size 48
+    secondarySize 44
+    interval 0.2
+    offset 0 60 0
+	dontlightself 1
+}
+
 object BD_Candelabra
 {
-    frame CBRA { light BIGREDTORCH }
+    frame CAN3 { light CANDELABRA }
+}
+
+flickerlight2 CANDLE
+{
+color 1.0 1.0 0.5
+size 16
+secondarysize 18
+interval 0.4
+dontlightself 1
 }
 
 object BD_Candlestick
 {
-frame CAND { light SMALLREDTORCH }
+frame CAND { light CANDLE }
 }
 
 object BD_EvilEye
@@ -1069,162 +1088,171 @@ object BD_ExplosiveBarrel
 }
 
 // Floor lamp
-pointlight LAMP
+flickerlight LAMP
 {
     color 1.0 1.0 0.8
-    size 56
-    offset 0 44 0
+    size 42
+    secondarySize 44
+    chance 0.01
+    offset 0 46 0
+	dontlightself 1
 }
 
 object BD_Column
 {
-    frame COLUA { light LAMP }
+    frame BCOLA { light LAMP }
+	frame BCOLY { light LAMP }
 }
 
-object LensFlare_Broken
-{
-	frame LENS { light LAMP }
-}
 
 // Short tech lamp
-pulselight SMALLLAMP
+flickerlight SMALLLAMP
 {
     color 0.8 0.8 1.0
-    size 56
-    secondarySize 58
-    interval 0.4
-    offset 0 44 0
+    size 48
+    secondarySize 52
+    chance 0.01
+    offset 0 58 0
+	dontlightself 1
 }
 
 object BD_TechLamp2
 {
-    frame TLP2A { light SMALLLAMP }
-    frame TLP2B { light SMALLLAMP }
-    frame TLP2C { light SMALLLAMP }
-    frame TLP2D { light SMALLLAMP }
+    frame BLP2A { light BIGLAMP }
+	frame BLP2B { light BIGLAMP }
+	frame BLP2C { light BIGLAMP }
+	frame BLP2D { light BIGLAMP }
+	frame BLP2Y { light BIGLAMP }
 }
 
 // Tall tech lamp
-pulselight BIGLAMP
+flickerlight BIGLAMP
 {
     color 0.8 0.8 1.0
     size 64
-    secondarySize 66
-    interval 0.4
+    secondarySize 60
+    chance 0.01
     offset 0 72 0
+	dontlightself 1
 }
 
 object BD_TechLamp
 {
-    frame TLMPA { light BIGLAMP }
-    frame TLMPB { light BIGLAMP }
-    frame TLMPC { light BIGLAMP }
-    frame TLMPD { light BIGLAMP }
+    frame BLMPA { light BIGLAMP }
+	frame BLMPB { light BIGLAMP }
+	frame BLMPC { light BIGLAMP }
+	frame BLMPD { light BIGLAMP }
+	frame BLMPY { light BIGLAMP }
 }
+
+/*
+	TALL TORCHES
+*/
 
 // Tall red torch
-flickerlight BIGREDTORCH
+flickerlight2 TallTorch_Red
 {
     color 1.0 0.3 0.0
-    size 64
-    secondarySize 72
-    chance 0.8
+    size 48
+    secondarySize 44
+    interval 0.2
     offset 0 60 0
-}
-
-object TallTorch_Red
-{
-    frame TTRB { light BIGREDTORCH }
+	dontlightself 1
 }
 
 // Tall green torch
-flickerlight BIGGREENTORCH
+flickerlight2 TallTorch_Green
 {
     color 0.0 1.0 0.0
-    size 64
-    secondarySize 72
-    chance 0.8
+    size 48
+    secondarySize 44
+    interval 0.2
     offset 0 60 0
-}
-
-object TallTorch_Green
-{
-    frame TTRB { light BIGGREENTORCH }
+	dontlightself 1
 }
 
 // Tall blue torch
-flickerlight BIGBLUETORCH
+flickerlight2 TallTorch_Blue
 {
     color 0.0 0.0 1.0
-    size 64
-    secondarySize 72
-    chance 0.8
+    size 48
+    secondarySize 52
+    interval 0.2
     offset 0 60 0
+	dontlightself 1
 }
+
+object TallTorch_Red
+{	frame TTRR { light TallTorch_Red }	}
+
+object TallTorch_Green
+{	frame TTRG { light TallTorch_Green }}
 
 object TallTorch_Blue
-{
-    frame TTRB { light BIGBLUETORCH }
-}
+{	frame TTRB { light TallTorch_Blue }	}
 
-// Small red torch
-flickerlight SMALLREDTORCH
+/*
+	SMALL TORCHES
+*/
+
+// Short red torch
+flickerlight2 ShortTorch_Red
 {
     color 1.0 0.3 0.0
-    size 48
-    secondarySize 54
-    chance 0.8
+    size 32
+    secondarySize 27
+    interval 0.2
     offset 0 35 0
+	dontlightself 1
+}
+
+// Short green torch
+flickerlight2 ShortTorch_Green
+{
+    color 0.0 1.0 0.0
+    size 32
+    secondarySize 27
+    interval 0.2
+    offset 0 35 0
+	dontlightself 1
+}
+
+// Short blue torch
+flickerlight2 ShortTorch_Blue
+{
+    color 0.0 0.0 1.0
+    size 32
+    secondarySize 27
+    interval 0.2
+    offset 0 35 0
+	dontlightself 1
 }
 
 object ShortTorch_Red
-{
-    frame STRB { light SMALLREDTORCH }
-}
-
-// Small green torch
-flickerlight SMALLGREENTORCH
-{
-    color 0.0 1.0 0.0
-    size 48
-    secondarySize 54
-    chance 0.8
-    offset 0 35 0
-}
+{	frame STRR { light ShortTorch_Red }		}
 
 object ShortTorch_Green
-{
-    frame STRB { light SMALLGREENTORCH }
-}
-
-// Small blue torch
-flickerlight SMALLBLUETORCH
-{
-    color 0.0 0.0 1.0
-    size 48
-    secondarySize 54
-    chance 0.8
-    offset 0 35 0
-}
+{	frame STRG { light ShortTorch_Green}	}
 
 object ShortTorch_Blue
-{
-    frame STRB { light SMALLBLUETORCH }
-}
+{	frame STRB { light ShortTorch_Blue }	}
+
 
 // Burning barrel
-flickerlight FIREBARREL
+flickerlight2 BURNINGBARREL
 {
-    color 1.0 0.9 0.0
+    color 1.0 1.0 0.0
     size 48
-    secondarySize 54
-    chance 0.8
-    offset 0 32 0
+    secondarySize 44
+    interval 0.2
+    offset 0 60 0
+	dontlightself 1
 }
+
 
 object BD_BurningBarrel
 {
-    frame BURB { light FIREBARREL }
+    frame BURB { light BURNINGBARREL }
 }
 
 // Skulls w/candles

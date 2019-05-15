@@ -1,12 +1,8 @@
 
 #include "DECORATE/BD_MONST.txt"
 
-//#include "DECORATE/BD_DGUY.txt"
-
-
 
 // --------- OBJECTS
 
-#include "DECORATE/Objects/BD_OBJ.txt"	//decorative objects
-#include "DECORATE/Objects/BD_LIGHT.txt" //light sources
+//#include "DECORATE/Objects/BD_OBJ.txt"	//decorative objects
 #include "DECORATE/Objects/BD_DEAD.txt"	//impaled bodies and other gory decorations

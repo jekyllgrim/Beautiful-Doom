@@ -185,8 +185,6 @@ states
 			scale.x*=randompick(-1,1);
 			}
 		#### A 1 {
-			if (FindState("Raise") && target && (target is "BDoomMonster") && target.InStateSequence(target.curstate,target.FindState("Raise")))
-				return ResolveState("Raise");
 			if (!bNOBLOOD && bdoom_blood && waterlevel == 0) //spawn blood is CVARs allow and not underwater
 				A_SpawnItemEx("BD_GibBlood",frandom(-2,2),frandom(-2,2),frandom(0,2),0,frandom(0,1),frandom(0,1),random(175,185),SXF_TRANSFERPOINTERS,144);
 			roll+=brot;

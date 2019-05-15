@@ -639,6 +639,197 @@ map "brightmaps/shorttorch.png"
 disablefullbright
 }
 
+// BURNING BARREL
+brightmap sprite BURBA0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBB0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBC0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBD0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBE0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBF0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBG0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBH0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBI0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBJ0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBK0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBL0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBM0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBN0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBO0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBP0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBQ0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBR0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBS0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBT0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBU0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBV0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBW0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBX0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBY0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+brightmap sprite BURBZ0 {
+map "brightmaps/burningbarrel.png"
+disablefullbright
+}
+
+// CANDLESTICK
+
+brightmap sprite CANDA0 {
+map "brightmaps/candle.png"
+disablefullbright
+}
+brightmap sprite CANDB0 {
+map "brightmaps/candle.png"
+disablefullbright
+}
+brightmap sprite CANDC0 {
+map "brightmaps/candle.png"
+disablefullbright
+}
+brightmap sprite CANDD0 {
+map "brightmaps/candle.png"
+disablefullbright
+}
+brightmap sprite CANDE0 {
+map "brightmaps/candle.png"
+disablefullbright
+}
+brightmap sprite CANDF0 {
+map "brightmaps/candle.png"
+disablefullbright
+}
+brightmap sprite CANDG0 {
+map "brightmaps/candle.png"
+disablefullbright
+}
+brightmap sprite CANDH0 {
+map "brightmaps/candle.png"
+disablefullbright
+}
+brightmap sprite CANDI0 {
+map "brightmaps/candle.png"
+disablefullbright
+}
+brightmap sprite CANDJ0 {
+map "brightmaps/candle.png"
+disablefullbright
+}
+
+// CANELABRA
+
+brightmap sprite CAN3A0 {
+map "brightmaps/candelabra.png"
+disablefullbright
+}
+brightmap sprite CAN3B0 {
+map "brightmaps/candelabra.png"
+disablefullbright
+}
+brightmap sprite CAN3C0 {
+map "brightmaps/candelabra.png"
+disablefullbright
+}
+brightmap sprite CAN3D0 {
+map "brightmaps/candelabra.png"
+disablefullbright
+}
+brightmap sprite CAN3E0 {
+map "brightmaps/candelabra.png"
+disablefullbright
+}
+brightmap sprite CAN3F0 {
+map "brightmaps/candelabra.png"
+disablefullbright
+}
+brightmap sprite CAN3G0 {
+map "brightmaps/candelabra.png"
+disablefullbright
+}
+brightmap sprite CAN3H0 {
+map "brightmaps/candelabra.png"
+disablefullbright
+}
+brightmap sprite CAN3I0 {
+map "brightmaps/candelabra.png"
+disablefullbright
+}
+brightmap sprite CAN3J0 {
+map "brightmaps/candelabra.png"
+disablefullbright
+}
 
 // BARON OF HELL
 
