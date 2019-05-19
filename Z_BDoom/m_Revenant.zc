@@ -21,7 +21,6 @@ Default {
 	Obituary "$OB_UNDEAD";
 	Tag "$FN_REVEN";
 	gibhealth 60;
-	BDoomMonster.allowfiredeath false;
 	}
 void BD_SkelMissile()
 	{
@@ -173,7 +172,7 @@ states
 Class BD_RevenantTracerFlare : BD_ProjFlare
 {
 Default {
-	BD_ProjFlare.fcolor "red";
+	Flare_General.fcolor "red";
 	alpha 0.9;
 	scale 0.13;
 	}

@@ -1,90 +1,32 @@
-// Small fire particle that spawns over torches and fades away
-Class TorchFireParticle : Flare_General
-{
-Default {
-	alpha 0.5;
-	scale 0.04;
-	}
-override void PostBeginPlay() {
-	super.PostBeginPlay();
-	let f = BD_LightSource (master);
-	if (!f) {
-		destroy();
-		return;
-		}
-	fcolor = f.fcolor;
-	}
-override void SetColor() {
-	if (fcolor == 'green')
-		frame = 1;
-	else if (fcolor == 'blue')
-		frame = 2;
-	else if (fcolor == 'yellow')
-		frame = 3;
-	}
-states
-	{
-	Spawn:
-		SPRK A 0 NoDelay SetColor();
-		SPRK # 1 bright {
-			A_FadeOut(0.01);
-			scale*=0.95;
-			}
-		wait;
-	}
-}
-
 // Universal flare used by light sources
-Class BD_LightFlare : Flare_General
+Class BD_LightFlare : BD_BaseFlare
 {
-double fscale;
-double falpha;
-Default {
-	+RELATIVETOFLOOR
-	+MOVEWITHSECTOR
-	}
+private int timer;
 override void Tick() {
 	if (!master) {
 		destroy();
 		return;
 		}	
-	super.tick();	
-	}
-override void SetColor() {
-	A_SetScale(fscale);
-	A_SetRenderStyle(falpha,Style_ADD);
-	if (fcolor == 'red')
-		sprite = GetSpriteIndex("LENR");
-	else if (fcolor == 'green')
-		sprite = GetSpriteIndex("LENG");
-	else if (fcolor == 'blue')
-		sprite = GetSpriteIndex("LENB");
-	else if (fcolor == 'yellow')
-		sprite = GetSpriteIndex("LENY");
-	else if (fcolor == 'cbra')
-		sprite = GetSpriteIndex("LENC"); //candelabra has a unique sprite with 3 halos
-	else if (fcolor == 'tech')
-		sprite = GetSpriteIndex("LENS"); //tech lamps use a completely different flare
-	else {
-		destroy();
-		return;
+	super.tick();
+	timer++;
+	if (timer >= 5) {
+		timer = 0;
+		if (bdoom_flames) {
+			if (fcolor != 'tech')
+				alpha = falpha*frandom(0.7,1.0);
+			else
+				A_SetScale(fscale*frandom(0.9,1.0));
+			}
 		}
 	}
-states
-	{
-	Spawn:
-		LENR A 0 NoDelay SetColor();
-		#### # 4 bright {
-			if (bdoom_flames) {
-				if (fcolor != 'tech')
-					alpha = falpha*frandom(0.7,1.0);
-				else
-					A_SetScale(fscale*frandom(0.9,1.0));
-				}
-			}
-		wait;
+override void SetColor() {
+	super.SetColor();
+	A_SetScale(fscale);
+	A_SetRenderStyle(falpha,Style_ADD);
 	}
 }
+
+
 
 /* 
 	BASE LIGHT SOURCE
@@ -92,7 +34,7 @@ states
 
 Class BD_LightSource : Actor abstract
 {
-BD_LightFlare flare; 
+BD_LightFlare flare;
 double fspawnheight; 	//flare actor spawn height
 name fcolor;			//flare actor color (red, green, blue, yellow)
 double fscale;			//flare actor scale
@@ -112,17 +54,6 @@ default {
 	+SOLID
 	}	
 
-override void PostBeginPlay() {
-	super.PostBeginPlay();
-	flare = BD_LightFlare(Spawn("BD_LightFlare",(pos.x,pos.y,pos.z+fspawnheight)));
-	if (!flare)
-		return;
-	flare.master = self;
-	flare.fcolor = fcolor;
-	flare.falpha = falpha;
-	flare.fscale = fscale;
-	}
-
 override void Tick() {
 	super.Tick();
 	if (level.isFrozen())
@@ -136,8 +67,9 @@ override void Tick() {
 		}
 	if (bdoom_flames && flare)
 		flare.SetOrigin((pos.x,pos.y,pos.z+fspawnheight),true);
+	if (!bdoom_flames && flare)
+		flare.destroy();
 	}
-
 }
 
 /* 
@@ -146,6 +78,7 @@ override void Tick() {
 
 Class BD_Torch : BD_LightSource abstract
 {
+int pspawnheight;
 Default {
 	BD_LightSource.fspawnheight 60;
 	BD_LightSource.fscale 0.38;
@@ -155,10 +88,21 @@ Default {
 	Height 68;
 	ProjectilePassHeight -16;
 	}
+override void PostBeginPlay() {
+	super.PostBeginPlay();
+	pspawnheight = fspawnheight;
+	}
 virtual void SetLightSprite() {
 	if 		(fcolor == 'green')		sprite = GetSpriteIndex("TTRG");
 	else if (fcolor == 'blue')		sprite = GetSpriteIndex("TTRB");
 	else							sprite = GetSpriteIndex("TTRR");
+	}
+void SpawnParticle() {
+	if (bdoom_flames && frandom(0,10) > 8.5) {
+		let fpart = BD_FireParticle(Spawn("BD_FireParticle",(pos.x+frandom(-3,3),pos.y+frandom(-3,3),pos.z+pspawnheight+frandom(10,14))));
+		fpart.vel = (frandom(-0.15,0.15),frandom(-0.15,0.15),frandom(0.2,0.5));
+		fpart.fcolor = fcolor;
+		}
 	}
 states
 	{
@@ -166,10 +110,7 @@ states
 		TNT1 A 0 NoDelay SetLightSprite();
 		#### A 0 A_Jump(256,random(1,25));
 	Idle:
-		#### ABCDEFGHIJKLMNOPQRSTUVWXYZ random(2,3) {
-			if (bdoom_flames)
-				A_SpawnItemEx("TorchFireParticle",frandom(-3,3),frandom(-3,3),fspawnheight+frandom(12,16),frandom(-0.15,0.15),frandom(-0.15,0.15),frandom(0.2,0.5),0,SXF_SETMASTER,220);
-			}
+		#### ABCDEFGHIJKLMNOPQRSTUVWXYZ random(2,3) SpawnParticle;
 		loop;
 	Loadsprites:
 		TTRG ABCDEFGHIJKLMNOPQRSTUVWXYZ 0;
@@ -220,6 +161,10 @@ Default {
 	BD_LightSource.fscale 0.18;
 	scale 0.37;
 	BD_LightSource.fcolor "green";
+	}
+override void PostBeginPlay() {
+	super.PostBeginPlay();
+	pspawnheight = fspawnheight-7;
 	}
 override void SetLightSprite() {
 	if (fcolor == 'green')

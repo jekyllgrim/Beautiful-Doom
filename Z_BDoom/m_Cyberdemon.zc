@@ -22,8 +22,6 @@ Default
 	ActiveSound "cyber/active";
 	Obituary "$OB_CYBORG";
 	Tag "$FN_CYBER";
-	BdoomMonster.allowfiredeath false;
-	BdoomMonster.allowsmokedeath false;
 	}
 states
 	{
@@ -31,7 +29,9 @@ states
 		stop;
 	Death.Fire:
 		stop;
-	Death.Plasmadamage:
+	Death.Greenfire:
+		stop;
+	Death.PlasmaDamage:
 		stop;
 	Death.BFGSplash:
 		stop;

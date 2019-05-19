@@ -21,8 +21,6 @@ Default
 	ActiveSound "spider/active";
 	Obituary "$OB_SPIDER";
 	Tag "$FN_SPIDER";
-	BdoomMonster.allowfiredeath false;
-	BdoomMonster.allowsmokedeath false;
 	}
 void DyingSpark() {
 	if (bdoom_blood) {
@@ -40,7 +38,9 @@ states
 		stop;
 	Death.Fire:
 		stop;
-	Death.Plasmadamage:
+	Death.Greenfire:
+		stop;
+	Death.PlasmaDamage:
 		stop;
 	Death.BFGSplash:
 		stop;

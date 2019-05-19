@@ -831,6 +831,92 @@ map "brightmaps/candelabra.png"
 disablefullbright
 }
 
+// EXPLOSIVE BARREL
+
+brightmap sprite BAR0A0 {
+map "brightmaps/ExplosiveBarrel.png"
+disablefullbright
+}
+brightmap sprite BAR0B0 {
+map "brightmaps/ExplosiveBarrel.png"
+disablefullbright
+}
+brightmap sprite BAR0C0 {
+map "brightmaps/ExplosiveBarrel.png"
+disablefullbright
+}
+brightmap sprite BAR0D0 {
+map "brightmaps/ExplosiveBarrel.png"
+disablefullbright
+}
+brightmap sprite BAR0E0 {
+map "brightmaps/ExplosiveBarrel.png"
+disablefullbright
+}
+
+brightmap sprite BAR2A0 {
+map "brightmaps/bardead1.png"
+disablefullbright
+}
+brightmap sprite BAR2B0 {
+map "brightmaps/bardead1.png"
+disablefullbright
+}
+brightmap sprite BAR2C0 {
+map "brightmaps/bardead1.png"
+disablefullbright
+}
+brightmap sprite BAR2D0 {
+map "brightmaps/bardead1.png"
+disablefullbright
+}
+brightmap sprite BAR2E0 {
+map "brightmaps/bardead1.png"
+disablefullbright
+}
+
+brightmap sprite BAR3A0 {
+map "brightmaps/bardead2.png"
+disablefullbright
+}
+brightmap sprite BAR3B0 {
+map "brightmaps/bardead2.png"
+disablefullbright
+}
+brightmap sprite BAR3C0 {
+map "brightmaps/bardead2.png"
+disablefullbright
+}
+brightmap sprite BAR3D0 {
+map "brightmaps/bardead2.png"
+disablefullbright
+}
+brightmap sprite BAR3E0 {
+map "brightmaps/bardead2.png"
+disablefullbright
+}
+
+brightmap sprite BAR4A0 {
+map "brightmaps/bardead3.png"
+disablefullbright
+}
+brightmap sprite BAR4B0 {
+map "brightmaps/bardead3.png"
+disablefullbright
+}
+brightmap sprite BAR4C0 {
+map "brightmaps/bardead3.png"
+disablefullbright
+}
+brightmap sprite BAR4D0 {
+map "brightmaps/bardead3.png"
+disablefullbright
+}
+brightmap sprite BAR4E0 {
+map "brightmaps/bardead3.png"
+disablefullbright
+}
+
 // BARON OF HELL
 
 brightmap sprite ZBOSa1 {

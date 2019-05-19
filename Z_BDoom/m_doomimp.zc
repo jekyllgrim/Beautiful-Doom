@@ -19,10 +19,11 @@ Default
 	HitObituary "$OB_IMPHIT";
 	Obituary "$OB_IMP";
 	Tag "$FN_IMP";
-	BdoomMonster.allowfiredeath false;
 	}
 states
 	{
+	Death.Fire:
+		stop;
 	Spawn:
 		TROR AB 10 A_Look();
 		Loop;

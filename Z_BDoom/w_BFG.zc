@@ -448,7 +448,7 @@ states
 Class BFGFlare : BD_ProjFlare
 {
 default {
-	BD_ProjFlare.fcolor "Green";
+	Flare_General.fcolor "Green";
 	alpha 0.25;
 	scale 0.9;
 	}
@@ -807,7 +807,7 @@ Default {
 Class ModernBFGFlare : BD_ProjFlare
 {
 Default {
-	BD_ProjFlare.fcolor "green";
+	Flare_General.fcolor "green";
 	alpha 0.4;
 	}
 override void PostBeginPlay() {

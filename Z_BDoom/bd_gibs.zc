@@ -22,6 +22,7 @@ bool bflat; //whether it needs to get FLATSPRITE when resting
 int restframe; //last frame used in death animation
 Default {
 	DebrisGeneral.sfxtype "gibs";
+	+NOTARGETSWITCH		//so that gibs pushed by explosions don't switch their target field to player
 	-NOBLOCKMAP 
 	+FLOORCLIP
 	-THRUACTORS

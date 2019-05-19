@@ -1064,7 +1064,7 @@ pulselight BARREL
     secondarySize 21
     interval 0.5
     offset 0 36 0
-//	dontlightself 1
+	dontlightself 1
 }
 
 object BD_ExplosiveBarrel

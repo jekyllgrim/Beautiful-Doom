@@ -1,5 +1,6 @@
 Class BD_LostSoul : LostSoul //replaces LostSoul
 {
+//BD_BaseFlare flare;
 Default {
 	species "LostSoul";
 	translation "80:95=48:63", "96:111=64:79", "236:239=0:0", "3:3=13:13";
@@ -14,12 +15,24 @@ override void Tick() {
 		bFLOATBOB = false;
 	if (level.isFrozen())
 		return;
-	if (bdoom_flames && !InstateSequence(curstate,FindState("Death"))) {
+	if (bdoom_flames && health > 0) {
 		if (InstateSequence(curstate,FindState("Missile")))
 			A_SpawnItemEx ("ParticleFire_Red",-10,frandom(-4,4),frandom(10,28), 0,frandom(-1,1),frandom(1,1.25));
 		else
 			A_SpawnItemEx ("ParticleFire_Red",frandom(-4,-8),frandom(-4,4),frandom(10,28), frandom(-0.8,-1),frandom(-1,1),frandom(1,1.25));
 		}
+	/*if (!flare && bdoom_flames && health > 0) {
+		flare = BD_BaseFlare(Spawn("BD_BaseFlare",(pos.x,pos.y,pos.z+28)));
+		flare.scale = (0.3,0.3);
+		flare.fcolor = 'yellow';
+		flare.A_SetRenderstyle(0.5,Style_Add);
+		}
+	if (bdoom_flames && flare) {
+		flare.SetOrigin((pos.x,pos.y,pos.z+28),true);
+		flare.vel = vel;
+		}
+	if (!bdoom_flames && flare)
+		flare.destroy();*/
 	super.Tick();
 	}
 states
@@ -44,8 +57,9 @@ states
 		LOSL F 3 A_Pain();
 		goto See;
 	Death:
-
-		TNT1 A 0 { scale.x*= randompick(-1,1); }
+		TNT1 A 0 { 
+			scale.x*= randompick(-1,1);
+			}
 		TNT1 A 0 A_JumpIf(bdoom_flames == false,"DeathVanilla");
 		LOSL GH 3 bright;
 		LOSL I 3 bright A_Scream();

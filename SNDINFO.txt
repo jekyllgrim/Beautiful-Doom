@@ -208,7 +208,12 @@ $limit torch/burn 4
 
 misc/keytry LOCKCARD
 
-$limit world/barrelx 5
+$random world/ebarrel	{ ebarrel1 ebarrel2 ebarrel3 ebarrel4 }
+ebarrel1	ebarrel1
+ebarrel2	ebarrel2
+ebarrel3	ebarrel3
+ebarrel4	ebarrel4
+$limit world/ebarrel 10
 
 
 // Item Pickup Sounds

@@ -23,7 +23,6 @@ Default
 	gibhealth 50;
 	+FLOATBOB
 	FloatBobStrength 0.35;
-	BDoomMonster.allowfiredeath false;
 	BDoomMonster.smokeheight 30;
 	}
 override void Tick() {

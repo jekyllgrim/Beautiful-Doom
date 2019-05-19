@@ -6,125 +6,152 @@
 
 //// EXPLOSIVE BARREL
 
-Class EBarrelPiece : BasicMetalPiece
+Class EBarrelPiece : SmallDebris
 {
 Default {
-	scale 0.5;
+	DebrisGeneral.sfxtype "debris";
 	}
-override void GibBeginPlay()
-	{
-	sprite = GetSpriteIndex("BPRT");
-	brot = random(14,20)*randompick(-1,1);
-	A_QueueCorpse();
-	roll = random(0,359);
+override void PostBeginPlay() {
+	super.PostBeginPlay();
+	wrot = random(16,24)*randompick(-1,1);
+	scale *= frandom(0.8,1);
 	}
-override void GibFall() 
+states
 	{
-	if (waterlevel == 0) {
-		A_Scream();
-		}
-	A_SetMass(bmass);
-	bMISSILE = false;
-	bNOINTERACTION = true;
-	bRELATIVETOFLOOR = true;
-	bMOVEWITHSECTOR = true;
+	Spawn:
+		BPRT AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 {
+			scale *= 0.93;
+			roll+=wrot;
+			}
+		stop;
 	}
 }
 
 Class BD_ExplosiveBarrel : ExplosiveBarrel replaces ExplosiveBarrel
 {
-Flare_General flare;
-override void PostBeginPlay() {
-	super.PostBeginPlay();
-	flare = Flare_General(Spawn("Flare_General",(pos.x,pos.y,pos.z+26)));
-	if (!flare)
-		return;
-	flare.scale.x = 0.2;
-	flare.scale.y = 0.14;
-	flare.fcolor = 'green';
+Default {
+	scale 0.8;
+	deathsound "world/ebarrel";
 	}
+BD_BaseFlare flare;
+
 override void Tick() {
 	super.Tick();
-	if (!flare)
+	if (level.isFrozen())
 		return;
-	if (bdoom_flames) {
-		flare.SetOrigin((pos.x,pos.y,pos.z+26),true);
-		flare.A_SetRenderstyle(0.4,Style_Add);
+	if (!flare && bdoom_flames && health > 0) {
+		flare = BD_BaseFlare(Spawn("BD_BaseFlare",(pos.x,pos.y,pos.z+26)));
+		flare.scale.x = 0.15;
+		flare.scale.y = 0.11;
+		flare.fcolor = 'green';
+		flare.A_SetRenderstyle(0.3,Style_Add);
 		}
-	else
-		flare.A_SetRenderstyle(0.4,Style_None);
+	if (bdoom_flames && flare)
+		flare.SetOrigin((pos.x,pos.y,pos.z+26),true);
+	if (!bdoom_flames && flare)
+		flare.destroy();
 	}
 states
 	{
 	Spawn:
-		BAR1 ABCDCB 4;
+		TNT1 A 0 NoDelay A_Jump(256,1,2,3,4,5);
+	Idle:
+		BAR0 ABCDE random(3,5) {
+			if (bdoom_flames && frandom(0,10) > 7) {
+				let fpart = BD_FireParticle(Spawn("BD_FireParticle",(pos.x+frandom(-5,5),pos.y+frandom(-5,5),pos.z+frandom(27.5,29))));
+				fpart.vel = (0,0,frandom(0.1,0.2));
+				fpart.fcolor = 'green';
+				}
+			}
 		loop;
 	Death:
 		TNT1 A 0 {
 			if (flare)
 				flare.destroy();
+			if (bdoom_shakes)
+				Radius_Quake(2,15,0,5,0);
+			A_SetScale(1.0);
 			}
 		BEXP AABBC 1;
 		BEXP C 1 A_Scream;
 		TNT1 A 0 {
-			A_SprayDecal("BarrelScorch",128);
+			let bar = Spawn("ExplodedBarrel",pos);
+			bar.master = self;
+			A_SetRenderstyle(0.8,Style_ADD);
+			scale *= frandom(0.7,1);
+			scale.x *= randompick(-1,1);
+			A_SprayDecal("BarrelScorch",128);			
 			if (bdoom_debris) {
-			
-				}
-			if (bdoom_debris) {
-				for (int i = 12; i > 0; i--)
+				for (int i = 5; i > 0; i--)
 					A_SpawnItemEx("SmokingPiece",	frandom(-6,6),frandom(-6,6),frandom(4,24),	frandom(-5,5),frandom(-5,5),frandom(7,12),failchance:64);
-				for (int i = 6; i > 0; i--)
+				for (int i = 7; i > 0; i--)
 					A_SpawnItemEx("EBarrelPiece",	frandom(-6,6),frandom(-6,6),frandom(4,24),	frandom(-10,10),frandom(-10,10),frandom(8,15),failchance:64);
 				}
 			}
-		BEXP DE 2;
-		TNT1 A 0 A_SetRenderstyle(0.8,Style_ADD);
-		BEXP FFGGH 1;
-		BEXP H 1 {
-			A_Explode();
-			if (bdoom_shakes)
-				Radius_Quake(3,15,0,5,0);
+		BEXP DE 2 {
+			if (bdoom_debris)
+				A_SpawnItemEx("BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(16,56),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.8,2.2),failchance:32);
 			}
-		BEXP IJKLMNOPQ 3;
+		BEXP FFGGH 1 {
+			if (bdoom_debris)
+				A_SpawnItemEx("BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(16,56),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.8,2.2),failchance:32);
+			}
+		BEXP H 1 A_Explode();
+		BEXP IJKLMNOPQ 3 {
+			if (bdoom_debris)
+				A_SpawnItemEx("BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(16,56),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.8,2.2),failchance:32);
+			}
 		TNT1 A 1050 A_BarrelDestroy;
 		TNT1 A 5 {
 			A_SetRenderstyle(1.0,Style_Normal);
+			A_SetScale(0.8);
 			A_Respawn();
+			A_RemoveChildren(true,RMVF_EVERYTHING);
 			}
 		wait;
 	}
 }
 
-/*
-Actor BarrelPart : DebrisGeneral
+Class ExplodedBarrel : Actor
 {
-+DOOMBOUNCE
--NOGRAVITY
--NOBLOCKMAP
-gravity 1.0
-seesound ""
-scale .55
-mass 1
+//int timer;
+Default {
+	+NOINTERACTION
+	+MOVEWITHSECTOR
+	+RELATIVETOFLOOR
+	scale 0.8;
+	}
+static const string SSprite[] =
+	{
+		"BAR2","BAR3","BAR4"
+	};
+/*override void Tick() {
+	super.tick();
+	if (level.IsFrozen() || !bdoom_debris)
+		return;
+	timer++;
+	if (random(0,10) > 9 && timer >= 20) {
+		for (int i = random(1,3); i > 0; i--)
+			A_SpawnItemEx("BlackSmoke",frandom(-8,8),frandom(-8,8),frandom(6,8),0,0,frandom(0.2,0.6),failchance:(128));
+		timer = 0;
+		}
+	}*/
 states
 	{
+	Loadsprites:
+		BAR2 ABCDE 0;
+		BAR3 ABCDE 0;
+		BAR4 ABCDE 0;
 	Spawn:
-		TNT1 A 0 NoDelay A_QueueCorpse
-		TNT1 A 0 A_SetScale(scalex*randompick(-1,1),scaley)
-		BPRT ABCDEFGH 1 
-		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_Debris")==0,"Null")
-		goto spawn+2
-	Death:
-	   	TNT1 A 0 A_jump(256,1,2,3)
-		BPRT A 50 A_JumpIf(GetCVAR("bdoom_Debris")==0,"Null")
-		wait
-		BPRT B 50 A_JumpIf(GetCVAR("bdoom_Debris")==0,"Null")
-		wait
-		BPRT E 50 A_JumpIf(GetCVAR("bdoom_Debris")==0,"Null")
-		wait
+		TNT1 A 0 NoDelay { sprite = GetSpriteIndex(SSprite[random(0,2)]); }
+	Idle:
+		#### A random(35,200);
+		#### ABCDEDCB random(6,9);
+		loop;
 	}
 }
 
+/*
 
 //******
 // HELL

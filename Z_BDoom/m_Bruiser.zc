@@ -21,11 +21,12 @@ Default
 	Tag "$FN_BARON";
 	bloodcolor "00 70 00";
 	gibhealth 60;
-	BDoomMonster.allowsmokedeath true;
-	BDoomMonster.allowfiredeath false;
 	}
 states
 	{
+	Death.Fire:
+	Death.GreenFire:
+		goto Death.PlasmaDamage;
 	Spawn:
 		BARI ABB 10 A_Look;
 		loop;

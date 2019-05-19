@@ -21,8 +21,6 @@ Default
 	+FORCEXYBILLBOARD
 	+FLOATBOB
 	FloatBobStrength 0.35;
-	BdoomMonster.allowfiredeath false;
-	BdoomMonster.allowsmokedeath false;
 	}
 override void Tick() {
 	super.Tick();
@@ -31,6 +29,12 @@ override void Tick() {
 	}
 states
 	{
+	Death.Fire:
+		stop;
+	Death.Greenfire:
+		stop;
+	Death.PlasmaDamage:
+		stop;
 	Spawn:
 		PAI1 AAAAA 10 A_Look;
 		PAI1 B 5 A_Look;
