@@ -172,6 +172,7 @@ states
 Class BD_DoomImpBall : DoomImpBall //replaces DoomImpBall
 {
 Default {
+	+BLOODLESSIMPACT
 	Damagetype "Fire";
 	scale 0.5;
 	decal "Scorch";

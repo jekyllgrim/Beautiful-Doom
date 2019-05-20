@@ -200,7 +200,7 @@ states
 			If(Bdoom_tracers)
 				A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0) ;
 			else
-				A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_NORANDOMPUFFZ);
+				A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
 			}
 		MGGG B 1;
 		TNT1 A 0 { 
@@ -219,7 +219,7 @@ states
 			If(Bdoom_tracers)
 				A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0) ;
 			else
-				A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_NORANDOMPUFFZ);
+				A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
 			}
 		MGGG B 1;
 		TNT1 A 0 { 
@@ -275,7 +275,7 @@ states
 			If(Bdoom_tracers)
 				A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0) ;
 			else
-				A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_NORANDOMPUFFZ);
+				A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
 				}
 		MGGG C 1 { 
 			if(bdoom_debris)
@@ -289,7 +289,7 @@ states
 			If(Bdoom_tracers)
 				A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0) ;
 			else
-				A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_NORANDOMPUFFZ);
+				A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
 			}
 		MGGG C 1 { 
 			if( bdoom_debris)
@@ -306,7 +306,7 @@ states
 			If(Bdoom_tracers)
 				A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0) ;
 			else
-				A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_NORANDOMPUFFZ);
+				A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
 			}	
 		MGGG C 1 { 
 				if (Bdoom_debris == 1)

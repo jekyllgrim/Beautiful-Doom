@@ -265,8 +265,8 @@ states
 }
 
 /*This is spawned by a burning monster and receives a "fire" translation from it,
-while the monster receives "scorched" translation. The interaction of sprites
-create an effect of smooth transition.
+while the monster receives "scorched" translation. As this fades out, it creates
+an effect of smooth transition from burning to scorched.
 */
 Class TranslatedBurningBody : Actor
 {
@@ -289,6 +289,10 @@ override void Tick() {
 	super.Tick();
 	if (level.isFrozen())
 		return;
+	if (waterlevel > 1) {
+		destroy();
+		return;
+		}
 	if (fadetime < fadestart)
 		fadetime++;
 	else
@@ -337,6 +341,10 @@ override void Tick () {
 	super.Tick();
 	if (level.isFrozen())
 		return;
+	if (waterlevel > 1) {
+		destroy();
+		return;
+		}
 	if (!master || !bdoom_flames) {
 		self.destroy();
 		return;

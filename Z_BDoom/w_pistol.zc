@@ -109,7 +109,7 @@ states
 			If(Bdoom_tracers)
 				A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0);
 			else
-				A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_NORANDOMPUFFZ);
+				A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
 			return ResolveState(null);
 			}
 		PI0G ABCD 1;
@@ -202,7 +202,7 @@ states
 			If(GetCVAR("Bdoom_tracers")==1)
 				A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0);
 			else
-				A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_NORANDOMPUFFZ);
+				A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
 			}
 		PIBN ABCD 1;
 		TNT1 A 0 { If( Bdoom_debris==1)
@@ -226,7 +226,7 @@ states
 			If(GetCVAR("Bdoom_tracers")==1)
 				A_FireBullets (5, 1.5, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,7.5); 
 			else
-				 A_FireBullets (5, 1.5, -1, 5, "EnBulletPuff",FBF_NORANDOMPUFFZ);
+				 A_FireBullets (5, 1.5, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
 			}
 		PIDF BC 1;
 		PIDF D 2;
@@ -260,7 +260,7 @@ states
 			If(GetCVAR("Bdoom_tracers")==1)
 				A_FireBullets (5, 1.5, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,-7.5);
 			else
-				 A_FireBullets (5, 1.5, -1, 5, "EnBulletPuff",FBF_NORANDOMPUFFZ);
+				 A_FireBullets (5, 1.5, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
 			}
 		PIDF FG 1;
 		PIDF H 2;
@@ -275,7 +275,7 @@ states
 			If(GetCVAR("Bdoom_tracers")==1)
 				A_FireBullets (5, 1.5, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,7.5);
 			else
-				 A_FireBullets (5, 1.5, -1, 5, "EnBulletPuff",FBF_NORANDOMPUFFZ);
+				 A_FireBullets (5, 1.5, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
 			}
 		PIDF JK 1;
 		PIDF L 2;

@@ -115,6 +115,7 @@ states
 Class BD_FatShot : FatShot //replaces FatShot
 {
 Default {
+	+BLOODLESSIMPACT
 	Damagetype "Fire";
 	decal "BigScorch";
 	renderstyle "Add";

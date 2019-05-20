@@ -136,7 +136,7 @@ void BD_Tracer()
 		if (level.maptime & 3)	return;
 	
 		//This version won't forcefully spawn stupid BulletPuffs, only modded smoke
-		Actor smoke = Spawn ("BD_RevenantTracerSmoke", Vec3Offset(-Vel.X, -Vel.Y, 0.), ALLOW_REPLACE);
+		/*Actor smoke = Spawn ("BD_RevenantTracerSmoke", Vec3Offset(-Vel.X, -Vel.Y, 0.), ALLOW_REPLACE);
 	
 		if (smoke != null)
 		{
@@ -144,16 +144,31 @@ void BD_Tracer()
 			smoke.tics -= random[Tracer](0, 3);
 			if (smoke.tics < 1)
 				smoke.tics = 1;
-		}
+		}*/
 		A_Tracer2(16.875);
+	}
+override void Tick () {
+    Vector3 oldPos = self.pos;    
+    Super.Tick();
+	if (!bdoom_debris || level.isFrozen() || !tracer)
+		return;
+	Vector3 path = level.vec3Diff( self.pos, oldPos );
+	double distance = path.length() / 3; //this determines how far apart the particles are
+	Vector3 direction = path / distance;
+	int steps = int( distance );
+	
+	for( int i = 0; i < steps; i++ )  {
+		Spawn("TracerTrail", oldPos );
+		oldPos = level.vec3Offset( oldPos, direction );
+		}
 	}
 states
 	{
 	Spawn:
 		TNT1 A 0 NoDelay {
 			A_PlaySound("revenant/tracerfly",4,1.0,true,5);
-			if (bdoom_debris)
-				A_spawnItemEx("BD_RevenantTracerFlare",flags:SXF_SETMASTER|SXF_ORIGINATOR);
+			//if (bdoom_debris)
+				//A_spawnItemEx("BD_RevenantTracerFlare",flags:SXF_SETMASTER|SXF_ORIGINATOR);
 			}
 		SKEB AB 2  BD_Tracer();
 		goto spawn+1;
@@ -168,6 +183,27 @@ states
 		stop;
 	}
 }
+
+Class TracerTrail : Actor
+{
+Default {
+	+NOINTERACTION
+	+NOBLOCKMAP
+	renderstyle "Add";
+	alpha 0.8;
+	scale 0.04;
+	}
+states
+	{
+	Spawn:
+		LENR A 1 {
+			A_FadeOut(0.04);
+			scale*=0.99;
+			}
+		loop;
+	}
+}
+
 
 Class BD_RevenantTracerFlare : BD_ProjFlare
 {

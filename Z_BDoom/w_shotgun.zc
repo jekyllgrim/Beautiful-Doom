@@ -120,7 +120,7 @@ States
 			If(bdoom_tracers)
 				A_FireBullets (5.6, 0, 7, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0);
 			else 
-				A_FireBullets (5.6, 0, 7, 5, "EnBulletPuff",FBF_NORANDOMPUFFZ);
+				A_FireBullets (5.6, 0, 7, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
 			}
 		SHOG BDFHIJKL 1;
 		SHOG M 2 {
