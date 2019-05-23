@@ -5,6 +5,7 @@ Class BD_Blursphere : Blursphere //replaces Blursphere
 {
 Default {
 	+FLOATBOB
+	-ZDOOMTRANS
 	floatbobstrength 0.6;
 	+FORCEXYBILLBOARD;
 	-VISIBILITYPULSE;

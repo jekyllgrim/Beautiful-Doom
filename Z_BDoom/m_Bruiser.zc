@@ -202,12 +202,11 @@ Default  {
 override void PostBeginPlay () {
 	super.PostBeginPlay();
 	if (bdoom_debris) {
-		actor f = Spawn("BD_ProjFlare",pos);
+		let f = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
 		f.master = self;
 		f.alpha = 0.6;
 		f.scale = (0.12,0.12);
-		let flr = BD_ProjFlare(f);
-		flr.fcolor = "green";
+		f.fcolor = "green";
 		}
 	broll = random(14,20)*randompick(-1,1);
 	}

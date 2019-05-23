@@ -8,6 +8,8 @@ override void Tick() {
 		return;
 		}	
 	super.tick();
+	if (level.IsFrozen())
+		return;
 	timer++;
 	if (timer >= 5) {
 		timer = 0;

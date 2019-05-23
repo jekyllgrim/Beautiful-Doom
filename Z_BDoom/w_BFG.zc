@@ -125,7 +125,7 @@ states
 				A_Playsound("weapons/bfg/cool");
 			}
 		BBGN EEDDCCBB 2 {
-			if (bdoom_debris == 1)
+			if (bdoom_debris)
 				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-5,5),sin(-pitch)*25+random(33,37), 0,0,1,0);
 			}
 		BBGN AA 2;
@@ -159,14 +159,14 @@ states
 			}
 		TNT1 A 0 A_JumpIf(invoker.railcounter >= 100,"AltEndLong");
 		BBGN EEEDDDCCCBBB 2 {
-			if (bdoom_debris == 1)
+			if (bdoom_debris)
 				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-5,5),sin(-pitch)*25+random(33,37),	0,0,1,0);
 			}
 		BBGN A 5 { invoker.railcounter = 0; }
 		goto ready;	
 	AltEndLong: //Played only if you held the button until the end
 		BBGN EEEEEDDDDDCCCCCBBBBB 2 {
-			if (bdoom_debris == 1)
+			if (bdoom_debris)
 				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-5,5),sin(-pitch)*25+random(33,37),	0,0,1,0);
 			}
 		BBGN A 5 { invoker.railcounter = 0; }
@@ -371,12 +371,12 @@ States
 	Spawn:
 		TNT1 A 0 NoDelay {
 			A_PlaySound("weapons/bfg/fly",6,1.0,TRUE,1);
-			if (bdoom_debris == 1)
+			if (bdoom_debris)
 				A_SpawnItemEx("BFGFlare",0,0,0,vel.x,vel.y,vel.z,0,SXF_SETMASTER|SXF_ORIGINATOR|SXF_ABSOLUTEVELOCITY);
 			}
 	Spawn1:
 		BFGB ABCDEFGH 1 bright {
-			if (bdoom_debris == 1)
+			if (bdoom_debris)
 				A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,4,"NullPuff",random(0,360),random(0,360),64,20,0,4,"BFGBallRay");
 			}
 		loop;
@@ -484,7 +484,7 @@ states
 	{
 	Spawn:
 		TNT1 A 0 Nodelay {
-			if (Bdoom_debris == 1)
+			if (bdoom_debris)
 				A_SpawnItemEx("BFGBallRayFlare",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS);
 //did you know that the actor that fires the railgun is also the target of the railgun particles? phantombeta knew
 //transfer velocity so that the lightning is always next to the bfg orb and not lagging behind
@@ -530,7 +530,7 @@ states
 	{
 	Spawn:
 		TNT1 A 0 NoDelay {
-			If(bdoom_debris == 1) {
+			If(bdoom_debris) {
 				for (int i = 16; i > 0; i--)
 					A_SpawnItemEx("BFGPlasmaPiece",0,0,0,frandom(-2.5,2.5),frandom(-2.5,2.5),frandom(-2.5,2.5),random(0,360));
 				}
@@ -577,7 +577,7 @@ states
 	{
 	Spawn:
 		TNT1 A 0 NoDelay {
-			if(Bdoom_debris == 1)
+			if(bdoom_debris)
 				A_SpawnItemEx("BFGRailFlare",0,0,0,0,0,0,0);
 			}
 		PEXP ABCDEFGHIJKLM 1 bright A_FadeOut(0.1);
@@ -607,7 +607,7 @@ states
 	{
 	Spawn:
 		TNT1 A 0 noDelay {
-			if(Bdoom_debris == 1)
+			if(bdoom_debris)
 				A_SpawnItemEx("BFGRailFlare_Hold");
 			}
 		TNT1 A 0 A_Jump(256,1,2,3,4,5);
@@ -640,7 +640,7 @@ states
 	{
 	Spawn:
 		TNT1 A 1 NoDelay {
-			if (bdoom_debris == 1) {
+			if (bdoom_debris) {
 				for (int i = 12; i > 0; i--)
 					A_SpawnItemEx("BFGPlasmaPiece",0,0,0,frandom(-2.5,2.5),frandom(-2.5,2.5),frandom(-2.5,2.5),random(0,360));
 				for (int i = 8; i > 0; i--)
@@ -656,8 +656,8 @@ Class ModernBFGBall : BFGBall
 {
 //wcharge just transfers the charge value from the weapon. 1-8 is normal shot, 9-12 is overcharge (12 leads to self-destruct)
 double wcharge;
-//wpower determines the power and range of rails; it's  the same as wcharge but clamped to 8 
-// (because overcharging isn't meant to increase power, it just lets you hold off the shot)
+/*wpower determines the power and range of rails; it's  the same as wcharge but clamped to 8 
+ (because overcharging isn't meant to increase power, it just lets you hold off the shot)*/
 double wpower;
 Default {
 	+FORCEXYBILLBOARD
@@ -674,7 +674,6 @@ Default {
 	damage 0;
 	radius 14;
 	height 8;
-	//missiletype "MBFGTrail";
 	}
 Override void PostBeginPlay() {
 	super.PostBeginPlay();
@@ -682,9 +681,11 @@ Override void PostBeginPlay() {
 		species = target.species;
 		//console.printf("%s",species);
 		let BFG = BD_BFG9000 (target.player.readyweapon);
-		wcharge = BFG.wcharge;
-		wpower = clamp(BFG.wcharge,1,8);
-		A_SetScale (0.06 + wcharge * 0.03);
+		if (BFG) {
+			wcharge = BFG.wcharge;
+			wpower = clamp(BFG.wcharge,1,8);
+			A_SetScale (0.06 + wcharge * 0.03);
+			}
 		}
 	}
 States
@@ -694,7 +695,7 @@ States
 			if (wcharge >= 12)
 				return ResolveState("SelfDestruct");
 			A_PlaySound("weapons/bfg/fly",6,1.0,TRUE);
-			if(Bdoom_debris == 1)
+			if(bdoom_debris)
 				A_SpawnItemEx("ModernBFGFlare",0,0,0,vel.x,vel.y,vel.z,0,SXF_SETMASTER|SXF_ORIGINATOR|SXF_ABSOLUTEVELOCITY|SXF_TRANSFERSCALE);
 			return ResolveState(null);
 			}
@@ -719,8 +720,8 @@ States
 		COIX AAAAAAAA 1 bright {
 			//visuals
 			roll+=10;
-			A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,15,"NullPuff",random(0,360),random(0,360),random(22,56),duration:56,sparsity:3.0,spawnclass:"MBFGRailParticle");
-			A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,15,"NullPuff",random(0,360),random(0,360),random(22,56),duration:56,sparsity:3.0,spawnclass:"MBFGRailParticle");
+			A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,15,"NullPuff",random(0,360),random(0,360),random(64,128),duration:56,sparsity:3.0,spawnclass:"MBFGRailParticle");
+			A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,15,"NullPuff",random(0,360),random(0,360),random(64,128),duration:56,sparsity:3.0,spawnclass:"MBFGRailParticle");
 			
 			double closestDist = double.infinity;
 			double rdistance = 144*wpower; //effective distance depends on charge

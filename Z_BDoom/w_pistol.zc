@@ -16,7 +16,7 @@ Default {
 	weapon.ammogive1	 	0;
 	weapon.ammotype2 		"Clip";
 	weapon.ammouse2 		1;
-	weapon.ammogive2		20;
+	weapon.ammogive2		0;
 	inventory.amount		1;
 	inventory.maxamount		2;
 	BDoomWeapon.AutoReloadTime 120;

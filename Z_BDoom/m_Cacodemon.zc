@@ -151,23 +151,103 @@ states
 	}
 }
 
-Class BD_CacodemonBall : CacodemonBall //replaces CacodemonBall
+Class CacoRedTrail : Actor
 {
 Default {
+	+NOINTERACTION
+	+NOBLOCKMAP
+	renderstyle "Add";
+	alpha 0.8;
+	scale 0.05;
+	}
+states
+	{
+	Spawn:
+		LENR A 1 {
+			A_FadeOut(0.2);
+			scale*=0.95;
+			}
+		loop;
+	}
+}
+
+Class CacoBlueTrail : Actor
+{
+Default {
+	+NOINTERACTION
+	+NOBLOCKMAP
+	renderstyle "Add";
+	alpha 0.8;
+	scale 0.1;
+	}
+states
+	{
+	Spawn:
+		LENB A 1 {
+			A_FadeOut(0.2);
+			scale*=0.95;
+			}
+		loop;
+	}
+}
+
+Class BD_CacodemonBall : CacodemonBall //replaces CacodemonBall
+{
+int broll;
+Default {
 	+FORCEXYBILLBOARD
+	+ROLLSPRITE
+	-ROLLCENTER
 	decal "Scorch";
 	renderstyle "Add";
-	alpha 0.9;
-	scale 0.5;
+	alpha 1.0;
+	scale 0.2;
+	}
+override void PostBeginPlay () {
+	super.PostBeginPlay();
+	scale.x*= randompick(-1,1);
+	scale.y*= randompick(-1,1);
+	roll = random(0,360);
+	broll = random(6,8)*randompick(1,-1);
+	if (bdoom_debris) {
+		let f = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
+		f.fcolor = 'blue';
+		f.scale = (0.21,0.21);
+		f.alpha = 0.3;
+		f.master = self;
+		
+		/*let f1 = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
+		f1.fcolor = 'red';
+		f1.scale = (0.1,0.1);
+		f1.alpha = 0.85;
+		f1.master = self;*/
+		}
+	}	
+override void Tick () {
+    Vector3 oldPos = self.pos;    
+    Super.Tick();
+	if (!bdoom_debris || level.isFrozen() )
+		return;
+	Vector3 path = level.vec3Diff( self.pos, oldPos );
+	double distance = path.length() / 3; //this determines how far apart the particles are
+	Vector3 direction = path / distance;
+	int steps = int( distance );
+	
+	for( int i = 0; i < steps; i++ )  {
+		Spawn("CacoRedTrail", oldPos );
+		Spawn("CacoBlueTrail", oldPos );
+		oldPos = level.vec3Offset( oldPos, direction );
+		}
 	}
 States
 	{
 	Spawn:
-		CABA ABCD 2 bright NoDelay {
-			if (bdoom_debris) {
-				A_SpawnItemEx("FirePiece_Cacodemon",frandom(-3,-6),frandom(-5,5),frandom(-5,5),0,0,0,0);
-				A_SpawnItemEx("FirePiece_Cacodemon",frandom(-3,-6),frandom(-5,5),frandom(-5,5),0,0,0,0);
-				}
+		ELBA ABCDEFGHIJKLMNO 2 bright NoDelay {
+			roll+=broll;
+			/*if (bdoom_debris) {
+				A_SpawnItemEx("FirePiece_Cacodemon",frandom(-3,-6),frandom(-5,5),frandom(-5,5),0,0,0,failchance:96);
+				A_SpawnItemEx("FirePiece_Cacodemon",frandom(-3,-6),frandom(-5,5),frandom(-5,5),0,0,0,failchance:96);
+				}*/
 			}
 		loop;
 	Death:
@@ -192,17 +272,5 @@ states
 			scale*=0.9;
 			}
 		wait;
-	}
-}
-
-/*
-Actor FirePiece_Cacodemon : FirePiece
-{
-translation "169:191=192:207", "208:223=169:191"
-states
-	{
-	Spawn:
-		FIRP ABCDEFGHIJ 2  A_FadeOut(0.1)
-		stop
 	}
 }

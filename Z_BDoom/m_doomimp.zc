@@ -182,10 +182,9 @@ Default {
 override void PostBeginPlay () {
 	super.PostBeginPlay();
 	if (bdoom_debris) {
-		actor f = Spawn("BD_ProjFlare",pos);
+		let f = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
+		f.fcolor = "yellow";
 		f.master = self;
-		let flr = BD_ProjFlare(f);
-		flr.fcolor = "yellow";
 		}
 	}
 States

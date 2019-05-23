@@ -275,7 +275,7 @@ states
 	{
 	Spawn:
 		PUFF A 1 bright {
-			if (bdoom_tracers == 0) {
+			if (!bdoom_tracers) {
 				self.destroy();
 				return ResolveState(null);
 				}
@@ -336,6 +336,9 @@ override void Tick() {
 	}
 states
 	{
+	Spawn:
+		PUFF A 1 bright;
+		loop;
 	Death:
 		TNT1 A 1 A_SpawnItemEx("EnBulletPuff",0,0,0,0,0,0,0,SXF_SETTARGET|SXF_ORIGINATOR);
 		stop;
