@@ -4,7 +4,7 @@ bool attacking;
 Default
 {
 	Health 70;
-	gibhealth 50;
+	gibhealth 40;
 	Radius 20;
 	Height 56;
 	Mass 100;

@@ -1,3 +1,4 @@
+
 /// MENU SOUNDS
 
 $alias menu/choose		weapons/ricochet	// Choose a menu item
@@ -126,29 +127,11 @@ $limit gibs/gibbed 6
 misc/flyloop "sounds/flyloop.ogg"
 $limit misc/flyloop 10
 
-// Item Pickup Sounds
-
-pickups/berserk		BERSPKUP
-ammo/clip			CLIPPKUP
-ammo/clipbox		CBOXPKUP
-ammo/shells			SHELPKUP
-ammo/rockets		ROCKPKUP
-ammo/cells			CELLPKUP
-
-pickups/chaingun		CHGNPKUP
-pickups/rocketlauncher	RLANDRAW
-pickups/plasmarifle		PLSDRAW
-pickups/bfg				BFGDRAW
-
-
-
-
 
 ///////////////////////
 /////// MONSTERS //////
 ///////////////////////
 
-world/torch	DSTORCH
 
 gibs/metalgib DSMETALB
 $random gibs/cybergibs { gibs/metalgib gibs/metalgib gibs/meatland }
@@ -183,6 +166,8 @@ chainguy/death1			dcpodth1
 chainguy/death2			dcpodth2
 chainguy/death3			dcpodth3
 
+electric/hum			elcthum1
+
 
 //////////////////////////
 //// ITEMS & OBJECTS /////
@@ -194,6 +179,13 @@ chainguy/death3			dcpodth3
 /// MISC
 
 glasscrack	glascrck
+
+world/torch	DSTORCH
+
+$random world/heartbeat { hbeat1 hbeat2 hbeat3 }
+hbeat1	hbeat1
+hbeat2	hbeat2
+hbeat3	hbeat3
 
 $random spark { spark1 spark2 spark3 }
 spark1	"sounds/decorations/spark1.ogg"
@@ -227,7 +219,6 @@ pickups/invulnerability	INVUPKUP
 pickups/invisibility	INVSPKUP
 pickups/googles		GGLSPKUP
 pickups/allmap		AMAPPKUP
-//berserk is in WEAPONS wad!
 pickups/armor0		ARM0PKUP
 pickups/armor1		ARM1PKUP
 pickups/armor2		ARM2PKUP
@@ -237,3 +228,15 @@ pickups/radsuit		SUITPKUP
 pickups/backpack	BKPKPKUP
 $alias misc/p_pkup pickups/allmap
 misc/k_pkup CARDPKUP
+
+pickups/berserk		BERSPKUP
+ammo/clip			CLIPPKUP
+ammo/clipbox		CBOXPKUP
+ammo/shells			SHELPKUP
+ammo/rockets		ROCKPKUP
+ammo/cells			CELLPKUP
+
+pickups/chaingun		CHGNPKUP
+pickups/rocketlauncher	RLANDRAW
+pickups/plasmarifle		PLSDRAW
+pickups/bfg				BFGDRAW

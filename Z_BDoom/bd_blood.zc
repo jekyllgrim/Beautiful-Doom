@@ -2,7 +2,7 @@ Class BloodGeneral : DebrisGeneral abstract
 {
 string bloodfloor;
 string bloodceiling;
-string bcolor;
+name bcolor;
 
 static const name bsprite[] = { "YBL7","YBL8","YBL9" };
 Default {
@@ -76,30 +76,30 @@ I could just use BloodTranslation directly for all cases, but that makes the spr
  */
 override void PostBeginPlay() {
 	if (!bdoom_blood || !target){
-		self.destroy();
+		destroy();
 		return;
 		}
 	if (target is "BDoomMonster") {
 		let trg = BDoomMonster(target);
 		if (trg.burning){
-			self.destroy();
+			destroy();
 			return;
 			}
 		}
 	if (target.bloodcolor) {
 	//obvious green prevalence
 		if (target.bloodcolor.G > 4*(target.bloodcolor.R  + target.bloodcolor.B)) {
-			bcolor = "green";
+			bcolor = 'green';
 			A_SetTranslation("GreenBlood");
 			}
 	 //obvious blue prevalence
 		else if (target.bloodcolor.B > 4*(target.bloodcolor.R  + target.bloodcolor.G)) {
-			bcolor = "blue";
+			bcolor = 'blue';
 			A_SetTranslation("BlueBlood");
 			}
 	 //obvious red prevalence. bloodcolor = 0 means default bloodcolor (68 00 00 or specified in MAPINFO). If changed in MAPINFO, it'll be a mismatch, but whaddaya do
 		else if (target.bloodcolor.R > 4*(target.bloodcolor.B  + target.bloodcolor.G) || target.bloodcolor == 0) {
-			bcolor = "red";
+			bcolor = 'red';
 			}
 	 //if played with another wad that contains very peculiar blood, like yellow or purple, translate sprites along with it. They won't spawn decals themselves.
 		else
@@ -111,27 +111,26 @@ override void PostBeginPlay() {
 
 virtual void BD_BloodDecal()
 	{
-	if (bcolor ~== "blue")
+	if (bcolor == 'blue')
 		A_SprayDecal("BloodSplatBlue",32);
-	else if (bcolor ~== "green")
+	else if (bcolor == 'green')
 		A_SprayDecal("BloodSplatGreen",32);
-	else if (bcolor ~== "red")
+	else if (bcolor == 'red')
 		A_SprayDecal("BloodSplatRed",32);
 	//no way to transfer shade to decals, so blood of colors other than red/blue/green won't produce decals
 	}
 states
 	{
 	spawn:
-		TNT1 AAA 0 NoDelay; //override hardcoded frame-skipping behavior for Blood
+		TNT1 AAA 0; //override hardcoded frame-skipping behavior for Blood
 		TNT1 A 0 {
 			A_FaceTarget(0,270,180,0);
 			A_SetScale(scale.x*randompick(-1,1)*frandom(0.7,1.2),scale.y*randompick(-1,1)*frandom(0.7,1.2));
 			roll = random(0,359);
 			self.sprite = GetSpriteIndex(bsprite[random(0,2)]);
-			return resolvestate("BD_Blood");
-			return resolvestate(null);
+			return resolvestate("BloodDo");
 			}
-	BD_Blood:
+	BloodDo:
 		#### ABCDEFGHIJKLMNOPQRS 1 {
 			if (waterlevel > 0)
 				return ResolveState("Water");
@@ -150,7 +149,7 @@ states
 				return ResolveState("CeilingSplat");		
 			
 			if (floorpic == skyflatnum || pos.z != floorz){
-				self.destroy();
+				destroy();
 				return ResolveState(null);
 				}
 			if (CheckLandingSize(24))
@@ -160,7 +159,7 @@ states
 			if	(CheckLandingSize(12))
 				scale*=0.5;
 			if	(CheckLandingSize(6)){
-				self.destroy();
+				destroy();
 				return ResolveState(null);
 				}
 			A_QueueCorpse();
@@ -174,7 +173,7 @@ states
 
 		#### # 1 {
 			if (waterlevel > 0){
-				self.destroy();
+				destroy();
 				return ResolveState(null);
 				}
 			if (CheckWater())
@@ -188,7 +187,7 @@ states
 		TNT1 A 0 {
 				//console.printf("ceiling");
 			if (ceilingpic == skyflatnum) {
-				self.destroy();
+				destroy();
 				return ResolveState(null);
 				}
 			if (CheckLandingSize(24,1))
@@ -198,23 +197,23 @@ states
 			if (CheckLandingSize(12,1))
 				scale*=0.5;
 			if (CheckLandingSize(6,1)) {
-				self.destroy();
+				destroy();
 				return ResolveState(null);
 				}
-			A_SpawnItemEx("CeilingSplat",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION|SXF_TRANSFERSTENCILCOL|SXF_TRANSFERRENDERSTYLE|SXF_TRANSFERSCALE|SXF_TRANSFERPOINTERS);
+			A_SpawnItemEx("CeilingSplat",flags:SXF_TRANSFERTRANSLATION|SXF_TRANSFERSTENCILCOL|SXF_TRANSFERRENDERSTYLE|SXF_TRANSFERSCALE|SXF_TRANSFERPOINTERS);
 			return ResolveState(null);
 			}
 		stop;
 	Raise:
 		TNT1 A 0 {
-			self.sprite = GetSpriteIndex(bsprite[random(0,2)]);
+			sprite = GetSpriteIndex(bsprite[random(0,2)]);
 			roll = random(0,359);
 			FlyBack();
 			}
 		#### SRQPONMLKJIHGFEDCBA 1 {
 			A_FadeOut(0.07);
 			if (target &&  Distance3D(target) < 16) {
-				self.destroy();
+				destroy();
 				return ResolveState(null);
 				}
 			return ResolveState(null);
@@ -240,10 +239,10 @@ states
 	{
 	spawn:
 		TNT1 A 1 NoDelay {
-			A_SetScale(scale.x*randompick(-1,1)*frandom(0.7,1.2),scale.y*randompick(-1,1)*frandom(0.7,1.2));
+			scale.x*= (randompick(-1,1)*frandom(0.7,1.2));
+			scale.y*= (randompick(-1,1)*frandom(0.7,1.2));
 			SetOrigin((pos.x,pos.y,floorz),0);
 			return resolvestate("Death");
-			return resolvestate(null);
 			}
 		stop;
 	}
@@ -297,7 +296,7 @@ states
 		TNT1 A 0 { vel.z = -3.7; }
 		BLOD ZZZZZZZZZZZZZZZZZZZZZZZZZ 1 {
 			if (waterlevel > 0) {
-				self.destroy();
+				destroy();
 				return ResolveState(null);
 				}
 			if (pos.z <= floorz)
@@ -319,6 +318,7 @@ states
 
 Class AniBloodPool : BloodGeneral
 {
+bool instant; //if true, the blood pool will instantly go through all the phases and reach the required size — for decorative purposes such as Heart Column, where animation is unneeded, but checking for overhand may still important
 double psize;
 Default {
 	+NOINTERACTION
@@ -334,15 +334,28 @@ Default {
 	}
 override void PostBeginPlay() {
 	if (waterlevel > 0) {
-		self.destroy();
+		destroy();
 		return;
 		}
 	double pscale;
 	pscale = frandom(0.23,0.35);
 	psize = pscale*22;
 	A_SetScale(pscale*frandom(0.8,1.1)*randompick(-1,1),pscale*frandom(0.8,1.1)*randompick(-1,1));
-	super.PostBeginPlay();
-	}
+
+
+	if (target && target.bloodcolor) {
+		if (target.bloodcolor.G > 4*(target.bloodcolor.R  + target.bloodcolor.B))
+			A_SetTranslation("GreenBlood");
+		else if (target.bloodcolor.B > 4*(target.bloodcolor.R  + target.bloodcolor.G))
+			A_SetTranslation("BlueBlood");
+		else if (target.bloodcolor.R > 4*(target.bloodcolor.B  + target.bloodcolor.G) || target.bloodcolor == 0)
+			bcolor = 'red';
+		else
+			Translation = target.BloodTranslation;
+		}
+		
+	Super.PostBeginPlay();
+	}	
 override void Tick () {
 	super.Tick();
 	if (CheckWater())
@@ -363,7 +376,7 @@ states
 	Spawn:
 		TNT1 A 0 NoDelay {
 			if (InvalidFloor()) {
-				self.destroy();
+				destroy();
 				return ResolveState(null);
 				}
 			SetOrigin((pos.x,pos.y,floorz+0.5),0);
@@ -371,6 +384,8 @@ states
 			return A_Jump(128,"Spawn1");
 			}
 		0000 ABCDEFGHI 2 {
+			if (instant)
+				A_SetTics(0);
 			if (InvalidFloor())
 				return ResolveState("Rest");
 			if (Checkwater())
@@ -379,6 +394,8 @@ states
 			return ResolveState(null);
 			}
 		0000 JKLMNOPQRSTU 2 {
+			if (instant)
+				A_SetTics(0);
 			if (InvalidFloor())
 				return ResolveState("Rest");
 			if (Checkwater())
@@ -387,6 +404,8 @@ states
 			return ResolveState(null);
 			}
 		0000 VWXYZ 3 {
+			if (instant)
+				A_SetTics(0);
 			if (InvalidFloor())
 				return ResolveState("Rest");
 			if (Checkwater())
@@ -395,6 +414,8 @@ states
 			return ResolveState(null);
 			}
 		0001 ABCD 3 {
+			if (instant)
+				A_SetTics(0);
 			if (InvalidFloor())
 				return ResolveState("Rest");
 			if (Checkwater())
@@ -405,6 +426,8 @@ states
 		goto rest;
 	Spawn1:
 		1000 ABCDEFGHI 2 {
+			if (instant)
+				A_SetTics(0);
 			if (InvalidFloor())
 				return ResolveState("Rest");
 			if (Checkwater())
@@ -413,6 +436,8 @@ states
 			return ResolveState(null);
 			}
 		1000 JKLMNOPQRSTU 2 {
+			if (instant)
+				A_SetTics(0);
 			if (InvalidFloor())
 				return ResolveState("Rest");
 			if (Checkwater())
@@ -421,6 +446,8 @@ states
 			return ResolveState(null);
 			}
 		1000 VWXYZ 3 {
+			if (instant)
+				A_SetTics(0);
 			if (InvalidFloor())
 				return ResolveState("Rest");
 			if (Checkwater())
@@ -429,6 +456,8 @@ states
 			return ResolveState(null);
 			}
 		1001 ABCD 3 {
+			if (instant)
+				A_SetTics(0);
 			if (InvalidFloor())
 				return ResolveState("Rest");
 			if (Checkwater())
@@ -440,7 +469,7 @@ states
 	Rest:
 		#### # 1 {
 			if (waterlevel > 0) {
-				self.destroy();
+				destroy();
 				return ResolveState(null);
 				}
 			if (Checkwater())
@@ -455,8 +484,8 @@ states
 
 
 
-//decorative blood for gory decorations
-Class BloodSpill : CeilingBloodDrop
+//decorative blood drop for gory decorations
+Class DecorBloodDrop : CeilingBloodDrop
 {
 Default {
 	scale 0.15;
@@ -469,7 +498,7 @@ states
 		TNT1 A 0 { vel.z = -3.7; }
 		BLOD ZZZZZZZZZZZZZZZZZZZZZZZZZ 1 {
 			if (waterlevel > 0) {
-				self.destroy();
+				destroy();
 				return ResolveState(null);
 				}
 			if (pos.z <= floorz)
@@ -494,11 +523,11 @@ Default {
 	}
 override void BD_BloodDecal()
 	{
-	if (bcolor ~== "blue")
+	if (bcolor == 'blue')
 		A_SprayDecal("BloodSprayBlue",32);
-	else if (bcolor ~== "green")
+	else if (bcolor == 'green')
 		A_SprayDecal("BloodSprayGreen",32);
-	else if (bcolor ~== "red")
+	else if (bcolor == 'red')
 		A_SprayDecal("BloodSprayRed",32);
 	}
 states
@@ -510,7 +539,7 @@ states
 			roll = random(0,359);
 			self.sprite = GetSpriteIndex(bsprite[random(0,2)]);
 			}
-	BD_Blood:
+	BloodDo:
 		#### ABCDEFGHIJKLMNOPQRS 1 {
 			if (waterlevel > 0)
 				return ResolveState("Fade");
@@ -536,7 +565,7 @@ Default {
 	}
 override void PostBeginPlay() {
 	if (waterlevel > 0) {
-		self.destroy();
+		destroy();
 		return;
 		}
 	super.PostBeginPlay();
@@ -562,7 +591,7 @@ Class NeckSpurt : BloodSpurt
 {
 override void PostBeginPlay() {
 	if (waterlevel > 0) {
-		self.destroy();
+		destroy();
 		return;
 		}
 	super.PostBeginPlay();
@@ -577,7 +606,7 @@ Class FrontalSpurt : BloodSpurt
 {
 override void PostBeginPlay() {
 	if (waterlevel > 0) {
-		self.destroy();
+		destroy();
 		return;
 		}
 	super.PostBeginPlay();
@@ -626,10 +655,10 @@ Default {
 	}
 states
 	{
-	BD_Blood:
+	BloodDo:
 		#### ABCDEFGHIJKKLLMMNNOOOPPPQQQRRRSSS 1 {
 			if (waterlevel > 0) {
-				self.destroy();
+				destroy();
 				return ResolveState(null);
 				}
 			vel.z = clamp(vel.z - 0.3,-2.0,10.0);

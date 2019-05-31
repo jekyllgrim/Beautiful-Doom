@@ -1,16 +1,18 @@
-Class BD_DeadBody : Actor
+Class BD_DeadBody : Actor abstract
 {
 Default {
-	+NOINTERACTION
-	+MOVEWITHSECTOR
+	+NOBLOCKMAP
 	}
 override void PostBeginPlay() {
 	super.PostBeginPlay();
 	scale.x *= randompick(-1,1);
 	if (!bdoom_blood)
 		return;
-	for (int i = 0; i < 5; i++)
-		A_SpawnItemEx("BD_Bloodpool",random(-48,48),random(-48,48),floorz,flags:SXF_SETTARGET,failchance:32);
+	let a = AniBloodPool(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
+	if (a) { 
+		a.instant = true;
+		a.translation = BloodTranslation;
+		}
 	}
 }
 

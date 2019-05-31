@@ -1,8 +1,3 @@
-
-#include "DECORATE/BD_MONST.txt"
-
-
-// --------- OBJECTS
-
-//#include "DECORATE/Objects/BD_OBJ.txt"	//decorative objects
-#include "DECORATE/Objects/BD_DEAD.txt"	//impaled bodies and other gory decorations
+#include "DECORATE/MONSTERS/IconOfSin.txt"
+#include "DECORATE/BD_Blood.txt"
+#include "DECORATE/BD_Monst.txt"

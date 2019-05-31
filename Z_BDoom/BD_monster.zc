@@ -108,27 +108,59 @@ void BD_Gibs()
 	A_SpawnItemEx("Gib_liver",		frandom(-4,4),frandom(-4,4),frandom(8,28),vel.x*frandom(0.3,0.8),vel.y*frandom(0.3,0.8),frandom(3,5),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 128);
 	A_SpawnItemEx("Gib_kidneys",	frandom(-4,4),frandom(-4,4),frandom(8,28),vel.x*frandom(0.3,0.8),vel.y*frandom(0.3,0.8),frandom(3,5),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 128);
 	
-	A_SpawnItemEx("Gib_Hand",		frandom(6,4),frandom(-4,4),frandom(35,40),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-	A_SpawnItemEx("Gib_Hand",		frandom(6,4),frandom(-4,4),frandom(35,40),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-	A_SpawnItemEx("Gib_Leg",		frandom(6,4),frandom(-4,4),frandom(10,12),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-	A_SpawnItemEx("Gib_Leg",		frandom(6,4),frandom(-4,4),frandom(10,12),	vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
-	A_SpawnItemEx("Gib_head",		frandom(-2,2),frandom(-2,2),frandom(42,48),vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 32);
+	let hand = Gib_Hand( Spawn("Gib_Hand",(pos.x+frandom(6,4),pos.y+frandom(-4,4),pos.z+frandom(35,40))) );
+	if (hand) {
+		hand.gibtype = GetClassName();
+		hand.vel = (vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10));
+		hand.target = self;
+		hand.translation = translation;
+		}	
+	let hand1 = Gib_Hand( Spawn("Gib_Hand",(pos.x+frandom(6,4),pos.y+frandom(-4,4),pos.z+frandom(35,40))) );
+	if (hand1) {
+		hand1.gibtype = GetClassName();
+		hand1.vel = (vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10));
+		hand1.target = self;
+		hand1.translation = translation;
+		}	
+	let leg = Gib_Leg( Spawn("Gib_Leg",(pos.x+frandom(6,4),pos.y+frandom(-4,4),pos.z+frandom(10,12))) );
+	if (leg) {
+		leg.gibtype = GetClassName();
+		leg.vel = (vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10));
+		leg.target = self;
+		leg.translation = translation;
+		}	
+	let leg1 = Gib_Leg( Spawn("Gib_Leg",(pos.x+frandom(6,4),pos.y+frandom(-4,4),pos.z+frandom(10,12))) );
+	if (leg1) {
+		leg1.gibtype = GetClassName();
+		leg1.vel = (vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10));
+		leg1.target = self;
+		leg1.translation = translation;
+		}	
+	let head = Gib_head( Spawn("Gib_head",(pos.x+frandom(-2,2),pos.y+frandom(-2,2),pos.z+frandom(42,48))) );
+	if (head) {
+		head.gibtype = GetClassName();
+		head.vel = (vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10));
+		head.target = self;
+		head.translation = translation;
+		}
 	
-	actor torso1 = Spawn("Gib_Torso1",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),pos.z+frandom(18,28)));
-	torso1.vel.x = vel.x*frandom(0.7,0.95);
-	torso1.vel.y = vel.y*frandom(0.7,0.95);
-	torso1.vel.z = vel.z*frandom(0.7,0.95);
-	torso1.target = self;
-	torso1.scale.x = randompick(-1,1);
-	torso1.translation = translation;
-	actor torso2 = Spawn("Gib_Torso2",(pos.x,pos.y+frandom(-8,8),pos.z+frandom(12,24)));
-	torso2.vel.x = vel.x*frandom(0.7,0.95);
-	torso2.vel.y = vel.y*frandom(0.7,0.95);
-	torso2.vel.z = vel.z*frandom(0.7,0.95);
-	torso2.target = self;
-	torso2.translation = translation;
-	if (torso1.scale.x == -1) //horizontal scale is randomized but synced between pieces of the same torso, so it doesn't look like 2 left halves or 2 right halves
-		torso2.scale.x = -1;
+	let torso1 = Gib_Torso1(Spawn("Gib_Torso1",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),pos.z+frandom(18,28))));
+	if (torso1) {
+		torso1.gibtype = GetClassName();
+		torso1.vel = (vel.x*frandom(0.7,0.95),vel.y*frandom(0.7,0.95),vel.z*frandom(0.7,0.95));
+		torso1.target = self;
+		torso1.scale.x = randompick(-1,1);
+		torso1.translation = translation;
+		}
+	let torso2 = Gib_Torso2(Spawn("Gib_Torso2",(pos.x,pos.y+frandom(-8,8),pos.z+frandom(12,24))));
+	if (torso2) {
+		torso2.gibtype = GetClassName();
+		torso1.vel = (vel.x*frandom(0.7,0.95),vel.y*frandom(0.7,0.95),vel.z*frandom(0.7,0.95));
+		torso2.target = self;
+		torso2.translation = translation;
+		if (torso1.scale.x == -1) //horizontal scale is randomized but synced between pieces of the same torso, so it doesn't look like 2 left halves or 2 right halves
+			torso2.scale.x = -1;
+		}
     }
 	
 states
@@ -146,9 +178,11 @@ states
 			}
 		#### # 1 {
 			if (vel.length() ~== 0) {
-				if (bdoom_blood)
-					A_SpawnItemEx("AniBloodPool",0,0,0,0,0,0,0,SXF_SETTARGET|SXF_USEBLOODCOLOR);
-				A_SpawnItemEx("CorpseFlySpawner",0,0,0,0,0,0,0,SXF_SETMASTER);
+				if (bdoom_blood) {
+					let a = AniBloodPool(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
+					if (a) a.translation = BloodTranslation;
+					}
+				A_SpawnItemEx("CorpseFlySpawner",flags:SXF_SETMASTER);
 				return ResolveState("DeathEnd");
 				}
 			return ResolveState(null);
@@ -267,6 +301,8 @@ states
 /*This is spawned by a burning monster and receives a "fire" translation from it,
 while the monster receives "scorched" translation. As this fades out, it creates
 an effect of smooth transition from burning to scorched.
+In case of plasma death, this receives normal translation, while the monster becomes
+scorched.
 */
 Class TranslatedBurningBody : Actor
 {

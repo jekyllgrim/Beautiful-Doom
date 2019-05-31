@@ -4,19 +4,33 @@
 //***************************\\
 //***************************\\
 
-Actor BD_SmallBloodpool : BD_Bloodpool replaces SmallBloodPool
+
+Class BD_BaseVictim : Actor
 {
-scale .35
+Default {
+	+DONTTHRUST
+	+DONTFALL
+	}
+override void PostBeginPlay() {
+	super.PostBeginPlay();
+	scale.x *= randompick(-1,1);
+	if (!bdoom_blood)
+		return;
+	let a = AniBloodPool(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
+	if (a) a.instant = true;
+	}
+override void Tick() {
+	super.Tick();
+	bSHOOTABLE = bdoom_killableobjects;
+	}
 }
 
-
-
-
+/*
 // ********************
 // A head impaled on a stick
 // ********************
 
-Actor BD_HeadOnAStick : HeadOnAStick replaces HeadOnAStick
+Class BD_HeadOnAStick : BD_BaseVictim replaces HeadOnAStick
 {
 +SHOOTABLE
 +DONTBLAST

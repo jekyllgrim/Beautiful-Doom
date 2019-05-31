@@ -171,11 +171,9 @@ states
 	}
 }
 
-Class CacoBlueTrail : Actor
+Class CacoBlueTrail : Flare_General
 {
 Default {
-	+NOINTERACTION
-	+NOBLOCKMAP
 	renderstyle "Add";
 	alpha 0.8;
 	scale 0.1;
@@ -201,7 +199,8 @@ Default {
 	decal "Scorch";
 	renderstyle "Add";
 	alpha 1.0;
-	scale 0.2;
+	scale 0.17;
+	//seesound "";
 	}
 override void PostBeginPlay () {
 	super.PostBeginPlay();
@@ -209,6 +208,7 @@ override void PostBeginPlay () {
 	scale.y*= randompick(-1,1);
 	roll = random(0,360);
 	broll = random(6,8)*randompick(1,-1);
+	A_PlaySound("electric/hum",6,1.0,true,4);
 	if (bdoom_debris) {
 		let f = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
 		f.fcolor = 'blue';
@@ -216,11 +216,15 @@ override void PostBeginPlay () {
 		f.alpha = 0.3;
 		f.master = self;
 		
-		/*let f1 = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
-		f1.fcolor = 'red';
-		f1.scale = (0.1,0.1);
-		f1.alpha = 0.85;
-		f1.master = self;*/
+		let lt = CacoBallLightning(Spawn("CacoBallLightning",pos));
+		if (!lt) return;
+		lt.master = self;
+		
+		let lt1 = CacoBallLightning(Spawn("CacoBallLightning",pos));
+		if (!lt1) return;
+		lt1.master = self;
+		lt1.upward = true;
+		
 		}
 	}	
 override void Tick () {
@@ -244,32 +248,130 @@ States
 	Spawn:
 		ELBA ABCDEFGHIJKLMNO 2 bright NoDelay {
 			roll+=broll;
-			/*if (bdoom_debris) {
-				A_SpawnItemEx("FirePiece_Cacodemon",frandom(-3,-6),frandom(-5,5),frandom(-5,5),0,0,0,failchance:96);
-				A_SpawnItemEx("FirePiece_Cacodemon",frandom(-3,-6),frandom(-5,5),frandom(-5,5),0,0,0,failchance:96);
-				}*/
 			}
 		loop;
 	Death:
-		TNT1 a 0 A_SetScale(1.0,1.0);
-		CABX ABCDEF 3  A_FadeOut(0.1);
+		TNT1 a 0 {
+			A_StopSound(6);
+			A_RemoveChildren(true,RMVF_EVERYTHING );
+			if (bdoom_debris) {
+				for (int i = 8; i > 0; i--)
+					A_SpawnItemEx("CacoBallPiece",frandom(-6,6),frandom(-6,6),frandom(-6,6),frandom(-2,2),frandom(-2,2),frandom(2,4),failchance:16);
+				//for (int i = 12; i > 0; i--)
+					//A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"NullPuff",random(0,360),random(0,360),range:24,sparsity:3.0,spawnclass:"CacoballRay");
+				let f = BD_BaseFlare(Spawn("BD_BaseFlare",pos));
+				f.fcolor = 'blue';
+				f.scale = (0.24,0.24);
+				f.alpha = 0.8;
+				tracer = f;
+				}
+			}
+		ELBX ABCDEFGHIJK 2 bright NoDelay {
+			A_FadeOut(0.01);
+			if (tracer) {
+				tracer.scale*=0.9;
+				tracer.A_FadeOut(0.1);
+				}
+			roll+=broll;
+			}
+		TNT1 A 0 {
+			if(tracer)
+				tracer.destroy();
+			}
 		stop;
 	}
 }
 
-Class FirePiece_Cacodemon : Flare_General
+Class CacoballRay : Flare_General
 {
 Default {
-	alpha 0.5;
-	scale 0.1;
+	alpha 0.8;
+	scale 0.02;
 	}
 states
 	{
 	Spawn:
-		TNT1 A 2 NoDelay;
-		SPRK C 1 bright  {
-			A_FadeOut(0.04);
-			scale*=0.9;
+		PEXP ABCDEF 1 bright A_FadeOut(0.0025);
+		PEXP GHIJKLM 2 bright A_FadeOut(0.0025);
+		stop;
+	}
+}
+
+Class CacoBallLightning : Flare_General
+{
+bool upward;
+double ceilz;
+double flrz;
+Default {
+	+BRIGHT
+	renderstyle "Add";
+	scale 0.12;
+	alpha 0.0;
+	}
+override void Tick() {
+	super.Tick();
+	if (level.IsFrozen())
+		return;
+	if (!master) {
+		destroy();
+		return;
+		}
+	/*if (alpha > 0)
+		A_PlaySound("electric/hum",6,1.0,true,1);
+	else
+		A_StopSound(6);*/
+	ceilz = master.ceilingz;
+	flrz = master.floorz;
+	if (upward) {
+		scale.y = (pos.z - ceilz) * 0.00375;
+		if (ceilz < pos.z || ceilz - pos.z > 72 || master.ceilingpic == skyflatnum || random(0,15) > 1)
+			alpha = Clamp(alpha-0.025,0,0.5);
+		else {
+			alpha = Clamp(alpha+0.1,0,0.5);
+			A_PlaySound("spark",volume:0.8,attenuation:2);
+			let piece = CacoBallPiece(Spawn("CacoBallPiece",(pos.x+frandom(-3,3),pos.y+frandom(-3,3),ceilz-0.5)));
+			piece.vel = (frandom(-3,3),frandom(-3,3),0);
+			}
+		}
+	else {
+		scale.y = (pos.z - flrz) * 0.00375;
+		if (flrz > pos.z || pos.z - flrz > 44 || master.floorpic == skyflatnum || random(0,15) > 1)
+			alpha = Clamp(alpha-0.025,0,0.5);
+		else {
+			alpha = Clamp(alpha+0.1,0,0.5);
+			A_PlaySound("spark",volume:0.8,attenuation:2);
+			let piece = CacoBallPiece(Spawn("CacoBallPiece",(pos.x+frandom(-3,3),pos.y+frandom(-3,3),flrz+0.5)));
+			piece.vel = (frandom(-2,2),frandom(-2,2),frandom(2,4));
+			}
+		}
+	}
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay {
+			if (master) {
+				SetOrigin(master.pos,false);
+				vel = master.vel;
+				}
+			}
+	Idle:
+		CLTN ABCDEFGH 2;
+		loop;
+	}
+}
+
+Class CacoBallPiece : RicochetSpark
+{
+Default {
+	alpha 1.0;
+	scale 0.08;
+	}
+states
+	{
+	Spawn:
+		SPRK C 1 bright	{
+			A_FadeOut(0.03);
+			scale *= 0.92;
 			}
 		wait;
 	}

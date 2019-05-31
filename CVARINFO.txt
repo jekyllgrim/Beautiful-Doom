@@ -11,6 +11,7 @@ server 	int  	bdoom_debrisnum 	= 300;
 server 	bool 	bdoom_shakes 		= true;
 server 	int		bdoom_weapons 		= 1;
 server bool		bdoom_autoreload	= true;
+server bool		bdoom_killableobjects	= true;
 user 	bool 	bdoom_muzzle		= true;
 server 	bool 	bdoom_tracers		= true;
 server 	bool 	bdoom_flies			= true;
