@@ -55,7 +55,7 @@ override void WorldTick() {
 				case 'PlasmaRifle' 		: player.pendingWeapon = GetWeapon(mo, "BD_PlasmaRifle"); 	mo.TakeInventory(oldweap,1); break;
 				case 'BFG9000' 			: player.pendingWeapon = GetWeapon(mo, "BD_BFG9000"); 		mo.TakeInventory(oldweap,1); break;
 				}
-			switch (oldweapr) { //if a vanilla weapon is READY (such as Pistol at vanilla map start), we also take it away and select the modded counterpart
+			switch (oldweapr) { //if (a vanilla weapon is READY (such as Pistol at vanilla map start), we also take it away and select the modded counterpart
 				case 'Fist' 			: player.pendingWeapon = GetWeapon(mo, "BD_Fist"); 			mo.TakeInventory(oldweapr,1); break;
 				case 'Chainsaw' 		: player.pendingWeapon = GetWeapon(mo, "BD_Chainsaw"); 		mo.TakeInventory(oldweapr,1); break;
 				case 'Pistol' 			: player.pendingWeapon = GetWeapon(mo, "BD_Pistol"); 		mo.TakeInventory(oldweapr,1); break;
@@ -188,5 +188,74 @@ override void CheckReplacement(ReplaceEvent e) {
 		case 'YellowSkull' 				: e.Replacement = "BD_YellowSkull"; 			break;
 		}
 	e.IsFinal = true;
+	}
+}
+
+Class DebrisAmountControl : EventHandler
+{
+Array <DebrisGeneral> bloodlist;
+Array <DebrisGeneral> giblist;
+Array <DebrisGeneral> debrislist;
+Array <DebrisGeneral> flamelist;
+
+override void WorldLoaded(WorldEvent e) {
+	bloodlist.Clear();
+	giblist.Clear();
+	flamelist.Clear();
+	debrislist.Clear();
+	}
+
+override void WorldThingSpawned(WorldEvent e) {
+	if (e.Thing is "DebrisGeneral") {
+		let a = DebrisGeneral(e.thing);
+		if (a) {
+			if 		(a.sfxtype == 'blood')
+				bloodlist.push(a);
+				
+			else if (a.sfxtype == 'gibs')
+				giblist.push(a);
+				
+			else if (a.sfxtype == 'flames')
+				flamelist.push(a);
+				
+			else if (a.sfxtype == 'debris')
+				debrislist.push(a);
+
+			}
+		}
+	}
+
+override void WorldThingDestroyed(WorldEvent e) {
+	if (e.Thing is "DebrisGeneral") {
+		let a = DebrisGeneral(e.thing);
+		if (a) {
+			if 		(a.sfxtype == 'blood')
+				bloodlist.delete	(bloodlist.Find(a));
+				
+			else if (a.sfxtype == 'gibs')
+				giblist.delete		(giblist.Find(a));
+				
+			else if (a.sfxtype == 'flames')
+				flamelist.delete	(flamelist.Find(a));
+				
+			else if (a.sfxtype == 'debris')
+				debrislist.delete	(debrislist.Find(a));		
+			}
+		}	
+	}
+
+override void WorldTick() {
+	//console.printf("blood array size: %d | gib array size: %d",bloodlist.Size(),giblist.Size());
+	while (bloodlist.Size() > bdoom_bloodnum)
+		bloodlist[0].destroy();
+		
+	while (giblist.Size() > bdoom_gibnum)
+		giblist[0].destroy();
+		
+	while (flamelist.Size() > bdoom_flamesnum) 
+		flamelist[0].destroy();
+		
+	while (debrislist.Size() > bdoom_debrisnum) 
+		debrislist[0].destroy();
 	}
 }

@@ -758,10 +758,10 @@ States
 				A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,maxdiff:15,pufftype:"NullPuff",random(0,360),random(0,360),range:random(48,80),sparsity:1.0,spawnclass:"MBFGRailParticle");			
 				A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,maxdiff:15,pufftype:"NullPuff",random(0,360),random(0,360),range:random(48,80),sparsity:1.0,spawnclass:"MBFGRailParticle");
 				}
-			else {
+			/*else {
 				A_CustomRailGun(0,0,"","CCFFCC",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING|RGF_FULLBRIGHT,maxdiff:15,pufftype:"NullPuff",random(0,360),random(0,360),range:random(48,80),duration:random(100,150),sparsity:0.15,driftspeed:0.3);
 				A_CustomRailGun(0,0,"","CCFFCC",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING|RGF_FULLBRIGHT,maxdiff:15,pufftype:"NullPuff",random(0,360),random(0,360),range:random(48,80),duration:random(100,150),sparsity:0.15,driftspeed:0.3);
-				}
+				}*/
 			
 			//iterator
 			double closestDist = double.infinity;

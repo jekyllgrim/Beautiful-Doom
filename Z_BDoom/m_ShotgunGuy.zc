@@ -27,7 +27,7 @@ states
 		loop;
 	See:
 		TNT1 A 0 {
-			A_SetScale(1.0,1.0);
+			A_SetScale(default.scale.x,default.scale.y);
 			bFRIGHTENED = false;
 			}
 	    SPO1 ABCDDCBA 3 A_Chase();

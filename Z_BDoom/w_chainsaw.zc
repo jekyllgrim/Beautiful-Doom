@@ -1,6 +1,6 @@
 Class BD_Chainsaw : BDoomWeapon //replaces Chainsaw
 {
-string mblood; //enemy blood color
+name mblood; //enemy blood color
 int jamstacks; //chance to jam
 int wallhits;
 bool hittarget; //did hit?
@@ -60,9 +60,9 @@ action void A_BloodOverlay () {
         return;
  
     string colorLetter = "";
-    if (invoker.mBlood ~== "blue")
+    if (invoker.mBlood == "blue")
         colorLetter = "Y";
-    else if (invoker.mBlood ~== "green")
+    else if (invoker.mBlood == "green")
         colorLetter = "Z";
     else
         colorLetter = "X";
@@ -483,11 +483,11 @@ override void PostBeginPlay() {
 	Super.PostBeginPlay();
 	let chainsaw = BD_Chainsaw (target.player.readyweapon);
 	if (chainsaw) {
-		if (chainsaw.mblood ~== "green") {
+		if (chainsaw.mBlood == "green") {
 			bcolor = "green";
 			A_SetTranslation("GreenBlood");
 			}
-		else if (chainsaw.mblood ~== "blue") {
+		else if (chainsaw.mBlood == "blue") {
 			bcolor = "blue";
 			A_SetTranslation("BlueBlood");
 			}
@@ -506,10 +506,10 @@ override void PostBeginPlay() {
 	Super.PostBeginPlay();
 	let chainsaw = BD_Chainsaw (target.player.readyweapon);
 	if (chainsaw) {
-		if (chainsaw.mblood ~== "green") {
+		if (chainsaw.mBlood == "green") {
 			A_SetTranslation("GreenBlood");
 			}
-		else if (chainsaw.mblood ~== "blue") {
+		else if (chainsaw.mBlood == "blue") {
 			A_SetTranslation("BlueBlood");
 			}
 		}

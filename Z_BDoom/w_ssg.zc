@@ -125,7 +125,7 @@ states
 		SH2N C 3 A_Gunflash();
 		SH2F Z 2 {
 				A_PlaySound("weapons/sshotf",5);
-				if (bdoom_tracers == 1)
+				if (bdoom_tracers)
 					A_FireBullets(11.2, 7.1, 20, 5, "EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0);
 				else
 					A_FireBullets(11.2, 7.1, 20, 5, "EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
@@ -145,7 +145,7 @@ states
 		SH2R I 1 A_playsound("weapons/sshoto");
 		SH2R JKL 1;
 		TNT1 A 0 { 
-			if (Bdoom_debris ==1) {
+			if (bdoom_debris) {
 				A_Eject("ShotgunCasing",16,-3.5,6.5,frandom(0,1),FRandom(-2.5,-3),frandom(4,5));
 				A_Eject("ShotgunCasing",16,-5,6.5,frandom(0,1),FRandom(-2.5,-3),frandom(4,5));
 				}
@@ -161,7 +161,7 @@ states
 		SH2N C 5 A_Refire();
 		goto ready	;
 	Flash:
-		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_muzzle")==1,"Flash1");
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_muzzle") == true,"Flash1");
 		SH2L A 3 bright A_Light1();
 		SH2L B 2 bright A_light2();
 		goto lightdone;
@@ -210,11 +210,15 @@ states
 			}
 		goto ready;
 	Fire.Enhanced:
-		TNT1 A 0 A_JumpIf(invoker.ShotFired == true,"Reload.Enhanced1");
-		SH2N A 3 A_Gunflash();
+		SH2N A 3 {
+			If(invoker.ShotFired)
+				return ResolveState("Reload.Enhanced1");
+			A_Gunflash("AltFlash.Right");
+			return ResolveState(null);
+			}
 		SH2F X 1 {
 				A_PlaySound("weapons/ssg/fire",5);
-				if (bdoom_tracers == 1)
+				if (bdoom_tracers)
 					A_FireBullets(11.2, 7.1, 20, 5, "EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0);
 				else
 					A_FireBullets(11.2, 7.1, 20, 5, "EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
@@ -231,14 +235,19 @@ states
 		TNT1 A 0 A_CheckReload();
 		goto reload;
 	AltFire:
-		TNT1 A 0 A_Jumpif (bdoom_weapons == 2, "AltFire.Modern");
-		TNT1 A 0 A_JumpIf(invoker.ShotFired == true,"AltFireSecond");
-		SH2N A 3 A_Gunflash("AltFlash.Right");
+		SH2N A 3 {
+			if (bdoom_weapons == 2)
+				return ResolveState("AltFire.Modern");
+			If(invoker.ShotFired)
+				return ResolveState("AltFireSecond");
+			A_Gunflash("AltFlash.Right");
+			return ResolveState(null);
+			}
 
 		SH2F X 1 {
 				invoker.ShotFired = true;
 				A_PlaySound("weapons/ssg/fire",5);
-				if (bdoom_tracers == 1)
+				if (bdoom_tracers)
 					A_FireBullets(10,6.5,10,5, "EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,1);
 				else
 					A_FireBullets(10,6.5,10,5,"EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
@@ -255,7 +264,7 @@ states
 		SH2F Y 1 {
 				invoker.ShotFired = false;
 				A_PlaySound("weapons/ssg/fire",5);
-				if (bdoom_tracers == 1)
+				if (bdoom_tracers)
 					A_FireBullets(10,6.5,10,5, "EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,1);
 				else
 					A_FireBullets(10,6.5,10,5,"EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
@@ -278,7 +287,7 @@ states
 		SH2R I 1 A_playsound("weapons/ssg/open");
 		SH2R JKL 1;
 		TNT1 A 0 { 
-			if (Bdoom_debris ==1) {
+			if (bdoom_debris) {
 				A_Eject("ShotgunCasing",16,-3.5,6.5,frandom(0,1),FRandom(-2.5,-3),frandom(4,5));
 				A_Eject("ShotgunCasing",16,-5,6.5,frandom(0,1),FRandom(-2.5,-3),frandom(4,5));
 				}
@@ -300,7 +309,7 @@ states
 		SH2R I 1 A_playsound("weapons/ssg/open");
 		SH2R JKL 1;
 		TNT1 A 0 { 
-			If(Bdoom_debris == 1)
+			If(bdoom_debris)
 				A_Eject("ShotgunCasing",16,-5,6.5,frandom(0,1),FRandom(-2.5,-3),frandom(4,5));
 			}
 		SH2R UVWX 2;
@@ -313,7 +322,7 @@ states
 		goto ready.Enhanced;
 		
 	AltFlash.Left:
-		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_muzzle")==1,"AltFlash.Left1");
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_muzzle") == true,"AltFlash.Left1");
 		SH2L C 3 bright A_Light1();
 		SH2L D 2 bright A_light2();
 		goto lightdone;
@@ -328,7 +337,7 @@ states
 			}
 		goto LightDone;
 	AltFlash.Right:
-		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_muzzle")==1,"AltFlash.Right1");
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_muzzle") == true,"AltFlash.Right1");
 		SH2L E 3 bright A_Light1();
 		SH2L F 2 bright A_light2();
 		goto lightdone;
@@ -500,7 +509,7 @@ states
 		
 	ModernFlash:
 		TNT1 A 0 A_OverlayOffset(PSP_FLASH,0,-13);
-		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_muzzle")==1,"ModernFlash1");
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_muzzle") == true,"ModernFlash1");
 		SH2L A 1 bright A_Light1();
 		SH2L B 1 bright A_light2();
 		goto lightdone;
@@ -516,7 +525,7 @@ states
 		goto LightDone;
 	ModernFlash.Left:
 		TNT1 A 0 A_OverlayOffset(PSP_FLASH,0,-13);
-		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_muzzle")==1,"ModernFlash.Left1");
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_muzzle") == true,"ModernFlash.Left1");
 		SH2L C 1 bright A_Light1();
 		SH2L D 1 bright A_light2();
 		goto lightdone;
@@ -532,7 +541,7 @@ states
 		goto LightDone;
 	ModernFlash.Right:
 		TNT1 A 0 A_OverlayOffset(PSP_FLASH,0,-13);
-		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_muzzle")==1,"ModernFlash.Right1");
+		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_muzzle") == true,"ModernFlash.Right1");
 		SH2L E 1 bright A_Light1();
 		SH2L F 1 bright A_light2();
 		goto lightdone;

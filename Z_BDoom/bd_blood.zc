@@ -7,6 +7,8 @@ name bcolor;
 static const name bsprite[] = { "YBL7","YBL8","YBL9" };
 Default {
 	DebrisGeneral.sfxtype "blood";
+	/*SmallDebris.removeonfall false;
+	smalldebris.dgravity 0.7;*/
 	+PUFFGETSOWNER
 	-NOGRAVITY
 	+ROLLSPRITE
@@ -39,12 +41,12 @@ bool CheckLandingSize (double cradius = 0, bool checkceiling = false) {
 			||	GetZAt(cradius,0,270,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
 			||	GetZAt(cradius,0,315,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz );
 	}
-override void Tick() {
+/*override void Tick() {
 	Super.Tick();
 	//if for some reason the switch into raising animation failed, just fade out the gib
 	if (FindState("Raise") && target && (target is "BDoomMonster") && target.InStateSequence(target.curstate,target.FindState("Raise")) && !InStateSequence(curstate,FindState("Raise")))
 		A_FadeOut(0.05);
-	}
+	}*/
 states
 	{
 	LoadSprites:
@@ -85,6 +87,7 @@ override void PostBeginPlay() {
 			destroy();
 			return;
 			}
+		trg.meatlist.push(self);
 		}
 	if (target.bloodcolor) {
 	//obvious green prevalence
@@ -134,6 +137,10 @@ states
 		#### ABCDEFGHIJKLMNOPQRS 1 {
 			if (waterlevel > 0)
 				return ResolveState("Water");
+			/*if (pos.z <= floorz)
+				return ResolveState("Death");
+			if (pos.z >= ceilingz-10)
+				return ResolveState("CeilingSplat");*/
 			return ResolveState(null);
 			}
 		stop;
@@ -142,13 +149,14 @@ states
 			A_Stop();
 			BD_BloodDecal();
 			A_Scream();
+			//SetOrigin((pos.x,pos.y,floorz),false);
 			/*bloodfloor = TexMan.GetName(floorpic);
 			bloodceiling = TexMan.GetName(ceilingpic);*/
 			A_SetScale(restscale*randompick(1,-1),restscale*randompick(1,-1));
 			if (pos.z >= ceilingz-10)
 				return ResolveState("CeilingSplat");		
 			
-			if (floorpic == skyflatnum || pos.z != floorz){
+			if (floorpic == skyflatnum || pos.z != floorz || waterlevel > 0){
 				destroy();
 				return ResolveState(null);
 				}
@@ -162,7 +170,7 @@ states
 				destroy();
 				return ResolveState(null);
 				}
-			A_QueueCorpse();
+			//A_QueueCorpse();
 			bFLATSPRITE = true;
 			bNOINTERACTION = true;			
 			bMOVEWITHSECTOR = true;
@@ -171,18 +179,12 @@ states
 			}
 		2PLT A 0 { self.frame = random(0,16); }
 
-		#### # 1 {
-			if (waterlevel > 0){
-				destroy();
-				return ResolveState(null);
-				}
+		#### # -1; /*10 {
 			if (CheckWater())
 				return ResolveState("Water");
-			if(target && target is "BDoomMonster" && target.InStateSequence(target.curstate,target.FindState("Raise")))
-				return ResolveState("Raise");
 			return ResolveState(null);
 			}
-		wait;
+		wait;*/ stop;
 	CeilingSplat:
 		TNT1 A 0 {
 				//console.printf("ceiling");
@@ -200,7 +202,18 @@ states
 				destroy();
 				return ResolveState(null);
 				}
-			A_SpawnItemEx("CeilingSplat",flags:SXF_TRANSFERTRANSLATION|SXF_TRANSFERSTENCILCOL|SXF_TRANSFERRENDERSTYLE|SXF_TRANSFERSCALE|SXF_TRANSFERPOINTERS);
+			let a = CeilingSplat(Spawn("CeilingSplat",(pos.x,pos.y,ceilingz)));
+			if (a) {
+				a.translation = BloodTranslation;
+				a.A_SetRenderStyle(alpha,GetRenderStyle());
+				a.scale = scale;
+				if (target && target is "BDoomMonster")	{
+					a.target = target;
+					let m = BDoomMonster(target);
+					if (m) m.meatlist.Push(a);
+					}
+				}
+			//A_SpawnItemEx("CeilingSplat",flags:SXF_TRANSFERTRANSLATION|SXF_TRANSFERSTENCILCOL|SXF_TRANSFERRENDERSTYLE|SXF_TRANSFERSCALE|SXF_TRANSFERPOINTERS);
 			return ResolveState(null);
 			}
 		stop;
@@ -210,9 +223,9 @@ states
 			roll = random(0,359);
 			FlyBack();
 			}
-		#### SRQPONMLKJIHGFEDCBA 1 {
-			A_FadeOut(0.07);
-			if (target &&  Distance3D(target) < 16) {
+		#### SRQPONMLKJIHGFEDCBA 1 bright {
+			A_FadeOut(0.03);
+			if (target &&  Distance3D(target) < 32) {
 				destroy();
 				return ResolveState(null);
 				}
@@ -233,18 +246,42 @@ Class BD_BloodPool : BD_Blood
 {
 Default {
 	+NOINTERACTION
+	+FLATSPRITE
+	+MOVEWITHSECTOR
+	+RELATIVETOFLOOR
 	}
-override void BD_BloodDecal() {}
 states
 	{
 	spawn:
-		TNT1 A 1 NoDelay {
-			scale.x*= (randompick(-1,1)*frandom(0.7,1.2));
-			scale.y*= (randompick(-1,1)*frandom(0.7,1.2));
+		TNT1 A 0 NoDelay {
+			if (floorpic == skyflatnum || waterlevel > 0){
+				destroy();
+				return ResolveState(null);
+				}
+			if (CheckLandingSize(24))
+				scale*=0.5;
+			if	(CheckLandingSize(18))
+				scale*=0.5;
+			if	(CheckLandingSize(12))
+				scale*=0.5;
+			if	(CheckLandingSize(6)){
+				destroy();
+				return ResolveState(null);
+				}
+			//A_QueueCorpse();
+			scale.x*= randompick(-1,1)*frandom(0.7,1.2);
+			scale.y*= randompick(-1,1)*frandom(0.7,1.2);
 			SetOrigin((pos.x,pos.y,floorz),0);
-			return resolvestate("Death");
+			A_SetScale(restscale*randompick(1,-1),restscale*randompick(1,-1));	
+			return ResolveState(null);	
 			}
-		stop;
+		2PLT A 0 { self.frame = random(0,16); }
+		#### # -1; /*10 {
+			if (CheckWater())
+				return ResolveState("Water");
+			return ResolveState(null);
+			}
+		wait;*/ stop;
 	}
 }
 
@@ -264,18 +301,21 @@ states
 	{
 	Spawn:
 		2PLT A 0 NoDelay {
-			A_QueueCorpse();
+			//A_QueueCorpse();
 			self.frame = random(0,16);
 			}
 		#### # 5 {
-			SetOrigin((pos.x,pos.y,ceilingz-1),1);
-			if(target && target is "BDoomMonster" && target.InStateSequence(target.curstate,target.FindState("Raise")))
-				return ResolveState("Fade");
+			SetOrigin((pos.x,pos.y,ceilingz-1),true);
+			/*if(target && target is "BDoomMonster" && target.InStateSequence(target.curstate,target.FindState("Raise")))
+				return ResolveState("Fade");*/
 			A_SpawnitemEx("CeilingBloodDrop",frandom(-2.0,2.0),frandom(-2.0,2.0),-1.,0,0,0,0,SXF_TRANSFERTRANSLATION|SXF_TRANSFERSTENCILCOL|SXF_TRANSFERRENDERSTYLE|SXF_NOPOINTERS,250);
 			A_FadeTo(0.1,0.001,1);
 			return ResolveState(null);
 			}
 		wait;
+	Raise:
+		#### # 1 { return ResolveState("Fade"); }
+		stop;
 	}
 }
 
@@ -288,12 +328,16 @@ Default {
 	scale 0.1;
 	alpha 0.75;
 	}
+override void PostBeginPlay() {
+	super.PostBeginPlay();
+	scale*= frandom(0.8,1.1);
+	scale.x*=randompick(-1,1);	
+	}
 states
 	{
 	spawn:
-		TNT1 A 0 NoDelay A_SetScale(frandom(0.08,0.11)*randompick(-1,1),frandom(0.08,0.11));
 		BLOD UVWWXXYYY 2;
-		TNT1 A 0 { vel.z = -3.7; }
+		TNT1 A 0 { vel.z = -3.4; }
 		BLOD ZZZZZZZZZZZZZZZZZZZZZZZZZ 1 {
 			if (waterlevel > 0) {
 				destroy();
@@ -307,7 +351,7 @@ states
 	Death:
 		TNT1 A 0 {
 			vel.z = 0.0;
-			SetOrigin((pos.x,pos.y,floorz+1),0);
+			SetOrigin((pos.x,pos.y,floorz),0);
 			scale.x = frandom(0.22,0.25)*randompick(-1,1);
 			}
 		BLOD GHIJK 3;
@@ -337,10 +381,9 @@ override void PostBeginPlay() {
 		destroy();
 		return;
 		}
-	double pscale;
-	pscale = frandom(0.23,0.35);
+	double pscale = scale.x*frandom(1.1,1.8);
 	psize = pscale*22;
-	A_SetScale(pscale*frandom(0.8,1.1)*randompick(-1,1),pscale*frandom(0.8,1.1)*randompick(-1,1));
+	A_SetScale(pscale*randompick(-1,1),pscale*randompick(-1,1));
 
 
 	if (target && target.bloodcolor) {
@@ -375,12 +418,12 @@ states
 	{
 	Spawn:
 		TNT1 A 0 NoDelay {
-			if (InvalidFloor()) {
+			if (InvalidFloor() || waterlevel > 0) {
 				destroy();
 				return ResolveState(null);
 				}
 			SetOrigin((pos.x,pos.y,floorz+0.5),0);
-			A_QueueCorpse();
+			//A_QueueCorpse();
 			return A_Jump(128,"Spawn1");
 			}
 		0000 ABCDEFGHI 2 {
@@ -467,45 +510,19 @@ states
 			}
 		goto rest;
 	Rest:
-		#### # 1 {
-			if (waterlevel > 0) {
-				destroy();
-				return ResolveState(null);
-				}
+		#### # -1; /*10 {
 			if (Checkwater())
-				A_FadeOut(0.01);
-			if(target && target is "BDoomMonster" && target.InStateSequence(target.curstate,target.FindState("Raise")))
 				return ResolveState("Fade");
 			return ResolveState(null);
 			}
-		wait;
-	}
-}
-
-
-
-//decorative blood drop for gory decorations
-Class DecorBloodDrop : CeilingBloodDrop
-{
-Default {
-	scale 0.15;
-	}
-states
-	{
-	spawn:
-		TNT1 A 0 NoDelay A_SetScale(scale.x*randompick(-1,1)*frandom(1.0,1.3),scale.y);
-		BLOD XYZ 3;
-		TNT1 A 0 { vel.z = -3.7; }
-		BLOD ZZZZZZZZZZZZZZZZZZZZZZZZZ 1 {
-			if (waterlevel > 0) {
-				destroy();
-				return ResolveState(null);
-				}
-			if (pos.z <= floorz)
-				return ResolveState("Death");
-			return ResolveState(null);
-			}
+		wait;*/
 		stop;
+	Raise:
+		#### # 1 {
+			scale*=0.92;
+			A_FadeOut(0.03);
+			}
+		loop;
 	}
 }
 
@@ -516,7 +533,6 @@ Class BD_BloodSplatter : BD_Blood replaces BloodSplatter {}
 Class BloodSpray : BD_Blood
 {
 Default {
-	+THRUACTORS
 	scale 0.12;
 	gravity 0.5;
 	alpha 0.7;
@@ -530,14 +546,20 @@ override void BD_BloodDecal()
 	else if (bcolor == 'red')
 		A_SprayDecal("BloodSprayRed",32);
 	}
-states
+override void Tick() {
+	super.Tick();
+	if (level.isFrozen())
+		return;
+	A_FadeOut(0.05);
+	}
+/*states
 	{
 	spawn:
 		TNT1 A 0 NoDelay {
 			A_SetGravity(frandom(0.4,0.6));
 			A_SetScale(scale.x*randompick(-1,1),scale.y*randompick(-1,1));
 			roll = random(0,359);
-			self.sprite = GetSpriteIndex(bsprite[random(0,2)]);
+			sprite = GetSpriteIndex(bsprite[random(0,2)]);
 			}
 	BloodDo:
 		#### ABCDEFGHIJKLMNOPQRS 1 {
@@ -547,11 +569,11 @@ states
 			return ResolveState(null);
 			}
 		stop;
-	}
+	}*/
 }
 
 //long "arterial" spurts
-Class BloodSpurt : BloodGeneral replaces AxeBlood
+Class BloodSpurt : BloodGeneral
 {
 double bpitch;
 double pitchchange;
@@ -590,10 +612,6 @@ states
 Class NeckSpurt : BloodSpurt
 {
 override void PostBeginPlay() {
-	if (waterlevel > 0) {
-		destroy();
-		return;
-		}
 	super.PostBeginPlay();
 	bpitch = frandom(2.0,5.5);
 	bspeed = frandom(1.0,2.5);
@@ -605,10 +623,6 @@ override void PostBeginPlay() {
 Class FrontalSpurt : BloodSpurt
 {
 override void PostBeginPlay() {
-	if (waterlevel > 0) {
-		destroy();
-		return;
-		}
 	super.PostBeginPlay();
 	bpitch = frandom(0.3,1.2);
 	bspeed = frandom(3.0,4.5);
@@ -661,11 +675,11 @@ states
 				destroy();
 				return ResolveState(null);
 				}
-			vel.z = clamp(vel.z - 0.3,-2.0,10.0);
-			a_Setscale(clamp(scale.x * 1.05,0.0,1.0),clamp(scale.y * 1.05,0.0,1.0));
-			a_fadeout(0.02);
+			vel.z = clamp(vel.z - 0.3,-1.5,10.0);
+			a_Setscale(clamp(scale.x * 1.02,0.0,1.5),clamp(scale.y * 1.02,0.0,1.5));
+			a_fadeout(0.015);
 			return ResolveState(null);
 			}
-		stop;
+		wait;
 	}
 }

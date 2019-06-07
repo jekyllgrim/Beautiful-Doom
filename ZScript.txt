@@ -1,4 +1,4 @@
-version "3.8.0"
+version "3.7.2"
 
 #include "Z_Bdoom/bd_main.zc"
 #include "Z_Bdoom/bd_blood.zc"
@@ -17,6 +17,7 @@ version "3.8.0"
 #include "Z_Bdoom/w_rocketlauncher.zc"
 #include "Z_Bdoom/w_plasmarifle.zc"
 #include "Z_Bdoom/w_bfg.zc"
+#include "Z_Bdoom/o_inventory.zc"
 
 #include "Z_Bdoom/SpriteShadow.zc"
 
@@ -41,4 +42,4 @@ version "3.8.0"
 #include "Z_Bdoom/o_DeadBodies.zc"
 #include "Z_Bdoom/o_lightsources.zc"
 #include "Z_Bdoom/o_misc.zc"
-#include "Z_Bdoom/o_inventory.zc"
+#include "Z_Bdoom/o_victims.zc"

@@ -5,25 +5,172 @@
 //***************************\\
 
 
-Class BD_BaseVictim : Actor
+
+
+//decorative blood drop for gory decorations
+Class DecorBloodDrop : CeilingBloodDrop
 {
 Default {
+	scale 0.15;
+	}
+states
+	{
+	spawn:
+		BLOD XYZ 3;
+		TNT1 A 0 { vel.z = -3.4; }
+		BLOD ZZZZZZZZZZZZZZZZZZZZZZZZZ 1 {
+			vel.z = Clamp(vel.z-0.05,-4,0);
+			if (waterlevel > 0) {
+				destroy();
+				return ResolveState(null);
+				}
+			if (pos.z <= floorz)
+				return ResolveState("Death");
+			return ResolveState(null);
+			}
+		stop;
+	}
+}
+
+Class BD_BaseVictim : Actor abstract
+{
+Default {
+	+SOLID
 	+DONTTHRUST
 	+DONTFALL
+	xscale 0.8;
+	yscale 0.68;
 	}
 override void PostBeginPlay() {
 	super.PostBeginPlay();
 	scale.x *= randompick(-1,1);
 	if (!bdoom_blood)
 		return;
-	let a = AniBloodPool(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
-	if (a) a.instant = true;
+	if (ceilingz - floorz > height && ceilingz - floorz < 320) {
+		let a = AniBloodPool(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
+		if (a) {
+			a.instant = true;
+			a.scale = (0.14,0.14)*frandom(0.8,1.4);
+			}
+		}
+	}
+states
+	{
+	Loadsprites:
+		BDB1 ABCDEFGHIJK 0;
+		BDB3 ABCDEFGHIJKL 0;
+		stop;
+	}
+}
+
+
+Class BD_HangingTorso : BD_BaseVictim 
+{
+int dir;
+double maxroll;
+double rollstep;
+property rollstep : rollstep;
+property maxroll : maxroll;
+Default {
+	BD_HangingTorso.maxroll 20;
+	BD_HangingTorso.rollstep 5;
+	Radius 16;
+	Height 64;
+	+NOGRAVITY
+	+SPAWNCEILING
+	+NODAMAGE
+	+ROLLSPRITE
+	+ROLLCENTER
+	+INTERPOLATEANGLES
+	painchance 128;
+	}
+override void PostBeginPlay() {
+	super.PostBeginPlay();
+	if (!bdoom_gibs)
+		return;
+	if (ceilingz - floorz <= height || ceilingz - floorz >= 320)
+		return;
+	for (int i = 4; i > 0; i--) {
+		if (random(0,2) > 0) {
+			let g = BasicMeatPiece(Spawn("BasicMeatPiece",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),floorz+1)));
+			if (g) g.instant = true;
+			}
+		}
 	}
 override void Tick() {
 	super.Tick();
 	bSHOOTABLE = bdoom_killableobjects;
+	if (level.isFrozen())
+		return;
+	if (bdoom_debris && abs(roll) < 5) 
+		A_SpawnitemEx("DecorBloodDrop",frandom(-5,5),frandom(-5,5),frandom(22,24),failchance:253);
+	}
+states
+	{
+	Spawn:
+		BDB1 A 0  NoDelay { 
+			frame = random(0,10); 
+			return ResolveState("Idle");
+			}
+	Idle:
+		#### # 10 { roll = 0; }
+		wait;
+	Pain:
+		#### # 0 {
+			maxroll = default.maxroll*frandom(0.5,1.1);
+			rollstep = default.rollstep;
+			if (roll == 0)
+				dir = randompick(-1,1);
+			else if (roll > 0)
+				dir = 1;
+			else
+				dir = -1;
+			}
+		#### # 4 {
+			roll = Clamp(roll + rollstep * dir,-maxroll,maxroll);
+			if (abs(roll) >= maxroll * 0.95) {
+				dir *= -1;
+				rollstep *= 0.85;
+				if (maxroll > 5)
+					maxroll *= 0.85;
+				}
+			if (abs(roll) < 0.1 && rollstep < 0.5) {
+				roll = 0;
+				return ResolveState("Idle");
+				}
+			return ResolveState(null);
+			}
+		wait;	
 	}
 }
+
+Class BD_HangTLookingDown : BD_HangingTorso replaces HangTLookingDown {}
+Class BD_HangTLookingUp : BD_HangingTorso replaces HangTLookingUp {}
+Class BD_HangTNoBrain : BD_HangingTorso replaces HangTNoBrain {}
+Class BD_HangTSkull : BD_HangingTorso replaces HangTSkull {}
+
+Class BD_HangingBody : BD_HangingTorso 
+{
+Default {
+	BD_HangingTorso.maxroll 10;
+	BD_HangingTorso.rollstep 2.5;
+	Radius 16;
+	Height 88;
+	painchance 80;
+	}
+states
+	{
+	Spawn:
+		BDB3 A 0  NoDelay { 
+			frame = random(0,11); 
+			return ResolveState("Idle");
+			}
+		stop;
+	}
+}
+
+Class BD_HangBNoBrain : BD_HangingBody replaces HangBNoBrain {}
+Class BD_HangNoGuts : BD_HangingBody replaces HangNoGuts {}
 
 /*
 // ********************
@@ -147,254 +294,6 @@ states
 }
 
 
-
-// *****************************
-// Hanging body without brains
-// *****************************
-
-Actor BD_HangBNoBrain : HangBNoBrain replaces HangBNoBrain
-{
-+DONTBLAST
-+SHOOTABLE
-deathheight 88
-health 30
-mass 9999999
-+NOPAIN +DONTFALL
-states
-	{
-	Spawn:
-		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
-		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
-		TNT1 A 0 A_CheckSight(2)
-		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
-		HDB2 A 10
-		goto spawn+1
-	Death:
-		HDB2 B 1 A_spawnitemEx("BodyNoBrain",0,0,0,0,0,0,0,SXF_TRANSFERSCALE)
-		HDB2 B -1
-		stop
-	}
-}
-
-actor BodyNoBrain : Gibs_General
-{
--DOOMBOUNCE
-Seesound ""
-Deathsound "gibs/splash"
-height 8
-radius 16
-states
-	{
-	Spawn:
-		HDD2 ABCD 3
-		wait
-	Death:
-		HDD2 E 1 A_scream
-		HDD2 E -1
-		stop
-	}
-}
-
-// ********************
-// Hanging body without guts
-// ********************
-
-Actor BD_HangNoGuts : HangNoGuts replaces HangNoGuts
-{
-+DONTBLAST
-+SHOOTABLE
-deathheight 88
-health 30
-mass 9999999
-+NOPAIN +DONTFALL
-states
-	{
-	Spawn:
-		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
-		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
-		TNT1 A 0 A_CheckSight(2)
-		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
-		HDB1 A 10
-		goto spawn+1
-	Death:
-		HDB2 B 1 A_spawnitemEx("BodyNoGuts",0,0,0,0,0,0,0,SXF_TRANSFERSCALE)
-		HDB2 B -1
-		stop
-	}
-}
-
-
-actor BodyNoGuts : BodyNoBrain
-{
-states
-	{
-	Spawn:
-		HDD1 ABCD 3
-		wait
-	Death:
-		HDD1 E 1 A_scream
-		HDD1 E -1
-		stop
-	}
-}
-
-// ********************
-// Hanging torso looking down
-// ********************
-
-Actor BD_HangTLookingDown : HangTLookingDown replaces HangTLookingDown
-{
-+DONTBLAST
-+SHOOTABLE
-deathheight 64
-health 30
-mass 9999999
-+NOPAIN +DONTFALL
-states
-	{
-	Spawn:
-		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
-		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
-		TNT1 A 0 A_CheckSight(2)
-		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
-		HDB3 A 10
-		goto spawn+1
-	Death:
-		HDB3 B 1 A_spawnitemEx("TorsoLookingDown",0,0,0,0,0,0,0,SXF_TRANSFERSCALE)
-		HDB3 B -1
-		stop
-	}
-}
-
-
-actor TorsoLookingDown : BodyNoBrain
-{
-radius 8
-states
-	{
-	Spawn:
-		HDD3 ABCD 3
-		wait
-	Death:
-		HDD3 E 1 A_scream
-		HDD3 E -1
-		stop
-	}
-}
-
-// ********************
-// Hanging body
-// ********************
-
-Actor BD_HangTSkull : HangTSkull replaces HangTSkull
-{
-+SHOOTABLE
-+DONTBLAST
-deathheight 64
-health 30
-mass 9999999
-+NOPAIN +DONTFALL
-states
-	{
-	Spawn:
-		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
-		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
-		TNT1 A 0 A_CheckSight(2)
-		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
-		HDB4 A 10
-		goto spawn+1
-	Death:
-		HDB3 B 1 A_spawnitemEx("TorsoSkull",0,0,0,0,0,0,0,SXF_TRANSFERSCALE)
-		HDB3 B -1
-		stop
-	}
-}
-
-
-actor TorsoSkull : TorsoLookingDown
-{
-states
-	{
-	Spawn:
-		HDD4 ABCD 3
-		wait
-	}
-}
-
-// ********************
-// Hanging torso looking up
-// ********************
-
-Actor BD_HangTLookingUp : HangTLookingUp replaces HangTLookingUp
-{
-+DONTBLAST
-+SHOOTABLE
-deathheight 64
-health 30
-mass 9999999
-+NOPAIN +DONTFALL
-states
-	{
-	Spawn:
-		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
-		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
-		TNT1 A 0 A_CheckSight(2)
-		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
-		HDB5 A 10
-		goto spawn+1
-	Death:
-		HDB3 B 1 A_spawnitemEx("TorsoLookingUp",0,0,0,0,0,0,0,SXF_TRANSFERSCALE)
-		HDB3 B -1
-		stop
-	}
-}
-
-actor TorsoLookingUp : TorsoLookingDown
-{
-states
-	{
-	Spawn:
-		HDD5 ABCD 3
-		wait
-	}
-}
-
-// ********************
-// Hanging torso without brains
-// ********************
-
-Actor BD_HangTNoBrain : HangTNoBrain replaces HangTNoBrain
-{
-+SHOOTABLE
-deathheight 64
-health 30
-mass 9999999
-+NOPAIN +DONTFALL
-states
-	{
-	Spawn:
-		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
-		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
-		TNT1 A 0 A_CheckSight(2)
-		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
-		HDB6 A 10
-		goto spawn+1
-	Death:
-		HDB3 B 1 A_spawnitemEx("TorsoNoBrain",0,0,0,0,0,0,0,SXF_TRANSFERSCALE)
-		HDB3 B -1
-		stop
-	}
-}
-
-actor TorsoNoBrain : TorsoLookingDown
-{
-states
-	{
-	Spawn:
-		HDD6 ABCD 3
-		wait
-	}
-}
 
 // *********************************
 // Hanging twitching bleeding body

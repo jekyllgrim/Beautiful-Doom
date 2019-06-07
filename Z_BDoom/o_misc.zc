@@ -305,7 +305,7 @@ states
 		TNT1 A 0 NoDelay A_jump(256,1,12);
 	Idle:
 		BHAC ABCD 3;
-		BHAC E 3 A_PlaySound("world/heartbeat",5,0.8,attenuation:3);
+		BHAC E 3 A_PlaySound("world/heartbeat",5,0.5,attenuation:6);
 		BHAC FGHIJKL 3;
 		loop;
 	}

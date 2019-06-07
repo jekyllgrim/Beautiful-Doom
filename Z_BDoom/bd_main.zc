@@ -5,7 +5,8 @@
 //base class for most debris
 Class DebrisGeneral : Actor abstract
 {
-name sfxtype; //'debris', 'flames', 'blood', 'gibs'
+bool landed;
+name sfxtype; //'debris', 'flames', 'blood', 'gibs' — based on the value the thing gets put into a special array that controls their number, see bd_events.zc
 property sfxtype : sfxtype;
 Default {
 	DebrisGeneral.sfxtype "debris";
@@ -20,6 +21,7 @@ Default {
 	+FORCEXYBILLBOARD
 	+THRUACTORS
 	+FLOORCLIP
+	+INTERPOLATEANGLES
 	-ALLOWPARTICLES
 	renderstyle "Translucent";
 	alpha 1.0;
@@ -32,6 +34,7 @@ Default {
 virtual void FlyBack() {
 	if (!target)
 		return;
+	landed = false;
 	bFLATSPRITE = false;
 	bNOGRAVITY = false;
 	bNOINTERACTION = false;
@@ -62,8 +65,10 @@ override void PostBeginPlay()
 	}
 override void Tick()
 	{
+	if (!self)
+		return;
 	super.Tick();
-	if (!level.isFrozen() &&
+	/*if (!level.isFrozen() &&
 		((sfxtype == 'debris' &&!bdoom_debris)	||
 		 (sfxtype == 'flames' &&!bdoom_flames)	||
 		 (sfxtype == 'blood' && !bdoom_blood)	||
@@ -71,7 +76,7 @@ override void Tick()
 		A_DeQueueCorpse();
 		destroy();
 		return;
-		}
+		}*/
 	}
 bool CheckWater() {
 	string flr = TexMan.GetName(floorpic);
@@ -83,7 +88,6 @@ bool CheckWater() {
 Class SmallDebris : DebrisGeneral abstract
 {
 int wrot;
-bool landed;
 double dgravity; //fake gravity
 double dbreak; //how quickly to reduce horizontal speed of "landed" particles
 bool removeonfall; //whether to remove immediately as it reaches the floor

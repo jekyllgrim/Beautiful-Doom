@@ -28,6 +28,7 @@ states
 		TROR AB 10 A_Look();
 		Loop;
 	See:
+		TNT1 A 0 A_SetScale(default.scale.x,default.scale.y);
 		TRO2 ABCDEF 3 A_Chase();
 		Loop;
 	Melee: //16 face target, 6 attack
@@ -112,7 +113,6 @@ states
 		TROD A 3 {
 			A_SpawnItemEx("Gib_Head",frandom(-2,2),frandom(-2,2),frandom(50,54),	frandom(2,5),0,frandom(1,5),random(150,210),SXF_SETTARGET);
 			A_SpawnItemEx("Gib_Hand",0,-20*scale.x,25,								vel.x*0.35,frandom(-2,-4)*scale.x,frandom(2,3),	0,SXF_SETTARGET);
-			return ResolveState(null);
 			}
 		TROD BCDF 3 BD_Bleed();
 		TROD F 3 A_NoBlocking();
@@ -122,7 +122,7 @@ states
 		TROP A 3 A_Scream();
 		TROP BC 3 BD_Bleed();
 		TROP CCDDCE random(4,7) {
-			if (!burning && random(0,100) < 40) {
+			if (!burning && random(0,100) > 40) {
 				A_PlaySound("gibs/bloodspurt");
 				A_SpawnItemEx("FrontalSpurt",2,frandom(-0.3,0.3),frandom(14,15),0,0,0,random(-30,-40)*scale.x,SXF_SETTARGET,80);
 				}
@@ -132,7 +132,7 @@ states
 			A_Pain();
 			}
 		TROP FFF random(4,7) {
-			if (!burning && random(0,100) < 40) {
+			if (!burning && random(0,100) > 40) {
 				A_PlaySound("gibs/bloodspurt");
 				A_SpawnItemEx("FrontalSpurt",2,frandom(0,0.5),frandom(11,12),0,0,0,random(-30,-40)*scale.x,SXF_SETTARGET,80);
 				}

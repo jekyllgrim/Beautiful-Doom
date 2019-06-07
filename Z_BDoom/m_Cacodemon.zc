@@ -196,6 +196,7 @@ Default {
 	+FORCEXYBILLBOARD
 	+ROLLSPRITE
 	-ROLLCENTER
+	-ZDOOMTRANS
 	decal "Scorch";
 	renderstyle "Add";
 	alpha 1.0;
@@ -266,7 +267,7 @@ States
 				tracer = f;
 				}
 			}
-		ELBX ABCDEFGHIJK 2 bright NoDelay {
+		ELBX ABCDEFGHIJK 2 bright {
 			A_FadeOut(0.01);
 			if (tracer) {
 				tracer.scale*=0.9;

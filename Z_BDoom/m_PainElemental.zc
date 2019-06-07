@@ -43,7 +43,6 @@ states
 		PAI1 B 5;
 		Loop;
 	see:
-		
 		SAIN abcdedcb 3 a_chase;
 		Loop;
 	Missile:

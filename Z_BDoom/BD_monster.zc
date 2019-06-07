@@ -1,6 +1,7 @@
 Class BDoomMonster : Actor abstract
 {
 TranslatedBurningBody burncorpse;
+BurningBodyFlame burnflame;
 double smokeheight;
 property smokeheight : smokeheight;
 int monsterclip; //used by monsters with guns when bdoom_weapons == 2
@@ -10,19 +11,7 @@ bool burning; //is showing burning or smoking animation
 int burntimer;
 int firetype; //0 = only smoke; 1 = regular yellow; 2 = baron green
 
-bool highfall;
-/*void BD_CheckFall() {
-	if (pos.z >= floorz+128)
-		highfall = true;
-	}
-void BD_Drop() {
-	if (highfall)
-		A_PlaySound("body/fall");
-	}*/
-/*bool allowfiredeath;
-bool allowsmokedeath;
-property allowfiredeath : allowfiredeath;
-property allowsmokedeath : allowsmokedeath;*/
+Array <DebrisGeneral> meatlist;
 
 Default {
 	Monster;
@@ -36,8 +25,14 @@ Default {
 	}
 	
 void BD_Bleed() {
-	if (!burning && bdoom_blood)
-		A_SpawnItemEx("Blood",frandom(-5.0,5.0),frandom(-5.0,5.0),frandom(16,default.height),frandom(-2,2),frandom(-2,2),frandom(1,3),SXF_SETTARGET);
+	if (burning || bdoom_blood)
+		return;
+	let bld = BD_Blood(Spawn("BD_Blood", (pos.x + frandom(-5.0,5.0), pos.y + frandom(-5.0,5.0), pos.z + frandom(16,default.height))));
+	if (bld) {
+		bld.vel = (frandom(-2,2),frandom(-2,2),frandom(1,3));
+		bld.target = self;
+		meatlist.push(bld);
+		}
 	}
 
 void BD_BulletAttack(double horz_spread, double vert_spread, int numbullets, int damageperbullet, string OldSound, string NewSound, string Casing, double CasingX = 0, double CasingY = 0, double CasingZ = 0, double TracerHeight = 32, double Tracerofs_xy = 0, class<Actor> puff = "EnBulletPuff")
@@ -84,83 +79,71 @@ override void Tick() {
 	else {
 		burning = false;
 		burntimer = 0;
-		if (burncorpse)
-			burncorpse.destroy();
+		if (burncorpse)	burncorpse.destroy();
+		if (burnflame)	burnflame.destroy();
 		return;
 		}
+	}
+	
+BasicMeatPiece BD_GibSpawn(Class<Actor> spawnclass, double hpos = 0, double vpos = 0, double hvel = 0, double vvel = 0, int spawnchance = 100) {
+	if (random(0,100) > spawnchance)
+		return null;
+	if (!(spawnclass is "BasicMeatPiece"))
+		return null;
+	let meat = BasicMeatPiece(Spawn(spawnclass, (pos.x + frandom(-hpos,hpos), pos.y + frandom(-hpos,hpos), pos.z + vpos)));
+	if (meat) {
+		meat.gibtype = GetClassName();
+		meat.vel = (vel.x*frandom(hvel*0.3,hvel),vel.y*frandom(hvel*0.3,hvel),vvel);
+		meat.target = self;
+		meat.translation = translation;
+		meatlist.push(meat);
+		return meat;
+		}
+	else
+		return null;
 	}
 
 void BD_Gibs()
     {
 	if (bdoom_gibs == 0)
 		return;
-
 	A_PlaySound("gibs/gibbed",volume:0.65);
-	for (int i = 18; i > 0; i--)
-		A_SpawnItemEx("BFountainSpray",frandom(-5.0,5.0),frandom(-5.0,5.0),random(8,28),vel.x*frandom(0.05,0.15),vel.y*frandom(0.05,0.15),frandom(4.5,6.5),0,SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION,36);
+	
+	for (int i = 18; i > 0; i--) {
+		if (random(0,10) > 1) {
+			let bfnt = BD_Blood( Spawn("BFountainSpray",(pos.x+frandom(-5,5),pos.y+frandom(-5,5),pos.z+frandom(8,28))) );
+			if (bfnt) {
+				//fountain spray isn't meat to inherit velocity from the monster, since it has to create a cloud of blood, not a bunch of directed spurt
+				bfnt.vel = (frandom(0.05,0.15),frandom(0.05,0.15),frandom(4.5,6.5));	bfnt.target = self;	bfnt.translation = translation;
+				meatlist.push(bfnt);
+				}
+			}
+		}
+	//generic-looking meat
 	for (int i = 6; i > 0; i--)
-		A_SpawnItemEx("BasicMeatPiece",random(-4,4),random(-4,4),random(10,48),		vel.x*frandom(0.35,1.2),vel.y*frandom(0.35,1.2),random(5,10),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 64);
+		BD_GibSpawn("BasicMeatPiece",hpos: 4,vpos: frandom(8,28), hvel: 1.6, vvel: frandom(5,10), spawnchance: 70);
+	
+	//more uniquely-looking internal organs
+	BD_GibSpawn("Gib_Intestine",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(3,5), spawnchance: 70);
+	BD_GibSpawn("Gib_Intestine",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(3,5), spawnchance: 70);
+	BD_GibSpawn("Gib_Lung",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(3,5), spawnchance: 50);
+	BD_GibSpawn("Gib_Lung",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(3,5), spawnchance: 50);
+	BD_GibSpawn("Gib_liver",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(3,5), spawnchance: 50);
+	BD_GibSpawn("Gib_kidneys",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(3,5), spawnchance: 50);
+	
+	//these will automatically select the appropriate sprites based on the classname of the monster that spawned them
+	BD_GibSpawn("Gib_head",hpos: 4,vpos: frandom(42,48), hvel: 1.2, vvel: frandom(5,10));
+	BD_GibSpawn("Gib_Hand",hpos: 4,vpos: frandom(35,40), hvel: 1.2, vvel: frandom(5,10), spawnchance: 90);
+	BD_GibSpawn("Gib_Hand",hpos: 4,vpos: frandom(35,40), hvel: 1.2, vvel: frandom(5,10), spawnchance: 90);
+	BD_GibSpawn("Gib_Leg",hpos: 4,vpos: frandom(10,12), hvel: 1.2, vvel: frandom(5,10), spawnchance: 90);
+	BD_GibSpawn("Gib_Leg",hpos: 4,vpos: frandom(10,12), hvel: 1.2, vvel: frandom(5,10), spawnchance: 90);
 
-	A_SpawnItemEx("Gib_Intestine",	frandom(-4,4),frandom(-4,4),frandom(8,28),vel.x*frandom(0.3,0.8),vel.y*frandom(0.3,0.8),frandom(3,5),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 92);
-	A_SpawnItemEx("Gib_Intestine",	frandom(-4,4),frandom(-4,4),frandom(8,28),vel.x*frandom(0.3,0.8),vel.y*frandom(0.3,0.8),frandom(3,5),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 170);
-	A_SpawnItemEx("Gib_Lung",		frandom(-4,4),frandom(-4,4),frandom(8,28),vel.x*frandom(0.3,0.8),vel.y*frandom(0.3,0.8),frandom(3,5),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 144);
-	A_SpawnItemEx("Gib_Lung",		frandom(-4,4),frandom(-4,4),frandom(8,28),vel.x*frandom(0.3,0.8),vel.y*frandom(0.3,0.8),frandom(3,5),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 144);
-	A_SpawnItemEx("Gib_liver",		frandom(-4,4),frandom(-4,4),frandom(8,28),vel.x*frandom(0.3,0.8),vel.y*frandom(0.3,0.8),frandom(3,5),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 128);
-	A_SpawnItemEx("Gib_kidneys",	frandom(-4,4),frandom(-4,4),frandom(8,28),vel.x*frandom(0.3,0.8),vel.y*frandom(0.3,0.8),frandom(3,5),	0,	SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION, 128);
+	let torso1 = BasicMeatPiece(	BD_GibSpawn("Gib_Torso1",hpos: 8,vpos: frandom(18,28), hvel: 1, vvel: vel.z*frandom(0.7,0.95))	);
+	if (torso1) torso1.scale.x = randompick(-1,1);
 	
-	let hand = Gib_Hand( Spawn("Gib_Hand",(pos.x+frandom(6,4),pos.y+frandom(-4,4),pos.z+frandom(35,40))) );
-	if (hand) {
-		hand.gibtype = GetClassName();
-		hand.vel = (vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10));
-		hand.target = self;
-		hand.translation = translation;
-		}	
-	let hand1 = Gib_Hand( Spawn("Gib_Hand",(pos.x+frandom(6,4),pos.y+frandom(-4,4),pos.z+frandom(35,40))) );
-	if (hand1) {
-		hand1.gibtype = GetClassName();
-		hand1.vel = (vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10));
-		hand1.target = self;
-		hand1.translation = translation;
-		}	
-	let leg = Gib_Leg( Spawn("Gib_Leg",(pos.x+frandom(6,4),pos.y+frandom(-4,4),pos.z+frandom(10,12))) );
-	if (leg) {
-		leg.gibtype = GetClassName();
-		leg.vel = (vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10));
-		leg.target = self;
-		leg.translation = translation;
-		}	
-	let leg1 = Gib_Leg( Spawn("Gib_Leg",(pos.x+frandom(6,4),pos.y+frandom(-4,4),pos.z+frandom(10,12))) );
-	if (leg1) {
-		leg1.gibtype = GetClassName();
-		leg1.vel = (vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10));
-		leg1.target = self;
-		leg1.translation = translation;
-		}	
-	let head = Gib_head( Spawn("Gib_head",(pos.x+frandom(-2,2),pos.y+frandom(-2,2),pos.z+frandom(42,48))) );
-	if (head) {
-		head.gibtype = GetClassName();
-		head.vel = (vel.x*frandom(0.35,1.2), vel.y*frandom(0.35,1.2),frandom(5,10));
-		head.target = self;
-		head.translation = translation;
-		}
+	let torso2 = BasicMeatPiece(	BD_GibSpawn("Gib_Torso2",hpos: 8,vpos: frandom(18,28), hvel: 1, vvel: vel.z*frandom(0.7,0.95))	);
+	if (torso2 && torso1 && torso1.scale.x == -1) torso2.scale.x = -1;
 	
-	let torso1 = Gib_Torso1(Spawn("Gib_Torso1",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),pos.z+frandom(18,28))));
-	if (torso1) {
-		torso1.gibtype = GetClassName();
-		torso1.vel = (vel.x*frandom(0.7,0.95),vel.y*frandom(0.7,0.95),vel.z*frandom(0.7,0.95));
-		torso1.target = self;
-		torso1.scale.x = randompick(-1,1);
-		torso1.translation = translation;
-		}
-	let torso2 = Gib_Torso2(Spawn("Gib_Torso2",(pos.x,pos.y+frandom(-8,8),pos.z+frandom(12,24))));
-	if (torso2) {
-		torso2.gibtype = GetClassName();
-		torso1.vel = (vel.x*frandom(0.7,0.95),vel.y*frandom(0.7,0.95),vel.z*frandom(0.7,0.95));
-		torso2.target = self;
-		torso2.translation = translation;
-		if (torso1.scale.x == -1) //horizontal scale is randomized but synced between pieces of the same torso, so it doesn't look like 2 left halves or 2 right halves
-			torso2.scale.x = -1;
-		}
     }
 	
 states
@@ -180,7 +163,11 @@ states
 			if (vel.length() ~== 0) {
 				if (bdoom_blood) {
 					let a = AniBloodPool(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
-					if (a) a.translation = BloodTranslation;
+					if (a) {
+						a.translation = BloodTranslation;
+						a.target = self;
+						meatlist.Push(a);
+						}
 					}
 				A_SpawnItemEx("CorpseFlySpawner",flags:SXF_SETMASTER);
 				return ResolveState("DeathEnd");
@@ -192,23 +179,37 @@ states
 		#### # -1;
 		stop;
 	Raise:
+		#### # 0 {
+			int list = meatlist.Size();
+			for (int i; i < list; i++) {
+				let a = DebrisGeneral(meatlist[i]);
+				if (a && a.FindState("Raise")) a.SetStateLabel("Raise");
+				}
+			}
+				
 		#### # 2 {
 			//raised = true;
 			if (self.frame > 0)
 				self.frame-=1;
 			else
 				{
+				int list = meatlist.Size();
+				for (int i; i < list; i++) {
+					let a = DebrisGeneral(meatlist[i]);
+					if (a) a.destroy();
+					}
+				meatlist.Clear();
+			
 				bFORCEXYBILLBOARD = default.bFORCEXYBILLBOARD;
 				translation = default.translation;
-				scale.x = default.scale.x;
-				scale.y = default.scale.y;
+				A_SetScale(default.scale.x,default.scale.y);
 				burning = false;
 				burntimer = 0;
 				return ResolveState("See");
 				}
 			return ResolveState(null);
 			}
-		loop;
+		wait;
 	Death.SSG:
 		#### # 0 {
 			//console.printf("%d",health);
@@ -238,8 +239,8 @@ states
 			burncorpse.master = self;
 			burncorpse.A_SetTranslation("Firedeath");
 			if (bdoom_flames) {
-				let bflame = BurningBodyFlame(Spawn("BurningBodyFlame",pos));
-				bflame.master = self;
+				burnflame = BurningBodyFlame(Spawn("BurningBodyFlame",pos));
+				burnflame.master = self;
 				}
 			return ResolveState("DoFireDeath");
 			}
@@ -250,9 +251,9 @@ states
 			burncorpse.master = self;
 			burncorpse.A_SetTranslation("GreenFiredeath");
 			if (bdoom_flames) {
-				let bflame = BurningBodyFlame(Spawn("BurningBodyFlame",pos));
-				bflame.master = self;
-				bflame.SetStateLabel("SpawnGreen");
+				burnflame = BurningBodyFlame(Spawn("BurningBodyFlame",pos));
+				burnflame.master = self;
+				burnflame.SetStateLabel("SpawnGreen");
 				}
 			return ResolveState("DoFireDeath");
 			}
@@ -315,7 +316,6 @@ Default {
 	TranslatedBurningBody.fadespeed 0.008;
 	TranslatedBurningBody.fadestart 100;
 	+NOINTERACTION
-	+NOBLOCKMAP
 	+MOVEWITHSECTOR
 	+RELATIVETOFLOOR
 	renderstyle "Translucent";
@@ -356,7 +356,6 @@ Class BurningBodyFlame : Actor
 int burntimer;
 Default {
 	+NOINTERACTION
-	+NOBLOCKMAP
 	+MOVEWITHSECTOR
 	+RELATIVETOFLOOR
 	renderstyle "Add";
