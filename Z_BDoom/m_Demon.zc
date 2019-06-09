@@ -95,9 +95,19 @@ states
 		SSRX A 3 BD_Bleed();
 		SSRX B 3;
 		SSRX C 3 A_Scream();
+		TNT1 A 0 {
+			for (int i = random(3,6); i > 0; i--) {
+				let meat = BasicMeatPiece(Spawn("BasicMeatPiece", (pos.x + frandom(-4,4), pos.y + frandom(-4,4), pos.z + frandom(12,22))));
+				if (meat) {
+					meat.vel = (frandom(-3,3),frandom(-3,3),frandom(2,6));
+					meat.target = self;
+					meatlist.push(meat);
+					}
+				}
+			}
 		SSRX D 3 A_NoBlocking();
-		SSRX EFGH 3 BD_Bleed();
-		SSRX IJK 3;
+		SSRX EFGH 3	BD_Bleed();
+		SSRX HIJK 3;
 		goto deathbleed;
 	Death.Saw:
 		TNT1 A 0 {

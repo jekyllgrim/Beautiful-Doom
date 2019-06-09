@@ -191,7 +191,7 @@ override void CheckReplacement(ReplaceEvent e) {
 	}
 }
 
-Class DebrisAmountControl : EventHandler
+Class FXAmountControl : EventHandler
 {
 Array <DebrisGeneral> bloodlist;
 Array <DebrisGeneral> giblist;
@@ -259,3 +259,5 @@ override void WorldTick() {
 		debrislist[0].destroy();
 	}
 }
+
+

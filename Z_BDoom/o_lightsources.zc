@@ -5,6 +5,7 @@ private int timer;			//used to perform flickering
 bool flicker;				//whether to flicker
 property flicker : flicker;
 Default {
+	DebrisGeneral.sfxtype "none";
 	BD_LightFlare.flicker true;
 	}
 override void Tick() {

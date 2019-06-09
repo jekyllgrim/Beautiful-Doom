@@ -177,14 +177,15 @@ states
 			bRELATIVETOFLOOR = true;
 			return ResolveState(null);
 			}
-		2PLT A 0 { self.frame = random(0,16); }
-
-		#### # -1; /*10 {
+		2PLT A 0 { 
+			self.frame = random(0,16);
 			if (CheckWater())
 				return ResolveState("Water");
 			return ResolveState(null);
 			}
-		wait;*/ stop;
+
+		#### # -1;
+		stop;
 	CeilingSplat:
 		TNT1 A 0 {
 				//console.printf("ceiling");
@@ -250,14 +251,17 @@ Default {
 	+MOVEWITHSECTOR
 	+RELATIVETOFLOOR
 	}
+override void PostBeginPlay() {
+	super.PostBeginPlay();
+	if (floorpic == skyflatnum || waterlevel > 0 || CheckWater()){
+		destroy();
+		return;
+		}
+	}
 states
 	{
 	spawn:
 		TNT1 A 0 NoDelay {
-			if (floorpic == skyflatnum || waterlevel > 0){
-				destroy();
-				return ResolveState(null);
-				}
 			if (CheckLandingSize(24))
 				scale*=0.5;
 			if	(CheckLandingSize(18))
@@ -272,7 +276,7 @@ states
 			scale.x*= randompick(-1,1)*frandom(0.7,1.2);
 			scale.y*= randompick(-1,1)*frandom(0.7,1.2);
 			SetOrigin((pos.x,pos.y,floorz),0);
-			A_SetScale(restscale*randompick(1,-1),restscale*randompick(1,-1));	
+			//A_SetScale(restscale*randompick(1,-1),restscale*randompick(1,-1));	
 			return ResolveState(null);	
 			}
 		2PLT A 0 { self.frame = random(0,16); }
@@ -432,7 +436,7 @@ states
 			if (InvalidFloor())
 				return ResolveState("Rest");
 			if (Checkwater())
-				A_FadeOut(0.01);
+				A_FadeOut(0.05);
 			psize+=2.0;
 			return ResolveState(null);
 			}
@@ -442,7 +446,7 @@ states
 			if (InvalidFloor())
 				return ResolveState("Rest");
 			if (Checkwater())
-				A_FadeOut(0.01);
+				A_FadeOut(0.05);
 			psize+=1.2;
 			return ResolveState(null);
 			}
@@ -452,7 +456,7 @@ states
 			if (InvalidFloor())
 				return ResolveState("Rest");
 			if (Checkwater())
-				A_FadeOut(0.01);
+				A_FadeOut(0.05);
 			psize+=1.0;
 			return ResolveState(null);
 			}
@@ -462,7 +466,7 @@ states
 			if (InvalidFloor())
 				return ResolveState("Rest");
 			if (Checkwater())
-				A_FadeOut(0.01);
+				A_FadeOut(0.05);
 			psize+=1.0;
 			return ResolveState(null);
 			}
@@ -474,7 +478,7 @@ states
 			if (InvalidFloor())
 				return ResolveState("Rest");
 			if (Checkwater())
-				A_FadeOut(0.01);
+				A_FadeOut(0.05);
 			psize+=2.0;
 			return ResolveState(null);
 			}
@@ -484,7 +488,7 @@ states
 			if (InvalidFloor())
 				return ResolveState("Rest");
 			if (Checkwater())
-				A_FadeOut(0.01);
+				A_FadeOut(0.05);
 			psize+=1.2;
 			return ResolveState(null);
 			}
@@ -494,7 +498,7 @@ states
 			if (InvalidFloor())
 				return ResolveState("Rest");
 			if (Checkwater())
-				A_FadeOut(0.01);
+				A_FadeOut(0.05);
 			psize+=1.0;
 			return ResolveState(null);
 			}
@@ -504,7 +508,7 @@ states
 			if (InvalidFloor())
 				return ResolveState("Rest");
 			if (Checkwater())
-				A_FadeOut(0.01);
+				A_FadeOut(0.05);
 			psize+=1.0;
 			return ResolveState(null);
 			}

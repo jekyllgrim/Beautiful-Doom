@@ -160,7 +160,7 @@ states
 			return ResolveState(null);
 			}
 		#### # 1 {
-			if (vel.length() ~== 0) {
+			if (vel ~== (0,0,0)) {
 				if (bdoom_blood) {
 					let a = AniBloodPool(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
 					if (a) {

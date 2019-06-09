@@ -4,6 +4,7 @@ version "3.7.2"
 #include "Z_Bdoom/bd_blood.zc"
 #include "Z_Bdoom/bd_gibs.zc"
 #include "Z_BDoom/bd_events.zc"
+#include "Z_BDoom/bd_menu.zc"
 #include "Z_BDoom/bd_levelcomp.zc"
 
 #include "Z_Bdoom/bd_weapon.zc"

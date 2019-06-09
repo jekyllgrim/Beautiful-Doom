@@ -6,22 +6,18 @@ AddOptionMenu "OptionsMenu"
 
 AddOptionMenu "OptionsMenu"
 {
-	StaticText ""
-	Submenu "BEAUTIFUL DOOM Settings",	"BDoom_Settings"
+	Submenu "Beautiful Doom Settings",	"BDoom_Settings"
 }
 
 ListMenu "BDoom_Credits"
 {
 	Font "SmallFont"
 
-	StaticText -16,	0, "Idea, main code", 					yellow
+	StaticText -16,	0, "Idea, code, graphics", 					yellow
 	StaticText 180,	0, "Jekyll Grim Payne", 	green
 
 	StaticText -16,	12, "Smooth Doom animations", 		yellow
 	StaticText 180,	12, "Gifty", 			green
-
-	StaticText -16,	24, "Original HD weapons art", 	yellow
-	StaticText 180,	24, "FrancoTieppo", 				green
 
 	StaticText -16,	36, "Sprite fixing", 	yellow
 	StaticText 180,	36, "Revenant100", 				green
@@ -70,76 +66,69 @@ ListMenu "BDoom_Credits"
 
 OptionMenu "BDoom_Settings"
 {
+	Title "Beautiful Doom Settings"
 	StaticText "Weapons", yellow
-	Option "Player Weapons",					"bdoom_weapons", "bdoom_weapons", "", 1
-	Option "Muzzle Flashes", 					"bdoom_muzzle", "bdoom_muzzle", "", 1
-	Option "Bullet Tracers",					"bdoom_tracers", "OnOff", "", 1
-	StaticText " "	
-	Option "Unselected weapons autoreload",		"bdoom_autoreload", "OnOff", "", 1
-	StaticText "(Modern Guns only)", white
+	Option "Player Weapons",					"bdoom_weapons", "bdoom_weapons", "bdoom_replaceweapons" //, 1
+	Option "Muzzle Flashes", 					"bdoom_muzzle", "bdoom_muzzle", "bdoom_replaceweapons" //, 1
+	Option "Bullet Tracers",					"bdoom_tracers", "OnOff", "" //, 1
+	OptionBGReload "Reload deselected weapons",	"bdoom_autoreload", "OnOff", "bdoom_weapons" //, 1
 	StaticText " "
 	
-	StaticText "Death Effects", yellow
-	Option "Enhanced gibs & deaths",			"bdoom_gibs", "OnOff", "", 1
-	Option "Enhanced blood",					"bdoom_blood", "OnOff", "", 1
-	Option "Force vanilla boss deaths",			"bdoom_nobossgibs", "OnOff", "", 1	
-	StaticText " "
-
 	StaticText "Special Effects", yellow
-	Option "Halos & particle flames",			"bdoom_flames", "OnOff", "", 1
-	Option "Casings, smoke, trails, debris",	"bdoom_debris", "OnOff", "", 1
-	
-	ScaleSlider "Max gibs",						"bdoom_gibnum", 100, 3000, 100, ""
-	ScaleSlider "Max blood drops",				"bdoom_bloodnum", 100, 3000, 100, ""
-	ScaleSlider "Max flames/light effects",		"bdoom_flamesnum", 100, 3000, 100, ""
-	ScaleSlider "Max debris/trails/smoke",		"bdoom_debrisnum", 100, 3000, 100, ""
-	ScaleSlider  "Maximum Shadow Distance", 	"cl_spriteshadowdistance",	0, 8192, 128, "Shadows are Disabled"
+	Option "Enhanced gibs & deaths",			"bdoom_gibs", "OnOff", "bdoom_replacemonsters" //, 1
+	Option "Enhanced blood",					"bdoom_blood", "OnOff", "bdoom_replacemonsters" //, 1
+	Option "Force vanilla boss deaths",			"bdoom_nobossgibs", "OnOff", "bdoom_gibs", 1	
+	Option "Halos & particle flames",			"bdoom_flames", "OnOff", "" //, 1
+	Option "Casings, smoke, trails, debris",	"bdoom_debris", "OnOff", "", 1	
 	StaticText " "
-
-	StaticText "Minor Effects and Sounds", yellow
-	Option "Ricochet & spark sounds", 			"bdoom_sparks", "OnOff", "", 1
-	Option "Flies over corpses", 				"bdoom_flies", "OnOff", "", 1
-	Option "Explosion shakes", 					"bdoom_shakes", "OnOff", "", 1
+	
+	ScaleSliderGC "Max gibs",					"bdoom_gibnum", 100, 3000, 100, "", "bdoom_gibs"
+	ScaleSliderGC "Max blood particles",		"bdoom_bloodnum", 100, 3000, 100, "", "bdoom_blood"
+	ScaleSliderGC "Max flames/light FX",		"bdoom_flamesnum", 100, 3000, 100, "", "bdoom_flames"
+	ScaleSliderGC "Max debris/trails/smoke FX",	"bdoom_debrisnum", 100, 3000, 100, "", "bdoom_debris"
+	ScaleSlider  "Maximum Shadow Distance", 	"cl_spriteshadowdistance",	0, 8192, 128, "Disabled"
+	StaticText " "
+	
+	StaticText "Additional Effects and Sounds", yellow
+	Option "Ricochet & spark sounds", 			"bdoom_sparks", "OnOff", "" //, 1
+	Option "Flies over corpses", 				"bdoom_flies", "OnOff", "bdoom_replacemonsters" //, 1
+	Option "Explosion shakes", 					"bdoom_shakes", "OnOff", "" //, 1
 	Option "Face on Standard HUD", 				"bdoom_hudface", "OnOff", "", 1	
 	StaticText " "
-	
-	StaticText "Options below allow to disable parts of the mod,", yellow
-	StaticText "which allows partial compatibility with other mods.", yellow
-	StaticText "(Any changes require a level restart to take effect)", white
-	StaticText " "
-	Option "Beautiful Doom weapons",		"bdoom_replaceweapons", "Toggle", "", 1
-	Option "Beautiful Doom monsters",		"bdoom_replacemonsters", "Toggle", "", 1
-	Option "Beautiful Doom items",			"bdoom_replaceitems", "Toggle", "", 1
-	StaticText " "
-	
-	StaticText "Specific monster replacements", yellow
-	StaticText "Allows to disable specific monsters from the mod", yellow
-	StaticText "(Any changes require a level restart to take effect)", white
-	StaticText " "
-	Option "Zombieman",				"bdoom_Zombieman", "Toggle", "", 1
-	Option "Shotgun Guy",			"bdoom_ShotgunGuy", "Toggle", "", 1
-	Option "Chaingun Guy",			"bdoom_ChaingunGuy", "Toggle", "", 1
-	Option "Wolfenstein Soldier",	"bdoom_WolfensteinSS", "Toggle", "", 1
-	Option "Imp",					"bdoom_DoomImp", "Toggle", "", 1
-	Option "Pinky Demon",			"bdoom_Demon", "Toggle", "", 1
-	Option "Spectre Demon",			"bdoom_Spectre", "Toggle", "", 1
-	Option "Cacodemon",				"bdoom_Cacodemon", "Toggle", "", 1
-	Option "Pain Elemental",		"bdoom_PainElemental", "Toggle", "", 1
-	Option "Lost Soul",				"bdoom_LostSoul", "Toggle", "", 1
-	Option "Revenant",				"bdoom_Revenant", "Toggle", "", 1
-	Option "Arachnotron",			"bdoom_Arachnotron", "Toggle", "", 1
-	Option "Mancubus",				"bdoom_Fatso", "Toggle", "", 1
-	Option "Hell Knight",			"bdoom_HellKnight", "Toggle", "", 1
-	Option "Baron of Hell",			"bdoom_BaronOfHell", "Toggle", "", 1
-	Option "Arch-Vile",				"bdoom_ArchVile", "Toggle", "", 1
-	Option "Cyberdemon",			"bdoom_Cyberdemon", "Toggle", "", 1
-	Option "Spider Mastermind",		"bdoom_SpiderMastermind", "Toggle", "", 1	
-	}
 
-OptionValue "OnOff"
+	StaticText "These options allow to disable parts of the mod,", yellow
+	StaticText "which enables partial compatibility with other mods.", yellow
+	StaticText "(Changes require a level restart)", white
+	StaticText " "
+	Option "Beautiful Doom weapons",		"bdoom_replaceweapons", "Toggle", "" //, 1
+	Option "Beautiful Doom monsters",		"bdoom_replacemonsters", "Toggle", "" //, 1
+	Option "Beautiful Doom items",			"bdoom_replaceitems", "Toggle", "", 1	
+	SubmenuGC "Per-monster replacement settings", "BDMonsterReplacements", "bdoom_replacemonsters"
+}
+
+OptionMenu BDMonsterReplacements
 {
-	0, "Off"
-	1, "On"
+	Title "Beautiful Doom monster replacement settings"
+	StaticText "Changes require a level restart to properly take effect", yellow
+	StaticText " "
+	Option "Zombieman",			"bdoom_Zombieman", "Toggle", "" //, 1
+	Option "Shotgun Guy",			"bdoom_ShotgunGuy", "Toggle", "" //, 1
+	Option "Chaingun Guy",		"bdoom_ChaingunGuy", "Toggle", "" //, 1
+	Option "Wolfenstein Soldier",	"bdoom_WolfensteinSS", "Toggle", "" //, 1
+	Option "Imp",					"bdoom_DoomImp", "Toggle", "" //, 1
+	Option "Pinky Demon",			"bdoom_Demon", "Toggle", "" //, 1
+	Option "Spectre Demon",		"bdoom_Spectre", "Toggle", "" //, 1
+	Option "Cacodemon",			"bdoom_Cacodemon", "Toggle", "" //, 1
+	Option "Pain Elemental",		"bdoom_PainElemental", "Toggle", "" //, 1
+	Option "Lost Soul",			"bdoom_LostSoul", "Toggle", "" //, 1
+	Option "Revenant",			"bdoom_Revenant", "Toggle", "" //, 1
+	Option "Arachnotron",			"bdoom_Arachnotron", "Toggle", "" //, 1
+	Option "Mancubus",			"bdoom_Fatso", "Toggle", "" //, 1
+	Option "Hell Knight",			"bdoom_HellKnight", "Toggle", "" //, 1
+	Option "Baron of Hell",		"bdoom_BaronOfHell", "Toggle", "" //, 1
+	Option "Arch-Vile",			"bdoom_ArchVile", "Toggle", "" //, 1
+	Option "Cyberdemon",			"bdoom_Cyberdemon", "Toggle", "" //, 1
+	Option "Spider Mastermind",	"bdoom_SpiderMastermind", "Toggle", "", 1	
 }
 
 OptionValue "Toggle"
