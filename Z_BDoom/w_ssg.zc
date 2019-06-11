@@ -213,7 +213,7 @@ states
 		SH2N A 3 {
 			If(invoker.ShotFired)
 				return ResolveState("Reload.Enhanced1");
-			A_Gunflash("AltFlash.Right");
+			A_Gunflash("Flash");
 			return ResolveState(null);
 			}
 		SH2F X 1 {

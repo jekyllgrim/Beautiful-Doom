@@ -13,9 +13,9 @@ int NonselTimer; //counts how long the weapon was deselected, used for automatic
 int AutoReloadTime; //the value that NonselTimer is compared to
 property AutoReloadTime : AutoReloadTime;
 
-Default {  //required default values for A_CameraSway. Otherwise it'll crash due to division by zero
+Default {  
 	BDoomWeapon.AutoReloadTime 60;
-	BDoomWeapon.maxOffsetTics 1;
+	BDoomWeapon.maxOffsetTics 1; //required default values for A_CameraSway. Otherwise it'll crash due to division by zero
 	BDoomWeapon.offsetTics -1;
 	}
 
@@ -276,7 +276,7 @@ states
 	Spawn:
 		PUFF A 1 bright {
 			if (!bdoom_tracers) {
-				self.destroy();
+				destroy();
 				return ResolveState(null);
 				}
 			return ResolveState(null);
@@ -410,7 +410,7 @@ Default {
 override void Tick() {
 	super.Tick();
 	if (ripdepth <= 0)
-		self.destroy();
+		destroy();
 	}
 override int SpecialMissileHit(actor victim) {
 	if (victim && !victim.player) {
@@ -475,20 +475,21 @@ states
 	{
 	Spawn:
 		CAS1 A 0 NoDelay {
+			if(!target) {
+				destroy();
+				return ResolveState(null);
+				}
 			if (self is "PistolCasing")
-				self.sprite = GetSpriteIndex("CAS1");
+				sprite = GetSpriteIndex("CAS1");
 			else if (self is "ShotgunCasing")
-				self.sprite = GetSpriteIndex("CAS2");
+				sprite = GetSpriteIndex("CAS2");
 			else if (self is "ChaingunCasing")
-				self.sprite = GetSpriteIndex("CAS3");
+				sprite = GetSpriteIndex("CAS3");
 			roll = frandom(88,92);
+			return ResolveState(null);
 			}
 	Fly:
 		#### AABBCCBBAABBCCBB 1 {
-			if(!target) {
-				self.destroy();
-				return ResolveState(null);
-				}
 			roll += brot;
 			if (waterlevel > 0)
 				return ResolveState("waterland");
@@ -507,7 +508,7 @@ states
 	Death:
 		#### # 0 {
 			if (CheckWater() || (target && target.bISMONSTER)) {
-				self.destroy();
+				destroy();
 				return ResolveState(null);
 				}
 			A_QueueCorpse();

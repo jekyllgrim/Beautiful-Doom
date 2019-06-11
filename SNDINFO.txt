@@ -168,6 +168,8 @@ chainguy/death3			dcpodth3
 
 electric/hum			elcthum1
 
+archvile/flameprep		"Sounds/arfireprep.ogg"
+archvile/flameexplosion	"Sounds/arfireexplo.ogg"
 
 //////////////////////////
 //// ITEMS & OBJECTS /////
