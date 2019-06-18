@@ -88,12 +88,7 @@ override void DoEffect()
 			owner.player.setPSprite(PSP_Weapon,ResolveState("QKick"));
 		//do this if used during Reload: weapon sprite will stay the same, kick will be shown and executed independently in overlay
 		else if (InStateSequence(psp.curstate,FindState("Reload.Modern"))	||
-				InStateSequence(psp.curstate, FindState("Reload.Modern1"))	||
-				InStateSequence(psp.curstate, FindState("Reload.ModernEnd"))||
-				InStateSequence(psp.curstate, FindState("Reload"))			||
-				InStateSequence(psp.curstate, FindState("Reload1"))			||
-				InStateSequence(psp.curstate, FindState("ReloadEnd"))		||
-				InStateSequence(psp.curstate, FindState("ReloadDo")) 		)
+				InStateSequence(psp.curstate, FindState("Reload"))			)
 			owner.player.setPSprite(-10,FindState("QuickKick"));
 		}
 	
@@ -415,7 +410,7 @@ override void Tick() {
 override int SpecialMissileHit(actor victim) {
 	if (victim && !victim.player) {
 		if (target) {
-			int xchance = clamp(distance3D(target) * 0.15,10,90); //chance to gib based on distance, min 10%, max 90%
+			int xchance = clamp(distance3D(target) * 0.15,5,50); //chance to gib based on distance, min 5%, max 50%
 			//console.printf("%d percent",100-xchance);
 			if (random(0,100) > xchance)
 				bEXTREMEDEATH = true;

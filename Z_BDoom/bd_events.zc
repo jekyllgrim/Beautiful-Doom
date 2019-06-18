@@ -109,10 +109,13 @@ Separate CVARs for each monsters are also supported. */
 class MonsterOverrideHandler : EventHandler
 {
 override void CheckReplacement(ReplaceEvent e) {
+	if (bdoom_blood) { //I put the blood here (at least for now), but it's actually not related to mosnters and only depends on its own CVAR
+		if (e.Replacee.GetClassName() == "Blood")
+			e.Replacement = "BD_Blood";
+		}
 	if (!bdoom_replacemonsters)
 		return;
 	switch (e.Replacee.GetClassName()) {
-		case 'Blood'				: 								e.Replacement = "BD_Blood";				break;
 		case 'Zombieman' 			: if (bdoom_Zombieman) 			e.Replacement = "BD_Zombieman"; 		break;
 		case 'ShotgunGuy' 			: if (bdoom_ShotgunGuy) 		e.Replacement = "BD_ShotgunGuy"; 		break;
 		case 'ChaingunGuy' 			: if (bdoom_ChaingunGuy) 		e.Replacement = "BD_ChaingunGuy"; 		break;
