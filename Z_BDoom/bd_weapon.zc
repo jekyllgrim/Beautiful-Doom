@@ -115,7 +115,7 @@ override void DoEffect()
 action void BD_WeaponReady (bool allowSecondary = false, bool allowReload = true, bool allowKick = true) {
   	int flags = 0;
 
-    if (allowReload && invoker.ammo1 && invoker.ammo2 && invoker.ammo2 != invoker.ammo1 && invoker.ammo2.amount > 0 && invoker.ammo1.amount < invoker.ammo1.maxamount)
+    if (allowReload && invoker.ammo1 && invoker.ammo2 && (invoker.ammo2 != invoker.ammo1) && (invoker.ammo2.amount > 0) && (invoker.ammo1.amount < invoker.ammo1.maxamount))
         flags |= WRF_ALLOWRELOAD;
     if (!allowSecondary)
         flags |= WRF_NOSECONDARY;
@@ -291,6 +291,7 @@ states
 
 Class RealBullet : BulletTracer
 {
+protected vector3 SpawnPos; //where the bullet was shot from
 double bulletdamage; 	//the actual damage value
 double falloffstrength; //how quickly the damage is reduced during travel
 double mindamage; 		//minimum damage value at any distance
@@ -320,22 +321,33 @@ Default {
 override void PostBeginPlay()
 	{
 	super.PostBeginPlay();
-	//vel = vel.Unit () * bulletspeed;
+	SpawnPos = pos;
 	BulletDamage = 3 * frandom(4,8);
 	}
-override void Tick() {
-	super.Tick();
-	if (target && distance3d(target) > falloffdistance)
-		bulletdamage = clamp(bulletdamage*falloffstrength,mindamage,100);
-	//console.printf("Damage %f",bulletdamage);
+double CalculateDamage() {
+	double ddamage;
+	int FalloffFactor = 0;
+	double ddistance = level.Vec3Diff(pos, SpawnPos).length() - falloffdistance;
+	if (ddistance > 0)
+		FalloffFactor = int (ddistance / default.speed); //this essentially means that falloff factor is applied "every tick", so there are fewer falloff steps for faster projectiles
+	ddamage = clamp(bulletdamage*(falloffstrength**FalloffFactor),mindamage,100); //falloffstrength is by how much it's reduced, this is applied to damage "every tick"
+	return ddamage;
 	}
+override int SpecialMissileHit(actor victim) {	
+	if (victim && target && (victim != target)) {
+		bulletdamage = CalculateDamage();
+		victim.DamageMobj(self,target,bulletdamage,"normal");		
+		}
+	return -1;
+	}
+	
 states
 	{
 	Spawn:
 		PUFF A 1 bright;
 		loop;
 	Death:
-		TNT1 A 1 A_SpawnItemEx("EnBulletPuff",0,0,0,0,0,0,0,SXF_SETTARGET|SXF_ORIGINATOR);
+		TNT1 A 1 A_SpawnItemEx("EnBulletPuff",flags:SXF_SETTARGET|SXF_ORIGINATOR);
 		stop;
 	}
 }
@@ -343,7 +355,6 @@ states
 Class BD_PistolBullet : RealBullet
 {
 Default {
-	//RealBullet.bulletspeed 170;
 	speed 170;
 	RealBullet.FalloffDistance 512;
 	RealBullet.falloffstrength 0.9;
@@ -351,14 +362,13 @@ Default {
 override void PostBeginPlay()
 	{
 	super.PostBeginPlay();
-	BulletDamage = 15; //3 * frandom(4,8);
+	BulletDamage = 15;
 	}
 }
 
 Class BD_RifleBullet : RealBullet
 {
 Default {
-	//RealBullet.bulletspeed 230;
 	speed 230;
 	RealBullet.FalloffDistance 640;
 	RealBullet.falloffstrength 0.93;
@@ -366,14 +376,13 @@ Default {
 override void PostBeginPlay()
 	{
 	super.PostBeginPlay();
-	BulletDamage = 15; //3 * frandom(6.5,8.0);
+	BulletDamage = 15;
 	}
 }
 
 Class BD_ShotgunPellet : RealBullet
 {
 Default {
-	//RealBullet.bulletspeed 140;
 	speed 140;
 	RealBullet.FalloffDistance 400;
 	RealBullet.falloffstrength 0.85;
@@ -382,7 +391,7 @@ Default {
 override void PostBeginPlay()
 	{
 	super.PostBeginPlay();
-	BulletDamage = 12; //3 * frandom(3,5);
+	BulletDamage = 12;
 	}
 }
 
@@ -408,18 +417,17 @@ override void Tick() {
 		destroy();
 	}
 override int SpecialMissileHit(actor victim) {
-	if (victim && !victim.player) {
-		if (target) {
-			int xchance = clamp(distance3D(target) * 0.15,5,50); //chance to gib based on distance, min 5%, max 50%
-			//console.printf("%d percent",100-xchance);
+	if (victim && target && (victim != target)) {
+			double xchance = clamp(level.Vec3Diff(pos, SpawnPos).length() * 0.23,25,99); //chance to gib based on distance
+			console.printf("%d %",100-xchance);
 			if (random(0,100) > xchance)
 				bEXTREMEDEATH = true;
-			}
-		ripdepth = ripdepth - victim.health; //reduce ripping ability before anything else
+		ripdepth -= victim.health; //reduce ripping ability before anything else
 		if (victim != hitvictim) { //deal damage only ONCE even if the pellet rips through
 			hitvictim = victim;
+			int FalloffFactor = 0;
+			bulletdamage = CalculateDamage();
 			victim.DamageMobj(self,target,bulletdamage,"normal");
-			//console.PrintF("Ripdepth %d, Health %d",ripdepth,victim.health);
 			}
 		}
 	if (ripdepth <= 0)
