@@ -200,23 +200,26 @@ states
 		BBGN A 1 A_Lower();
 		wait;
 	Ready.Modern:
-		BBGN A 1 {
+		TNT1 A 0 {
+			A_ClearRefire();
 			string curspecies = species;
 			if (curspecies.IndexOf("BDoomPlayerSpecies") < 0) {
 					invoker.prevspecies = species; //record previous species, if any (and if not already BDoomPlayerSpecies%d)
 					species = String.Format("BDoomPlayerSpecies%d",self.PlayerNumber()); //assign unique species based on player number
-					}
-			
-			A_WeaponReady(WRF_NOSECONDARY);
-			//A_PlaySound("Mweapons/bfg/ready",6,0.45,1);
-			A_ClearRefire();
+					}			
 			invoker.wcharge = 0;
 			invoker.railcounter = 0;
 			let po = player.findPsprite(3);
 			if (!po)
 				A_OverLay(3,"ReadyLights");
 			}
-		goto ready;
+		BBGN A 1 {		
+			If(bdoom_weapons!=2)
+				return ResolveState("Ready");
+			A_WeaponReady(WRF_NOSECONDARY);
+			return ResolveState(null);
+			}
+		wait;
 	ReadyLights:
 		BMGY ABCDEFEDCB 2 bright;
 		loop;

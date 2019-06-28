@@ -316,13 +316,13 @@ Default {
 	speed 170;
 	radius 1;
 	height 1;
-	DamageFunction bulletdamage;
+	DamageFunction CalculateDamage();
 	}
 override void PostBeginPlay()
 	{
 	super.PostBeginPlay();
 	SpawnPos = pos;
-	BulletDamage = 3 * frandom(4,8);
+	BulletDamage = 10;
 	}
 double CalculateDamage() {
 	double ddamage;
@@ -331,14 +331,8 @@ double CalculateDamage() {
 	if (ddistance > 0)
 		FalloffFactor = int (ddistance / default.speed); //this essentially means that falloff factor is applied "every tick", so there are fewer falloff steps for faster projectiles
 	ddamage = clamp(bulletdamage*(falloffstrength**FalloffFactor),mindamage,100); //falloffstrength is by how much it's reduced, this is applied to damage "every tick"
+	console.printf("Damage %f, distance %d",ddamage,level.Vec3Diff(pos, SpawnPos).length());
 	return ddamage;
-	}
-override int SpecialMissileHit(actor victim) {	
-	if (victim && target && (victim != target)) {
-		bulletdamage = CalculateDamage();
-		victim.DamageMobj(self,target,bulletdamage,"normal");		
-		}
-	return -1;
 	}
 	
 states
@@ -419,7 +413,7 @@ override void Tick() {
 override int SpecialMissileHit(actor victim) {
 	if (victim && target && (victim != target)) {
 			double xchance = clamp(level.Vec3Diff(pos, SpawnPos).length() * 0.23,25,99); //chance to gib based on distance
-			console.printf("%d %",100-xchance);
+			//console.printf("%d %",100-xchance);
 			if (random(0,100) > xchance)
 				bEXTREMEDEATH = true;
 		ripdepth -= victim.health; //reduce ripping ability before anything else
@@ -444,6 +438,7 @@ override void PostBeginPlay()
 	}
 }
 
+//double dmg = clamp(maxdmg - (dist - falloffstart) / (falloffend - falloffstart) * (maxdmg - mindmg), mindmg, maxdmg);
 
 //***************
 // EMPTY CASINGS

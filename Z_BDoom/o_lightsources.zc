@@ -1,3 +1,21 @@
+Class FountainSpawner : Actor {
+PurpleParticleFountain fountain;
+Default {
+    +NOINTERACTION
+    }
+states {
+    Spawn:
+        TNT1 A 350 NoDelay {
+            fountain = PurpleParticleFountain(Spawn("PurpleParticleFountain",pos));
+            }
+        TNT1 A 0 {
+            if (fountain)
+                fountain.destroy();
+            }
+        stop;
+    }
+}
+
 // Universal flare used by light sources
 Class BD_LightFlare : BD_BaseFlare
 {
