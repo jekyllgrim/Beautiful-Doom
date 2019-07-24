@@ -331,7 +331,7 @@ double CalculateDamage() {
 	if (ddistance > 0)
 		FalloffFactor = int (ddistance / default.speed); //this essentially means that falloff factor is applied "every tick", so there are fewer falloff steps for faster projectiles
 	ddamage = clamp(bulletdamage*(falloffstrength**FalloffFactor),mindamage,100); //falloffstrength is by how much it's reduced, this is applied to damage "every tick"
-	console.printf("Damage %f, distance %d",ddamage,level.Vec3Diff(pos, SpawnPos).length());
+	//console.printf("Damage %f, distance %d",ddamage,level.Vec3Diff(pos, SpawnPos).length());
 	return ddamage;
 	}
 	
