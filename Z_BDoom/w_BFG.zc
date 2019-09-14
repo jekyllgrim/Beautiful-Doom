@@ -798,8 +798,8 @@ States
 				
 				if (targetActor != null) {
 					A_Face(targetActor,0,0,flags: FAF_MIDDLE);
-									
-					A_CustomRailGun(30 + 22*wpower,0,"","40FF40",RGF_NOPIERCING|RGF_FULLBRIGHT|RGF_CENTERZ|RGF_SILENT ,maxdiff:10,pufftype:"MBFGRailPuff",range:rdistance,duration:random(100,150),sparsity:0.15,driftspeed:0.3);
+					//this is the actual attack; since the rail can be pretty long, it uses built-in gzdoom particles instead of actor-based ones for more efficiency
+					A_CustomRailGun(30 + 22*wpower,0,"","2affa5",RGF_NOPIERCING|RGF_FULLBRIGHT|RGF_CENTERZ|RGF_SILENT ,maxdiff:10,pufftype:"MBFGRailPuff",range:rdistance,duration:random(100,150),sparsity:0.15,driftspeed:0.3);
 					
 					//A_CustomRailGun(30 + 22*wpower,0,"","FFFFFF",RGF_NOPIERCING|RGF_FULLBRIGHT|RGF_CENTERZ|RGF_SILENT,aim:0,maxdiff:15,"MBFGRailPuff",range:rdistance,duration:512,sparsity:6.5,spawnclass:"MBFGRailParticle");
 				}

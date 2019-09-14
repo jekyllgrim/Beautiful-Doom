@@ -42,6 +42,8 @@ override void DoEffect()
 			BobRangeY = 0.2;
 			BobStyle = 5;
 			BobSpeed = 2.0;
+			if (owner.player.readyweapon)
+				owner.player.WeaponState |= WF_WEAPONBOBBING;
 		}
 	else {
 			BobRangeX = 1.0;
@@ -165,6 +167,7 @@ action void A_Eject(class<Actor> itemtype, double xofs = 0, double yofs = 0, dou
 		c.target = self; //get pointer to spawner — if spawned by monster it'll disappear after bouncing
 		c.angle = angle;
 	}
+
 states
 	{
 	QKick:
@@ -244,7 +247,7 @@ Default {
 	alpha 0.75;
 	renderstyle "add";
 	damage 0;
-	speed 150;
+	speed 64;
 	radius 4;
 	height 4;
 	seesound "null";
@@ -269,6 +272,9 @@ override void Tick () {
 states
 	{
 	Spawn:
+		TNT1 A 2 Nodelay {
+			vel = vel.unit() * 180;
+			}
 		PUFF A 1 bright {
 			if (!bdoom_tracers) {
 				destroy();
@@ -276,7 +282,7 @@ states
 				}
 			return ResolveState(null);
 			}
-		loop;
+		wait;
 	Xdeath:
 		TNT1 A 1;
 		stop;
@@ -296,13 +302,13 @@ double bulletdamage; 	//the actual damage value
 double falloffstrength; //how quickly the damage is reduced during travel
 double mindamage; 		//minimum damage value at any distance
 int falloffdistance; 	//distance at which the falloff begins
-int bulletspeed; 		//speed; currently not used
+int bulletspeed; 		//speed
 property bulletspeed : bulletspeed;
 property falloffstrength : falloffstrength;
 property falloffdistance : falloffdistance;
 property mindamage : mindamage;
 Default {
-	//RealBullet.bulletspeed 200;
+	RealBullet.bulletspeed 200;
 	RealBullet.FalloffDistance 1024;
 	RealBullet.falloffstrength 0.3;
 	RealBullet.mindamage 1;
@@ -313,7 +319,7 @@ Default {
 	+BLOODSPLATTER
 	+THRUGHOST
 	decal "none";
-	speed 170;
+	speed 32;
 	radius 1;
 	height 1;
 	DamageFunction CalculateDamage();
@@ -321,7 +327,7 @@ Default {
 override void PostBeginPlay()
 	{
 	super.PostBeginPlay();
-	SpawnPos = pos;
+	vel = vel.unit() * bulletspeed;
 	BulletDamage = 10;
 	}
 double CalculateDamage() {
@@ -329,7 +335,7 @@ double CalculateDamage() {
 	int FalloffFactor = 0;
 	double ddistance = level.Vec3Diff(pos, SpawnPos).length() - falloffdistance;
 	if (ddistance > 0)
-		FalloffFactor = int (ddistance / default.speed); //this essentially means that falloff factor is applied "every tick", so there are fewer falloff steps for faster projectiles
+		FalloffFactor = int (ddistance / default.speed); //this essentially means that falloff factor is retroactively applied "every tick", so there are fewer falloff steps for faster projectiles
 	ddamage = clamp(bulletdamage*(falloffstrength**FalloffFactor),mindamage,100); //falloffstrength is by how much it's reduced, this is applied to damage "every tick"
 	//console.printf("Damage %f, distance %d",ddamage,level.Vec3Diff(pos, SpawnPos).length());
 	return ddamage;
@@ -349,7 +355,7 @@ states
 Class BD_PistolBullet : RealBullet
 {
 Default {
-	speed 170;
+	RealBullet.bulletspeed 170;
 	RealBullet.FalloffDistance 512;
 	RealBullet.falloffstrength 0.9;
 	}
@@ -363,7 +369,7 @@ override void PostBeginPlay()
 Class BD_RifleBullet : RealBullet
 {
 Default {
-	speed 230;
+	RealBullet.bulletspeed 230;
 	RealBullet.FalloffDistance 640;
 	RealBullet.falloffstrength 0.93;
 	}
@@ -377,7 +383,7 @@ override void PostBeginPlay()
 Class BD_ShotgunPellet : RealBullet
 {
 Default {
-	speed 140;
+	RealBullet.bulletspeed 140;
 	RealBullet.FalloffDistance 400;
 	RealBullet.falloffstrength 0.85;
 	RealBullet.mindamage 0.4;
@@ -439,6 +445,177 @@ override void PostBeginPlay()
 }
 
 //double dmg = clamp(maxdmg - (dist - falloffstart) / (falloffend - falloffstart) * (maxdmg - mindmg), mindmg, maxdmg);
+
+
+Class BD_MuzzleFlashParticle : Actor {
+Default {
+	+NOINTERACTION
+	+FORCEXYBILLBOARD
+	+BRIGHT
+	+ROLLSPRITE
+	+ROLLCENTER
+	renderstyle "Add";
+	alpha 0.4;
+	scale 0.03;
+	}
+override void PostBeginPlay() {
+	super.PostBeginPlay();
+	roll = random(0,359);
+	}
+states {
+	Spawn:
+		BOM1 # 1 A_FadeOut(0.1);
+		wait;
+	}
+}
+
+Class BD_MuzzleSpark : BD_MuzzleFlashParticle {
+Default {
+	alpha 0.9;
+	scale 0.03;
+	speed 1;
+	}
+override void PostBeginPlay() {
+	vel = vel.unit() * 12;
+	super.PostBeginPlay();
+	}
+states {
+	Spawn:
+		SPRK A 1 {
+			A_FadeOut(0.5);
+			//scale*=0.5;
+			vel*=0.8;
+			}
+		wait;
+	}
+}
+
+Class BD_MuzzleFlare : Flare_General {
+Default {
+	alpha 0.5;
+	scale 0.07;
+	}
+override void Tick() {
+	//if (master)
+		//SetOrigin(master.pos,true);
+	super.Tick();
+	}
+states {
+	Spawn:
+		LENY A 1 A_FadeOut(0.14);
+		wait;
+	}
+}
+
+class BD_MuzzleSmoke : Smoke_General
+{
+Default {
+	alpha 0.15;
+	scale 0.07;
+	speed 1;
+	}
+override void PostBeginPlay() {
+	vel = vel.unit() * frandom(1,4);
+	super.PostBeginPlay();
+	}
+override void Tick() {
+	super.Tick();
+	vel *= 0.8;
+	}
+states
+	{
+	Spawn:
+		SMK1 AAABBBCCCDDDEEEFFFGGGHHHIIIJJJKKKLLLMMMNNNOOOPPPQQQRRR 1 {
+			vel.z = clamp(vel.z*0.85,0.04,0.1);
+			A_FadeOut(0.0003);
+			scale *= 1.02;
+			}
+		stop;
+	}
+}
+			
+			
+
+Class BD_MuzzleFlash : BD_MuzzleFlashParticle {
+int mcount;
+Default {
+	//+MISSILE
+	//speed 32;
+	scale 0.035;
+	alpha 0.8;
+	}
+override void PostBeginPlay() {
+	super.PostBeginPlay();
+	scale*=frandom(0.9,1.1);
+	vel = vel.Unit () * 1;
+	if (target && (target is "PlayerPawn")) {
+		let plr = PlayerPawn(target);
+		vel += plr.vel;
+		angle = plr.angle;
+		pitch = plr.pitch;
+		//Console.Printf("player pitch: %d, flash pitch: %d", plr.pitch, pitch);
+		double zdiff = plr.player.viewz - plr.pos.z - plr.player.viewheight;
+		SetZ(pos.z+zdiff);
+		}
+	for (int i = random(5,11); i > 0; i--) {
+		//A_SpawnItemEx("BD_MuzzleSpark",frandom(-2,2),frandom(-2,2),frandom(-2,2),frandom(16,19),0,frandom(-5,5),angle:random(-40,40));
+		A_Spawnprojectile("BD_MuzzleSpark",frandom(-2,2),frandom(-2,2),frandom(-40,40),CMF_AIMDIRECTION,pitch+frandom(-40,40));
+		}
+	for (int i = 7; i > 0; i--) {
+		A_Spawnprojectile("BD_MuzzleSmoke",frandom(-0.5,0.5),frandom(-0.5,0.5),0,CMF_AIMDIRECTION,pitch);
+		}
+	let flare = BD_MuzzleFlare(Spawn("BD_MuzzleFlare",pos));
+	if (flare) {
+		flare.vel = vel;
+		flare.master = self;
+		flare.scale = scale*2;
+		}
+	}
+states {
+	Spawn:
+		BOM1 I 1 NoDelay { frame = random(5,9); }
+		BOM1 # 1 {
+			A_FadeOut(0.27);
+			scale*=1.1;
+			}
+		wait;
+	}
+/*override void Tick () {
+	if (target && (target is "PlayerPawn")) {
+		let plr = PlayerPawn(target);
+		double zdiff = plr.player.viewz - plr.pos.z - plr.player.viewheight;
+		vel.z += zdiff;
+		}
+	super.Tick();
+	}*/
+/*override void Tick () {
+	if (mcount > 6) {
+		destroy();
+		return;
+		}
+    Vector3 oldPos = self.pos;
+    
+    Super.Tick();
+	if (level.isFrozen())
+		return;
+	Vector3 path = level.vec3Diff( self.pos, oldPos );
+	double distance = path.length() * 0.85;
+	Vector3 direction = path / distance;
+	int steps = int( distance );
+	
+	for( int i = 0; i < steps; i++ )  {
+		actor mo = Spawn("BD_MuzzleFlashParticle", oldPos );
+		mo.frame = mcount;
+		mo.vel = vel;
+		mcount++;
+			if (mcount > 6) {
+				destroy();
+				return;
+				}
+		oldPos = level.vec3Offset( oldPos, direction );
+		}
+	}*/
+}
 
 //***************
 // EMPTY CASINGS

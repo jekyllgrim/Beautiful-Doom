@@ -9,6 +9,18 @@ Model BulletTracer
 	
 	FrameIndex PUFF A 0 0
 }
+
+Model BD_MuzzleSpark
+{
+	Path "models"
+	Model 0 "tracer.md3"
+	Skin 0 "spark.png"
+	Scale 1.0 1.0 1.0
+	PITCHFROMMOMENTUM
+	
+	FrameIndex SPRK A 0 0
+}
+
 /*
 Model ModernPlasmaTracer
 {

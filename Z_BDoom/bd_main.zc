@@ -95,6 +95,7 @@ property dgravity : dgravity;
 property removeonfall : removeonfall;
 property dbreak : dbreak;
 Default {
+	+CLIENTSIDEONLY
 	SmallDebris.removeonfall true;
 	SmallDebris.dbreak 0;
 	-MISSILE
@@ -144,6 +145,7 @@ Default {
 	+RELATIVETOFLOOR
 	+MOVEWITHSECTOR
 	+NOINTERACTION
+	+BRIGHT
 	renderstyle "Add";
 	alpha 0.4;
 	scale 0.4;
@@ -186,7 +188,7 @@ states
 	{
 	Spawn:
 		TNT1 A 0 NoDelay SetColor();
-		#### # 1 bright;
+		#### # 1;
 		wait;
 	}
 }
@@ -401,6 +403,13 @@ Default {
 	alpha 0.05;
 	scale 0.02;
 	}
+/*override void Tick() {
+	if (target) {
+		vel.x = target.vel.x;
+		vel.y = target.vel.y;
+		}
+	super.Tick();
+	}*/
 states
 	{
 	Spawn:

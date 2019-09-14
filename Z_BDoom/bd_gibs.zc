@@ -802,8 +802,10 @@ Default {
 	}
 override void GibBeginPlay()
 	{
-	super.GibBeginPlay();
 	bmass = 200;
+	brot = random(14,17)*randompick(-1,1);
+	restframe = 25;
+	roll = random(0,359);
 	}
 states
 	{
@@ -1049,6 +1051,7 @@ override void GibBeginPlay()
 	bmass = 100;
 	sprite = GetSpriteIndex("TRP1"); 
 	frame = random (0,2);
+	restframe = frame;
 	brot = randompick(8,-8);
 	A_SetScale(0.6);
 	scale.x *= randompick(-1,1);
@@ -1084,7 +1087,9 @@ override void GibBeginPlay()
 	{
 	Super.GibBeginPlay();
 	frame = random(0,3);
+	restframe = frame;
 	brot = 5;
+	roll = 0;
 	endroll = 116;
 	}
 override void GibFall(){
@@ -1094,7 +1099,7 @@ override void GibFall(){
 states
 	{
 	spawn:
-		SPP5 # 0 NoDelay GibBeginPlay();
+		SPP5 A 0 NoDelay GibBeginPlay();
 		SPP5 # 1 {
 			if (abs(roll) < abs(endroll))
 				roll+=brot;

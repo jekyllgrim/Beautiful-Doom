@@ -14,7 +14,7 @@ server 	bool 	bdoom_debris 			= true;
 server 	bool 	bdoom_sparks 			= true;
 server 	bool 	bdoom_shakes 			= true;
 
-server bool		bdoom_killableobjects	= true;
+server	bool	bdoom_killableobjects	= true;
 server 	bool 	bdoom_flies				= true;
 user 	bool 	bdoom_hudface			= true;
 
