@@ -404,17 +404,12 @@ private actor hitvictim;	//the actor that was hit
 Default {
 	//RealBullet.bulletspeed 140;
 	damage 0;
-	speed 140;
+	RealBullet.Bulletspeed 140;
 	RealBullet.FalloffDistance 300;
 	RealBullet.falloffstrength 0.8;
 	RealBullet.mindamage 0.5;
 	+RIPPER
 	//+NOBOSSRIP
-	}
-override void Tick() {
-	super.Tick();
-	if (ripdepth <= 0)
-		destroy();
 	}
 override int SpecialMissileHit(actor victim) {
 	if (victim && target && (victim != target)) {
