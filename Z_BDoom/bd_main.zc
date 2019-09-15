@@ -204,10 +204,17 @@ Default {
 	-RELATIVETOFLOOR
 	-MOVEWITHSECTOR
 	}
+virtual void SetPos() {
+	if (master) {
+		SetOrigin(master.pos,0);
+		vel = master.vel;
+		}
+	}
 override void Tick() {
 	super.Tick();
-	if (!master || (master && (master.InstateSequence(master.curstate,master.FindState("Death")) 
-			|| master.InstateSequence(master.curstate,master.FindState("XDeath")))	)	) {
+	if (!master || !bdoom_debris || 
+		(master && (master.InstateSequence(master.curstate,master.FindState("Death")) || 
+		 master.InstateSequence(master.curstate,master.FindState("XDeath")))	)	) {
 		Destroy();
 		return;
 		}
@@ -216,10 +223,7 @@ states
 	{
 	Spawn:
 		TNT1 A 0 NoDelay { //this part makes sure the flare is aligned with the master, otherwise it tends to appear at the wrong place when spawned
-			if (master) {
-				SetOrigin(master.pos,0);
-				vel = master.vel;
-				}
+			SetPos();
 			SetColor();
 			}
 		#### # 1 bright;

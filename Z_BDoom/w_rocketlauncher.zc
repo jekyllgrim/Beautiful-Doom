@@ -688,27 +688,15 @@ states
 	}
 }
 
-Class RocketFlare : Flare_General
+Class RocketFlare : BD_ProjFlare
 { 
 Default {
-	renderstyle "Add";
 	alpha 0.4;
-	scale 0.09;
+	scale 0.11;
 	}
-override void PostBeginPlay() {
-	super.PostBeginPlay();
+override void SetPos() {
 	if (master && bdoom_debris)
-		A_Warp(AAPTR_MASTER,-36,0,6);
-	else {
-		self.destroy();
-		return;
-		}
-	}
-states
-	{
-	Spawn:
-		LENR A 1 NoDelay bright;
-		loop;
+		A_Warp(AAPTR_MASTER,-15,0,6);
 	}
 }
 
@@ -717,14 +705,25 @@ Class HomingRocketFlare : RocketFlare
 override void Tick() {
 	super.Tick();
 	if (bdoom_debris && master)
-		A_Warp(AAPTR_MASTER,-17,0,6,0,WARPF_INTERPOLATE);
-	else {
-		self.Destroy();
-		return;
-		}
+		A_Warp(AAPTR_MASTER,-15,0,6,0,WARPF_INTERPOLATE);
 	}
 }
 
+//flashes at the end of the homing version of the rocket
+Class SeekerFlare : Flare_General
+{ 
+Default {
+	alpha 0.5;
+	scale 0.12;
+	} 
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_PlaySound("weapons/rlan/seek",1,1.0,0,1);
+		LENG A 2;
+		stop;
+	}
+}
 
 Class BD_RocketTrail : Rocket1Trail
 { 
@@ -733,59 +732,6 @@ alpha 0.22;
 	}
 }
 
-//// expensive rocket smoke, unused
-//spawner for modern rocket smoke
-/*Class ModernRocketTrail : Actor
-{
-Default {
-	+NOGRAVITY
-	+NOINTERACTION
-	}
-states
-	{
-	Spawn:
-		TNT1 AAAA 0 NoDelay {
-			if (target && distance3d(target) > 48)
-				A_SpawnItemEx("MRocketSmoke",0,0,0,frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5),0,48);
-			}
-		TNT1 A 1;
-		stop;
-	}
-}
-		
-//thick grey smoke that spreads around
-Class MRocketSmoke : WallSmoke
-{
-//double fade;
-Default {
-	renderstyle "Translucent";
-	alpha 0.2;
-	}
-override void PostBeginPlay()
-	{
-	super.PostBeginPlay();
-	A_SetScale(frandom(0.025,0.029),frandom(0.025,0.029));
-	//fade = 0.005;
-	}
-states
-	{
-	Spawn:
-		SM21 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 NoDelay {
-		//fade = clamp(fade-0.00005,0.0005,0.005);
-			A_Fadeout(0.004);
-			a_Setscale(clamp(scale.x*1.05,0.01,0.15),clamp(scale.y*1.05,0.01,0.15));
-			vel*=0.95;
-			roll+=wrot;
-			}
-		SM22 ABCDEFGHIJK 1 {
-			A_Fadeout(0.004);
-			a_Setscale(clamp(scale.x*1.05,0.01,0.15),clamp(scale.y*1.05,0.01,0.15));
-			vel*=0.95;
-			roll+=wrot;
-			}
-		wait;
-	}
-}*/
 
 Class ModernRocketTrail : WallSmoke
 {
@@ -812,45 +758,17 @@ states
 	}
 }
 
-//flashes at the end of the homing version of the rocket
-Class SeekerFlare : Flare_General
-{ 
-Default {
-+FORCEXYBILLBOARD
-+NOGRAVITY;
-alpha 0.5;
-scale 0.12;
-} 
-states
-	{
-	Spawn:
-		TNT1 A 0 NoDelay A_PlaySound("weapons/rlan/seek",1,1.0,0,1);
-		LENG A 2;
-		stop;
-	}
-}
-
 //yellow tail flare for modern rocket
-Class ModernRocketFlare : Flare_General
+Class ModernRocketFlare : BD_ProjFlare
 { 
 Default {
-	renderstyle "Add";
+	Flare_General.fcolor "yellow";
 	alpha 0.4;
 	scale 0.06;
-	} 
+	}
 override void Tick() {
 	super.Tick();
 	if (bdoom_debris && master)
-		A_Warp(AAPTR_MASTER,-7,0,0,0,WARPF_INTERPOLATE);
-	else {
-		self.Destroy();
-		return;
-		}
-	}
-states
-	{
-	Spawn:
-		LENY A 1 NoDelay bright ;		
-		loop;
+		A_Warp(AAPTR_MASTER,-7,flags:WARPF_INTERPOLATE);
 	}
 }

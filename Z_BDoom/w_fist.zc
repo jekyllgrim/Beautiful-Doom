@@ -31,6 +31,7 @@ override void DoEffect()
 		return;
 	if(bdoom_weapons == 2)
 		{
+			owner.player.cheats |= CF_INTERPVIEW;
 			bNOAUTOFIRE = true;
 			bWIMPY_WEAPON = false;
 		}
