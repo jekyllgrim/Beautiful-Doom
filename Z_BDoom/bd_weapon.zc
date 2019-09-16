@@ -67,7 +67,7 @@ override void DoEffect()
 	
 //QUICK KICK
 	//if player presses +user1 (default Q and Mouse4)
-	if 	(owner.player.cmd.buttons & BT_USER1) {
+	if 	((owner.player.cmd.buttons & BT_USER1) && !(owner.player.oldbuttons & BT_USER1)) {
 		let psp = owner.player.FindPSprite(PSP_WEAPON);
 		let kicks = owner.player.FindPSprite(-10);
 		if(!psp)
@@ -243,10 +243,8 @@ Default {
 	-ACTIVATEPCROSS;
 	+NOTELEPORT;
 	+BLOODLESSIMPACT;
-	+THRUGHOST;
 	alpha 0.75;
 	renderstyle "add";
-	damage 0;
 	speed 64;
 	radius 4;
 	height 4;
@@ -255,19 +253,19 @@ Default {
 	}    
 //override snippet by phantombeta
 override void Tick () {
-        Super.Tick ();
+	Super.Tick ();
 
-        if (!playeringame [consolePlayer])
-            return;
-        
-        let curCamera = players [consolePlayer].camera;
-        if (!curCamera) // If the player's "camera" variable is null, set it to their PlayerPawn
-            curCamera = players [consolePlayer].mo;
-        if (!curCamera) // If the player's PlayerPawn is null too, just stop trying
-            return;
+	if (!playeringame [consolePlayer])
+		return;
+	
+	let curCamera = players [consolePlayer].camera;
+	if (!curCamera) // If the player's "camera" variable is null, set it to their PlayerPawn
+		curCamera = players [consolePlayer].mo;
+	if (!curCamera) // If the player's PlayerPawn is null too, just stop trying
+		return;
 
-        if (CheckIfCloser (curCamera, 192))
-            A_PlaySound("weapons/tracerwhizz",1,1.0,0,8);
+	if (CheckIfCloser (curCamera, 192))
+		A_PlaySound("weapons/tracerwhizz",1,1.0,0,8);
     }
 states
 	{
@@ -317,7 +315,6 @@ Default {
 	+NOTELEPORT
 	-BLOODLESSIMPACT
 	+BLOODSPLATTER
-	+THRUGHOST
 	decal "none";
 	speed 32;
 	radius 1;
@@ -327,17 +324,19 @@ Default {
 override void PostBeginPlay()
 	{
 	super.PostBeginPlay();
+	if (target)
+		SpawnPos = target.pos;
 	vel = vel.unit() * bulletspeed;
 	BulletDamage = 10;
 	}
 double CalculateDamage() {
-	double ddamage;
+	int ddamage;
 	int FalloffFactor = 0;
 	double ddistance = level.Vec3Diff(pos, SpawnPos).length() - falloffdistance;
 	if (ddistance > 0)
-		FalloffFactor = int (ddistance / default.speed); //this essentially means that falloff factor is retroactively applied "every tick", so there are fewer falloff steps for faster projectiles
+		FalloffFactor = int (ddistance / bulletspeed); //this essentially means that falloff factor is retroactively applied "every tick", so there are fewer falloff steps for faster projectiles
 	ddamage = clamp(bulletdamage*(falloffstrength**FalloffFactor),mindamage,100); //falloffstrength is by how much it's reduced, this is applied to damage "every tick"
-	//console.printf("Damage %f, distance %d",ddamage,level.Vec3Diff(pos, SpawnPos).length());
+	console.printf("distance %f",level.Vec3Diff(pos, SpawnPos).length(),FalloffFactor);
 	return ddamage;
 	}
 	
@@ -386,7 +385,6 @@ Default {
 	RealBullet.bulletspeed 140;
 	RealBullet.FalloffDistance 400;
 	RealBullet.falloffstrength 0.85;
-	RealBullet.mindamage 0.4;
 	}
 override void PostBeginPlay()
 	{
@@ -402,12 +400,10 @@ Class BD_SSGPellet : RealBullet
 private int ripdepth; 		//how much health it can pierce through
 private actor hitvictim;	//the actor that was hit
 Default {
-	//RealBullet.bulletspeed 140;
 	damage 0;
 	RealBullet.Bulletspeed 140;
 	RealBullet.FalloffDistance 300;
 	RealBullet.falloffstrength 0.8;
-	RealBullet.mindamage 0.5;
 	+RIPPER
 	//+NOBOSSRIP
 	}
@@ -510,7 +506,7 @@ Default {
 	speed 1;
 	}
 override void PostBeginPlay() {
-	vel = vel.unit() * frandom(1,4);
+	vel = vel.unit() * frandom(1,3);
 	super.PostBeginPlay();
 	}
 override void Tick() {
