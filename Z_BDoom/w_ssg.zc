@@ -319,7 +319,7 @@ states
 		TNT1 A 2 {
 			A_Light2();
 			if(GetCVAR("bdoom_muzzle")==0) {
-				if	(invoker.shotfired)
+				if	(invoker.shotfired || (bdoom_weapons == 2 && CountInv("SSGCLip") < 2))
 					A_Overlay(100,"FlashVanillaLeft");
 				else
 					A_Overlay(100,"FlashVanillaRight");
@@ -343,11 +343,11 @@ states
 					A_OverlayFlags(-100,PSPF_FLIP|PSPF_MIRROR,true);
 					A_OverlayFlags(100,PSPF_FLIP|PSPF_MIRROR,true);
 					}
-				if (bdoom_weapons == 2) {
-					A_OverlayOffset(100, 0,-12,WOF_ADD);
-					A_OverlayOffset(-100, 0,-12,WOF_ADD);
-					A_SetTics(1);
-					}
+				}
+			if (bdoom_weapons == 2) {
+				A_OverlayOffset(100, 0,-12,WOF_ADD);
+				A_OverlayOffset(-100, 0,-12,WOF_ADD);
+				A_SetTics(1);
 				}
 			A_OverlayFlags(100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
 			A_OverlayFlags(-100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);

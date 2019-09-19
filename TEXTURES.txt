@@ -173,6 +173,86 @@ Sprite "MUZ4D0", 180, 180
 	Patch "MUZ4D0", 0, 0
 }
 
+Sprite "MUZ6A0", 180, 180
+{
+	XScale 1.4
+	YScale 1.8
+	Offset -135, -8
+	Patch "MUZ2A0", 0, 0
+}
+
+Sprite "MUZ6B0", 180, 180
+{
+	XScale 1.4
+	YScale 1.8
+	Offset -135, -8
+	Patch "MUZ2B0", 0, 0
+}
+
+Sprite "MUZ6C0", 180, 180
+{
+	XScale 1.4
+	YScale 1.8
+	Offset -135, -8
+	Patch "MUZ2C0", 0, 0
+}
+
+Sprite "MUZ6D0", 180, 180
+{
+	XScale 1.4
+	YScale 1.8
+	Offset -135, -8
+	Patch "MUZ2D0", 0, 0
+}
+
+Sprite "MUZ5A0", 180, 180
+{
+	XScale 2.000
+	YScale 2.000
+	Offset -230, -8
+	Patch "MUZ5A0", 0, 0
+}
+
+Sprite "MUZ5B0", 180, 180
+{
+	XScale 2.000
+	YScale 2.000
+	Offset -230, -8
+	Patch "MUZ5B0", 0, 0
+}
+
+Sprite "MUZ5C0", 180, 180
+{
+	XScale 2.000
+	YScale 2.000
+	Offset -230, -8
+	Patch "MUZ5C0", 0, 0
+}
+
+Sprite "MUZ5D0", 180, 180
+{
+	XScale 2.000
+	YScale 2.000
+	Offset -230, -8
+	Patch "MUZ5D0", 0, 0
+}
+
+Sprite "MUZ5E0", 180, 180
+{
+	XScale 2.000
+	YScale 2.000
+	Offset -230, -8
+	Patch "MUZ5E0", 0, 0
+}
+
+Sprite "MUZ5F0", 180, 180
+{
+	XScale 2.000
+	YScale 2.000
+	Offset -230, -8
+	Patch "MUZ5F0", 0, 0
+}
+
 Graphic "BDCURS01", 103, 145
 {
 	Patch "BDCURS01", 0, 0

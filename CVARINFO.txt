@@ -9,6 +9,7 @@ server 	bool 	bdoom_tracers			= true;
 server 	bool 	bdoom_blood 			= true;
 server 	bool 	bdoom_gibs 				= true;
 server 	bool 	bdoom_nobossgibs		= false;
+server bool		bdoom_livegibs			= true;
 server 	bool 	bdoom_flames 			= true;
 server 	bool 	bdoom_debris 			= true;
 server 	bool 	bdoom_sparks 			= true;
@@ -23,13 +24,11 @@ server 	int  	bdoom_bloodnum 			= 500;
 server 	int  	bdoom_gibnum 			= 500;
 server 	int  	bdoom_flamesnum			= 300;
 
-server bool		bdoom_livegibs			= true;
 
 user int cl_spriteshadowdistance = 1024;
-
-
-server float fs_volume_mul = 1.0;
-server float fs_delay_mul = 1.0;
+user float	fs_volume_mul = 1.0;
+user float	fs_delay_mul = 1.0;
+user bool	fs_enabled = true;
 
 //per-monster replacements
 server bool bdoom_Zombieman = true;

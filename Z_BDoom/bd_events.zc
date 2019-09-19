@@ -264,3 +264,12 @@ override void WorldTick() {
 }
 
 
+class FootstepsInit : EventHandler {
+    override void PlayerEntered(PlayerEvent e) {
+        let steps = BD_Footsteps(Actor.Spawn("BD_Footsteps"));
+		if (steps) {
+			steps.Init(players[e.playerNumber].mo);
+			steps.fplayer = players[e.playerNumber];
+			}
+    }
+}

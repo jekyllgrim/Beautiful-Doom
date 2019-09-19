@@ -13,6 +13,8 @@ bool bpunch; //(with Berserk) used left punch?
 //int pconnected; // (unused) how many times the punch actually hit something
 int targetdistance;
 int jangle; //jump angle
+double bzoom;
+double bzoommul;
 Default {
 	weapon.selectionorder 370;
 	+WEAPON.NOALERT
@@ -42,11 +44,11 @@ override void DoEffect()
 		}
 	//Console.Printf("tcombo "..tcombo)
 	if (bdoom_weapons != 2 || owner.player.readyweapon != self) {
-			fcombo = 0;
-			lcombo = 0;
-			tcombo = 0;
-			hurtchance = 0;
-			}
+		fcombo = 0;
+		lcombo = 0;
+		tcombo = 0;
+		hurtchance = 0;
+		}
 	}
 
 states
@@ -1090,13 +1092,23 @@ states
 
 Class BD_Berserk : CustomInventory //replaces Berserk
 {	
+private int counter;
 Default
 	{
 	+COUNTITEM
 	+INVENTORY.ALWAYSPICKUP
 	+INVENTORY.ISHEALTH
 	Inventory.PickupMessage "$GOTBERSERK";
-inventory.pickupsound "pickups/berserk";
+	inventory.pickupsound "pickups/berserk";
+	}
+override void AttachToOwner(Actor user) {
+	super.AttachToOwner(user);
+	counter = 40;
+	}
+override void DoEffect() {
+	super.DoEffect();
+	if (!owner) return;
+	counter-=1;
 	}
 States
 	{
@@ -1124,11 +1136,33 @@ States
 
 Class ModernBerserk_Regen : PowerRegeneration
 {
+private int counter;
 Default {
 	powerup.duration -40;
 	powerup.strength 5;
 	powerup.color "DD 00 00", 0.5;
 	}
+/*override void AttachToOwner(Actor user) {
+	super.AttachToOwner(user);
+	counter = 40*35;
+	}
+override void DoEffect() {
+	super.DoEffect();
+	if (!owner) return;
+	counter--;
+	if (counter > 35*35)
+		owner.player.readyweapon.fovscale = Clamp(owner.player.readyweapon.fovscale * 1.001, 1, 1.2);
+	else if (counter <= 35*35 && counter > 10*35)
+		owner.player.readyweapon.fovscale = Clamp(owner.player.readyweapon.fovscale * 0.99998, 1, 1.2);
+	else if (counter <= 5*35)
+		owner.player.readyweapon.fovscale = Clamp(owner.player.readyweapon.fovscale * 0.9991, 1, 1.2);
+	//Console.Printf("zoom: %f counter: %d",owner.player.readyweapon.fovscale,counter/35);
+	}
+override void DetachFromOwner() {
+	if (owner.player.readyweapon.fovscale != 1 && owner.player.readyweapon.fovscale != 0)
+		owner.player.readyweapon.fovscale = 1;
+	super. DetachFromOwner();
+	}*/
 }
 
 Class ModernBerserk_Speed : PowerSpeed

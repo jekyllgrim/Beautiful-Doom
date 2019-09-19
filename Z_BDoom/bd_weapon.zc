@@ -301,11 +301,13 @@ double falloffstrength; //how quickly the damage is reduced during travel
 double mindamage; 		//minimum damage value at any distance
 int falloffdistance; 	//distance at which the falloff begins
 int bulletspeed; 		//speed
+property bulletdamage : bulletdamage;
 property bulletspeed : bulletspeed;
 property falloffstrength : falloffstrength;
 property falloffdistance : falloffdistance;
 property mindamage : mindamage;
 Default {
+	RealBullet.bulletDamage 10;
 	RealBullet.bulletspeed 200;
 	RealBullet.FalloffDistance 1024;
 	RealBullet.falloffstrength 0.3;
@@ -327,7 +329,6 @@ override void PostBeginPlay()
 	if (target)
 		SpawnPos = target.pos;
 	vel = vel.unit() * bulletspeed;
-	BulletDamage = 10;
 	}
 double CalculateDamage() {
 	int ddamage;
@@ -336,7 +337,7 @@ double CalculateDamage() {
 	if (ddistance > 0)
 		FalloffFactor = int (ddistance / bulletspeed); //this essentially means that falloff factor is retroactively applied "every tick", so there are fewer falloff steps for faster projectiles
 	ddamage = clamp(bulletdamage*(falloffstrength**FalloffFactor),mindamage,100); //falloffstrength is by how much it's reduced, this is applied to damage "every tick"
-	console.printf("distance %f",level.Vec3Diff(pos, SpawnPos).length(),FalloffFactor);
+	//console.printf("distance: %d Damage: %d",level.Vec3Diff(pos, SpawnPos).length(),ddamage);
 	return ddamage;
 	}
 	
@@ -354,42 +355,30 @@ states
 Class BD_PistolBullet : RealBullet
 {
 Default {
+	RealBullet.bulletDamage 15;
 	RealBullet.bulletspeed 170;
 	RealBullet.FalloffDistance 512;
 	RealBullet.falloffstrength 0.9;
-	}
-override void PostBeginPlay()
-	{
-	super.PostBeginPlay();
-	BulletDamage = 15;
 	}
 }
 
 Class BD_RifleBullet : RealBullet
 {
 Default {
+	RealBullet.bulletDamage 15;
 	RealBullet.bulletspeed 230;
 	RealBullet.FalloffDistance 640;
 	RealBullet.falloffstrength 0.93;
-	}
-override void PostBeginPlay()
-	{
-	super.PostBeginPlay();
-	BulletDamage = 15;
 	}
 }
 
 Class BD_ShotgunPellet : RealBullet
 {
 Default {
+	RealBullet.bulletDamage 12;
 	RealBullet.bulletspeed 140;
 	RealBullet.FalloffDistance 400;
 	RealBullet.falloffstrength 0.85;
-	}
-override void PostBeginPlay()
-	{
-	super.PostBeginPlay();
-	BulletDamage = 12;
 	}
 }
 
@@ -400,6 +389,7 @@ Class BD_SSGPellet : RealBullet
 private int ripdepth; 		//how much health it can pierce through
 private actor hitvictim;	//the actor that was hit
 Default {
+	RealBullet.bulletDamage 12;
 	damage 0;
 	RealBullet.Bulletspeed 140;
 	RealBullet.FalloffDistance 300;
@@ -430,7 +420,6 @@ override int SpecialMissileHit(actor victim) {
 override void PostBeginPlay()
 	{
 	super.PostBeginPlay();
-	BulletDamage = 12;
 	ripdepth = 200;
 	}
 }

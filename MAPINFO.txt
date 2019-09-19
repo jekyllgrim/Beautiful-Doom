@@ -1,8 +1,7 @@
 
 gameinfo
 {
-	AddEventHandlers = "SpriteShadowHandler", "WeaponOverrideHandler", "MonsterOverrideHandler", "ItemOverrideHandler", "FXAmountControl"
-	//PlayerClasses = "BD_DoomPlayer"
+	AddEventHandlers = "SpriteShadowHandler", "WeaponOverrideHandler", "MonsterOverrideHandler", "ItemOverrideHandler", "FXAmountControl", "FootstepsInit"
 	
 	PrecacheClasses = 	"BDoomWeapon",
 						"BD_SuperShotgun",

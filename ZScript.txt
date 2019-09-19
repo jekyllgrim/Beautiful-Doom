@@ -21,6 +21,7 @@ version "4.0.0"
 #include "Z_Bdoom/o_inventory.zc"
 
 #include "Z_Bdoom/SpriteShadow.zc"
+#include "Z_Bdoom/Footsteps3.zc"
 
 #include "Z_Bdoom/BD_Monster.zc"
 #include "Z_Bdoom/m_zombieman.zc"

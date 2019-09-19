@@ -68,17 +68,18 @@ OptionMenu "BDoom_Settings"
 {
 	Title "Beautiful Doom Settings"
 	StaticText "Weapons", yellow
-	Option "Player Weapons",					"bdoom_weapons", "bdoom_weapons", "bdoom_replaceweapons" //, 1
-	Option "Muzzle Flashes", 					"bdoom_muzzle", "bdoom_muzzle", "bdoom_replaceweapons" //, 1
+	Option "Player Weapons",					"bdoom_weapons", "bdoom_weapons", "bdoom_replaceweapons"
+	Option "Muzzle Flashes", 					"bdoom_muzzle", "bdoom_muzzle", "bdoom_replaceweapons"
 	OptionBoth "Bullet Tracers",				"bdoom_tracers", "OnOff", "bdoom_replaceweapons", "bdoom_replacemonsters"
 	OptionBGReload "Reload deselected weapons",	"bdoom_autoreload", "OnOff", "bdoom_weapons", "bdoom_replaceweapons"
 	StaticText " "
 	
 	StaticText "Special Effects", yellow
 	Option "Enhanced gibs & deaths",			"bdoom_gibs", "OnOff", "bdoom_replacemonsters"
+	Option "Gibs pushable by explosions",		"bdoom_livegibs", "Toggle", "bdoom_gibs"
 	Option "Enhanced blood",					"bdoom_blood", "OnOff"
 	OptionEither "Force vanilla boss deaths",	"bdoom_nobossgibs", "OnOff", "bdoom_gibs", "bdoom_replacemonsters"
-	Option "Halos & particle flames",			"bdoom_flames", "OnOff", "" //, 1
+	Option "Halos & particle flames",			"bdoom_flames", "OnOff", ""
 	Option "Casings, smoke, trails, debris",	"bdoom_debris", "OnOff", "", 1	
 	StaticText " "
 	
@@ -90,9 +91,9 @@ OptionMenu "BDoom_Settings"
 	StaticText " "
 	
 	StaticText "Additional Effects and Sounds", yellow
-	Option "Ricochet & spark sounds", 			"bdoom_sparks", "OnOff", "" //, 1
-	Option "Flies over corpses", 				"bdoom_flies", "OnOff", "bdoom_replacemonsters" //, 1
-	Option "Explosion shakes", 					"bdoom_shakes", "OnOff", "" //, 1
+	Option "Ricochet & spark sounds", 			"bdoom_sparks", "OnOff", ""
+	Option "Flies over corpses", 				"bdoom_flies", "OnOff", "bdoom_replacemonsters"
+	Option "Explosion shakes", 					"bdoom_shakes", "OnOff", ""
 	Option "Face on Standard HUD", 				"bdoom_hudface", "OnOff", "", 1	
 	StaticText " "
 
@@ -100,8 +101,8 @@ OptionMenu "BDoom_Settings"
 	StaticText "which enables partial compatibility with other mods.", yellow
 	StaticText "(Changes require a level restart)", white
 	StaticText " "
-	Option "Beautiful Doom weapons",			"bdoom_replaceweapons", "Toggle", "" //, 1
-	Option "Beautiful Doom monsters",			"bdoom_replacemonsters", "Toggle", "" //, 1
+	Option "Beautiful Doom weapons",			"bdoom_replaceweapons", "Toggle", ""
+	Option "Beautiful Doom monsters",			"bdoom_replacemonsters", "Toggle", ""
 	Option "Beautiful Doom items",				"bdoom_replaceitems", "Toggle", "", 1	
 	SubmenuGC "Per-monster replacement settings", "BDMonsterReplacements", "bdoom_replacemonsters"
 }
@@ -111,23 +112,23 @@ OptionMenu BDMonsterReplacements
 	Title "Beautiful Doom monster replacement settings"
 	StaticText "Changes require a level restart to properly take effect", yellow
 	StaticText " "
-	Option "Zombieman",				"bdoom_Zombieman", "Toggle", "" //, 1
-	Option "Shotgun Guy",			"bdoom_ShotgunGuy", "Toggle", "" //, 1
-	Option "Chaingun Guy",			"bdoom_ChaingunGuy", "Toggle", "" //, 1
-	Option "Wolfenstein Soldier",	"bdoom_WolfensteinSS", "Toggle", "" //, 1
-	Option "Imp",					"bdoom_DoomImp", "Toggle", "" //, 1
-	Option "Pinky Demon",			"bdoom_Demon", "Toggle", "" //, 1
-	Option "Spectre Demon",			"bdoom_Spectre", "Toggle", "" //, 1
-	Option "Cacodemon",				"bdoom_Cacodemon", "Toggle", "" //, 1
-	Option "Pain Elemental",		"bdoom_PainElemental", "Toggle", "" //, 1
-	Option "Lost Soul",				"bdoom_LostSoul", "Toggle", "" //, 1
-	Option "Revenant",				"bdoom_Revenant", "Toggle", "" //, 1
-	Option "Arachnotron",			"bdoom_Arachnotron", "Toggle", "" //, 1
-	Option "Mancubus",				"bdoom_Fatso", "Toggle", "" //, 1
-	Option "Hell Knight",			"bdoom_HellKnight", "Toggle", "" //, 1
-	Option "Baron of Hell",			"bdoom_BaronOfHell", "Toggle", "" //, 1
-	Option "Arch-Vile",				"bdoom_ArchVile", "Toggle", "" //, 1
-	Option "Cyberdemon",			"bdoom_Cyberdemon", "Toggle", "" //, 1
+	Option "Zombieman",				"bdoom_Zombieman", "Toggle", ""
+	Option "Shotgun Guy",			"bdoom_ShotgunGuy", "Toggle", ""
+	Option "Chaingun Guy",			"bdoom_ChaingunGuy", "Toggle", ""
+	Option "Wolfenstein Soldier",	"bdoom_WolfensteinSS", "Toggle", ""
+	Option "Imp",					"bdoom_DoomImp", "Toggle", ""
+	Option "Pinky Demon",			"bdoom_Demon", "Toggle", ""
+	Option "Spectre Demon",			"bdoom_Spectre", "Toggle", ""
+	Option "Cacodemon",				"bdoom_Cacodemon", "Toggle", ""
+	Option "Pain Elemental",		"bdoom_PainElemental", "Toggle", ""
+	Option "Lost Soul",				"bdoom_LostSoul", "Toggle", ""
+	Option "Revenant",				"bdoom_Revenant", "Toggle", ""
+	Option "Arachnotron",			"bdoom_Arachnotron", "Toggle", ""
+	Option "Mancubus",				"bdoom_Fatso", "Toggle", ""
+	Option "Hell Knight",			"bdoom_HellKnight", "Toggle", ""
+	Option "Baron of Hell",			"bdoom_BaronOfHell", "Toggle", ""
+	Option "Arch-Vile",				"bdoom_ArchVile", "Toggle", ""
+	Option "Cyberdemon",			"bdoom_Cyberdemon", "Toggle", ""
 	Option "Spider Mastermind",		"bdoom_SpiderMastermind", "Toggle", "", 1	
 }
 
