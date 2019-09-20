@@ -1,3 +1,3 @@
 #include "DECORATE/MONSTERS/IconOfSin.txt"
 #include "DECORATE/BD_Blood.txt"
-#include "DECORATE/BD_Monst.txt"
+//#include "DECORATE/BD_Monst.txt"
