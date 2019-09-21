@@ -134,6 +134,8 @@ override void CheckReplacement(ReplaceEvent e) {
 		case 'ArchVile' 			: if (bdoom_ArchVile) 			e.Replacement = "BD_ArchVile"; 			break;
 		case 'Cyberdemon' 			: if (bdoom_Cyberdemon) 		e.Replacement = "BD_Cyberdemon"; 		break;
 		case 'SpiderMastermind' 	: if (bdoom_SpiderMastermind) 	e.Replacement = "BD_SpiderMastermind";	break;
+		case 'BossBrain' 			: if (bdoom_IconOfSin) 			e.Replacement = "BD_BossBrain";			break;
+		case 'SpawnShot' 			: if (bdoom_IconOfSin) 			e.Replacement = "BD_SpawnShot";			break;
 		}
 	e.IsFinal = true;
 	}
@@ -143,24 +145,30 @@ override void Checkreplacee(ReplacedEvent e) {
 	switch (e.Replacement.GetClassName()) {
 		case 'BD_Zombieman' 		: if (bdoom_Zombieman) 			e.Replacee = "Zombieman"; 		break;
 		case 'BD_ShotgunGuy' 		: if (bdoom_ShotgunGuy) 		e.Replacee = "ShotgunGuy"; 		break;
-		case 'BD_ChaingunGuy' 		: if (bdoom_ChaingunGuy) 		e.Replacee = "ChaingunGuy"; 		break;
+		case 'BD_ChaingunGuy' 		: if (bdoom_ChaingunGuy) 		e.Replacee = "ChaingunGuy"; 	break;
 		case 'BD_WolfensteinSS'		: if (bdoom_WolfensteinSS) 		e.Replacee = "WolfensteinSS"; 	break;
-		case 'BD_DoomImp' 			: if (bdoom_DoomImp) 			e.Replacee = "DoomImp"; 			break;
+		case 'BD_DoomImp' 			: if (bdoom_DoomImp) 			e.Replacee = "DoomImp"; 		break;
 		case 'BD_Demon' 			: if (bdoom_Demon) 				e.Replacee = "Demon"; 			break;
-		case 'BD_Spectre' 			: if (bdoom_Spectre) 			e.Replacee = "Spectre"; 			break;
+		case 'BD_Spectre' 			: if (bdoom_Spectre) 			e.Replacee = "Spectre"; 		break;
 		case 'BD_Cacodemon' 		: if (bdoom_Cacodemon) 			e.Replacee = "Cacodemon"; 		break;
 		case 'BD_PainElemental'		: if (bdoom_PainElemental) 		e.Replacee = "PainElemental"; 	break;
-		case 'BD_LostSoul'			: if (bdoom_LostSoul) 			e.Replacee = "LostSoul"; 			break;
-		case 'BD_Revenant' 			: if (bdoom_Revenant) 			e.Replacee = "Revenant"; 			break;
-		case 'BD_Arachnotron' 		: if (bdoom_Arachnotron) 		e.Replacee = "Arachnotron"; 		break;
+		case 'BD_LostSoul'			: if (bdoom_LostSoul) 			e.Replacee = "LostSoul"; 		break;
+		case 'BD_Revenant' 			: if (bdoom_Revenant) 			e.Replacee = "Revenant"; 		break;
+		case 'BD_Arachnotron' 		: if (bdoom_Arachnotron) 		e.Replacee = "Arachnotron"; 	break;
 		case 'BD_Fatso' 			: if (bdoom_Fatso) 				e.Replacee = "Fatso"; 			break;
 		case 'BD_HellKnight' 		: if (bdoom_HellKnight) 		e.Replacee = "HellKnight"; 		break;
-		case 'BD_BaronOfHell' 		: if (bdoom_BaronOfHell) 		e.Replacee = "BaronOfHell"; 		break;
-		case 'BD_ArchVile' 			: if (bdoom_ArchVile) 			e.Replacee = "ArchVile"; 			break;
+		case 'BD_BaronOfHell' 		: if (bdoom_BaronOfHell) 		e.Replacee = "BaronOfHell"; 	break;
+		case 'BD_ArchVile' 			: if (bdoom_ArchVile) 			e.Replacee = "ArchVile"; 		break;
 		case 'BD_Cyberdemon' 		: if (bdoom_Cyberdemon) 		e.Replacee = "Cyberdemon"; 		break;
-		case 'BD_SpiderMastermind' 	: if (bdoom_SpiderMastermind) 	e.Replacee = "SpiderMastermind";	break;
+		case 'BD_SpiderMastermind' 	: if (bdoom_SpiderMastermind) 	e.Replacee = "SpiderMastermind";break;
+		case 'BD_BossBrain' 		: if (bdoom_IconOfSin) 			e.Replacee = "BossBrain";		break;
+		case 'BD_SpawnShot' 		: if (bdoom_IconOfSin) 			e.Replacee = "SpawnShot";		break;
 		}
 	}
+/*override void WorldThingdamaged (WorldEvent e) {
+	if (bdoom_shakes && (e.thing is "BossBrain"))
+		e.thing.Radius_Quake(3,10,0,50,0);
+	}*/
 }
 
 class ItemOverrideHandler : EventHandler

@@ -224,6 +224,16 @@ states
 		#### # 10 A_PlaySound("Mweapons/dry");
 		#### # 0 A_Jump(256,"Reload");
 		wait;
+	LoadSprites:
+		MUZ1 ABCDEFGH 0;
+		MUZ2 ABCD 0;
+		MUZ3 ABCD 0;
+		MUZ4 ABCD 0;
+		MUZ6 ABCD 0;
+		MUZ7 ABCDEF 0;
+		MUZ8 ABCDEF 0;
+		stop;
+		
 	}
 }
 

@@ -184,6 +184,10 @@ states
 
 Class BD_BaseFlare : Flare_General
 {
+/*override void Tick() {
+	super.Tick();
+	Console.Printf("flare alpha: %f scale: %f",alpha,scalex);
+	}*/
 states
 	{
 	Spawn:

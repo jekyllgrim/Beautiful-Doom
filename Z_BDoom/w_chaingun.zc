@@ -583,13 +583,11 @@ states
 						A_Eject("BD_MuzzleSmoke",12,0,4,32);
 					}
 				A_Overlay(-100,"FlashModernMuzzle");
-				A_OverlayFlags(-100,PSPF_ADDWEAPON,false);
 				if (invoker.riflesights)
 					A_OverlayOffset(-100,0,65);
 				else
 					A_OverlayOffset(-100,0,85);
-				if (random(0,1) == 1) 
-					A_OverlayFlags(-100,PSPF_FLIP,true);
+				A_OverlayFlags(-100,PSPF_ADDWEAPON,false);
 				}
 					
 			A_OverlayFlags(100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
@@ -618,18 +616,16 @@ states
 			}
 		stop;
 	FlashModernMuzzle:
-		MUZ5 A 1 bright {
+		MUZ7 A 1 bright {
 				let fl = player.FindPSprite(-100);
-				fl.frame = random(0,4);
+				if (fl) {
+					if (invoker.riflesights)
+						fl.sprite = GetSpriteIndex("MUZ8");
+					fl.frame = random(0,5);
+					}
 				}
-		#### # 1 bright {
-			A_OverlayAlpha(-100,0.8);
-			A_OverlayFlags(-100,PSPF_ADDWEAPON|PSPF_ADDBOB,false);
-			}
-		#### # 1 bright {
-			A_OverlayAlpha(-100,0.5);
-			A_OverlayFlags(-100,PSPF_ADDWEAPON|PSPF_ADDBOB,false);
-			}
+		#### # 1 bright A_OverlayAlpha(-100,0.8);
+		#### # 1 bright A_OverlayAlpha(-100,0.5);
 		stop;
 	}
 }

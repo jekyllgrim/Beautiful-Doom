@@ -112,15 +112,15 @@ $random gibs/rip { gibs/rip1 gibs/rip2 gibs/rip3 }
 $limit gibs/rip 5
 
 //main gibbing sound
-$random gibs/gibbed { gibs/gibbed1 gibs/gibbed2 gibs/gibbed3 gibs/gibbed4 gibs/gibbed5 gibs/gibbed6 gibs/gibbed7 gibs/gibbed8 }
-gibs/gibbed1	DSGIB1
-gibs/gibbed2	DSGIB2
-gibs/gibbed3	DSGIB3
-gibs/gibbed4	DSGIB4
-gibs/gibbed5	DSGIB5
-gibs/gibbed6	DSGIB6
-gibs/gibbed7	DSGIB7
-gibs/gibbed8	DSGIB8
+$random gibs/gibbed { ggibbed1 ggibbed2 ggibbed3 ggibbed4 ggibbed5 ggibbed6 ggibbed7 ggibbed8 }
+ggibbed1	DSGIB1
+ggibbed2	DSGIB2
+ggibbed3	DSGIB3
+ggibbed4	DSGIB4
+ggibbed5	DSGIB5
+ggibbed6	DSGIB6
+ggibbed7	DSGIB7
+ggibbed8	DSGIB8
 $limit gibs/gibbed 6
 
 
@@ -156,6 +156,7 @@ $rolloff spiderdemon/fire3 600 3000
 revenant/tracerfly	TRACFLY
 
 bossbrain/spawn		"sounds/Hellspawn.ogg"
+bossbrain/cubeloop	"sounds/hellscream.ogg"
 
 chainguy/sight1			dcposit1
 chainguy/sight2			dcposit2

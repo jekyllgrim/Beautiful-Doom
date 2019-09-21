@@ -189,6 +189,7 @@ states
 			if (!p2) {
 				A_Overlay(6,"Heat",0);
 				A_OverlayOffset(6,0.0,0.0,WOF_INTERPOLATE);
+				A_OverlayRenderstyle(6,STYLE_Add);
 				}
 			if (invoker.heatcounter > 0)
 				A_WeaponReady(WRF_ALLOWUSER1|WRF_ALLOWRELOAD);

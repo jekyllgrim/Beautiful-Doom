@@ -49,3 +49,4 @@ server bool bdoom_BaronOfHell = true;
 server bool bdoom_ArchVile = true;
 server bool bdoom_Cyberdemon = true;
 server bool bdoom_SpiderMastermind = true;
+server bool bdoom_IconOfSin	= true;

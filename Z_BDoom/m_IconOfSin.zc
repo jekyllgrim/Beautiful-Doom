@@ -1,0 +1,76 @@
+Class BD_BossBrain : BossBrain {
+states {
+	Pain:
+		BBRN B 36 {
+			A_BrainPain();
+			If(bdoom_shakes)
+				Radius_Quake(3,10,0,50,0);
+			return ResolveState("Spawn");
+			}
+		goto spawn;
+	}
+}
+
+
+Class BD_SpawnFire : ArchPentagram {
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		A_PlaySound("bossbrain/spawn");
+	}
+}
+
+Class BD_SpawnShot : SpawnShot {
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		A_PlaySound("bossbrain/cubeloop",looping:true,attenuation:2);
+		if (bdoom_debris) {
+			let f = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
+			f.master = self;
+			f.alpha = 0.25;
+			f.scale = (0.7,0.8);		
+			f.fcolor = "red";
+			}
+		}
+	override void Tick() {
+		super.Tick();
+		if (!level.IsFrozen())
+			A_SpawnItemEx("ParticleFire_Red",frandom(-12,-16),frandom(-4,4),frandom(-4,4),failchance:64);
+		}
+	States 	{
+		Spawn: 
+			SCUB ABCDEF 2 bright A_SpawnFly("BD_SpawnFire");
+			Loop;
+		}
+}
+
+/*
+Actor BossBrainExplosionSpawner
+{
++NOINTERACTION
++NOGRAVITY
+states
+	{
+	Spawn:
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 2 A_SpawnItemEx("BossBrainExplosion",random(320,-320),0,random(-192,192),0,0,0,0,0,0)
+		stop
+	}
+}
+
+Actor BossBrainExplosion
+{
++NOINTERACTION
++NOGRAVITY
+renderstyle Add
+alpha .85
+states
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_PlaySoundEx("weapons/rlan/explosion","voice")
+		TNT1 A 0 A_SpawnItemEx("Blood",0,0,0,random(-3,3),random(5,10),random(3,10),0,0,0)
+		BOM3 ABCDEFGHIJK 2 bright
+		BOM3 LMNOPRTU 2 bright
+		stop
+		}
+}
+
+

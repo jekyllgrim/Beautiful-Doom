@@ -1,6 +1,6 @@
 Class BD_LostSoul : LostSoul //replaces LostSoul
 {
-//BD_BaseFlare flare;
+BD_BaseFlare flare;
 Default {
 	species "LostSoul";
 	translation "80:95=48:63", "96:111=64:79", "236:239=0:0", "3:3=13:13";
@@ -8,7 +8,8 @@ Default {
 	+NOBLOOD
 	+FORCEXYBILLBOARD
 	+FLOATBOB
-	FLoatBobStrength 0.3;
+	FloatBobStrength 0.3;
+	speed 1.334;
 	}
 override void Tick() {
 	if (target)
@@ -22,16 +23,21 @@ override void Tick() {
 			A_SpawnItemEx ("ParticleFire_Red",frandom(-4,-8),frandom(-4,4),frandom(10,28), frandom(-0.8,-1),frandom(-1,1),frandom(1,1.25));
 		}
 	/*if (!flare && bdoom_flames && health > 0) {
-		flare = BD_BaseFlare(Spawn("BD_BaseFlare",(pos.x,pos.y,pos.z+28)));
-		flare.scale = (0.3,0.3);
+		flare = BD_BaseFlare(Spawn("BD_BaseFlare",(pos.x,pos.y,pos.z+20)));
+		flare.alpha = 0.25;
+		flare.scale = 0.35;
 		flare.fcolor = 'yellow';
-		flare.A_SetRenderstyle(0.5,Style_Add);
+		if (bFLOATBOB) {
+			flare.bFLOATBOB = true;
+			flare.FloatBobStrength = FloatBobStrength;
+			flare.FloatBobPhase = FloatBobPhase;
+			}
+		else
+			flare.bFLOATBOB = false;
 		}
-	if (bdoom_flames && flare) {
-		flare.SetOrigin((pos.x,pos.y,pos.z+28),true);
-		flare.vel = vel;
-		}
-	if (!bdoom_flames && flare)
+	if (bdoom_flames && flare)
+		flare.Warp(self,6,0,20,flags:WARPF_INTERPOLATE);
+	if (flare && (!bdoom_flames || health <= 0))
 		flare.destroy();*/
 	super.Tick();
 	}
@@ -43,7 +49,8 @@ states
 		loop;
 	See:
 		TNT1 A 0 A_JumpIf(bdoom_flames == false,"SeeVanilla");
-		LOSL A 6 A_Chase();
+		LOSL A 1 A_Chase();
+		LOSL AAAAA 1 A_Chase(null,null,CHF_DONTTURN);
 		loop;
 	Missile:
 		TNT1 A 0 A_JumpIf(bdoom_flames == false,"MissileVanilla");
