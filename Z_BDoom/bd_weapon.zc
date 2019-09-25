@@ -37,6 +37,7 @@ override void DoEffect()
 	Super.DoEffect();
 	if (!owner)
 		return;
+	//Console.Printf("x: %d, y: %d, z:%d", owner.pos.x,owner.pos.y,owner.pos.z);
 	if(bdoom_weapons == 2) {
 			BobRangeX = 0.2;
 			BobRangeY = 0.2;
@@ -633,24 +634,24 @@ Default {
 	Scale 0.15;
 	}
 Override Void PostBeginPlay() {
+	if(!target) {
+		destroy();
+		return;
+		}
 	super.PostBeginPlay();
 	brot = frandom(18,24);
+	roll = frandom(100,105);
 	}
 states
 	{
 	Spawn:
 		CAS1 A 0 NoDelay {
-			if(!target) {
-				destroy();
-				return ResolveState(null);
-				}
 			if (self is "PistolCasing")
 				sprite = GetSpriteIndex("CAS1");
 			else if (self is "ShotgunCasing")
 				sprite = GetSpriteIndex("CAS2");
 			else if (self is "ChaingunCasing")
 				sprite = GetSpriteIndex("CAS3");
-			roll = frandom(88,92);
 			return ResolveState(null);
 			}
 	Fly:

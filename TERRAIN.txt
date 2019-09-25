@@ -20,7 +20,7 @@ splash Water
 terrain Water
 {
 	splash		Water
-	footclip	6
+	footclip	0//6
 	liquid
 }
 
@@ -43,7 +43,7 @@ splash Blood
 terrain Blood
 {
 	splash		Blood
-	footclip	6
+	footclip	0//6
 	liquid
 }
 
@@ -66,7 +66,7 @@ splash Nuke
 terrain Nuke
 {
 	splash		Nuke
-	footclip	6
+	footclip	0//6
 	liquid
 }
 
@@ -89,7 +89,7 @@ splash Lava
 terrain Lava
 {
 	splash		Nuke
-	footclip	6
+	footclip	0//6
 	liquid
 }
 
@@ -113,7 +113,7 @@ splash Lav2
 terrain Lav2
 {
 	splash		Lav2
-	footclip	6
+	footclip	0//6
 	liquid
 }
 
@@ -136,7 +136,7 @@ splash Lav3
 terrain Lav3
 {
 	splash		Lav3
-	footclip	6
+	footclip	0//6
 	liquid
 }
 
@@ -164,7 +164,7 @@ splash Slime
 terrain Slime
 {
 	splash		Slime
-	footclip	6
+	footclip	0//6
 	liquid
 }
 
@@ -187,7 +187,7 @@ splash Grey
 terrain Grey
 {
 	splash		Grey
-	footclip	6
+	footclip	0//6
 	liquid
 }
 
@@ -211,7 +211,7 @@ splash Sludge
 terrain Sludge
 {
 	splash		Sludge
-	footclip	6
+	footclip	0//6
 	liquid
 }
 

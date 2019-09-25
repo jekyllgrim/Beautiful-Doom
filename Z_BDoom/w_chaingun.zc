@@ -183,7 +183,7 @@ states
 		MGGG B 1;
 		TNT1 A 0 { 
 			if( bdoom_debris)
-				A_Eject("ChaingunCasing",20,frandom(7,8),10,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
+				A_Eject("ChaingunCasing",20,frandom(4,5),18,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
 			}
 		MGGG CD 1;
 		TNT1 A 0 A_CheckReload();
@@ -202,7 +202,7 @@ states
 		MGGG B 1;
 		TNT1 A 0 { 
 			if( bdoom_debris)
-				A_Eject("ChaingunCasing",20,frandom(7,8),10,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
+				A_Eject("ChaingunCasing",20,frandom(4,5),18,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
 			}
 		MGGG CD 1;
 		TNT1 A 0 A_refire();
@@ -280,7 +280,7 @@ states
 				}
 		MGGG C 1 { 
 			if(bdoom_debris)
-				A_Eject("ChaingunCasing",20,frandom(7,8),10,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
+				A_Eject("ChaingunCasing",20,frandom(4,5),18,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
 			}
 		TNT1 A 0 A_CheckReload();		
 		MGGG A 1 { 
@@ -294,7 +294,7 @@ states
 			}
 		MGGG C 1 { 
 			if( bdoom_debris)
-				A_Eject("ChaingunCasing",20,frandom(7,8),10,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
+				A_Eject("ChaingunCasing",20,frandom(4,5),18,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
 			}
 	AltHold:
 		TNT1 A 0 A_JumpIf(bdoom_weapons==2,"AltFire.Modern");
@@ -311,7 +311,7 @@ states
 			}	
 		MGGG C 1 { 
 				if (bdoom_debris)
-					A_Eject("ChaingunCasing",20,frandom(7,8),10,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
+					A_Eject("ChaingunCasing",20,frandom(4,5),18,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
 				}
 		TNT1 A 0 {
 			if (invoker.HeatStacks < 60)
@@ -456,6 +456,10 @@ states
 			A_ZoomFactor(1,ZOOM_NOSCALETURNING);
 			}		
 		RIFN CD 1 A_WeaponOffset(0,-3,WOF_ADD);
+		TNT1 A 0 {
+			if (bdoom_debris)
+				A_Eject("ChaingunCasing",20,frandom(1,2),12.5,frandom(0,2),FRandom(4.5,5),frandom(2,2.5));
+			}
 		RIFN E 1 {
 			if (CountInv("RifleClip") < 1) {
 				let s = Player.FindPsprite(PSP_Weapon);
@@ -489,7 +493,7 @@ states
 		RIFS C 2 {
 			A_ZoomFactor(1.3,ZOOM_NOSCALETURNING);
 			If(bdoom_debris)
-				A_Eject("ChaingunCasing",20,frandom(4,5),4,frandom(0,2),FRandom(5.5,7),frandom(2,2.5));
+				A_Eject("ChaingunCasing",20,frandom(3,4),4,frandom(0,2),FRandom(5.5,7),frandom(2,2.5));
 			}
 		RIFS BA 2;
 		goto ready;

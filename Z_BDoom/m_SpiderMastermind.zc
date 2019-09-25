@@ -209,7 +209,7 @@ states
 	Spawn:
 		TNT1 A 0 NoDelay {
 			if (bdoom_shakes)
-				Radius_Quake(4,40,0,18,0);
+				A_Quake(4,40,0,1100,"");
 			}
 		BOM1 ABCDEFGHIJKLMNOPQRSTUVWX 2;
 		stop;

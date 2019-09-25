@@ -1,7 +1,7 @@
 
 gameinfo
 {
-	AddEventHandlers = "SpriteShadowHandler", "WeaponOverrideHandler", "MonsterOverrideHandler", "ItemOverrideHandler", "FXAmountControl", "FootstepsInit"
+	AddEventHandlers = "SpriteShadowHandler", "WeaponOverrideHandler", "MonsterOverrideHandler", "ItemOverrideHandler", "FXAmountControl", "FootstepsInit"//, "BFGTargetTracker"
 	
 	PrecacheClasses = 	"BDoomWeapon",
 						"BD_SuperShotgun",

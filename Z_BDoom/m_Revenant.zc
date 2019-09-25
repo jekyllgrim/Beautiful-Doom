@@ -185,23 +185,19 @@ states
 	}
 }
 
-Class TracerTrail : Actor
+Class TracerTrail : BD_BaseFlare
 {
 Default {
-	+NOINTERACTION
-	+NOBLOCKMAP
-	renderstyle "Add";
+	Flare_General.fcolor "red";
 	alpha 0.8;
 	scale 0.04;
 	}
-states
-	{
-	Spawn:
-		LENR A 1 {
-			A_FadeOut(0.04);
-			scale*=0.99;
-			}
-		loop;
+override void Tick() {
+	if (level.isFrozen())
+		return;
+	super.Tick();
+	A_FadeOut(0.04);
+	scale*=0.99;
 	}
 }
 

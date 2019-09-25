@@ -1,5 +1,5 @@
 ===========================================================================
-Advanced engine needed  : GZDoom 4.0.0
+Advanced engine needed  : GZDoom 4.2.0
 Primary purpose         : No levels included
 ===========================================================================
 Title                   : Beautiful Doom
