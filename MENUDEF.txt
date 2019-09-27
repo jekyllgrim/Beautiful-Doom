@@ -91,6 +91,7 @@ OptionMenu "BDoom_Settings"
 	StaticText " "
 	
 	StaticText "Additional Effects and Sounds", yellow
+	Option "Footstep sounds", 					"fs_enabled", "OnOff", ""
 	Option "Ricochet & spark sounds", 			"bdoom_sparks", "OnOff", ""
 	Option "Flies over corpses", 				"bdoom_flies", "OnOff", "bdoom_replacemonsters"
 	Option "Explosion shakes", 					"bdoom_shakes", "OnOff", ""
@@ -104,6 +105,7 @@ OptionMenu "BDoom_Settings"
 	Option "Beautiful Doom weapons",			"bdoom_replaceweapons", "Toggle", ""
 	Option "Beautiful Doom monsters",			"bdoom_replacemonsters", "Toggle", ""
 	Option "Beautiful Doom items",				"bdoom_replaceitems", "Toggle", "", 1	
+	Option "Beautiful Doom decorations",		"bdoom_replaceobjects", "Toggle", "", 1	
 	SubmenuGC "Per-monster replacement settings", "BDMonsterReplacements", "bdoom_replacemonsters"
 }
 

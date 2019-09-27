@@ -1,6 +1,7 @@
 server	bool	bdoom_replacemonsters 	= true;
 server	bool	bdoom_replaceweapons 	= true;
 server	bool	bdoom_replaceitems		= true;
+server	bool	bdoom_replaceobjects	= true;
 server 	int		bdoom_weapons 			= 1;
 server bool		bdoom_autoreload		= true;
 user 	bool 	bdoom_muzzle			= true;

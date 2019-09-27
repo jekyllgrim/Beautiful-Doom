@@ -29,10 +29,10 @@ secondarySize 10
 chance 0.5
 }
 
-object ChainsawPuff
+/*object BD_ChainsawPuff
 {
 frame CPUF { light CPUFF }
-}
+}*/
 
 pulselight RSPARK
 {

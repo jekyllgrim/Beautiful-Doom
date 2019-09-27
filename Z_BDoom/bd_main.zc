@@ -226,8 +226,8 @@ override void Tick() {
 states
 	{
 	Spawn:
-		TNT1 A 0 NoDelay { //this part makes sure the flare is aligned with the master, otherwise it tends to appear at the wrong place when spawned
-			SetPos();
+		TNT1 A 0 NoDelay { 
+			SetPos(); //this part makes sure the flare is aligned with the master, otherwise it tends to appear at the wrong place when spawned
 			SetColor();
 			}
 		#### # 1 bright;
@@ -668,6 +668,7 @@ Default {
 	+BLOODLESSIMPACT
 	+PAINLESS
 	+PUFFONACTORS
+	+NODAMAGETHRUST
 	}
 states
 	{

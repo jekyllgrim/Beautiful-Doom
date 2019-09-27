@@ -229,8 +229,6 @@ pickups/keycard		CARDPKUP
 pickups/skullkey	SKULPKUP
 pickups/radsuit		SUITPKUP
 pickups/backpack	BKPKPKUP
-$alias misc/p_pkup pickups/allmap
-misc/k_pkup CARDPKUP
 
 pickups/berserk		BERSPKUP
 ammo/clip			CLIPPKUP

@@ -153,22 +153,19 @@ states
 	TALL TORCHES
 */
 
-Class TallTorch_Green : BD_Torch replaces GreenTorch
-{
+Class TallTorch_Green : BD_Torch {
 Default {
 	BD_LightSource.fcolor "green";
 	}
 }
 
-Class TallTorch_Red : BD_Torch replaces RedTorch
-{
+Class TallTorch_Red : BD_Torch {
 Default {
 	BD_LightSource.fcolor "red";
 	}
 }
 
-Class TallTorch_Blue : BD_Torch replaces BlueTorch
-{
+Class TallTorch_Blue : BD_Torch {
 Default {
 	BD_LightSource.fcolor "blue";
 	}
@@ -178,8 +175,7 @@ Default {
 	SHORT TORCHES
 */
 
-Class ShortTorch_Green : BD_Torch replaces ShortGreenTorch
-{
+Class ShortTorch_Green : BD_Torch {
 Default {
 	radius 16;
 	height 37;
@@ -202,15 +198,13 @@ override void SetLightSprite() {
 	}
 }
 
-Class ShortTorch_Red : ShortTorch_Green replaces ShortRedTorch
-{
+Class ShortTorch_Red : ShortTorch_Green {
 Default {
 	BD_LightSource.fcolor "red";
 	}
 }
 
-Class ShortTorch_Blue : ShortTorch_Green replaces ShortBlueTorch
-{
+Class ShortTorch_Blue : ShortTorch_Green {
 Default {
 	BD_LightSource.fcolor "blue";
 	}
@@ -220,8 +214,7 @@ Default {
 	CANDLE & CANDELABRA
 */
 
-Class BD_Candlestick : BD_LightSource replaces Candlestick
-{
+Class BD_Candlestick : BD_LightSource {
 Default
 	{
 	BD_LightSource.fspawnheight 12.4;
@@ -243,8 +236,7 @@ states
 	}
 }
 
-Class BD_Candelabra : BD_LightSource replaces Candelabra
-{
+Class BD_Candelabra : BD_LightSource {
 Default
 	{
 	BD_LightSource.fspawnheight 55.5;
@@ -269,8 +261,7 @@ states
 	BURNING BARREL
 */
 
-Class BD_BurningBarrel : BD_LightSource replaces BurningBarrel
-{
+Class BD_BurningBarrel : BD_LightSource {
 Default
 	{
 	Radius 16;
@@ -380,8 +371,7 @@ states
 	}
 }
 
-Class BD_Techlamp : BD_BaseLamp replaces Techlamp
-{
+Class BD_Techlamp : BD_BaseLamp {
 Default
 	{
 	Height 80;
@@ -396,8 +386,7 @@ states
 	}
 }
 
-Class BD_Techlamp2 : BD_BaseLamp replaces Techlamp2
-{
+Class BD_Techlamp2 : BD_BaseLamp {
 Default
 	{
 	Height 60;
@@ -414,8 +403,7 @@ states
 }
 
 
-Class BD_Column : BD_BaseLamp replaces Column
-{
+Class BD_Column : BD_BaseLamp {
 Default
 	{
 	Height 48;

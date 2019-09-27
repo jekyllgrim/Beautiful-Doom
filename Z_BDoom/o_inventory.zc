@@ -1,287 +1,239 @@
 
 // Berserk is defined in w_fist.zc
 
-Class BD_Blursphere : Blursphere //replaces Blursphere
-{
-Default {
-	+FLOATBOB
-	-ZDOOMTRANS
-	floatbobstrength 0.6;
-	+FORCEXYBILLBOARD;
-	-VISIBILITYPULSE;
-	inventory.pickupsound "pickups/invisibility";
-	powerup.color "blue", 0.03;
-	renderstyle "Add";
-	alpha 0.8;
-	scale 0.25;
+Class BD_Blursphere : Blursphere {
+	Default {
+		+FLOATBOB
+		-ZDOOMTRANS
+		floatbobstrength 0.6;
+		+FORCEXYBILLBOARD;
+		-VISIBILITYPULSE;
+		inventory.pickupsound "pickups/invisibility";
+		powerup.color "blue", 0.03;
+		renderstyle "Add";
+		alpha 0.8;
+		scale 0.25;
+		}
+	states {
+		Spawn:
+			NVIS BCDEFG 4 bright { alpha -= 0.12; }
+			NVIS FEDCBA 4 bright { alpha += 0.12; }
+			Loop;
+		}
 	}
-States
-	{
-	Spawn:
-		NVIS BCDEFG 4 bright { alpha -= 0.12; }
-		NVIS FEDCBA 4 bright { alpha += 0.12; }
-		Loop;
-	}
-}
 
-Class BD_Soulsphere : Soulsphere //replaces Soulsphere
-{
-Default {
-	+FLOATBOB
-	floatbobstrength 0.6;
-	+FORCEXYBILLBOARD
-	inventory.pickupsound "pickups/soulsphere";
-	renderstyle "Add";
-	alpha 1.0;
-	scale 0.25;
+Class BD_Soulsphere : Soulsphere {
+	Default {
+		+FLOATBOB
+		floatbobstrength 0.6;
+		+FORCEXYBILLBOARD
+		inventory.pickupsound "pickups/soulsphere";
+		renderstyle "Add";
+		alpha 1.0;
+		scale 0.25;
+		}
+	states {
+		Spawn:
+			SOU1 ABCDEFGFEDCB 4 bright;
+			loop;
+		}
 	}
-states
-	{
-	Spawn:
-		SOU1 ABCDEFGFEDCB 4 bright;
-		loop;
-	}
-}
 			
 
-Class BD_Megasphere : Megasphere //replaces Megasphere
-{
-Default {
-	+FORCEXYBILLBOARD
-	+FLOATBOB
-	floatbobstrength 0.6;
-	inventory.pickupsound "pickups/megasphere";
-	renderstyle "Add";
-	alpha 1.0;
-	scale 0.25;
-	}	
-states
-	{
-	spawn:
-		MEG1 abcdefGGFedcb 4 bright;
-		loop;
+Class BD_Megasphere : Megasphere {
+	Default {
+		+FORCEXYBILLBOARD
+		+FLOATBOB
+		floatbobstrength 0.6;
+		inventory.pickupsound "pickups/megasphere";
+		renderstyle "Add";
+		alpha 1.0;
+		scale 0.25;
+		}	
+	states {
+		spawn:
+			MEG1 abcdefGGFedcb 4 bright;
+			loop;
+		}
 	}
-}
 
-Class BD_InvulnerabilitySphere : InvulnerabilitySphere //replaces InvulnerabilitySphere
-{
-Default {
-	+FLOATBOB
-	floatbobstrength 0.6;
-	+FORCEXYBILLBOARD
-	inventory.pickupsound "pickups/invulnerability";
-	renderstyle "Add";
-	alpha 1.0;
-	scale 0.25;
+Class BD_InvulnerabilitySphere : InvulnerabilitySphere {
+	Default {
+		+FLOATBOB
+		floatbobstrength 0.6;
+		+FORCEXYBILLBOARD
+		inventory.pickupsound "pickups/invulnerability";
+		renderstyle "Add";
+		alpha 1.0;
+		scale 0.25;
+		}
+	states {
+		spawn:
+			NVUL FEDCBAA 4 bright;
+			loop;
+		}
 	}
-states
-	{
-	spawn:
-		NVUL FEDCBAA 4 bright;
-		loop;
-	}
-}
 
-Class BD_Allmap : Allmap //replaces Allmap
-{
-Default {
-	inventory.pickupsound "pickups/allmap";
+Class BD_Allmap : Allmap {
+	Default {
+		inventory.pickupsound "pickups/allmap";
+		}
+	states {
+		spawn:
+			CMAP abcdefgh 3 bright;
+			loop;
+		}
 	}
-states
-	{
-	spawn:
-		CMAP abcdefgh 3 bright;
-		loop;
-	}
-}
 
-Class BD_Infrared : Infrared //replaces Infrared
-{
-Default {
-	inventory.pickupsound "pickups/googles";
+Class BD_Infrared : Infrared {
+	Default {
+		inventory.pickupsound "pickups/googles";
+		}
+	states {
+		spawn:
+			SVIS abcdEEEEE 3 bright;
+			loop;
+		}
 	}
-states
-	{
-	spawn:
-		SVIS abcdEEEEE 3 bright;
-		loop;
-	}
-}
 
 
-Class BD_HealthBonus : HealthBonus //replaces HealthBonus
-{
-Default {
-	inventory.pickupsound "pickups/health0";
+Class BD_HealthBonus : HealthBonus {
+	Default {
+		inventory.pickupsound "pickups/health0";
+		}
+	states {
+		spawn:
+			bonu abcdefgfedcb 3;
+			loop;
+		}
 	}
-states
-	{
-	spawn:
-		bonu abcdefgfedcb 3;
-		loop;
-	}
-}
 
-Class BD_ArmorBonus : ArmorBonus //replaces ArmorBonus
-{
-Default {
-	inventory.pickupsound "pickups/armor0";
+Class BD_ArmorBonus : ArmorBonus {
+	Default {
+		inventory.pickupsound "pickups/armor0";
+		}
+	states {
+		Spawn:
+			HELB abcdefghgfedcb 3;
+			loop;
+		}
 	}
-states
-	{
-	Spawn:
-		HELB abcdefghgfedcb 3;
-		loop;
-	}
-}
 
-Class BD_Stimpack : Stimpack //replaces Stimpack
-{
-Default {
-	inventory.pickupsound "pickups/health1";
+Class BD_Stimpack : Stimpack {
+	Default {
+		inventory.pickupsound "pickups/health1";
+		}
 	}
-}
 
-Class BD_Medikit : Medikit //replaces Medikit
-{
-Default {
-	inventory.pickupsound "pickups/health2";
+Class BD_Medikit : Medikit {
+	Default {
+		inventory.pickupsound "pickups/health2";
+		}
 	}
-}
 
-Class BD_GreenArmor : GreenArmor //replaces GreenArmor
-{
-Default {
-	inventory.pickupsound "pickups/armor1";
+Class BD_GreenArmor : GreenArmor {
+	Default {
+		inventory.pickupsound "pickups/armor1";
+		}
+	states {
+		spawn:
+			garm ab 4 bright;
+			garm cdcb 4;
+			loop;
+		}
 	}
-states
-	{
-	spawn:
-		garm ab 4 bright;
-		garm cdcb 4;
-		loop;
-	}
-}
 
-Class BD_BlueArmor : BlueArmor //replaces BlueArmor
-{
-Default {
-	inventory.pickupsound "pickups/armor2";
+Class BD_BlueArmor : BlueArmor {
+	Default {
+		inventory.pickupsound "pickups/armor2";
+		}
+	states {
+		spawn:
+			blar ab 4 bright;
+			blar cdcb 4;
+			loop;
+		}
 	}
-states
-	{
-	spawn:
-		blar ab 4 bright;
-		blar cdcb 4;
-		loop;
-	}
-}
-
-Class BD_Backpack : Backpack //replaces Backpack
-{
-Default {
-	inventory.pickupsound "pickups/backpack";
-	}
-}
-
-Class BD_Radsuit : Radsuit //replaces Radsuit
-{
-Default {
-	inventory.pickupsound "pickups/radsuit";
-	}
-}
 
 //// KEYS
 
-Class BD_RedCard : redcard //replaces redcard
-{
-Default {
-	inventory.pickupsound "pickups/keycard";
-	species "RedCard";
+Class BD_RedCard : redcard {
+	Default {
+		inventory.pickupsound "pickups/keycard";
+		species "RedCard";
+		}
+	States {
+		Spawn:
+			RDCK ABCDEFGH 5 bright;
+			Loop;
+		}
 	}
-States
-  {
-  Spawn:
-	RDCK ABCDEFGH 5 bright;
-    Loop;
-  }
-}
 
-Class BD_BlueCard : bluecard //replaces bluecard
-{
-Default {
-	inventory.pickupsound "pickups/keycard";
-	species "BlueCard";
+Class BD_BlueCard : bluecard {
+	Default {
+		inventory.pickupsound "pickups/keycard";
+		species "BlueCard";
+		}
+	States {
+		Spawn:
+			BLCK ABCDEFGH 5 bright;
+			Loop;
+		}
 	}
-States
-  {
-  Spawn:
-	BLCK ABCDEFGH 5 bright;
-    Loop;
-  }
-}
 
-Class BD_YellowCard : yellowcard //replaces yellowcard
-{
-Default {
-	inventory.pickupsound "pickups/keycard";
-	species "YellowCard";
+Class BD_YellowCard : yellowcard {
+	Default {
+		inventory.pickupsound "pickups/keycard";
+		species "YellowCard";
+		}
+	States {
+		Spawn:
+			YLCK ABCDEFGH 5 bright;
+			Loop;
+		}
 	}
-States
-  {
-  Spawn:
-	YLCK ABCDEFGH 5 bright;
-    Loop;
-  }
-}
 
-Class BD_RedSkull : redskull //replaces redskull
-{
-Default {
-	inventory.pickupsound "pickups/skullkey";
-	species "RedSkull";
-	scale 0.6;
+Class BD_RedSkull : redskull {
+	Default {
+		inventory.pickupsound "pickups/skullkey";
+		species "RedSkull";
+		scale 0.6;
+		}
+	states {
+		Spawn:
+			RSKK AB 5;
+			RSKK CD 5 bright;
+			RSKK CB 5;
+			loop;
+		}
 	}
-states
-	{
-	Spawn:
-		RSKK AB 5;
-		RSKK CD 5 bright;
-		RSKK CB 5;
-		loop;
-	}
-}
 
-Class BD_BlueSkull : blueskull //replaces blueskull
-{
-Default {
-	inventory.pickupsound "pickups/skullkey";
-	species "BlueSkull";
-	scale 0.6;
+Class BD_BlueSkull : blueskull {
+	Default {
+		inventory.pickupsound "pickups/skullkey";
+		species "BlueSkull";
+		scale 0.6;
+		}
+	states {
+		Spawn:
+			BSKK AB 5;
+			BSKK CD 5 bright;
+			BSKK CB 5;
+			loop;
+		}
 	}
-states
-	{
-	Spawn:
-		BSKK AB 5;
-		BSKK CD 5 bright;
-		BSKK CB 5;
-		loop;
-	}
-}
 
-Class BD_YellowSkull : yellowskull //replaces yellowskull
-{
-Default {
-	inventory.pickupsound "pickups/skullkey";
-	species "YellowSkull";
-	scale 0.6;
+Class BD_YellowSkull : yellowskull {
+	Default {
+		inventory.pickupsound "pickups/skullkey";
+		species "YellowSkull";
+		scale 0.6;
+		}
+	states {
+		Spawn:
+			YSKK AB 5;
+			YSKK CD 5 bright;
+			YSKK CB 5;
+			loop;
+		}
 	}
-states
-	{
-	Spawn:
-		YSKK AB 5;
-		YSKK CD 5 bright;
-		YSKK CB 5;
-		loop;
-	}
-}

@@ -9,7 +9,7 @@ Model BulletTracer
 	
 	FrameIndex PUFF A 0 0
 }
-
+/*
 Model BD_MuzzleSpark
 {
 	Path "models"
@@ -21,7 +21,7 @@ Model BD_MuzzleSpark
 	FrameIndex SPRK A 0 0
 }
 
-/*
+
 Model ModernPlasmaTracer
 {
 	Path "models"

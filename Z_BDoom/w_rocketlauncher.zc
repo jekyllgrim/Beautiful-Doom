@@ -398,7 +398,7 @@ states
 			A_SetScale(rs,rs);
 			A_SetRoll(random(0,359));
 			if(bdoom_shakes)
-				Radius_Quake(1,8,0,4,0);
+				A_Quake(1,8,0,256,"");
 			if(bdoom_weapons == 0)
 				A_PlaySound("weapons/rocklx",5);
 			else
@@ -524,7 +524,7 @@ states
 			A_SetRoll(random(0,359));
 			A_PlaySound("Mweapons/rocket/explosion",5);
 			if(bdoom_shakes)
-				Radius_Quake(2,8,0,4,0);
+				A_Quake(2,8,0,256,"");
 			if(bdoom_debris) {
 				for (int i = 20; i > 0; i--)
 					A_SpawnItemEx("RicochetSpark",0,0,0,	frandom(-6,6),frandom(-6,6),frandom(3,10),0,0,92);

@@ -8,8 +8,7 @@
 
 // TELEPORT FOG
 
-Class BD_TeleportFog : TeleportFog replaces TeleportFog
-{
+Class BD_TeleportFog : TeleportFog {
 BD_BaseFlare flare;
 Default {
 	+FORCEXYBILLBOARD
@@ -67,8 +66,7 @@ states
 	}
 }
 
-Class BD_ExplosiveBarrel : ExplosiveBarrel replaces ExplosiveBarrel
-{
+Class BD_ExplosiveBarrel : ExplosiveBarrel {
 Default {
 	scale 0.8;
 	deathsound "world/ebarrel";
@@ -109,7 +107,7 @@ states
 			if (flare)
 				flare.destroy();
 			if (bdoom_shakes)
-				Radius_Quake(2,15,0,5,0);
+				A_Quake(2,15,0,320,"");
 			A_SetScale(1.0);
 			}
 		BEXP AABBC 1;
@@ -199,8 +197,7 @@ states
 
 // Eye floating over a candle
 
-Class BD_EvilEye : EvilEye replaces EvilEye
-{
+Class BD_EvilEye : EvilEye {
 states
 	{
 	Spawn:
@@ -252,8 +249,7 @@ states
 
 // Floating glowing rock with a skull
 
-Class BD_FloatingSkull : FloatingSkull replaces FloatingSkull
-{
+Class BD_FloatingSkull : FloatingSkull {
 Default {
 	+FLOATBOB
 	floatbobstrength 0.3;
@@ -274,8 +270,7 @@ states
 
 // Column with a beating heart on it
 
-Class BD_HeartColumn : HeartColumn replaces HeartColumn
-{
+Class BD_HeartColumn : HeartColumn {
 BD_LightFlare flare;
 override void PostBeginPlay() {
 	super.PostBeginPlay();
@@ -313,8 +308,7 @@ states
 
 // Big brown tree
 
-Class BD_BigTree : BigTree replaces BigTree
-{
+Class BD_BigTree : BigTree {
 override void PostBeginPlay() {
 	super.PostBeginPlay();
 	scale.x*=randompick(-1,1);
@@ -387,8 +381,7 @@ states
 
 // Small burnt tree
 
-Class BD_TorchTree : TorchTree replaces TorchTree
-{
+Class BD_TorchTree : TorchTree {
 states
 	{
 	Load:

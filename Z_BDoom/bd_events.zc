@@ -1,4 +1,27 @@
 class WeaponOverrideHandler : EventHandler {
+	// These items have no new visuals and only new pickup sounds, so, I insert them via an event handler, without replacing the actual actors
+	override void WorldThingSpawned(WorldEvent e) {
+		if (!bdoom_replaceitems)
+			return;
+		if (!(e.thing is "Inventory"))
+			return;
+		let inv = Inventory(e.thing);
+		if (!inv)
+			return;
+		switch (inv.GetClassName()) {
+			case 'Clip' 		: inv.pickupsound = "ammo/clip";		break;
+			case 'ClipBox' 		: inv.pickupsound = "ammo/clipbox";		break;
+			case 'Shell' 		: inv.pickupsound = "ammo/shells";		break;
+			case 'ShellBox' 	: inv.pickupsound = "ammo/shells";		break;
+			case 'RocketAmmo' 	: inv.pickupsound = "ammo/rockets";		break;
+			case 'RocketBox' 	: inv.pickupsound = "ammo/rockets";		break;
+			case 'Cell' 		: inv.pickupsound = "ammo/cells";		break;
+			case 'CellPack' 	: inv.pickupsound = "ammo/cells";		break;
+			case 'BackPack' 	: inv.pickupsound = "pickups/backpack";	break;
+			case 'RadSuit' 		: inv.pickupsound = "pickups/radsuit";	break;
+			}
+		}
+
 	// Replaces weapons on the map if the appropriate CVAR is true.
 	override void CheckReplacement(ReplaceEvent e) {
 		if (!bdoom_replaceweapons)
@@ -14,7 +37,7 @@ class WeaponOverrideHandler : EventHandler {
 			case 'RocketLauncher'	: e.Replacement = "BD_RocketLauncher"; 	break;
 			case 'PlasmaRifle' 		: e.Replacement = "BD_PlasmaRifle"; 	break;
 			case 'BFG9000' 			: e.Replacement = "BD_BFG9000"; 		break;
-			
+			/*
 			case 'Clip' 			: e.Replacement = "BD_Clip"; 			break;
 			case 'ClipBox' 			: e.Replacement = "BD_ClipBox"; 		break;
 			case 'Shell' 			: e.Replacement = "BD_Shell"; 			break;
@@ -22,7 +45,7 @@ class WeaponOverrideHandler : EventHandler {
 			case 'RocketAmmo' 		: e.Replacement = "BD_RocketAmmo"; 	break;
 			case 'RocketBox' 		: e.Replacement = "BD_RocketBox"; 	break;
 			case 'Cell' 			: e.Replacement = "BD_Cell"; 			break;
-			case 'CellPack' 		: e.Replacement = "BD_CellPack"; 	break;
+			case 'CellPack' 		: e.Replacement = "BD_CellPack"; 	break;*/
 			}
 		e.IsFinal = true;
 		}
@@ -89,7 +112,7 @@ class WeaponOverrideHandler : EventHandler {
 					case 'BD_PlasmaRifle' 	: player.pendingWeapon = GetWeapon(mo, "PlasmaRifle"); 		mo.TakeInventory(oldweapr,1); break;
 					case 'BD_BFG9000' 		: player.pendingWeapon = GetWeapon(mo, "BFG9000"); 			mo.TakeInventory(oldweapr,1); break;
 					}				
-				mo.speed = mo.default.speed; 	
+				mo.speed = mo.default.speed; 	//to ensure the player is no longer affected by speed-altering effects of kicking or modern rifle ADS
 				}
 			}
 		}
@@ -105,38 +128,84 @@ class WeaponOverrideHandler : EventHandler {
 Helps to keep the mod compatible with monster mods. 
 Separate CVARs for each monsters are also supported. */
 
-class MonsterOverrideHandler : EventHandler {
+class BD_ActorOverrideHandler : EventHandler {
 	override void CheckReplacement(ReplaceEvent e) {
 		if (bdoom_blood) {
 			if (e.Replacee.GetClassName() == "Blood")
 				e.Replacement = "BD_Blood";
 			}
-		if (!bdoom_replacemonsters)
-			return;
-		switch (e.Replacee.GetClassName()) {
-			case 'Zombieman' 			: if (bdoom_Zombieman) 			e.Replacement = "BD_Zombieman"; 		break;
-			case 'ShotgunGuy' 			: if (bdoom_ShotgunGuy) 		e.Replacement = "BD_ShotgunGuy"; 		break;
-			case 'ChaingunGuy' 			: if (bdoom_ChaingunGuy) 		e.Replacement = "BD_ChaingunGuy"; 		break;
-			case 'WolfensteinSS'		: if (bdoom_WolfensteinSS) 		e.Replacement = "BD_WolfensteinSS"; 	break;
-			case 'DoomImp' 				: if (bdoom_DoomImp) 			e.Replacement = "BD_DoomImp"; 			break;
-			case 'Demon' 				: if (bdoom_Demon) 				e.Replacement = "BD_Demon"; 			break;
-			case 'Spectre' 				: if (bdoom_Spectre) 			e.Replacement = "BD_Spectre"; 			break;
-			case 'Cacodemon' 			: if (bdoom_Cacodemon) 			e.Replacement = "BD_Cacodemon"; 		break;
-			case 'PainElemental'		: if (bdoom_PainElemental) 		e.Replacement = "BD_PainElemental"; 	break;
-			case 'LostSoul'				: if (bdoom_LostSoul) 			e.Replacement = "BD_LostSoul"; 			break;
-			case 'Revenant' 			: if (bdoom_Revenant) 			e.Replacement = "BD_Revenant"; 			break;
-			case 'Arachnotron' 			: if (bdoom_Arachnotron) 		e.Replacement = "BD_Arachnotron"; 		break;
-			case 'Fatso' 				: if (bdoom_Fatso) 				e.Replacement = "BD_Fatso"; 			break;
-			case 'HellKnight' 			: if (bdoom_HellKnight) 		e.Replacement = "BD_HellKnight"; 		break;
-			case 'BaronOfHell' 			: if (bdoom_BaronOfHell) 		e.Replacement = "BD_BaronOfHell"; 		break;
-			case 'ArchVile' 			: if (bdoom_ArchVile) 			e.Replacement = "BD_ArchVile"; 			break;
-			case 'Cyberdemon' 			: if (bdoom_Cyberdemon) 		e.Replacement = "BD_Cyberdemon"; 		break;
-			case 'SpiderMastermind' 	: if (bdoom_SpiderMastermind) 	e.Replacement = "BD_SpiderMastermind";	break;
-			case 'BossBrain' 			: if (bdoom_IconOfSin) 			e.Replacement = "BD_BossBrain";			break;
-			case 'SpawnShot' 			: if (bdoom_IconOfSin) 			e.Replacement = "BD_SpawnShot";			break;
+		if (bdoom_replacemonsters) {	
+			switch (e.Replacee.GetClassName()) {
+				case 'Zombieman' 			: if (bdoom_Zombieman) 			e.Replacement = "BD_Zombieman"; 		break;
+				case 'ShotgunGuy' 			: if (bdoom_ShotgunGuy) 		e.Replacement = "BD_ShotgunGuy"; 		break;
+				case 'ChaingunGuy' 			: if (bdoom_ChaingunGuy) 		e.Replacement = "BD_ChaingunGuy"; 		break;
+				case 'WolfensteinSS'		: if (bdoom_WolfensteinSS) 		e.Replacement = "BD_WolfensteinSS"; 	break;
+				case 'DoomImp' 				: if (bdoom_DoomImp) 			e.Replacement = "BD_DoomImp"; 			break;
+				case 'Demon' 				: if (bdoom_Demon) 				e.Replacement = "BD_Demon"; 			break;
+				case 'Spectre' 				: if (bdoom_Spectre) 			e.Replacement = "BD_Spectre"; 			break;
+				case 'Cacodemon' 			: if (bdoom_Cacodemon) 			e.Replacement = "BD_Cacodemon"; 		break;
+				case 'PainElemental'		: if (bdoom_PainElemental) 		e.Replacement = "BD_PainElemental"; 	break;
+				case 'LostSoul'				: if (bdoom_LostSoul) 			e.Replacement = "BD_LostSoul"; 			break;
+				case 'Revenant' 			: if (bdoom_Revenant) 			e.Replacement = "BD_Revenant"; 			break;
+				case 'Arachnotron' 			: if (bdoom_Arachnotron) 		e.Replacement = "BD_Arachnotron"; 		break;
+				case 'Fatso' 				: if (bdoom_Fatso) 				e.Replacement = "BD_Fatso"; 			break;
+				case 'HellKnight' 			: if (bdoom_HellKnight) 		e.Replacement = "BD_HellKnight"; 		break;
+				case 'BaronOfHell' 			: if (bdoom_BaronOfHell) 		e.Replacement = "BD_BaronOfHell"; 		break;
+				case 'ArchVile' 			: if (bdoom_ArchVile) 			e.Replacement = "BD_ArchVile"; 			break;
+				case 'Cyberdemon' 			: if (bdoom_Cyberdemon) 		e.Replacement = "BD_Cyberdemon"; 		break;
+				case 'SpiderMastermind' 	: if (bdoom_SpiderMastermind) 	e.Replacement = "BD_SpiderMastermind";	break;
+				case 'BossBrain' 			: if (bdoom_IconOfSin) 			e.Replacement = "BD_BossBrain";			break;
+				case 'SpawnShot' 			: if (bdoom_IconOfSin) 			e.Replacement = "BD_SpawnShot";			break;
+				}
+			}
+		if (bdoom_replaceitems) {
+			switch (e.Replacee.GetClassName()) {
+				case 'Blursphere' 				: e.Replacement = "BD_Blursphere"; 				break;
+				case 'Soulsphere' 				: e.Replacement = "BD_Soulsphere"; 				break;
+				case 'Megasphere' 				: e.Replacement = "BD_Megasphere"; 				break;
+				case 'InvulnerabilitySphere' 	: e.Replacement = "BD_InvulnerabilitySphere"; 	break;
+				case 'Allmap' 					: e.Replacement = "BD_Allmap"; 					break;
+				case 'Infrared' 				: e.Replacement = "BD_Infrared"; 				break;
+				case 'HealthBonus' 				: e.Replacement = "BD_HealthBonus"; 			break;
+				case 'ArmorBonus' 				: e.Replacement = "BD_ArmorBonus"; 				break;
+				case 'Stimpack' 				: e.Replacement = "BD_Stimpack"; 				break;
+				case 'Medikit' 					: e.Replacement = "BD_Medikit"; 				break;
+				case 'GreenArmor' 				: e.Replacement = "BD_GreenArmor"; 				break;
+				case 'BlueArmor' 				: e.Replacement = "BD_BlueArmor"; 				break;
+				case 'RedCard' 					: e.Replacement = "BD_RedCard"; 				break;
+				case 'BlueCard' 				: e.Replacement = "BD_BlueCard"; 				break;
+				case 'YellowCard' 				: e.Replacement = "BD_YellowCard"; 				break;
+				case 'RedSkull' 				: e.Replacement = "BD_RedSkull"; 				break;
+				case 'BlueSkull' 				: e.Replacement = "BD_BlueSkull"; 				break;
+				case 'YellowSkull' 				: e.Replacement = "BD_YellowSkull"; 			break;
+				}
+			}
+		if (bdoom_replaceobjects) {
+			switch (e.Replacee.GetClassName()) {
+				case 'TeleportFog' 		: e.replacement = "BD_TeleportFog";		break;
+				case 'ExplosiveBarrel' 	: e.replacement = "BD_ExplosiveBarrel";	break;
+				case 'EvilEye' 			: e.replacement = "BD_EvilEye";			break;
+				case 'FloatingSkull' 	: e.replacement = "BD_FloatingSkull";	break;
+				case 'HeartColumn' 		: e.replacement = "BD_HeartColumn";		break;
+				case 'BigTree' 			: e.replacement = "BD_BigTree";			break;
+				case 'TorchTree' 		: e.replacement = "BD_TorchTree";		break;
+				case 'GreenTorch' 		: e.replacement = "TallTorch_Green";	break;
+				case 'RedTorch' 		: e.replacement = "TallTorch_Red";		break;
+				case 'BlueTorch' 		: e.replacement = "TallTorch_Blue";		break;
+				case 'ShortGreenTorch' 	: e.replacement = "ShortTorch_Green";	break;
+				case 'ShortRedTorch' 	: e.replacement = "ShortTorch_Red";		break;
+				case 'ShortBlueTorch' 	: e.replacement = "ShortTorch_Blue";	break;
+				case 'Candlestick' 		: e.replacement = "BD_Candlestick";		break;
+				case 'Candelabra' 		: e.replacement = "BD_Candelabra";		break;
+				case 'BurningBarrel' 	: e.replacement = "BD_BurningBarrel";	break;
+				case 'Techlamp' 		: e.replacement = "BD_Techlamp";		break;
+				case 'Techlamp2' 		: e.replacement = "BD_Techlamp2";		break;
+				case 'Column' 			: e.replacement = "BD_Column";			break;
+				}
 			}
 		e.IsFinal = true;
 		}
+	//  This override tells the game which of the original monsters the modded monster replaces. Necessary for "hardcoded" effects such as Map07 or E1M8
 	override void Checkreplacee(ReplacedEvent e) {
 		if (!bdoom_replacemonsters)
 			return;
@@ -165,36 +234,6 @@ class MonsterOverrideHandler : EventHandler {
 		}
 	}
 
-class ItemOverrideHandler : EventHandler {
-	override void CheckReplacement(ReplaceEvent e) {
-		if (!bdoom_replaceitems)
-			return;
-		switch (e.Replacee.GetClassName()) {
-			case 'Blursphere' 				: e.Replacement = "BD_Blursphere"; 				break;
-			case 'Soulsphere' 				: e.Replacement = "BD_Soulsphere"; 				break;
-			case 'Megasphere' 				: e.Replacement = "BD_Megasphere"; 				break;
-			case 'InvulnerabilitySphere' 	: e.Replacement = "BD_InvulnerabilitySphere"; 	break;
-			case 'Allmap' 					: e.Replacement = "BD_Allmap"; 					break;
-			case 'Infrared' 				: e.Replacement = "BD_Infrared"; 				break;
-			case 'HealthBonus' 				: e.Replacement = "BD_HealthBonus"; 			break;
-			case 'ArmorBonus' 				: e.Replacement = "BD_ArmorBonus"; 				break;
-			case 'Stimpack' 				: e.Replacement = "BD_Stimpack"; 				break;
-			case 'Medikit' 					: e.Replacement = "BD_Medikit"; 				break;
-			case 'GreenArmor' 				: e.Replacement = "BD_GreenArmor"; 				break;
-			case 'BlueArmor' 				: e.Replacement = "BD_BlueArmor"; 				break;
-			case 'Backpack' 				: e.Replacement = "BD_Backpack"; 				break;
-			case 'Radsuit' 					: e.Replacement = "BD_Radsuit"; 				break;
-			case 'RedCard' 					: e.Replacement = "BD_RedCard"; 				break;
-			case 'BlueCard' 				: e.Replacement = "BD_BlueCard"; 				break;
-			case 'YellowCard' 				: e.Replacement = "BD_YellowCard"; 				break;
-			case 'RedSkull' 				: e.Replacement = "BD_RedSkull"; 				break;
-			case 'BlueSkull' 				: e.Replacement = "BD_BlueSkull"; 				break;
-			case 'YellowSkull' 				: e.Replacement = "BD_YellowSkull"; 			break;
-			}
-		e.IsFinal = true;
-		}
-	}
-
 Class FXAmountControl : EventHandler {
 	Array <DebrisGeneral> bloodlist;
 	Array <DebrisGeneral> giblist;
@@ -212,18 +251,14 @@ Class FXAmountControl : EventHandler {
 		if (e.Thing is "DebrisGeneral") {
 			let a = DebrisGeneral(e.thing);
 			if (a) {
-				if 		(a.sfxtype == 'blood')
-					bloodlist.push(a);
-					
+				if (a.sfxtype == 'blood')
+					bloodlist.push(a);					
 				else if (a.sfxtype == 'gibs')
-					giblist.push(a);
-					
+					giblist.push(a);					
 				else if (a.sfxtype == 'flames')
-					flamelist.push(a);
-					
+					flamelist.push(a);					
 				else if (a.sfxtype == 'debris')
 					debrislist.push(a);
-
 				}
 			}
 		}
@@ -232,15 +267,12 @@ Class FXAmountControl : EventHandler {
 		if (e.Thing is "DebrisGeneral") {
 			let a = DebrisGeneral(e.thing);
 			if (a) {
-				if 		(a.sfxtype == 'blood')
-					bloodlist.delete	(bloodlist.Find(a));
-					
+				if (a.sfxtype == 'blood')
+					bloodlist.delete	(bloodlist.Find(a));					
 				else if (a.sfxtype == 'gibs')
-					giblist.delete		(giblist.Find(a));
-					
+					giblist.delete		(giblist.Find(a));					
 				else if (a.sfxtype == 'flames')
-					flamelist.delete	(flamelist.Find(a));
-					
+					flamelist.delete	(flamelist.Find(a));					
 				else if (a.sfxtype == 'debris')
 					debrislist.delete	(debrislist.Find(a));		
 				}
@@ -250,14 +282,11 @@ Class FXAmountControl : EventHandler {
 	override void WorldTick() {
 		//console.printf("blood array size: %d | gib array size: %d",bloodlist.Size(),giblist.Size());
 		while (bloodlist.Size() > bdoom_bloodnum)
-			bloodlist[0].destroy();
-			
+			bloodlist[0].destroy();			
 		while (giblist.Size() > bdoom_gibnum)
-			giblist[0].destroy();
-			
+			giblist[0].destroy();			
 		while (flamelist.Size() > bdoom_flamesnum) 
-			flamelist[0].destroy();
-			
+			flamelist[0].destroy();			
 		while (debrislist.Size() > bdoom_debrisnum) 
 			debrislist[0].destroy();
 		}
@@ -271,21 +300,5 @@ class FootstepsInit : EventHandler {
 			steps.Init(players[e.playerNumber].mo);
 			steps.fplayer = players[e.playerNumber];
 			}
-		}
-	}
-
-Class BFGTargetTracker : EventHandler {
-	Array < Actor > bfglist;
-	
-	override void WorldLoaded(WorldEvent e) {
-		bfglist.Clear();
-		}	
-	override void WorldThingSpawned (WorldEvent e) {
-		if ((e.thing.bISMONSTER && !e.thing.bFRIENDLY) || (e.thing.player && e.thing == e.thing.player.mo))
-			bfglist.push(e.thing);
-		}		
-	override void WorldThingDied (WorldEvent e) {
-		if ((e.thing.bISMONSTER && !e.thing.bFRIENDLY) || (e.thing.player && e.thing == e.thing.player.mo))
-			bfglist.delete(bfglist.Find(e.thing));
 		}
 	}
