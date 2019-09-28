@@ -198,42 +198,50 @@ states
 }
 
 // base glow to be spawned alongside projectiles
-Class BD_ProjFlare : Flare_General
-{
-Default {
-	DebrisGeneral.sfxtype "debris";
-	Flare_General.fcolor "Red";
-	alpha 0.8;
-	scale 0.11;
-	-RELATIVETOFLOOR
-	-MOVEWITHSECTOR
-	}
-virtual void SetPos() {
-	if (master) {
-		SetOrigin(master.pos,0);
-		vel = master.vel;
+Class BD_ProjFlare : Flare_General {
+	state mdeath;
+	state mxdeath;
+	Default {
+		DebrisGeneral.sfxtype "debris";
+		Flare_General.fcolor "Red";
+		alpha 0.8;
+		scale 0.11;
+		-RELATIVETOFLOOR
+		-MOVEWITHSECTOR
 		}
-	}
-override void Tick() {
-	super.Tick();
-	if (!master || !bdoom_debris || 
-		(master && (master.InstateSequence(master.curstate,master.FindState("Death")) || 
-		 master.InstateSequence(master.curstate,master.FindState("XDeath")))	)	) {
-		Destroy();
-		return;
-		}
-	}
-states
-	{
-	Spawn:
-		TNT1 A 0 NoDelay { 
-			SetPos(); //this part makes sure the flare is aligned with the master, otherwise it tends to appear at the wrong place when spawned
-			SetColor();
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		if (master) {
+			mdeath = master.FindState("Death");
+			mxdeath = master.FindState("XDeath");
 			}
-		#### # 1 bright;
-		wait;
+		}
+	virtual void SetPos() {
+		if (master) {
+			SetOrigin(master.pos,0);
+			vel = master.vel;
+			}
+		}
+	override void Tick() {
+		super.Tick();
+		if (!master || !bdoom_debris || 
+			(master && (master.InstateSequence(master.curstate,mdeath) || 
+			 master.InstateSequence(master.curstate,mxdeath))	)	) {
+			Destroy();
+			return;
+			}
+		}
+	states
+		{
+		Spawn:
+			TNT1 A 0 NoDelay { 
+				SetPos(); //this part makes sure the flare is aligned with the master, otherwise it tends to appear at the wrong place when spawned
+				SetColor();
+				}
+			#### # 1 bright;
+			wait;
+		}
 	}
-}
 
 
 

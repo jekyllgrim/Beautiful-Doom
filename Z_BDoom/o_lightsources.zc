@@ -1,57 +1,38 @@
-Class FountainSpawner : Actor {
-PurpleParticleFountain fountain;
-Default {
-    +NOINTERACTION
-    }
-states {
-    Spawn:
-        TNT1 A 350 NoDelay {
-            fountain = PurpleParticleFountain(Spawn("PurpleParticleFountain",pos));
-            }
-        TNT1 A 0 {
-            if (fountain)
-                fountain.destroy();
-            }
-        stop;
-    }
-}
-
 // Universal flare used by light sources
-Class BD_LightFlare : BD_BaseFlare
-{
-private int timer;			//used to perform flickering
-bool flicker;				//whether to flicker
-property flicker : flicker;
-Default {
-	DebrisGeneral.sfxtype "none";
-	BD_LightFlare.flicker true;
-	}
-override void Tick() {
-	if (!master) {
-		destroy();
-		return;
-		}	
-	super.tick();
-	if (level.IsFrozen())
-		return;
-	if (flicker)
-		timer++;
-	if (timer >= 5) {
-		timer = 0;
-		if (bdoom_flames) { //falpha and scale are used as a base to make sure they stay close to original values while changing randomly
-			if (fcolor != 'tech')
-				alpha = falpha*frandom(0.7,1.0); //for torches I do flickering by changing the alpha
-			else
-				A_SetScale(fscale*frandom(0.9,1.0)); //for lamps I change the size of the flare instead (due to different graphics of the flare this looks better)
+Class BD_LightFlare : BD_BaseFlare {
+	private int timer;			//used to perform flickering
+	bool flicker;				//whether to flicker
+	property flicker : flicker;
+	Default {
+		DebrisGeneral.sfxtype "none";
+		BD_LightFlare.flicker true;
+		}
+	override void Tick() {
+		if (!master) {
+			destroy();
+			return;
+			}	
+		super.tick();
+		if (level.IsFrozen())
+			return;
+		if (flicker)
+			timer++;
+		if (timer >= 5) {
+			timer = 0;
+			if (bdoom_flames) { //falpha and scale are used as a base to make sure they stay close to original values while changing randomly
+				if (fcolor != 'tech')
+					alpha = falpha*frandom(0.7,1.0); //for torches I do flickering by changing the alpha
+				else
+					A_SetScale(fscale*frandom(0.9,1.0)); //for lamps I change the size of the flare instead (due to different graphics of the flare this looks better)
+				}
 			}
 		}
+	override void SetColor() { //see bd.main.zc
+		super.SetColor();
+		A_SetScale(fscale);
+		A_SetRenderStyle(falpha,Style_ADD);
+		}
 	}
-override void SetColor() { //see bd.main.zc
-	super.SetColor();
-	A_SetScale(fscale);
-	A_SetRenderStyle(falpha,Style_ADD);
-	}
-}
 
 
 
@@ -59,45 +40,44 @@ override void SetColor() { //see bd.main.zc
 	BASE LIGHT SOURCE
 */
 
-Class BD_LightSource : Actor abstract
-{
-BD_LightFlare flare;
-double fspawnheight; 	//flare actor spawn height
-name fcolor;			//torch color and flare actor color (red, green, blue, yellow)
-double fscale;			//flare actor scale
-double falpha;			//flare actor alpha
+Class BD_LightSource : Actor abstract {
+	BD_LightFlare flare;
+	double fspawnheight; 	//flare actor spawn height
+	name fcolor;			//torch color and flare actor color (red, green, blue, yellow)
+	double fscale;			//flare actor scale
+	double falpha;			//flare actor alpha
 
-property fspawnheight : fspawnheight;
-property fcolor : fcolor;
-property fscale : fscale;
-property falpha : falpha;
+	property fspawnheight : fspawnheight;
+	property fcolor : fcolor;
+	property fscale : fscale;
+	property falpha : falpha;
 
-default {
-	BD_LightSource.fspawnheight 48;
-	BD_LightSource.fscale 0.3;
-	BD_LightSource.fcolor "Red";
-	BD_LightSource.falpha 0.4;
-	ProjectilePassHeight -16;
-	+SOLID
-	}	
+	default {
+		BD_LightSource.fspawnheight 48;
+		BD_LightSource.fscale 0.3;
+		BD_LightSource.fcolor "Red";
+		BD_LightSource.falpha 0.4;
+		ProjectilePassHeight -16;
+		+SOLID
+		}	
 
-override void Tick() {
-	super.Tick();
-	if (level.isFrozen())
-		return;
-	if (!flare && bdoom_flames) {
-		flare = BD_LightFlare(Spawn("BD_LightFlare",(pos.x,pos.y,pos.z+fspawnheight)));
-		flare.master = self;
-		flare.fcolor = fcolor;
-		flare.falpha = falpha;
-		flare.fscale = fscale;
+	override void Tick() {
+		super.Tick();
+		if (level.isFrozen())
+			return;
+		if (!flare && bdoom_flames) {
+			flare = BD_LightFlare(Spawn("BD_LightFlare",(pos.x,pos.y,pos.z+fspawnheight)));
+			flare.master = self;
+			flare.fcolor = fcolor;
+			flare.falpha = falpha;
+			flare.fscale = fscale;
+			}
+		if (bdoom_flames && flare)
+			flare.SetOrigin((pos.x,pos.y,pos.z+fspawnheight),true);
+		if (!bdoom_flames && flare)
+			flare.destroy();
 		}
-	if (bdoom_flames && flare)
-		flare.SetOrigin((pos.x,pos.y,pos.z+fspawnheight),true);
-	if (!bdoom_flames && flare)
-		flare.destroy();
 	}
-}
 
 /* 
 	BASE TORCH
