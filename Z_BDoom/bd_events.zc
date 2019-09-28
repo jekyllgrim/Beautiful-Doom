@@ -37,23 +37,13 @@ class WeaponOverrideHandler : EventHandler {
 			case 'RocketLauncher'	: e.Replacement = "BD_RocketLauncher"; 	break;
 			case 'PlasmaRifle' 		: e.Replacement = "BD_PlasmaRifle"; 	break;
 			case 'BFG9000' 			: e.Replacement = "BD_BFG9000"; 		break;
-			/*
-			case 'Clip' 			: e.Replacement = "BD_Clip"; 			break;
-			case 'ClipBox' 			: e.Replacement = "BD_ClipBox"; 		break;
-			case 'Shell' 			: e.Replacement = "BD_Shell"; 			break;
-			case 'ShellBox' 		: e.Replacement = "BD_ShellBox"; 	break;
-			case 'RocketAmmo' 		: e.Replacement = "BD_RocketAmmo"; 	break;
-			case 'RocketBox' 		: e.Replacement = "BD_RocketBox"; 	break;
-			case 'Cell' 			: e.Replacement = "BD_Cell"; 			break;
-			case 'CellPack' 		: e.Replacement = "BD_CellPack"; 	break;*/
 			}
 		e.IsFinal = true;
 		}
 		
-	/* This override detect if the player received a vanilla weapon directly (e.g. via ACS script)
+	/* This override detects if the player received a vanilla weapon directly (e.g. via ACS script)
 	and replaces them with modded ones. It also replaces starting weapon.
-
-	The initial version provided by Zombie
+	Initial version provided by Zombie
 	*/
 	override void WorldTick() {		
 		for (int pn = 0; pn < MAXPLAYERS; pn++) {
@@ -156,6 +146,13 @@ class BD_ActorOverrideHandler : EventHandler {
 				case 'SpiderMastermind' 	: if (bdoom_SpiderMastermind) 	e.Replacement = "BD_SpiderMastermind";	break;
 				case 'BossBrain' 			: if (bdoom_IconOfSin) 			e.Replacement = "BD_BossBrain";			break;
 				case 'SpawnShot' 			: if (bdoom_IconOfSin) 			e.Replacement = "BD_SpawnShot";			break;
+			//decorative corpses:
+				case 'DeadZombieman' 			: if (bdoom_Zombieman) 			e.Replacement = "BD_DeadZombieman"; 		break;
+				case 'DeadShotgunGuy' 			: if (bdoom_ShotgunGuy) 		e.Replacement = "BD_DeadShotgunGuy"; 		break;
+				case 'DeadDoomImp' 				: if (bdoom_DoomImp) 			e.Replacement = "BD_DeadDoomImp"; 			break;
+				case 'DeadDemon' 				: if (bdoom_Demon) 				e.Replacement = "BD_DeadDemon"; 			break;
+				case 'DeadCacodemon' 			: if (bdoom_Cacodemon) 			e.Replacement = "BD_DeadCacodemon"; 		break;
+				case 'DeadLostSoul'				: if (bdoom_LostSoul) 			e.Replacement = "BD_DeadLostSoul"; 			break;
 				}
 			}
 		if (bdoom_replaceitems) {
@@ -182,6 +179,14 @@ class BD_ActorOverrideHandler : EventHandler {
 			}
 		if (bdoom_replaceobjects) {
 			switch (e.Replacee.GetClassName()) {
+					//VICTIMS
+				Case 'HangTLookingDown' 	: e.Replacement = "BD_HangingTorso"; 	break;
+				Case 'HangTLookingUp' 		: e.Replacement = "BD_HangingTorso"; 	break;
+				Case 'HangTNoBrain' 		: e.Replacement = "BD_HangingTorso"; 	break;
+				Case 'HangTSkull' 			: e.Replacement = "BD_HangingTorso"; 	break;
+				Case 'HangBNoBrain' 		: e.Replacement = "BD_HangingBody"; 	break;
+				Case 'HangNoGuts' 			: e.Replacement = "BD_HangingBody"; 	break;
+					//MISC
 				case 'TeleportFog' 		: e.replacement = "BD_TeleportFog";		break;
 				case 'ExplosiveBarrel' 	: e.replacement = "BD_ExplosiveBarrel";	break;
 				case 'EvilEye' 			: e.replacement = "BD_EvilEye";			break;
@@ -189,6 +194,7 @@ class BD_ActorOverrideHandler : EventHandler {
 				case 'HeartColumn' 		: e.replacement = "BD_HeartColumn";		break;
 				case 'BigTree' 			: e.replacement = "BD_BigTree";			break;
 				case 'TorchTree' 		: e.replacement = "BD_TorchTree";		break;
+					//LIGHTS
 				case 'GreenTorch' 		: e.replacement = "TallTorch_Green";	break;
 				case 'RedTorch' 		: e.replacement = "TallTorch_Red";		break;
 				case 'BlueTorch' 		: e.replacement = "TallTorch_Blue";		break;

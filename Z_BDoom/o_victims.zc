@@ -38,21 +38,6 @@ Default {
 	+SOLID
 	+DONTTHRUST
 	+DONTFALL
-	xscale 0.8;
-	yscale 0.68;
-	}
-override void PostBeginPlay() {
-	super.PostBeginPlay();
-	scale.x *= randompick(-1,1);
-	if (!bdoom_blood)
-		return;
-	if (ceilingz - floorz > height && ceilingz - floorz < 320) {
-		let a = AniBloodPool(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
-		if (a) {
-			a.instant = true;
-			a.scale = (0.14,0.14)*frandom(0.8,1.4);
-			}
-		}
 	}
 states
 	{
@@ -64,113 +49,115 @@ states
 }
 
 
-Class BD_HangingTorso : BD_BaseVictim 
-{
-int dir;
-double maxroll;
-double rollstep;
-property rollstep : rollstep;
-property maxroll : maxroll;
-Default {
-	BD_HangingTorso.maxroll 20;
-	BD_HangingTorso.rollstep 5;
-	Radius 16;
-	Height 64;
-	+NOGRAVITY
-	+SPAWNCEILING
-	+NODAMAGE
-	+ROLLSPRITE
-	+ROLLCENTER
-	+INTERPOLATEANGLES
-	painchance 128;
-	}
-override void PostBeginPlay() {
-	super.PostBeginPlay();
-	if (!bdoom_gibs)
-		return;
-	if (ceilingz - floorz <= height || ceilingz - floorz >= 320)
-		return;
-	for (int i = 4; i > 0; i--) {
-		if (random(0,2) > 0) {
-			let g = BasicMeatPiece(Spawn("BasicMeatPiece",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),floorz+1)));
-			if (g) g.instant = true;
+Class BD_HangingTorso : BD_BaseVictim {
+	int dir;
+	double maxroll;
+	double rollstep;
+	property rollstep : rollstep;
+	property maxroll : maxroll;
+	Default {
+		BD_HangingTorso.maxroll 20;
+		BD_HangingTorso.rollstep 5;
+		Radius 16;
+		Height 64;
+		xscale 0.8;
+		yscale 0.68;
+		+NOGRAVITY
+		+SPAWNCEILING
+		+NODAMAGE
+		+ROLLSPRITE
+		+ROLLCENTER
+		+INTERPOLATEANGLES
+		painchance 128;
+		}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		scale.x *= randompick(-1,1);
+		//Console.Printf("%d",pos.z - floorz);
+		if (pos.z - floorz <= 0 || pos.z - floorz > 96)
+			return;
+		if (!bdoom_blood)
+			return;
+		let a = AniBloodPool(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
+		if (a) {
+			a.instant = true;
+			a.scale = (0.14,0.14)*frandom(0.8,1.4);
+			}
+		if (!bdoom_gibs)
+			return;
+		for (int i = 4; i > 0; i--) {
+			if (random(0,2) > 0) {
+				let g = BasicMeatPiece(Spawn("BasicMeatPiece",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),floorz+1)));
+				if (g) g.instant = true;
+				}
 			}
 		}
-	}
-override void Tick() {
-	super.Tick();
-	bSHOOTABLE = bdoom_killableobjects;
-	if (level.isFrozen())
-		return;
-	if (bdoom_debris && abs(roll) < 5) 
-		A_SpawnitemEx("DecorBloodDrop",frandom(-5,5),frandom(-5,5),frandom(22,24),failchance:253);
-	}
-states
-	{
-	Spawn:
-		BDB1 A 0  NoDelay { 
-			frame = random(0,10); 
-			return ResolveState("Idle");
-			}
-	Idle:
-		#### # 10 { roll = 0; }
-		wait;
-	Pain:
-		#### # 0 {
-			maxroll = default.maxroll*frandom(0.5,1.1);
-			rollstep = default.rollstep;
-			if (roll == 0)
-				dir = randompick(-1,1);
-			else if (roll > 0)
-				dir = 1;
-			else
-				dir = -1;
-			}
-		#### # 4 {
-			roll = Clamp(roll + rollstep * dir,-maxroll,maxroll);
-			if (abs(roll) >= maxroll * 0.95) {
-				dir *= -1;
-				rollstep *= 0.85;
-				if (maxroll > 5)
-					maxroll *= 0.85;
-				}
-			if (abs(roll) < 0.1 && rollstep < 0.5) {
-				roll = 0;
+	override void Tick() {
+		super.Tick();
+		bSHOOTABLE = bdoom_killableobjects;
+		if (level.isFrozen())
+			return;
+		if (bdoom_debris && abs(roll) < 5) 
+			A_SpawnitemEx("DecorBloodDrop",frandom(-5,5),frandom(-5,5),frandom(22,24),failchance:253);
+		}
+	states
+		{
+		Spawn:
+			BDB1 A 0  NoDelay { 
+				frame = random(0,10); 
 				return ResolveState("Idle");
 				}
-			return ResolveState(null);
-			}
-		wait;	
+		Idle:
+			#### # 10 { roll = 0; }
+			wait;
+		Pain:
+			#### # 0 {
+				maxroll = default.maxroll*frandom(0.5,1.1);
+				rollstep = default.rollstep;
+				if (roll == 0)
+					dir = randompick(-1,1);
+				else if (roll > 0)
+					dir = 1;
+				else
+					dir = -1;
+				}
+			#### # 4 {
+				roll = Clamp(roll + rollstep * dir,-maxroll,maxroll);
+				if (abs(roll) >= maxroll * 0.95) {
+					dir *= -1;
+					rollstep *= 0.85;
+					if (maxroll > 5)
+						maxroll *= 0.85;
+					}
+				if (abs(roll) < 0.1 && rollstep < 0.5) {
+					roll = 0;
+					return ResolveState("Idle");
+					}
+				return ResolveState(null);
+				}
+			wait;	
+		}
 	}
-}
 
-Class BD_HangTLookingDown : BD_HangingTorso replaces HangTLookingDown {}
-Class BD_HangTLookingUp : BD_HangingTorso replaces HangTLookingUp {}
-Class BD_HangTNoBrain : BD_HangingTorso replaces HangTNoBrain {}
-Class BD_HangTSkull : BD_HangingTorso replaces HangTSkull {}
-
-Class BD_HangingBody : BD_HangingTorso 
-{
-Default {
-	BD_HangingTorso.maxroll 10;
-	BD_HangingTorso.rollstep 2.5;
-	Radius 16;
-	Height 88;
-	painchance 80;
+Class BD_HangingBody : BD_HangingTorso {
+	Default {
+		BD_HangingTorso.maxroll 10;
+		BD_HangingTorso.rollstep 2.5;
+		Radius 16;
+		Height 88;
+		painchance 80;
+		}
+	states
+		{
+		Spawn:
+			BDB3 A 0  NoDelay { 
+				frame = random(0,11); 
+				return ResolveState("Idle");
+				}
+			stop;
+		}
 	}
-states
-	{
-	Spawn:
-		BDB3 A 0  NoDelay { 
-			frame = random(0,11); 
-			return ResolveState("Idle");
-			}
-		stop;
-	}
-}
 
-Class BD_HangBNoBrain : BD_HangingBody replaces HangBNoBrain {}
-Class BD_HangNoGuts : BD_HangingBody replaces HangNoGuts {}
 
 /*
 // ********************
