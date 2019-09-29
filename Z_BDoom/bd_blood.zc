@@ -129,10 +129,6 @@ states
 		#### ABCDEFGHIJKLMNOPQRS 1 {
 			if (waterlevel > 0)
 				return ResolveState("Water");
-			/*if (pos.z <= floorz)
-				return ResolveState("Death");
-			if (pos.z >= ceilingz-10)
-				return ResolveState("CeilingSplat");*/
 			return ResolveState(null);
 			}
 		stop;
@@ -141,12 +137,22 @@ states
 			A_Stop();
 			BD_BloodDecal();
 			A_Scream();
-			//SetOrigin((pos.x,pos.y,floorz),false);
-			/*bloodfloor = TexMan.GetName(floorpic);
-			bloodceiling = TexMan.GetName(ceilingpic);*/
 			A_SetScale(restscale*randompick(1,-1),restscale*randompick(1,-1));
-			if (pos.z >= ceilingz-10)
-				return ResolveState("CeilingSplat");		
+			if (pos.z >= ceilingz-10){
+				let a = CeilingSplat(Spawn("CeilingSplat",(pos.x,pos.y,ceilingz)));
+				if (a) {
+					a.translation = translation;
+					a.A_SetRenderStyle(alpha,GetRenderStyle());
+					a.scale = scale;
+					if (target && target is "BDoomMonster")	{
+						a.target = target;
+						let m = BDoomMonster(target);
+						if (m) m.meatlist.Push(a);
+						}
+					}
+				destroy();
+				return ResolveState(null);
+				}	
 			
 			if (floorpic == skyflatnum || pos.z != floorz || waterlevel > 0){
 				destroy();
@@ -177,37 +183,6 @@ states
 			}
 
 		#### # -1;
-		stop;
-	CeilingSplat:
-		TNT1 A 0 {
-				//console.printf("ceiling");
-			if (ceilingpic == skyflatnum) {
-				destroy();
-				return ResolveState(null);
-				}
-			if (CheckLandingSize(24,1))
-				scale*=0.5;
-			if (CheckLandingSize(18,1))
-				scale*=0.5;
-			if (CheckLandingSize(12,1))
-				scale*=0.5;
-			if (CheckLandingSize(6,1)) {
-				destroy();
-				return ResolveState(null);
-				}
-			let a = CeilingSplat(Spawn("CeilingSplat",(pos.x,pos.y,ceilingz)));
-			if (a) {
-				a.translation = BloodTranslation;
-				a.A_SetRenderStyle(alpha,GetRenderStyle());
-				a.scale = scale;
-				if (target && target is "BDoomMonster")	{
-					a.target = target;
-					let m = BDoomMonster(target);
-					if (m) m.meatlist.Push(a);
-					}
-				}
-			return ResolveState(null);
-			}
 		stop;
 	Raise:
 		TNT1 A 0 {
@@ -279,38 +254,52 @@ states
 }
 
 
-Class CeilingSplat : BloodGeneral
-{
-Default {
-	-MISSILE
-	+NOGRAVITY
-	+FLATSPRITE
-	+NOINTERACTION
-	-RELATIVETOFLOOR
-	-MOVEWITHSECTOR
-	height 1;
+Class CeilingSplat : BloodGeneral {
+	Default {
+		-MISSILE
+		+NOGRAVITY
+		+FLATSPRITE
+		+NOINTERACTION
+		-RELATIVETOFLOOR
+		-MOVEWITHSECTOR
+		height 1;
+		scale 0.35;
+		renderstyle "Translucent";
+		alpha 0.8;
+		}
+	Override Void PostBeginPlay() {
+		super.PostBeginPlay();
+		if (ceilingpic == skyflatnum)
+			destroy();
+		if (CheckLandingSize(24,1))
+			scale*=0.5;
+		if (CheckLandingSize(18,1))
+			scale*=0.5;
+		if (CheckLandingSize(12,1))
+			scale*=0.5;
+		if (CheckLandingSize(6,1))
+			destroy();
+		}
+	states
+		{
+		Spawn:
+			2PLT A 0 NoDelay {
+				frame = random(0,16);
+				}
+			#### # 5 {
+				SetOrigin((pos.x,pos.y,ceilingz-1),true);
+				/*if(target && target is "BDoomMonster" && target.InStateSequence(target.curstate,target.FindState("Raise")))
+					return ResolveState("Fade");*/
+				A_SpawnitemEx("CeilingBloodDrop",frandom(-2.0,2.0),frandom(-2.0,2.0),-1.,0,0,0,0,SXF_TRANSFERTRANSLATION|SXF_TRANSFERSTENCILCOL|SXF_TRANSFERRENDERSTYLE|SXF_NOPOINTERS,250);
+				A_FadeTo(0.1,0.001,1);
+				return ResolveState(null);
+				}
+			wait;
+		Raise:
+			#### # 1 { return ResolveState("Fade"); }
+			stop;
+		}
 	}
-states
-	{
-	Spawn:
-		2PLT A 0 NoDelay {
-			
-			frame = random(0,16);
-			}
-		#### # 5 {
-			SetOrigin((pos.x,pos.y,ceilingz-1),true);
-			/*if(target && target is "BDoomMonster" && target.InStateSequence(target.curstate,target.FindState("Raise")))
-				return ResolveState("Fade");*/
-			A_SpawnitemEx("CeilingBloodDrop",frandom(-2.0,2.0),frandom(-2.0,2.0),-1.,0,0,0,0,SXF_TRANSFERTRANSLATION|SXF_TRANSFERSTENCILCOL|SXF_TRANSFERRENDERSTYLE|SXF_NOPOINTERS,250);
-			A_FadeTo(0.1,0.001,1);
-			return ResolveState(null);
-			}
-		wait;
-	Raise:
-		#### # 1 { return ResolveState("Fade"); }
-		stop;
-	}
-}
 
 Class CeilingBloodDrop : BloodGeneral
 {

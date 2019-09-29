@@ -331,7 +331,7 @@ override void Tick() {
 			alpha = Clamp(alpha+0.1,0,0.5);
 			A_PlaySound("spark",volume:0.8,attenuation:2);
 			let piece = CacoBallPiece(Spawn("CacoBallPiece",(pos.x+frandom(-3,3),pos.y+frandom(-3,3),ceilz-0.5)));
-			piece.vel = (frandom(-3,3),frandom(-3,3),0);
+			if (piece) piece.vel = (frandom(-3,3),frandom(-3,3),0);
 			}
 		}
 	else {
@@ -342,7 +342,7 @@ override void Tick() {
 			alpha = Clamp(alpha+0.1,0,0.5);
 			A_PlaySound("spark",volume:0.8,attenuation:2);
 			let piece = CacoBallPiece(Spawn("CacoBallPiece",(pos.x+frandom(-3,3),pos.y+frandom(-3,3),flrz+0.5)));
-			piece.vel = (frandom(-2,2),frandom(-2,2),frandom(2,4));
+			if (piece) piece.vel = (frandom(-2,2),frandom(-2,2),frandom(2,4));
 			}
 		}
 	}

@@ -172,11 +172,18 @@ class BasicMeatPiece : Gibs_General {
 	bool instant;
 	Default {
 		scale 0.45;
+		+SLIDESONWALLS
 		}
 	static const string GibSprite[] =
 		{
 			"GIB1","GIB2","GIB3","GIB4","GIB5"
 		};
+	override void PostBeginPlay() {
+		super.PostBeginPlay();	
+		A_FaceMovementDirection();
+		if (self.GetClassName() == "BasicMeatPiece")
+			bSLIDESONWALLS = false;
+		}
 	override void GibBeginPlay()
 		{
 		super.GibBeginPlay();
@@ -210,7 +217,7 @@ class BasicMeatPiece : Gibs_General {
 		//disable interactivity if 'bdoom_livegibs' CVAR is false
 		if (landed) {
 			bVULNERABLE = bdoom_livegibs;
-			if (bdoom_livegibs && bNOINTERACTION) {
+			if (bdoom_livegibs) {
 				bNOINTERACTION = false;
 				A_ChangeLinkFlags(false);
 				}
@@ -237,18 +244,40 @@ class BasicMeatPiece : Gibs_General {
 				scale.x*=randompick(-1,1);
 				}
 			#### # 1 {
-				if (blockingline && (blockingline.flags & blockingline.ML_BLOCKING)) {
-					A_Scream();
-					if (bcolor == 'blue')
-						A_SprayDecal("BloodSplatBlue",radius+8);
-					else if (bcolor == 'green')
-						A_SprayDecal("BloodSplatGreen",radius+8);
-					else
-						A_SprayDecal("BloodSplatRed",radius+8);
-					roll = randompick(0,180);
-					A_Stop();
-					gravity = frandom(0.0018,0.0022);
-					return ResolveState("WallSlide");
+				if (!bSLIDESONWALLS) {
+					if (pos.z >= ceilingz-16){
+						let a = CeilingSplat(Spawn("CeilingSplat",(pos.x,pos.y,ceilingz)));
+						if (a) {
+							if (bcolor == 'blue')
+								a.A_SetTranslation("BlueBlood");
+							else if (bcolor == 'green')
+								a.A_SetTranslation("GreenBlood");
+							if (target && target is "BDoomMonster")	{
+								a.target = target;
+								let m = BDoomMonster(target);
+								if (m) m.meatlist.Push(a);
+								}
+							}
+						SetOrigin((pos.x,pos.y,ceilingz-height),true);
+						A_Scream();
+						roll = randompick(90,-90);
+						A_Stop();
+						gravity = 0.0005;
+						return ResolveState("Ceiling");
+						}
+					if (blockingline && (blockingline.flags & blockingline.ML_BLOCKING)) {
+						A_Scream();
+						if (bcolor == 'blue')
+							A_SprayDecal("BloodSplatBlue",radius+8);
+						else if (bcolor == 'green')
+							A_SprayDecal("BloodSplatGreen",radius+8);
+						else
+							A_SprayDecal("BloodSplatRed",radius+8);
+						roll = randompick(0,180);
+						A_Stop();
+						gravity = frandom(0.0018,0.0022);
+						return ResolveState("WallSlide");
+						}
 					}
 				if (!bNOBLOOD && bdoom_blood && waterlevel == 0) //spawn blood is CVARs allow and not underwater
 					BD_GibBleed("BD_GibBlood",2,frandom(0,2),60);					
@@ -268,6 +297,13 @@ class BasicMeatPiece : Gibs_General {
 			#### # 30 A_SetTics(random(35,90));
 			#### # 0 {
 				gravity = bmass*frandom(0.0006,0.0007);
+				}
+			#### # 1;
+			wait;
+		Ceiling:
+			#### # 30 A_SetTics(random(40,80));
+			#### # 0 {
+				gravity = default.gravity;
 				}
 			#### # 1;
 			wait;
@@ -384,6 +420,7 @@ class Gib_Intestine : BasicMeatPiece {
 
 class Gib_Lung : BasicMeatPiece {
 	Default {
+		+SLIDESONWALLS
 		scale 0.23;
 		}
 	override void GibBeginPlay()
@@ -395,6 +432,7 @@ class Gib_Lung : BasicMeatPiece {
 
 class Gib_Liver : BasicMeatPiece {
 	Default {
+		+SLIDESONWALLS
 		scale 0.23;
 		}
 	override void GibBeginPlay()
@@ -406,6 +444,7 @@ class Gib_Liver : BasicMeatPiece {
 
 class Gib_Kidneys : BasicMeatPiece { //I don't know what that sprite is but it looks non-generic enough to be unique
 	Default {
+		+SLIDESONWALLS
 		scale 0.4;
 		}
 	override void GibBeginPlay()
