@@ -63,21 +63,6 @@ override void PostBeginPlay()
 		}
 	super.PostBeginPlay();
 	}
-override void Tick()
-	{
-	if (!self)
-		return;
-	super.Tick();
-	/*if (!level.isFrozen() &&
-		((sfxtype == 'debris' &&!bdoom_debris)	||
-		 (sfxtype == 'flames' &&!bdoom_flames)	||
-		 (sfxtype == 'blood' && !bdoom_blood)	||
-		 (sfxtype == 'gibs' && 	!bdoom_gibs)	)) {
-		A_DeQueueCorpse();
-		destroy();
-		return;
-		}*/
-	}
 bool CheckWater() {
 	string flr = TexMan.GetName(floorpic);
 	return (GetFloorTerrain().isLiquid == true || flr == "BLOOD1" || flr ==  "BLOOD2" || flr ==  "BLOOD3" || flr.IndexOf("WATER") >= 0 || flr.IndexOf("LAVA") >= 0 || flr.IndexOf("NUKAGE") >= 0 || flr ==  "SLIME01" || flr ==  "SLIME02" || flr ==  "SLIME03" || flr ==  "SLIME04" || flr ==  "SLIME05" || flr ==  "SLIME06" || flr ==  "SLIME07" || flr ==  "SLIME08" || flr ==  "SLIME09" || flr ==  "SLIME10" || flr ==  "SLIME11" || flr ==  "SLIME12");

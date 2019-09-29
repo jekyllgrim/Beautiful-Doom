@@ -32,21 +32,39 @@ states
 	}
 }
 
-Class BD_BaseVictim : Actor abstract
-{
-Default {
-	+SOLID
-	+DONTTHRUST
-	+DONTFALL
+Class BD_BaseVictim : Actor abstract {
+	Default {
+		+SOLID
+		+DONTTHRUST
+		+DONTFALL
+		+NODAMAGE
+		}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		scale.x *= randompick(-1,1);
+		if (pos.z - floorz < 0 || pos.z - floorz > 96)
+			return;
+		if (!bdoom_blood)
+			return;
+		let a = AniBloodPool(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
+		if (a) {
+			a.instant = true;
+			a.scale = (0.14,0.14)*frandom(0.8,1.4);
+			}
+		}
+	override void Tick() {
+		super.Tick();
+		if (bSOLID)
+			bSHOOTABLE = bdoom_killableobjects;
+		}
+	states
+		{
+		Loadsprites:
+			BDB1 ABCDEFGHIJK 0;
+			BDB3 ABCDEFGHIJKL 0;
+			stop;
+		}
 	}
-states
-	{
-	Loadsprites:
-		BDB1 ABCDEFGHIJK 0;
-		BDB3 ABCDEFGHIJKL 0;
-		stop;
-	}
-}
 
 
 Class BD_HangingTorso : BD_BaseVictim {
@@ -64,7 +82,6 @@ Class BD_HangingTorso : BD_BaseVictim {
 		yscale 0.68;
 		+NOGRAVITY
 		+SPAWNCEILING
-		+NODAMAGE
 		+ROLLSPRITE
 		+ROLLCENTER
 		+INTERPOLATEANGLES
@@ -72,17 +89,6 @@ Class BD_HangingTorso : BD_BaseVictim {
 		}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		scale.x *= randompick(-1,1);
-		//Console.Printf("%d",pos.z - floorz);
-		if (pos.z - floorz <= 0 || pos.z - floorz > 96)
-			return;
-		if (!bdoom_blood)
-			return;
-		let a = AniBloodPool(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
-		if (a) {
-			a.instant = true;
-			a.scale = (0.14,0.14)*frandom(0.8,1.4);
-			}
 		if (!bdoom_gibs)
 			return;
 		for (int i = 4; i > 0; i--) {
@@ -94,7 +100,8 @@ Class BD_HangingTorso : BD_BaseVictim {
 		}
 	override void Tick() {
 		super.Tick();
-		bSHOOTABLE = bdoom_killableobjects;
+		if (bSOLID)
+			bSHOOTABLE = bdoom_killableobjects;
 		if (level.isFrozen())
 			return;
 		if (bdoom_debris && abs(roll) < 5) 

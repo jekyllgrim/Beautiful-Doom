@@ -940,7 +940,7 @@ Class MBFGRailParticle : Flare_General {
 				A_FadeOut(0.002);
 				scale*=0.98;
 				if (target) {
-					if (orb.dead) {
+					if (orb && orb.dead) {
 						vel = (frandom(-5,5),frandom(-5,5),frandom(-5,5));
 						target = null;
 						}

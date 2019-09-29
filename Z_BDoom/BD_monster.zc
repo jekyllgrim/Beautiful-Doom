@@ -302,7 +302,7 @@ Class BDoomMonster : Actor abstract {
 				BD_Gibs();
 				}
 			TNT1 ABCDEFGHIJKLMN 2;
-			goto Deathbleed;
+			goto DeathEnd;
 		}
 	}
 
