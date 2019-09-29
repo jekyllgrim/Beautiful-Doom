@@ -317,10 +317,6 @@ override void Tick() {
 		destroy();
 		return;
 		}
-	/*if (alpha > 0)
-		A_PlaySound("electric/hum",6,1.0,true,1);
-	else
-		A_StopSound(6);*/
 	ceilz = master.ceilingz;
 	flrz = master.floorz;
 	if (upward) {
