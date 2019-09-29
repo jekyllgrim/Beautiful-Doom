@@ -273,20 +273,23 @@ states
 		PLGF A 1 { 
 			invoker.HeatCounter+=0.5;
 			A_FireProjectile("ModernPlasmaball",frandom(-1.8,1.8),1,0,0,0,frandom(-1.5,1.5));
-			//A_SetPitch(pitch - 0.1,SPF_INTERPOLATE);
+			A_ZoomFactor(0.997,ZOOM_NOSCALETURNING);
 			A_OverlayOffset(5,0.0,0.0,WOF_INTERPOLATE);
 			A_OverlayOffset(6,0.0,0.0,WOF_INTERPOLATE);
 			A_GunFlash("Flash.Modern");
 			}
 		PLGF B 1 {
+			A_ZoomFactor(0.998,ZOOM_NOSCALETURNING);
 			A_OverlayOffset(5,0.0,2.2,WOF_INTERPOLATE);
 			A_OverlayOffset(6,0.0,2.2,WOF_INTERPOLATE);
 			}
 		PLGF C 1 {
+			A_ZoomFactor(0.999,ZOOM_NOSCALETURNING);
 			A_OverlayOffset(5,0.0,1.7,WOF_INTERPOLATE);
 			A_OverlayOffset(6,0.0,1.7,WOF_INTERPOLATE);
 			}
 		PLGF B 1{
+			A_ZoomFactor(1,ZOOM_NOSCALETURNING);
 			A_OverlayOffset(5,0.0,3.2,WOF_INTERPOLATE);
 			A_OverlayOffset(6,0.0,3.2,WOF_INTERPOLATE);
 			}
