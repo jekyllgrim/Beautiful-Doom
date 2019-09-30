@@ -1,124 +1,121 @@
-Class BD_Revenant : BDoomMonster //replaces Revenant
-{
-Default {
-	species "Revenant";
-	Health 300;
-	Radius 20;
-	Height 56;
-	Mass 500;
-	Speed 10;
-	PainChance 100;
-	Monster;
-	MeleeThreshold 196;
-	+MISSILEMORE 
-	+FLOORCLIP
-	SeeSound "skeleton/sight";
-	PainSound "skeleton/pain";
-	DeathSound "skeleton/death";
-	ActiveSound "skeleton/active";
-	MeleeSound "skeleton/melee";
-	HitObituary "$OB_UNDEADHIT";
-	Obituary "$OB_UNDEAD";
-	Tag "$FN_REVEN";
-	gibhealth 60;
-	}
-void BD_SkelMissile()
-	{
-		if (target == null) return;
-		A_FaceTarget();
-		AddZ(16);
-		Actor missile = SpawnMissile(target, "BD_RevenantTracer"); //spawn modded missile instead of vanilla
-		AddZ(-16);
-		if (missile != null)
-		{
-			missile.SetOrigin(missile.Vec3Offset(missile.Vel.X, missile.Vel.Y, 0.), false);
-			missile.tracer = target;
+Class BD_Revenant : BDoomMonster {
+	Default {
+		species "Revenant";
+		Health 300;
+		Radius 20;
+		Height 56;
+		Mass 500;
+		Speed 10;
+		PainChance 100;
+		Monster;
+		MeleeThreshold 196;
+		+MISSILEMORE 
+		+FLOORCLIP
+		SeeSound "skeleton/sight";
+		PainSound "skeleton/pain";
+		DeathSound "skeleton/death";
+		ActiveSound "skeleton/active";
+		MeleeSound "skeleton/melee";
+		HitObituary "$OB_UNDEADHIT";
+		Obituary "$OB_UNDEAD";
+		Tag "$FN_REVEN";
+		gibhealth 60;
+		}
+	void BD_SkelMissile()	{
+			if (target == null) return;
+			A_FaceTarget();
+			AddZ(16);
+			Actor missile = SpawnMissile(target, "BD_RevenantTracer"); //spawn modded missile instead of vanilla
+			AddZ(-16);
+			if (missile != null)
+			{
+				missile.SetOrigin(missile.Vec3Offset(missile.Vel.X, missile.Vel.Y, 0.), false);
+				missile.tracer = target;
+			}
+		}
+	states {
+		Spawn:
+			REVI AB 10 A_Look();
+			loop;
+		See:
+			TNT1 A 0 A_SetScale(default.scale.x,default.scale.y);
+			RSKE abcddefghh 2 A_Chase();
+			loop;
+		Melee:
+			TNT1 A 0 A_FaceTarget();
+			SSKE A 3 A_SkelWhoosh();
+			SSKE B 3;
+			SSKE C 3 A_FaceTarget();
+			SSKE D 3;
+			SSKE E 3 A_SkelFist();
+			SSKE D 3;
+			goto See;
+		Missile:
+			TNT1 A 0 A_FaceTarget();
+			RMIS a 4 a_facetarget();
+			
+			TNT1 A 0 A_Jump(128,"MissileLeft");
+			RMIR b 3;
+			RMIR c 3;
+			RMIR d 3 BD_SkelMissile();
+			RMIR e 3;
+			RMIR F 2;
+			goto MissileEnd;
+		MissileLeft:	
+			RMIL b 3;
+			RMIL c 3;
+			RMIL d 3 BD_SkelMissile();
+			RMIL e 3;
+			RMIL F 2;
+			goto MissileEnd;
+		MissileEnd:	
+			RMIS G 2;
+			RMIS H 10 A_facetarget();
+			goto See;
+		Crush:
+			TNT1 A 0 { scale.x *= randompick(-1,1); }
+			CRS2 A -1;
+			stop;
+		Pain:
+			REVP a 5;
+			REVP b 5 A_Pain();
+			goto See;
+		Death:
+			TNT1 A 0 { 
+				scale.x *= randompick(-1,1);
+				if (random(1,2) == 2)
+					return ResolveState("Death1");
+				return ResolveState(null);
+				}
+			REVM abc 3;
+			REVM d 3 a_scream();
+			REVM e 2 a_noblocking();
+			REVM e 1;
+			REVM fghi 3;
+			REVM i -1;
+			stop;
+		Death1:
+			REVN abc 3;
+			REVN d 4 a_scream();
+			REVN e 4 a_noblocking();
+			REVN fg 4;
+			REVN H -1;
+			stop;	
+		XDeath:
+			TNT1 A 0 { 
+				if (random(1,2) == 2)
+					return ResolveState("Death");
+				scale.x *= randompick(-1,1);
+				return ResolveState(null);
+				}
+			REVX a 3;
+			REVX b 3;
+			REVX c 2 a_scream();
+			REVX d 2 a_noblocking();
+			REVX efghij 3;
+			REVX k -1;
 		}
 	}
-states
-	{
-	Spawn:
-		REVI AB 10 A_Look();
-		loop;
-	See:
-		TNT1 A 0 A_SetScale(default.scale.x,default.scale.y);
-		RSKE abcddefghh 2 A_Chase();
-		loop;
-	Melee:
-		TNT1 A 0 A_FaceTarget();
-		SSKE A 3 A_SkelWhoosh();
-		SSKE B 3;
-		SSKE C 3 A_FaceTarget();
-		SSKE D 3;
-		SSKE E 3 A_SkelFist();
-		SSKE D 3;
-		goto See;
-	Missile:
-		TNT1 A 0 A_FaceTarget();
-		RMIS a 4 a_facetarget();
-		
-		TNT1 A 0 A_Jump(128,"MissileLeft");
-		RMIR b 3;
-		RMIR c 3;
-		RMIR d 3 BD_SkelMissile();
-		RMIR e 3;
-		RMIR F 2;
-		goto MissileEnd;
-	MissileLeft:	
-		RMIL b 3;
-		RMIL c 3;
-		RMIL d 3 BD_SkelMissile();
-		RMIL e 3;
-		RMIL F 2;
-		goto MissileEnd;
-	MissileEnd:	
-		RMIS G 2;
-		RMIS H 10 A_facetarget();
-		goto See;
-	Crush:
-		TNT1 A 0 { scale.x *= randompick(-1,1); }
-		CRS2 A -1;
-		stop;
-	Pain:
-		REVP a 5;
-	    REVP b 5 A_Pain();
-		goto See;
-	Death:
-		TNT1 A 0 { 
-			scale.x *= randompick(-1,1);
-			if (random(1,2) == 2)
-				return ResolveState("Death1");
-			return ResolveState(null);
-			}
-		REVM abc 3;
-		REVM d 3 a_scream();
-		REVM e 2 a_noblocking();
-		REVM e 1;
-		REVM fghi 3;
-		REVM i -1;
-		stop;
-	Death1:
-		REVN abc 3;
-		REVN d 4 a_scream();
-		REVN e 4 a_noblocking();
-		REVN fg 4;
-		REVN H -1;
-		stop;	
-	XDeath:
-		TNT1 A 0 { 
-			if (random(1,2) == 2)
-				return ResolveState("Death");
-			scale.x *= randompick(-1,1);
-			return ResolveState(null);
-			}
-		REVX a 3;
-		REVX b 3;
-		REVX c 2 a_scream();
-		REVX d 2 a_noblocking();
-		REVX efghij 3;
-		REVX k -1;
-		}
-}
 
 
 Class BD_RevenantTracerSmoke : Rocket1Trail //replaces RevenantTracerSmoke
@@ -130,92 +127,76 @@ Default {
 }
 
 
-Class BD_RevenantTracer : RevenantTracer //replaces RevenantTracer
-{
-void BD_Tracer()
-	{
-		if (level.maptime & 3)	return;
-	
-		//This version won't forcefully spawn stupid BulletPuffs, only modded smoke
-		/*Actor smoke = Spawn ("BD_RevenantTracerSmoke", Vec3Offset(-Vel.X, -Vel.Y, 0.), ALLOW_REPLACE);
-	
-		if (smoke != null)
-		{
-			smoke.Vel.Z = 1.;
-			smoke.tics -= random[Tracer](0, 3);
-			if (smoke.tics < 1)
-				smoke.tics = 1;
-		}*/
-		A_Tracer2(16.875);
-	}
-override void Tick () {
-    Vector3 oldPos = self.pos;    
-    Super.Tick();
-	if (!bdoom_debris || level.isFrozen() || !tracer)
-		return;
-	Vector3 path = level.vec3Diff( self.pos, oldPos );
-	double distance = path.length() / 3; //this determines how far apart the particles are
-	Vector3 direction = path / distance;
-	int steps = int( distance );
-	
-	for( int i = 0; i < steps; i++ )  {
-		Spawn("TracerTrail", oldPos );
-		oldPos = level.vec3Offset( oldPos, direction );
+Class BD_RevenantTracer : RevenantTracer {
+	void BD_Tracer() {
+			if (level.maptime & 3)	return;
+			A_Tracer2(16.875);
+		}
+	override void Tick () {
+		Vector3 oldPos = self.pos;    
+		Super.Tick();
+		if (!bdoom_debris || level.isFrozen() || !tracer)
+			return;
+		Vector3 path = level.vec3Diff( self.pos, oldPos );
+		double distance = path.length() / 3; //this determines how far apart the particles are
+		Vector3 direction = path / distance;
+		int steps = int( distance );
+		
+		for( int i = 0; i < steps; i++ )  {
+			Spawn("TracerTrail", oldPos );
+			oldPos = level.vec3Offset( oldPos, direction );
+			}
+		}
+	states {
+		Spawn:
+			TNT1 A 0 NoDelay {
+				A_PlaySound("revenant/tracerfly",4,1.0,true,5);
+				//if (bdoom_debris)
+					//A_spawnItemEx("BD_RevenantTracerFlare",flags:SXF_SETMASTER|SXF_ORIGINATOR);
+				}
+			SKEB AB 2  BD_Tracer();
+			goto spawn+1;
+		Death:
+			TNT1 A 0 {
+				A_StopSound(4);
+				bFORCEXYBILLBOARD = true;
+				alpha = 0.8;
+				}
+			FBXP ABC 3  A_FadeOut(0.1);
+			FBXP DEF 4  A_FadeOut(0.1);
+			stop;
+		}
+}
+
+Class TracerTrail : BD_BaseFlare {
+	Default {
+		Flare_General.fcolor "red";
+		alpha 0.8;
+		scale 0.04;
+		}
+	override void Tick() {
+		if (level.isFrozen())
+			return;
+		super.Tick();
+		A_FadeOut(0.04);
+		scale*=0.99;
 		}
 	}
-states
-	{
-	Spawn:
-		TNT1 A 0 NoDelay {
-			A_PlaySound("revenant/tracerfly",4,1.0,true,5);
-			//if (bdoom_debris)
-				//A_spawnItemEx("BD_RevenantTracerFlare",flags:SXF_SETMASTER|SXF_ORIGINATOR);
+
+
+Class BD_RevenantTracerFlare : BD_ProjFlare {
+	Default {
+		Flare_General.fcolor "red";
+		alpha 0.9;
+		scale 0.13;
+		}
+	override void Tick() {
+		super.Tick();
+		if (bdoom_debris && master)
+			SetOrigin(master.pos,1);
+		else {
+			self.Destroy();
+			return;
 			}
-		SKEB AB 2  BD_Tracer();
-		goto spawn+1;
-	Death:
-		TNT1 A 0 {
-			A_StopSound(4);
-			bFORCEXYBILLBOARD = true;
-			alpha = 0.8;
-			}
-		FBXP ABC 3  A_FadeOut(0.1);
-		FBXP DEF 4  A_FadeOut(0.1);
-		stop;
-	}
-}
-
-Class TracerTrail : BD_BaseFlare
-{
-Default {
-	Flare_General.fcolor "red";
-	alpha 0.8;
-	scale 0.04;
-	}
-override void Tick() {
-	if (level.isFrozen())
-		return;
-	super.Tick();
-	A_FadeOut(0.04);
-	scale*=0.99;
-	}
-}
-
-
-Class BD_RevenantTracerFlare : BD_ProjFlare
-{
-Default {
-	Flare_General.fcolor "red";
-	alpha 0.9;
-	scale 0.13;
-	}
-override void Tick() {
-	super.Tick();
-	if (bdoom_debris && master)
-		SetOrigin(master.pos,1);
-	else {
-		self.Destroy();
-		return;
 		}
 	}
-}
