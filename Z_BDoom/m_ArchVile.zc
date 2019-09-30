@@ -182,9 +182,9 @@ Class BD_ArchvileFire : ArchvileFire {
 		Super.Tick();
 		if (level.isFrozen())
 			return;
-		if (!tracer || !target)
-			return;
-		if (target.Checksight(tracer,0))
+		if (!tracer || !target || !target.Checksight(tracer,0))
+			A_FadeOut(0.1);
+		else if (tracer && target)
 			Warp(tracer,32,8,0,WARPF_INTERPOLATE);
 		if (sprite == GetSpriteIndex("TNT1"))
 			A_SpawnItemEx("ParticleFire_Yellow",frandom(-10,10),frandom(-10,10),frandom(0,5),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.8,1.5));
