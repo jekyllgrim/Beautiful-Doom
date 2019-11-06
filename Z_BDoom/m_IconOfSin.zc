@@ -73,7 +73,7 @@ Class BD_SpawnShot : SpawnShot {
 		}
 	override void Tick() {
 		super.Tick();
-		if (!level.IsFrozen())
+		if (!level.isFrozen())
 			A_SpawnItemEx("ParticleFire_Red",frandom(-12,-16),frandom(-4,4),frandom(-4,4),failchance:64);
 		}
 	States 	{

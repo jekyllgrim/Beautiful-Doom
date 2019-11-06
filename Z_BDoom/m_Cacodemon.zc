@@ -311,7 +311,7 @@ Default {
 	}
 override void Tick() {
 	super.Tick();
-	if (level.IsFrozen())
+	if (level.isFrozen())
 		return;
 	if (!master) {
 		destroy();

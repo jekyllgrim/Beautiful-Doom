@@ -406,7 +406,7 @@ Default {
 	}
 override void Tick() {
 	super.Tick();
-	if (level.IsFrozen())
+	if (level.isFrozen())
 		return;
 	A_FadeOut(0.15);
 	scale*=0.9;

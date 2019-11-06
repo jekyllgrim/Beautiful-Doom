@@ -1,646 +1,644 @@
-Class BD_Chaingun : BDoomWeapon //replaces Chaingun
-{
-double HeatStacks;
-double HeatDecay;
-bool RifleSights;
-bool DryReload;
-int tfired;
-Default
-	{
-	Tag "$TAG_CHAINGUN";
-	weapon.selectionorder 70;
-	Weapon.AmmoType		"Clip";
-	Weapon.AmmoUse		1;
-	Weapon.AmmoGive		0;
-	Weapon.AmmoType2	"Clip";
-	Weapon.AmmoUse2		1;
-	Weapon.AmmoGive2	20;
-	weapon.slotnumber	4;
-	BDoomWeapon.AutoReloadTime 140;
-	}
-override string PickupMessage ()
-	{
-	if(bdoom_weapons == 2) 
-		return "You got the Machine Gun!"; 
-	else
-		return "$GOTCHAINGUN"; 
-	}
-override string GetObituary (Actor victim, Actor inflictor, Name mod, bool playerattack)
-    {
-	if(bdoom_weapons == 2) 
-		return "%o was penetrated by %k's assault rifle."; 
-	else 
-		return "$OB_MPCHAINGUN"; 
-	}
-override void Tick()
-	{
-	If (Owner)	
-		return;
-	else
+Class BD_Chaingun : BDoomWeapon {
+	double HeatStacks;
+	double HeatDecay;
+	bool RifleSights;
+	bool DryReload;
+	int tfired;
+	Default
 		{
-		if(bdoom_weapons == 2)
-			pickupsound = "Mweapons/rifle/clipin";
+		Tag "$TAG_CHAINGUN";
+		weapon.selectionorder 70;
+		Weapon.AmmoType		"Clip";
+		Weapon.AmmoUse		1;
+		Weapon.AmmoGive		0;
+		Weapon.AmmoType2	"Clip";
+		Weapon.AmmoUse2		1;
+		Weapon.AmmoGive2	20;
+		weapon.slotnumber	4;
+		BDoomWeapon.AutoReloadTime 140;
+		}
+	override string PickupMessage ()
+		{
+		if(bdoom_weapons == 2) 
+			return "You got the Machine Gun!"; 
 		else
-			pickupsound = "pickups/chaingun"; 
+			return "$GOTCHAINGUN"; 
 		}
-	Super.Tick();
-	}
-override void DoEffect()
-	{
-	Super.DoEffect();
-	if (!owner)
-		return;
-	if(bdoom_weapons == 2)
+	override string GetObituary (Actor victim, Actor inflictor, Name mod, bool playerattack)
 		{
-		Ammo1 = ammo(Owner.FindInventory("RifleClip") );
-		ammouse1 = 1;
-		ammouse2 = 1;
-		if (RifleSights)
-			bNOAUTOFIRE = true;
-		else	
+		if(bdoom_weapons == 2) 
+			return "%o was penetrated by %k's assault rifle."; 
+		else 
+			return "$OB_MPCHAINGUN"; 
+		}
+	override void Tick()
+		{
+		If (Owner)	
+			return;
+		else
+			{
+			if(bdoom_weapons == 2)
+				pickupsound = "Mweapons/rifle/clipin";
+			else
+				pickupsound = "pickups/chaingun"; 
+			}
+		Super.Tick();
+		}
+	override void DoEffect()
+		{
+		Super.DoEffect();
+		if (!owner)
+			return;
+		if(bdoom_weapons == 2)
+			{
+			Ammo1 = ammo(Owner.FindInventory("RifleClip") );
+			ammouse1 = 1;
+			ammouse2 = 1;
+			if (RifleSights)
+				bNOAUTOFIRE = true;
+			else	
+				bNOAUTOFIRE = false;
+			bAMMO_OPTIONAL = true;
+			if (!ammo1)
+				Owner.GiveInventory("RifleClip",40);
+			}
+		else
+			{
+			Ammo1 = ammo(Owner.FindInventory("Clip"));
+			ammouse1 = 1;
+			Ammo2 = ammo(Owner.FindInventory("Clip"));
+			ammouse2 = 1;
 			bNOAUTOFIRE = false;
-		bAMMO_OPTIONAL = true;
-		if (!ammo1)
-			Owner.GiveInventory("RifleClip",40);
-		}
-	else
-		{
-		Ammo1 = ammo(Owner.FindInventory("Clip"));
-		ammouse1 = 1;
-		Ammo2 = ammo(Owner.FindInventory("Clip"));
-		ammouse2 = 1;
-		bNOAUTOFIRE = false;
-		bAMMO_OPTIONAL = false;
-		}
-	if (owner.player.readyweapon != self || bdoom_weapons != 2) { //if not using Modern Assault Rifle
-		tfired = 0;							//set spread value to 0
-		RifleSights = false;				//unset ADS
-		}
-	if (owner.player.readyweapon != self || bdoom_weapons != 1)
-		HeatStacks = 0;						//reset heatstacks if not reset yet
+			bAMMO_OPTIONAL = false;
+			}
+		if (owner.player.readyweapon != self || bdoom_weapons != 2) { //if not using Modern Assault Rifle
+			tfired = 0;							//set spread value to 0
+			RifleSights = false;				//unset ADS
+			}
+		if (owner.player.readyweapon != self || bdoom_weapons != 1)
+			HeatStacks = 0;						//reset heatstacks if not reset yet
+			
+		let s = owner.player.FindPsprite(PSP_Weapon);
+		let chg = BD_Chaingun(owner.player.ReadyWeapon);
+		if (!s || !chg)
+			return;
+		let fl = owner.player.FindPsprite(5);
+		if (bdoom_weapons == 1 && HeatStacks > 0 )
+			owner.player.SetPSprite(5,FindState("FlashHeated"));
+		else
+			owner.player.SetPSprite(5,null);
 		
-	let s = owner.player.FindPsprite(PSP_Weapon);
-	let chg = BD_Chaingun(owner.player.ReadyWeapon);
-	if (!s || !chg)
-		return;
-	let fl = owner.player.FindPsprite(5);
-	if (bdoom_weapons == 1 && HeatStacks > 0 )
-		owner.player.SetPSprite(5,FindState("FlashHeated"));
-	else
-		owner.player.SetPSprite(5,null);
-	
-	//crosshair and bob handling for ADS
-	if ((InStateSequence(s.curstate, FindState("ReadySights"))	||	
-		InStateSequence(s.curstate, FindState("FireSights"))) 	){
-		chg.crosshair = 99; //if ADS used, disable crosshair and set very little bob
-		BobRangeX = 0.08;
-		BobRangeY = 0.1;
-		BobStyle = 5;
-		BobSpeed = 2.0;
-		}
-	else { 
-		chg.crosshair = 0; //if ADS isn't used, set crosshair to default
-		if (bdoom_weapons == 2) { //and set bob to either default Modern value...
-			BobRangeX = 0.2;
-			BobRangeY = 0.2;
+		//crosshair and bob handling for ADS
+		if ((InStateSequence(s.curstate, FindState("ReadySights"))	||	
+			InStateSequence(s.curstate, FindState("FireSights"))) 	){
+			chg.crosshair = 99; //if ADS used, disable crosshair and set very little bob
+			BobRangeX = 0.08;
+			BobRangeY = 0.1;
 			BobStyle = 5;
 			BobSpeed = 2.0;
 			}
-		else { //... or the default non-Modern value
-			BobRangeX = 1.0;
-			BobRangeY = 1.0;
-			BobStyle = 0;
-			BobSpeed = 1.0;
+		else { 
+			chg.crosshair = 0; //if ADS isn't used, set crosshair to default
+			if (bdoom_weapons == 2) { //and set bob to either default Modern value...
+				BobRangeX = 0.2;
+				BobRangeY = 0.2;
+				BobStyle = 5;
+				BobSpeed = 2.0;
+				}
+			else { //... or the default non-Modern value
+				BobRangeX = 1.0;
+				BobRangeY = 1.0;
+				BobStyle = 0;
+				BobSpeed = 1.0;
+				}
 			}
 		}
-	}
-states
-	{
-	Spawn:
-		MGUN A 1 NoDelay {
-			if (bdoom_weapons == 2) {
-				self.sprite = GetSpriteIndex("RIFN");
-				self.frame = 25;
-				A_SetScale(0.75);
+	states
+		{
+		Spawn:
+			MGUN A 1 NoDelay {
+				if (bdoom_weapons == 2) {
+					self.sprite = GetSpriteIndex("RIFN");
+					self.frame = 25;
+					A_SetScale(0.75);
+					}
+				else {
+					self.sprite = GetSpriteIndex("MGUN");
+					self.frame = 0;
+					A_SetScale(1.0);
+					}
 				}
-			else {
-				self.sprite = GetSpriteIndex("MGUN");
-				self.frame = 0;
-				A_SetScale(1.0);
+			loop;
+			RIFN Z 1;
+		Select:
+			TNT1 A 0 { 
+				A_StopSound(5);			
+				if (bdoom_weapons == 2)
+					return ResolveState("Select.Modern");
+				If(bdoom_weapons == 1) 
+					A_PlaySound("weapons/chaingun/draw");
+				return ResolveState(null);
 				}
-			}
-		loop;
-		RIFN Z 1;
-	Select:
-		TNT1 A 0 { 
-			A_StopSound(5);			
-			if (bdoom_weapons == 2)
-				return ResolveState("Select.Modern");
-			If(bdoom_weapons == 1) 
-				A_PlaySound("weapons/chaingun/draw");
-			return ResolveState(null);
-			}
-		MGGS ABCDEF 1 A_WeaponReady(WRF_NOFIRE);
-		goto ready;
-	Deselect:
-		TNT1 A 0 { 
-			A_StopSound(5); 
-			if (bdoom_weapons == 2)
-				return ResolveState("Deselect.Modern");
-			speed = default.speed;
-			A_ZoomFactor(1.0);
-			return ResolveState(null);
-			}
-		MGGG A 1 A_Lower();
-		wait;
-	Ready:
-		MGGG A 1 {
-			if (bdoom_weapons == 2)
-				return ResolveState("Ready.Modern");
-			speed = default.speed;
-			A_ZoomFactor(1.0); 
-			if (bdoom_weapons == 0)
-				A_WeaponReady(WRF_NOSECONDARY);
-			else 
-				A_WeaponReady();
-			return ResolveState(null);
-			}
-		loop;
-	Fire:
-		TNT1 A 0 A_JumpIf(bdoom_weapons==2,"Fire.Modern");
-		MGGG A 1 {
-			A_WeaponOffset(0.0,35.0,WOF_INTERPOLATE);
-			a_gunflash();
-			if (bdoom_weapons == 0)
-				A_PlaySound("weapons/chngun");
-			else 
-				A_PlaySound("weapons/chaingun/fire");
-			If(Bdoom_tracers)
-				A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0) ;
-			else
-				A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
-			}
-		MGGG B 1;
-		TNT1 A 0 { 
-			if( bdoom_debris)
-				A_Eject("ChaingunCasing",20,frandom(4,5),18,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
-			}
-		MGGG CD 1;
-		TNT1 A 0 A_CheckReload();
-		
-		MGGG A 1 {
-			a_gunflash();
-			if (bdoom_weapons == 0)
-				A_PlaySound("weapons/chngun");
-			else 
-				A_PlaySound("weapons/chaingun/fire");
-			If(Bdoom_tracers)
-				A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0) ;
-			else
-				A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
-			}
-		MGGG B 1;
-		TNT1 A 0 { 
-			if( bdoom_debris)
-				A_Eject("ChaingunCasing",20,frandom(4,5),18,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
-			}
-		MGGG CD 1;
-		TNT1 A 0 A_refire();
-		MGGG ABCD 1 {
-			A_WeaponReady(WRF_NOSECONDARY);
-			A_WeaponOffset(0.0,-0.75,WOF_ADD);
-			}
-		MGGG ABCDAABBCCDD 1 A_WeaponReady(WRF_NOSECONDARY);
-		goto ready;
-	Flash:
-		TNT1 A 1 {
-			A_Light2();
-			if(GetCVAR("bdoom_muzzle")==0)
-				A_Overlay(100,"FlashVanilla");
-			else {
-				for (int i = random (2,3); i > 0; i --)
-					A_Eject("BD_MuzzleSmoke",12,0,4,32);
-				A_Overlay(100,"FlashEnhanced");
-				A_Overlay(-100,"FlashMuzzle");
-				A_OverlayOffset(-100,0+frandom(-0.5,0.5),50+frandom(-0.5,0.5));
-				if (random(0,1) == 1) 
-					A_OverlayFlags(-100,PSPF_FLIP,true);
+			MGGS ABCDEF 1 A_WeaponReady(WRF_NOFIRE);
+			goto ready;
+		Deselect:
+			TNT1 A 0 { 
+				A_StopSound(5); 
+				if (bdoom_weapons == 2)
+					return ResolveState("Deselect.Modern");
+				speed = default.speed;
+				A_ZoomFactor(1.0);
+				return ResolveState(null);
 				}
-			A_OverlayFlags(100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
-			A_OverlayFlags(-100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
-			A_OverlayRenderstyle(100,STYLE_Add);
-			A_OverlayRenderstyle(-100,STYLE_Add);
-			}
-		TNT1 A 1 A_Light1();
-		goto lightdone;
-	FlashVanilla:
-		MGGL AB 1 bright;
-		goto lightdone;
-	FlashEnhanced:
-		MGGM A 1 bright;
-		MGGM B 1 bright A_OverlayAlpha(100,0.8);
-		MGGM C 1 bright A_OverlayAlpha(100,0.6);
-		MGGM D 1 bright A_OverlayAlpha(100,0.4);
-		goto lightdone;
-	FlashMuzzle:
-		MUZ6 A 1 bright {
-				let fl = player.FindPSprite(-100);
-				fl.frame = random(0,3);
+			MGGG A 1 A_Lower();
+			wait;
+		Ready:
+			MGGG A 1 {
+				if (bdoom_weapons == 2)
+					return ResolveState("Ready.Modern");
+				speed = default.speed;
+				A_ZoomFactor(1.0); 
+				if (bdoom_weapons == 0)
+					A_WeaponReady(WRF_NOSECONDARY);
+				else 
+					A_WeaponReady();
+				return ResolveState(null);
 				}
-		#### # 1 bright A_OverlayAlpha(-100,0.8);
-		#### # 1 bright A_OverlayAlpha(-100,0.5);
-		stop;
-	FlashHeated:
-		MGGH B 1 bright {
-			A_OverlayFlags(5,PSPF_Alpha|PSPF_FORCEALPHA,true);
-			A_OverlayAlpha(5,invoker.HeatStacks*0.0165);
-			}
-		stop;
-	AltFire:
-		TNT1 A 0 {
-			if (bdoom_weapons == 2)
-				return ResolveState("AltFire.Modern");
-			A_playsound("weapons/chaingun/start");
-			return ResolveState(null);
-			}
-		MGGG ABCDABCD 2;
-		MGGG ABCDABCD 1;
-		TNT1 A 0 A_playsound("weapons/chaingun/spin",5,1.0,true);
-		MGGG ACACACACAC 1;
-		
-		MGGG A 1 { 
-			A_WeaponOffset(0.0,35.0,WOF_INTERPOLATE);
-			invoker.HeatStacks++; 
-			a_gunflash();
-			A_PlaySound("weapons/chaingun/fire");
-			If(Bdoom_tracers)
-				A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0) ;
-			else
-				A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
+			loop;
+		Fire:
+			TNT1 A 0 A_JumpIf(bdoom_weapons==2,"Fire.Modern");
+			MGGG A 1 {
+				A_WeaponOffset(0.0,35.0,WOF_INTERPOLATE);
+				a_gunflash();
+				if (bdoom_weapons == 0)
+					A_PlaySound("weapons/chngun");
+				else 
+					A_PlaySound("weapons/chaingun/fire");
+				If(Bdoom_tracers)
+					A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0) ;
+				else
+					A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
 				}
-		MGGG C 1 { 
-			if(bdoom_debris)
-				A_Eject("ChaingunCasing",20,frandom(4,5),18,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
-			}
-		TNT1 A 0 A_CheckReload();		
-		MGGG A 1 { 
-			invoker.HeatStacks++; 
-			a_gunflash();
-			A_PlaySound("weapons/chaingun/fire");
-			If(Bdoom_tracers)
-				A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0) ;
-			else
-				A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
-			}
-		MGGG C 1 { 
-			if( bdoom_debris)
-				A_Eject("ChaingunCasing",20,frandom(4,5),18,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
-			}
-	AltHold:
-		TNT1 A 0 A_JumpIf(bdoom_weapons==2,"AltFire.Modern");
-		TNT1 A 0 A_CheckReload();
-		MGGG A 1 { 
-			A_WeaponOffset(0.0,35.0,WOF_INTERPOLATE);
-			invoker.HeatStacks++; 
-			a_gunflash();
-			A_PlaySound("weapons/chaingun/fire");
-			If(Bdoom_tracers)
-				A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0) ;
-			else
-				A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
-			}	
-		MGGG C 1 { 
-				if (bdoom_debris)
+			MGGG B 1;
+			TNT1 A 0 { 
+				if( bdoom_debris)
 					A_Eject("ChaingunCasing",20,frandom(4,5),18,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
 				}
-		TNT1 A 0 {
-			if (invoker.HeatStacks < 60)
-				A_ReFire("AltHold"); 
-			}
-	AltFireEnd:
-		TNT1 A 0 {
-			A_playsound("weapons/chaingun/stop",5);
-			invoker.HeatDecay = invoker.heatStacks * 0.05;
-			}
-		MGGG ABCDA 1 {
-			A_WeaponOffset(0.0,-0.6,WOF_ADD);
-			If(bdoom_debris && invoker.HeatStacks >= 10)
-				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-3,3),sin(-pitch)*25+random(33,37),		0,0,frandom(0.2,0.4),0);
-			invoker.heatStacks -= invoker.Heatdecay;
-			}
-		MGGG BCDABC 2 {
-			If(bdoom_debris && invoker.HeatStacks >= 10)
-				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-3,3),sin(-pitch)*25+random(33,37),		0,0,frandom(0.2,0.4),0);
-			invoker.heatStacks -= invoker.Heatdecay;
-			}
-		MGGG DABCD 3 {
-			If(bdoom_debris && invoker.HeatStacks >= 10)
-				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-3,3),sin(-pitch)*25+random(33,37),		0,0,frandom(0.2,0.4),0);
-			invoker.heatStacks -= invoker.Heatdecay;
-			}
-		TNT1 A 0 {
-			A_ClearRefire();
-			if (invoker.HeatStacks == 0)
-				return ResolveState("Ready");
-			return ResolveState(null);
-			}
-		MGGG ABCD 4 {
-			If(bdoom_debris && invoker.HeatStacks >= 10)
-				A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-3,3),sin(-pitch)*25+random(33,37),		0,0,frandom(0.2,0.4),0);
-			invoker.heatStacks -= invoker.Heatdecay;
-			A_WeaponReady(WRF_NOFIRE);
-			}
-		goto ready;
-	AltFlash:
-		TNT1 A 1 {
-			A_Light2();
-			if(GetCVAR("bdoom_muzzle")==0)
-				A_Overlay(100,"AltFlashVanilla");
-			else {
-				for (int i = random (2,3); i > 0; i --)
-					A_Eject("BD_MuzzleSmoke",12,0,4,32);
-				A_Overlay(100,"AltFlashEnhanced");
-				A_Overlay(-100,"FlashMuzzle");
-				A_OverlayOffset(-100,0+frandom(-0.5,0.5),50+frandom(-0.5,0.5));
-				if (random(0,1) == 1) 
-					A_OverlayFlags(-100,PSPF_FLIP,true);
+			MGGG CD 1;
+			TNT1 A 0 A_CheckReload();
+			
+			MGGG A 1 {
+				a_gunflash();
+				if (bdoom_weapons == 0)
+					A_PlaySound("weapons/chngun");
+				else 
+					A_PlaySound("weapons/chaingun/fire");
+				If(Bdoom_tracers)
+					A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0) ;
+				else
+					A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
 				}
-			A_OverlayFlags(100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
-			A_OverlayFlags(-100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
-			A_OverlayRenderstyle(100,STYLE_Add);
-			A_OverlayRenderstyle(-100,STYLE_Add);
-			}
-		TNT1 A 1 A_Light1();
-		goto lightdone;
-	AltFlashVanilla:
-		MGGL AC 1 bright;
-		goto lightdone;
-	AltFlashEnhanced:
-		MGGM A 1 bright;
-		MGGM C 1 bright A_OverlayAlpha(100,0.6);
-		goto lightdone;
+			MGGG B 1;
+			TNT1 A 0 { 
+				if( bdoom_debris)
+					A_Eject("ChaingunCasing",20,frandom(4,5),18,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
+				}
+			MGGG CD 1;
+			TNT1 A 0 A_refire();
+			MGGG ABCD 1 {
+				A_WeaponReady(WRF_NOSECONDARY);
+				A_WeaponOffset(0.0,-0.75,WOF_ADD);
+				}
+			MGGG ABCDAABBCCDD 1 A_WeaponReady(WRF_NOSECONDARY);
+			goto ready;
+		Flash:
+			TNT1 A 1 {
+				A_Light2();
+				if(GetCVAR("bdoom_muzzle")==0)
+					A_Overlay(100,"FlashVanilla");
+				else {
+					for (int i = random (2,3); i > 0; i --)
+						A_Eject("BD_MuzzleSmoke",12,0,4,32);
+					A_Overlay(100,"FlashEnhanced");
+					A_Overlay(-100,"FlashMuzzle");
+					A_OverlayOffset(-100,0+frandom(-0.5,0.5),50+frandom(-0.5,0.5));
+					if (random(0,1) == 1) 
+						A_OverlayFlags(-100,PSPF_FLIP,true);
+					}
+				A_OverlayFlags(100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
+				A_OverlayFlags(-100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
+				A_OverlayRenderstyle(100,STYLE_Add);
+				A_OverlayRenderstyle(-100,STYLE_Add);
+				}
+			TNT1 A 1 A_Light1();
+			goto lightdone;
+		FlashVanilla:
+			MGGL AB 1 bright;
+			goto lightdone;
+		FlashEnhanced:
+			MGGM A 1 bright;
+			MGGM B 1 bright A_OverlayAlpha(100,0.8);
+			MGGM C 1 bright A_OverlayAlpha(100,0.6);
+			MGGM D 1 bright A_OverlayAlpha(100,0.4);
+			goto lightdone;
+		FlashMuzzle:
+			MUZ6 A 1 bright {
+					let fl = player.FindPSprite(-100);
+					fl.frame = random(0,3);
+					}
+			#### # 1 bright A_OverlayAlpha(-100,0.8);
+			#### # 1 bright A_OverlayAlpha(-100,0.5);
+			stop;
+		FlashHeated:
+			MGGH B 1 bright {
+				A_OverlayFlags(5,PSPF_Alpha|PSPF_FORCEALPHA,true);
+				A_OverlayAlpha(5,invoker.HeatStacks*0.0165);
+				}
+			stop;
+		AltFire:
+			TNT1 A 0 {
+				if (bdoom_weapons == 2)
+					return ResolveState("AltFire.Modern");
+				A_playsound("weapons/chaingun/start");
+				return ResolveState(null);
+				}
+			MGGG ABCDABCD 2;
+			MGGG ABCDABCD 1;
+			TNT1 A 0 A_playsound("weapons/chaingun/spin",5,1.0,true);
+			MGGG ACACACACAC 1;
+			
+			MGGG A 1 { 
+				A_WeaponOffset(0.0,35.0,WOF_INTERPOLATE);
+				invoker.HeatStacks++; 
+				a_gunflash();
+				A_PlaySound("weapons/chaingun/fire");
+				If(Bdoom_tracers)
+					A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0) ;
+				else
+					A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
+					}
+			MGGG C 1 { 
+				if(bdoom_debris)
+					A_Eject("ChaingunCasing",20,frandom(4,5),18,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
+				}
+			TNT1 A 0 A_CheckReload();		
+			MGGG A 1 { 
+				invoker.HeatStacks++; 
+				a_gunflash();
+				A_PlaySound("weapons/chaingun/fire");
+				If(Bdoom_tracers)
+					A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0) ;
+				else
+					A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
+				}
+			MGGG C 1 { 
+				if( bdoom_debris)
+					A_Eject("ChaingunCasing",20,frandom(4,5),18,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
+				}
+		AltHold:
+			TNT1 A 0 A_JumpIf(bdoom_weapons==2,"AltFire.Modern");
+			TNT1 A 0 A_CheckReload();
+			MGGG A 1 { 
+				A_WeaponOffset(0.0,35.0,WOF_INTERPOLATE);
+				invoker.HeatStacks++; 
+				a_gunflash();
+				A_PlaySound("weapons/chaingun/fire");
+				If(Bdoom_tracers)
+					A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0) ;
+				else
+					A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
+				}	
+			MGGG C 1 { 
+					if (bdoom_debris)
+						A_Eject("ChaingunCasing",20,frandom(4,5),18,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
+					}
+			TNT1 A 0 {
+				if (invoker.HeatStacks < 60)
+					A_ReFire("AltHold"); 
+				}
+		AltFireEnd:
+			TNT1 A 0 {
+				A_playsound("weapons/chaingun/stop",5);
+				invoker.HeatDecay = invoker.heatStacks * 0.05;
+				}
+			MGGG ABCDA 1 {
+				A_WeaponOffset(0.0,-0.6,WOF_ADD);
+				If(bdoom_debris && invoker.HeatStacks >= 10)
+					A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-3,3),sin(-pitch)*25+random(33,37),		0,0,frandom(0.2,0.4),0);
+				invoker.heatStacks -= invoker.Heatdecay;
+				}
+			MGGG BCDABC 2 {
+				If(bdoom_debris && invoker.HeatStacks >= 10)
+					A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-3,3),sin(-pitch)*25+random(33,37),		0,0,frandom(0.2,0.4),0);
+				invoker.heatStacks -= invoker.Heatdecay;
+				}
+			MGGG DABCD 3 {
+				If(bdoom_debris && invoker.HeatStacks >= 10)
+					A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-3,3),sin(-pitch)*25+random(33,37),		0,0,frandom(0.2,0.4),0);
+				invoker.heatStacks -= invoker.Heatdecay;
+				}
+			TNT1 A 0 {
+				A_ClearRefire();
+				if (invoker.HeatStacks == 0)
+					return ResolveState("Ready");
+				return ResolveState(null);
+				}
+			MGGG ABCD 4 {
+				If(bdoom_debris && invoker.HeatStacks >= 10)
+					A_SpawnItemEx("WeaponSmoke",cos(pitch)*25,random(-3,3),sin(-pitch)*25+random(33,37),		0,0,frandom(0.2,0.4),0);
+				invoker.heatStacks -= invoker.Heatdecay;
+				A_WeaponReady(WRF_NOFIRE);
+				}
+			goto ready;
+		AltFlash:
+			TNT1 A 1 {
+				A_Light2();
+				if(GetCVAR("bdoom_muzzle")==0)
+					A_Overlay(100,"AltFlashVanilla");
+				else {
+					for (int i = random (2,3); i > 0; i --)
+						A_Eject("BD_MuzzleSmoke",12,0,4,32);
+					A_Overlay(100,"AltFlashEnhanced");
+					A_Overlay(-100,"FlashMuzzle");
+					A_OverlayOffset(-100,0+frandom(-0.5,0.5),50+frandom(-0.5,0.5));
+					if (random(0,1) == 1) 
+						A_OverlayFlags(-100,PSPF_FLIP,true);
+					}
+				A_OverlayFlags(100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
+				A_OverlayFlags(-100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
+				A_OverlayRenderstyle(100,STYLE_Add);
+				A_OverlayRenderstyle(-100,STYLE_Add);
+				}
+			TNT1 A 1 A_Light1();
+			goto lightdone;
+		AltFlashVanilla:
+			MGGL AC 1 bright;
+			goto lightdone;
+		AltFlashEnhanced:
+			MGGM A 1 bright;
+			MGGM C 1 bright A_OverlayAlpha(100,0.6);
+			goto lightdone;
 
-	//MODERN
-	Select.Modern:
-		TNT1 A 0 {
-			A_PlaySound("MWeapons/rifle/select");
-			A_Weaponoffset(30.0,67.0);
-			}
-		RIFN CCCCCBA 1 {
-			if (CountInv("RifleClip") < 1) {
-				let s = player.FindPSprite(PSP_Weapon);
-				if (s)
-					s.frame = 3;
+		//MODERN
+		Select.Modern:
+			TNT1 A 0 {
+				A_PlaySound("MWeapons/rifle/select");
+				A_Weaponoffset(30.0,67.0);
 				}
-			A_WeaponOffset(-4.0,-5.0,WOF_ADD);
-			A_WeaponReady(WRF_NOFIRE|WRF_NOBOB);
-			}
-		goto ready;
-	Deselect.Modern:
-		TNT1 A 0 { 
-			if (!invoker.RifleSights)
-				return ResolveState("Deselect1.Modern");
-			speed = default.speed;
-			A_ZoomFactor(1.0);
-			return ResolveState(null);
-			}
-		RIFA DCBA 2;
-	Deselect1.Modern:
-		RIFN A 1 {			
-			if (Countinv("RifleClip") < 1) {
-				let po = player.FindPSprite (PSP_Weapon);
-				po.frame = 3;
+			RIFN CCCCCBA 1 {
+				if (CountInv("RifleClip") < 1) {
+					let s = player.FindPSprite(PSP_Weapon);
+					if (s)
+						s.frame = 3;
+					}
+				A_WeaponOffset(-4.0,-5.0,WOF_ADD);
+				A_WeaponReady(WRF_NOFIRE|WRF_NOBOB);
 				}
-			 A_Lower(12);
-			}
-		wait;
-		RIFN D 0;
-		stop;
-	Ready.Modern:
-		RIFN A 1 {
-			let s = player.findPSprite(PSP_Weapon);
-			if (s) {
-				if (invoker.riflesights) 
-					return ResolveState("ReadySights");	
-				else if (Countinv("RifleClip") < 1)
-					s.frame = 3;
+			goto ready;
+		Deselect.Modern:
+			TNT1 A 0 { 
+				if (!invoker.RifleSights)
+					return ResolveState("Deselect1.Modern");
+				speed = default.speed;
+				A_ZoomFactor(1.0);
+				return ResolveState(null);
 				}
-			BD_WeaponReady(true);
-			return ResolveState(null);
-			}
-		goto ready;
-	ReadySights:
-		RIFS A 1 {
-			BD_WeaponReady(1,1,0);
-			speed = default.speed * 0.8;
-			A_ZoomFactor(1.3);
-			}
-		goto ready;		
-	Fire.Modern:
-		RIFN A 1 {
-			if (CountInv("RifleClip") < 1)
-				return ResolveState("DryReload");
-			if (invoker.riflesights)
-				return ResolveState("FireSights");
-			A_gunflash("FlashModern");
-			A_PlaySound("Mweapons/rifle/fire");
-			A_WeaponOffset(frandom(-0.3,0.3),2,WOF_ADD);
-			A_FireBullets(1.5 + (invoker.tfired * 0.15),1.0 + (invoker.tfired * 0.15),-1,0,"NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_RifleBullet",0,0);
-			A_SetPitch(pitch - frandom(0.37,0.42),SPF_INTERPOLATE);
-			A_ZoomFactor(0.996,ZOOM_INSTANT|ZOOM_NOSCALETURNING);
-			invoker.tfired = clamp(invoker.tfired+1,0,9);
-			return ResolveState(null);
-			}
-		RIFN B 1 {
-			A_WeaponOffset(frandom(-0.3,0.3),4,WOF_ADD);
-			A_ZoomFactor(1,ZOOM_NOSCALETURNING);
-			}		
-		RIFN CD 1 A_WeaponOffset(0,-3,WOF_ADD);
-		TNT1 A 0 {
-			if (bdoom_debris)
-				A_Eject("ChaingunCasing",20,frandom(1,2),12.5,frandom(0,2),FRandom(4.5,5),frandom(2,2.5));
-			}
-		RIFN E 1 {
-			if (CountInv("RifleClip") < 1) {
-				let s = Player.FindPsprite(PSP_Weapon);
-				if (s)
-					s.frame = 3;
+			RIFA DCBA 2;
+		Deselect1.Modern:
+			RIFN A 1 {			
+				if (Countinv("RifleClip") < 1) {
+					let po = player.FindPSprite (PSP_Weapon);
+					po.frame = 3;
+					}
+				 A_Lower(12);
 				}
-			}
-		TNT1 A 0 A_ReFire("Fire.Modern");
-		RIFN A 2 {
-			A_WeaponOffset(0,32.0,WOF_INTERPOLATE);
-			invoker.tfired = 0;
-			if (CountInv("RifleClip") < 1) {
-				let s = Player.FindPsprite(PSP_Weapon);
-				if (s)
-					s.frame = 3;
+			wait;
+			RIFN D 0;
+			stop;
+		Ready.Modern:
+			RIFN A 1 {
+				let s = player.findPSprite(PSP_Weapon);
+				if (s) {
+					if (invoker.riflesights) 
+						return ResolveState("ReadySights");	
+					else if (Countinv("RifleClip") < 1)
+						s.frame = 3;
+					}
+				BD_WeaponReady(true);
+				return ResolveState(null);
 				}
-			}
-		goto ready;
-	FireSights:
-		RIFS A 1 {
-			A_WeaponOffset(0.0,34.0,WOF_INTERPOLATE);
-			let plr = PlayerPawn(self);
-			plr.AttackZOffset = 11;
-			A_FireBullets(0.4,0.15,-1,0,"NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_RifleBullet",0,0);
-			A_gunflash("FlashModern");
-			A_PlaySound("Mweapons/rifle/fire");
-			A_SetPitch(pitch - 0.3,SPF_INTERPOLATE);
-			A_ZoomFactor(1.29,ZOOM_INSTANT|ZOOM_NOSCALETURNING);
-			plr.AttackZOffset = 8;
-			}
-		RIFS C 2 {
-			A_ZoomFactor(1.3,ZOOM_NOSCALETURNING);
-			If(bdoom_debris)
-				A_Eject("ChaingunCasing",20,frandom(3,4),4,frandom(0,2),FRandom(5.5,7),frandom(2,2.5));
-			}
-		RIFS BA 2;
-		goto ready;
-	DryReload:
-		RIFN D 12 {
-			A_ClearRefire();
-			invoker.DryReload = true;
-			A_PlaySound("Mweapons/dry",7);
-			let po = player.FindPSprite(psp_weapon);
-			if (po && invoker.RifleSights) {
-				po.sprite = GetSpriteIndex("RIFS");
-				po.frame = 0;
+			goto ready;
+		ReadySights:
+			RIFS A 1 {
+				BD_WeaponReady(1,1,0);
+				speed = default.speed * 0.8;
+				A_ZoomFactor(1.3);
 				}
-			}
-		goto reload;
-		RIFS A 0;
-	Reload:
-		TNT1 A 0 { 
-			A_ClearRefire();
-			if (CountINv("Clip") == 0)
-				return ResolveState("Ready");
-			if (!invoker.RifleSights)
-				Return ResolveState("ReloadDo");
-			else
-				{
+			goto ready;		
+		Fire.Modern:
+			RIFN A 1 {
+				if (CountInv("RifleClip") < 1)
+					return ResolveState("DryReload");
+				if (invoker.riflesights)
+					return ResolveState("FireSights");
+				A_gunflash("FlashModern");
+				A_PlaySound("Mweapons/rifle/fire");
+				A_WeaponOffset(frandom(-0.3,0.3),2,WOF_ADD);
+				A_FireBullets(1.5 + (invoker.tfired * 0.15),1.0 + (invoker.tfired * 0.15),-1,0,"NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_RifleBullet",0,0);
+				A_SetPitch(pitch - frandom(0.37,0.42),SPF_INTERPOLATE);
+				A_ZoomFactor(0.996,ZOOM_INSTANT|ZOOM_NOSCALETURNING);
+				invoker.tfired = clamp(invoker.tfired+1,0,9);
+				return ResolveState(null);
+				}
+			RIFN B 1 {
+				A_WeaponOffset(frandom(-0.3,0.3),4,WOF_ADD);
+				A_ZoomFactor(1,ZOOM_NOSCALETURNING);
+				}		
+			RIFN CD 1 A_WeaponOffset(0,-3,WOF_ADD);
+			TNT1 A 0 {
+				if (bdoom_debris)
+					A_Eject("ChaingunCasing",20,frandom(1,2),12.5,frandom(0,2),FRandom(4.5,5),frandom(2,2.5));
+				}
+			RIFN E 1 {
+				if (CountInv("RifleClip") < 1) {
+					let s = Player.FindPsprite(PSP_Weapon);
+					if (s)
+						s.frame = 3;
+					}
+				}
+			TNT1 A 0 A_ReFire("Fire.Modern");
+			RIFN A 2 {
+				A_WeaponOffset(0,32.0,WOF_INTERPOLATE);
+				invoker.tfired = 0;
+				if (CountInv("RifleClip") < 1) {
+					let s = Player.FindPsprite(PSP_Weapon);
+					if (s)
+						s.frame = 3;
+					}
+				}
+			goto ready;
+		FireSights:
+			RIFS A 1 {
+				A_WeaponOffset(0.0,34.0,WOF_INTERPOLATE);
+				let plr = PlayerPawn(self);
+				plr.AttackZOffset = 13;
+				A_FireBullets(0.4,0.15,-1,0,"NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_RifleBullet",0,0);
+				A_gunflash("FlashModern");
+				A_PlaySound("Mweapons/rifle/fire");
+				A_SetPitch(pitch - 0.3,SPF_INTERPOLATE);
+				A_ZoomFactor(1.29,ZOOM_INSTANT|ZOOM_NOSCALETURNING);
+				plr.AttackZOffset = 8;
+				}
+			RIFS C 2 {
+				A_ZoomFactor(1.3,ZOOM_NOSCALETURNING);
+				If(bdoom_debris)
+					A_Eject("ChaingunCasing",20,frandom(3,4),4,frandom(0,2),FRandom(5.5,7),frandom(2,2.5));
+				}
+			RIFS BA 2;
+			goto ready;
+		DryReload:
+			RIFN D 12 {
+				A_ClearRefire();
+				invoker.DryReload = true;
+				A_PlaySound("Mweapons/dry",7);
+				let po = player.FindPSprite(psp_weapon);
+				if (po && invoker.RifleSights) {
+					po.sprite = GetSpriteIndex("RIFS");
+					po.frame = 0;
+					}
+				}
+			goto reload;
+			RIFS A 0;
+		Reload:
+			TNT1 A 0 { 
+				A_ClearRefire();
+				if (CountINv("Clip") == 0)
+					return ResolveState("Ready");
+				if (!invoker.RifleSights)
+					Return ResolveState("ReloadDo");
+				else
+					{
+					invoker.RifleSights = false;
+					speed = default.speed;
+					A_ZoomFactor(1.0);
+					}
+				return ResolveState(null);
+				}
+			RIFA DCBA 2;
+		ReloadDo:
+			RIFR ABCDE 2;
+			RIFR F 8 A_PlaySound("Mweapons/rifle/clipout");
+			RIFR GH 2;
+			RIFR I 5;
+			RIFR JKL 2;
+			TNT1 A 0 BD_Reload();
+			RIFR M 1 A_PlaySound("Mweapons/rifle/clipin");
+			RIFR MMM 1 A_WeaponOffset(1,0,WOF_ADD);
+			RIFR M 1 A_WeaponOffset(-1,0,WOF_ADD);
+			RIFR NHGFEDC 2;
+			TNT1 A 0 { 
+				if (!invoker.DryReload)
+					return ResolveState("ReloadEnd");
+				A_PlaySound("Mweapons/rifle/cock");
+				invoker.DryReload = false;
+				return ResolveState(null);
+				}
+			RIFN DEAA 2;
+			goto ready;
+		ReloadEnd:
+			RIFR BA 2;
+			goto ready;
+		AltFire.Modern:
+			TNT1 A 0 { 
+				A_ClearRefire();
+				if (invoker.RifleSights)
+					return ResolveState("UnsetSights");
+				invoker.RifleSights = true; 
+				A_PlaySound("Mweapons/rifle/aim",7);
+				speed = default.speed * 0.8;
+				A_ZoomFactor(1.3);
+				return ResolveState(null);
+				}
+			RIFA ABCD 2;
+			goto ReadySights;
+		UnsetSights:
+			TNT1 A 0 { 
 				invoker.RifleSights = false;
+				A_PlaySound("Mweapons/rifle/unaim",7);
 				speed = default.speed;
 				A_ZoomFactor(1.0);
 				}
-			return ResolveState(null);
-			}
-		RIFA DCBA 2;
-	ReloadDo:
-		RIFR ABCDE 2;
-		RIFR F 8 A_PlaySound("Mweapons/rifle/clipout");
-		RIFR GH 2;
-		RIFR I 5;
-		RIFR JKL 2;
-		TNT1 A 0 BD_Reload();
-		RIFR M 1 A_PlaySound("Mweapons/rifle/clipin");
-		RIFR MMM 1 A_WeaponOffset(1,0,WOF_ADD);
-		RIFR M 1 A_WeaponOffset(-1,0,WOF_ADD);
-		RIFR NHGFEDC 2;
-		TNT1 A 0 { 
-			if (!invoker.DryReload)
-				return ResolveState("ReloadEnd");
-			A_PlaySound("Mweapons/rifle/cock");
-			invoker.DryReload = false;
-			return ResolveState(null);
-			}
-		RIFN DEAA 2;
-		goto ready;
-	ReloadEnd:
-		RIFR BA 2;
-		goto ready;
-	AltFire.Modern:
-		TNT1 A 0 { 
-			A_ClearRefire();
-			if (invoker.RifleSights)
-				return ResolveState("UnsetSights");
-			invoker.RifleSights = true; 
-			A_PlaySound("Mweapons/rifle/aim",7);
-			speed = default.speed * 0.8;
-			A_ZoomFactor(1.3);
-			return ResolveState(null);
-			}
-		RIFA ABCD 2;
-		goto ReadySights;
-	UnsetSights:
-		TNT1 A 0 { 
-			invoker.RifleSights = false;
-			A_PlaySound("Mweapons/rifle/unaim",7);
-			speed = default.speed;
-			A_ZoomFactor(1.0);
-			}
-		RIFA DCBA 2;
-		goto Ready;
-	FlashModern:
-		TNT1 A 1 {
-			A_Light2();
-			if (invoker.riflesights)
-				A_Overlay(100,"FlashModernSights");
-			else
-				A_Overlay(100,"FlashModernHighlights");
-			
-			if (GetCVAR("bdoom_muzzle") == 1) {
-				for (int i = random (2,3); i > 0; i --) {
-					if (invoker.riflesights)
-						A_Eject("BD_MuzzleSmoke",12,0,1.5,32);
-					else
-						A_Eject("BD_MuzzleSmoke",12,0,4,32);
-					}
-				A_Overlay(-100,"FlashModernMuzzle");
+			RIFA DCBA 2;
+			goto Ready;
+		FlashModern:
+			TNT1 A 1 {
+				A_Light2();
 				if (invoker.riflesights)
-					A_OverlayOffset(-100,0,65);
+					A_Overlay(100,"FlashModernSights");
 				else
-					A_OverlayOffset(-100,0,85);
-				A_OverlayFlags(-100,PSPF_ADDWEAPON,false);
-				}
-					
-			A_OverlayFlags(100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
-			A_OverlayFlags(-100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
-			A_OverlayRenderstyle(100,STYLE_Add);
-			A_OverlayRenderstyle(-100,STYLE_Add);
-			}
-		TNT1 A 1 A_Light1();
-		goto lightdone;
-		RIFM ABCD 0;
-	FlashModernHighlights:
-		RIFL AB 1 bright {
-			if (GetCVAR("bdoom_muzzle") == 1) {
-				let fl = player.FindPSprite(100);
-				if (fl) fl.sprite = GetSpriteIndex("RIFM");
-				}
-			}
-			
-		stop;
-	FlashModernSights:
-		RIFL CD 1 bright {
-			if (GetCVAR("bdoom_muzzle") == 1) {
-				let fl = player.FindPSprite(100);
-				if (fl) fl.sprite = GetSpriteIndex("RIFM");
-				}
-			}
-		stop;
-	FlashModernMuzzle:
-		MUZ7 A 1 bright {
-				let fl = player.FindPSprite(-100);
-				if (fl) {
+					A_Overlay(100,"FlashModernHighlights");
+				
+				if (GetCVAR("bdoom_muzzle") == 1) {
+					for (int i = random (2,3); i > 0; i --) {
+						if (invoker.riflesights)
+							A_Eject("BD_MuzzleSmoke",12,0,1.5,32);
+						else
+							A_Eject("BD_MuzzleSmoke",12,0,4,32);
+						}
+					A_Overlay(-100,"FlashModernMuzzle");
 					if (invoker.riflesights)
-						fl.sprite = GetSpriteIndex("MUZ8");
-					fl.frame = random(0,5);
+						A_OverlayOffset(-100,0,65);
+					else
+						A_OverlayOffset(-100,0,85);
+					A_OverlayFlags(-100,PSPF_ADDWEAPON,false);
+					}
+						
+				A_OverlayFlags(100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
+				A_OverlayFlags(-100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
+				A_OverlayRenderstyle(100,STYLE_Add);
+				A_OverlayRenderstyle(-100,STYLE_Add);
+				}
+			TNT1 A 1 A_Light1();
+			goto lightdone;
+			RIFM ABCD 0;
+		FlashModernHighlights:
+			RIFL AB 1 bright {
+				if (GetCVAR("bdoom_muzzle") == 1) {
+					let fl = player.FindPSprite(100);
+					if (fl) fl.sprite = GetSpriteIndex("RIFM");
 					}
 				}
-		#### # 1 bright A_OverlayAlpha(-100,0.8);
-		#### # 1 bright A_OverlayAlpha(-100,0.5);
-		stop;
+				
+			stop;
+		FlashModernSights:
+			RIFL CD 1 bright {
+				if (GetCVAR("bdoom_muzzle") == 1) {
+					let fl = player.FindPSprite(100);
+					if (fl) fl.sprite = GetSpriteIndex("RIFM");
+					}
+				}
+			stop;
+		FlashModernMuzzle:
+			MUZ7 A 1 bright {
+					let fl = player.FindPSprite(-100);
+					if (fl) {
+						if (invoker.riflesights)
+							fl.sprite = GetSpriteIndex("MUZ8");
+						fl.frame = random(0,5);
+						}
+					}
+			#### # 1 bright A_OverlayAlpha(-100,0.8);
+			#### # 1 bright A_OverlayAlpha(-100,0.5);
+			stop;
+		}
 	}
-}
 
-Class RifleClip : ammo
-{
-Default {
-inventory.icon "HMAGZ0";
-	inventory.amount 1;
-	inventory.maxamount 40;
-	ammo.backpackamount 0;
-	ammo.backpackmaxamount 40;
+Class RifleClip : ammo {
+	Default {
+	inventory.icon "HMAGZ0";
+		inventory.amount 1;
+		inventory.maxamount 40;
+		ammo.backpackamount 0;
+		ammo.backpackmaxamount 40;
+		}
 	}
-}

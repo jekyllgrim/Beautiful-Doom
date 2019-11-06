@@ -1,173 +1,183 @@
-Class BD_ArchVile : BDoomMonster //replaces Archvile
-{
-Default
-	{
-	species "Archvile";
-	Health 700;
-	Radius 20;
-	Height 56;
-	Mass 500;
-	Speed 15;
-	PainChance 10;
-	Monster;
-	MaxTargetRange 896;
-	+QUICKTORETALIATE 
-	+FLOORCLIP 
-	+NOTARGET
-	SeeSound "vile/sight";
-	PainSound "vile/pain";
-	DeathSound "vile/death";
-	ActiveSound "vile/active";
-	MeleeSound "vile/stop";
-	Obituary "$OB_VILE";
-	Tag "$FN_ARCH";
-	gibhealth 60;
-	}
-override void Tick () {
-	super.Tick();
-	if (level.isFrozen())
-		return;
-	else if (!bdoom_flames)
-		return;
-	/*if ( InStateSequence(curstate,FindState("See")) && pos.z == floorz)
-		A_SpawnItemEx("ArchFlameDebris",frandom(-10,0),frandom(-8,8),4,failchance:240);*/
-	if ( InStateSequence(curstate,FindState("See"))
-		||InStateSequence(curstate,FindState("Pain")) ) {
-		A_SpawnItemEx("ArchFlameParticle",frandom(-20,-10),frandom(-10,10),frandom(24,70),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.2,0.6));
-		A_SpawnItemEx("ArchFlameParticle",frandom(-20,-10),frandom(-10,10),frandom(24,70),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.2,0.6));
-		}		
-	else if ( (InStateSequence(curstate,FindState("Missile")) || InStateSequence(curstate,FindState("Heal"))) && !InStateSequence(curstate,FindState("MissileDo"))) {
-		A_SpawnItemEx("ReverseArchFlameParticle",randompick(frandom(-32,-40),frandom(32,40)),randompick(frandom(-32,-40),frandom(32,40)),frandom(8,96),flags:SXF_SETTARGET);
-		A_SpawnItemEx("ReverseArchFlameParticle",randompick(frandom(-32,-40),frandom(32,40)),randompick(frandom(-32,-40),frandom(32,40)),frandom(8,96),flags:SXF_SETTARGET);
-		}		
-		
-	}
-states
-	{
-	Death.Fire:
-		stop;
-	Death.Greenfire:
-		stop;
-	Death.PlasmaDamage:
-		stop;
-	Raise:
-		stop;
-	Spawn:
-		VILI ABB 10 A_Look;
-		Loop;
-	See:
-		VILW abcdeefghijj 2 a_vilechase;
-		Loop;
-	Missile:
-		TNT1 A 0 Bright	A_VileStart();		
-		NVIL ABCDE 2 bright {
-			A_FaceTarget();
-			if (bdoom_flames) {
-				A_SpawnItemEx("ParticleFire_Yellow",-24,-28,frandom(78,82),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
-				A_SpawnItemEx("ParticleFire_Yellow",-24, 28,frandom(78,82),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
-				}
-			}
-			
-		NVIL F 2 bright {			
-			if (bdoom_flames) {
-				A_SpawnProjectile("ArchFlameSeeker");
-				A_VileTarget("BD_ArchvileFire");
-				A_SpawnItemEx("ParticleFire_Yellow",-8,-22,frandom(70,82),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
-				A_SpawnItemEx("ParticleFire_Yellow",-8, 22,frandom(70,82),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
-				A_SpawnItemEx("ParticleFire_Yellow",-8, 22,frandom(70,82),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
-				}
-			else 
-				A_VileTarget();
-			}
-		NVIL G 2 bright {
-			if (bdoom_flames) {
-				A_SpawnItemEx("ParticleFire_Yellow",-4,-18,48,frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
-				A_SpawnItemEx("ParticleFire_Yellow",-4, 18,48,frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
-				}
-			}
-		NVIL H 2 bright {
-			if (bdoom_flames) {
-				A_SpawnItemEx("ParticleFire_Yellow",0,-20,44,frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
-				A_SpawnItemEx("ParticleFire_Yellow",0, 20,44,frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
-				}
-			}
-		NVIL I 2 bright {
-			if (bdoom_flames) {
-				A_SpawnItemEx("ParticleFire_Yellow",0,-16,40,frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
-				A_SpawnItemEx("ParticleFire_Yellow",0, 16,40,frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
-				}
-			}
-			
-		NVIL I 2 bright {
-			A_FaceTarget();
-			if (bdoom_flames) {
-				A_SpawnItemEx("ParticleFire_Yellow",0,-10,40,frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
-				A_SpawnItemEx("ParticleFire_Yellow",0, 10,40,frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
-				}
-			}
-		NVIL JKKKKKKKKKKKKKKLLMM 2 bright {
-			A_FaceTarget();
-			if (bdoom_flames) {
-				A_SpawnItemEx("ParticleFire_Yellow",4,frandom(-1.5,1.5),frandom(37,40),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
-				A_SpawnItemEx("ParticleFire_Yellow",4,frandom(-1.5,1.5),frandom(37,40),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
-				}
-			}
-	MissileDo:
-		TNT1 A 0 A_VileAttack();
-		NVIL NNOO 2 bright {
-			if (bdoom_flames) {
-				A_SpawnItemEx("ParticleFire_Yellow",36,frandom(-1.5,1.5),frandom(37,40),frandom(-2.2,2.2),frandom(-2.2,2.2),frandom(-1,2));
-				A_SpawnItemEx("ParticleFire_Yellow",36,frandom(-1.5,1.5),frandom(37,40),frandom(-2.2,2.2),frandom(-2.2,2.2),frandom(-1,2));
-				A_SpawnItemEx("ParticleFire_Yellow",36,frandom(-1.5,1.5),frandom(37,40),frandom(-2.2,2.2),frandom(-2.2,2.2),frandom(-1,2));
-				A_SpawnItemEx("ArchFlameParticle",36,frandom(-1.5,1.5),frandom(37,40), frandom(-2.5,2.5),frandom(-2.5,2.5),frandom(-2,3.4),0,0,0);
-				A_SpawnItemEx("ArchFlameParticle",36,frandom(-1.5,1.5),frandom(37,40), frandom(-2.5,2.5),frandom(-2.5,2.5),frandom(-2,3.4),0,0,0);
-				A_SpawnItemEx("ArchFlameParticle",36,frandom(-1.5,1.5),frandom(37,40), frandom(-2.5,2.5),frandom(-2.5,2.5),frandom(-2,3.4),0,0,0);
-				A_SpawnItemEx("ArchFlameParticle",36,frandom(-1.5,1.5),frandom(37,40), frandom(-2.5,2.5),frandom(-2.5,2.5),frandom(-2,3.4),0,0,0);
-				}
-			}
-		NVIL PPQQ 2 bright {
-			if (bdoom_flames) {
-				A_SpawnItemEx("ParticleFire_Yellow",36,frandom(-1.5,1.5),frandom(37,40),frandom(-1.5,1.5),frandom(-1.5,1.5),frandom(-0.6,1.4));
-				A_SpawnItemEx("ParticleFire_Yellow",36,frandom(-1.5,1.5),frandom(37,40),frandom(-1.5,1.5),frandom(-1.5,1.5),frandom(-0.6,1.4));
-				}
-			}
-		NVIL R 20 Bright;
-		Goto See;
-	Heal:
-		TNT1 A 0 A_SpawnItemEx("ArchPentagram",32,0);
-		VIL1 xxyzyxxyzy 3 bright;
-		goto see;
-	Pain:
-		VILP a 3;
-		VILP b 7 a_pain;
-		Goto See;
-	Death:
-		TNT1 A 0 {
-			scale.x = randompick(-1,1);
-			}
-		VILM A 3;
-		VILM B 3 A_Scream;
-		VILM C 3 A_NoBlocking;
-		VILM DEF 3;
-		VILM GHIJKLM 3 BD_Bleed;
-		goto deathbleed;
-	XDeath:
-		TNT1 A 0 {
-			return A_jump(96,"Death");
-			scale.x = randompick(-1,1);
-			return ResolveState(null);
-			}
-		VILX A 3;
-		VILX b 2 a_scream;
-		VILX c 2 a_noblocking;
-		VILX defghijklmnop 2 BD_Bleed();
-		VILX q 1;
-		goto deathbleed;
-	Crush:
-		CRS2 A -1;
-		stop;
+Class BD_ArchVile : BDoomMonster {
+	state spain;
+	state smissile;
+	state smissiledo;
+	state sheal;
+	Default
+		{
+		species "Archvile";
+		Health 700;
+		Radius 20;
+		Height 56;
+		Mass 500;
+		Speed 15;
+		PainChance 10;
+		Monster;
+		MaxTargetRange 896;
+		+QUICKTORETALIATE 
+		+FLOORCLIP 
+		+NOTARGET
+		SeeSound "vile/sight";
+		PainSound "vile/pain";
+		DeathSound "vile/death";
+		ActiveSound "vile/active";
+		MeleeSound "vile/stop";
+		Obituary "$OB_VILE";
+		Tag "$FN_ARCH";
+		gibhealth 60;
 		}
-}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		ssee = FindState("See");
+		spain = FindState("Pain");
+		smissile = FindState("Missile");
+		smissiledo = FindState("MissileDo");
+		sheal = FindState("Heal");
+		}
+	override void Tick () {
+		super.Tick();
+		if (level.isFrozen())
+			return;
+		else if (!bdoom_flames)
+			return;
+		/*if ( InStateSequence(curstate,FindState("See")) && pos.z == floorz)
+			A_SpawnItemEx("ArchFlameDebris",frandom(-10,0),frandom(-8,8),4,failchance:240);*/
+		if ( InStateSequence(curstate,ssee)
+			||InStateSequence(curstate,spain) ) {
+			A_SpawnItemEx("ArchFlameParticle",frandom(-20,-10),frandom(-10,10),frandom(24,70),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.2,0.6));
+			A_SpawnItemEx("ArchFlameParticle",frandom(-20,-10),frandom(-10,10),frandom(24,70),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.2,0.6));
+			}		
+		else if ( (InStateSequence(curstate,smissile) || InStateSequence(curstate,sheal)) && !InStateSequence(curstate,smissiledo)) {
+			A_SpawnItemEx("ReverseArchFlameParticle",randompick(frandom(-32,-40),frandom(32,40)),randompick(frandom(-32,-40),frandom(32,40)),frandom(8,96),flags:SXF_SETTARGET);
+			A_SpawnItemEx("ReverseArchFlameParticle",randompick(frandom(-32,-40),frandom(32,40)),randompick(frandom(-32,-40),frandom(32,40)),frandom(8,96),flags:SXF_SETTARGET);
+			}		
+			
+		}
+	states	{
+		Death.Fire:
+			stop;
+		Death.Greenfire:
+			stop;
+		Death.PlasmaDamage:
+			stop;
+		Raise:
+			stop;
+		Spawn:
+			VILI ABB 10 A_Look;
+			Loop;
+		See:
+			VILW abcdeefghijj 2 a_vilechase;
+			Loop;
+		Missile:
+			TNT1 A 0 Bright	A_VileStart();		
+			NVIL ABCDE 2 bright {
+				A_FaceTarget();
+				if (bdoom_flames) {
+					A_SpawnItemEx("ParticleFire_Yellow",-24,-28,frandom(78,82),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
+					A_SpawnItemEx("ParticleFire_Yellow",-24, 28,frandom(78,82),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
+					}
+				}
+				
+			NVIL F 2 bright {			
+				if (bdoom_flames) {
+					A_SpawnProjectile("ArchFlameSeeker");
+					A_VileTarget("BD_ArchvileFire");
+					A_SpawnItemEx("ParticleFire_Yellow",-8,-22,frandom(70,82),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
+					A_SpawnItemEx("ParticleFire_Yellow",-8, 22,frandom(70,82),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
+					A_SpawnItemEx("ParticleFire_Yellow",-8, 22,frandom(70,82),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
+					}
+				else 
+					A_VileTarget();
+				}
+			NVIL G 2 bright {
+				if (bdoom_flames) {
+					A_SpawnItemEx("ParticleFire_Yellow",-4,-18,48,frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
+					A_SpawnItemEx("ParticleFire_Yellow",-4, 18,48,frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
+					}
+				}
+			NVIL H 2 bright {
+				if (bdoom_flames) {
+					A_SpawnItemEx("ParticleFire_Yellow",0,-20,44,frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
+					A_SpawnItemEx("ParticleFire_Yellow",0, 20,44,frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
+					}
+				}
+			NVIL I 2 bright {
+				if (bdoom_flames) {
+					A_SpawnItemEx("ParticleFire_Yellow",0,-16,40,frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
+					A_SpawnItemEx("ParticleFire_Yellow",0, 16,40,frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
+					}
+				}
+				
+			NVIL I 2 bright {
+				A_FaceTarget();
+				if (bdoom_flames) {
+					A_SpawnItemEx("ParticleFire_Yellow",0,-10,40,frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
+					A_SpawnItemEx("ParticleFire_Yellow",0, 10,40,frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
+					}
+				}
+			NVIL JKKKKKKKKKKKKKKLLMM 2 bright {
+				A_FaceTarget();
+				if (bdoom_flames) {
+					A_SpawnItemEx("ParticleFire_Yellow",4,frandom(-1.5,1.5),frandom(37,40),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
+					A_SpawnItemEx("ParticleFire_Yellow",4,frandom(-1.5,1.5),frandom(37,40),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.9,1.4));
+					}
+				}
+		MissileDo:
+			TNT1 A 0 A_VileAttack();
+			NVIL NNOO 2 bright {
+				if (bdoom_flames) {
+					A_SpawnItemEx("ParticleFire_Yellow",36,frandom(-1.5,1.5),frandom(37,40),frandom(-2.2,2.2),frandom(-2.2,2.2),frandom(-1,2));
+					A_SpawnItemEx("ParticleFire_Yellow",36,frandom(-1.5,1.5),frandom(37,40),frandom(-2.2,2.2),frandom(-2.2,2.2),frandom(-1,2));
+					A_SpawnItemEx("ParticleFire_Yellow",36,frandom(-1.5,1.5),frandom(37,40),frandom(-2.2,2.2),frandom(-2.2,2.2),frandom(-1,2));
+					A_SpawnItemEx("ArchFlameParticle",36,frandom(-1.5,1.5),frandom(37,40), frandom(-2.5,2.5),frandom(-2.5,2.5),frandom(-2,3.4),0,0,0);
+					A_SpawnItemEx("ArchFlameParticle",36,frandom(-1.5,1.5),frandom(37,40), frandom(-2.5,2.5),frandom(-2.5,2.5),frandom(-2,3.4),0,0,0);
+					A_SpawnItemEx("ArchFlameParticle",36,frandom(-1.5,1.5),frandom(37,40), frandom(-2.5,2.5),frandom(-2.5,2.5),frandom(-2,3.4),0,0,0);
+					A_SpawnItemEx("ArchFlameParticle",36,frandom(-1.5,1.5),frandom(37,40), frandom(-2.5,2.5),frandom(-2.5,2.5),frandom(-2,3.4),0,0,0);
+					}
+				}
+			NVIL PPQQ 2 bright {
+				if (bdoom_flames) {
+					A_SpawnItemEx("ParticleFire_Yellow",36,frandom(-1.5,1.5),frandom(37,40),frandom(-1.5,1.5),frandom(-1.5,1.5),frandom(-0.6,1.4));
+					A_SpawnItemEx("ParticleFire_Yellow",36,frandom(-1.5,1.5),frandom(37,40),frandom(-1.5,1.5),frandom(-1.5,1.5),frandom(-0.6,1.4));
+					}
+				}
+			NVIL R 20 Bright;
+			Goto See;
+		Heal:
+			TNT1 A 0 A_SpawnItemEx("ArchPentagram",32,0);
+			VIL1 xxyzyxxyzy 3 bright;
+			goto see;
+		Pain:
+			VILP a 3;
+			VILP b 7 a_pain;
+			Goto See;
+		Death:
+			TNT1 A 0 {
+				scale.x = randompick(-1,1);
+				}
+			VILM A 3;
+			VILM B 3 A_Scream;
+			VILM C 3 A_NoBlocking;
+			VILM DEF 3;
+			VILM GHIJKLM 3 BD_Bleed;
+			goto deathbleed;
+		XDeath:
+			TNT1 A 0 {
+				return A_jump(96,"Death");
+				scale.x = randompick(-1,1);
+				return ResolveState(null);
+				}
+			VILX A 3;
+			VILX b 2 a_scream;
+			VILX c 2 a_noblocking;
+			VILX defghijklmnop 2 BD_Bleed();
+			VILX q 1;
+			goto deathbleed;
+		Crush:
+			CRS2 A -1;
+			stop;
+			}
+	}
 	
 
 Class BD_ArchvileFire : ArchvileFire {
@@ -223,6 +233,8 @@ Class ArchFlameSeeker : Actor {
 		}
 	override void Tick() {
 		super.Tick();
+		if (level.isFrozen())
+			return;
 		if (!target || !(target is "BD_ArchVile") || !tracer || ftimer < 1) {
 			destroy();
 			return;

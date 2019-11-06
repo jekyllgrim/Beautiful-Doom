@@ -54,12 +54,13 @@ states
 			return ResolveState(null);
 			}
 		CPAS ABCEE 2 A_FaceTarget();
+	MissileLoop:
 		CPAS F 2 BD_BulletAttack(22.5, 0, 1, random(1,5)*3, "chainguy/attack", "weapons/chaingun/fire","ChaingunCasing",18,-20,34,32,12);
 		CPAS E 2 A_FaceTarget();
 		CPAS F 2 BD_BulletAttack(22.5, 0, 1, random(1,5)*3, "chainguy/attack", "weapons/chaingun/fire","ChaingunCasing",18,-20,34,32,12);
 		CPAS E 2 A_FaceTarget();
 		CPAS E 1 A_MonsterRefire(40,"AttackEnd");
-		goto Missile+6;
+		loop;
 	MissileModern:
 		CPAS ABCEE 2 A_FaceTarget();
 	MissileModernDo:

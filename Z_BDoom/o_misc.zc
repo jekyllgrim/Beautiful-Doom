@@ -165,7 +165,7 @@ static const string SSprite[] =
 	};
 /*override void Tick() {
 	super.tick();
-	if (level.IsFrozen() || !bdoom_debris)
+	if (level.isFrozen() || !bdoom_debris)
 		return;
 	timer++;
 	if (random(0,10) > 9 && timer >= 20) {
@@ -334,7 +334,7 @@ Default {
 	scale 0.5;
 	+NOINTERACTION
 	SmallDebris.Removeonfall false;
-	SmallDebris.dbreak 0.95;
+	SmallDebris.dbrake 0.95;
 	}
 override void PostBeginPlay() {
 	super.PostBeginPlay();
