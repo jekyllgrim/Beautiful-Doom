@@ -164,7 +164,7 @@ states
 				if (random(0,1) == 1) 
 					A_OverlayFlags(-100,PSPF_FLIP,true);
 				A_OverlayFlags(-100,PSPF_ADDWEAPON,false);
-				A_OverlayOffset(-100,0,90);
+				A_OverlayOffset(-100,0,44);
 				A_OverlayFlags(-100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
 				A_OverlayRenderstyle(-100,STYLE_Add);
 				}
@@ -203,9 +203,7 @@ states
 			return ResolveState(null);
 			}
 		SH2L I 1 bright A_OverlayAlpha(100,0.8);
-		SH2L I 1 bright A_OverlayAlpha(100,0.6);
-		SH2L I 1 bright A_OverlayAlpha(100,0.4);
-		SH2L I 1 bright A_OverlayAlpha(100,0.2);
+		SH2L I 1 bright A_OverlayAlpha(100,0.5);
 		stop;
 	FlashMuzzle:
 		MUZ4 A 2 bright {
@@ -215,8 +213,8 @@ states
 					A_SetTics(1);
 				}
 		#### # 1 bright A_OverlayAlpha(-100,0.8);
-		#### # 1 bright A_OverlayAlpha(-100,0.6);
-		#### # 1 bright A_OverlayAlpha(-100,0.4);
+		//#### # 1 bright A_OverlayAlpha(-100,0.6);
+		//#### # 1 bright A_OverlayAlpha(-100,0.4);
 		stop;
 		
 	
@@ -328,7 +326,7 @@ states
 				A_Overlay(100,"FlashEnhancedSide");
 				A_Overlay(-100,"FlashMuzzleSide");
 				A_OverlayFlags(-100,PSPF_ADDWEAPON,false);
-				A_OverlayOffset(-100,-8,90);
+				A_OverlayOffset(-100,0,44);
 				A_OverlayFlags(-100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
 				A_OverlayRenderstyle(-100,STYLE_Add);
 				int vofs = 0;
@@ -378,8 +376,7 @@ states
 			return ResolveState(null);
 			}
 		SH2L G 1 bright A_OverlayAlpha(100,0.8);
-		SH2L G 1 bright A_OverlayAlpha(100,0.6);
-		SH2L G 1 bright A_OverlayAlpha(100,0.4);
+		SH2L G 1 bright A_OverlayAlpha(100,0.5);
 		stop;
 	FlashMuzzleSide:
 		MUZ3 A 1 bright {
@@ -387,8 +384,8 @@ states
 				fl.frame = random(0,3);
 				}
 		#### # 1 bright A_OverlayAlpha(-100,0.8);
-		#### # 1 bright A_OverlayAlpha(-100,0.6);
-		#### # 1 bright A_OverlayAlpha(-100,0.4);
+		//#### # 1 bright A_OverlayAlpha(-100,0.6);
+		//#### # 1 bright A_OverlayAlpha(-100,0.4);
 		stop;
 		
 	Reload.Enhanced:

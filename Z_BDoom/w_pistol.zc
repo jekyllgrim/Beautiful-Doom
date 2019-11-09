@@ -135,7 +135,7 @@ states
 					A_Eject("BD_MuzzleSmoke",12,0,6.2,32);
 				A_Overlay(100,"FlashEnhanced");
 				A_Overlay(-100,"FlashMuzzle");
-				A_OverlayOffset(-100,0,65);
+				A_OverlayOffset(-100,0,8);
 				if (random(0,1) == 1) 
 					A_OverlayFlags(-100,PSPF_FLIP,true);
 				}
@@ -173,15 +173,15 @@ states
 	FlashMuzzle:
 		MUZ1 A 1 bright {
 				let fl = player.FindPSprite(-100);
-				fl.frame = random(0,7);
+				fl.frame = random(0,3);
 				}
 		MUZ1 # 1 bright A_OverlayAlpha(-100,0.8);
-		MUZ1 # 1 bright {
+		/*MUZ1 # 1 bright {
 			if (bdoom_weapons == 2)
 				A_ClearOverlays(-100,-100);
 			A_OverlayAlpha(-100,0.6);
 			}
-		MUZ1 # 1 bright A_OverlayAlpha(-100,0.4);
+		MUZ1 # 1 bright A_OverlayAlpha(-100,0.4);*/
 		stop;
 
 //ENHANCED		
@@ -309,7 +309,7 @@ states
 					}
 				A_Overlay(100,"AltFlashEnhanced");
 				A_Overlay(-100,"AltFlashMuzzle");
-				A_OverlayOffset(-100,40,53);
+				A_OverlayOffset(-100,40,0);
 				if (random(0,1) == 1) 
 					A_OverlayFlags(-100,PSPF_FLIP,true);
 				}
@@ -334,10 +334,10 @@ states
 	AltFlashMuzzle:
 		MUZ1 A 1 bright {
 				let fl = player.FindPSprite(-100);
-				fl.frame = random(0,7);
+				fl.frame = random(0,3);
 				}
-		MUZ1 # 1 bright A_OverlayAlpha(-100,0.7);
-		MUZ1 # 1 bright A_OverlayAlpha(-100,0.4);
+		MUZ1 # 1 bright A_OverlayAlpha(-100,0.8);
+		//MUZ1 # 1 bright A_OverlayAlpha(-100,0.4);
 		stop;
 // MODERN GUNS
 
