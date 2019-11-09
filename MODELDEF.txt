@@ -133,7 +133,59 @@ Model BD_SpiderBullet
 	FrameIndex PUFF A 0 0
 }
 
+Model BD_PlaneDecal
+{
+	UseActorPitch
+	UseActorRoll
+	zoffset 1.0
+	Scale 2.2 2.2 2.2
+	
+	Model 0 "models/bloodpool/BloodPool.md3"
 
+	Skin 0 "graphics/CHIP1.png"
+	FrameIndex CHIP A 0 0
+	Skin 0 "graphics/CHIP2.png"
+	FrameIndex CHIP B 0 0	
+	Skin 0 "graphics/CHIP3.png"
+	FrameIndex CHIP C 0 0	
+	Skin 0 "graphics/CHIP4.png"
+	FrameIndex CHIP D 0 0	
+	Skin 0 "graphics/CHIP5.png"
+	FrameIndex CHIP E 0 0
+
+	Skin 0 "graphics/MCHIP1.png"
+	FrameIndex METL A 0 0
+	Skin 0 "graphics/MCHIP2.png"
+	FrameIndex METL B 0 0	
+	Skin 0 "graphics/MCHIP3.png"
+	FrameIndex METL C 0 0	
+	Skin 0 "graphics/MCHIP4.png"
+	FrameIndex METL D 0 0	
+	Skin 0 "graphics/MCHIP5.png"
+	FrameIndex METL E 0 0	
+
+	Skin 0 "graphics/WCHIP1.png"
+	FrameIndex WOOD A 0 0
+	Skin 0 "graphics/WCHIP2.png"
+	FrameIndex WOOD B 0 0	
+	Skin 0 "graphics/WCHIP3.png"
+	FrameIndex WOOD C 0 0	
+	Skin 0 "graphics/WCHIP4.png"
+	FrameIndex WOOD D 0 0	
+	Skin 0 "graphics/WCHIP5.png"
+	FrameIndex WOOD E 0 0	
+
+	Skin 0 "graphics/SCHIP1.png"
+	FrameIndex BRIK A 0 0
+	Skin 0 "graphics/SCHIP2.png"
+	FrameIndex BRIK B 0 0	
+	Skin 0 "graphics/SCHIP3.png"
+	FrameIndex BRIK C 0 0	
+	Skin 0 "graphics/SCHIP4.png"
+	FrameIndex BRIK D 0 0	
+}
+	
+	
 ////////// BLOOD POOL
 
 //the actual model by Nash, textures/animation by me

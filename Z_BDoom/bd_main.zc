@@ -640,16 +640,13 @@ Class NullPuff : Actor {
 	}
 
 Class EnBulletPuff : BDoomPuff {
-	//int hitangle;
 	protected string hittex; //texture that was hit
-	name dtype; //debris type
+	name DebrisType; //debris type
 	int rchance; //ricochet chance
 	bool debris; //whether to spawn debris
-	int  smoke; //0 - none, 1 - directional, 2 - circular, slides along the wall
+	int smoke; //0 - none, 1 - directional, 2 - circular, slides along the wall
 	int sparkchance; //spark chance
-	//int tracepitch;
-	//int traceheight;
-	protected double smokeangle;
+	protected double hitangle;
 	protected string decaltype;
 	protected FLineTraceData puffdata;
 	Default {
@@ -695,9 +692,9 @@ Class EnBulletPuff : BDoomPuff {
 						double lineangle = atan2(puffdata.HitLine.delta.y, puffdata.HitLine.delta.x);
 						int adiff = DeltaAngle(lineangle,target.angle);
 						if (adiff > 0)
-							smokeangle = lineangle - 90;
+							hitangle = lineangle - 90;
 						else
-							smokeangle = lineangle + 90;
+							hitangle = lineangle + 90;
 						//console.printf("line angle: %d | angle: %d | delta: %d",lineangle,target.angle,adiff);
 						}
 					}
@@ -724,7 +721,7 @@ Class EnBulletPuff : BDoomPuff {
 				for (int i = 0; i < WoodWalls.Size(); i++) {
 					if (hittex.IndexOf(WoodWalls[i]) >= 0 ) {
 						decaltype = "BulletWchip";
-						dtype = 'wood';
+						DebrisType = 'wood';
 						debris = true;
 						smoke = 1;
 						rchance = 0;
@@ -738,7 +735,7 @@ Class EnBulletPuff : BDoomPuff {
 				for (int i = 0; i < MarbleWalls.Size(); i++) {
 					if (hittex.IndexOf(MarbleWalls[i]) >= 0 ) {
 						decaltype = "BulletSchip";
-						dtype = 'marble';
+						DebrisType = 'marble';
 						rchance = 20;
 						debris = true;
 						smoke = 2;
@@ -764,7 +761,7 @@ Class EnBulletPuff : BDoomPuff {
 				for (int i = 0; i < BrickWalls.Size(); i++) {
 					if (hittex.IndexOf(BrickWalls[i]) >= 0 ) {
 						decaltype = "BulletSchip";
-						dtype = 'brick';
+						DebrisType = 'brick';
 						rchance = 15;
 						debris = true;
 						smoke = 2;
@@ -777,7 +774,7 @@ Class EnBulletPuff : BDoomPuff {
 				for (int i = 0; i < GoreWalls.Size(); i++) {
 					if (hittex.IndexOf(GoreWalls[i]) >= 0 ) {
 						decaltype = "Bulletchip";
-						dtype = 'bloody';
+						DebrisType = 'bloody';
 						debris = true;
 						smoke = 0;
 						A_Playsound("bullet/body",0,1.0,0,3);	
@@ -789,7 +786,7 @@ Class EnBulletPuff : BDoomPuff {
 				for (int i = 0; i < SkinWalls.Size(); i++) {
 					if (hittex.IndexOf(SkinWalls[i]) >= 0 ) {
 						decaltype = "Bulletchip";
-						dtype = 'skin';
+						DebrisType = 'skin';
 						debris = false;
 						smoke = 0;
 						A_Playsound("bullet/body",0,1.0,0,3);	
@@ -800,7 +797,7 @@ Class EnBulletPuff : BDoomPuff {
 				//Generic - suitable for stone, gray walls, etc. Minor ricochet chance, no sparks, generic debris, circular smoke
 				if (puffdata.HitType != TRACE_HitNone) {
 					decaltype = "Bulletchip";
-					dtype = 'stone';
+					DebrisType = 'stone';
 					rchance = 25;
 					debris = true;
 					smoke = 2;
@@ -819,35 +816,86 @@ Class EnBulletPuff : BDoomPuff {
 					if (smoke == 1) {
 						if (puffdata.HitType == TRACE_HitFloor) {
 							for (int i = 0; i < 10; i++)
-								A_SpawnItemEx("WallSmoke",0,0,0,frandom(-0.1,0.1),frandom(-0.1,0.1),frandom(0.2,1.2),0,SXF_ABSOLUTEANGLE,48);
+								A_SpawnItemEx("WallSmoke",0,0,0,frandom(-0.1,0.1),frandom(-0.1,0.1),frandom(0.2,1.2),0,0,48);
 							}
 						else if (puffdata.HitType == TRACE_HitCeiling) {
 							for (int i = 0; i < 10; i++)
-								A_SpawnItemEx("WallSmoke",0,0,0,frandom(-0.1,0.1),frandom(-0.1,0.1),-frandom(0.2,1.2),0,SXF_ABSOLUTEANGLE,48);
+								A_SpawnItemEx("WallSmoke",0,0,0,frandom(-0.1,0.1),frandom(-0.1,0.1),-frandom(0.2,1.2),0,0,48);
 							}
 						else {
 							for (int i = 0; i < 10; i++)
-								A_SpawnItemEx("WallSmoke",0,0,0,frandom(0.2,1.2),0,0,smokeangle+frandom(-4,4),SXF_ABSOLUTEANGLE,48);
+								A_SpawnItemEx("WallSmoke",0,0,0,frandom(0.2,1.2),0,0,hitangle+frandom(-4,4),SXF_ABSOLUTEANGLE,48);
 							}
 						}
 					else if (smoke == 2) {
 						for (int i = 0; i < 15; i++)
-							A_SpawnItemEx("RingSmoke",	0,0,0,	frandom(-0.7,0.7),frandom(-0.7,0.7),frandom(-0.7,0.7),0,0,64);
+							A_SpawnItemEx("RingSmoke", 0,0,0, frandom(-0.7,0.7),frandom(-0.7,0.7),frandom(-0.7,0.7),0,0,64);
 						}
 					if (debris) {
-						for (int i = 0; i < 5; i++)
-							A_SpawnItemEx("Wallpart",		0,0,0,	frandom(2,5),0,	frandom(1,4),random(150,210),SXF_SETTARGET,	64);
+						if (puffdata.HitType == TRACE_HitFloor) {
+							for (int i = 0; i < 5; i++)
+								A_SpawnItemEx("Wallpart", 0,0,0, frandom(-1,1),frandom(-1,1),frandom(2,5), 0,SXF_SETTARGET,64);
+							}
+						else if (puffdata.HitType == TRACE_HitCeiling) {
+							for (int i = 0; i < 5; i++)
+								A_SpawnItemEx("Wallpart", 0,0,0, frandom(-1,1),frandom(-1,1),0, 0,SXF_SETTARGET,64);
+							}
+						else {
+							for (int i = 0; i < 5; i++)
+								A_SpawnItemEx("Wallpart", 0,0,0, frandom(2,5),0,frandom(1,3), hitangle+frandom(-15,15),SXF_SETTARGET|SXF_ABSOLUTEANGLE,64);
+							}
 						}
 					if (random(0,100) < sparkchance) {
 						for (int i = 0; i < 6; i++)
-							A_SpawnItemEx("RicochetSpark",	0,0,0,	frandom(-1.5,1.5),	frandom(-1.5,1.5),	frandom(1,4),		0,				0,				72);
+							A_SpawnItemEx("RicochetSpark", 0,0,0, frandom(-1.5,1.5),frandom(-1.5,1.5),frandom(1,4), 0,0,72);
 						}
 					}
-				if (pos.z > floorz+8 && pos.z < ceilingz-8)
-					A_SprayDecal(decaltype,8);
+				if (decaltype) {
+					if (puffdata.HitType == TRACE_HitFloor) {
+						let pld = BD_PlaneDecal(Spawn("BD_PlaneDecal",(pos.x,pos.y,floorz)));
+						if (pld) pld.decaltype = decaltype;
+						}
+					else if (puffdata.HitType == TRACE_HitCeiling) {
+						let pld = BD_PlaneDecal(Spawn("BD_PlaneDecal",(pos.x,pos.y,ceilingz)));
+						if (pld) {
+							pld.decaltype = decaltype;
+							pld.roll = 180;
+							}
+						}
+					else
+						A_SprayDecal(decaltype,8);
+					}
 				return ResolveState(null);
 				}
 			BPUF ABCD 1 bright;
+			stop;
+		}
+	}
+
+Class BD_PlaneDecal : DebrisGeneral {
+	name decaltype;
+	Default {
+		+NOINTERACTION
+		+RELATIVETOFLOOR
+		+MOVEWITHSECTOR
+		renderstyle 'Shaded';
+		}
+	states {
+		load:
+			CHIP ABCDE 0;
+			METL ABCDE 0;
+			WOOD ABCDE 0;
+			BRIK ABCD 0;
+		Spawn:
+			TNT1 A 0 NoDelay {				
+				switch (decaltype) {
+					case 'BulletChip'	: sprite = GetSpriteIndex("CHIP");	frame = random(0,4); alpha = 0.85; angle = random(0,360); break;
+					case 'BulletMChip'	: sprite = GetSpriteIndex("METL");	frame = random(0,4); alpha = 0.55; angle = random(0,360);break;
+					case 'BulletWChip'	: sprite = GetSpriteIndex("WOOD");	frame = random(0,4); alpha = 1.0; break;
+					case 'BulletSChip'	: sprite = GetSpriteIndex("BRIK");	frame = random(0,3); alpha = 0.75; angle = random(0,360);break;
+					}
+				}
+			#### # -1;
 			stop;
 		}
 	}
@@ -872,17 +920,17 @@ Class WallPart : SmallDebris {
 		if (!target || !(target is "EnBulletPuff"))
 			return;
 		let puff = EnBulletPuff(target);
-		if (puff.dtype == 'wood') {
+		if (puff.DebrisType == 'wood') {
 			A_SetTranslation("DebrisWood");
 			A_setScale(frandom(0.14,0.18),frandom(0.06,0.09));
 			}
-		else if (puff.dtype == 'marble') {
+		else if (puff.DebrisType == 'marble') {
 			if (random(0,1) == 1)
 				A_SetTranslation("DebrisMarble1");
 			else
 				A_SetTranslation("DebrisMarble2");
 			}
-		else if (puff.dtype == 'brick')
+		else if (puff.DebrisType == 'brick')
 			A_SetTranslation("DebrisBrick");
 		}
 	states {
@@ -890,7 +938,7 @@ Class WallPart : SmallDebris {
 			TNT1 A 0 NoDelay {
 				if (target && target is "EnBulletPuff") {
 					let puff = EnBulletPuff(target);
-					if (puff.dtype == 'bloody')
+					if (puff.DebrisType == 'bloody')
 					return ResolveState("Bloody");
 					}
 				return ResolveState(null);

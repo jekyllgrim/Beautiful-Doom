@@ -246,8 +246,8 @@ Class BD_Chaingun : BDoomWeapon {
 					let fl = player.FindPSprite(-100);
 					fl.frame = random(0,3);
 					}
-			#### # 1 bright A_OverlayAlpha(-100,0.8);
-			#### # 1 bright A_OverlayAlpha(-100,0.5);
+			//#### # 1 bright A_OverlayAlpha(-100,0.8);
+			//#### # 1 bright A_OverlayAlpha(-100,0.5);
 			stop;
 		FlashHeated:
 			MGGH B 1 bright {
