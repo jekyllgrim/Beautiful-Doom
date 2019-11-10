@@ -1,8 +1,6 @@
 Class BD_ArchVile : BDoomMonster {
-	state spain;
-	state smissile;
-	state smissiledo;
-	state sheal;
+	protected state mmissiledo;
+	protected state hheal;
 	Default
 		{
 		species "Archvile";
@@ -28,11 +26,8 @@ Class BD_ArchVile : BDoomMonster {
 		}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		ssee = FindState("See");
-		spain = FindState("Pain");
-		smissile = FindState("Missile");
-		smissiledo = FindState("MissileDo");
-		sheal = FindState("Heal");
+		mmissiledo = FindState("MissileDo");
+		hheal = FindState("Heal");
 		}
 	override void Tick () {
 		super.Tick();
@@ -43,11 +38,11 @@ Class BD_ArchVile : BDoomMonster {
 		/*if ( InStateSequence(curstate,FindState("See")) && pos.z == floorz)
 			A_SpawnItemEx("ArchFlameDebris",frandom(-10,0),frandom(-8,8),4,failchance:240);*/
 		if ( InStateSequence(curstate,ssee)
-			||InStateSequence(curstate,spain) ) {
+			||InStateSequence(curstate,ppain) ) {
 			A_SpawnItemEx("ArchFlameParticle",frandom(-20,-10),frandom(-10,10),frandom(24,70),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.2,0.6));
 			A_SpawnItemEx("ArchFlameParticle",frandom(-20,-10),frandom(-10,10),frandom(24,70),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.2,0.6));
 			}		
-		else if ( (InStateSequence(curstate,smissile) || InStateSequence(curstate,sheal)) && !InStateSequence(curstate,smissiledo)) {
+		else if ( (InStateSequence(curstate,mmissile) || InStateSequence(curstate,hheal)) && !InStateSequence(curstate,mmissiledo)) {
 			A_SpawnItemEx("ReverseArchFlameParticle",randompick(frandom(-32,-40),frandom(32,40)),randompick(frandom(-32,-40),frandom(32,40)),frandom(8,96),flags:SXF_SETTARGET);
 			A_SpawnItemEx("ReverseArchFlameParticle",randompick(frandom(-32,-40),frandom(32,40)),randompick(frandom(-32,-40),frandom(32,40)),frandom(8,96),flags:SXF_SETTARGET);
 			}		

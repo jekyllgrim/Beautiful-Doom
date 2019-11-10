@@ -76,6 +76,44 @@ Class DebrisGeneral : Actor abstract {
 			}
 		return false;
 		}
+	bool CheckLandingSize (double cradius = 0, bool checkceiling = false) {
+		/*int aangle = 0;
+		if (checkceiling)
+			return (GetZAt(cradius,0,0,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
+				||	GetZAt(cradius,0,45,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
+				||	GetZAt(cradius,0,90,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
+				||	GetZAt(cradius,0,135,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
+				||	GetZAt(cradius,0,180,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
+				||	GetZAt(cradius,0,225,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
+				||	GetZAt(cradius,0,270,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
+				||	GetZAt(cradius,0,315,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz );
+		else
+			return (GetZAt(cradius,0,0,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
+				||	GetZAt(cradius,0,45,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
+				||	GetZAt(cradius,0,90,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
+				||	GetZAt(cradius,0,135,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
+				||	GetZAt(cradius,0,180,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
+				||	GetZAt(cradius,0,225,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
+				||	GetZAt(cradius,0,270,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
+				||	GetZAt(cradius,0,315,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz );
+		}*/
+		        bool ret = false;
+        if (checkceiling) {
+            double ceilingHeight = GetZAt (flags: GZF_CEILING);
+            for (int i = 0; i < 360; i += 45) {
+				double curHeight = GetZAt (cradius, 0, i, GZF_ABSOLUTEANG | GZF_CEILING);
+				ret = ret || (curHeight > ceilingHeight);
+				}
+			}
+        else {
+            double floorHeight = GetZAt ();
+			for (int i = 0; i < 360; i += 45) {
+				double curHeight = GetZAt (cradius, 0, i, GZF_ABSOLUTEANG);
+				ret = ret || (curHeight < floorHeight);
+				}
+			}
+        return ret;
+		}
 	}
 
 //base class for less expensive version for small debris

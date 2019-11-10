@@ -328,8 +328,11 @@ Class RealBullet : BulletTracer {
 				}
 			PUFF A 1 bright;
 			wait;
+		XDeath:
+			TNT1 A 0;
+			stop;
 		Death:
-			TNT1 A 5 {
+			TNT1 A 1 {
 				let puff = Spawn("EnBulletPuff",pos); //A_SpawnItemEx("EnBulletPuff",flags:SXF_SETTARGET|SXF_ORIGINATOR);
 				if (puff)
 					puff.target = self;

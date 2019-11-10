@@ -1,15 +1,23 @@
 Class BDoomMonster : Actor abstract {
 	TranslatedBurningBody burncorpse;
 	BurningBodyFlame burnflame;
-	double smokeheight;
+	protected double smokeheight;
 	property smokeheight : smokeheight;
-	int monsterclip; //used by monsters with guns when bdoom_weapons == 2
+	protected int monsterclip; //used by monsters with guns when bdoom_weapons == 2
 	property monsterclip : monsterclip;
 
 	bool burning; //is showing burning or smoking animation
-	int burntimer;
-	int firetype; //0 = only smoke; 1 = regular yellow; 2 = baron green
-	state ssee;
+	protected int burntimer;
+	protected int firetype; //0 = only smoke; 1 = regular yellow; 2 = baron green
+	protected state sspawn;
+	protected state ssee;
+	protected state mmissile;
+	protected state mmelee;
+	protected state ppain;
+	protected state ddeath;
+	protected state xxdeath;
+	protected state vxdeath;
+	
 
 	Array <DebrisGeneral> meatlist; //keeps track of all gibs and blood spawned by the monster, so that they can be FlyBack()'d when it's resurrected
 
@@ -17,15 +25,19 @@ Class BDoomMonster : Actor abstract {
 		Monster;
 		BDoomMonster.monsterclip 10;
 		BDoomMonster.smokeheight 0;
-		/*BDoomMonster.allowsmokedeath true;
-		BDoomMonster.allowfiredeath true;*/
 		attacksound "none";
 		bloodtype "BD_Blood", "BD_Blood", "BloodSpurt";
-		//+DOHARMSPECIES
 		}
 	override Void PostBeginPlay() {
 		super.PostBeginPlay();
+		sspawn = FindState("Spawn");
 		ssee = FindState("See");
+		mmissile = FindState("Missile");
+		mmelee = FindState("Melee");
+		ppain = FindState("Pain");
+		ddeath = FindState("Death");
+		xxdeath = FindState("XDeath");
+		vxdeath = FindState("XDeath.Vanilla");
 		}
 		
 	void BD_Bleed() {
@@ -216,11 +228,11 @@ Class BDoomMonster : Actor abstract {
 		Death.Telefrag:
 		Death.Massacre:
 			TNT1 A 0 {
-				if (FindState("XDeath.Vanilla"))
-					return ResolveState("XDeath.Vanilla");
-				else if (FindState("XDeath"))
-					return ResolveState("XDeath");
-				return ResolveState("Death");
+				if (vxdeath)
+					return vxdeath;
+				else if (xxdeath)
+					return xxdeath;
+				return ddeath;
 				}
 			stop;
 		Death.Fire:
@@ -282,9 +294,9 @@ Class BDoomMonster : Actor abstract {
 					A_SetTranslation("GreenBloodyScorched");
 				else
 					A_SetTranslation("BloodyScorched");
-				if (FindState("Xdeath"))
-					return ResolveState("XDeath");
-				return ResolveState("Death");
+				if (xxdeath)
+					return xxdeath;
+				return ddeath;
 				}
 			stop;
 		XDeath.Particles:

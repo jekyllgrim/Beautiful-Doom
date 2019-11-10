@@ -14,27 +14,6 @@ Class BloodGeneral : DebrisGeneral abstract {
 		decal "none";
 		height 1;
 		}
-	bool CheckLandingSize (double cradius = 0, bool checkceiling = false) {
-		int aangle = 0;
-		if (checkceiling)
-			return (GetZAt(cradius,0,0,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
-				||	GetZAt(cradius,0,45,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
-				||	GetZAt(cradius,0,90,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
-				||	GetZAt(cradius,0,135,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
-				||	GetZAt(cradius,0,180,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
-				||	GetZAt(cradius,0,225,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
-				||	GetZAt(cradius,0,270,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
-				||	GetZAt(cradius,0,315,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz );
-		else
-			return (GetZAt(cradius,0,0,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
-				||	GetZAt(cradius,0,45,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
-				||	GetZAt(cradius,0,90,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
-				||	GetZAt(cradius,0,135,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
-				||	GetZAt(cradius,0,180,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
-				||	GetZAt(cradius,0,225,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
-				||	GetZAt(cradius,0,270,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
-				||	GetZAt(cradius,0,315,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz );
-		}
 	states	{
 		LoadSprites:
 			2PLT ABCDEFGHIJKLMNOPQ 0;
@@ -266,6 +245,7 @@ Class CeilingSplat : BloodGeneral {
 		alpha 0.8;
 		}
 	Override Void PostBeginPlay() {
+		super.PostBeginPlay();
 		if (ceilingpic == skyflatnum) {
 			destroy();
 			return;
@@ -280,7 +260,6 @@ Class CeilingSplat : BloodGeneral {
 			destroy();
 			return;
 			}
-		super.PostBeginPlay();
 		}
 	states
 		{
@@ -393,7 +372,7 @@ Class AniBloodPool : BloodGeneral {
 					}
 				SetOrigin((pos.x,pos.y,floorz+0.5),0);
 				
-				return A_Jump(128,"Spawn1");
+				return A_Jump(128,"SpawnDo");
 				}
 			0000 ABCDEFGHI 2 {
 				if (instant)
@@ -436,7 +415,7 @@ Class AniBloodPool : BloodGeneral {
 				return ResolveState(null);
 				}
 			goto rest;
-		Spawn1:
+		SpawnDo:
 			1000 ABCDEFGHI 2 {
 				if (instant)
 					A_SetTics(0);
