@@ -1,15 +1,15 @@
 Class BDoomWeapon : Weapon abstract {
-	bool iskicking; //currently kicking
-	int offsetTics; // current camera sway timer
-	double maxOffsetTics; // starting point for the timer
-	double offsetAngle; // the target angle for the camera sway
-	double offsetPitch;
-	double currentAngleOffset; // how much has the camera already been offset?
-	double currentPitchOffset;
+	protected bool iskicking; //currently kicking
+	protected int offsetTics; // current camera sway timer
+	protected double maxOffsetTics; // starting point for the timer
+	protected double offsetAngle; // the target angle for the camera sway
+	protected double offsetPitch;
+	protected double currentAngleOffset; // how much has the camera already been offset?
+	protected double currentPitchOffset;
 	property maxOffsetTics : maxOffsetTics;
 	property offsetTics : offsetTics;
-	int NonselTimer; //counts how long the weapon was deselected, used for automatic background reload
-	int AutoReloadTime; //the value that NonselTimer is compared to
+	protected int NonselTimer; //counts how long the weapon was deselected, used for automatic background reload
+	protected int AutoReloadTime; //the value that NonselTimer is compared to
 	property AutoReloadTime : AutoReloadTime;
 
 	Default {  
@@ -19,8 +19,7 @@ Class BDoomWeapon : Weapon abstract {
 		}
 
 	// Camera sway function by josh771
-	action void A_CameraSway(double aoffset, double poffset, int tics)
-	{
+	action void A_CameraSway(double aoffset, double poffset, int tics) {
 		invoker.offsetTics = tics;
 		invoker.maxOffsetTics = tics;
 		

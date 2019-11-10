@@ -2,8 +2,29 @@
 ////////////// ALL BASIC BEAUTIFUL DOOM OBJECTS ////////////
 ////////////////////////////////////////////////////////////
 
+Class BDoomActor : Actor abstract {
+	bool CheckLandingSize (double cradius = 0, bool checkceiling = false) {
+		bool ret = false;
+		if (checkceiling) {
+			double ceilingHeight = GetZAt (flags: GZF_CEILING);
+			for (int i = 0; i < 360; i += 45) {
+				double curHeight = GetZAt (cradius, 0, i, GZF_ABSOLUTEANG | GZF_CEILING);
+				ret = ret || (curHeight > ceilingHeight);
+				}
+			}
+		else {
+			double floorHeight = GetZAt ();
+			for (int i = 0; i < 360; i += 45) {
+				double curHeight = GetZAt (cradius, 0, i, GZF_ABSOLUTEANG);
+				ret = ret || (curHeight < floorHeight);
+				}
+			}
+		return ret;
+		}
+	}
+
 //base class for most debris
-Class DebrisGeneral : Actor abstract {
+Class DebrisGeneral : BDoomActor abstract {
 	bool landed;
 	name sfxtype; //'debris', 'flames', 'blood', 'gibs' — based on the value the thing gets put into a special array that controls their number, see bd_events.zc
 	property sfxtype : sfxtype;
@@ -53,7 +74,6 @@ Class DebrisGeneral : Actor abstract {
 		Thrust(hvel,angle);
 		vel.z = vvel;
 		}
-		
 	override void PostBeginPlay() {
 		if (!level.IsPointInLevel(pos)) {
 			destroy();
@@ -75,44 +95,6 @@ Class DebrisGeneral : Actor abstract {
 				return true;
 			}
 		return false;
-		}
-	bool CheckLandingSize (double cradius = 0, bool checkceiling = false) {
-		/*int aangle = 0;
-		if (checkceiling)
-			return (GetZAt(cradius,0,0,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
-				||	GetZAt(cradius,0,45,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
-				||	GetZAt(cradius,0,90,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
-				||	GetZAt(cradius,0,135,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
-				||	GetZAt(cradius,0,180,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
-				||	GetZAt(cradius,0,225,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
-				||	GetZAt(cradius,0,270,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz
-				||	GetZAt(cradius,0,315,GZF_ABSOLUTEANG|GZF_CEILING,AAPTR_DEFAULT) > ceilingz );
-		else
-			return (GetZAt(cradius,0,0,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
-				||	GetZAt(cradius,0,45,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
-				||	GetZAt(cradius,0,90,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
-				||	GetZAt(cradius,0,135,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
-				||	GetZAt(cradius,0,180,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
-				||	GetZAt(cradius,0,225,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
-				||	GetZAt(cradius,0,270,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz
-				||	GetZAt(cradius,0,315,GZF_ABSOLUTEANG,AAPTR_DEFAULT) < floorz );
-		}*/
-		        bool ret = false;
-        if (checkceiling) {
-            double ceilingHeight = GetZAt (flags: GZF_CEILING);
-            for (int i = 0; i < 360; i += 45) {
-				double curHeight = GetZAt (cradius, 0, i, GZF_ABSOLUTEANG | GZF_CEILING);
-				ret = ret || (curHeight > ceilingHeight);
-				}
-			}
-        else {
-            double floorHeight = GetZAt ();
-			for (int i = 0; i < 360; i += 45) {
-				double curHeight = GetZAt (cradius, 0, i, GZF_ABSOLUTEANG);
-				ret = ret || (curHeight < floorHeight);
-				}
-			}
-        return ret;
 		}
 	}
 
@@ -520,7 +502,7 @@ class BigBlackSmoke : BlackSmoke {
 Class BigBlackSmokeTrail : BigBlackSmoke {}
 
 //basic smoke behind a rocket
-Class Rocket1Trail : Smoke_General {
+Class BD_RocketTrail : Smoke_General {
 	Default {
 		scale 0.1;
 		renderstyle "Translucent";
@@ -533,11 +515,11 @@ Class Rocket1Trail : Smoke_General {
 		}
 	}
 
-Class SmokeBallTrail : Rocket1Trail {
-Default {
-	alpha 0.15;
+Class SmokeBallTrail : BD_RocketTrail {
+	Default {
+		alpha 0.15;
+		}
 	}
-}
 
 //a particle that spawns thin smoke behind itself
 Class SmokingPiece : SmallDebris {
@@ -572,8 +554,8 @@ Class WallSmoke : Smoke_General {
 	Default {
 		+ROLLCENTER
 		scale 0.018;
-		renderstyle "Add";
-		alpha 0.4;
+		renderstyle "Translucent";
+		alpha 0.3;
 		}
 	override void PostBeginPlay()
 		{
@@ -606,28 +588,46 @@ Class WallSmoke : Smoke_General {
 //circular puff of smoke for hard walls (stone, brick)
 Class RingSmoke : WallSmoke {
 	Default {
-		alpha 0.2;
+		alpha 0.4;
 		}
 	states {
 		Spawn:
 			SM21 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 NoDelay {
+				A_Fadeout(0.015);
+				a_Setscale(clamp(scale.x*1.01,0.01,0.05),clamp(scale.y*1.01,0.01,0.05));
+				vel*=0.9;
+				roll+=wrot;
+				wrot *= 0.96;
+				}
+			SM22 ABCDEFGHIJK 1 {
+				A_Fadeout(0.01);
+				a_Setscale(clamp(scale.x*1.01,0.01,0.05),clamp(scale.y*1.01,0.01,0.05));
+				vel*=0.9;
+				roll+=wrot;
+				wrot *= 0.95;
+				if (alpha < 0.1)
+					A_FadeOut(0.005);
+				}
+			wait;
+			
+			/*SM21 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 NoDelay {
 				A_Fadeout(0.005);
-				a_Setscale(clamp(scale.x*1.03,0.01,0.1),clamp(scale.y*1.03,0.01,0.1));
+				a_Setscale(clamp(scale.x*1.01,0.01,0.1),clamp(scale.y*1.01,0.01,0.1));
 				vel*=0.9;
 				roll+=wrot;
 				}
 			SM22 ABCDEFGHIJK 1 {
 				A_Fadeout(0.005);
-				a_Setscale(clamp(scale.x*1.03,0.01,0.1),clamp(scale.y*1.03,0.01,0.1));
+				a_Setscale(clamp(scale.x*1.01,0.01,0.1),clamp(scale.y*1.01,0.01,0.1));
 				vel*=0.9;
 				roll+=wrot;
 				}
-			wait;
+			wait;*/
 		}
 	}
 
 // Base puff class. Also holds arrays with texture names to simulate different effects for different "surfaces"
-Class BdoomPuff : Actor abstract {
+Class BdoomPuff : BDoomActor abstract {
 	Default {
 		+NOBLOCKMAP
 		+NOGRAVITY
@@ -855,15 +855,15 @@ Class EnBulletPuff : BDoomPuff {
 					if (smoke == 1) {
 						if (puffdata.HitType == TRACE_HitFloor) {
 							for (int i = 0; i < 10; i++)
-								A_SpawnItemEx("WallSmoke",0,0,0,frandom(-0.1,0.1),frandom(-0.1,0.1),frandom(0.2,1.2),0,0,48);
+								A_SpawnItemEx("WallSmoke",0,0,0,frandom(-0.1,0.1),frandom(-0.1,0.1),frandom(0.1,0.9),0,0,48);
 							}
 						else if (puffdata.HitType == TRACE_HitCeiling) {
 							for (int i = 0; i < 10; i++)
-								A_SpawnItemEx("WallSmoke",0,0,0,frandom(-0.1,0.1),frandom(-0.1,0.1),-frandom(0.2,1.2),0,0,48);
+								A_SpawnItemEx("WallSmoke",0,0,0,frandom(-0.1,0.1),frandom(-0.1,0.1),-frandom(0.1,0.9),0,0,48);
 							}
 						else {
 							for (int i = 0; i < 10; i++)
-								A_SpawnItemEx("WallSmoke",0,0,0,frandom(0.2,1.2),0,0,hitangle+frandom(-4,4),SXF_ABSOLUTEANGLE,48);
+								A_SpawnItemEx("WallSmoke",0,0,0,frandom(0.1,0.9),0,0,hitangle+frandom(-4,4),SXF_ABSOLUTEANGLE,48);
 							}
 						}
 					else if (smoke == 2) {
@@ -891,11 +891,11 @@ Class EnBulletPuff : BDoomPuff {
 					}
 				if (decaltype) {
 					//spawn an actor with 3D model to emulate floor/ceiling decals
-					if (puffdata.HitType == TRACE_HitFloor) {
+					if (puffdata.HitType == TRACE_HitFloor && !CheckLandingSize(2)) {
 						let pld = BD_PlaneDecal(Spawn("BD_PlaneDecal",(pos.x,pos.y,floorz)));
 						if (pld) pld.decaltype = decaltype;
 						}
-					else if (puffdata.HitType == TRACE_HitCeiling) {
+					else if (puffdata.HitType == TRACE_HitCeiling && !CheckLandingSize(2,true)) {
 						let pld = BD_PlaneDecal(Spawn("BD_PlaneDecal",(pos.x,pos.y,ceilingz)));
 						if (pld) {
 							pld.decaltype = decaltype;

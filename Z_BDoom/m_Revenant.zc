@@ -118,13 +118,12 @@ Class BD_Revenant : BDoomMonster {
 	}
 
 
-Class BD_RevenantTracerSmoke : Rocket1Trail //replaces RevenantTracerSmoke
-{
-Default {
-	alpha 0.45;
-	scale 0.12;
+Class BD_RevenantTracerSmoke : BD_RocketTrail {
+	Default {
+		alpha 0.45;
+		scale 0.12;
+		}
 	}
-}
 
 
 Class BD_RevenantTracer : RevenantTracer {
