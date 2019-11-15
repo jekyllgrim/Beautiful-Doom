@@ -144,6 +144,8 @@ Class SmallDebris : DebrisGeneral abstract {
 
 //base class for flares and flame effects
 Class Flare_General : DebrisGeneral abstract {
+	protected state mdeath;
+	protected state mxdeath;
 	name fcolor;		//flare of the color; can be set as a property or externally
 	double fscale;		//scale; used to when scale needs to be easily set externally from the spawner
 	double falpha;		//alpha; used to when scale needs to be easily set externally from the spawner
@@ -158,6 +160,13 @@ Class Flare_General : DebrisGeneral abstract {
 		renderstyle "Add";
 		alpha 0.4;
 		scale 0.4;
+		}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		if (master) {
+			mdeath = master.FindState("Death");
+			mxdeath = master.FindState("XDeath");
+			}
 		}
 	virtual void SetColor() { //fcolor is meant to be set by the actor that spawns the flare
 		switch (fcolor) {
@@ -199,8 +208,6 @@ Class BD_BaseFlare : Flare_General {
 
 // base glow to be spawned alongside projectiles
 Class BD_ProjFlare : Flare_General {
-	state mdeath;
-	state mxdeath;
 	double xoffset;
 	Default {
 		DebrisGeneral.sfxtype "debris";
@@ -210,23 +217,14 @@ Class BD_ProjFlare : Flare_General {
 		-RELATIVETOFLOOR
 		-MOVEWITHSECTOR
 		}
-	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		if (master) {
-			mdeath = master.FindState("Death");
-			mxdeath = master.FindState("XDeath");
-			}
-		}
 	override void Tick() {
 		super.Tick();
 		if (level.isFrozen())
 			return;
 		if (master)
-			//SetOrigin(master.pos + (,true);
-			A_Warp(AAPTR_Master,xoffset,0,0,flags:WARPF_INTERPOLATE);//,heightoffset:0.5);
-		if (!master || !bdoom_debris || 
-			(master && (master.InstateSequence(master.curstate,mdeath) || 
-			 master.InstateSequence(master.curstate,mxdeath))	)	) {
+			A_Warp(AAPTR_Master,xoffset,0,0,flags:WARPF_INTERPOLATE);
+		if (!master || !bdoom_debris || (master && (master.InstateSequence(master.curstate,mdeath) || 
+										 master.InstateSequence(master.curstate,mxdeath)) )) {
 			Destroy();
 			return;
 			}
