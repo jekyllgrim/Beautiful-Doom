@@ -140,7 +140,7 @@ Model BD_PlaneDecal
 	zoffset 1.0
 	Scale 2.2 2.2 2.2
 	
-	Model 0 "models/bloodpool/BloodPool.md3"
+	Model 0 "models/BloodPool.md3"
 
 	Skin 0 "graphics/CHIP1.png"
 	FrameIndex CHIP A 0 0
@@ -196,128 +196,372 @@ Model AniBloodPool
 	zoffset 1.0
 	Scale 100.0 100.0 100.0
 
-	Path "models/bloodpool"
+	Path "models"
 	Model 0 "BloodPool.md3"
 
-	Skin 0 "bpool1_1.png"
-	FrameIndex 0000 A 0 0
-	Skin 0 "bpool1_2.png"
-	FrameIndex 0000 B 0 0
-	Skin 0 "bpool1_3.png"
-	FrameIndex 0000 C 0 0
-	Skin 0 "bpool1_4.png"
-	FrameIndex 0000 D 0 0
-	Skin 0 "bpool1_5.png"
-	FrameIndex 0000 E 0 0
-	Skin 0 "bpool1_6.png"
-	FrameIndex 0000 F 0 0
-	Skin 0 "bpool1_7.png"
-	FrameIndex 0000 G 0 0
-	Skin 0 "bpool1_8.png"
-	FrameIndex 0000 H 0 0
-	Skin 0 "bpool1_9.png"
-	FrameIndex 0000 I 0 0
-	Skin 0 "bpool1_10.png"
-	FrameIndex 0000 J 0 0
-	Skin 0 "bpool1_11.png"
-	FrameIndex 0000 K 0 0
-	Skin 0 "bpool1_12.png"
-	FrameIndex 0000 L 0 0
-	Skin 0 "bpool1_13.png"
-	FrameIndex 0000 M 0 0
-	Skin 0 "bpool1_14.png"
-	FrameIndex 0000 N 0 0
-	Skin 0 "bpool1_15.png"
-	FrameIndex 0000 O 0 0
-	Skin 0 "bpool1_16.png"
-	FrameIndex 0000 P 0 0
-	Skin 0 "bpool1_17.png"
-	FrameIndex 0000 Q 0 0
-	Skin 0 "bpool1_18.png"
-	FrameIndex 0000 R 0 0
-	Skin 0 "bpool1_19.png"
-	FrameIndex 0000 S 0 0
-	Skin 0 "bpool1_20.png"
-	FrameIndex 0000 T 0 0
-	Skin 0 "bpool1_21.png"
-	FrameIndex 0000 U 0 0
-	Skin 0 "bpool1_22.png"
-	FrameIndex 0000 V 0 0
-	Skin 0 "bpool1_23.png"
-	FrameIndex 0000 W 0 0
-	Skin 0 "bpool1_24.png"
-	FrameIndex 0000 X 0 0
-	Skin 0 "bpool1_25.png"
-	FrameIndex 0000 Y 0 0
-	Skin 0 "bpool1_26.png"
-	FrameIndex 0000 Z 0 0
-	Skin 0 "bpool1_27.png"
-	FrameIndex 0001 A 0 0
-	Skin 0 "bpool1_28.png"
-	FrameIndex 0001 B 0 0
-	Skin 0 "bpool1_29.png"
-	FrameIndex 0001 C 0 0
-	Skin 0 "bpool1_30.png"
-	FrameIndex 0001 D 0 0
+	Skin 0 "bloodpool/bpool1_1.png"
+	FrameIndex R000 A 0 0
+	Skin 0 "bloodpool/bpool1_2.png"
+	FrameIndex R000 B 0 0
+	Skin 0 "bloodpool/bpool1_3.png"
+	FrameIndex R000 C 0 0
+	Skin 0 "bloodpool/bpool1_4.png"
+	FrameIndex R000 D 0 0
+	Skin 0 "bloodpool/bpool1_5.png"
+	FrameIndex R000 E 0 0
+	Skin 0 "bloodpool/bpool1_6.png"
+	FrameIndex R000 F 0 0
+	Skin 0 "bloodpool/bpool1_7.png"
+	FrameIndex R000 G 0 0
+	Skin 0 "bloodpool/bpool1_8.png"
+	FrameIndex R000 H 0 0
+	Skin 0 "bloodpool/bpool1_9.png"
+	FrameIndex R000 I 0 0
+	Skin 0 "bloodpool/bpool1_10.png"
+	FrameIndex R000 J 0 0
+	Skin 0 "bloodpool/bpool1_11.png"
+	FrameIndex R000 K 0 0
+	Skin 0 "bloodpool/bpool1_12.png"
+	FrameIndex R000 L 0 0
+	Skin 0 "bloodpool/bpool1_13.png"
+	FrameIndex R000 M 0 0
+	Skin 0 "bloodpool/bpool1_14.png"
+	FrameIndex R000 N 0 0
+	Skin 0 "bloodpool/bpool1_15.png"
+	FrameIndex R000 O 0 0
+	Skin 0 "bloodpool/bpool1_16.png"
+	FrameIndex R000 P 0 0
+	Skin 0 "bloodpool/bpool1_17.png"
+	FrameIndex R000 Q 0 0
+	Skin 0 "bloodpool/bpool1_18.png"
+	FrameIndex R000 R 0 0
+	Skin 0 "bloodpool/bpool1_19.png"
+	FrameIndex R000 S 0 0
+	Skin 0 "bloodpool/bpool1_20.png"
+	FrameIndex R000 T 0 0
+	Skin 0 "bloodpool/bpool1_21.png"
+	FrameIndex R000 U 0 0
+	Skin 0 "bloodpool/bpool1_22.png"
+	FrameIndex R000 V 0 0
+	Skin 0 "bloodpool/bpool1_23.png"
+	FrameIndex R000 W 0 0
+	Skin 0 "bloodpool/bpool1_24.png"
+	FrameIndex R000 X 0 0
+	Skin 0 "bloodpool/bpool1_25.png"
+	FrameIndex R000 Y 0 0
+	Skin 0 "bloodpool/bpool1_26.png"
+	FrameIndex R000 Z 0 0
+	Skin 0 "bloodpool/bpool1_27.png"
+	FrameIndex R001 A 0 0
+	Skin 0 "bloodpool/bpool1_28.png"
+	FrameIndex R001 B 0 0
+	Skin 0 "bloodpool/bpool1_29.png"
+	FrameIndex R001 C 0 0
+	Skin 0 "bloodpool/bpool1_30.png"
+	FrameIndex R001 D 0 0
 
-	Skin 0 "bpool2_1.png"
-	FrameIndex 1000 A 0 0
-	Skin 0 "bpool2_2.png"
-	FrameIndex 1000 B 0 0
-	Skin 0 "bpool2_3.png"
-	FrameIndex 1000 C 0 0
-	Skin 0 "bpool2_4.png"
-	FrameIndex 1000 D 0 0
-	Skin 0 "bpool2_5.png"
-	FrameIndex 1000 E 0 0
-	Skin 0 "bpool2_6.png"
-	FrameIndex 1000 F 0 0
-	Skin 0 "bpool2_7.png"
-	FrameIndex 1000 G 0 0
-	Skin 0 "bpool2_8.png"
-	FrameIndex 1000 H 0 0
-	Skin 0 "bpool2_9.png"
-	FrameIndex 1000 I 0 0
-	Skin 0 "bpool2_10.png"
-	FrameIndex 1000 J 0 0
-	Skin 0 "bpool2_11.png"
-	FrameIndex 1000 K 0 0
-	Skin 0 "bpool2_12.png"
-	FrameIndex 1000 L 0 0
-	Skin 0 "bpool2_13.png"
-	FrameIndex 1000 M 0 0
-	Skin 0 "bpool2_14.png"
-	FrameIndex 1000 N 0 0
-	Skin 0 "bpool2_15.png"
-	FrameIndex 1000 O 0 0
-	Skin 0 "bpool2_16.png"
-	FrameIndex 1000 P 0 0
-	Skin 0 "bpool2_17.png"
-	FrameIndex 1000 Q 0 0
-	Skin 0 "bpool2_18.png"
-	FrameIndex 1000 R 0 0
-	Skin 0 "bpool2_19.png"
-	FrameIndex 1000 S 0 0
-	Skin 0 "bpool2_20.png"
-	FrameIndex 1000 T 0 0
-	Skin 0 "bpool2_21.png"
-	FrameIndex 1000 U 0 0
-	Skin 0 "bpool2_22.png"
-	FrameIndex 1000 V 0 0
-	Skin 0 "bpool2_23.png"
-	FrameIndex 1000 W 0 0
-	Skin 0 "bpool2_24.png"
-	FrameIndex 1000 X 0 0
-	Skin 0 "bpool2_25.png"
-	FrameIndex 1000 Y 0 0
-	Skin 0 "bpool2_26.png"
-	FrameIndex 1000 Z 0 0
-	Skin 0 "bpool2_27.png"
-	FrameIndex 1001 A 0 0
-	Skin 0 "bpool2_28.png"
-	FrameIndex 1001 B 0 0
-	Skin 0 "bpool2_29.png"
-	FrameIndex 1001 C 0 0
-	Skin 0 "bpool2_30.png"
-	FrameIndex 1001 D 0 0
+	Skin 0 "bloodpool/bpool2_1.png"
+	FrameIndex R010 A 0 0
+	Skin 0 "bloodpool/bpool2_2.png"
+	FrameIndex R010 B 0 0
+	Skin 0 "bloodpool/bpool2_3.png"
+	FrameIndex R010 C 0 0
+	Skin 0 "bloodpool/bpool2_4.png"
+	FrameIndex R010 D 0 0
+	Skin 0 "bloodpool/bpool2_5.png"
+	FrameIndex R010 E 0 0
+	Skin 0 "bloodpool/bpool2_6.png"
+	FrameIndex R010 F 0 0
+	Skin 0 "bloodpool/bpool2_7.png"
+	FrameIndex R010 G 0 0
+	Skin 0 "bloodpool/bpool2_8.png"
+	FrameIndex R010 H 0 0
+	Skin 0 "bloodpool/bpool2_9.png"
+	FrameIndex R010 I 0 0
+	Skin 0 "bloodpool/bpool2_10.png"
+	FrameIndex R010 J 0 0
+	Skin 0 "bloodpool/bpool2_11.png"
+	FrameIndex R010 K 0 0
+	Skin 0 "bloodpool/bpool2_12.png"
+	FrameIndex R010 L 0 0
+	Skin 0 "bloodpool/bpool2_13.png"
+	FrameIndex R010 M 0 0
+	Skin 0 "bloodpool/bpool2_14.png"
+	FrameIndex R010 N 0 0
+	Skin 0 "bloodpool/bpool2_15.png"
+	FrameIndex R010 O 0 0
+	Skin 0 "bloodpool/bpool2_16.png"
+	FrameIndex R010 P 0 0
+	Skin 0 "bloodpool/bpool2_17.png"
+	FrameIndex R010 Q 0 0
+	Skin 0 "bloodpool/bpool2_18.png"
+	FrameIndex R010 R 0 0
+	Skin 0 "bloodpool/bpool2_19.png"
+	FrameIndex R010 S 0 0
+	Skin 0 "bloodpool/bpool2_20.png"
+	FrameIndex R010 T 0 0
+	Skin 0 "bloodpool/bpool2_21.png"
+	FrameIndex R010 U 0 0
+	Skin 0 "bloodpool/bpool2_22.png"
+	FrameIndex R010 V 0 0
+	Skin 0 "bloodpool/bpool2_23.png"
+	FrameIndex R010 W 0 0
+	Skin 0 "bloodpool/bpool2_24.png"
+	FrameIndex R010 X 0 0
+	Skin 0 "bloodpool/bpool2_25.png"
+	FrameIndex R010 Y 0 0
+	Skin 0 "bloodpool/bpool2_26.png"
+	FrameIndex R010 Z 0 0
+	Skin 0 "bloodpool/bpool2_27.png"
+	FrameIndex R011 A 0 0
+	Skin 0 "bloodpool/bpool2_28.png"
+	FrameIndex R011 B 0 0
+	Skin 0 "bloodpool/bpool2_29.png"
+	FrameIndex R011 C 0 0
+	Skin 0 "bloodpool/bpool2_30.png"
+	FrameIndex R011 D 0 0
+
+	Skin 0 "bloodpool_green/bpool1_1.png"
+	FrameIndex G000 A 0 0
+	Skin 0 "bloodpool_green/bpool1_2.png"
+	FrameIndex G000 B 0 0
+	Skin 0 "bloodpool_green/bpool1_3.png"
+	FrameIndex G000 C 0 0
+	Skin 0 "bloodpool_green/bpool1_4.png"
+	FrameIndex G000 D 0 0
+	Skin 0 "bloodpool_green/bpool1_5.png"
+	FrameIndex G000 E 0 0
+	Skin 0 "bloodpool_green/bpool1_6.png"
+	FrameIndex G000 F 0 0
+	Skin 0 "bloodpool_green/bpool1_7.png"
+	FrameIndex G000 G 0 0
+	Skin 0 "bloodpool_green/bpool1_8.png"
+	FrameIndex G000 H 0 0
+	Skin 0 "bloodpool_green/bpool1_9.png"
+	FrameIndex G000 I 0 0
+	Skin 0 "bloodpool_green/bpool1_10.png"
+	FrameIndex G000 J 0 0
+	Skin 0 "bloodpool_green/bpool1_11.png"
+	FrameIndex G000 K 0 0
+	Skin 0 "bloodpool_green/bpool1_12.png"
+	FrameIndex G000 L 0 0
+	Skin 0 "bloodpool_green/bpool1_13.png"
+	FrameIndex G000 M 0 0
+	Skin 0 "bloodpool_green/bpool1_14.png"
+	FrameIndex G000 N 0 0
+	Skin 0 "bloodpool_green/bpool1_15.png"
+	FrameIndex G000 O 0 0
+	Skin 0 "bloodpool_green/bpool1_16.png"
+	FrameIndex G000 P 0 0
+	Skin 0 "bloodpool_green/bpool1_17.png"
+	FrameIndex G000 Q 0 0
+	Skin 0 "bloodpool_green/bpool1_18.png"
+	FrameIndex G000 R 0 0
+	Skin 0 "bloodpool_green/bpool1_19.png"
+	FrameIndex G000 S 0 0
+	Skin 0 "bloodpool_green/bpool1_20.png"
+	FrameIndex G000 T 0 0
+	Skin 0 "bloodpool_green/bpool1_21.png"
+	FrameIndex G000 U 0 0
+	Skin 0 "bloodpool_green/bpool1_22.png"
+	FrameIndex G000 V 0 0
+	Skin 0 "bloodpool_green/bpool1_23.png"
+	FrameIndex G000 W 0 0
+	Skin 0 "bloodpool_green/bpool1_24.png"
+	FrameIndex G000 X 0 0
+	Skin 0 "bloodpool_green/bpool1_25.png"
+	FrameIndex G000 Y 0 0
+	Skin 0 "bloodpool_green/bpool1_26.png"
+	FrameIndex G000 Z 0 0
+	Skin 0 "bloodpool_green/bpool1_27.png"
+	FrameIndex G001 A 0 0
+	Skin 0 "bloodpool_green/bpool1_28.png"
+	FrameIndex G001 B 0 0
+	Skin 0 "bloodpool_green/bpool1_29.png"
+	FrameIndex G001 C 0 0
+	Skin 0 "bloodpool_green/bpool1_30.png"
+	FrameIndex G001 D 0 0
+
+	Skin 0 "bloodpool_green/bpool2_1.png"
+	FrameIndex G010 A 0 0
+	Skin 0 "bloodpool_green/bpool2_2.png"
+	FrameIndex G010 B 0 0
+	Skin 0 "bloodpool_green/bpool2_3.png"
+	FrameIndex G010 C 0 0
+	Skin 0 "bloodpool_green/bpool2_4.png"
+	FrameIndex G010 D 0 0
+	Skin 0 "bloodpool_green/bpool2_5.png"
+	FrameIndex G010 E 0 0
+	Skin 0 "bloodpool_green/bpool2_6.png"
+	FrameIndex G010 F 0 0
+	Skin 0 "bloodpool_green/bpool2_7.png"
+	FrameIndex G010 G 0 0
+	Skin 0 "bloodpool_green/bpool2_8.png"
+	FrameIndex G010 H 0 0
+	Skin 0 "bloodpool_green/bpool2_9.png"
+	FrameIndex G010 I 0 0
+	Skin 0 "bloodpool_green/bpool2_10.png"
+	FrameIndex G010 J 0 0
+	Skin 0 "bloodpool_green/bpool2_11.png"
+	FrameIndex G010 K 0 0
+	Skin 0 "bloodpool_green/bpool2_12.png"
+	FrameIndex G010 L 0 0
+	Skin 0 "bloodpool_green/bpool2_13.png"
+	FrameIndex G010 M 0 0
+	Skin 0 "bloodpool_green/bpool2_14.png"
+	FrameIndex G010 N 0 0
+	Skin 0 "bloodpool_green/bpool2_15.png"
+	FrameIndex G010 O 0 0
+	Skin 0 "bloodpool_green/bpool2_16.png"
+	FrameIndex G010 P 0 0
+	Skin 0 "bloodpool_green/bpool2_17.png"
+	FrameIndex G010 Q 0 0
+	Skin 0 "bloodpool_green/bpool2_18.png"
+	FrameIndex G010 R 0 0
+	Skin 0 "bloodpool_green/bpool2_19.png"
+	FrameIndex G010 S 0 0
+	Skin 0 "bloodpool_green/bpool2_20.png"
+	FrameIndex G010 T 0 0
+	Skin 0 "bloodpool_green/bpool2_21.png"
+	FrameIndex G010 U 0 0
+	Skin 0 "bloodpool_green/bpool2_22.png"
+	FrameIndex G010 V 0 0
+	Skin 0 "bloodpool_green/bpool2_23.png"
+	FrameIndex G010 W 0 0
+	Skin 0 "bloodpool_green/bpool2_24.png"
+	FrameIndex G010 X 0 0
+	Skin 0 "bloodpool_green/bpool2_25.png"
+	FrameIndex G010 Y 0 0
+	Skin 0 "bloodpool_green/bpool2_26.png"
+	FrameIndex G010 Z 0 0
+	Skin 0 "bloodpool_green/bpool2_27.png"
+	FrameIndex G011 A 0 0
+	Skin 0 "bloodpool_green/bpool2_28.png"
+	FrameIndex G011 B 0 0
+	Skin 0 "bloodpool_green/bpool2_29.png"
+	FrameIndex G011 C 0 0
+	Skin 0 "bloodpool_green/bpool2_30.png"
+	FrameIndex G011 D 0 0
+
+	Skin 0 "bloodpool_blue/bpool1_1.png"
+	FrameIndex B000 A 0 0
+	Skin 0 "bloodpool_blue/bpool1_2.png"
+	FrameIndex B000 B 0 0
+	Skin 0 "bloodpool_blue/bpool1_3.png"
+	FrameIndex B000 C 0 0
+	Skin 0 "bloodpool_blue/bpool1_4.png"
+	FrameIndex B000 D 0 0
+	Skin 0 "bloodpool_blue/bpool1_5.png"
+	FrameIndex B000 E 0 0
+	Skin 0 "bloodpool_blue/bpool1_6.png"
+	FrameIndex B000 F 0 0
+	Skin 0 "bloodpool_blue/bpool1_7.png"
+	FrameIndex B000 G 0 0
+	Skin 0 "bloodpool_blue/bpool1_8.png"
+	FrameIndex B000 H 0 0
+	Skin 0 "bloodpool_blue/bpool1_9.png"
+	FrameIndex B000 I 0 0
+	Skin 0 "bloodpool_blue/bpool1_10.png"
+	FrameIndex B000 J 0 0
+	Skin 0 "bloodpool_blue/bpool1_11.png"
+	FrameIndex B000 K 0 0
+	Skin 0 "bloodpool_blue/bpool1_12.png"
+	FrameIndex B000 L 0 0
+	Skin 0 "bloodpool_blue/bpool1_13.png"
+	FrameIndex B000 M 0 0
+	Skin 0 "bloodpool_blue/bpool1_14.png"
+	FrameIndex B000 N 0 0
+	Skin 0 "bloodpool_blue/bpool1_15.png"
+	FrameIndex B000 O 0 0
+	Skin 0 "bloodpool_blue/bpool1_16.png"
+	FrameIndex B000 P 0 0
+	Skin 0 "bloodpool_blue/bpool1_17.png"
+	FrameIndex B000 Q 0 0
+	Skin 0 "bloodpool_blue/bpool1_18.png"
+	FrameIndex B000 R 0 0
+	Skin 0 "bloodpool_blue/bpool1_19.png"
+	FrameIndex B000 S 0 0
+	Skin 0 "bloodpool_blue/bpool1_20.png"
+	FrameIndex B000 T 0 0
+	Skin 0 "bloodpool_blue/bpool1_21.png"
+	FrameIndex B000 U 0 0
+	Skin 0 "bloodpool_blue/bpool1_22.png"
+	FrameIndex B000 V 0 0
+	Skin 0 "bloodpool_blue/bpool1_23.png"
+	FrameIndex B000 W 0 0
+	Skin 0 "bloodpool_blue/bpool1_24.png"
+	FrameIndex B000 X 0 0
+	Skin 0 "bloodpool_blue/bpool1_25.png"
+	FrameIndex B000 Y 0 0
+	Skin 0 "bloodpool_blue/bpool1_26.png"
+	FrameIndex B000 Z 0 0
+	Skin 0 "bloodpool_blue/bpool1_27.png"
+	FrameIndex B001 A 0 0
+	Skin 0 "bloodpool_blue/bpool1_28.png"
+	FrameIndex B001 B 0 0
+	Skin 0 "bloodpool_blue/bpool1_29.png"
+	FrameIndex B001 C 0 0
+	Skin 0 "bloodpool_blue/bpool1_30.png"
+	FrameIndex B001 D 0 0
+
+	Skin 0 "bloodpool_blue/bpool2_1.png"
+	FrameIndex B010 A 0 0
+	Skin 0 "bloodpool_blue/bpool2_2.png"
+	FrameIndex B010 B 0 0
+	Skin 0 "bloodpool_blue/bpool2_3.png"
+	FrameIndex B010 C 0 0
+	Skin 0 "bloodpool_blue/bpool2_4.png"
+	FrameIndex B010 D 0 0
+	Skin 0 "bloodpool_blue/bpool2_5.png"
+	FrameIndex B010 E 0 0
+	Skin 0 "bloodpool_blue/bpool2_6.png"
+	FrameIndex B010 F 0 0
+	Skin 0 "bloodpool_blue/bpool2_7.png"
+	FrameIndex B010 G 0 0
+	Skin 0 "bloodpool_blue/bpool2_8.png"
+	FrameIndex B010 H 0 0
+	Skin 0 "bloodpool_blue/bpool2_9.png"
+	FrameIndex B010 I 0 0
+	Skin 0 "bloodpool_blue/bpool2_10.png"
+	FrameIndex B010 J 0 0
+	Skin 0 "bloodpool_blue/bpool2_11.png"
+	FrameIndex B010 K 0 0
+	Skin 0 "bloodpool_blue/bpool2_12.png"
+	FrameIndex B010 L 0 0
+	Skin 0 "bloodpool_blue/bpool2_13.png"
+	FrameIndex B010 M 0 0
+	Skin 0 "bloodpool_blue/bpool2_14.png"
+	FrameIndex B010 N 0 0
+	Skin 0 "bloodpool_blue/bpool2_15.png"
+	FrameIndex B010 O 0 0
+	Skin 0 "bloodpool_blue/bpool2_16.png"
+	FrameIndex B010 P 0 0
+	Skin 0 "bloodpool_blue/bpool2_17.png"
+	FrameIndex B010 Q 0 0
+	Skin 0 "bloodpool_blue/bpool2_18.png"
+	FrameIndex B010 R 0 0
+	Skin 0 "bloodpool_blue/bpool2_19.png"
+	FrameIndex B010 S 0 0
+	Skin 0 "bloodpool_blue/bpool2_20.png"
+	FrameIndex B010 T 0 0
+	Skin 0 "bloodpool_blue/bpool2_21.png"
+	FrameIndex B010 U 0 0
+	Skin 0 "bloodpool_blue/bpool2_22.png"
+	FrameIndex B010 V 0 0
+	Skin 0 "bloodpool_blue/bpool2_23.png"
+	FrameIndex B010 W 0 0
+	Skin 0 "bloodpool_blue/bpool2_24.png"
+	FrameIndex B010 X 0 0
+	Skin 0 "bloodpool_blue/bpool2_25.png"
+	FrameIndex B010 Y 0 0
+	Skin 0 "bloodpool_blue/bpool2_26.png"
+	FrameIndex B010 Z 0 0
+	Skin 0 "bloodpool_blue/bpool2_27.png"
+	FrameIndex B011 A 0 0
+	Skin 0 "bloodpool_blue/bpool2_28.png"
+	FrameIndex B011 B 0 0
+	Skin 0 "bloodpool_blue/bpool2_29.png"
+	FrameIndex B011 C 0 0
+	Skin 0 "bloodpool_blue/bpool2_30.png"
+	FrameIndex B011 D 0 0
 }

@@ -57,7 +57,7 @@ Class BD_SpawnFire : ArchPentagram {
 		super.PostBeginPlay();
 		A_PlaySound("bossbrain/spawn");
 		}
-}
+	}
 
 Class BD_SpawnShot : SpawnShot {
 	override void PostBeginPlay() {
@@ -81,7 +81,7 @@ Class BD_SpawnShot : SpawnShot {
 			SCUB ABCDEF 2 bright A_SpawnFly("BD_SpawnFire");
 			Loop;
 		}
-}
+	}
 
 /*
 Actor BossBrainExplosionSpawner

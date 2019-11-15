@@ -223,7 +223,7 @@ Class BD_ProjFlare : Flare_General {
 			return;
 		if (master)
 			//SetOrigin(master.pos + (,true);
-			A_Warp(AAPTR_Master,xoffset,0,0,flags:WARPF_INTERPOLATE,heightoffset:0.5);
+			A_Warp(AAPTR_Master,xoffset,0,0,flags:WARPF_INTERPOLATE);//,heightoffset:0.5);
 		if (!master || !bdoom_debris || 
 			(master && (master.InstateSequence(master.curstate,mdeath) || 
 			 master.InstateSequence(master.curstate,mxdeath))	)	) {
@@ -510,7 +510,7 @@ Class BD_RocketTrail : Smoke_General {
 		}
 	states {
 		Spawn:
-			SMOK ABCDEFGHIJKLMNOPQ 1 NoDelay A_FadeOut(0.01);
+			SMOK ABCDEFGHIJKLMNOPQ 1 NoDelay A_FadeOut(0.03);
 			stop;
 		}
 	}

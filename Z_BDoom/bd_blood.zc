@@ -323,6 +323,7 @@ Class CeilingBloodDrop : BloodGeneral {
 Class AniBloodPool : BloodGeneral {
 	bool instant; //if true, the blood pool will instantly go through all the phases and reach the required size — for decorative purposes such as Heart Column, where animation is unneeded, but checking for overhang may still important
 	double psize;
+	private int ver;
 	Default {
 		+NOINTERACTION
 		+RELATIVETOFLOOR
@@ -336,27 +337,29 @@ Class AniBloodPool : BloodGeneral {
 		scale 0.2;
 		}
 	override void PostBeginPlay() {
+		Super.PostBeginPlay();
 		if (waterlevel > 0) {
 			destroy();
 			return;
 			}
 		double pscale = scale.x*frandom(1.1,1.8);
 		psize = pscale*22;
+		if (CheckLandingSize (psize) || waterlevel > 0) {
+			destroy();
+			return;
+			}
 		A_SetScale(pscale*randompick(-1,1),pscale*randompick(-1,1));
-
 
 		if (target && target.bloodcolor) {
 			if (target.bloodcolor.G > 4*(target.bloodcolor.R  + target.bloodcolor.B))
-				A_SetTranslation("GreenBlood");
+				bcolor = 'green';
 			else if (target.bloodcolor.B > 4*(target.bloodcolor.R  + target.bloodcolor.G))
-				A_SetTranslation("BlueBlood");
+				bcolor = 'blue';
 			else if (target.bloodcolor.R > 4*(target.bloodcolor.B  + target.bloodcolor.G) || target.bloodcolor == 0)
 				bcolor = 'red';
 			else
 				Translation = target.BloodTranslation;
-			}
-			
-		Super.PostBeginPlay();
+			}		
 		}	
 	override void Tick () {
 		super.Tick();
@@ -366,15 +369,26 @@ Class AniBloodPool : BloodGeneral {
 	states	{
 		Spawn:
 			TNT1 A 0 NoDelay {
-				if (CheckLandingSize (psize) || waterlevel > 0) {
-					destroy();
-					return ResolveState(null);
-					}
 				SetOrigin((pos.x,pos.y,floorz+0.5),0);
-				
-				return A_Jump(128,"SpawnDo");
+				ver = randompick(0,1);
+				if (ver == 0) {
+					if (bcolor == 'green')
+						sprite = GetSpriteIndex("G000");
+					else if (bcolor == 'blue')
+						sprite = GetSpriteIndex("B000");
+					else
+						sprite = GetSpriteIndex("R000");
+					}
+				else {
+					if (bcolor == 'green')
+						sprite = GetSpriteIndex("G010");
+					else if (bcolor == 'blue')
+						sprite = GetSpriteIndex("B010");
+					else
+						sprite = GetSpriteIndex("R010");
+					}
 				}
-			0000 ABCDEFGHI 2 {
+			#### ABCDEFGHI 2 {
 				if (instant)
 					A_SetTics(0);
 				if (CheckLandingSize (psize))
@@ -384,7 +398,7 @@ Class AniBloodPool : BloodGeneral {
 				psize+=2.0;
 				return ResolveState(null);
 				}
-			0000 JKLMNOPQRSTU 2 {
+			#### JKLMNOPQRSTU 2 {
 				if (instant)
 					A_SetTics(0);
 				if (CheckLandingSize (psize))
@@ -394,7 +408,7 @@ Class AniBloodPool : BloodGeneral {
 				psize+=1.2;
 				return ResolveState(null);
 				}
-			0000 VWXYZ 3 {
+			#### VWXYZ 3 {
 				if (instant)
 					A_SetTics(0);
 				if (CheckLandingSize (psize))
@@ -404,49 +418,26 @@ Class AniBloodPool : BloodGeneral {
 				psize+=1.0;
 				return ResolveState(null);
 				}
-			0001 ABCD 3 {
-				if (instant)
-					A_SetTics(0);
-				if (CheckLandingSize (psize))
-					return ResolveState("Rest");
-				if (Checkwater())
-					A_FadeOut(0.05);
-				psize+=1.0;
-				return ResolveState(null);
+			//running out of alphabet letters
+			TNT1 A 0 {
+				if (ver == 0) {
+					if (bcolor == 'green')
+						sprite = GetSpriteIndex("G001");
+					else if (bcolor == 'blue')
+						sprite = GetSpriteIndex("B001");
+					else
+						sprite = GetSpriteIndex("R001");
+					}
+				else {
+					if (bcolor == 'green')
+						sprite = GetSpriteIndex("G011");
+					else if (bcolor == 'blue')
+						sprite = GetSpriteIndex("B011");
+					else
+						sprite = GetSpriteIndex("R011");
+					}
 				}
-			goto rest;
-		SpawnDo:
-			1000 ABCDEFGHI 2 {
-				if (instant)
-					A_SetTics(0);
-				if (CheckLandingSize (psize))
-					return ResolveState("Rest");
-				if (Checkwater())
-					A_FadeOut(0.05);
-				psize+=2.0;
-				return ResolveState(null);
-				}
-			1000 JKLMNOPQRSTU 2 {
-				if (instant)
-					A_SetTics(0);
-				if (CheckLandingSize (psize))
-					return ResolveState("Rest");
-				if (Checkwater())
-					A_FadeOut(0.05);
-				psize+=1.2;
-				return ResolveState(null);
-				}
-			1000 VWXYZ 3 {
-				if (instant)
-					A_SetTics(0);
-				if (CheckLandingSize (psize))
-					return ResolveState("Rest");
-				if (Checkwater())
-					A_FadeOut(0.05);
-				psize+=1.0;
-				return ResolveState(null);
-				}
-			1001 ABCD 3 {
+			#### ABCD 3 {
 				if (instant)
 					A_SetTics(0);
 				if (CheckLandingSize (psize))
@@ -471,6 +462,20 @@ Class AniBloodPool : BloodGeneral {
 				A_FadeOut(0.03);
 				}
 			loop;
+		LoadSprites:
+			R000 ABCDEFGHIJKLMNOPQRSTUVWXYZ 0;
+			R001 ABCD 0;
+			R010 ABCDEFGHIJKLMNOPQRSTUVWXYZ 0;
+			R011 ABCD 0;
+			G000 ABCDEFGHIJKLMNOPQGSTUVWXYZ 0;
+			G001 ABCD 0;
+			G010 ABCDEFGHIJKLMNOPQGSTUVWXYZ 0;
+			G011 ABCD 0;
+			B000 ABCDEFGHIJKLMNOPQBSTUVWXYZ 0;
+			B001 ABCD 0;
+			B010 ABCDEFGHIJKLMNOPQBSTUVWXYZ 0;
+			B011 ABCD 0;
+			stop;
 		}
 	}
 
