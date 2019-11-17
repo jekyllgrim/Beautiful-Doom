@@ -171,7 +171,7 @@ states
 	}
 }
 
-Class CacoBlueTrail : Flare_General
+Class CacoBlueTrail : BD_BaseFlare
 {
 Default {
 	renderstyle "Add";
@@ -283,7 +283,7 @@ States
 	}
 }
 
-Class CacoballRay : Flare_General
+Class CacoballRay : BD_BaseFlare
 {
 Default {
 	alpha 0.8;
@@ -298,7 +298,7 @@ states
 	}
 }
 
-Class CacoBallLightning : Flare_General
+Class CacoBallLightning : BD_BaseFlare
 {
 bool upward;
 double ceilz;

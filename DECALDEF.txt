@@ -516,188 +516,929 @@ decalgroup BigScorch
 
 // plasma fade
 
-fader PFade
+fader HighlightsFade
 {
-DecayStart 0
-DecayTime 3
+	DecayStart 1
+	DecayTime 3
+}
+
+fader PlasmaBaseFade
+{
+	DecayStart 0
+	DecayTime 4
+}
+
+decal PlasmaLightning1
+{
+	pic PLLITE1
+	shade "00 00 80"
+	fullbright
+	animator PlasmaBaseFade
+	randomflipx
+	randomflipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal PlasmaLightning2
+{
+	pic PLLITE2
+	shade "00 00 80"
+	fullbright
+	animator PlasmaBaseFade
+	randomflipx
+	randomflipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decalgroup PlasmaLightning
+{
+	PlasmaLightning1 1
+	PlasmaLightning2 2
+}
+
+decal BluePlasmaBase1
+{
+	pic PSPLAT1A
+	shade "20 20 FF"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	x-scale 0.5
+	y-scale 0.5
 }
 
 decal BluePlasmaSplat1
 {
-lowerdecal Scorch
-add 0.7
+	pic PSPLAT1B
+	shade "FF FF FF"
+	lowerdecal BluePlasmaBase1
 	fullbright
-animator PFade
-pic PSPLAT01
-randomflipx
-randomflipy
-x-scale 0.5
-y-scale 0.5
+	animator HighlightsFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaBase2
+{
+	pic PSPLAT2A
+	shade "20 20 FF"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	x-scale 0.5
+	y-scale 0.5
 }
 
 decal BluePlasmaSplat2
 {
-lowerdecal Scorch
-add 0.7
+	pic PSPLAT2B
+	lowerdecal BluePlasmaBase2
+	shade "FF FF FF"
 	fullbright
-animator PFade
-pic PSPLAT02
-randomflipx
-randomflipy
-x-scale 0.5
-y-scale 0.5
+	animator HighlightsFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaBase3
+{
+	pic PSPLAT3A
+	shade "20 20 FF"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	x-scale 0.5
+	y-scale 0.5
 }
 
 decal BluePlasmaSplat3
 {
-lowerdecal Scorch
-add 0.7
+	pic PSPLAT3B
+	lowerdecal BluePlasmaBase3
+	shade "FF FF FF"
 	fullbright
-animator PFade
-pic PSPLAT03
-randomflipx
-randomflipy
-x-scale 0.5
-y-scale 0.5
+	animator HighlightsFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaBase4
+{
+	pic PSPLAT4A
+	shade "20 20 FF"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	x-scale 0.5
+	y-scale 0.5
 }
 
 decal BluePlasmaSplat4
 {
-lowerdecal Scorch
-add 0.7
+	pic PSPLAT4B
+	lowerdecal BluePlasmaBase4
+	shade "FF FF FF"
 	fullbright
-animator PFade
-pic PSPLAT04
-randomflipx
-randomflipy
-x-scale 0.5
-y-scale 0.5
+	animator HighlightsFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaBase5
+{
+	pic PSPLAT5A
+	shade "20 20 FF"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	x-scale 0.5
+	y-scale 0.5
 }
 
 decal BluePlasmaSplat5
 {
-lowerdecal Scorch
-add 0.7
+	pic PSPLAT5B
+	lowerdecal BluePlasmaBase5
+	shade "FF FF FF"
 	fullbright
-animator PFade
-pic PSPLAT05
-randomflipx
-randomflipy
-x-scale 0.5
-y-scale 0.5
+	animator HighlightsFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaBase6
+{
+	pic PSPLAT6A
+	shade "20 20 FF"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	x-scale 0.5
+	y-scale 0.5
 }
 
 decal BluePlasmaSplat6
 {
-lowerdecal Scorch
-add 0.7
+	pic PSPLAT6B
+	lowerdecal BluePlasmaBase6
+	shade "FF FF FF"
 	fullbright
-animator PFade
-pic PSPLAT06
-randomflipx
-randomflipy
-x-scale 0.5
-y-scale 0.5
+	animator HighlightsFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaBase7
+{
+	pic PSPLAT1A
+	shade "20 20 FF"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaSplat7
+{
+	pic PSPLAT1B
+	lowerdecal BluePlasmaBase7
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaBase8
+{
+	pic PSPLAT2A
+	shade "20 20 FF"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaSplat8
+{
+	pic PSPLAT2B
+	lowerdecal BluePlasmaBase8
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaBase9
+{
+	pic PSPLAT3A
+	shade "20 20 FF"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaSplat9
+{
+	pic PSPLAT3B
+	lowerdecal BluePlasmaBase9
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaBase10
+{
+	pic PSPLAT4A
+	shade "20 20 FF"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaSplat10
+{
+	pic PSPLAT4B
+	lowerdecal BluePlasmaBase10
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaBase11
+{
+	pic PSPLAT5A
+	shade "20 20 FF"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaSplat11
+{
+	pic PSPLAT5B
+	lowerdecal BluePlasmaBase11
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaBase12
+{
+	pic PSPLAT6A
+	shade "20 20 FF"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaSplat12
+{
+	pic PSPLAT6B
+	lowerdecal BluePlasmaBase12
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaBase13
+{
+	pic PSPLAT1A
+	shade "20 20 FF"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaSplat13
+{
+	pic PSPLAT1B
+	lowerdecal BluePlasmaBase13
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaBase14
+{
+	pic PSPLAT2A
+	shade "20 20 FF"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaSplat14
+{
+	pic PSPLAT2B
+	lowerdecal BluePlasmaBase14
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaBase14
+{
+	pic PSPLAT3A
+	shade "20 20 FF"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaSplat14
+{
+	pic PSPLAT3B
+	lowerdecal BluePlasmaBase14
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaBase15
+{
+	pic PSPLAT4A
+	shade "20 20 FF"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaSplat15
+{
+	pic PSPLAT4B
+	lowerdecal BluePlasmaBase15
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaBase16
+{
+	pic PSPLAT5A
+	shade "20 20 FF"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaSplat16
+{
+	pic PSPLAT5B
+	lowerdecal BluePlasmaBase16
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaBase17
+{
+	pic PSPLAT6A
+	shade "20 20 FF"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BluePlasmaSplat17
+{
+	pic PSPLAT6B
+	lowerdecal BluePlasmaBase17
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
 }
 
 decalgroup BluePlasmaSplat
 {
-BluePlasmaSplat1 6
-BluePlasmaSplat2 6
-BluePlasmaSplat3 6
-BluePlasmaSplat4 6
-BluePlasmaSplat5 6
-BluePlasmaSplat6 6
+	BluePlasmaSplat1 1
+	BluePlasmaSplat2 1
+	BluePlasmaSplat3 1
+	BluePlasmaSplat4 1
+	BluePlasmaSplat5 1
+	BluePlasmaSplat6 1
+	BluePlasmaSplat7 1
+	BluePlasmaSplat8 1
+	BluePlasmaSplat9 1
+	BluePlasmaSplat10 1
+	BluePlasmaSplat11 1
+	BluePlasmaSplat12 1
+	BluePlasmaSplat13 1
+	BluePlasmaSplat14 1
+	BluePlasmaSplat15 1
+	BluePlasmaSplat16 1
+	BluePlasmaSplat17 1
 }
 
 
+decal ArachnotronPlasmaBase1
+{
+	pic PSPLAT1A
+	shade "20 FF 20"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	x-scale 0.5
+	y-scale 0.5
+}
 
 decal ArachnotronPlasmaSplat1
 {
-lowerdecal Scorch
-add 1.0
+	pic PSPLAT1B
+	shade "FF FF FF"
+	lowerdecal ArachnotronPlasmaBase1
 	fullbright
-animator PFade
-pic GSPLAT01
-randomflipx
-randomflipy
-x-scale 0.5
-y-scale 0.5
+	animator HighlightsFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaBase2
+{
+	pic PSPLAT2A
+	shade "20 FF 20"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	x-scale 0.5
+	y-scale 0.5
 }
 
 decal ArachnotronPlasmaSplat2
 {
-lowerdecal Scorch
-add 1.0
+	pic PSPLAT2B
+	lowerdecal ArachnotronPlasmaBase2
+	shade "FF FF FF"
 	fullbright
-animator PFade
-pic GSPLAT02
-randomflipx
-randomflipy
-x-scale 0.5
-y-scale 0.5
+	animator HighlightsFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaBase3
+{
+	pic PSPLAT3A
+	shade "20 FF 20"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	x-scale 0.5
+	y-scale 0.5
 }
 
 decal ArachnotronPlasmaSplat3
 {
-lowerdecal Scorch
-add 1.0
+	pic PSPLAT3B
+	lowerdecal ArachnotronPlasmaBase3
+	shade "FF FF FF"
 	fullbright
-animator PFade
-pic GSPLAT03
-randomflipx
-randomflipy
-x-scale 0.5
-y-scale 0.5
+	animator HighlightsFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaBase4
+{
+	pic PSPLAT4A
+	shade "20 FF 20"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	x-scale 0.5
+	y-scale 0.5
 }
 
 decal ArachnotronPlasmaSplat4
 {
-lowerdecal Scorch
-add 1.0
+	pic PSPLAT4B
+	lowerdecal ArachnotronPlasmaBase4
+	shade "FF FF FF"
 	fullbright
-animator PFade
-pic GSPLAT04
-randomflipx
-randomflipy
-x-scale 0.5
-y-scale 0.5
+	animator HighlightsFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaBase5
+{
+	pic PSPLAT5A
+	shade "20 FF 20"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	x-scale 0.5
+	y-scale 0.5
 }
 
 decal ArachnotronPlasmaSplat5
 {
-lowerdecal Scorch
-add 1.0
+	pic PSPLAT5B
+	lowerdecal ArachnotronPlasmaBase5
+	shade "FF FF FF"
 	fullbright
-animator PFade
-pic GSPLAT05
-randomflipx
-randomflipy
-x-scale 0.5
-y-scale 0.5
+	animator HighlightsFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaBase6
+{
+	pic PSPLAT6A
+	shade "20 FF 20"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	x-scale 0.5
+	y-scale 0.5
 }
 
 decal ArachnotronPlasmaSplat6
 {
-lowerdecal Scorch
-add 1.0
+	pic PSPLAT6B
+	lowerdecal ArachnotronPlasmaBase6
+	shade "FF FF FF"
 	fullbright
-animator PFade
-pic GSPLAT06
-randomflipx
-randomflipy
-x-scale 0.5
-y-scale 0.5
+	animator HighlightsFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaBase7
+{
+	pic PSPLAT1A
+	shade "20 FF 20"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaSplat7
+{
+	pic PSPLAT1B
+	lowerdecal ArachnotronPlasmaBase7
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaBase8
+{
+	pic PSPLAT2A
+	shade "20 FF 20"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaSplat8
+{
+	pic PSPLAT2B
+	lowerdecal ArachnotronPlasmaBase8
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaBase9
+{
+	pic PSPLAT3A
+	shade "20 FF 20"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaSplat9
+{
+	pic PSPLAT3B
+	lowerdecal ArachnotronPlasmaBase9
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaBase10
+{
+	pic PSPLAT4A
+	shade "20 FF 20"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaSplat10
+{
+	pic PSPLAT4B
+	lowerdecal ArachnotronPlasmaBase10
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaBase11
+{
+	pic PSPLAT5A
+	shade "20 FF 20"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaSplat11
+{
+	pic PSPLAT5B
+	lowerdecal ArachnotronPlasmaBase11
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaBase12
+{
+	pic PSPLAT6A
+	shade "20 FF 20"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaSplat12
+{
+	pic PSPLAT6B
+	lowerdecal ArachnotronPlasmaBase12
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaBase13
+{
+	pic PSPLAT1A
+	shade "20 FF 20"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaSplat13
+{
+	pic PSPLAT1B
+	lowerdecal ArachnotronPlasmaBase13
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaBase14
+{
+	pic PSPLAT2A
+	shade "20 FF 20"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaSplat14
+{
+	pic PSPLAT2B
+	lowerdecal ArachnotronPlasmaBase14
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaBase14
+{
+	pic PSPLAT3A
+	shade "20 FF 20"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaSplat14
+{
+	pic PSPLAT3B
+	lowerdecal ArachnotronPlasmaBase14
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaBase15
+{
+	pic PSPLAT4A
+	shade "20 FF 20"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaSplat15
+{
+	pic PSPLAT4B
+	lowerdecal ArachnotronPlasmaBase15
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaBase16
+{
+	pic PSPLAT5A
+	shade "20 FF 20"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaSplat16
+{
+	pic PSPLAT5B
+	lowerdecal ArachnotronPlasmaBase16
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaBase17
+{
+	pic PSPLAT6A
+	shade "20 FF 20"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal ArachnotronPlasmaSplat17
+{
+	pic PSPLAT6B
+	lowerdecal ArachnotronPlasmaBase17
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
 }
 
 decalgroup ArachnotronPlasmaSplat
 {
-ArachnotronPlasmaSplat1 6
-ArachnotronPlasmaSplat2 6
-ArachnotronPlasmaSplat3 6
-ArachnotronPlasmaSplat4 6
-ArachnotronPlasmaSplat5 6
-ArachnotronPlasmaSplat6 6
+	ArachnotronPlasmaSplat1 1
+	ArachnotronPlasmaSplat2 1
+	ArachnotronPlasmaSplat3 1
+	ArachnotronPlasmaSplat4 1
+	ArachnotronPlasmaSplat5 1
+	ArachnotronPlasmaSplat6 1
+	ArachnotronPlasmaSplat7 1
+	ArachnotronPlasmaSplat8 1
+	ArachnotronPlasmaSplat9 1
+	ArachnotronPlasmaSplat10 1
+	ArachnotronPlasmaSplat11 1
+	ArachnotronPlasmaSplat12 1
+	ArachnotronPlasmaSplat13 1
+	ArachnotronPlasmaSplat14 1
+	ArachnotronPlasmaSplat15 1
+	ArachnotronPlasmaSplat16 1
+	ArachnotronPlasmaSplat17 1
 }
 
 
@@ -709,96 +1450,96 @@ ArachnotronPlasmaSplat6 6
 
 fader RailFade
 {
-DecayStart 3
-DecayTime 9
+	DecayStart 3
+	DecayTime 9
 }
 
 decal PlasmaRailSplat1
 {
-lowerdecal BigScorch
-add 1.0
+	lowerdecal BigScorch
+	add 1.0
 	fullbright
-animator RailFade
-pic PLSPLAT1
-randomflipx
-randomflipy
-x-scale 0.45
-y-scale 0.45
+	animator RailFade
+	pic PLSPLAT1
+	randomflipx
+	randomflipy
+	x-scale 0.45
+	y-scale 0.45
 }
 
 decal PlasmaRailSplat2
 {
-lowerdecal BigScorch
-add 1.0
+	lowerdecal BigScorch
+	add 1.0
 	fullbright
-animator RailFade
-pic PLSPLAT2
-randomflipx
-randomflipy
-x-scale 0.45
-y-scale 0.45
+	animator RailFade
+	pic PLSPLAT2
+	randomflipx
+	randomflipy
+	x-scale 0.45
+	y-scale 0.45
 }
 
 decal PlasmaRailSplat3
 {
-lowerdecal BigScorch
-add 1.0
+	lowerdecal BigScorch
+	add 1.0
 	fullbright
-animator RailFade
-pic PLSPLAT3
-randomflipx
-randomflipy
-x-scale 0.45
-y-scale 0.45
+	animator RailFade
+	pic PLSPLAT3
+	randomflipx
+	randomflipy
+	x-scale 0.45
+	y-scale 0.45
 }
 
 decal PlasmaRailSplat4
 {
-lowerdecal BigScorch
-add 1.0
+	lowerdecal BigScorch
+	add 1.0
 	fullbright
-animator RailFade
-pic PLSPLAT4
-randomflipx
-randomflipy
-x-scale 0.45
-y-scale 0.45
+	animator RailFade
+	pic PLSPLAT4
+	randomflipx
+	randomflipy
+	x-scale 0.45
+	y-scale 0.45
 }
 
 decal PlasmaRailSplat5
 {
-lowerdecal BigScorch
-add 1.0
+	lowerdecal BigScorch
+	add 1.0
 	fullbright
-animator RailFade
-pic PLSPLAT5
-randomflipx
-randomflipy
-x-scale 0.45
-y-scale 0.45
+	animator RailFade
+	pic PLSPLAT5
+	randomflipx
+	randomflipy
+	x-scale 0.45
+	y-scale 0.45
 }
 
 decal PlasmaRailSplat6
 {
-lowerdecal BigScorch
-add 1.0
+	lowerdecal BigScorch
+	add 1.0
 	fullbright
-animator RailFade
-pic PLSPLAT6
-randomflipx
-randomflipy
-x-scale 0.45
-y-scale 0.45
+	animator RailFade
+	pic PLSPLAT6
+	randomflipx
+	randomflipy
+	x-scale 0.45
+	y-scale 0.45
 }
 
 decalgroup PlasmaRailSplat
 {
-PlasmaRailSplat1 6
-PlasmaRailSplat2 6
-PlasmaRailSplat3 6
-PlasmaRailSplat4 6
-PlasmaRailSplat5 6
-PlasmaRailSplat6 6
+	PlasmaRailSplat1 6
+	PlasmaRailSplat2 6
+	PlasmaRailSplat3 6
+	PlasmaRailSplat4 6
+	PlasmaRailSplat5 6
+	PlasmaRailSplat6 6
 }
 
 /// +++++++++++++++++////
@@ -809,8 +1550,60 @@ PlasmaRailSplat6 6
 
 fader BFGFade
 {
-	Decaystart 6
-	Decaytime 25
+	Decaystart 3
+	Decaytime 18
+}
+
+fader BFGMainFade
+{
+	Decaystart 3
+	Decaytime 8
+}
+
+decal BFGScorch1
+{
+	pic BFGSCRC1
+	animator BFGMainFade
+	shade "80 ff 80"
+	lowerdecal BigScorch
+	fullbright
+	randomflipx
+	randomflipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BFGScorch2
+{
+	pic BFGSCRC2
+	animator BFGMainFade
+	shade "80 ff 80"
+	lowerdecal BigScorch
+	fullbright
+	randomflipx
+	randomflipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal BFGScorch3
+{
+	pic BFGSCRC3
+	animator BFGMainFade
+	shade "80 ff 80"
+	lowerdecal BigScorch
+	fullbright
+	randomflipx
+	randomflipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+colorchanger BFGScorchFade
+{
+	color "ff ff ff"
+	Fadestart 0.5
+	FadeTime 3.5
 }
 
 decal BFGLightning1
@@ -851,46 +1644,6 @@ decalgroup BFGLightning
 	BFGLightning1	1
 	BFGLightning2	1
 	BFGLightning3	1
-}
-
-decal BFGScorch1
-{
-	pic BFGSCRC1
-	animator ToBlack
-	shade "80 ff 80"
-	randomflipx
-	randomflipy
-	x-scale 0.5
-	y-scale 0.5
-}
-
-decal BFGScorch2
-{
-	pic BFGSCRC2
-	animator ToBlack
-	shade "80 ff 80"
-	randomflipx
-	randomflipy
-	x-scale 0.5
-	y-scale 0.5
-}
-
-decal BFGScorch3
-{
-	pic BFGSCRC3
-	animator ToBlack
-	shade "80 ff 80"
-	randomflipx
-	randomflipy
-	x-scale 0.5
-	y-scale 0.5
-}
-
-colorchanger BFGScorchFade
-{
-	color "ff ff ff"
-	Fadestart 0.5
-	FadeTime 3.5
 }
 
 decalgroup BFGScorch

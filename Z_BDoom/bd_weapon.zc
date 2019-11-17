@@ -658,7 +658,7 @@ Class BD_MuzzleSpark : BD_MuzzleFlashParticle {
 		}
 	}
 
-Class BD_MuzzleFlare : Flare_General {
+Class BD_MuzzleFlare : BD_BaseFlare {
 	Default {
 		alpha 0.5;
 		scale 0.07;

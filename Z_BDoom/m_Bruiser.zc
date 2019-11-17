@@ -224,7 +224,7 @@ States
 		}
 }
 
-Class FirePiece_Baron : Flare_General
+Class FirePiece_Baron : BD_BaseFlare
 {
 Default {
 	alpha 0.5;

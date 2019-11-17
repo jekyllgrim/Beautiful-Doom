@@ -154,7 +154,7 @@ Class BD_FatShot : FatShot {
 		}
 	}
 
-Class BD_FatShotFlare : Flare_General {
+Class BD_FatShotFlare : BD_BaseFlare {
 	Default {
 		alpha 0.8;
 		scale 0.2;

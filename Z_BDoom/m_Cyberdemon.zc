@@ -141,7 +141,7 @@ states
 }
 
 // Explosion that spawns blood as well as metal pieces — used by Cyberdemon, as well as Icon of Sin
-Class CyberExplosion : Flare_General
+Class CyberExplosion : BD_BaseFlare
 {
 Default {
 	+ROLLSPRITE

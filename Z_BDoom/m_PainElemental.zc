@@ -148,7 +148,7 @@ states
 	}
 }
 
-Class PEExplosion : Flare_General
+Class PEExplosion : BD_BaseFlare
 {
 Default {
 	+ROLLSPRITE

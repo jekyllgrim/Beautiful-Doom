@@ -301,7 +301,7 @@ Class ArchFlameSeekerTrail : ParticleFire_General {
 	
 
 //these raise above the pentagram as well as float behind Archie when he's walking around
-Class ArchFlameParticle : Flare_General {
+Class ArchFlameParticle : BD_BaseFlare {
 	Default {
 		alpha 0.65;
 		scale 0.04;
@@ -318,7 +318,7 @@ Class ArchFlameParticle : Flare_General {
 	}
 
 //these fade in and fly towards the Archie as he's gathering strength to burn you
-Class ReverseArchFlameParticle : Flare_General {
+Class ReverseArchFlameParticle : BD_BaseFlare {
 	Default {
 		alpha 0.0;
 		scale 0.01;
@@ -348,7 +348,7 @@ Class ReverseArchFlameParticle : Flare_General {
 		}
 	}
 
-Class ArchFlameDebris : Flare_General {
+Class ArchFlameDebris : BD_BaseFlare {
 	Default {
 		+RELATIVETOFLOOR
 		}

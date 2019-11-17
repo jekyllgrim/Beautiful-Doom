@@ -1,5 +1,5 @@
 // Universal flare used by light sources
-Class BD_LightFlare : Flare_General {
+Class BD_LightFlare : BD_BaseFlare {
 	bool flicker;				//whether to flicker
 	property flicker : flicker;
 	Default {

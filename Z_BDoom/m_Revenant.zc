@@ -169,7 +169,7 @@ Class BD_RevenantTracer : RevenantTracer {
 
 Class TracerTrail : BD_BaseFlare {
 	Default {
-		Flare_General.fcolor "red";
+		BD_BaseFlare.fcolor "red";
 		alpha 0.8;
 		scale 0.04;
 		}
@@ -185,7 +185,7 @@ Class TracerTrail : BD_BaseFlare {
 
 Class BD_RevenantTracerFlare : BD_ProjFlare {
 	Default {
-		Flare_General.fcolor "red";
+		BD_BaseFlare.fcolor "red";
 		alpha 0.9;
 		scale 0.13;
 		}

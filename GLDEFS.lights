@@ -121,10 +121,10 @@ frame BOM4 { light ROCKET_X1 }
 frame BOM5 { light ROCKET_X3 }
 }
 
-object SeekerFlare
+/*object SeekerFlare
 {
 frame LENG { light ALTBFGBALL }
-}
+}*/
 
 Object BD_HomingRocket
 {

@@ -283,8 +283,8 @@ class BasicMeatPiece : Gibs_General {
 						let smudge = GibSmudge(Spawn("GibSmudge",pos));
 						if (smudge) {
 							smudge.master = self;
-							smudge.bWALLSPRITE = true;
-							smudge.angle = atan2(blockingline.delta.y, blockingline.delta.x) + 90;
+							//smudge.bWALLSPRITE = true;
+							//smudge.angle = atan2(blockingline.delta.y, blockingline.delta.x) + 90;
 							}
 						roll = randompick(0,180);
 						A_Stop();
@@ -307,14 +307,22 @@ class BasicMeatPiece : Gibs_General {
 				}
 			wait;
 		WallSlide:
-			#### # 30 A_SetTics(random(35,90));
+			#### # 30 {
+				UnlinkFromWorld ();
+				LinkToWorld ();
+				A_SetTics(random(35,90));
+				}
 			#### # 0 {
 				gravity = bmass*frandom(0.0006,0.0007);
 				}
 			#### # 1;
 			wait;
 		Ceiling:
-			#### # 30 A_SetTics(random(50,100));
+			#### # 30 {
+				UnlinkFromWorld ();
+				LinkToWorld ();
+				A_SetTics(random(50,100));
+				}
 			#### # 15 {
 				gravity = default.gravity*0.1;
 				}
@@ -355,7 +363,6 @@ class BasicMeatPiece : Gibs_General {
 Class GibSmudge : DebrisGeneral {
 	BasicMeatPiece meat;
 	bool ceiling;
-	double finaly;
 	Default {
 		DebrisGeneral.sfxtype "gibs";
 		+NOINTERACTION
@@ -369,7 +376,6 @@ Class GibSmudge : DebrisGeneral {
 		scale.x *= randompick(-1,1);
 		if (master)
 			meat = BasicMeatPiece(master);
-		finaly = frandom(0.03,0.06);
 		}
 	override void Tick() {
 		super.Tick();
@@ -391,20 +397,14 @@ Class GibSmudge : DebrisGeneral {
 			else {
 				if (!meat.landed) 
 					scale.y = Clamp(abs(meat.vel.z)*0.2,0.05,0.4);
-				else if (abs(scale.y) > finaly)
-					scale.y *= 0.995;
+				else if (abs(scale.y) > 0.01)
+					scale.y *= 0.9;
+				else {
+					destroy();
+					return;
+					}
 				}
 			}
-		/*			
-		if (meat && !meat.landed) {
-			SetOrigin(meat.pos,true);
-			if (ceiling)
-				scale.y = Clamp((ceilingz-meat.pos.z)*0.025,0.05,0.4);
-			else
-				scale.y = Clamp(abs(meat.vel.z)*0.2,0.2,0.4);
-			}
-		else if (abs(scale.y) > 0.05)
-			scale.y *= 0.9;*/
 		else {
 			 destroy();
 			 return;
