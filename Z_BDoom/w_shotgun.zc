@@ -220,13 +220,13 @@ States
 		TNT1 A 0 A_WeaponOffset(0.0,32.0,WOF_INTERPOLATE);
 		goto ready;
 	Deselect.Modern:
-		SHOR A 1 A_Lower(12);
+		SHON A 1 A_Lower(12);
 		wait;
 	Ready.Modern:
-		SHOR A 1 BD_WeaponReady();
+		SHON A 1 BD_WeaponReady();
 		goto ready;
 	DryReload:
-		SHOR A 10 A_PlaySound("Mweapons/dry");
+		SHON A 10 A_PlaySound("Mweapons/dry");
 		goto reload;
 	Fire.Modern:
 		#### # 0 A_JumpIfNoAmmo("DryReload");
