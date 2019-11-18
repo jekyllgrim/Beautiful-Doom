@@ -2,6 +2,108 @@
 // ------------------ BRIGHTMAPS ------------------
 // ------------------------------------------------
 
+// MODERN SHOTGUN
+
+brightmap sprite "SHOLF0" {
+	map "Brightmaps/ModernShotgun/SHOLF0.png"
+}
+
+brightmap sprite "SHONA0" {
+	map "Brightmaps/ModernShotgun/SHONA0.png"
+}
+
+brightmap sprite "SHONB0" {
+	map "Brightmaps/ModernShotgun/SHONB0.png"
+}
+
+brightmap sprite "SHONC0" {
+	map "Brightmaps/ModernShotgun/SHONC0.png"
+}
+
+brightmap sprite "SHOND0" {
+	map "Brightmaps/ModernShotgun/SHOND0.png"
+}
+
+brightmap sprite "SHONE0" {
+	map "Brightmaps/ModernShotgun/SHONE0.png"
+}
+
+brightmap sprite "SHONF0" {
+	map "Brightmaps/ModernShotgun/SHONF0.png"
+}
+
+brightmap sprite "SHONG0" {
+	map "Brightmaps/ModernShotgun/SHONG0.png"
+}
+
+brightmap sprite "SHONH0" {
+	map "Brightmaps/ModernShotgun/SHONH0.png"
+}
+
+brightmap sprite "SHORA0" {
+	map "Brightmaps/ModernShotgun/SHONA0.png"
+}
+
+brightmap sprite "SHORB0" {
+	map "Brightmaps/ModernShotgun/SHONA0.png"
+}
+
+brightmap sprite "SHORC0" {
+	map "Brightmaps/ModernShotgun/SHONA0.png"
+}
+
+brightmap sprite "SHORD0" {
+	map "Brightmaps/ModernShotgun/SHORD0.png"
+}
+
+brightmap sprite "SHORE0" {
+	map "Brightmaps/ModernShotgun/SHORD0.png"
+}
+
+brightmap sprite "SHORF0" {
+	map "Brightmaps/ModernShotgun/SHORF0.png"
+}
+
+brightmap sprite "SHORG0" {
+	map "Brightmaps/ModernShotgun/SHORF0.png"
+}
+
+brightmap sprite "SHORH0" {
+	map "Brightmaps/ModernShotgun/SHORH0.png"
+}
+
+brightmap sprite "SHORI0" {
+	map "Brightmaps/ModernShotgun/SHORH0.png"
+}
+
+brightmap sprite "SHORJ0" {
+	map "Brightmaps/ModernShotgun/SHORJ0.png"
+}
+
+brightmap sprite "SHORK0" {
+	map "Brightmaps/ModernShotgun/SHORJ0.png"
+}
+
+brightmap sprite "SHORL0" {
+	map "Brightmaps/ModernShotgun/SHORL0.png"
+}
+
+brightmap sprite "SHORM0" {
+	map "Brightmaps/ModernShotgun/SHORM0.png"
+}
+
+brightmap sprite "SHORN0" {
+	map "Brightmaps/ModernShotgun/SHORM0.png"
+}
+
+brightmap sprite "SHORO0" {
+	map "Brightmaps/ModernShotgun/SHORO0.png"
+}
+
+brightmap sprite "SHORP0" {
+	map "Brightmaps/ModernShotgun/SHORP0.png"
+}
+
 // TALL TORCH
 brightmap sprite TTRGA0 {
 map "brightmaps/talltorch.png"
