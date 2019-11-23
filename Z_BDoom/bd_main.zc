@@ -3,6 +3,7 @@
 ////////////////////////////////////////////////////////////
 
 Class BDoomActor : Actor abstract {
+	protected double pi;		
 	bool CheckLandingSize (double cradius = 0, bool checkceiling = false) {
 		bool ret = false;
 		if (checkceiling) {
@@ -21,6 +22,16 @@ Class BDoomActor : Actor abstract {
 		}
 		return ret;
 	}
+	int BD_Sign (int i) {
+		if (i >= 0)
+			return 1;
+		else
+			return -1;
+	}
+	override void BeginPlay() {
+		super.BeginPlay();
+		pi = 3.141592653589793;
+	}	
 }
 
 //base class for most debris

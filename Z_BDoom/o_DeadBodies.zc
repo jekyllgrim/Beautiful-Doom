@@ -1,7 +1,7 @@
 Class BD_DeadBody : Actor abstract {
 	Default {
 		+NOBLOCKMAP
-		}
+	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		scale.x *= randompick(-1,1);
@@ -10,10 +10,10 @@ Class BD_DeadBody : Actor abstract {
 		let a = AniBloodPool(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
 		if (a) { 
 			a.instant = true;
-			a.translation = BloodTranslation;
-			}
+			a.target = self;
 		}
 	}
+}
 
 Class BD_DeadZombieMan : BD_DeadBody {
 	states
@@ -28,8 +28,8 @@ Class BD_DeadZombieMan : BD_DeadBody {
 			stop;
 			POSD H -1;
 			stop;
-		}
 	}
+}
 
 Class BD_DeadShotgunGuy : BD_DeadBody {
 	states
@@ -44,8 +44,8 @@ Class BD_DeadShotgunGuy : BD_DeadBody {
 			stop;
 			SPOD K -1;
 			stop;
-		}
 	}
+}
 
 Class BD_DeadDoomImp : BD_DeadBody {
 	states
@@ -60,8 +60,8 @@ Class BD_DeadDoomImp : BD_DeadBody {
 			stop;
 			TROD K -1;
 			stop;
-		}
 	}
+}
 
 Class BD_DeadDemon : BD_DeadBody {
 	states
@@ -78,13 +78,13 @@ Class BD_DeadDemon : BD_DeadBody {
 			stop;
 			SARY I -1;
 			stop;
-		}
 	}
+}
 
 Class BD_DeadCacodemon : BD_DeadBody {
 	Default {
 		bloodcolor "Blue";
-		}
+	}
 	states
 		{
 		Spawn:
@@ -99,8 +99,8 @@ Class BD_DeadCacodemon : BD_DeadBody {
 			stop;
 			HEAX S -1;
 			stop;
-		}
 	}
+}
 
 Class BD_DeadLostSoul : BD_DeadBody {
 	states
@@ -108,5 +108,5 @@ Class BD_DeadLostSoul : BD_DeadBody {
 		spawn:
 			LGI2 A -1;
 			stop;
-		}
 	}
+}

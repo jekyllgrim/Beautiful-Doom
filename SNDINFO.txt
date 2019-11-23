@@ -201,6 +201,14 @@ $limit lamp/hum 4
 torch/burn	"sounds/decorations/torchloop.ogg"
 $limit torch/burn 4
 
+$random world/ropecreak { rope1 rope2 rope3 rope4 rope5 rope6 }
+rope1	rope1
+rope2	rope2
+rope3	rope3
+rope4	rope4
+rope5	rope5
+rope6	rope6
+
 misc/keytry LOCKCARD
 
 $random world/ebarrel	{ ebarrel1 ebarrel2 ebarrel3 ebarrel4 }

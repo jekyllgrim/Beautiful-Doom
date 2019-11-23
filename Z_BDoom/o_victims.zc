@@ -12,7 +12,7 @@ Class DecorBloodDrop : CeilingBloodDrop
 {
 Default {
 	scale 0.15;
-	}
+}
 states
 	{
 	spawn:
@@ -23,22 +23,22 @@ states
 			if (waterlevel > 0) {
 				destroy();
 				return ResolveState(null);
-				}
+			}
 			if (pos.z <= floorz)
 				return ResolveState("Death");
 			return ResolveState(null);
-			}
+		}
 		stop;
-	}
+}
 }
 
-Class BD_BaseVictim : Actor abstract {
+Class BD_BaseVictim : BDoomActor abstract {
 	Default {
 		+SOLID
 		+DONTTHRUST
 		+DONTFALL
 		+NODAMAGE
-		}
+	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		scale.x *= randompick(-1,1);
@@ -50,32 +50,33 @@ Class BD_BaseVictim : Actor abstract {
 		if (a) {
 			a.instant = true;
 			a.scale = (0.14,0.14)*frandom(0.8,1.4);
-			}
+			a.target = self;
 		}
+	}
 	override void Tick() {
 		super.Tick();
 		if (bSOLID)
 			bSHOOTABLE = bdoom_killableobjects;
-		}
+	}
 	states
 		{
 		Loadsprites:
 			BDB1 ABCDEFGHIJK 0;
 			BDB3 ABCDEFGHIJKL 0;
 			stop;
-		}
 	}
-
+}
 
 Class BD_HangingTorso : BD_BaseVictim {
-	int dir;
-	double maxroll;
-	double rollstep;
-	property rollstep : rollstep;
-	property maxroll : maxroll;
+	protected double swingspeed;
+	property swingspeed : swingspeed;
+	
+	protected double rollangVel;
+	protected double rollang;
+	protected double damping;
+	
 	Default {
-		BD_HangingTorso.maxroll 20;
-		BD_HangingTorso.rollstep 5;
+		BD_HangingTorso.swingspeed 0.08;
 		Radius 16;
 		Height 64;
 		xscale 0.8;
@@ -85,8 +86,8 @@ Class BD_HangingTorso : BD_BaseVictim {
 		+ROLLSPRITE
 		+ROLLCENTER
 		+INTERPOLATEANGLES
-		painchance 128;
-		}
+		painchance 160;
+	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		if (!bdoom_gibs)
@@ -95,9 +96,12 @@ Class BD_HangingTorso : BD_BaseVictim {
 			if (random(0,2) > 0) {
 				let g = BasicMeatPiece(Spawn("BasicMeatPiece",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),floorz+1)));
 				if (g) g.instant = true;
-				}
 			}
 		}
+		rollangVel = 0;
+		rollang = 0;
+		damping = 0.02;
+	}
 	override void Tick() {
 		super.Tick();
 		if (bSOLID)
@@ -106,64 +110,57 @@ Class BD_HangingTorso : BD_BaseVictim {
 			return;
 		if (bdoom_debris && abs(roll) < 5) 
 			A_SpawnitemEx("DecorBloodDrop",frandom(-5,5),frandom(-5,5),frandom(22,24),failchance:253);
+	}
+	void BD_StartSwing() {
+		double sspeed = 1;
+		for (int i = 4; i > 0; i--) {
+			if (random(0,100) < 50)
+				sspeed *= 0.7;
+			}
+		if (roll ~== 0)
+			rollangVel = swingspeed * randompick(-1,1);
+		else 
+			rollangVel = swingspeed * BD_Sign(roll);
+		rollangVel *= sspeed;
 		}
 	states
 		{
 		Spawn:
-			BDB1 A 0  NoDelay { 
-				frame = random(0,10); 
-				return ResolveState("Idle");
+			BDB1 A 1 NoDelay {
+				frame = random(0,10);
 				}
+			goto idle;
 		Idle:
-			#### # 10 { roll = 0; }
-			wait;
+			#### # 1 {
+				rollang += rollangVel;
+				rollangVel += -(damping * rollang) - rollangVel*damping;
+				roll = rollang * 180.0 / pi;
+				if (abs(roll) < 1 && rollangVel > 0.01)
+					A_Playsound("world/ropecreak",CHAN_VOICE|CHAN_NOSTOP,attenuation:4);
+			}
+			loop;
 		Pain:
-			#### # 0 {
-				maxroll = default.maxroll*frandom(0.5,1.1);
-				rollstep = default.rollstep;
-				if (roll == 0)
-					dir = randompick(-1,1);
-				else if (roll > 0)
-					dir = 1;
-				else
-					dir = -1;
-				}
-			#### # 4 {
-				roll = Clamp(roll + rollstep * dir,-maxroll,maxroll);
-				if (abs(roll) >= maxroll * 0.95) {
-					dir *= -1;
-					rollstep *= 0.85;
-					if (maxroll > 5)
-						maxroll *= 0.85;
-					}
-				if (abs(roll) < 0.1 && rollstep < 0.5) {
-					roll = 0;
-					return ResolveState("Idle");
-					}
-				return ResolveState(null);
-				}
-			wait;	
-		}
+			#### # 0 BD_StartSwing();
+			goto Idle;	
 	}
+}
 
 Class BD_HangingBody : BD_HangingTorso {
 	Default {
-		BD_HangingTorso.maxroll 10;
-		BD_HangingTorso.rollstep 2.5;
+		BD_HangingTorso.swingspeed 0.05;
 		Radius 16;
 		Height 88;
-		painchance 80;
-		}
+	}
 	states
 		{
 		Spawn:
 			BDB3 A 0  NoDelay { 
 				frame = random(0,11); 
 				return ResolveState("Idle");
-				}
+			}
 			stop;
-		}
 	}
+}
 
 
 /*
@@ -189,7 +186,7 @@ states
 		POL4 B 1 A_SpawnItemEx("HeadFromPole",random(-4,4),random(-4,4),56,random(3,7),0,random(0,5),random(0,360))
 		POL4 B -1
 		stop
-	}
+}
 }
 	
 actor HeadFromPole : Gibs_general
@@ -284,7 +281,7 @@ states
 		TNT1 A 0 A_TakeInventory("DummyChecker",1)
 		POL2 F 1 A_SpawnItemEx("HeadFromPole",random(-4,4),random(-4,4),24,random(3,7),0,random(0,5),random(0,360))
 		goto spawn5
-	}
+}
 }
 
 
@@ -323,7 +320,7 @@ states
 		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
 		GOR1 G 12
 		goto Death+4
-	}
+}
 }
 
 // **********************************
@@ -349,7 +346,7 @@ states
 		TNT1 A 0 A_FaceTarget
 		GOR3 A 10 A_SpawnitemEx("BloodSpill",6,random(13,15),28,0,0,0,0,0,230)
 		goto spawn+1
-	}
+}
 }
 
 Actor BD_Meat4 : Meat4 replaces Meat4
@@ -363,7 +360,7 @@ states
 		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
 		GOR4 A 10
 		goto spawn+1
-	}
+}
 }
 
 
@@ -378,7 +375,7 @@ states
 		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
 		GOR5 A 10
 		goto spawn+1
-	}
+}
 }
 
 // ********************
@@ -421,7 +418,7 @@ states
 		POL1 BCDEFGHIJKLMN 5
 		POL1 N -1
 		stop
-	}
+}
 }
 
 // ****************************
@@ -455,7 +452,7 @@ states
 		POL6 CDEFGHIJKL 5
 		POL6 L -1
 		stop
-	}
+}
 }
 
 // ********************

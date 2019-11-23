@@ -1548,10 +1548,11 @@ decalgroup PlasmaRailSplat
 /// +++++++++++++++++////
 /// +++++++++++++++++////
 
-fader BFGFade
+colorchanger BFGLightningFade
 {
-	Decaystart 3
-	Decaytime 18
+	Color "00 00 00"
+	FadeStart 3
+	FadeTime 18
 }
 
 fader BFGMainFade
@@ -1613,7 +1614,7 @@ decal BFGLightning1
 	fullbright
 	randomflipx
 	randomflipy
-	animator BFGFade
+	animator BFGLightningFade
 	lowerdecal BFGScorch
 }
 
@@ -1624,7 +1625,7 @@ decal BFGLightning2
 	fullbright
 	randomflipx
 	randomflipy
-	animator BFGFade
+	animator BFGLightningFade
 	lowerdecal BFGScorch
 }
 
@@ -1635,7 +1636,7 @@ decal BFGLightning3
 	fullbright
 	randomflipx
 	randomflipy
-	animator BFGFade
+	animator BFGLightningFade
 	lowerdecal BFGScorch
 }
 
