@@ -33,10 +33,12 @@ states
 }
 
 Class BD_BaseVictim : BDoomActor abstract {
+	protected bool vdead;
 	Default {
 		+SOLID
 		+DONTTHRUST
 		+DONTFALL
+		+DONTCORPSE
 		+NODAMAGE
 	}
 	override void PostBeginPlay() {
@@ -104,27 +106,27 @@ Class BD_HangingTorso : BD_BaseVictim {
 	}
 	override void Tick() {
 		super.Tick();
-		if (bSOLID)
-			bSHOOTABLE = bdoom_killableobjects;
 		if (level.isFrozen())
 			return;
 		if (bdoom_debris && abs(roll) < 5) 
-			A_SpawnitemEx("DecorBloodDrop",frandom(-5,5),frandom(-5,5),frandom(22,24),failchance:253);
+			A_SpawnitemEx("DecorBloodDrop",frandom(-5,5),frandom(-5,5),frandom(22,24),failchance:254);
+		rollang += rollangVel;
+		rollangVel += -(damping * rollang) - rollangVel*damping;
+		roll = rollang * 180.0 / pi;
 	}
-	void BD_StartSwing() {
-		double sspeed = 1;
+	void BD_StartSwing(double rfactor = 1.0) {
+		double sspeed = 1 * rfactor;
 		for (int i = 4; i > 0; i--) {
 			if (random(0,100) < 50)
 				sspeed *= 0.7;
-			}
+		}
 		if (roll ~== 0)
 			rollangVel = swingspeed * randompick(-1,1);
 		else 
 			rollangVel = swingspeed * BD_Sign(roll);
 		rollangVel *= sspeed;
-		}
-	states
-		{
+	}
+	states {
 		Spawn:
 			BDB1 A 1 NoDelay {
 				frame = random(0,10);
@@ -132,11 +134,8 @@ Class BD_HangingTorso : BD_BaseVictim {
 			goto idle;
 		Idle:
 			#### # 1 {
-				rollang += rollangVel;
-				rollangVel += -(damping * rollang) - rollangVel*damping;
-				roll = rollang * 180.0 / pi;
 				if (abs(roll) < 1 && rollangVel > 0.01)
-					A_Playsound("world/ropecreak",CHAN_VOICE|CHAN_NOSTOP,attenuation:4);
+					A_Playsound("victims/ropecreak",CHAN_VOICE|CHAN_NOSTOP,attenuation:4);
 			}
 			loop;
 		Pain:
@@ -151,8 +150,7 @@ Class BD_HangingBody : BD_HangingTorso {
 		Radius 16;
 		Height 88;
 	}
-	states
-		{
+	states {
 		Spawn:
 			BDB3 A 0  NoDelay { 
 				frame = random(0,11); 
@@ -162,6 +160,139 @@ Class BD_HangingBody : BD_HangingTorso {
 	}
 }
 
+Class BD_BloodyTwitch : BD_HangingTorso {
+	protected state slow;
+	protected state shigh;
+	Default {
+		BD_HangingTorso.swingspeed 0.01;
+		radius 16;
+		height 68;
+		yscale 0.8;
+		health 80;
+		-NODAMAGE
+		painchance 220;
+		+BUDDHA
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		slow = FindState("HeadLowered");
+		shigh = FindState("HeadRaised");
+		}
+	override void Tick() {
+		super.Tick();
+		if (level.isFrozen())
+			return;
+		if (bdoom_debris) 
+			A_SpawnitemEx("DecorBloodDrop",frandom(-3,3),frandom(-3,3),frandom(-4,0),failchance:254);
+		if (health == 1 && !vdead)
+			SetStateLabel("Die");
+	}
+	/*override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle) {
+		A_PlaySound("victims/chain",CHAN_BODY|CHAN_NOSTOP,attenuation:4);
+		BD_StartSwing();
+		int dmg = super.DamageMobj(inflictor, source, damage, mod, flags, angle);
+		if (vdead)
+			return dmg;
+		if (health - dmg > 1) {
+			A_PlaySound("victims/pain",CHAN_VOICE|CHAN_NOSTOP);
+			if (InStateSequence(curstate,slow))
+				SetStateLabel("LowTwitch");
+			else if (InStateSequence(curstate,shigh))
+				SetStateLabel("TopTwitch");
+			return dmg;
+			}
+		SetStateLabel("Die");
+		return dmg;
+	}*/
+	states {
+		Spawn:
+			TNT1 A 0 NoDelay A_Jump(256,"HeadNeutral","HeadLowered","HeadRaised");
+		Pain:
+			#### # 1 {
+				bNOPAIN = true;
+				A_PlaySound("victims/chain",CHAN_BODY|CHAN_NOSTOP,attenuation:4);
+				BD_StartSwing(2.5);
+				if (vdead)
+					return ResolveState("Dead");
+				else if (health <= 1)
+					return ResolveState("Die");
+				else {
+					A_PlaySound("victims/pain",CHAN_VOICE|CHAN_NOSTOP);
+					if (frame > 5 && frame < 9)
+						return ResolveState("LowTwitch");
+					else
+						return ResolveState("TopTwitch");
+				}
+				return ResolveState(null);
+			}
+			goto spawn;
+		HeadNeutral:
+			BTWT AB random(20,60) A_Jump(128,"RaiseHead","LowerHead");
+			loop;
+		LowerHead:
+			BTWT AFG 6;
+		HeadLowered:
+			BTWT GHGI random(20,60);
+			TNT1 A 0 A_Jump(144,"HeadLoweredEnd","LowTwitch","Cough");
+			loop;
+		HeadLoweredEnd:
+			BTWT FB 6;
+			goto HeadNeutral;
+		RaiseHead:
+			BTWT BC 6;			
+		HeadRaised:
+			BTWT CD random(20,60);
+			TNT1 A 0 A_Jump(112,"HeadRaisedEnd","TopTwitch");
+			loop;
+		HeadRaisedEnd:
+			BTWT CB 6;
+			goto HeadNeutral;
+		TopTwitch:
+			TNT1 A 0 {
+				A_PlaySound("victims/chain",attenuation:4);
+				BD_StartSwing();
+			}
+			BTWT CECECE random(9,12);
+			TNT1 A 0 { bNOPAIN = false; }
+			goto HeadRaised;
+		LowTwitch:
+			TNT1 A 0 {
+				A_PlaySound("victims/chain",attenuation:4);
+				BD_StartSwing();
+			}
+			BTWT IJIJIJ random(9,12);
+			TNT1 A 0 { bNOPAIN = false; }
+			goto HeadLowered;
+		Cough:
+			BTWT G 4;
+			TNt1 A 0 A_PlaySound("victims/cough",attenuation:5);
+			BTWT KLMN 4;
+			BTWT G 10;
+			TNT1 A 0 A_Jump(96,"HeadLowered");
+			TNt1 A 0 A_PlaySound("victims/cough",attenuation:5);
+			BTWT KLMN 4;
+			BTWT G 14;
+			goto HeadLowered;
+		Die:
+			BTWT F 5 {
+				A_PlaySound("victims/death",CHAN_ITEM);
+				vdead = true;
+			}
+			BTWT GOPQ 7;
+		Dead:
+			BTWT R 20;
+			TNT1 A 0 { bNOPAIN = false; }
+			loop;
+	}
+}
+
+
+Class BD_NonsolidTwitch : BD_BloodyTwitch {
+	Default {
+		-SOLID
+	}
+}
+		
 
 /*
 // ********************

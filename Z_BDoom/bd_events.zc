@@ -186,6 +186,9 @@ class BD_ActorOverrideHandler : EventHandler {
 				Case 'HangTSkull' 			: e.Replacement = "BD_HangingTorso"; 	break;
 				Case 'HangBNoBrain' 		: e.Replacement = "BD_HangingBody"; 	break;
 				Case 'HangNoGuts' 			: e.Replacement = "BD_HangingBody"; 	break;
+				Case 'BloodyTwitch'			: e.Replacement = "BD_BloodyTwitch"; 	break;
+				Case 'NonSolidTwitch'		: e.Replacement = "BD_NonsolidTwitch"; 	break;
+				
 					//MISC
 				case 'TeleportFog' 		: e.replacement = "BD_TeleportFog";		break;
 				case 'ExplosiveBarrel' 	: e.replacement = "BD_ExplosiveBarrel";	break;

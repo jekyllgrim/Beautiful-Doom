@@ -201,13 +201,40 @@ $limit lamp/hum 4
 torch/burn	"sounds/decorations/torchloop.ogg"
 $limit torch/burn 4
 
-$random world/ropecreak { rope1 rope2 rope3 rope4 rope5 rope6 }
+$random victims/ropecreak { rope1 rope2 rope3 rope4 rope5 rope6 }
 rope1	rope1
 rope2	rope2
 rope3	rope3
 rope4	rope4
 rope5	rope5
 rope6	rope6
+
+$random victims/chain { chain1 chain2 chain3 chain4 }
+chain1	chain1
+chain2	chain2
+chain3	chain3
+chain4	chain4
+
+$random victims/cough { cough1 cough2 cough3 cough4 cough5 }
+cough1	cough1
+cough2	cough2
+cough3	cough3
+cough4	cough4
+cough5	cough5
+
+$random victims/pain { vicpain1 vicpain2 vicpain3 vicpain4 vicpain5 vicpain6 }
+vicpain1	vicpain1
+vicpain2	vicpain2
+vicpain3	vicpain3
+vicpain4	vicpain4
+vicpain5	vicpain5
+vicpain6	vicpain6
+
+$random victims/death { vicdie1 vicdie2 vicdie3 vicdie4 }
+vicdie1	vicdie1
+vicdie2	vicdie2
+vicdie3	vicdie3
+vicdie4	vicdie4
 
 misc/keytry LOCKCARD
 
