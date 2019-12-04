@@ -312,6 +312,7 @@ fist/heavyswing2	"sounds/modern/fist/swing_heavy2.ogg"
 fist/heavyswing3	"sounds/modern/fist/swing_heavy3.ogg"
 fist/heavyswing4	"sounds/modern/fist/swing_heavy4.ogg"
 Mweapons/fist/wear	"sounds/modern/fist/knuckle_wear.ogg"
+
 $random Mweapons/fist/heavyhit { hfist/hit1 hfist/hit2 hfist/hit3 hfist/hit4 }
 $volume Mweapons/fist/heavyhit 0.6
 $random Mweapons/fist/heavyflesh { hfist/flesh1 hfist/flesh2 hfist/flesh3 }

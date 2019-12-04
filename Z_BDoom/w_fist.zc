@@ -398,11 +398,22 @@ Class BD_Fist : BDoomWeapon {
 				else
 					A_CameraSway(1.6,0,8);
 			}
-			NUKL FGH 1 A_OverlayOffset(2,-1.75,-1.75,WOF_ADD);
-			NUKL IIJJAAA 2 {
+			NUKL F 1 A_OverlayOffset(2,-1.75,-1.75,WOF_ADD);
+			NUKL GHII 1 {
 				A_WeaponReady(WRF_DISABLESWITCH|WRF_ALLOWUSER1);
 				A_OverlayOffset(2,-1.75,-1.75,WOF_ADD);
+				return ResolveState(null);
 			}
+			NUKL JJJAAAAA 1 {
+				if (FindInventory("ModernBerserk_Regen") && (player.cmd.buttons & BT_ATTACK) && (player.oldbuttons & BT_ATTACK))
+					return ResolveState("Fire.Modern");
+				A_WeaponReady(WRF_DISABLESWITCH|WRF_ALLOWUSER1);
+				A_OverlayOffset(2,-1.75,-1.75,WOF_ADD);
+				return ResolveState(null);
+			}
+			TNT1 A 0 {
+				return ResolveState(null);
+				}
 			goto ready;
 		LightFinisher:
 			TNT1 A 0 {
@@ -579,10 +590,10 @@ Class BD_Fist : BDoomWeapon {
 					A_CameraSway(0.0,3.2,4);
 			}
 			NUKU DDDD 1 A_WeaponOffset(frandom(-1.0,1.0),frandom(0.0,2.0),WOF_ADD);
-			NUKU EFG 2 {
+			NUKU E 2 {
 				A_OverlayOffset(2,3.14,-3.6,WOF_ADD);
 			}
-			NUKU HIJK 2 {
+			NUKU FGHIJK 2 {
 				A_WeaponReady(WRF_DISABLESWITCH|WRF_NOSECONDARY|WRF_NOBOB|WRF_ALLOWUSER1);
 				A_OverlayOffset(2,3.14,-3.6,WOF_ADD);
 			}
