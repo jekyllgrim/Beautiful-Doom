@@ -312,11 +312,13 @@ fist/heavyswing2	"sounds/modern/fist/swing_heavy2.ogg"
 fist/heavyswing3	"sounds/modern/fist/swing_heavy3.ogg"
 fist/heavyswing4	"sounds/modern/fist/swing_heavy4.ogg"
 Mweapons/fist/wear	"sounds/modern/fist/knuckle_wear.ogg"
-$random Mweapons/fist/heavyhit { hfist/hit1 hfist/hit2 hfist/hit3}
+$random Mweapons/fist/heavyhit { hfist/hit1 hfist/hit2 hfist/hit3 hfist/hit4 }
+$volume Mweapons/fist/heavyhit 0.6
 $random Mweapons/fist/heavyflesh { hfist/flesh1 hfist/flesh2 hfist/flesh3 }
-hfist/hit1		"sounds/modern/fist/heavyhit1.ogg"
-hfist/hit2		"sounds/modern/fist/heavyhit2.ogg"
-hfist/hit3		"sounds/modern/fist/heavyhit3.ogg"
+hfist/hit1		"sounds/modern/fist/hheavyhit1.ogg"
+hfist/hit2		"sounds/modern/fist/hheavyhit2.ogg"
+hfist/hit3		"sounds/modern/fist/hheavyhit3.ogg"
+hfist/hit4		"sounds/modern/fist/hheavyhit4.ogg"
 hfist/flesh1	"sounds/modern/fist/heavyhitflesh1.ogg"
 hfist/flesh2	"sounds/modern/fist/heavyhitflesh2.ogg"
 hfist/flesh3	"sounds/modern/fist/heavyhitflesh3.ogg"

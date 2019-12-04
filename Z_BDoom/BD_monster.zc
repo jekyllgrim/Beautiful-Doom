@@ -27,7 +27,7 @@ Class BDoomMonster : Actor abstract {
 		BDoomMonster.smokeheight 0;
 		attacksound "none";
 		bloodtype "BD_Blood", "BD_Blood", "BloodSpurt";
-		}
+	}
 	override Void PostBeginPlay() {
 		super.PostBeginPlay();
 		sspawn = FindState("Spawn");
@@ -38,7 +38,7 @@ Class BDoomMonster : Actor abstract {
 		ddeath = FindState("Death");
 		xxdeath = FindState("XDeath");
 		vxdeath = FindState("XDeath.Vanilla");
-		}
+	}
 		
 	void BD_Bleed() {
 		if (burning || bdoom_blood)
@@ -48,8 +48,8 @@ Class BDoomMonster : Actor abstract {
 			bld.vel = (frandom(-2,2),frandom(-2,2),frandom(1,3));
 			bld.target = self;
 			meatlist.push(bld);
-			}
 		}
+	}
 
 	void BD_BulletAttack(double horz_spread, double vert_spread, int numbullets, int damageperbullet, string OldSound, string NewSound, string Casing, double CasingX = 0, double CasingY = 0, double CasingZ = 0, double TracerHeight = 32, double Tracerofs_xy = 0, class<Actor> puff = "EnBulletPuff") {		
 		if (bdoom_debris)
@@ -62,7 +62,7 @@ Class BDoomMonster : Actor abstract {
 			A_CustomBulletAttack(horz_spread, vert_spread, numbullets, damageperbullet, puff, 0, CBAF_NORANDOM,AAPTR_TARGET,"BulletTracer",TracerHeight,Tracerofs_xy);
 		else
 			A_CustomBulletAttack(horz_spread, vert_spread, numbullets, damageperbullet, puff, 0, CBAF_NORANDOM);
-		}
+	}
 
 	state BD_Refire(int ChanceToEnd = 0, statelabel endstate = "See") 
 		{ 
@@ -75,7 +75,7 @@ Class BDoomMonster : Actor abstract {
 		else
 			return A_MonsterRefire(40,endstate);
 		return ResolveState(null);
-		}
+	}
 		
 	override void Tick() {
 		super.Tick();
@@ -90,16 +90,16 @@ Class BDoomMonster : Actor abstract {
 				A_SpawnItemEx("BlackSmoke",frandom(-16,16),frandom(-16,16),smokeheight + frandom(8,16),0,0,frandom(0.4,0.9),0,0,80);
 			else {
 				A_SpawnItemEx("BlackSmoke",frandom(-16,16),frandom(-16,16),smokeheight + frandom(8,16),0,0,frandom(0.4,0.9),0,0,burntimer*0.8);
-				}
-			}		
+			}
+		}		
 		else {
 			burning = false;
 			burntimer = 0;
 			if (burncorpse)	burncorpse.destroy();
 			if (burnflame)	burnflame.destroy();
 			return;
-			}
 		}
+	}
 		
 	BasicMeatPiece BD_GibSpawn(Class<Actor> spawnclass, double hpos = 0, double vpos = 0, double hvel = 0, double vvel = 0, int spawnchance = 100) {
 		if (random(0,100) > spawnchance)
@@ -114,10 +114,10 @@ Class BDoomMonster : Actor abstract {
 			meat.translation = translation;
 			meatlist.push(meat);
 			return meat;
-			}
+		}
 		else
 			return null;
-		}
+	}
 
 	void BD_Gibs()
 		{
@@ -132,9 +132,9 @@ Class BDoomMonster : Actor abstract {
 					//fountain spray isn't meat to inherit velocity from the monster, since it has to create a cloud of blood, not a bunch of directed spurt
 					bfnt.vel = (frandom(0.05,0.15),frandom(0.05,0.15),frandom(4.5,6.5));	bfnt.target = self;	bfnt.translation = translation;
 					meatlist.push(bfnt);
-					}
 				}
 			}
+		}
 		//generic-looking meat
 		for (int i = 6; i > 0; i--)
 			BD_GibSpawn("BasicMeatPiece",hpos: 4,vpos: frandom(8,28), hvel: 1.6, vvel: frandom(5,10), spawnchance: 70);
@@ -160,7 +160,7 @@ Class BDoomMonster : Actor abstract {
 		let torso2 = BasicMeatPiece(	BD_GibSpawn("Gib_Torso2",hpos: 8,vpos: frandom(18,28), hvel: 1, vvel: vel.z*frandom(0.7,0.95))	);
 		if (torso2 && torso1 && torso1.scale.x == -1) torso2.scale.x = -1;
 		
-		}
+	}
 		
 	states {
 		Crush:
@@ -173,7 +173,7 @@ Class BDoomMonster : Actor abstract {
 				if (burning)
 					return ResolveState("DeathEnd");
 				return ResolveState(null);
-				}
+			}
 			#### # 1 {
 				if (vel ~== (0,0,0)) {
 					if (bdoom_blood) {
@@ -182,13 +182,13 @@ Class BDoomMonster : Actor abstract {
 							//a.translation = BloodTranslation;
 							a.target = self;
 							meatlist.Push(a);
-							}
 						}
+					}
 					A_SpawnItemEx("CorpseFlySpawner",flags:SXF_SETMASTER);
 					return ResolveState("DeathEnd");
-					}
-				return ResolveState(null);
 				}
+				return ResolveState(null);
+			}
 			wait;
 		DeathEnd:
 			#### # -1;
@@ -199,8 +199,8 @@ Class BDoomMonster : Actor abstract {
 				for (int i; i < list; i++) {
 					let a = DebrisGeneral(meatlist[i]);
 					if (a && a.FindState("Raise")) a.SetStateLabel("Raise");
-					}
 				}
+			}
 					
 			#### # 2 {
 				//raised = true;
@@ -212,7 +212,7 @@ Class BDoomMonster : Actor abstract {
 					for (int i; i < list; i++) {
 						let a = DebrisGeneral(meatlist[i]);
 						if (a) a.destroy();
-						}
+					}
 					meatlist.Clear();
 					//A_RemoveChildren(RMVF_EVERYTHING);
 					bFORCEXYBILLBOARD = default.bFORCEXYBILLBOARD;
@@ -221,9 +221,9 @@ Class BDoomMonster : Actor abstract {
 					burning = false;
 					burntimer = 0;
 					return ResolveState("See");
-					}
-				return ResolveState(null);
 				}
+				return ResolveState(null);
+			}
 			wait;
 		Death.Telefrag:
 		Death.Massacre:
@@ -233,7 +233,7 @@ Class BDoomMonster : Actor abstract {
 				else if (xxdeath)
 					return xxdeath;
 				return ddeath;
-				}
+			}
 			stop;
 		Death.Fire:
 			TNT1 A 0 {
@@ -241,14 +241,14 @@ Class BDoomMonster : Actor abstract {
 				if (burncorpse) {
 					burncorpse.master = self;
 					burncorpse.A_SetTranslation("Firedeath");
-					}
+				}
 				if (bdoom_flames) {
 					burnflame = BurningBodyFlame(Spawn("BurningBodyFlame",pos));
 					if (burnflame) 
 						burnflame.master = self;
-					}
-				return ResolveState("DoFireDeath");
 				}
+				return ResolveState("DoFireDeath");
+			}
 			stop;
 		Death.GreenFire:
 			TNT1 A 0 {
@@ -256,16 +256,16 @@ Class BDoomMonster : Actor abstract {
 				if (burncorpse) {
 					burncorpse.master = self;
 					burncorpse.A_SetTranslation("GreenFiredeath");
-					}
+				}
 				if (bdoom_flames) {
 					burnflame = BurningBodyFlame(Spawn("BurningBodyFlame",pos));
 					if (burnflame) {
 						burnflame.master = self;
 						burnflame.SetStateLabel("SpawnGreen");
-						}
 					}
-				return ResolveState("DoFireDeath");
 				}
+				return ResolveState("DoFireDeath");
+			}
 			stop;
 		Death.PlasmaDamage:
 			TNT1 A 0 {
@@ -274,9 +274,9 @@ Class BDoomMonster : Actor abstract {
 					burncorpse.master = self;
 					burncorpse.fadestart = 0;
 					burncorpse.fadespeed = 0.03;
-					}
-				return ResolveState("DoFireDeath");
 				}
+				return ResolveState("DoFireDeath");
+			}
 			stop;
 		DoFireDeath:
 			TNT1 A 0 {
@@ -284,7 +284,7 @@ Class BDoomMonster : Actor abstract {
 				burntimer = 0;
 				A_SetTranslation("Scorched");
 				return ResolveState("Death");
-				}
+			}
 			stop;
 		Death.BFGSplash:
 			TNT1 A 0 {
@@ -297,18 +297,18 @@ Class BDoomMonster : Actor abstract {
 				if (xxdeath)
 					return xxdeath;
 				return ddeath;
-				}
+			}
 			stop;
 		XDeath.Particles:
 			TNT1 A 0 {
 				//A_XScream();
 				A_NoBlocking();
 				BD_Gibs();
-				}
+			}
 			TNT1 ABCDEFGHIJKLMN 2;
 			goto DeathEnd;
-		}
 	}
+}
 
 /*This is spawned by a burning monster and receives a "fire" translation from it,
 while the monster receives "scorched" translation. As this fades out, it creates
@@ -330,7 +330,7 @@ Class TranslatedBurningBody : Actor {
 		+RELATIVETOFLOOR
 		renderstyle "Translucent";
 		alpha 1.0;
-		}
+	}
 	override void Tick() {
 		super.Tick();
 		if (level.isFrozen())
@@ -338,27 +338,27 @@ Class TranslatedBurningBody : Actor {
 		if (waterlevel > 1) {
 			destroy();
 			return;
-			}
+		}
 		if (fadetime < fadestart)
 			fadetime++;
 		else
 			A_FadeOut(fadespeed);
-		}
+	}
 	states {
 		Spawn:
 			TNT1 A 1 NoDelay {
 				if (!master) {
 					destroy();
 					return;
-					}
+				}
 				sprite = master.sprite;
 				frame = master.frame;
 				scale = master.scale;
 				SetOrigin(master.pos,true);
-				}
+			}
 			loop;
-		}
 	}
+}
 
 Class BurningBodyFlame : Actor {
 	int burntimer;
@@ -370,12 +370,12 @@ Class BurningBodyFlame : Actor {
 		alpha 0.8;
 		xscale 1.0;
 		yscale 0.65;
-		}
+	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		scale.x = master.radius*0.06; //radius of 20 = xscale 1.0
 		scale.y = scale.x*0.5;
-		}
+	}
 	override void Tick () {
 		super.Tick();
 		if (level.isFrozen())
@@ -383,18 +383,18 @@ Class BurningBodyFlame : Actor {
 		if (waterlevel > 1) {
 			destroy();
 			return;
-			}
+		}
 		if (!master || !bdoom_flames) {
 			self.destroy();
 			return;
-			}
+		}
 		SetOrigin(master.pos,true);
 		burntimer++;
 		if (burntimer > 100) {
 			scale.y*=0.995;
 			A_FadeOut(0.005);
-			}
 		}
+	}
 	states{
 		Spawn:
 			BBR1 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 bright;
@@ -404,8 +404,8 @@ Class BurningBodyFlame : Actor {
 			BGR1 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 bright;
 			BGR2 ABCDEF 1 bright;
 			loop;
-		}
 	}
+}
 
 
 Class BD_ZombieBullet : BD_PistolBullet {
@@ -413,36 +413,36 @@ Class BD_ZombieBullet : BD_PistolBullet {
 		{
 		super.PostBeginPlay();
 		BulletDamage = 3 * frandom(1,5);
-		}
 	}
+}
 
 Class BD_ZombiePellet : BD_ShotgunPellet {
 	override void PostBeginPlay()
 		{
 		super.PostBeginPlay();
 		BulletDamage = 2 * frandom(3,4);
-		}
 	}
+}
 
 Class BD_SpiderBullet : BD_PistolBullet {
 	override void PostBeginPlay()
 		{
 		super.PostBeginPlay();
 		BulletDamage = 2 * frandom(2,4);
-		}
 	}
+}
 
 Class CorpseFlySpawner : Actor {
 	Default {
 		+NOINTERACTION
 		+MOVEWITHSECTOR
-		}
+	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		if (master)
 			height = master.height;
 		//Console.Printf("height: %d",height);
-		}
+	}
 	override void Tick() {
 		if (level.isFrozen())
 			return;
@@ -451,47 +451,47 @@ Class CorpseFlySpawner : Actor {
 		if (!master || (master && master.health > 0)) {
 			destroy();
 			return;
-			}
-		super.Tick();
 		}
+		super.Tick();
+	}
 	void SpawnFly() {
 		let fly = CorpseFly(Spawn("CorpseFly",(pos.x+frandom(64,128)*randompick(-1,1),pos.y+frandom(64,128)*randompick(-1,1),pos.z+height + frandom(18,22))));
 		if (fly) fly.master = self;
-		}
+	}
 	states	{
 		Spawn:
 			TNT1 A 1 NoDelay A_SetTics(35 * random(120,240)); //wait 2-4 minutes
 			TNT1 A 1 {
 				SpawnFly();
 				A_SetTics(35 * random(20,40));
-				}
+			}
 			TNT1 A 1 {
 				SpawnFly();
 				A_SetTics(35 * random(40,70));
-				}
+			}
 			TNT1 A 1 {
 				if (random(0,1) == 1)
 					SpawnFly();
 				A_SetTics(35 * random(100,150));
-				}
+			}
 			TNT1 A 1 {
 				if (random(0,1) == 1)
 					SpawnFly();
 				A_SetTics(35 * random(180,240));
-				}
+			}
 			TNT1 A 1 {
 				if (random(0,1) == 1)
 					SpawnFly();
 				A_SetTics(35 * random(280,320));
-				}
+			}
 			TNT1 A -1 {
 				if (random(0,1) == 1)
 					SpawnFly();
-				}
+			}
 			stop;
 
-		}
-	}	
+	}
+}	
 
 Class CorpseFly : Actor {
 	Default {
@@ -503,24 +503,24 @@ Class CorpseFly : Actor {
 		renderstyle "translucent";
 		alpha 0.0;
 		scale 0.05;
-		}
+	}
 //this is one of the few actors that, when the related CVAR is disabled, doesn't despawn but instead goes into minimal-resource mode
 	override void Tick() {
 		if (!bdoom_flies) {
 			A_ChangeLinkFlags(sector:true);
 			return;
-			}
+		}
 		A_ChangeLinkFlags(sector:false);
 		
 		Super.Tick();
-		}
+	}
 			
 	override void PostBeginPlay()
 		{
 		super.PostBeginPlay();
 		A_PlaySound("misc/flyloop",4,1.0,1,14);
 		scale.x *= randompick(-1,1);
-		}
+	}
 	states {
 		Spawn:
 			FLYC ABCBABCBABCBABCBABCBABCBABCBABCB 1 A_FadeIn(0.03,FTF_CLAMP);
@@ -530,22 +530,22 @@ Class CorpseFly : Actor {
 				if (!master) {
 					vel = (frandom(-2,2),frandom(-2,2),0);
 					return ResolveState("FadeOut");
-					}
+				}
 				else if (master && (Distance3D(master) > 48 || pos.z < master.pos.z+master.height)) {
 					//A_FaceMaster();
 					vector3 dest = (master.pos.x,master.pos.y,master.pos.z+master.height+frandom(18,22));
 					vel = level.Vec3Diff(pos,dest).unit() * Distance3D(master) / 64;
 					return ResolveState("ReturnToMaster");
-					}
-				return ResolveState(null);
 				}
+				return ResolveState(null);
+			}
 			FLYC ABCBABC 1;
 			TNT1 A 0 {
 				scale.x *= -1;
 				A_FaceMaster();
 				angle += frandom(-15,15);
 				Thrust(frandom(0.1,0.32),angle+frandom(-20,20));
-				}
+			}
 			FLYC ABCBABCBABCBABCB 1 { vel *= 1.1; }
 			TNT1 A 0 A_Jump(256,1,2,3,4,5,6);
 			FLYC ABCBABCBABCBABCBABCBABCBABCBABCB 1 { vel *= 0.97; }
@@ -558,5 +558,5 @@ Class CorpseFly : Actor {
 		FadeOut:
 			FLYC ABC 1 A_FadeOut(0.01);
 			loop;
-		}
 	}
+}

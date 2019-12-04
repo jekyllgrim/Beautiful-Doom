@@ -379,7 +379,6 @@ Class BD_SSGPellet : RealBullet {
 		RealBullet.FalloffDistance 300;
 		RealBullet.falloffstrength 0.8;
 		+RIPPER
-		//+NOBOSSRIP
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
@@ -391,18 +390,17 @@ Class BD_SSGPellet : RealBullet {
 				//console.printf("%d %",100-xchance);
 				if (random(0,100) > xchance)
 					bEXTREMEDEATH = true;
-			ripdepth -= victim.health; //reduce ripping ability before anything else
 			if (victim != hitvictim) { //deal damage only ONCE even if the pellet rips through
+				ripdepth -= victim.health; //reduce ripping ability
 				hitvictim = victim;
 				bulletdamage = CalculateDamage();
 				victim.DamageMobj(self,target,bulletdamage,"normal");
 			}
 		}
 		if (ripdepth <= 0)
-			return -1;
+			return 0;
 		else
 			return 1;
-		//bulletdamage*= 0.5;
 	}
 }
 

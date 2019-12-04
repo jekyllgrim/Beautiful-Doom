@@ -1,71 +1,81 @@
-AddOptionMenu "OptionsMenu"
-{
-	StaticText ""
-	Submenu "Beautiful Doom Credits", "BDoom_Credits"
+LISTMENU "MainMenu" {
+	IfGame(Doom) {
+		StaticPatch 94, 2, "M_DOOM"
+		Position 97, 72
+		IfOption(ReadThis) {
+			Position 97, 64
+		}
+	}
+	IfGame(Strife) {
+		StaticPatch 84, 2, "M_STRIFE"
+		Position 97, 45
+	}
+	
+	TextItem "$MNU_NEWGAME", "n", "PlayerclassMenu"
+	TextItem "$MNU_OPTIONS", "o", "OptionsMenu"
+	TextItem "Beautiful Settings", "b", "BDoom_Settings"
+	TextItem "$MNU_LOADGAME", "l", "LoadGameMenu"
+	TextItem "$MNU_SAVEGAME", "s", "SaveGameMenu"
+	IfOption(ReadThis) {
+		TextItem "$MNU_INFO", "i", "ReadThisMenu"
+	}
+	TextItem "Beautiful Credits", "", "BDoom_Credits"
+	TextItem "$MNU_QUITGAME", "q", "QuitMenu"
 }
 
-AddOptionMenu "OptionsMenu"
-{
-	Submenu "Beautiful Doom Settings",	"BDoom_Settings"
-}
-
-ListMenu "BDoom_Credits"
-{
+ListMenu "BDoom_Credits" {
 	Font "SmallFont"
 
-	StaticText -16,	0, "Idea, code, graphics", 					yellow
-	StaticText 180,	0, "Jekyll Grim Payne", 	green
+	StaticText -16,	0, "Idea, main code and graphics", 			yellow
+	StaticText 180,	0, "Jekyll Grim Payne aka Agent_Ash", 		green
 
-	StaticText -16,	12, "Smooth Doom animations", 		yellow
-	StaticText 180,	12, "Gifty", 			green
+	StaticText -16,	12, "Smooth Doom animations", 	yellow
+	StaticText 180,	12, "Gifty", 					green
 
-	StaticText -16,	36, "Sprite fixing", 	yellow
+	StaticText -16,	36, "Minor Sprite fixing", 		yellow
 	StaticText 180,	36, "Revenant100", 				green
 
-	StaticText -16,	48, "Assault rifle sprites", 	yellow
-	StaticText 180,	48, "Mike12", 				green
+	StaticText -16,	48, "Assault Rifle sprites", 	yellow
+	StaticText 180,	48, "Mike12", 					green
 
 	StaticText -16,	60, "Smooth guns, HD sounds", 	yellow
 	StaticText 180,	60, "perkristian", 				green
 
 	StaticText -16,	72, "Splashes and switches", 	yellow
-	StaticText 180,	72, "Enjay", 				green
+	StaticText 180,	72, "Enjay", 					green
 	
-	StaticText -16,	84, "Original gibs", 	yellow
-	StaticText 180,	84, "Nash", 				green
+	StaticText -16,	84, "Sprite shadows", 			yellow
+	StaticText 180,	84, "Nash", 					green
 
-	StaticText -16,	96, "HD item sprites", 	yellow
-	StaticText 180,	96, "Death Egg", 				green
+	StaticText -16,	108, "Footstep scripting", 		yellow
+	StaticText 180,	108, "The Zombie Killer", 		green
 
-	StaticText -16,	108, "Footstep scripting", 	yellow
-	StaticText 180,	108, "The ZombieKiller", 				green
+	StaticText -16,	120, "Heavy Laser sound", 		yellow
+	StaticText 180,	120, "Michael Henderson", 		green
 
-	StaticText -16,	120, "Heavy Laser sound", 	yellow
-	StaticText 180,	120, "Michael Henderson", 				green
-
-	StaticText -16,	132, "Alt death sprites", 	yellow
+	StaticText -16,	132, "Alt death sprites", 		yellow
 	StaticText 180,	132, "Death Egg", 				green
 	StaticText 180,	140, "David G.", 				green
-	StaticText 180,	148, "DenisBelmondo", 				green
+	StaticText 180,	148, "DenisBelmondo", 			green
 	StaticText 180,	156, "alando1", 				green
 
-	StaticText -16,	168, "Scripting help", 	yellow
-	StaticText -16,	176, "phantombeta", 				green
-	StaticText -16,	184, "Marisa Kirisame", 				green
+	StaticText -16,	168, "Scripting help", 			yellow
+	StaticText -16,	176, "phantombeta", 			green
+	StaticText -16,	184, "Marisa Kirisame", 		green
 	StaticText -16,	192, "Gutawer", 				green
 	StaticText -16,	200, "josh771", 				green
 	StaticText -16,	208, "Accensus", 				green
 	StaticText -16,	216, "Caligari87", 				green
 
-	StaticText 110,	176, "Nash", 				green
-	StaticText 110,	184, "Zombie", 				green
-	StaticText 110,	192, "D2JK", 				green
+	StaticText 110,	176, "Nash", 					green
+	StaticText 110,	184, "Zombie", 					green
+	StaticText 110,	192, "D2JK", 					green
 	StaticText 110,	200, "3saster", 				green
+	StaticText 110,	208, "kodi", 					green
 }
 
 
-OptionMenu "BDoom_Settings"
-{
+OptionMenu "BDoom_Settings" {
 	Title "Beautiful Doom Settings"
 	StaticText "Weapons", yellow
 	Option "Player Weapons",					"bdoom_weapons", "bdoom_weapons", "bdoom_replaceweapons"
@@ -98,7 +108,7 @@ OptionMenu "BDoom_Settings"
 	Option "Face on Standard HUD", 				"bdoom_hudface", "OnOff", "", 1	
 	StaticText " "
 
-	StaticText "These options allow to disable parts of the mod,", yellow
+	StaticText "Options below allow to disable parts of the mod,", yellow
 	StaticText "which enables partial compatibility with other mods.", yellow
 	StaticText "(Changes require a level restart)", white
 	StaticText " "
@@ -109,8 +119,7 @@ OptionMenu "BDoom_Settings"
 	SubmenuGC "Per-monster replacement settings", "BDMonsterReplacements", "bdoom_replacemonsters"
 }
 
-OptionMenu BDMonsterReplacements
-{
+OptionMenu BDMonsterReplacements {
 	Title "Beautiful Doom monster replacement settings"
 	StaticText "Changes require a level restart to properly take effect", yellow
 	StaticText " "
@@ -134,21 +143,18 @@ OptionMenu BDMonsterReplacements
 	Option "Spider Mastermind",		"bdoom_SpiderMastermind", "Toggle", "", 1	
 }
 
-OptionValue "Toggle"
-{
+OptionValue "Toggle" {
 	0, "Disable"
 	1, "Enable"
 }
 
-OptionValue "bdoom_weapons"
-{
+OptionValue "bdoom_weapons" {
 	0, "Vanilla"
 	1, "Enhanced"
 	2, "Modern"
 }
 
-OptionValue "bdoom_muzzle"
-{
+OptionValue "bdoom_muzzle" {
 	0, "Vanilla"
 	1, "Enhanced"
 }

@@ -19,8 +19,8 @@ class WeaponOverrideHandler : EventHandler {
 			case 'CellPack' 	: inv.pickupsound = "ammo/cells";		break;
 			case 'BackPack' 	: inv.pickupsound = "pickups/backpack";	break;
 			case 'RadSuit' 		: inv.pickupsound = "pickups/radsuit";	break;
-			}
 		}
+	}
 
 	// Replaces weapons on the map if the appropriate CVAR is true.
 	override void CheckReplacement(ReplaceEvent e) {
@@ -37,12 +37,12 @@ class WeaponOverrideHandler : EventHandler {
 			case 'RocketLauncher'	: e.Replacement = "BD_RocketLauncher"; 	break;
 			case 'PlasmaRifle' 		: e.Replacement = "BD_PlasmaRifle"; 	break;
 			case 'BFG9000' 			: e.Replacement = "BD_BFG9000"; 		break;
-			}
-		e.IsFinal = true;
 		}
+		e.IsFinal = true;
+	}
 		
 	/* This override detects if the player received a vanilla weapon directly (e.g. via ACS script)
-	and replaces them with modded ones. It also replaces starting weapon.
+	and replaces them with one from the mod. It also replaces the starting weapon.
 	Initial version provided by Zombie
 	*/
 	override void WorldTick() {		
@@ -66,7 +66,7 @@ class WeaponOverrideHandler : EventHandler {
 					case 'RocketLauncher' 	: player.pendingWeapon = GetWeapon(mo, "BD_RocketLauncher");mo.TakeInventory(oldweap,1); break;
 					case 'PlasmaRifle' 		: player.pendingWeapon = GetWeapon(mo, "BD_PlasmaRifle"); 	mo.TakeInventory(oldweap,1); break;
 					case 'BFG9000' 			: player.pendingWeapon = GetWeapon(mo, "BD_BFG9000"); 		mo.TakeInventory(oldweap,1); break;
-					}
+				}
 				switch (oldweapr) { //if (a vanilla weapon is READY (such as Pistol at vanilla map start), we also take it away and select the modded counterpart
 					case 'Fist' 			: player.pendingWeapon = GetWeapon(mo, "BD_Fist"); 			mo.TakeInventory(oldweapr,1); break;
 					case 'Chainsaw' 		: player.pendingWeapon = GetWeapon(mo, "BD_Chainsaw"); 		mo.TakeInventory(oldweapr,1); break;
@@ -77,8 +77,8 @@ class WeaponOverrideHandler : EventHandler {
 					case 'RocketLauncher' 	: player.pendingWeapon = GetWeapon(mo, "BD_RocketLauncher");mo.TakeInventory(oldweapr,1); break;
 					case 'PlasmaRifle' 		: player.pendingWeapon = GetWeapon(mo, "BD_PlasmaRifle"); 	mo.TakeInventory(oldweapr,1); break;
 					case 'BFG9000' 			: player.pendingWeapon = GetWeapon(mo, "BD_BFG9000"); 		mo.TakeInventory(oldweapr,1); break;
-					}
 				}
+			}
 			else { //the reverse effect for when the player sets replace weapons CVAR to false (not very necessary, since officially a level start is required to take effect anyway)
 				switch (oldweap) {
 					case 'BD_Fist' 			: player.pendingWeapon = GetWeapon(mo, "Fist"); 			mo.TakeInventory(oldweap,1); break;
@@ -90,7 +90,7 @@ class WeaponOverrideHandler : EventHandler {
 					case 'BD_RocketLauncher': player.pendingWeapon = GetWeapon(mo, "RocketLauncher");	mo.TakeInventory(oldweap,1); break;
 					case 'BD_PlasmaRifle' 	: player.pendingWeapon = GetWeapon(mo, "PlasmaRifle"); 		mo.TakeInventory(oldweap,1); break;
 					case 'BD_BFG9000' 		: player.pendingWeapon = GetWeapon(mo, "BFG9000"); 			mo.TakeInventory(oldweap,1); break;
-					}
+				}
 				switch (oldweapr) {
 					case 'BD_Fist' 			: player.pendingWeapon = GetWeapon(mo, "Fist"); 			mo.TakeInventory(oldweapr,1); break;
 					case 'BD_Chainsaw' 		: player.pendingWeapon = GetWeapon(mo, "Chainsaw"); 		mo.TakeInventory(oldweapr,1); break;
@@ -101,21 +101,20 @@ class WeaponOverrideHandler : EventHandler {
 					case 'BD_RocketLauncher': player.pendingWeapon = GetWeapon(mo, "RocketLauncher");	mo.TakeInventory(oldweapr,1); break;
 					case 'BD_PlasmaRifle' 	: player.pendingWeapon = GetWeapon(mo, "PlasmaRifle"); 		mo.TakeInventory(oldweapr,1); break;
 					case 'BD_BFG9000' 		: player.pendingWeapon = GetWeapon(mo, "BFG9000"); 			mo.TakeInventory(oldweapr,1); break;
-					}				
+				}				
 				mo.speed = mo.default.speed; 	//to ensure the player is no longer affected by speed-altering effects of kicking or modern rifle ADS
-				}
 			}
 		}
-	// Courtesy of Zombie
-	private Weapon GetWeapon(PlayerPawn mo, Class<Weapon> type)
-		{
-			let weap = Weapon(mo.FindInventory(type));
-			return weap ? weap : Weapon(mo.GiveInventoryType(type));
-		}
 	}
+	// Courtesy of Zombie
+	private Weapon GetWeapon(PlayerPawn mo, Class<Weapon> type) {
+		let weap = Weapon(mo.FindInventory(type));
+		return weap ? weap : Weapon(mo.GiveInventoryType(type));
+	}
+}
 
-/* Simply replaces monsters with modded ones if the appropriate CVAR is true.
-Helps to keep the mod compatible with monster mods. 
+/* Simply replaces actors with modded ones if the appropriate CVAR is true.
+Helps to keep the mod compatible with other actor-replacing mods. 
 Separate CVARs for each monsters are also supported. */
 
 class BD_ActorOverrideHandler : EventHandler {
@@ -123,7 +122,7 @@ class BD_ActorOverrideHandler : EventHandler {
 		if (bdoom_blood) {
 			if (e.Replacee.GetClassName() == "Blood")
 				e.Replacement = "BD_Blood";
-			}
+		}
 		if (bdoom_replacemonsters) {	
 			switch (e.Replacee.GetClassName()) {
 				case 'Zombieman' 			: if (bdoom_Zombieman) 			e.Replacement = "BD_Zombieman"; 		break;
@@ -147,14 +146,14 @@ class BD_ActorOverrideHandler : EventHandler {
 				case 'BossBrain' 			: if (bdoom_IconOfSin) 			e.Replacement = "BD_BossBrain";			break;
 				case 'SpawnShot' 			: if (bdoom_IconOfSin) 			e.Replacement = "BD_SpawnShot";			break;
 			//decorative corpses:
-				case 'DeadZombieman' 			: if (bdoom_Zombieman) 			e.Replacement = "BD_DeadZombieman"; 		break;
-				case 'DeadShotgunGuy' 			: if (bdoom_ShotgunGuy) 		e.Replacement = "BD_DeadShotgunGuy"; 		break;
-				case 'DeadDoomImp' 				: if (bdoom_DoomImp) 			e.Replacement = "BD_DeadDoomImp"; 			break;
-				case 'DeadDemon' 				: if (bdoom_Demon) 				e.Replacement = "BD_DeadDemon"; 			break;
-				case 'DeadCacodemon' 			: if (bdoom_Cacodemon) 			e.Replacement = "BD_DeadCacodemon"; 		break;
-				case 'DeadLostSoul'				: if (bdoom_LostSoul) 			e.Replacement = "BD_DeadLostSoul"; 			break;
-				}
+				case 'DeadZombieman' 		: if (bdoom_Zombieman) 			e.Replacement = "BD_DeadZombieman"; 		break;
+				case 'DeadShotgunGuy' 		: if (bdoom_ShotgunGuy) 		e.Replacement = "BD_DeadShotgunGuy"; 		break;
+				case 'DeadDoomImp' 			: if (bdoom_DoomImp) 			e.Replacement = "BD_DeadDoomImp"; 			break;
+				case 'DeadDemon' 			: if (bdoom_Demon) 				e.Replacement = "BD_DeadDemon"; 			break;
+				case 'DeadCacodemon' 		: if (bdoom_Cacodemon) 			e.Replacement = "BD_DeadCacodemon"; 		break;
+				case 'DeadLostSoul'			: if (bdoom_LostSoul) 			e.Replacement = "BD_DeadLostSoul"; 			break;
 			}
+		}
 		if (bdoom_replaceitems) {
 			switch (e.Replacee.GetClassName()) {
 				case 'Blursphere' 				: e.Replacement = "BD_Blursphere"; 				break;
@@ -175,8 +174,8 @@ class BD_ActorOverrideHandler : EventHandler {
 				case 'RedSkull' 				: e.Replacement = "BD_RedSkull"; 				break;
 				case 'BlueSkull' 				: e.Replacement = "BD_BlueSkull"; 				break;
 				case 'YellowSkull' 				: e.Replacement = "BD_YellowSkull"; 			break;
-				}
 			}
+		}
 		if (bdoom_replaceobjects) {
 			switch (e.Replacee.GetClassName()) {
 					//VICTIMS
@@ -187,8 +186,7 @@ class BD_ActorOverrideHandler : EventHandler {
 				Case 'HangBNoBrain' 		: e.Replacement = "BD_HangingBody"; 	break;
 				Case 'HangNoGuts' 			: e.Replacement = "BD_HangingBody"; 	break;
 				Case 'BloodyTwitch'			: e.Replacement = "BD_BloodyTwitch"; 	break;
-				Case 'NonSolidTwitch'		: e.Replacement = "BD_NonsolidTwitch"; 	break;
-				
+				Case 'NonSolidTwitch'		: e.Replacement = "BD_NonsolidTwitch"; 	break;				
 					//MISC
 				case 'TeleportFog' 		: e.replacement = "BD_TeleportFog";		break;
 				case 'ExplosiveBarrel' 	: e.replacement = "BD_ExplosiveBarrel";	break;
@@ -210,10 +208,10 @@ class BD_ActorOverrideHandler : EventHandler {
 				case 'Techlamp' 		: e.replacement = "BD_Techlamp";		break;
 				case 'Techlamp2' 		: e.replacement = "BD_Techlamp2";		break;
 				case 'Column' 			: e.replacement = "BD_Column";			break;
-				}
 			}
-		e.IsFinal = true;
 		}
+		e.IsFinal = true;
+	}
 	//  This override tells the game which of the original monsters the modded monster replaces. Necessary for "hardcoded" effects such as Map07 or E1M8
 	override void Checkreplacee(ReplacedEvent e) {
 		if (!bdoom_replacemonsters)
@@ -239,23 +237,26 @@ class BD_ActorOverrideHandler : EventHandler {
 			case 'BD_SpiderMastermind' 	: if (bdoom_SpiderMastermind) 	e.Replacee = "SpiderMastermind";break;
 			case 'BD_BossBrain' 		: if (bdoom_IconOfSin) 			e.Replacee = "BossBrain";		break;
 			case 'BD_SpawnShot' 		: if (bdoom_IconOfSin) 			e.Replacee = "SpawnShot";		break;
-			}
 		}
 	}
+}
 
+// controls the amount of special effect actors, such as gibs, debris, flames
 Class FXAmountControl : EventHandler {
 	Array <DebrisGeneral> bloodlist;
 	Array <DebrisGeneral> giblist;
 	Array <DebrisGeneral> debrislist;
 	Array <DebrisGeneral> flamelist;
-
+	
+	//clear the arrays upon map start
 	override void WorldLoaded(WorldEvent e) {
 		bloodlist.Clear();
 		giblist.Clear();
 		flamelist.Clear();
 		debrislist.Clear();
-		}
+	}
 
+	//add a thing into a corresponding array when it gets spawned
 	override void WorldThingSpawned(WorldEvent e) {
 		if (e.Thing is "DebrisGeneral") {
 			let a = DebrisGeneral(e.thing);
@@ -268,10 +269,11 @@ Class FXAmountControl : EventHandler {
 					flamelist.push(a);					
 				else if (a.sfxtype == 'debris')
 					debrislist.push(a);
-				}
 			}
 		}
+	}
 
+	//remove the thing from the array when it's removed
 	override void WorldThingDestroyed(WorldEvent e) {
 		if (e.Thing is "DebrisGeneral") {
 			let a = DebrisGeneral(e.thing);
@@ -284,10 +286,11 @@ Class FXAmountControl : EventHandler {
 					flamelist.delete	(flamelist.Find(a));					
 				else if (a.sfxtype == 'debris')
 					debrislist.delete	(debrislist.Find(a));		
-				}
-			}	
-		}
+			}
+		}	
+	}
 
+	//continuously check if the number of FX actors is bigger than the array. if true, delete the oldest actors
 	override void WorldTick() {
 		//console.printf("blood array size: %d | gib array size: %d",bloodlist.Size(),giblist.Size());
 		while (bloodlist.Size() > bdoom_bloodnum)
@@ -298,16 +301,16 @@ Class FXAmountControl : EventHandler {
 			flamelist[0].destroy();			
 		while (debrislist.Size() > bdoom_debrisnum) 
 			debrislist[0].destroy();
-		}
 	}
+}
 
-
+//attaches footstep actors to players
 class FootstepsInit : EventHandler {
     override void PlayerEntered(PlayerEvent e) {
         let steps = BD_Footsteps(Actor.Spawn("BD_Footsteps"));
 		if (steps) {
 			steps.Init(players[e.playerNumber].mo);
 			steps.fplayer = players[e.playerNumber];
-			}
 		}
 	}
+}
