@@ -4,14 +4,19 @@
 
 Class BD_Fist : BDoomWeapon {
 	bool speedup;
+	protected double dmgmul;
+	protected double wzoom;
 	int fcombo; // total # of light hits; reset by Light Finisher, Uppercut and Kick
 	int lcombo; // # of light hits IN A ROW (at 5th goes to Light Finisher); reset by any finisher
 	int tcombo; // total length of combo (total # of all hits that connected with an enemy). Increased by puffs (can't be increased by swinging at air, in contrast to others)
-	int hurtchance; // % chance of FORCEPAINing the enemy with light punches (increased with tcombo, clamped at 15-85%)
+	protected int hurtchance; // % chance of FORCEPAINing the enemy with light punches (increased with tcombo, clamped at 15-85%)
 	bool bpunch; //(with Berserk) used left punch?
 	int targetdistance;
-	
+	property BerserkMultiplier : dmgmul;
+	property zoom : wzoom;
 	Default {
+		BD_Fist.BerserkMultiplier 1;
+		BD_Fist.zoom 1;
 		weapon.selectionorder 370;
 		+WEAPON.NOALERT
 		weapon.slotnumber 1;
@@ -27,7 +32,7 @@ Class BD_Fist : BDoomWeapon {
 		If (!Owner)
 			return;
 		if(bdoom_weapons == 2) {
-			owner.player.cheats |= CF_INTERPVIEW;
+			owner.player.cheats |= CF_INTERPVIEW; //force mouse smoothing to avoid screwy camera when A_CameraSway is used
 			bNOAUTOFIRE = true;
 			bWIMPY_WEAPON = false;
 		}
@@ -35,7 +40,7 @@ Class BD_Fist : BDoomWeapon {
 			bNOAUTOFIRE = false;
 			bWIMPY_WEAPON = true;
 		}
-		//Console.Printf("tcombo "..tcombo)
+		//Console.Printf("tcombo %d",tcombo);
 		if (bdoom_weapons != 2 || owner.player.readyweapon != self) {
 			fcombo = 0;
 			lcombo = 0;
@@ -464,14 +469,37 @@ Class BD_Fist : BDoomWeapon {
 				invoker.tcombo = 0;
 				return ResolveState(null);
 			}
-			NUKR AB 4; //if fcombo is 0, perform basic heavy punch but with longer wind-up, so spamming it without doing combo is ineffective
+			//if fcombo is 0, perform basic heavy punch but with longer wind-up
+			NUKR AAAABBBB 1 A_WeaponOffset(1.2,1.2,WOF_ADD);
 		HeavyPunch1:
 			TNT1 A 0 {
-				A_PlaySound("Mweapons/fist/swing",5);
-				if (FindInventory("ModernBerserk_Regen"))
+				if (FindInventory("ModernBerserk_Regen") && (player.cmd.buttons & BT_ALTATTACK) && (player.oldbuttons & BT_ALTATTACK) && invoker.wzoom > 0.93) {
+					invoker.dmgmul = Clamp(invoker.dmgmul+0.35,1,3.5);
+					Console.Printf("dmg mul: %f",invoker.dmgmul);
+					return ResolveState(null);
+				}
+				invoker.wzoom = 1;
+				A_ZoomFactor(1,ZOOM_NOSCALETURNING);
+				return ResolveState("HeavyPunch1Do");
+			}
+			NUKR BBB 1 {
+				A_OverlayOffset(2,-0.3,0.1,WOF_ADD);
+				A_WeaponOffset(0.22,0.22,WOF_ADD);
+				invoker.wzoom = Clamp(invoker.wzoom * 0.997,0.9,1);
+				A_ZoomFactor(invoker.wzoom,ZOOM_NOSCALETURNING);
+			}
+			loop;
+		HeavyPunch1Do:
+			TNT1 A 0 {
+				A_WeaponOffset(0,32);
+				if (FindInventory("ModernBerserk_Regen")) {
 					A_CameraSway(2.1,0,5);
-				else
+					A_PlaySound("Mweapons/fist/heavyswing",5);
+				}
+				else {
 					A_CameraSway(1.7,0,4);
+					A_PlaySound("Mweapons/fist/swing",5);
+				}
 			}
 			NUKR CDE 1 {
 				A_Recoil(-0.35);
@@ -480,12 +508,14 @@ Class BD_Fist : BDoomWeapon {
 			NUKR F 1 {
 				invoker.lcombo = 0;
 				if (FindInventory("Modernberserk_Regen"))
-					A_Recoil(-1.5);
+					A_Recoil(-1.5 * invoker.dmgmul);
 				else
 					A_Recoil(-0.5);
 				A_OverlayOffset(2,-5.5,6.3,WOF_ADD);
-				if (FindInventory("Modernberserk_Regen"))
-					A_CustomPunch(14.0*frandom(4.5,5.0), TRUE,0, "ModernFistPuff_Berserk",72);
+				if (FindInventory("Modernberserk_Regen")) {
+					A_CustomPunch(10.0*frandom(4.5,5.0)*invoker.dmgmul, TRUE,0, "ModernFistPuffHeavy_Berserk",72);
+					invoker.dmgmul = invoker.default.dmgmul;
+				}
 				else
 					A_CustomPunch(6.0*frandom(2.5,5.0), TRUE,0, "ModernFistPuff",72);
 				A_WeaponOffset(frandom(-2.0,2.0),frandom(0.0,2.5),WOF_ADD);
@@ -496,7 +526,21 @@ Class BD_Fist : BDoomWeapon {
 				else
 					A_CameraSway(-1.7,0,4);
 			}
-			NUKR GHIJK 1 A_OverlayOffset(2,2.9,-3.1,WOF_ADD);
+			NUKR G 1 {
+				if (FindInventory("ModernBerserk_Regen") && invoker.tcombo > 3)
+					A_WeaponReady(WRF_DISABLESWITCH|WRF_NOSECONDARY|WRF_NOBOB|WRF_ALLOWUSER1);
+				A_OverlayOffset(2,2.9,-3.1,WOF_ADD);
+			}
+			NUKR H 1 {
+				if (FindInventory("ModernBerserk_Regen") && invoker.tcombo > 2)
+					A_WeaponReady(WRF_DISABLESWITCH|WRF_NOSECONDARY|WRF_NOBOB|WRF_ALLOWUSER1);
+				A_OverlayOffset(2,2.9,-3.1,WOF_ADD);
+			}
+			NUKR IJK 1 {
+				if (FindInventory("ModernBerserk_Regen"))
+					A_WeaponReady(WRF_DISABLESWITCH|WRF_NOSECONDARY|WRF_NOBOB|WRF_ALLOWUSER1);
+				A_OverlayOffset(2,2.9,-3.1,WOF_ADD);
+			}
 			NUKR LM 2 {
 				A_WeaponReady(WRF_DISABLESWITCH|WRF_NOSECONDARY|WRF_NOBOB|WRF_ALLOWUSER1);
 				A_OverlayOffset(2,2.9,-3.1,WOF_ADD);
@@ -510,10 +554,12 @@ Class BD_Fist : BDoomWeapon {
 		HeavyPunch2:
 			TNT1 A 0 {
 				A_PlaySound("Mweapons/fist/heavyswing",5);
-				if (FindInventory("ModernBerserk_Regen"))
+				if (FindInventory("ModernBerserk_Regen")) {
 					A_CameraSway(2.7,0,5);
-				else
-					A_CameraSway(1.9,0,5);
+				}
+				else {
+					A_CameraSway(1.9,0,4);
+				}
 			}
 			NUKR BCDE 1 {
 				A_Recoil(-0.85);
@@ -527,7 +573,7 @@ Class BD_Fist : BDoomWeapon {
 					A_Recoil(-0.5);
 				A_OverlayOffset(2,-5.5,6.3,WOF_ADD);
 				if (FindInventory("Modernberserk_Regen"))
-					A_CustomPunch(18.0*frandom(4.5,6.5), TRUE,0, "ModernFistPuffHeavy_Berserk",76);
+					A_CustomPunch(14.0*frandom(4.5,6.5)*invoker.dmgmul, TRUE,0, "ModernFistPuffHeavy_Berserk",76);
 				else
 					A_CustomPunch(6.5*frandom(3.0,6.0), TRUE,0, "ModernFistPuffHeavy",76);			
 				A_WeaponOffset(frandom(-2.0,2.0),frandom(0.0,2.5),WOF_ADD);
@@ -538,10 +584,19 @@ Class BD_Fist : BDoomWeapon {
 				else
 					A_CameraSway(-1.9,0,5);
 			}
-			NUKR GH 1 {
+			NUKR G 1 {
+				if (FindInventory("ModernBerserk_Regen") && invoker.tcombo > 3)
+					A_WeaponReady(WRF_DISABLESWITCH|WRF_NOSECONDARY|WRF_NOBOB|WRF_ALLOWUSER1);
+				A_OverlayOffset(2,3.4,-3.9,WOF_ADD);
+			}
+			NUKR H 1 {
+				if (FindInventory("ModernBerserk_Regen") && invoker.tcombo > 2)
+					A_WeaponReady(WRF_DISABLESWITCH|WRF_NOSECONDARY|WRF_NOBOB|WRF_ALLOWUSER1);
 				A_OverlayOffset(2,3.4,-3.9,WOF_ADD);
 			}
 			NUKR IJ 2 {
+				if (FindInventory("ModernBerserk_Regen"))
+					A_WeaponReady(WRF_DISABLESWITCH|WRF_NOSECONDARY|WRF_NOBOB|WRF_ALLOWUSER1);
 				A_OverlayOffset(2,3.4,-3.9,WOF_ADD);
 			}
 			NUKR KLM 2 {
@@ -578,7 +633,7 @@ Class BD_Fist : BDoomWeapon {
 					A_Recoil(-0.35);
 				A_OverlayOffset(2,-5.5,6.3,WOF_ADD);
 				if (FindInventory("Modernberserk_Regen"))
-					A_CustomPunch(24*frandom(4.5,8), TRUE,0, "ModernFistPuffUppercut_Berserk",79);
+					A_CustomPunch(20*frandom(4.5,6) * invoker.dmgmul, TRUE,0, "ModernFistPuffUppercut_Berserk",79);
 				else
 					A_CustomPunch(8*frandom(3.4,6.5), TRUE,0, "ModernFistPuffUppercut",79);
 				A_WeaponOffset(frandom(-2.0,2.0),frandom(0.0,2.5),WOF_ADD);
@@ -589,8 +644,24 @@ Class BD_Fist : BDoomWeapon {
 				else
 					A_CameraSway(0.0,3.2,4);
 			}
-			NUKU DDDD 1 A_WeaponOffset(frandom(-1.0,1.0),frandom(0.0,2.0),WOF_ADD);
+			NUKU D 1 {
+				if (FindInventory("ModernBerserk_Regen") && invoker.tcombo > 3)
+					A_WeaponReady(WRF_DISABLESWITCH|WRF_NOSECONDARY|WRF_NOBOB|WRF_ALLOWUSER1);
+				A_WeaponOffset(frandom(-1.0,1.0),frandom(0.0,2.0),WOF_ADD);
+			}
+			NUKU D 1 {
+				if (FindInventory("ModernBerserk_Regen") && invoker.tcombo > 2)
+					A_WeaponReady(WRF_DISABLESWITCH|WRF_NOSECONDARY|WRF_NOBOB|WRF_ALLOWUSER1);
+				A_WeaponOffset(frandom(-1.0,1.0),frandom(0.0,2.0),WOF_ADD);
+			}
+			NUKU DD 1 {
+				if (FindInventory("ModernBerserk_Regen"))
+					A_WeaponReady(WRF_DISABLESWITCH|WRF_NOSECONDARY|WRF_NOBOB|WRF_ALLOWUSER1);
+				A_WeaponOffset(frandom(-1.0,1.0),frandom(0.0,2.0),WOF_ADD);
+			}
 			NUKU E 2 {
+				if (FindInventory("ModernBerserk_Regen"))
+					A_WeaponReady(WRF_DISABLESWITCH|WRF_NOSECONDARY|WRF_NOBOB|WRF_ALLOWUSER1);
 				A_OverlayOffset(2,3.14,-3.6,WOF_ADD);
 			}
 			NUKU FGHIJK 2 {
@@ -614,15 +685,15 @@ Class BD_Fist : BDoomWeapon {
 				A_OverlayOffset(2,0,0,WOF_INTERPOLATE);
 				A_OverlayOffset(3,0,0,WOF_INTERPOLATE);
 			}
-			TNT1 A 0 A_Jumpif(invoker.tcombo > 0, 3);
+			TNT1 A 0 A_Jumpif((invoker.tcombo > 0 || FindInventory("Modernberserk_Regen")), 3);
 			TNT1 AA 1 {
-				A_OverlayOffset(2,-3.0,3.0,WOF_ADD);
-				A_OverlayOffset(3,3.0,3.0,WOF_ADD);
+				A_OverlayOffset(2,-4,4,WOF_ADD);
+				A_OverlayOffset(3,4,4,WOF_ADD);
 			}
-			TNT1 A 0 A_Jumpif(invoker.tcombo > 1, 3);
+			TNT1 A 0 A_Jumpif(invoker.tcombo > 1, 4);
 			KICK AB 1 {
-				A_OverlayOffset(2,-3.0,3.0,WOF_ADD);
-				A_OverlayOffset(3,3.0,3.0,WOF_ADD);
+				A_OverlayOffset(2,-4,4,WOF_ADD);
+				A_OverlayOffset(3,4,4,WOF_ADD);
 			}
 			TNT1 A 0 { 
 				speed = default.speed*0.1;
@@ -631,7 +702,7 @@ Class BD_Fist : BDoomWeapon {
 				else
 					A_PlaySound("Mweapons/fist/swing",5);
 				if (FindInventory("ModernBerserk_Regen"))
-					A_CameraSway(0.0,4,4);
+					A_CameraSway(0.0,4.2,4);
 				else
 					A_CameraSway(0.0,3,4);
 			}
@@ -640,16 +711,19 @@ Class BD_Fist : BDoomWeapon {
 				A_OverlayOffset(3,3.0,2.0,WOF_ADD);
 			}
 			KICK EF 1 {		
-				if (FindInventory("Modernberserk_Regen"))
-					A_Recoil(clamp (invoker.tcombo, 1, 4) * -2.5);
+				if (FindInventory("Modernberserk_Regen")) {
+					A_Recoil(clamp (invoker.tcombo, 1, 6) * -3);
+					if (pos.z == floorz)
+						vel.z += 5;
+				}
 				else
 					A_Recoil(clamp (invoker.tcombo, 1, 4) * -1.3);
 			}
 			KICK G 3 {
 				if (FindInventory("Modernberserk_Regen"))
-					A_Recoil(clamp (invoker.tcombo, 1, 4) * -2.5);
+					A_Recoil(clamp (invoker.tcombo, 1, 6) * -2.5);
 				else
-					A_Recoil(clamp (invoker.tcombo, 1, 4) * -1.3);
+					A_Recoil(clamp (invoker.tcombo, 1, 6) * -1.3);
 				if (FindInventory("Modernberserk_Regen"))
 					A_CustomPunch(20.0*frandom(4.5,6.0), TRUE,CPF_NOTURN, "ModernKickPuff_Berserk",88);
 				else
@@ -661,15 +735,22 @@ Class BD_Fist : BDoomWeapon {
 			}
 			TNT1 A 0 {
 				if (FindInventory("ModernBerserk_Regen"))
-					A_CameraSway(0.0,-4,4);
+					A_CameraSway(0.0,-4.2,4);
 				else
 					A_CameraSway(0.0,-3,4);
 			}
-			KICK HDC 2 {
+			KICK H 2 {
+				if (FindInventory("ModernBerserk_Regen") && invoker.tcombo > 2)
+					A_WeaponReady(WRF_DISABLESWITCH|WRF_NOSECONDARY|WRF_NOBOB);
 				A_OverlayOffset(2,3.0,-2.0,WOF_ADD);
 				A_OverlayOffset(3,-3.0,-2.0,WOF_ADD);
 			}
-			//TNT1 A 0 { invoker.tcombo = invoker.pconnected; }
+			KICK DC 2 {
+				if (FindInventory("ModernBerserk_Regen"))
+					A_WeaponReady(WRF_DISABLESWITCH|WRF_NOSECONDARY|WRF_NOBOB);
+				A_OverlayOffset(2,3.0,-2.0,WOF_ADD);
+				A_OverlayOffset(3,-3.0,-2.0,WOF_ADD);
+			}
 			KICK BA 3 {
 				A_WeaponReady(WRF_DISABLESWITCH|WRF_NOSECONDARY|WRF_NOBOB);
 				A_OverlayOffset(2,3.0,-2.0,WOF_ADD);
@@ -709,7 +790,7 @@ Class ModernFistPuff : BdoomPuff {
 				if(target) {
 					let bdfist = BD_Fist (target.player.readyweapon);
 					if (bdfist)
-						bdfist.tcombo++; //bdfist.pconnected++;
+						bdfist.tcombo++;
 				}
 				A_SetPitch(target.pitch+frandom(-1.0,1.0),SPF_INTERPOLATE,AAPTR_TARGET);
 			}
@@ -848,7 +929,7 @@ Class ModernKickPuff_Berserk : ModernKickPuff {
 				if(target) {
 					let bdfist = BD_Fist (target.player.readyweapon);
 					if (bdfist)
-						bdfist.tcombo++; //bdfist.pconnected++;
+						bdfist.tcombo++;
 				}
 				A_AlertMonsters(256,AMF_EMITFROMTARGET);
 				A_RadiusThrust(512,80,RTF_NOIMPACTDAMAGE,64);
@@ -896,7 +977,7 @@ Class ModernFistPuffUppercut : ModernFistPuffHeavy {
 				if(target) {
 					let bdfist = BD_Fist (target.player.readyweapon);
 					if (bdfist)
-						bdfist.tcombo++; //bdfist.pconnected++;
+						bdfist.tcombo++;
 				}
 				A_AlertMonsters(196,AMF_EMITFROMTARGET);
 				if (tracer) {
@@ -941,7 +1022,7 @@ Class ModernFistPuffUppercut_Berserk : ModernFistPuffUppercut {
 				if(target) {
 					let bdfist = BD_Fist (target.player.readyweapon);
 					if (bdfist)
-						bdfist.tcombo++; //bdfist.pconnected++;
+						bdfist.tcombo++; 
 				}
 				A_AlertMonsters(196,AMF_EMITFROMTARGET);
 				if (tracer) {
