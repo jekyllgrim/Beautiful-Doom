@@ -26,6 +26,10 @@ Class BD_PlasmaRifle : BDoomWeapon {
 		let psp = owner.player.FindPSprite(PSP_WEAPON);
 		if (psp && bdoom_weapons == 2 && heatcounter > 0)
 			heatcounter -= 0.02;
+		if (bdoom_weapons == 2) 
+			bALT_AMMO_OPTIONAL = true;
+		else
+			bALT_AMMO_OPTIONAL = false;
 	}
 	states
 		{

@@ -25,28 +25,22 @@ class BD_BFG9000 : BDoomWeapon {
 		decal "ArachnotronPlasmaSplat";
 		weapon.slotnumber 7;
 	}
-	override void DoEffect()
-		{
+	override void DoEffect() {
 		Super.DoEffect();
 		If (Owner)
 			{
-			if(bdoom_weapons == 2)
-				{
-					AmmoUse1 = 10;
-					AmmoUse2 = 0;
-					bALT_AMMO_OPTIONAL = true;
+			if(bdoom_weapons == 2) {
+				AmmoUse1 = 10;
+				AmmoUse2 = 0;
+				bALT_AMMO_OPTIONAL = true;
 			}
-			else
-				{
-					AmmoUse1 = 40;
-					AmmoUse2 = 1;
-					bALT_AMMO_OPTIONAL = false;
+			else {
+				AmmoUse1 = 40;
+				AmmoUse2 = 1;
+				bALT_AMMO_OPTIONAL = false;
 			}
 			//console.printf("Player Species: %s",owner.species);
 		}
-		/*if (owner.player.readyweapon == self && bdoom_weapons == 2) {
-			owner.player.ReadyWeapon.FOVScale = 1 - wcharge*0.01;
-		}*/
 	}
 	States {
 		Spawn:
