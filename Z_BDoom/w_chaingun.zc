@@ -83,6 +83,8 @@ Class BD_Chaingun : BDoomWeapon {
 		if (owner.player.readyweapon == self && bdoom_weapons == 2) {
 			let s = owner.player.FindPsprite(PSP_Weapon);
 			let chg = BD_Chaingun(owner.player.ReadyWeapon);
+			if (!s || !chg)
+				return;
 			if ((InStateSequence(s.curstate, FindState("ReadySights"))	||	
 				InStateSequence(s.curstate, FindState("FireSights"))) 	){
 				chg.crosshair = 99; //if ADS used, disable crosshair and set very little bob
