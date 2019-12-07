@@ -1,6 +1,6 @@
 LISTMENU "MainMenu" {
 	IfGame(Doom) {
-		StaticPatch 94, 2, "M_DOOM"
+		StaticPatch 85, 0, "BD_TITLE"
 		Position 97, 72
 		IfOption(ReadThis) {
 			Position 97, 64
@@ -74,6 +74,10 @@ ListMenu "BDoom_Credits" {
 	StaticText 110,	208, "kodi", 					green
 }
 
+AddOptionMenu "OptionsMenu"
+{
+	Submenu "Beautiful Doom Settings", "BDoom_Settings"
+}
 
 OptionMenu "BDoom_Settings" {
 	Title "Beautiful Doom Settings"
@@ -119,7 +123,7 @@ OptionMenu "BDoom_Settings" {
 	SubmenuGC "Per-monster replacement settings", "BDMonsterReplacements", "bdoom_replacemonsters"
 }
 
-OptionMenu BDMonsterReplacements {
+OptionMenu "BDMonsterReplacements" {
 	Title "Beautiful Doom monster replacement settings"
 	StaticText "Changes require a level restart to properly take effect", yellow
 	StaticText " "

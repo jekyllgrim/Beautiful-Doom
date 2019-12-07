@@ -214,21 +214,41 @@ flickerlight PLASMA_X4
 
 object BD_Plasmaball
 {
-frame COIL { light PLASMABALL }
-frame PEXPA { light PLASMA_X1 }
-frame PEXPB { light PLASMA_X1 }
-frame PEXPC { light PLASMA_X1 }
-frame PEXPD { light PLASMA_X2 }
-frame PEXPE { light PLASMA_X2 }
-frame PEXPF { light PLASMA_X2 }
-frame PEXPG { light PLASMA_X2 }
-frame PEXPH { light PLASMA_X3 }
-frame PEXPI { light PLASMA_X3 }
-frame PEXPJ { light PLASMA_X3 }
-frame PEXPK { light PLASMA_X4 }
-frame PEXPL { light PLASMA_X4 }
-frame PEXPM { light PLASMA_X4 }
+	frame COIL { light PLASMABALL }
+	frame PEXPA { light PLASMA_X1 }
+	frame PEXPB { light PLASMA_X1 }
+	frame PEXPC { light PLASMA_X1 }
+	frame PEXPD { light PLASMA_X2 }
+	frame PEXPE { light PLASMA_X2 }
+	frame PEXPF { light PLASMA_X2 }
+	frame PEXPG { light PLASMA_X2 }
+	frame PEXPH { light PLASMA_X3 }
+	frame PEXPI { light PLASMA_X3 }
+	frame PEXPJ { light PLASMA_X3 }
+	frame PEXPK { light PLASMA_X4 }
+	frame PEXPL { light PLASMA_X4 }
+	frame PEXPM { light PLASMA_X4 }
 }
+
+
+object ModernArachnotronPlasma
+{
+	frame COIL { light PLASMABALL }
+	frame PEXPA { light PLASMA_X1 }
+	frame PEXPB { light PLASMA_X1 }
+	frame PEXPC { light PLASMA_X1 }
+	frame PEXPD { light PLASMA_X2 }
+	frame PEXPE { light PLASMA_X2 }
+	frame PEXPF { light PLASMA_X2 }
+	frame PEXPG { light PLASMA_X2 }
+	frame PEXPH { light PLASMA_X3 }
+	frame PEXPI { light PLASMA_X3 }
+	frame PEXPJ { light PLASMA_X3 }
+	frame PEXPK { light PLASMA_X4 }
+	frame PEXPL { light PLASMA_X4 }
+	frame PEXPM { light PLASMA_X4 }
+}
+
 
 pulselight PLASMARAIL
 {
@@ -246,20 +266,20 @@ pointlight YPLASMABALL
 
 object ModernPlasmaball
 {
-frame COIS { light ARACHPLAS }
-frame PEXPA { light ARACHPLAS_1 }
-frame PEXPB { light ARACHPLAS_1 }
-frame PEXPC { light ARACHPLAS_1 }
-frame PEXPD { light ARACHPLAS_2 }
-frame PEXPE { light ARACHPLAS_2 }
-frame PEXPF { light ARACHPLAS_2 }
-frame PEXPG { light ARACHPLAS_2 }
-frame PEXPH { light ARACHPLAS_3 }
-frame PEXPI { light ARACHPLAS_3 }
-frame PEXPJ { light ARACHPLAS_3 }
-frame PEXPK { light ARACHPLAS_4 }
-frame PEXPL { light ARACHPLAS_4 }
-frame PEXPM { light ARACHPLAS_4 }
+	frame COIS { light ARACHPLAS }
+	frame PEXPA { light ARACHPLAS_1 }
+	frame PEXPB { light ARACHPLAS_1 }
+	frame PEXPC { light ARACHPLAS_1 }
+	frame PEXPD { light ARACHPLAS_2 }
+	frame PEXPE { light ARACHPLAS_2 }
+	frame PEXPF { light ARACHPLAS_2 }
+	frame PEXPG { light ARACHPLAS_2 }
+	frame PEXPH { light ARACHPLAS_3 }
+	frame PEXPI { light ARACHPLAS_3 }
+	frame PEXPJ { light ARACHPLAS_3 }
+	frame PEXPK { light ARACHPLAS_4 }
+	frame PEXPL { light ARACHPLAS_4 }
+	frame PEXPM { light ARACHPLAS_4 }
 }
 
 flickerlight YPLASMA_1

@@ -1,91 +1,84 @@
-Class BD_Arachnotron : BDoomMonster //replaces Arachnotron
-{
-Default
-	{
-	species "Arachnotron";
-	Health 500;
-	Radius 64;
-	Height 64;
-	Mass 600;
-	Speed 12;
-	PainChance 128;
-	Monster;
-	+FLOORCLIP
-	+BOSSDEATH
-	SeeSound "baby/sight";
-	PainSound "baby/pain";
-	DeathSound "baby/death";
-	ActiveSound "baby/active";
-	Obituary "$OB_BABY";
-	Tag "$FN_ARACH";
-	}
-states
-	{
-	Death.Fire:
-	Death.GreenFire:
-		goto Death.PlasmaDamage;
-	Spawn:
-		ARAI AB 10 A_Look();
-		loop;
-	Crush:
-		CRS2 A -1;
-		stop;
-	see:
-		ARAC a 20;
-		ARAC a 3 a_babymetal();
-		ARAC bcdee 3 a_chase();
-		ARAC f 3 a_babymetal();
-		ARAC ghijj 3 a_chase();
-		goto see+1;
-	missile:
-		ARAC a 20 a_facetarget();
-		ARAT a 3 bright {
-			A_FaceTarget();
-			if (bdoom_weapons == 2)
-				A_Spawnprojectile("ModernArachnotronPlasma");
-			else 
-				A_Spawnprojectile("BD_ArachnotronPlasma");
-			}
-		ARAT b 3 bright;
-		ARAT c 3 bright a_SpidRefire();
-		goto missile+1;
-	pain:
-		ARPA a 3;
-		ARPA b 3 a_pain();
-		goto see+1;
-	Death:
-		TNT1 A 0 { scale.x = randompick(-1,1); }
-		ARAM a 3;
-		ARAM b 3 a_scream();
-		ARAM c 3 a_noblocking();
-		ARAM defghI 3 {
-			if (bdoom_gibs && !burning)
-				A_SpawnItemEx("BasicMeatPiece",frandom(-4,4),frandom(-4,4),frandom(32,48),	frandom(2,5),0,frandom(3,4),random(-70,-100)*scale.x,SXF_SETTARGET,40);
-			}
-		ARAM jklm 3 BD_Bleed();
-		goto deathbleed;
-	XDeath:
-		stop;
+Class BD_Arachnotron : BDoomMonster {
+	Default	{
+		species "Arachnotron";
+		Health 500;
+		Radius 64;
+		Height 64;
+		Mass 600;
+		Speed 12;
+		PainChance 128;
+		Monster;
+		+FLOORCLIP
+		+BOSSDEATH
+		SeeSound "baby/sight";
+		PainSound "baby/pain";
+		DeathSound "baby/death";
+		ActiveSound "baby/active";
+		Obituary "$OB_BABY";
+		Tag "$FN_ARACH";
 		}
-}
-
-Class BD_ArachnotronPlasma : BD_Plasmaball //replaces ArachnotronPlasma
-{
-Default
-	{
-	BD_Plasmaball.pcolor "green";
-	decal "ArachnotronPlasmaSplat";
-	translation "GreenPlasma";
+	states	{
+		Death.Fire:
+		Death.GreenFire:
+			goto Death.PlasmaDamage;
+		Spawn:
+			ARAI AB 10 A_Look();
+			loop;
+		Crush:
+			CRS2 A -1;
+			stop;
+		see:
+			ARAC a 20;
+			ARAC a 3 a_babymetal();
+			ARAC bcdee 3 a_chase();
+			ARAC f 3 a_babymetal();
+			ARAC ghijj 3 a_chase();
+			goto see+1;
+		missile:
+			ARAC a 20 a_facetarget();
+			ARAT a 3 {
+				A_FaceTarget();
+				if (bdoom_weapons == 2)
+					A_Spawnprojectile("ModernArachnotronPlasma");
+				else 
+					A_Spawnprojectile("BD_ArachnotronPlasma");
+				}
+			ARAT b 3;
+			ARAT c 3 a_SpidRefire();
+			goto missile+1;
+		pain:
+			ARPA a 3;
+			ARPA b 3 a_pain();
+			goto see+1;
+		Death:
+			TNT1 A 0 { scale.x = randompick(-1,1); }
+			ARAM a 3;
+			ARAM b 3 a_scream();
+			ARAM c 3 a_noblocking();
+			ARAM defghI 3 {
+				if (bdoom_gibs && !burning)
+					A_SpawnItemEx("BasicMeatPiece",frandom(-4,4),frandom(-4,4),frandom(32,48),	frandom(2,5),0,frandom(3,4),random(-70,-100)*scale.x,SXF_SETTARGET,40);
+				}
+			ARAM jklm 3 BD_Bleed();
+			goto deathbleed;
+		XDeath:
+			stop;
 	}
 }
 
-Class ModernArachnotronPlasma : BD_Plasmaball
-{
-Default
-	{
-	BD_Plasmaball.pcolor "blue";
-	speed 40;
-	SeeSound "Mweapons/plasma/fire";
+Class BD_ArachnotronPlasma : BD_Plasmaball {
+	Default	{
+		BD_Plasmaball.pcolor "green";
+		decal "ArachnotronPlasmaSplat";
+		translation "GreenPlasma";
+	}
+}
+
+Class ModernArachnotronPlasma : BD_Plasmaball {
+	Default	{
+		BD_Plasmaball.pcolor "blue";
+		speed 40;
+		SeeSound "Mweapons/plasma/fire";
 	}
 }
 
