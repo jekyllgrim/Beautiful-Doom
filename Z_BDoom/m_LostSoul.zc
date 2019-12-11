@@ -14,7 +14,7 @@ Default {
 override void Tick() {
 	if (target)
 		bFLOATBOB = false;
-	if (level.isFrozen())
+	if (isFrozen())
 		return;
 	if (bdoom_flames && health > 0) {
 		if (InstateSequence(curstate,FindState("Missile")))

@@ -79,7 +79,7 @@ Class BDoomMonster : Actor abstract {
 		
 	override void Tick() {
 		super.Tick();
-		if (level.isFrozen() || !bdoom_flames)
+		if (isFrozen() || !bdoom_flames)
 			return;
 		if (health > 0 && InStateSequence(curstate,ssee))
 			scale.x = 1;
@@ -333,7 +333,7 @@ Class TranslatedBurningBody : Actor {
 	}
 	override void Tick() {
 		super.Tick();
-		if (level.isFrozen())
+		if (isFrozen())
 			return;
 		if (waterlevel > 1) {
 			destroy();
@@ -378,7 +378,7 @@ Class BurningBodyFlame : Actor {
 	}
 	override void Tick () {
 		super.Tick();
-		if (level.isFrozen())
+		if (isFrozen())
 			return;
 		if (waterlevel > 1) {
 			destroy();
@@ -444,7 +444,7 @@ Class CorpseFlySpawner : Actor {
 		//Console.Printf("height: %d",height);
 	}
 	override void Tick() {
-		if (level.isFrozen())
+		if (isFrozen())
 			return;
 		if (!bdoom_flies)
 			return;

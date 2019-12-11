@@ -28,7 +28,7 @@ Class BD_ChaingunGuy : BDoomMonster {
 		}
 	override void Tick() {
 		super.Tick();
-		if (level.isFrozen() || bdoom_weapons != 2)
+		if (isFrozen() || bdoom_weapons != 2)
 			return;
 		//if (ppain && InStateSequence(curstate,ppain))
 			//console.printf("ouch");

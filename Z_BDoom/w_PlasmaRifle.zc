@@ -358,7 +358,7 @@ Class BD_Plasmaball : Plasmaball {
 	override void Tick () {
 		Vector3 oldPos = self.pos;    
 		Super.Tick();
-		if (!bdoom_debris || level.isFrozen())
+		if (!bdoom_debris || isFrozen())
 			return;
 		Vector3 path = level.vec3Diff( self.pos, oldPos );
 		double distance = path.length() / 3; //this determines how far apart the particles are
@@ -408,7 +408,7 @@ Class BD_PlasmaTrail : BD_BaseFlare {
 	}
 	override void Tick() {
 		super.Tick();
-		if (level.isFrozen())
+		if (isFrozen())
 			return;
 		A_FadeOut(0.15);
 		scale*=0.9;

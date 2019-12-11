@@ -130,7 +130,7 @@ Class SmallDebris : DebrisGeneral abstract {
 	}
 	override void Tick() {
 		super.tick();
-		if (level.isFrozen())
+		if (isFrozen())
 			return;
 		if (pos.z > floorz)
 			vel.z-=dgravity;
@@ -225,7 +225,7 @@ Class BD_ProjFlare : BD_BaseFlare {
 		super.Tick();
 		if (master)
 			A_Warp(AAPTR_Master,xoffset,0,0,flags:WARPF_INTERPOLATE);
-		if (level.isFrozen())
+		if (isFrozen())
 			return;
 		if (!master || !bdoom_debris || (master && (master.InstateSequence(master.curstate,mdeath) || 
 										 master.InstateSequence(master.curstate,mxdeath)) )) {

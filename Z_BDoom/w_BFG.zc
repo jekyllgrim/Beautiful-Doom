@@ -451,7 +451,7 @@ Class BD_BFGBall : BFGBall {
 	override void Tick () {
 		Vector3 oldPos = self.pos;
 		Super.Tick();
-		if (!bdoom_debris || level.isFrozen())
+		if (!bdoom_debris || isFrozen())
 			return;
 		Vector3 path = level.vec3Diff( self.pos, oldPos );
 		double distance = path.length() / 3; //this determines how far apart the particles are
@@ -803,7 +803,7 @@ Class ModernBFGBall : BD_BFGBall {
 	}
 	Override void Tick() {
 		super.Tick();
-		if (level.isFrozen())
+		if (isFrozen())
 			return;
 		//Console.printf("%f",scale.x);
 		roll+=broll;

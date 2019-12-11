@@ -229,7 +229,7 @@ class BasicMeatPiece : Gibs_General {
 				A_ChangeLinkFlags(true);
 				}
 			}
-		if (level.isFrozen())
+		if (isFrozen())
 			return;
 		if (!bdoom_livegibs)
 			return;
@@ -379,7 +379,7 @@ Class GibSmudge : DebrisGeneral {
 		}
 	override void Tick() {
 		super.Tick();
-		if (level.isFrozen())
+		if (isFrozen())
 			return;
 		if (meat) {
 			if (!meat.landed)

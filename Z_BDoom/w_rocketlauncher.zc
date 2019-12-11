@@ -490,21 +490,18 @@ Class ModernRocket : BD_Rocket {
 	}
 	//lovely snippet for smoke trail by Arctangent
 	override void Tick () {
-		Vector3 oldPos = self.pos;
+		Vector3 oldPos = pos;
 		
 		Super.Tick();
-		if (bdoom_debris && !level.isFrozen()) {
-			Vector3 path = level.vec3Diff( self.pos, oldPos );
+		if (bdoom_debris && !isFrozen() && GetAge() > 3) {
+			Vector3 path = level.vec3Diff( pos, oldPos );
 			double distance = path.length() / 4; //this determines how far apart the particles are
 			Vector3 direction = path / distance;
 			int steps = int( distance );
 			
 			for( int i = 0; i < steps; i++ )  {
-				if (target && distance3d(target) > 128) { //give us some distance so that the smoke doesn't spawn right in the player's face
-					actor mo = Spawn(trailactor, oldPos );
-					mo.vel = (frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5));
-					//mo.target = target;
-				}
+				actor mo = Spawn(trailactor, oldPos );
+				mo.vel = (frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5));
 				oldPos = level.vec3Offset( oldPos, direction );
 			}
 		}
@@ -596,8 +593,8 @@ Class ModernGrenade : ModernRocket {
 	states {
 		Spawn:
 			MROG AABBCCDD 1 {
-				// this lets us make the grenade slide instead of stopping dead when it can't bounce anymore
-				if ((abs(vel.x) + abs(vel.y) < 14 ) && (abs(vel.z) < 4) && (pos.z-floorz < 12)) {
+				// this in combination with -BOUNCEAUTOOFF lets the grenade slide and come to a stop instead of stopping dead OR bouncing continuously
+				if (vel.length() < 12 && (pos.z-floorz < 12)) {
 					bMISSILE = false;
 					bCORPSE = true;
 				}
@@ -629,7 +626,7 @@ Class ModernGrenadeFlare : BD_BaseFlare {
 		if (master)
 			SetOrigin(master.pos,true);
 		else {
-			self.destroy();
+			destroy();
 			return;
 		}
 	} 

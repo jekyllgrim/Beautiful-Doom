@@ -134,7 +134,7 @@ Class BD_RevenantTracer : RevenantTracer {
 	override void Tick () {
 		Vector3 oldPos = self.pos;    
 		Super.Tick();
-		if (!bdoom_debris || level.isFrozen() || !tracer)
+		if (!bdoom_debris || isFrozen() || !tracer)
 			return;
 		Vector3 path = level.vec3Diff( self.pos, oldPos );
 		double distance = path.length() / 3; //this determines how far apart the particles are
@@ -174,7 +174,7 @@ Class TracerTrail : BD_BaseFlare {
 		scale 0.04;
 		}
 	override void Tick() {
-		if (level.isFrozen())
+		if (isFrozen())
 			return;
 		super.Tick();
 		A_FadeOut(0.04);

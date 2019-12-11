@@ -2,7 +2,7 @@ Class BD_BossBrain : BossBrain {
 	bool braindead;
 	override void Tick() {
 		super.Tick();
-		if (level.isFrozen() || !braindead)
+		if (isFrozen() || !braindead)
 			return;
 		let spurt  = BD_Blood(Spawn("BD_Blood",(2880,1450,395)));
 		if (spurt) {
@@ -73,7 +73,7 @@ Class BD_SpawnShot : SpawnShot {
 		}
 	override void Tick() {
 		super.Tick();
-		if (!level.isFrozen())
+		if (!isFrozen())
 			A_SpawnItemEx("ParticleFire_Red",frandom(-12,-16),frandom(-4,4),frandom(-4,4),failchance:64);
 		}
 	States 	{

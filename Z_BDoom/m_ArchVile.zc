@@ -30,7 +30,7 @@ Class BD_ArchVile : BDoomMonster {
 	}
 	override void Tick () {
 		super.Tick();
-		if (level.isFrozen())
+		if (isFrozen())
 			return;
 		else if (!bdoom_flames)
 			return;
@@ -184,7 +184,7 @@ Class BD_ArchvileFire : ArchvileFire {
 	}
 	override void Tick() {
 		Super.Tick();
-		if (level.isFrozen())
+		if (isFrozen())
 			return;
 		if (!tracer || !target || !target.Checksight(tracer,0))
 			A_FadeOut(0.1);
@@ -227,7 +227,7 @@ Class ArchFlameSeeker : Actor {
 	}
 	override void Tick() {
 		super.Tick();
-		if (level.isFrozen())
+		if (isFrozen())
 			return;
 		if (!target || !(target is "BD_ArchVile") || !tracer || ftimer < 1) {
 			destroy();

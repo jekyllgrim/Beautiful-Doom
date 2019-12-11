@@ -240,7 +240,7 @@ Class BulletTracer : FastProjectile {
 	//whizz sound snippet by phantombeta
 	override void Tick () {
 		Super.Tick ();
-		if (level.isFrozen())
+		if (isFrozen())
 			return;
 		if (!playeringame [consolePlayer])
 			return;		
@@ -470,7 +470,7 @@ Class SSGDamageCounter : Inventory {
 		inventory.maxamount 1;
 	}
 	override void DoEffect() {
-		if (!owner || level.isFrozen())
+		if (!owner || isFrozen())
 			return;
 		super.DoEffect();
 		if (owner.health <= 0 || GetAge() > 1) {

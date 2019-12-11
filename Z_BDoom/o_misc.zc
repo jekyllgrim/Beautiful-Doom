@@ -28,7 +28,7 @@ override void PostBeginPlay() {
 	}
 override void Tick() {
 	super.Tick();
-	if (level.isFrozen())
+	if (isFrozen())
 		return;
 	if (flare)
 		flare.A_SetScale(0.3 - 0.03*frame);
@@ -75,7 +75,7 @@ BD_BaseFlare flare;
 
 override void Tick() {
 	super.Tick();
-	if (level.isFrozen())
+	if (isFrozen())
 		return;
 	if (!flare && bdoom_flames && health > 0) {
 		flare = BD_BaseFlare(Spawn("BD_BaseFlare",(pos.x,pos.y,pos.z+26)));
@@ -165,7 +165,7 @@ static const string SSprite[] =
 	};
 /*override void Tick() {
 	super.tick();
-	if (level.isFrozen() || !bdoom_debris)
+	if (isFrozen() || !bdoom_debris)
 		return;
 	timer++;
 	if (random(0,10) > 9 && timer >= 20) {
@@ -225,7 +225,7 @@ Default {
 	}
 override void Tick() {
 	super.Tick();
-	if (level.isFrozen())
+	if (isFrozen())
 		return;
 	if (!flare && bdoom_flames) {
 		flare = BD_BaseFlare(Spawn("BD_BaseFlare",(pos.x,pos.y,pos.z+32)));
@@ -279,7 +279,7 @@ override void PostBeginPlay() {
 	}
 override void Tick() {
 	super.Tick();
-	if (level.isFrozen())
+	if (isFrozen())
 		return;
 	if (!flare && bdoom_flames) {
 		flare = BD_LightFlare(Spawn("BD_LightFlare",(pos.x,pos.y,pos.z+38)));
@@ -344,7 +344,7 @@ override void PostBeginPlay() {
 	dgravity = frandom(0.002,0.005);	
 	}
 override void Tick() {
-	if (!level.isFrozen()) {
+	if (!isFrozen()) {
 		vel.x*=0.99;
 		vel.y*=0.99;
 		}

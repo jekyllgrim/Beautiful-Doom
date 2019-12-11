@@ -500,7 +500,7 @@ Class BloodSpray : BD_Blood {
 	}
 	override void Tick() {
 		super.Tick();
-		if (level.isFrozen())
+		if (isFrozen())
 			return;
 		A_FadeOut(0.05);
 	}

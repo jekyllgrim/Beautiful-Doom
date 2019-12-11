@@ -12,7 +12,7 @@ Class BD_LightFlare : BD_BaseFlare {
 			return;
 			}	
 		super.tick();
-		if (level.isFrozen() || !bdoom_flames)
+		if (isFrozen() || !bdoom_flames)
 			return;
 		if (level.time % 5) {
 			if (fcolor != 'tech' && fcolor != 'tech2')
@@ -59,7 +59,7 @@ Class BD_LightSource : Actor abstract {
 
 	override void Tick() {
 		super.Tick();
-		if (level.isFrozen())
+		if (isFrozen())
 			return;
 		if (!flare && bdoom_flames) {
 			flare = BD_LightFlare(Spawn("BD_LightFlare",(pos.x,pos.y,pos.z+fspawnheight)));
