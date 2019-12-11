@@ -155,8 +155,9 @@ states
 			if(GetCVAR("bdoom_muzzle")==0)
 				A_Overlay(100,"FlashVanilla");
 			else {
-				int vofs = 0;
-				if (bdoom_weapons == 2) vofs = -2.3;
+				double vofs = 0;
+				if (bdoom_weapons == 2) 
+					vofs = -2.3;
 				for (int i = random (4,6); i > 0; i --)
 					A_Eject("BD_MuzzleSmoke",7,frandom(-1,1),4+vofs,32);
 				A_Overlay(100,"FlashEnhanced");
@@ -329,8 +330,9 @@ states
 				A_OverlayOffset(-100,0,44);
 				A_OverlayFlags(-100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
 				A_OverlayRenderstyle(-100,STYLE_Add);
-				int vofs = 0;
-				if (bdoom_weapons == 2) vofs = -2.3;
+				double vofs = 0;
+				if (bdoom_weapons == 2) 
+					vofs = -2.3;
 				if	((bdoom_weapons == 1 && invoker.shotfired) || (bdoom_weapons == 2 && CountInv("SSGClip") < 2)) {
 					for (int i = random (2,3); i > 0; i --)
 						A_Eject("BD_MuzzleSmoke",7,-1,4+vofs,32);
