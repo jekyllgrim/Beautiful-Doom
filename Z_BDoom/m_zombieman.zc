@@ -116,38 +116,23 @@ Class BD_ZombieMan : BDoomMonster {
 			goto deathbleed;
 		Death.Saw:
 			TNT1 A 0 {
-				if (!bdoom_gibs || random(0,1) > 0)
-					return ResolveState("Death");
 				scale.x*=randompick(-1,1);
-				A_FaceTarget();
-				A_Pain();
-				return ResolveState(null);
 			}
-			POSY AAZZ random(8,10) {
-				if(bdoom_blood)
-					A_SpawnItemEx("BloodSpurt",	1,0,frandom(30,38),0,0,0,random(-40,40),SXF_SETTARGET,96);
+			POSY ABCD 6;
+			TNT1 A 0 A_Scream;
+			POSY EFGHIJ 3 {
+				if(bdoom_blood) {
+					A_FaceTarget();
+					A_SpawnItemEx("Blood",	frandom(-4,4),frandom(0,6),frandom(28,36),frandom(2,4),0,frandom(4,6),	random(-80,-90)*scale.x,SXF_SETTARGET,80);
+				}
 			}
-			POSY Z 5 {
-				A_Pain();
+			POSY K 3 {
 				A_NoBlocking();
+				A_PlaySound("gibs/meatland");
 			}
-			POSY AAAZZZ random(8,10) A_SpawnItemEx("BloodSpurt", 1,0,frandom(30,38),0,0,0,random(-40,40),SXF_SETTARGET,96);
-			POSY Z 5 A_Scream();
-			POSY BCDEFG 3 {
-				if(bdoom_blood)
-					A_SpawnItemEx("Blood",	frandom(-4,4),frandom(0,6),	frandom(12,18),	frandom(2,4),0,frandom(4,6),	random(-20,20),SXF_SETTARGET,128);
-			}
-			TNT1 A 0 A_PlaySound("gibs/meatland");
-			POSY HI 2 {
-				if(bdoom_blood)
-					A_SpawnItemEx("Blood",	frandom(-4,4),frandom(0,6),	frandom(12,18),	frandom(2,4),0,frandom(4,6),	random(-20,20),SXF_SETTARGET,128);
-			}
-			TNT1 A 0 A_PlaySound("gibs/meatland");
-			POSY J 3 {
-				if(bdoom_blood)
-					A_SpawnItemEx("Blood",	frandom(-4,4),frandom(0,6),	frandom(12,18),	frandom(2,4),0,frandom(4,6),	random(-20,20),SXF_SETTARGET,128);
-			}
-			POSY K 1;
+			POSY L 4;
+			POSY M 3 A_PlaySound("gibs/meatland");
+			POSY NOP 7;
 			goto deathbleed;
 		DecapDeath:
 			POSD A 2 {
