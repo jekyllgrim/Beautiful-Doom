@@ -32,6 +32,7 @@ Class BD_Fist : BDoomWeapon {
 		If (!Owner)
 			return;
 		if(bdoom_weapons == 2) {
+			//console.printf("hurt chance: %d",hurtchance);
 			owner.player.cheats |= CF_INTERPVIEW; //force mouse smoothing to avoid screwy camera when A_CameraSway is used
 			bNOAUTOFIRE = true;
 			bWIMPY_WEAPON = false;
@@ -404,10 +405,14 @@ Class BD_Fist : BDoomWeapon {
 					A_CameraSway(1.6,0,8);
 			}
 			NUKL F 1 A_OverlayOffset(2,-1.75,-1.75,WOF_ADD);
-			NUKL GHII 1 {
+			NUKL G 1 {
+				if (FindInventory("ModernBerserk_Regen"))
+					A_WeaponReady(WRF_DISABLESWITCH|WRF_ALLOWUSER1);
+				A_OverlayOffset(2,-1.75,-1.75,WOF_ADD);
+			}
+			NUKL HII 1 {
 				A_WeaponReady(WRF_DISABLESWITCH|WRF_ALLOWUSER1);
 				A_OverlayOffset(2,-1.75,-1.75,WOF_ADD);
-				return ResolveState(null);
 			}
 			NUKL JJJAAAAA 1 {
 				if (FindInventory("ModernBerserk_Regen") && (player.cmd.buttons & BT_ATTACK) && (player.oldbuttons & BT_ATTACK))
@@ -516,8 +521,12 @@ Class BD_Fist : BDoomWeapon {
 					A_CustomPunch(10.0*frandom(4.5,5.0)*invoker.dmgmul, TRUE,0, "ModernFistPuffHeavy_Berserk",72);
 					invoker.dmgmul = invoker.default.dmgmul;
 				}
-				else
-					A_CustomPunch(6.0*frandom(2.5,5.0), TRUE,0, "ModernFistPuff",72);
+				else {
+					if (invoker.hurtchance > random(0,100))
+						A_CustomPunch(6.0*frandom(2.5,5.0), TRUE,0, "ModernFistPuff_Pain",72);
+					else
+						A_CustomPunch(6.0*frandom(2.5,5.0), TRUE,0, "ModernFistPuff",72);
+				}
 				A_WeaponOffset(frandom(-2.0,2.0),frandom(0.0,2.5),WOF_ADD);
 			}
 			TNT1 A 0 {				
