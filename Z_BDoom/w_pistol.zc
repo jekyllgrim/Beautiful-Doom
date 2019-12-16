@@ -46,8 +46,8 @@ Class BD_Pistol : BDoomWeapon {
 	
 	states {
 		Spawn:
-			PIST Z -1 {		
-				if(bdoom_weapons == 1) { 
+			PIST Z 1 {		
+				if(bdoom_weapons == 1 && bdoom_replaceweapons) { 
 					A_SetRenderstyle (1.0,STYLE_Normal); 
 					bSPECIAL = true;
 				}
@@ -56,7 +56,7 @@ Class BD_Pistol : BDoomWeapon {
 					bSPECIAL = false;
 				}
 			}
-			stop;
+			loop;
 	// VANILLA
 		Ready:
 			PI0G A 1 {
