@@ -565,3 +565,50 @@ Model AniBloodPool
 	Skin 0 "bloodpool_blue/bpool2_30.png"
 	FrameIndex B011 D 0 0
 }
+
+Model BD_Blood
+{
+	zoffset 1.0
+	Scale 80 80 80
+	Path "models"
+	Model 0 "BloodPool.md3"
+	
+	Skin 0 "FloorSplats/bsplatA.png"
+	FrameIndex MODL A 0 0
+	Skin 0 "FloorSplats/bsplatB.png"
+	FrameIndex MODL B 0 0
+	Skin 0 "FloorSplats/bsplatC.png"
+	FrameIndex MODL C 0 0
+	Skin 0 "FloorSplats/bsplatD.png"
+	FrameIndex MODL D 0 0
+	Skin 0 "FloorSplats/bsplatE.png"
+	FrameIndex MODL E 0 0
+	Skin 0 "FloorSplats/bsplatF.png"
+	FrameIndex MODL F 0 0
+	Skin 0 "FloorSplats/bsplatG.png"
+	FrameIndex MODL G 0 0
+	Skin 0 "FloorSplats/bsplatH.png"
+	FrameIndex MODL H 0 0
+	Skin 0 "FloorSplats/bsplatI.png"
+	FrameIndex MODL I 0 0
+	Skin 0 "FloorSplats/bsplatJ.png"
+	FrameIndex MODL J 0 0
+	Skin 0 "FloorSplats/bsplatK.png"
+	FrameIndex MODL K 0 0
+	Skin 0 "FloorSplats/bsplatL.png"
+	FrameIndex MODL L 0 0
+	Skin 0 "FloorSplats/bsplatM.png"
+	FrameIndex MODL M 0 0
+	Skin 0 "FloorSplats/bsplatN.png"
+	FrameIndex MODL N 0 0
+	Skin 0 "FloorSplats/bsplatO.png"
+	FrameIndex MODL O 0 0
+	Skin 0 "FloorSplats/bsplatP.png"
+	FrameIndex MODL P 0 0
+	Skin 0 "FloorSplats/bsplatQ.png"
+	FrameIndex MODL Q 0 0
+	Skin 0 "FloorSplats/bsplatR.png"
+	FrameIndex MODL R 0 0
+	Skin 0 "FloorSplats/bsplatS.png"
+	FrameIndex MODL S 0 0
+}
