@@ -86,6 +86,7 @@ OptionMenu "BDoom_Settings" {
 	Option "Muzzle Flashes", 					"bdoom_muzzle", "bdoom_muzzle", "bdoom_replaceweapons"
 	OptionBoth "Bullet Tracers",				"bdoom_tracers", "OnOff", "bdoom_replaceweapons", "bdoom_replacemonsters"
 	OptionBGReload "Reload deselected weapons",	"bdoom_autoreload", "OnOff", "bdoom_weapons", "bdoom_replaceweapons"
+	Option "Shootable Decorations", 			"bdoom_killableobjects", "Toggle", "bdoom_replaceobjects"
 	StaticText " "
 	
 	StaticText "Special Effects", yellow
