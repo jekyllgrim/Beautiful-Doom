@@ -90,7 +90,7 @@ Class BD_ExplosiveBarrel : ExplosiveBarrel {
 		Spawn:
 			TNT1 A 0 NoDelay A_Jump(256,1,2,3,4,5);
 		Idle:
-			BERB ABCDE random(3,5) {
+			BEBR ABCDE random(3,5) {
 				if (bdoom_flames && frandom(0,10) > 7) {
 					let fpart = BD_FireParticle(Spawn("BD_FireParticle",(pos.x+frandom(-5,5),pos.y+frandom(-5,5),pos.z+frandom(27.5,29))));
 					fpart.vel = (0,0,frandom(0.1,0.2));

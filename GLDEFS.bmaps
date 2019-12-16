@@ -935,65 +935,65 @@ disablefullbright
 
 // EXPLOSIVE BARREL
 
-brightmap sprite BAR0A0 {
+brightmap sprite BEBRA0 {
 map "brightmaps/ExplosiveBarrel.png"
 disablefullbright
 }
-brightmap sprite BAR0B0 {
+brightmap sprite BEBRB0 {
 map "brightmaps/ExplosiveBarrel.png"
 disablefullbright
 }
-brightmap sprite BAR0C0 {
+brightmap sprite BEBRC0 {
 map "brightmaps/ExplosiveBarrel.png"
 disablefullbright
 }
-brightmap sprite BAR0D0 {
+brightmap sprite BEBRD0 {
 map "brightmaps/ExplosiveBarrel.png"
 disablefullbright
 }
-brightmap sprite BAR0E0 {
+brightmap sprite BEBRE0 {
 map "brightmaps/ExplosiveBarrel.png"
 disablefullbright
 }
 
-brightmap sprite BAR2A0 {
+brightmap sprite BXP2A0 {
 map "brightmaps/bardead1.png"
 disablefullbright
 }
-brightmap sprite BAR2B0 {
+brightmap sprite BXP2B0 {
 map "brightmaps/bardead1.png"
 disablefullbright
 }
-brightmap sprite BAR2C0 {
+brightmap sprite BXP2C0 {
 map "brightmaps/bardead1.png"
 disablefullbright
 }
-brightmap sprite BAR2D0 {
+brightmap sprite BXP2D0 {
 map "brightmaps/bardead1.png"
 disablefullbright
 }
-brightmap sprite BAR2E0 {
+brightmap sprite BXP2E0 {
 map "brightmaps/bardead1.png"
 disablefullbright
 }
 
-brightmap sprite BAR3A0 {
+brightmap sprite BXP3A0 {
 map "brightmaps/bardead2.png"
 disablefullbright
 }
-brightmap sprite BAR3B0 {
+brightmap sprite BXP3B0 {
 map "brightmaps/bardead2.png"
 disablefullbright
 }
-brightmap sprite BAR3C0 {
+brightmap sprite BXP3C0 {
 map "brightmaps/bardead2.png"
 disablefullbright
 }
-brightmap sprite BAR3D0 {
+brightmap sprite BXP3D0 {
 map "brightmaps/bardead2.png"
 disablefullbright
 }
-brightmap sprite BAR3E0 {
+brightmap sprite BXP3E0 {
 map "brightmaps/bardead2.png"
 disablefullbright
 }
