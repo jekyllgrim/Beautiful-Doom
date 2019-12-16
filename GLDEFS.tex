@@ -1,0 +1,80 @@
+/*
+
+material flat FWATER1 {
+	shader "shaders/glsl/normalwarp.fp"
+	normal "materials/normalmaps/water_normal.png"
+	specular "materials/specular/water_specular.png"
+	glossiness 100
+	specularlevel 50
+}*/
+
+material texture LAVA1 {
+	shader "shaders/glsl/func_warp2.fp"
+	brightmap "brightmaps/NUKAGE1.png"
+}
+
+material texture DBRAIN1 {
+	shader "shaders/glsl/func_warp2.fp"
+	brightmap "brightmaps/NUKAGE1.png"
+}
+
+brightmap texture SFALL1 {
+	map "brightmaps/NUKAGE1.png"
+}
+
+brightmap texture SFALL2 {
+	map "brightmaps/NUKAGE1.png"
+}
+
+brightmap texture SFALL3 {
+	map "brightmaps/NUKAGE1.png"
+}
+
+brightmap texture SFALL4 {
+	map "brightmaps/NUKAGE1.png"
+}
+
+material flat NUKAGE1 {
+	shader "shaders/glsl/func_warp2.fp"
+	brightmap "brightmaps/NUKAGE1.png"
+}
+
+Glow {
+	Texture "LAVA1", 701000, 128
+	Texture "LAVA2", 701000, 128
+	Texture "LAVA3", 701000, 128
+	Texture "LAVA4", 701000, 128
+	
+	Texture "LAVA01", 701000, 128
+	Texture "LAVA02", 701000, 128
+	Texture "LAVA03", 701000, 128
+	Texture "LAVA04", 701000, 128
+	
+	Texture "DBRAIN1", 701000, 128
+	Texture "DBRAIN2", 701000, 128
+	Texture "DBRAIN3", 701000, 128
+	Texture "DBRAIN4", 701000, 128
+	
+	Texture "NUKAGE1", 007000, 128
+	Texture "NUKAGE2", 007000, 128
+	Texture "NUKAGE3", 007000, 128
+	Texture "NUKAGE4", 007000, 128
+	
+	Texture "NUKAGE01", 007000, 128
+	Texture "NUKAGE02", 007000, 128
+	Texture "NUKAGE03", 007000, 128
+	Texture "NUKAGE04", 007000, 128
+	
+	Texture "SFALL1", 003000, 128
+	Texture "SFALL2", 003000, 128
+	Texture "SFALL3", 003000, 128
+	Texture "SFALL4", 003000, 128
+	
+	//teleporters
+	Texture "GATE1", 800000, 48
+	Texture "GATE2", 800000, 48
+	Texture "GATE3", 800000, 48
+	Texture "GATE4", 808080, 48
+	
+	Texture "F_SKY1", 604050, 120
+}
