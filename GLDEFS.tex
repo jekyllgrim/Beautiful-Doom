@@ -9,29 +9,19 @@ material flat FWATER1 {
 }*/
 
 material texture LAVA1 {
-	shader "shaders/glsl/func_warp2.fp"
+	shader "shaders/glsl/func_warp1.fp"
 	brightmap "brightmaps/NUKAGE1.png"
 }
 
 material texture DBRAIN1 {
-	shader "shaders/glsl/func_warp2.fp"
+	shader "shaders/glsl/func_warp1.fp"
 	brightmap "brightmaps/NUKAGE1.png"
 }
 
-brightmap texture SFALL1 {
-	map "brightmaps/NUKAGE1.png"
-}
-
-brightmap texture SFALL2 {
-	map "brightmaps/NUKAGE1.png"
-}
-
-brightmap texture SFALL3 {
-	map "brightmaps/NUKAGE1.png"
-}
-
-brightmap texture SFALL4 {
-	map "brightmaps/NUKAGE1.png"
+material texture SFALL1 {
+	shader "shaders/glsl/dualscroll.fp"
+	speed 0.5
+	brightmap "brightmaps/NUKEFALL.png"
 }
 
 material flat NUKAGE1 {

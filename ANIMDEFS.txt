@@ -144,14 +144,14 @@ pic NUKAGE1 tics 3600
 pic NUKAGE1 tics 3600
 
 texture optional NUKAGE01
-pic NUKAGE01 tics 1
-pic NUKAGE01 tics 1
+pic NUKAGE01 tics 3600
+pic NUKAGE01 tics 3600
 texture optional NUKAGE02
-pic NUKAGE01 tics 1
-pic NUKAGE01 tics 1
+pic NUKAGE01 tics 3600
+pic NUKAGE01 tics 3600
 texture optional NUKAGE03
-pic NUKAGE01 tics 1
-pic NUKAGE01 tics 1
+pic NUKAGE01 tics 3600
+pic NUKAGE01 tics 3600
 
 //warp texture LAVA1
 //warp texture DBRAIN1
@@ -163,142 +163,18 @@ warp2 texture BLOOD01
 warp2 texture FWATER1
 warp2 texture FWATER01
 
-/*texture SFALL1
-pic SFALL01 tics 2
-pic SFALL02 tics 2
-pic SFALL03 tics 2
-pic SFALL04 tics 2
-pic SFALL05 tics 2
-pic SFALL06 tics 2
-pic SFALL07 tics 2
-pic SFALL08 tics 2
-pic SFALL09 tics 2
-pic SFALL10 tics 2
-pic SFALL11 tics 2
-pic SFALL12 tics 2
-pic SFALL13 tics 2
-pic SFALL14 tics 2
-pic SFALL15 tics 2
-pic SFALL16 tics 2
-pic SFALL17 tics 2
-pic SFALL18 tics 2
-pic SFALL19 tics 2
-pic SFALL20 tics 2
-pic SFALL21 tics 2
-pic SFALL22 tics 2
-pic SFALL23 tics 2
-pic SFALL24 tics 2
-pic SFALL25 tics 2
-pic SFALL26 tics 2
-pic SFALL27 tics 2
-pic SFALL28 tics 2
-pic SFALL29 tics 2
-pic SFALL30 tics 2
-pic SFALL31 tics 2
-pic SFALL32 tics 2
-
-texture SFALL2
-pic SFALL01 tics 2
-pic SFALL02 tics 2
-pic SFALL03 tics 2
-pic SFALL04 tics 2
-pic SFALL05 tics 2
-pic SFALL06 tics 2
-pic SFALL07 tics 2
-pic SFALL08 tics 2
-pic SFALL09 tics 2
-pic SFALL10 tics 2
-pic SFALL11 tics 2
-pic SFALL12 tics 2
-pic SFALL13 tics 2
-pic SFALL14 tics 2
-pic SFALL15 tics 2
-pic SFALL16 tics 2
-pic SFALL17 tics 2
-pic SFALL18 tics 2
-pic SFALL19 tics 2
-pic SFALL20 tics 2
-pic SFALL21 tics 2
-pic SFALL22 tics 2
-pic SFALL23 tics 2
-pic SFALL24 tics 2
-pic SFALL25 tics 2
-pic SFALL26 tics 2
-pic SFALL27 tics 2
-pic SFALL28 tics 2
-pic SFALL29 tics 2
-pic SFALL30 tics 2
-pic SFALL31 tics 2
-pic SFALL32 tics 2
-
-texture SFALL3
-pic SFALL01 tics 2
-pic SFALL02 tics 2
-pic SFALL03 tics 2
-pic SFALL04 tics 2
-pic SFALL05 tics 2
-pic SFALL06 tics 2
-pic SFALL07 tics 2
-pic SFALL08 tics 2
-pic SFALL09 tics 2
-pic SFALL10 tics 2
-pic SFALL11 tics 2
-pic SFALL12 tics 2
-pic SFALL13 tics 2
-pic SFALL14 tics 2
-pic SFALL15 tics 2
-pic SFALL16 tics 2
-pic SFALL17 tics 2
-pic SFALL18 tics 2
-pic SFALL19 tics 2
-pic SFALL20 tics 2
-pic SFALL21 tics 2
-pic SFALL22 tics 2
-pic SFALL23 tics 2
-pic SFALL24 tics 2
-pic SFALL25 tics 2
-pic SFALL26 tics 2
-pic SFALL27 tics 2
-pic SFALL28 tics 2
-pic SFALL29 tics 2
-pic SFALL30 tics 2
-pic SFALL31 tics 2
-pic SFALL32 tics 2
-
-texture SFALL4
-pic SFALL01 tics 2
-pic SFALL02 tics 2
-pic SFALL03 tics 2
-pic SFALL04 tics 2
-pic SFALL05 tics 2
-pic SFALL06 tics 2
-pic SFALL07 tics 2
-pic SFALL08 tics 2
-pic SFALL09 tics 2
-pic SFALL10 tics 2
-pic SFALL11 tics 2
-pic SFALL12 tics 2
-pic SFALL13 tics 2
-pic SFALL14 tics 2
-pic SFALL15 tics 2
-pic SFALL16 tics 2
-pic SFALL17 tics 2
-pic SFALL18 tics 2
-pic SFALL19 tics 2
-pic SFALL20 tics 2
-pic SFALL21 tics 2
-pic SFALL22 tics 2
-pic SFALL23 tics 2
-pic SFALL24 tics 2
-pic SFALL25 tics 2
-pic SFALL26 tics 2
-pic SFALL27 tics 2
-pic SFALL28 tics 2
-pic SFALL29 tics 2
-pic SFALL30 tics 2
-pic SFALL31 tics 2
-pic SFALL32 tics 2
-*/
+texture optional SFALL1
+pic SFALL1 tics 3600
+pic SFALL1 tics 3600
+texture optional SFALL2
+pic SFALL1 tics 3600
+pic SFALL1 tics 3600
+texture optional SFALL3
+pic SFALL1 tics 3600
+pic SFALL1 tics 3600
+texture optional SFALL4
+pic SFALL1 tics 3600
+pic SFALL1 tics 3600
 
 
 // Switches by Enjay
