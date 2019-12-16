@@ -395,6 +395,9 @@ Class BD_SSGPellet : RealBullet {
 				hitvictim = victim;
 				bulletdamage = CalculateDamage();
 				victim.DamageMobj(self,target,bulletdamage,"normal");
+				let mon = BDoomMonster(victim);
+				if (mon)
+					mon.BD_Bleed();
 			}
 		}
 		if (ripdepth <= 0)

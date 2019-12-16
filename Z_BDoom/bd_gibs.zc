@@ -45,7 +45,7 @@ class Gibs_General : DebrisGeneral abstract {
 		height 4;
 		alpha 1.0;
 		translation "0:255=0:255";
-		}
+	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();	
 		A_FaceMovementDirection();
@@ -60,12 +60,12 @@ class Gibs_General : DebrisGeneral abstract {
 				bcolor = 'red';			
 			else
 				Translation = target.BloodTranslation;
-			}
 		}
+	}
 	virtual void GibBeginPlay() {
 		if (gibtype == "none" && target)
 			gibtype = target.GetClassName();
-		}
+	}
 	virtual void GibFall() {
 		landed = true;
 		bSLIDESONWALLS = true;
@@ -73,8 +73,8 @@ class Gibs_General : DebrisGeneral abstract {
 		if (bflat) {
 			bFLATSPRITE = true;
 			pitch = 0;
-			}
 		}
+	}
 		
 	void BD_GibBleed(Class<Actor> spawnclass, double hpos = 0, double vpos = 0, int spawnchance = 100) {				
 		if (random(0,100) > spawnchance)
@@ -86,10 +86,9 @@ class Gibs_General : DebrisGeneral abstract {
 			bdrop.target = target;
 			let mon = BDoomMonster(target);
 			mon.meatlist.Push(bdrop);
-			}
 		}
-	states
-		{
+	}
+	states {
 		LoadSprites:
 			GIBD ABC 0;
 			GIB1 AXZ 0;
@@ -143,31 +142,31 @@ class Gibs_General : DebrisGeneral abstract {
 			PAPP AB 0;
 			PARP AB 0;
 			stop;
-		}
 	}
+}
 
 //smaller version of BD_Blood that spawns behind flying gibs
 Class BD_GibBlood : BD_Blood {
 	Default {
 		Scale 0.15;
 		deathsound "gibs/BD_Blood";
-		}
+	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		restscale = frandom(0.07,0.11);
-		}
 	}
+}
 
 //smaller versions of resting blood pool that spawns by resting gibs when they're pushed by explosions, leaving trails of blood on the floor
 Class BD_GibBloodPool : BD_BloodPool {
 	Default {
 		scale 0.1;
-		}
+	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		restscale = frandom(0.06,0.085);
-		}
 	}
+}
 
 class BasicMeatPiece : Gibs_General {
 	bool instant;
@@ -175,19 +174,18 @@ class BasicMeatPiece : Gibs_General {
 		scale 0.45;
 		+SLIDESONWALLS
 		radius 2;
-		}
+	}
 	static const string GibSprite[] =
 		{
 			"GIB1","GIB2","GIB3","GIB4","GIB5"
-		};
+	};
 	override void PostBeginPlay() {
 		super.PostBeginPlay();	
 		A_FaceMovementDirection();
 		if (self.GetClassName() == "BasicMeatPiece")
 			bSLIDESONWALLS = false;
-		}
-	override void GibBeginPlay()
-		{
+	}
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex(GibSprite[random(0,4)]);
 		bmass = 50;
@@ -199,8 +197,8 @@ class BasicMeatPiece : Gibs_General {
 				SetStateLabel("Crash");
 			else if (FindState("Death"))
 				SetStateLabel("Death");
-			}
 		}
+	}
 	override void GibFall() {
 		super.GibFall();
 		if (!bdoom_livegibs)
@@ -210,10 +208,10 @@ class BasicMeatPiece : Gibs_General {
 				A_Scream();
 			frame = restframe;
 			roll = 0;
-			}
+		}
 		A_SetMass(bmass);
 		bDROPPED = true;
-		}
+	}
 	override void Tick() {
 		Super.Tick();
 		//disable interactivity if 'bdoom_livegibs' CVAR is false
@@ -222,13 +220,13 @@ class BasicMeatPiece : Gibs_General {
 			if (bdoom_livegibs) {
 				bNOINTERACTION = false;
 				A_ChangeLinkFlags(false);
-				}
+			}
 			else {
 				A_Stop();
 				bNOINTERACTION = true;
 				A_ChangeLinkFlags(true);
-				}
 			}
+		}
 		if (isFrozen())
 			return;
 		if (!bdoom_livegibs)
@@ -237,14 +235,13 @@ class BasicMeatPiece : Gibs_General {
 			return;
 		if ((abs(vel.x) > 2 || abs(vel.y) > 2) )
 			BD_GibBleed("BD_GibBloodPool",2,-pos.z+floorz,75);
-		}
-	states
-		{
+	}
+	states {
 		spawn:
 			#### A 0 NoDelay {
 				GibBeginPlay();
 				scale.x*=randompick(-1,1);
-				}
+			}
 			#### # 1 {
 				if (!bSLIDESONWALLS) {
 					if (pos.z >= ceilingz-16){
@@ -258,8 +255,8 @@ class BasicMeatPiece : Gibs_General {
 								a.target = target;
 								let m = BDoomMonster(target);
 								if (m) m.meatlist.Push(a);
-								}
 							}
+						}
 						SetOrigin((pos.x,pos.y,ceilingz-height),true);
 						A_Scream();
 						let smudge = GibSmudge(Spawn("GibSmudge",pos));
@@ -267,11 +264,11 @@ class BasicMeatPiece : Gibs_General {
 							smudge.master = self;
 							smudge.ceiling = true;
 							smudge.scale.x*= 1.4;
-							}
+						}
 						A_Stop();
 						gravity = frandom(0.0022,0.0025);
 						return ResolveState("Ceiling");
-						}
+					}
 					if (blockingline && (blockingline.flags & blockingline.ML_BLOCKING)) {
 						A_Scream();
 						if (bcolor == 'blue')
@@ -285,13 +282,13 @@ class BasicMeatPiece : Gibs_General {
 							smudge.master = self;
 							//smudge.bWALLSPRITE = true;
 							//smudge.angle = atan2(blockingline.delta.y, blockingline.delta.x) + 90;
-							}
+						}
 						roll = randompick(0,180);
 						A_Stop();
 						gravity = frandom(0.0018,0.0022);
 						return ResolveState("WallSlide");
-						}
 					}
+				}
 				if (!bNOBLOOD && bdoom_blood && waterlevel == 0) //spawn blood is CVARs allow and not underwater
 					BD_GibBleed("BD_GibBlood",2,frandom(0,2),60);					
 				roll+=brot;
@@ -302,19 +299,19 @@ class BasicMeatPiece : Gibs_General {
 						brot *= 0.98;
 					else //when not rotating anymore, stop moving
 						return ResolveState("Rest");
-					}
-				return ResolveState(null);
 				}
+				return ResolveState(null);
+			}
 			wait;
 		WallSlide:
 			#### # 30 {
 				UnlinkFromWorld ();
 				LinkToWorld ();
 				A_SetTics(random(35,90));
-				}
+			}
 			#### # 0 {
 				gravity = bmass*frandom(0.0006,0.0007);
-				}
+			}
 			#### # 1;
 			wait;
 		Ceiling:
@@ -322,13 +319,13 @@ class BasicMeatPiece : Gibs_General {
 				UnlinkFromWorld ();
 				LinkToWorld ();
 				A_SetTics(random(50,100));
-				}
+			}
 			#### # 15 {
 				gravity = default.gravity*0.1;
-				}
+			}
 			#### # 0 {
 				gravity = default.gravity*0.6;
-				}
+			}
 			#### # 1;
 			wait;
 		Crash:
@@ -337,13 +334,13 @@ class BasicMeatPiece : Gibs_General {
 				if (vel ~== (0,0,0))
 					return ResolveState("Rest");
 				return ResolveState(null);
-				}
+			}
 			wait;
 		Rest:
 			#### # 1 { 
 				if (waterlevel > 0 && frame != restframe)
 					roll += clamp(brot,-0.1,0.1);
-				}
+			}
 			wait;
 		Raise:
 			#### # 0 FlyBack();
@@ -353,12 +350,12 @@ class BasicMeatPiece : Gibs_General {
 				if (target &&  Distance2D(target) < 16) {
 					destroy();
 					return ResolveState(null);
-					}
-				return ResolveState(null);
 				}
+				return ResolveState(null);
+			}
 			wait;
-		}
 	}
+}
 	
 Class GibSmudge : DebrisGeneral {
 	BasicMeatPiece meat;
@@ -370,13 +367,13 @@ Class GibSmudge : DebrisGeneral {
 		xscale 0.32;
 		yscale 0.5;
 		alpha 0.8;
-		}
+	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		scale.x *= randompick(-1,1);
 		if (master)
 			meat = BasicMeatPiece(master);
-		}
+	}
 	override void Tick() {
 		super.Tick();
 		if (isFrozen())
@@ -392,8 +389,8 @@ Class GibSmudge : DebrisGeneral {
 				else {
 					destroy();
 					return;
-					}
 				}
+			}
 			else {
 				if (!meat.landed) 
 					scale.y = Clamp(abs(meat.vel.z)*0.2,0.05,0.4);
@@ -402,24 +399,24 @@ Class GibSmudge : DebrisGeneral {
 				else {
 					destroy();
 					return;
-					}
 				}
 			}
+		}
 		else {
 			 destroy();
 			 return;
 			 }
-		}
+	}
 	states {
 		Spawn:
 			GIBD B -1 NoDelay {
 				if (ceiling)
 					frame = 2;
-				}
+			}
 			stop;
 			
-		}
 	}
+}
 
 class BasicMetalPiece : BasicMeatPiece {
 	Default {
@@ -432,9 +429,8 @@ class BasicMetalPiece : BasicMeatPiece {
 		bouncetype "Doom";
 		bouncefactor 0.4;
 		+NOBLOOD
-		}
-	override void GibBeginPlay()
-		{
+	}
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("GMET");
 		bmass = 70;
@@ -443,14 +439,12 @@ class BasicMetalPiece : BasicMeatPiece {
 		restframe = frame;
 		roll = random(0,359);
 		A_SetScale(frandom(0.3,0.8)*randompick(-1,1));
-		}
-	override void GibFall() 
-		{
+	}
+	override void GibFall()  {
 		super.GibFall();
 		bMISSILE = false;
-		}
-	states
-		{
+	}
+	states {
 		spawn:
 			GMET A 0 NoDelay GibBeginPlay();
 			#### # 1 {			
@@ -462,198 +456,190 @@ class BasicMetalPiece : BasicMeatPiece {
 						vel.z = -0.5;
 					else
 						return ResolveState("Rest");
-					}
-				return ResolveState(null);
 				}
+				return ResolveState(null);
+			}
 			wait;
 		Death:
 			#### # 0 {
 				return ResolveState("Crash");
-				}
+			}
 			wait;
 		Raise:
 			stop;
-		}
 	}
+}
 
 class BasicMeatPiece_Heavy : BasicMeatPiece {
 	Default {
 		scale 0.8;
-		}
-	override void GibBeginPlay()
-		{
+	}
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		bmass = 80;
-		}
 	}
+}
 
 class Gib_Intestine : BasicMeatPiece {
 	Default {
 		bouncetype "none";
 		scale 0.32;
 		gravity 0.5;
-		}
-	override void GibBeginPlay()
-		{
+	}
+	override void GibBeginPlay() {
 		super.GibBeginPlay();	
 		bflat = true;
 		bmass = 80;
 		brot = frandom(4,7)*randompick(1,-1);
 		sprite = GetSpriteIndex("GIX2");
-		}
 	}
+}
 
 class Gib_Lung : BasicMeatPiece {
 	Default {
 		+SLIDESONWALLS
 		scale 0.23;
-		}
-	override void GibBeginPlay()
-		{
+	}
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("GIX1");
-		}
 	}
+}
 
 class Gib_Liver : BasicMeatPiece {
 	Default {
 		+SLIDESONWALLS
 		scale 0.23;
-		}
-	override void GibBeginPlay()
-		{
+	}
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("GIX3");
-		}
 	}
+}
 
 class Gib_Kidneys : BasicMeatPiece { //I don't know what that sprite is but it looks non-generic enough to be unique
 	Default {
 		+SLIDESONWALLS
 		scale 0.4;
-		}
-	override void GibBeginPlay()
-		{
+	}
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("GIX4");
-		}
 	}
+}
 
 class Gib_Hand : BasicMeatPiece {
 	Default {
 		+ROLLCENTER
 		scale 0.8;
-		}
-	override void GibBeginPlay()
-		{
+	}
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		bmass = 70;
 		brot = frandom(6,9)*randompick(1,-1);
 		if (gibtype == 'BD_Zombieman') {
 			sprite = GetSpriteIndex("HND1");
 			restframe = random(1,2);
-			}
+		}
 		else if (gibtype == 'BD_ShotgunGuy') {
 			sprite = GetSpriteIndex("HND2");
 			restframe = 1;
-			}
+		}
 		else if (gibtype == 'BD_ChaingunGuy') {
 			sprite = GetSpriteIndex("HND3");
 			restframe = random(1,2);
-			}
+		}
 		else if (gibtype == 'BD_DoomImp') {
 			sprite = GetSpriteIndex("HND4");
 			restframe = random(1,2);
-			}
+		}
 		else if (gibtype == 'BD_WolfensteinSS') {
 			sprite = GetSpriteIndex("HND5");
 			restframe = 1;
-			}
+		}
 		else if (gibtype == 'BD_Demon' || gibtype == 'BD_Spectre') {
 			sprite = GetSpriteIndex("HND8");
 			restframe = 1;
 			if (gibtype == 'BD_Spectre')
 				A_SetRenderstyle(0.5,STYLE_OptFuzzy);
-			}
+		}
 		else {
 			destroy();
 			return;
-			}
 		}
 	}
+}
 
 class Gib_Leg : BasicMeatPiece {
 	Default {
 		+ROLLCENTER
 		scale 0.8;
-		}
-	override void GibBeginPlay()
-		{
+	}
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		if (gibtype == 'BD_Zombieman') {
 			sprite = GetSpriteIndex("LEG1");
 			frame = random(0,1);
 			restframe = random(2,4);
-			}
+		}
 		else if (gibtype == 'BD_ShotgunGuy') {
 			sprite = GetSpriteIndex("LEG2");
 			frame = random(0,1);
 			restframe = random(2,4);
-			}
+		}
 		else if (gibtype == 'BD_ChaingunGuy') {
 			sprite = GetSpriteIndex("LEG3");
 			frame = 0;
 			restframe = random(1,2);
-			}
+		}
 		else if (gibtype == 'BD_DoomImp') {
 			sprite = GetSpriteIndex("LEG4");
 			frame = random(0,1);
 			restframe = random(2,3);
-			}
+		}
 		else if (gibtype == 'BD_WolfensteinSS') {
 			sprite = GetSpriteIndex("LEG5");
 			frame = 0;
 			restframe = random(1,2);
-			}
+		}
 		else {
 			destroy();
 			return;
-			}
+		}
 		bmass = 70;
 		brot = frandom(5,8)*randompick(1,-1);
-		}
 	}
+}
 
 class Gib_Head : BasicMeatPiece {
 	Default {
 		+ROLLCENTER
 		scale 0.8;
-		}
-	override void GibBeginPlay()
-		{
+	}
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		bmass = 70;
 		brot = frandom(8,12)*randompick(1,-1);
 		if (gibtype == 'BD_Zombieman') {
 			sprite = GetSpriteIndex("HED1");
 			restframe = random(1,3);
-			}
+		}
 		else if (gibtype == 'BD_ShotgunGuy') {
 			sprite = GetSpriteIndex("HED2");
 			restframe = random(1,2);
-			}
+		}
 		else if (gibtype == 'BD_ChaingunGuy') {
 			sprite = GetSpriteIndex("HED3");
 			restframe = random(1,2);
-			}
+		}
 		else if (gibtype == 'BD_DoomImp') {
 			sprite = GetSpriteIndex("HED4");
 			restframe = random(1,2);
-			}
+		}
 		else if (gibtype == 'BD_WolfensteinSS') {
 			sprite = GetSpriteIndex("HED5");
 			restframe = random(1,2);
-			}
+		}
 		else if (gibtype == 'BD_Demon' || gibtype == 'BD_Spectre') {
 			sprite = GetSpriteIndex("HED8");
 			restframe = 1;
@@ -661,13 +647,13 @@ class Gib_Head : BasicMeatPiece {
 			bmass = 100;
 			if (gibtype == 'BD_Spectre')
 				A_SetRenderstyle(0.5,STYLE_OptFuzzy);
-			}
+		}
 		else {
 			destroy();
 			return;
-			}
 		}
 	}
+}
 
 class Gib_Torso1 : BasicMeatPiece {
 	int finalframe; //last frame used in the flying animation
@@ -675,9 +661,8 @@ class Gib_Torso1 : BasicMeatPiece {
 		DebrisGeneral.sfxtype "none"; //I don't want torsos to get destroyed because they essentially function as a corpse and show where the monster died
 		gravity 1.0;
 		scale 1.0;
-		}
-	override void GibBeginPlay()
-		{
+	}
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		roll = 0;
 		brot = randompick(-1,1); //only used for underwater rotation
@@ -685,30 +670,29 @@ class Gib_Torso1 : BasicMeatPiece {
 			sprite = GetSpriteIndex("TR11");
 			finalframe = 3; 
 			restframe =  6; 
-			}
+		}
 		else if (gibtype == 'BD_ShotgunGuy') {
 			sprite = GetSpriteIndex("TR21");
 			finalframe = 3; 
 			restframe =  7;
-			}	
+		}	
 		else if (gibtype == 'BD_ChainGunGuy') {
 			sprite = GetSpriteIndex("TR31");
 			finalframe = 4; 
 			restframe =  8; 
-			}	
+		}	
 		else if (gibtype == 'BD_DoomImp') {
 			sprite = GetSpriteIndex("TR41");
 			finalframe = 3; 
 			restframe =  7; 
-			}		
+		}		
 		else if (gibtype == 'BD_WolfensteinSS') { //the SS soldier has only 1 torso set that is used as his death animation on the WolfesteinSS actor directly
 			destroy();	
 			return;
-			}
-		bmass = 200;
 		}
-	states
-		{
+		bmass = 200;
+	}
+	states {
 		Spawn:
 			#### A 1 NoDelay GibBeginPlay();
 			#### # 3 {
@@ -719,30 +703,35 @@ class Gib_Torso1 : BasicMeatPiece {
 				if (waterlevel > 0)
 					return ResolveState("Rest");
 				return ResolveState(null);
-				}
+			}
 			wait;
 		Crash:
 			#### # 4 {
 				if (frame < restframe) //landing ainmation (usually blood comes out of the torso,etc.)
 					frame++;
 				if (frame == restframe && vel ~== (0, 0, 0)) { //in contrast to other gibs, torso is always noninteractive, so that it always stays close to the position of the original dead body (so that players can see where the monster died and can predict where the Arch-Vile is going to go to resurrect them)
-					if (bdoom_blood)
-						Spawn("AniBloodPool",(pos.x,pos.y,floorz));
+					if (bdoom_blood && target && (target is "BDoomMonster")) {
+						let body = BDoomMonster(target);
+						let pool = DebrisGeneral(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
+						if (body && pool) {
+							body.meatlist.push(pool);
+						}
+					}
 					A_SpawnItemEx("CorpseFlySpawner",flags:SXF_SETMASTER);
 					bNOINTERACTION = true;
 					bRELATIVETOFLOOR = true;
 					bMOVEWITHSECTOR = true;
 					return ResolveState("Rest");
-					}
-				return ResolveState(null);
 				}
+				return ResolveState(null);
+			}
 			loop;
 		Rest:
 			#### # 1 { 
 				if (waterlevel > 0 && frame != restframe)
 					roll += clamp(brot,-0.1,0.1);
 				return ResolveState(null);
-				}
+			}
 			wait;
 		Raise:
 			#### # 0 FlyBack();
@@ -753,9 +742,9 @@ class Gib_Torso1 : BasicMeatPiece {
 				if (target &&  Distance3D(target) < 16) {
 					destroy();
 					return ResolveState(null);
-					}
-				return ResolveState(null);
 				}
+				return ResolveState(null);
+			}
 			wait;
 		loadsprites:
 			TR11 ABCDEFG 0;
@@ -763,39 +752,38 @@ class Gib_Torso1 : BasicMeatPiece {
 			TR21 ABCDEFGH 0;
 			TR22 ABCDEFGH 0;
 			stop;
-		}
 	}
+}
 
 Class Gib_Torso2 : Gib_Torso1 {
-	override void GibBeginPlay()
-		{
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		if (gibtype == 'BD_Zombieman') {
 			sprite = GetSpriteIndex("TR12");
 			finalframe = 3; 
 			restframe =  6; 
-			}
+		}
 		else if (gibtype == 'BD_ShotgunGuy') {
 			sprite = GetSpriteIndex("TR22");
 			finalframe = 3; 
 			restframe =  7; 
-			}	
+		}	
 		else if (gibtype == 'BD_ChainGunGuy') {
 			sprite = GetSpriteIndex("TR32");
 			finalframe = 3; 
 			restframe =  7; 
-			}			
+		}			
 		else if (gibtype == 'BD_DoomImp') {
 			sprite = GetSpriteIndex("TR42");
 			finalframe = 3; 
 			restframe =  7; 
-			}		
+		}		
 		else if (gibtype == 'BD_WolfensteinSS') {
 			destroy();
 			return;
-			}
 		}
 	}
+}
 
 //// CACODEMON
 
@@ -804,27 +792,25 @@ class CacodemonMeatPiece : BasicMeatPiece {
 	Default {
 		bloodcolor "00 00 CC";
 		translation "CacoGibs";
-		}
-	override void GibBeginPlay()
-		{
+	}
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		restframe = 23;
-		}
 	}
+}
 
 Class CacodemonEye : BasicMeatPiece {
 	Default {
 		bloodcolor "00 00 CC";
-		}
-	override void GibBeginPlay()
-		{
+	}
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("EYE1");
 		bmass = 40;
 		brot = frandom(18,22)*randompick(1,-1);
 		restframe = 1;
-		}
 	}
+}
 
 //// LOST SOUL pieces
 
@@ -835,17 +821,15 @@ class LS_Horn : BasicMeatPiece {
 		seesound "";
 		deathsound "";
 		bouncesound "";
-		}
-	override void GibBeginPlay()
-		{
+	}
+	override void GibBeginPlay() {
 		Super.GibBeginPlay();
 		sprite = GetSpriteIndex("LGI1");
 		restframe = 0;
 		bmass = 40;
 		brot = frandom(14,20)*randompick(1,-1);
-		}
-	states
-		{
+	}
+	states {
 		Raise:
 			stop;
 		loadsprites:
@@ -853,57 +837,52 @@ class LS_Horn : BasicMeatPiece {
 			LGI2 A 0;
 			LGI3 A 0;
 			stop;
-		}
 	}
+}
 
 Class LS_shard : LS_Horn {
-	override void GibBeginPlay()
-		{
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("LGI3");
 		bmass = 30;
-		}
 	}
+}
 
 Class LS_Skull : LS_Horn {
 	Default {
 		height 4;
 		radius 2;
-		}
-	override void GibBeginPlay()
-		{
+	}
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("LGI2");
 		bmass = 50;
-		}
 	}
+}
 
 // PAIN ELEMENTAL
 
 class PainElementalHand : BasicMeatPiece {
-	override void GibBeginPlay()
-		{
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("HND6");
 		restframe = 1;
-		}
 	}
+}
 
 class PainElementalJaw : PainElementalHand {
-	override void GibBeginPlay()
-		{
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("PAPP");
-		}
 	}
+}
 
 class PainElementalHorn : PainElementalHand {
-	override void GibBeginPlay()
-		{
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("PARP");
-		}
 	}
+}
 
 
 // CYBERDEMON
@@ -911,16 +890,14 @@ class PainElementalHorn : PainElementalHand {
 Class BasicBossGib : BasicMeatPiece {
 	Default {
 		scale 1.0;
-		}
-	override void GibBeginPlay()
-		{
+	}
+	override void GibBeginPlay() {
 		bmass = 200;
 		brot = random(14,17)*randompick(-1,1);
 		restframe = 25;
 		roll = random(0,359);
-		}
-	states
-		{
+	}
+	states {
 		spawn:
 			#### A 0 NoDelay GibBeginPlay();
 			#### A 1 {
@@ -930,7 +907,7 @@ Class BasicBossGib : BasicMeatPiece {
 				if (waterlevel == 3)
 					return ResolveState("Rest");
 				return ResolveState(null);
-				}
+			}
 			wait;
 		Crash:
 			#### # 5 GibFall();
@@ -940,7 +917,7 @@ Class BasicBossGib : BasicMeatPiece {
 				else if (vel ~== (0,0,0))
 					return ResolveState("Rest");
 				return ResolveState(null);
-				}
+			}
 			wait;
 		loadsprites:
 			//cyberdemon
@@ -955,124 +932,111 @@ Class BasicBossGib : BasicMeatPiece {
 			stop;
 		Raise:
 			stop;
-		}
 	}
+}
 
 class CyberHead : BasicBossGib {
 	Default {
 		scale 0.8;
 		gravity 0.5;
-		}
-	override void GibBeginPlay()
-		{
+	}
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		brot = -10;
 		sprite = GetSpriteIndex("HED7"); 
-		}
-	override void GibFall ()
-		{
+	}
+	override void GibFall () {
 		super.GibFall();
 		frame = randompick(1,5,9);
 		restframe = frame+3;
-		}
 	}
+}
 
 Class CyberHandLeft : CyberHead {
-	override void GibBeginPlay()
-		{
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		brot = -5;
 		sprite = GetSpriteIndex("HND7"); 
 		roll = 45;
-		}
-	override void GibFall ()
-		{
+	}
+	override void GibFall () {
 		super.GibFall();
 		bNOBLOOD = true;
 		frame = randompick(1,4,7);
 		restframe = frame+2;
-		}
 	}
+}
 
 Class CyberHandRight : CyberHandLeft {
-	override void GibBeginPlay()
-		{
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("HND9"); 
 		brot = 5;
 		roll = 0;
-		}
-	override void GibFall ()
-		{
+	}
+	override void GibFall () {
 		super.GibFall();
 		bNOBLOOD = false;
 		frame = randompick(1,4);
 		restframe = frame+2;
-		}
 	}
+}
 
 Class CyberLegLeft : CyberHandRight {
-	override void GibBeginPlay()
-		{
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("LEG9"); 
 		brot = -5;
-		}
 	}
+}
 
 Class CyberLegRight : CyberHandLeft {
-	override void GibBeginPlay()
-		{
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("LEG7"); 
 		brot = 5;
 		roll = 0;
-		}
-	override void GibFall ()
-		{
+	}
+	override void GibFall () {
 		super.GibFall();
 		bNOBLOOD = false;
 		frame = randompick(1,4);
 		restframe = frame+2;
-		}
 	}
+}
 
 Class CyberTorso1 : CyberHandRight {
-	override void GibBeginPlay()
-		{
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("TRC1"); 
 		brot = 8;
-		}
 	}
+}
 
 Class CyberTorso2 : Gib_Torso1 {
-	override void GibBeginPlay()
-		{
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("TRC2");
 		restframe = 4; 
 		restframe = 9; 
 		bmass = 600;
-		}
-	states
-		{
+	}
+	states {
 		Rest:
 			#### # 0 {
 				frame = restframe; //in case for SOME reason the animation didn't finish
-				}
+			}
 			#### # -1;
 			stop;
-		}
 	}
+}
 
 Class CyberTorso3 : CyberTorso2 {
-	override void GibBeginPlay()
-		{
+	override void GibBeginPlay() {
 		Super.GibBeginPlay();
 		sprite = GetSpriteIndex("TRC3");
-		}
 	}
+}
 
 // SPIDER MASTERMIND
 
@@ -1081,21 +1045,19 @@ Class CyberTorso3 : CyberTorso2 {
 Class SpiderBrainRight : BasicBossGib {
 	Default {
 		scale 0.8;
-		}
-	override void GibBeginPlay()
-		{
+	}
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		brot = 7;
 		sprite = GetSpriteIndex("SPP1"); 
 		restframe = 3;
-		}
+	}
 	override void GibFall() {
 		super.GibFall();
 		frame = 1;
 		restframe = 3;
-		}
-	states
-		{
+	}
+	states {
 		loadsprites:
 			SPP1 ABCD 0;
 			SPP2 ABCD 0;
@@ -1105,50 +1067,46 @@ Class SpiderBrainRight : BasicBossGib {
 			TRP1 ABC 0;
 			TRP2 AB 0;
 			stop;
-		}
 	}
+}
 
 Class SpiderBrainLeft : SpiderBrainRight {
-	override void GibBeginPlay()
-		{
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		brot = -7;
 		sprite = GetSpriteIndex("SPP1"); 
 		scale.x *= -1;
-		}
 	}
+}
 
 Class SpiderBrainMid : SpiderBrainRight {
-	override void GibBeginPlay()
-		{
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		brot = randompick(-6,6);
 		sprite = GetSpriteIndex("SPP2"); 
 		scale.x *= randompick(-1,1);
-		}
 	}
+}
 
 Class SpiderFace : SpiderBrainRight {
-	override void GibBeginPlay()
-		{
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		brot = randompick(-5,5);
 		sprite = GetSpriteIndex("SPP3"); 
-		}
+	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		bflat = true;
-		}
+	}
 	override void GibFall() {
 		super.GibFall();
 		frame = 0;
 		restframe = 0;
-		}
 	}
+}
 
 class SpiderMetalPiece : BasicMetalPiece {
-	override void GibBeginPlay()
-		{
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		bmass = 100;
 		sprite = GetSpriteIndex("TRP1"); 
@@ -1157,23 +1115,22 @@ class SpiderMetalPiece : BasicMetalPiece {
 		brot = randompick(8,-8);
 		A_SetScale(0.6);
 		scale.x *= randompick(-1,1);
-		}
 	}
+}
 
 class SpiderGunGib : SpiderMetalPiece {
-	override void GibBeginPlay()
-		{
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("TRP2");
 		frame = 0;
 		brot = randompick(6,-6);
 		scale.x *= randompick(-1,1);
-		}
+	}
 	override void GibFall() {
 		super.GibFall();
 		frame = 1;
-		}
 	}
+}
 
 class SpiderLegRight : BasicBossGib {
 	int endroll;
@@ -1182,22 +1139,20 @@ class SpiderLegRight : BasicBossGib {
 		seesound "none";
 		deathsound "gibs/metallic";
 		scale 1.0;
-		}
-	override void GibBeginPlay()
-		{
+	}
+	override void GibBeginPlay() {
 		Super.GibBeginPlay();
 		frame = random(0,3);
 		restframe = frame;
 		brot = 5;
 		roll = 0;
 		endroll = 116;
-		}
+	}
 	override void GibFall(){
 		super.GibFall();
 		roll = endroll;
-		}
-	states
-		{
+	}
+	states {
 		spawn:
 			SPP5 A 0 NoDelay GibBeginPlay();
 			SPP5 # 1 {
@@ -1206,60 +1161,58 @@ class SpiderLegRight : BasicBossGib {
 				if (waterlevel == 3)
 					return ResolveState("Rest");
 				return ResolveState(null);
-				}
+			}
 			wait;
 		Crash:
 			SPP5 # -1 GibFall();
 			stop;
-		}
 	}
+}
 
 class SpiderLegLeft : SpiderLegRight {
-	override void GibBeginPlay()
-		{
+	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		scale.x *= -1;
 		brot = -5;
 		endroll = -116;
-		}
 	}
+}
 
 Class SpiderHandRight : BasicBossGib {
 	Default {
 		xscale -1;
-		}
+	}
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		bmass = 50;
 		brot = 8;
 		restframe = 1;
-		}
-	states
-		{
+	}
+	states {
 		spawn:
 			SPP4 A 0 NoDelay {
 				GibBeginPlay();
-				}
+			}
 			SPP4 A 1 {
 				A_SpawnItemEx("BD_GibBlood",frandom(-2,2),frandom(-2,2),frandom(0,2),0,frandom(0,1),frandom(0,1),random(175,185),SXF_TRANSFERPOINTERS,144);
 				roll+=brot;
 				if (waterlevel == 3)
 					return ResolveState("Rest");
 				return ResolveState(null);
-				}
+			}
 			wait;
 		Crash:
 			SPP4 B -1 GibFall();
 			stop;
-		}
 	}
+}
 
 Class SpiderHandLeft : SpiderHandRight {
 	Default {
 		xscale 1;
-		}
+	}
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		brot = -8;
-		}
 	}
+}

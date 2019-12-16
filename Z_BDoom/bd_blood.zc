@@ -146,19 +146,28 @@ Class BD_Blood : BloodGeneral replaces Blood {
 					return ResolveState(null);
 				}
 				
-				bFLATSPRITE = true;
+				//bFLATSPRITE = true;
 				bNOINTERACTION = true;
 				A_ChangeLinkFlags(blockmap:true);
 				bMOVEWITHSECTOR = true;
 				bRELATIVETOFLOOR = true;
+				A_SetScale(abs(scale.x),abs(scale.y));
+				angle = random(0,36);
+				A_SetRenderStyle(1,STYLE_Normal);
 				return ResolveState(null);
 			}
-			2PLT A 0 { 
+			MODL A 0 { 
 				frame = random(0,16);
 				if (CheckWater())
 					return ResolveState("Water");
 				return ResolveState(null);
 			}
+			/*2PLT A 0 { 
+				frame = random(0,16);
+				if (CheckWater())
+					return ResolveState("Water");
+				return ResolveState(null);
+			}*/
 
 			#### # -1;
 			stop;
@@ -178,11 +187,12 @@ Class BD_Blood : BloodGeneral replaces Blood {
 			}
 			stop;
 		Water:
+			#### # 0 A_SetRenderStyle(alpha,STYLE_Translucent);
 			#### # 1 {
 				A_FadeOut(0.04);
 				scale*=1.03;
 			}
-			loop;
+			wait;
 	}
 }
 
@@ -329,11 +339,9 @@ Class AniBloodPool : BloodGeneral {
 		+RELATIVETOFLOOR
 		+MOVEWITHSECTOR
 		-MISSILE
-		+FLATSPRITE
+		//+FLATSPRITE
 		height 1;
-		renderstyle "Normal";
-		//Alpha 0.9;
-		decal "none";
+		renderstyle 'Normal';
 		scale 0.2;
 	}
 	override void PostBeginPlay() {
@@ -348,7 +356,7 @@ Class AniBloodPool : BloodGeneral {
 			destroy();
 			return;
 		}
-		A_SetScale(pscale*randompick(-1,1),pscale*randompick(-1,1));
+		angle = random(0,359);
 
 		if (target && target.bloodcolor) {
 			if (target.bloodcolor.G > 4*(target.bloodcolor.R  + target.bloodcolor.B))
@@ -363,8 +371,12 @@ Class AniBloodPool : BloodGeneral {
 	}	
 	override void Tick () {
 		super.Tick();
-		if (CheckWater())
+		if (isFrozen())
+			return;
+		if (CheckWater()) {
+			A_SetRenderstyle(alpha,STYLE_Translucent);
 			A_FadeOut(0.01);
+		}
 	}
 	states	{
 		Spawn:
@@ -393,8 +405,6 @@ Class AniBloodPool : BloodGeneral {
 					A_SetTics(0);
 				if (CheckLandingSize (psize))
 					return ResolveState("Rest");
-				if (Checkwater())
-					A_FadeOut(0.05);
 				psize+=2.0;
 				return ResolveState(null);
 			}
@@ -403,8 +413,6 @@ Class AniBloodPool : BloodGeneral {
 					A_SetTics(0);
 				if (CheckLandingSize (psize))
 					return ResolveState("Rest");
-				if (Checkwater())
-					A_FadeOut(0.05);
 				psize+=1.2;
 				return ResolveState(null);
 			}
@@ -413,8 +421,6 @@ Class AniBloodPool : BloodGeneral {
 					A_SetTics(0);
 				if (CheckLandingSize (psize))
 					return ResolveState("Rest");
-				if (Checkwater())
-					A_FadeOut(0.05);
 				psize+=1.0;
 				return ResolveState(null);
 			}
@@ -442,26 +448,23 @@ Class AniBloodPool : BloodGeneral {
 					A_SetTics(0);
 				if (CheckLandingSize (psize))
 					return ResolveState("Rest");
-				if (Checkwater())
-					A_FadeOut(0.05);
 				psize+=1.0;
 				return ResolveState(null);
 			}
 			goto rest;
 		Rest:
-			#### # -1; /*10 {
-				if (Checkwater())
-					return ResolveState("Fade");
-				return ResolveState(null);
-			}
-			wait;*/
+			#### # -1;
 			stop;
 		Raise:
+			#### # 0 {
+				A_SetRenderstyle(alpha,STYLE_Translucent);
+				//console.printf("fade blood pool");
+			}
 			#### # 1 {
 				scale*=0.92;
 				A_FadeOut(0.03);
 			}
-			loop;
+			wait;
 		LoadSprites:
 			R000 ABCDEFGHIJKLMNOPQRSTUVWXYZ 0;
 			R001 ABCD 0;

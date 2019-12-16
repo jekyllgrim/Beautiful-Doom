@@ -52,7 +52,10 @@ class WeaponOverrideHandler : EventHandler {
 
 			PlayerInfo player	= players[pn];
 			PlayerPawn mo		= player.mo;
-			
+			if (!player || !mo)
+				return;
+			if (!player.pendingWeapon || !player.readyweapon)
+				return;
 			let oldweap = player.pendingWeapon.GetClassName(); //get the weapon that is being selected
 			let oldweapr = player.readyweapon.GetClassName(); //get the currently selected weapons
 			if (bdoom_replaceweapons) { //check if the replace weapons CVAR is true
