@@ -32,7 +32,7 @@ Class BD_Fist : BDoomWeapon {
 		If (!Owner)
 			return;
 		if(bdoom_weapons == 2) {
-			//console.printf("hurt chance: %d",hurtchance);
+			console.printf("hurt chance: %d",hurtchance);
 			owner.player.cheats |= CF_INTERPVIEW; //force mouse smoothing to avoid screwy camera when A_CameraSway is used
 			bNOAUTOFIRE = true;
 			bWIMPY_WEAPON = false;
@@ -373,7 +373,7 @@ Class BD_Fist : BDoomWeapon {
 				A_WeaponOffset(0,32,WOF_INTERPOLATE);
 				invoker.fcombo++;
 				invoker.lcombo++;
-				invoker.hurtchance = clamp(invoker.tcombo * 10, 15,85);
+				invoker.hurtchance = clamp(invoker.tcombo * 8, 10,85);
 				if (invoker.lcombo >= 5 && !FindInventory("ModernBerserk_Regen"))
 					return ResolveState("LightFinisher");
 				A_Overlay(2,"Ready.Right");
