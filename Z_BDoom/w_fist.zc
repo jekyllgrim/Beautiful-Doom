@@ -32,7 +32,7 @@ Class BD_Fist : BDoomWeapon {
 		If (!Owner)
 			return;
 		if(bdoom_weapons == 2) {
-			console.printf("hurt chance: %d",hurtchance);
+			//console.printf("hurt chance: %d",hurtchance);
 			owner.player.cheats |= CF_INTERPVIEW; //force mouse smoothing to avoid screwy camera when A_CameraSway is used
 			bNOAUTOFIRE = true;
 			bWIMPY_WEAPON = false;
