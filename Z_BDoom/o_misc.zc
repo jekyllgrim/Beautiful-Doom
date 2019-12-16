@@ -9,183 +9,176 @@
 // TELEPORT FOG
 
 Class BD_TeleportFog : TeleportFog {
-BD_BaseFlare flare;
-Default {
-	+FORCEXYBILLBOARD
-	+BRIGHT
-	renderstyle "Add";
-	alpha 0.8;
+	BD_BaseFlare flare;
+	Default {
+		+FORCEXYBILLBOARD
+		+BRIGHT
+		renderstyle "Add";
+		alpha 0.8;
 	}
-override void PostBeginPlay() {
-	super.PostBeginPlay();
-	scale.x*=randompick(-1,1);
-	if (bdoom_flames) {
-		flare = BD_BaseFlare(Spawn("BD_BaseFlare",(pos.x,pos.y,pos.z+32)));
-		flare.A_SetScale(0.3);
-		flare.A_SetRenderstyle(0.4,Style_ADD);
-		flare.fcolor = 'green';
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		scale.x*=randompick(-1,1);
+		if (bdoom_flames) {
+			flare = BD_BaseFlare(Spawn("BD_BaseFlare",(pos.x,pos.y,pos.z+32)));
+			flare.A_SetScale(0.3);
+			flare.A_SetRenderstyle(0.4,Style_ADD);
+			flare.fcolor = 'green';
 		}
 	}
-override void Tick() {
-	super.Tick();
-	if (isFrozen())
-		return;
-	if (flare)
-		flare.A_SetScale(0.3 - 0.03*frame);
+	override void Tick() {
+		super.Tick();
+		if (isFrozen())
+			return;
+		if (flare)
+			flare.A_SetScale(0.3 - 0.03*frame);
 	}
-states
-	{
-	Spawn:
-		TFOG ABCDCBAABABCDCDEFGHIJ 3;
-		TNT1 A 0 { if (flare) flare.destroy(); }
-		stop;
+	states {
+		Spawn:
+			TFOG ABCDCBAABABCDCDEFGHIJ 3;
+			TNT1 A 0 { if (flare) flare.destroy(); }
+			stop;
 	}
 }
 
 
 // Explosive Barrel
 
-Class EBarrelPiece : SmallDebris
-{
-Default {
-	DebrisGeneral.sfxtype "debris";
+Class EBarrelPiece : SmallDebris {
+	Default {
+		DebrisGeneral.sfxtype "debris";
 	}
-override void PostBeginPlay() {
-	super.PostBeginPlay();
-	wrot = random(16,24)*randompick(-1,1);
-	scale *= frandom(0.8,1);
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		wrot = random(16,24)*randompick(-1,1);
+		scale *= frandom(0.8,1);
 	}
-states
-	{
-	Spawn:
-		BPRT AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 {
-			scale *= 0.93;
-			roll+=wrot;
+	states {
+		Spawn:
+			BPRT AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 {
+				scale *= 0.93;
+				roll+=wrot;
 			}
-		stop;
+			stop;
 	}
 }
 
 Class BD_ExplosiveBarrel : ExplosiveBarrel {
-Default {
-	scale 0.8;
-	deathsound "world/ebarrel";
+	Default {
+		scale 0.8;
+		deathsound "world/ebarrel";
 	}
-BD_BaseFlare flare;
+	BD_BaseFlare flare;
 
-override void Tick() {
-	super.Tick();
-	if (isFrozen())
-		return;
-	if (!flare && bdoom_flames && health > 0) {
-		flare = BD_BaseFlare(Spawn("BD_BaseFlare",(pos.x,pos.y,pos.z+26)));
-		flare.scale.x = 0.15;
-		flare.scale.y = 0.11;
-		flare.fcolor = 'green';
-		flare.A_SetRenderstyle(0.3,Style_Add);
+	override void Tick() {
+		super.Tick();
+		if (isFrozen())
+			return;
+		if (!flare && bdoom_flames && health > 0) {
+			flare = BD_BaseFlare(Spawn("BD_BaseFlare",(pos.x,pos.y,pos.z+26)));
+			flare.scale.x = 0.15;
+			flare.scale.y = 0.11;
+			flare.fcolor = 'green';
+			flare.A_SetRenderstyle(0.3,Style_Add);
 		}
-	if (bdoom_flames && flare)
-		flare.SetOrigin((pos.x,pos.y,pos.z+26),true);
-	if (!bdoom_flames && flare)
-		flare.destroy();
+		if (bdoom_flames && flare)
+			flare.SetOrigin((pos.x,pos.y,pos.z+26),true);
+		if (!bdoom_flames && flare)
+			flare.destroy();
 	}
-states
-	{
-	Spawn:
-		TNT1 A 0 NoDelay A_Jump(256,1,2,3,4,5);
-	Idle:
-		BAR0 ABCDE random(3,5) {
-			if (bdoom_flames && frandom(0,10) > 7) {
-				let fpart = BD_FireParticle(Spawn("BD_FireParticle",(pos.x+frandom(-5,5),pos.y+frandom(-5,5),pos.z+frandom(27.5,29))));
-				fpart.vel = (0,0,frandom(0.1,0.2));
-				fpart.fcolor = 'green';
+	states {
+		Spawn:
+			TNT1 A 0 NoDelay A_Jump(256,1,2,3,4,5);
+		Idle:
+			BERB ABCDE random(3,5) {
+				if (bdoom_flames && frandom(0,10) > 7) {
+					let fpart = BD_FireParticle(Spawn("BD_FireParticle",(pos.x+frandom(-5,5),pos.y+frandom(-5,5),pos.z+frandom(27.5,29))));
+					fpart.vel = (0,0,frandom(0.1,0.2));
+					fpart.fcolor = 'green';
 				}
 			}
-		loop;
-	Death:
-		TNT1 A 0 {
-			if (flare)
-				flare.destroy();
-			if (bdoom_shakes)
-				A_Quake(2,15,0,320,"");
-			A_SetScale(1.0);
+			loop;
+		Death:
+			TNT1 A 0 {
+				if (flare)
+					flare.destroy();
+				if (bdoom_shakes)
+					A_Quake(2,15,0,320,"");
+				A_SetScale(1.0);
 			}
-		BEXP AABBC 1;
-		BEXP C 1 A_Scream;
-		TNT1 A 0 {
-			let bar = Spawn("ExplodedBarrel",pos);
-			bar.master = self;
-			A_SetRenderstyle(0.8,Style_ADD);
-			scale *= frandom(0.7,1);
-			scale.x *= randompick(-1,1);
-			A_SprayDecal("BarrelScorch",128);			
-			if (bdoom_debris) {
-				for (int i = 5; i > 0; i--)
-					A_SpawnItemEx("SmokingPiece",	frandom(-6,6),frandom(-6,6),frandom(4,24),	frandom(-5,5),frandom(-5,5),frandom(7,12),failchance:64);
-				for (int i = 7; i > 0; i--)
-					A_SpawnItemEx("EBarrelPiece",	frandom(-6,6),frandom(-6,6),frandom(4,24),	frandom(-10,10),frandom(-10,10),frandom(8,15),failchance:64);
+			BEXP AABBC 1;
+			BEXP C 1 A_Scream;
+			TNT1 A 0 {
+				let bar = Spawn("ExplodedBarrel",pos);
+				bar.master = self;
+				A_SetRenderstyle(0.8,Style_ADD);
+				scale *= frandom(0.7,1);
+				scale.x *= randompick(-1,1);
+				A_SprayDecal("BarrelScorch",128);			
+				if (bdoom_debris) {
+					for (int i = 5; i > 0; i--)
+						A_SpawnItemEx("SmokingPiece",	frandom(-6,6),frandom(-6,6),frandom(4,24),	frandom(-5,5),frandom(-5,5),frandom(7,12),failchance:64);
+					for (int i = 7; i > 0; i--)
+						A_SpawnItemEx("EBarrelPiece",	frandom(-6,6),frandom(-6,6),frandom(4,24),	frandom(-10,10),frandom(-10,10),frandom(8,15),failchance:64);
 				}
 			}
-		BEXP DE 2 {
-			if (bdoom_debris)
-				A_SpawnItemEx("BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(16,56),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.8,2.2),failchance:32);
+			BEXP DE 2 {
+				if (bdoom_debris)
+					A_SpawnItemEx("BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(16,56),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.8,2.2),failchance:32);
 			}
-		BEXP FFGGH 1 {
-			if (bdoom_debris)
-				A_SpawnItemEx("BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(16,56),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.8,2.2),failchance:32);
+			BEXP FFGGH 1 {
+				if (bdoom_debris)
+					A_SpawnItemEx("BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(16,56),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.8,2.2),failchance:32);
 			}
-		BEXP H 1 A_Explode();
-		BEXP IJKLMNOPQ 3 {
-			if (bdoom_debris)
-				A_SpawnItemEx("BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(16,56),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.8,2.2),failchance:32);
+			BEXP H 1 A_Explode();
+			BEXP IJKLMNOPQ 3 {
+				if (bdoom_debris)
+					A_SpawnItemEx("BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(16,56),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.8,2.2),failchance:32);
 			}
-		TNT1 A 1050 A_BarrelDestroy;
-		TNT1 A 5 {
-			A_SetRenderstyle(1.0,Style_Normal);
-			A_SetScale(0.8);
-			A_Respawn();
-			A_RemoveChildren(true,RMVF_EVERYTHING);
+			TNT1 A 1050 A_BarrelDestroy;
+			TNT1 A 5 {
+				A_SetRenderstyle(1.0,Style_Normal);
+				A_SetScale(0.8);
+				A_Respawn();
+				A_RemoveChildren(true,RMVF_EVERYTHING);
 			}
-		wait;
+			wait;
 	}
 }
 
-Class ExplodedBarrel : Actor
-{
-//int timer;
-Default {
-	+NOINTERACTION
-	+MOVEWITHSECTOR
-	+RELATIVETOFLOOR
-	scale 0.8;
+Class ExplodedBarrel : Actor {
+	Default {
+		+NOINTERACTION
+		+MOVEWITHSECTOR
+		+RELATIVETOFLOOR
+		scale 0.8;
 	}
-static const string SSprite[] =
-	{
-		"BAR2","BAR3","BAR4"
+	static const string SSprite[] =
+		{
+			"BXP2","BXP3","BXP4"
 	};
-/*override void Tick() {
-	super.tick();
-	if (isFrozen() || !bdoom_debris)
-		return;
-	timer++;
-	if (random(0,10) > 9 && timer >= 20) {
-		for (int i = random(1,3); i > 0; i--)
-			A_SpawnItemEx("BlackSmoke",frandom(-8,8),frandom(-8,8),frandom(6,8),0,0,frandom(0.2,0.6),failchance:(128));
-		timer = 0;
+	/*override void Tick() {
+		super.tick();
+		if (isFrozen() || !bdoom_debris)
+			return;
+		timer++;
+		if (random(0,10) > 9 && timer >= 20) {
+			for (int i = random(1,3); i > 0; i--)
+				A_SpawnItemEx("BlackSmoke",frandom(-8,8),frandom(-8,8),frandom(6,8),0,0,frandom(0.2,0.6),failchance:(128));
+			timer = 0;
 		}
 	}*/
-states
-	{
-	Loadsprites:
-		BAR2 ABCDE 0;
-		BAR3 ABCDE 0;
-		BAR4 ABCDE 0;
-	Spawn:
-		TNT1 A 0 NoDelay { sprite = GetSpriteIndex(SSprite[random(0,2)]); }
-	Idle:
-		#### A random(35,200);
-		#### ABCDEDCB random(6,9);
-		loop;
+	states {
+		Loadsprites:
+			BXP2 ABCDE 0;
+			BXP3 ABCDE 0;
+			BXP4 ABCDE 0;
+		Spawn:
+			TNT1 A 0 NoDelay { sprite = GetSpriteIndex(SSprite[random(0,2)]); }
+		Idle:
+			#### A random(35,200);
+			#### ABCDEDCB random(6,9);
+			loop;
 	}
 }
 
@@ -198,183 +191,175 @@ states
 // Eye floating over a candle
 
 Class BD_EvilEye : EvilEye {
-states
-	{
-	Spawn:
-		TNT1 A -1 NoDelay {
-			Spawn("BD_Candlestick",pos);
-			Spawn("FloatingEye",(pos.x,pos.y,pos.z+10));
+	states {
+		Spawn:
+			TNT1 A -1 NoDelay {
+				Spawn("BD_Candlestick",pos);
+				Spawn("FloatingEye",(pos.x,pos.y,pos.z+10));
 			}
-		stop;
+			stop;
 	}
 }
 
-Class FloatingEye : Actor
-{
-BD_BaseFlare flare;
-Default {
-	renderstyle "Translucent";
-	+NOINTERACTION
-	+VISIBILITYPULSE
-	+FORCEXYBILLBOARD
-	+NOGRAVITY
-	+RELATIVETOFLOOR +MOVEWITHSECTOR
-	+FLOATBOB
-	+BRIGHT
-	floatbobstrength 0.5;
+Class FloatingEye : Actor {
+	BD_BaseFlare flare;
+	Default {
+		renderstyle "Translucent";
+		+NOINTERACTION
+		+VISIBILITYPULSE
+		+FORCEXYBILLBOARD
+		+NOGRAVITY
+		+RELATIVETOFLOOR +MOVEWITHSECTOR
+		+FLOATBOB
+		+BRIGHT
+		floatbobstrength 0.5;
 	}
-override void Tick() {
-	super.Tick();
-	if (isFrozen())
-		return;
-	if (!flare && bdoom_flames) {
-		flare = BD_BaseFlare(Spawn("BD_BaseFlare",(pos.x,pos.y,pos.z+32)));
-		flare.fcolor = 'green';
-		flare.A_SetRenderstyle(0.4,Style_ADD);
-		flare.A_SetScale(0.3);
-		flare.bFLOATBOB = true;
-		flare.FloatBobPhase = FloatBobPhase;
-		flare.floatbobstrength = floatbobstrength;
+	override void Tick() {
+		super.Tick();
+		if (isFrozen())
+			return;
+		if (!flare && bdoom_flames) {
+			flare = BD_BaseFlare(Spawn("BD_BaseFlare",(pos.x,pos.y,pos.z+32)));
+			flare.fcolor = 'green';
+			flare.A_SetRenderstyle(0.4,Style_ADD);
+			flare.A_SetScale(0.3);
+			flare.bFLOATBOB = true;
+			flare.FloatBobPhase = FloatBobPhase;
+			flare.floatbobstrength = floatbobstrength;
 		}
-	if (!bdoom_flames && flare)
-		flare.destroy();
+		if (!bdoom_flames && flare)
+			flare.destroy();
 	}
-states
-	{
-	Spawn:
-		SEYE ABCDEF 4;
-		loop;
+	states {
+		Spawn:
+			SEYE ABCDEF 4;
+			loop;
 	}
 }
 
 // Floating glowing rock with a skull
 
 Class BD_FloatingSkull : FloatingSkull {
-Default {
-	+FLOATBOB
-	floatbobstrength 0.3;
+	Default {
+		+FLOATBOB
+		floatbobstrength 0.3;
 	}
-states
-	{
-	Spawn:
-		FSKX ABCDEF random(4,5) {
-			if (bdoom_flames && random(0,10) > 3) {
-				let fpart = BD_FireParticle(Spawn("BD_FireParticle",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),pos.z+frandom(54,57))));
-				fpart.vel = (frandom(-0.15,0.15),frandom(-0.15,0.15),frandom(0.2,0.5));
-				fpart.fcolor = 'red';
+	states {
+		Spawn:
+			FSKX ABCDEF random(4,5) {
+				if (bdoom_flames && random(0,10) > 3) {
+					let fpart = BD_FireParticle(Spawn("BD_FireParticle",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),pos.z+frandom(54,57))));
+					fpart.vel = (frandom(-0.15,0.15),frandom(-0.15,0.15),frandom(0.2,0.5));
+					fpart.fcolor = 'red';
 				}
 			}
-		loop;
+			loop;
 	}
 }
 
 // Column with a beating heart on it
 
 Class BD_HeartColumn : HeartColumn {
-BD_LightFlare flare;
-override void PostBeginPlay() {
-	super.PostBeginPlay();
-	let a = AniBloodPool(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
-	if (a)  a.instant = true;
+	BD_LightFlare flare;
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		let a = AniBloodPool(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
+		if (a)  a.instant = true;
 	}
-override void Tick() {
-	super.Tick();
-	if (isFrozen())
-		return;
-	if (!flare && bdoom_flames) {
-		flare = BD_LightFlare(Spawn("BD_LightFlare",(pos.x,pos.y,pos.z+38)));
-		flare.master = self;
-		flare.fcolor = 'red';
-		flare.falpha = 0.3;
-		flare.fscale = 0.1;
-		flare.flicker = false;
+	override void Tick() {
+		super.Tick();
+		if (isFrozen())
+			return;
+		if (!flare && bdoom_flames) {
+			flare = BD_LightFlare(Spawn("BD_LightFlare",(pos.x,pos.y,pos.z+38)));
+			flare.master = self;
+			flare.fcolor = 'red';
+			flare.falpha = 0.3;
+			flare.fscale = 0.1;
+			flare.flicker = false;
 		}
-	if (bdoom_flames && flare)
-		flare.SetOrigin((pos.x,pos.y,pos.z+38),true);
-	if (!bdoom_flames && flare)
-		flare.destroy();
+		if (bdoom_flames && flare)
+			flare.SetOrigin((pos.x,pos.y,pos.z+38),true);
+		if (!bdoom_flames && flare)
+			flare.destroy();
 	}
-states
-	{
-	Spawn:
-		TNT1 A 0 NoDelay A_jump(256,1,12);
-	Idle:
-		BHAC ABCD 3;
-		BHAC E 3 A_PlaySound("world/heartbeat",5,0.5,attenuation:6);
-		BHAC FGHIJKL 3;
-		loop;
+	states {
+		Spawn:
+			TNT1 A 0 NoDelay A_jump(256,1,12);
+		Idle:
+			BHAC ABCD 3;
+			BHAC E 3 A_PlaySound("world/heartbeat",5,0.5,attenuation:6);
+			BHAC FGHIJKL 3;
+			loop;
 	}
 }
 
 // Big brown tree
 
 Class BD_BigTree : BigTree {
-override void PostBeginPlay() {
-	super.PostBeginPlay();
-	scale.x*=randompick(-1,1);
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		scale.x*=randompick(-1,1);
 	}
-states
-	{
-	Spawn:
-		BTR2 A 0 noDelay { frame = random(0,3); }
-		BTR2 # 20 {
-			if (bdoom_debris && frame != 0 && random(0,10) > 9)
-				A_SpawnItemEx("BigTreeLeaf",frandom(-20,20),frandom(-20,20),height+frandom(-4,4),frandom(-2,2),frandom(-2,2),0);
+	states {
+		Spawn:
+			BTR2 A 0 noDelay { frame = random(0,3); }
+			BTR2 # 20 {
+				if (bdoom_debris && frame != 0 && random(0,10) > 9)
+					A_SpawnItemEx("BigTreeLeaf",frandom(-20,20),frandom(-20,20),height+frandom(-4,4),frandom(-2,2),frandom(-2,2),0);
 			}
-		wait;
-	load:
-		BTR2 ABCD 0;
-		stop;
+			wait;
+		load:
+			BTR2 ABCD 0;
+			stop;
 	}
 }
 
-Class BigTreeLeaf : SmallDebris
-{
-Default {
-	scale 0.5;
-	+NOINTERACTION
-	SmallDebris.Removeonfall false;
-	SmallDebris.dbrake 0.95;
+Class BigTreeLeaf : SmallDebris {
+	Default {
+		scale 0.5;
+		+NOINTERACTION
+		SmallDebris.Removeonfall false;
+		SmallDebris.dbrake 0.95;
 	}
-override void PostBeginPlay() {
-	super.PostBeginPlay();
-	scale*=frandom(0.9,1.1);
-	scale.x*=randompick(-1,1);
-	scale.y*=randompick(-1,1);
-	dgravity = frandom(0.002,0.005);	
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		scale*=frandom(0.9,1.1);
+		scale.x*=randompick(-1,1);
+		scale.y*=randompick(-1,1);
+		dgravity = frandom(0.002,0.005);	
 	}
-override void Tick() {
-	if (!isFrozen()) {
-		vel.x*=0.99;
-		vel.y*=0.99;
+	override void Tick() {
+		if (!isFrozen()) {
+			vel.x*=0.99;
+			vel.y*=0.99;
 		}
-	super.Tick();
+		super.Tick();
 	}
-states
-	{
-	Spawn:
-		LEFB ABCDEFGHI 4 {
-			if (abs(vel.x) < 0.5 && abs(vel.y) < 0.5 && random(1,3) > 2) {
-				vel.x = Clamp (frandom(-1.5,1.5),-1.5,1.5);
-				vel.y = Clamp (frandom(-1.5,1.5),-1.5,1.5);
+	states {
+		Spawn:
+			LEFB ABCDEFGHI 4 {
+				if (abs(vel.x) < 0.5 && abs(vel.y) < 0.5 && random(1,3) > 2) {
+					vel.x = Clamp (frandom(-1.5,1.5),-1.5,1.5);
+					vel.y = Clamp (frandom(-1.5,1.5),-1.5,1.5);
 				}
-			if (pos.z <= floorz+1)
-				return ResolveState("Land");
-			return ResolveState(null);
+				if (pos.z <= floorz+1)
+					return ResolveState("Land");
+				return ResolveState(null);
 			}
-		loop;
-	Land:
-		LEFB ABCDEFGHI 5 {
-			if (vel.length() < 0.03) {
-				bFLATSPRITE = true;
-				return ResolveState("End");
+			loop;
+		Land:
+			LEFB ABCDEFGHI 5 {
+				if (vel.length() < 0.03) {
+					bFLATSPRITE = true;
+					return ResolveState("End");
 				}
-			return ResolveState(null);
+				return ResolveState(null);
 			}
-		loop;
-	End:
-		LEFB # 10 A_FadeOut(0.05);
-		loop;
+			loop;
+		End:
+			LEFB # 10 A_FadeOut(0.05);
+			loop;
 	}
 }
 	
@@ -382,16 +367,15 @@ states
 // Small burnt tree
 
 Class BD_TorchTree : TorchTree {
-states
-	{
-	Load:
-		TRE1 AB 0;
-	Spawn:
-		TRE1 A 0 NoDelay {
-			scale.x*=randompick(-1,1);
-			frame = random(0,1);
+	states {
+		Load:
+			TRE1 AB 0;
+		Spawn:
+			TRE1 A 0 NoDelay {
+				scale.x*=randompick(-1,1);
+				frame = random(0,1);
 			}
-		TRE1 # -1;
-		stop;
+			TRE1 # -1;
+			stop;
 	}
 }
