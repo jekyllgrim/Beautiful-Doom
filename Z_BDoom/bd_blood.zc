@@ -50,7 +50,7 @@ Class BD_Blood : BloodGeneral replaces Blood {
 			destroy();
 			return;
 		}
-		if (target is "BDoomMonster") {
+		if (target && (target is "BDoomMonster")) {
 			let trg = BDoomMonster(target);
 			if (trg) {
 				if (trg.burning){
@@ -60,7 +60,7 @@ Class BD_Blood : BloodGeneral replaces Blood {
 				trg.meatlist.push(self);
 			}
 		}
-		if (target.bloodcolor) {
+		if (target && target.bloodcolor) {
 			//obvious green prevalence
 			if (target.bloodcolor.G > 4*(target.bloodcolor.R  + target.bloodcolor.B)) {
 				bcolor = 'green';
@@ -145,6 +145,7 @@ Class BD_Blood : BloodGeneral replaces Blood {
 					destroy();
 					return ResolveState(null);
 				}
+				A_SetSize(16*scale.x,5);
 				
 				//bFLATSPRITE = true;
 				bNOINTERACTION = true;
@@ -211,8 +212,7 @@ Class BD_BloodPool : BD_Blood {
 			return;
 		}
 	}
-	states
-		{
+	states {
 		spawn:
 			TNT1 A 0 NoDelay {
 				A_SetScale(restscale*randompick(1,-1),restscale*randompick(1,-1));
@@ -226,7 +226,7 @@ Class BD_BloodPool : BD_Blood {
 					destroy();
 					return ResolveState(null);
 				}
-				SetOrigin((pos.x,pos.y,floorz),0);
+				SetOrigin((pos.x,pos.y,floorz),false);
 				//A_SetScale(restscale*randompick(1,-1),restscale*randompick(1,-1));	
 				return ResolveState(null);	
 			}
@@ -271,8 +271,7 @@ Class CeilingSplat : BloodGeneral {
 			return;
 		}
 	}
-	states
-		{
+	states {
 		Spawn:
 			2PLT A 0 NoDelay {
 				frame = random(0,16);
@@ -303,8 +302,7 @@ Class CeilingBloodDrop : BloodGeneral {
 		scale*= frandom(0.8,1.1);
 		scale.x*=randompick(-1,1);	
 	}
-	states
-		{
+	states {
 		spawn:
 			BLOD UVWWXXYYY 2;
 			TNT1 A 0 { vel.z = -3.4; }
@@ -339,7 +337,6 @@ Class AniBloodPool : BloodGeneral {
 		+RELATIVETOFLOOR
 		+MOVEWITHSECTOR
 		-MISSILE
-		//+FLATSPRITE
 		height 1;
 		renderstyle 'Normal';
 		scale 0.2;
@@ -532,8 +529,7 @@ Class BloodSpurt : BloodGeneral {
 		pitchchange = 0.5;
 		sprayactor = "BloodSpray";
 	}
-	states
-		{
+	states {
 		Spawn:
 			TNT1 A 0 NoDelay A_FaceTarget(0,270,0,0);
 			TNT1 A 0 A_Jump(256,random(1,5));
@@ -573,8 +569,7 @@ Class NeckSpray : SmallDebris {
 		alpha 0.7;
 	}
 	static const string bsprite[] =	{ "YBL7","YBL8","YBL9" };
-	states
-		{
+	states {
 		spawn:
 			TNT1 A 0 NoDelay {
 				A_SetScale(scale.x*randompick(-1,1),scale.y*randompick(-1,1));
@@ -599,8 +594,7 @@ Class BFountainSpray : BD_Blood {
 		renderstyle "Translucent";
 		alpha 0.6;
 	}
-	states
-		{
+	states {
 		BloodDo:
 			#### ABCDEFGHIJKKLLMMNNOOOPPPQQQRRRSSS 1 {
 				if (waterlevel > 0) {
