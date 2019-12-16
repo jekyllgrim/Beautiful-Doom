@@ -562,6 +562,7 @@ Class ModernRocket : BD_Rocket {
 
 
 Class ModernGrenade : ModernRocket {
+	private state sspawn;
 	Default	{
 		scale 0.45;
 		-NOGRAVITY;
@@ -589,6 +590,14 @@ Class ModernGrenade : ModernRocket {
 				a.master = self;
 			}
 		trailactor = "ModernGrenadeTrail";
+		sspawn = FindState("Spawn");
+	}
+	override void Tick() {
+		super.Tick();
+		if (isFrozen())
+			return;
+		if (InstateSequence(curstate,sspawn) && GetAge() > 250)
+			SetStateLabel("Death");
 	}
 	states {
 		Spawn:
