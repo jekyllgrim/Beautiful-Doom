@@ -285,10 +285,10 @@ Class BD_BaseLamp : BD_LightSource abstract {
 		deathheight 80;
 		deathsound "glasscrack";
 		}
-	override void PostBeginPlay() {
+	/*override void PostBeginPlay() {
 		super.PostBeginPlay();
 		A_PlaySound("lamp/hum",looping:true,attenuation:4);
-		}
+		}*/
 	override void Tick() {
 		super.Tick();
 		bVULNERABLE = bdoom_killableobjects;
