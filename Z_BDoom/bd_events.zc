@@ -1,6 +1,8 @@
 class WeaponOverrideHandler : EventHandler {
 	// These items have no new visuals and only new pickup sounds, so, I insert them via an event handler, without replacing the actual actors
 	override void WorldThingSpawned(WorldEvent e) {
+		/*if (e.thing)
+			Console.Printf("%s",e.thing.GetClassName());*/
 		if (!bdoom_replaceitems)
 			return;
 		if (!(e.thing is "Inventory"))
