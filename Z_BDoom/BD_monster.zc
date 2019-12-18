@@ -179,7 +179,6 @@ Class BDoomMonster : Actor abstract {
 					if (bdoom_blood) {
 						let pool = DebrisGeneral(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
 						if (pool) {
-							//a.translation = BloodTranslation;
 							pool.target = self;
 							meatlist.Push(pool);
 						}

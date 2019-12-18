@@ -1,5 +1,4 @@
 Class BDoomWeapon : Weapon abstract {
-	protected bool iskicking; //currently kicking
 	protected int offsetTics; // current camera sway timer
 	protected double maxOffsetTics; // starting point for the timer
 	protected double offsetAngle; // the target angle for the camera sway
