@@ -84,7 +84,7 @@ class WeaponOverrideHandler : EventHandler {
 					case 'BFG9000' 			: player.pendingWeapon = GetWeapon(mo, "BD_BFG9000"); 		mo.TakeInventory(oldweapr,1); break;
 				}
 			}
-			else { //the reverse effect for when the player sets replace weapons CVAR to false (not very necessary, since officially a level start is required to take effect anyway)
+			/*else { //the reverse effect giving back original weapon. disabled because dangerous. besides officialy this requires level restart anyway
 				switch (oldweap) {
 					case 'BD_Fist' 			: player.pendingWeapon = GetWeapon(mo, "Fist"); 			mo.TakeInventory(oldweap,1); break;
 					case 'BD_Chainsaw' 		: player.pendingWeapon = GetWeapon(mo, "Chainsaw"); 		mo.TakeInventory(oldweap,1); break;
@@ -108,7 +108,7 @@ class WeaponOverrideHandler : EventHandler {
 					case 'BD_BFG9000' 		: player.pendingWeapon = GetWeapon(mo, "BFG9000"); 			mo.TakeInventory(oldweapr,1); break;
 				}				
 				mo.speed = mo.default.speed; 	//to ensure the player is no longer affected by speed-altering effects of kicking or modern rifle ADS
-			}
+			}*/
 		}
 	}
 	// Courtesy of Zombie
@@ -263,9 +263,14 @@ Class FXAmountControl : EventHandler {
 
 	//add a thing into a corresponding array when it gets spawned
 	override void WorldThingSpawned(WorldEvent e) {
-		if (e.Thing is "DebrisGeneral") {
+		if (e.thing && e.thing.player) {
+			if (!e.thing.FindInventory("BD_BloodyPrintControl"))
+				e.thing.GiveInventory("BD_BloodyPrintControl",1);
+		}			
+		if (e.thing && e.thing is "DebrisGeneral") {
 			let a = DebrisGeneral(e.thing);
 			if (a) {
+				//console.printf("%s",a.sfxtype);
 				if (a.sfxtype == 'blood')
 					bloodlist.push(a);					
 				else if (a.sfxtype == 'gibs')

@@ -176,6 +176,45 @@ texture optional SFALL4
 pic SFALL1 tics 3600
 pic SFALL1 tics 3600
 
+texture optional BFALL1
+pic BFALL1 tics 3600
+pic BFALL1 tics 3600
+texture optional BFALL2
+pic BFALL1 tics 3600
+pic BFALL1 tics 3600
+texture optional BFALL3
+pic BFALL1 tics 3600
+pic BFALL1 tics 3600
+texture optional BFALL4
+pic BFALL1 tics 3600
+pic BFALL1 tics 3600
+
+texture optional WFALL1
+pic WFALL1 tics 3600
+pic WFALL1 tics 3600
+texture optional WFALL2
+pic WFALL1 tics 3600
+pic WFALL1 tics 3600
+texture optional WFALL3
+pic WFALL1 tics 3600
+pic WFALL1 tics 3600
+texture optional WFALL4
+pic WFALL1 tics 3600
+pic WFALL1 tics 3600
+
+texture optional LFALL1
+pic LFALL1 tics 3600
+pic LFALL1 tics 3600
+texture optional LFALL2
+pic LFALL1 tics 3600
+pic LFALL1 tics 3600
+texture optional LFALL3
+pic LFALL1 tics 3600
+pic LFALL1 tics 3600
+texture optional LFALL4
+pic LFALL1 tics 3600
+pic LFALL1 tics 3600
+
 
 // Switches by Enjay
 

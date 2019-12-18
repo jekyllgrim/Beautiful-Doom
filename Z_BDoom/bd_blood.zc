@@ -5,7 +5,6 @@ Class BloodGeneral : DebrisGeneral abstract {
 		DebrisGeneral.sfxtype "blood";
 		+PUFFGETSOWNER
 		-NOGRAVITY
-		+ROLLSPRITE
 		+DONTSPLASH
 		gravity 0.7;
 		renderstyle "Translucent";
@@ -27,6 +26,126 @@ Class BloodGeneral : DebrisGeneral abstract {
 	}
 }
 
+Class BD_BloodyPrintControl : Inventory {
+	FXAmountControl event;
+	private int bloodtrack; //how much blood was "collected by our boots"
+	private bool side;
+	private bool drip;
+	property drip : drip;
+	private array <BloodGeneral> bootsblood;
+	Default {
+		BD_BloodyPrintControl.drip false;
+		+INVENTORY.UNDROPPABLE
+		+INVENTORY.UNTOSSABLE
+		inventory.maxamount 1;
+	}
+	static const name LiquidFloors[] = { 
+		"BLOOD1", "BLOOD2", "BLOOD3", "SLIME01", "SLIME02", "SLIME03", "SLIME04", "SLIME05", "SLIME06", "SLIME07", "SLIME08", "SLIME09", "SLIME10", "SLIME11", "SLIME12"
+	};
+	bool CheckWater(actor checker = null) {
+		if (!checker)
+			checker = self;
+		if (checker.waterlevel > 0)
+			return true;
+		if (checker.GetFloorTerrain().isLiquid == true)
+			return true;
+		string flr = TexMan.GetName(checker.floorpic);
+		if (flr.IndexOf("WATER") >= 0 || flr.IndexOf("LAVA") >= 0 || flr.IndexOf("NUKAGE") >= 0)
+			return true;
+		for (int i = 0; i < LiquidFloors.Size(); i++) {
+			if (flr == LiquidFloors[i])
+				return true;
+		}
+		return false;
+	}
+	override void DoEffect() {
+		super.DoEffect();		
+		if (!owner || !bdoom_blood || !owner.player || level.isFrozen())
+			return;
+		//debug
+		//Console.Printf("blood on boots: %d | vel: %d",bootsblood.Size(),owner.vel.length());
+		event = FXAmountControl(EventHandler.find("FXAmountControl"));
+		if (!event)
+			return;
+		//blood isn't collected on boots and prints aren't spawned if we're not on the floor or are barely moving
+		if (!(owner.pos.z ~== owner.floorz))
+			return;
+		if (CheckWater(owner)) {
+			bootsblood.Clear();
+			return;
+		}
+		double pspeed = owner.vel.length();
+		if (drip && (level.time % 6 == 0))
+			bootsblood.delete(0);
+		if (bootsblood.Size() < 48 && pspeed > 4) {
+			for (int i = 0; i < event.bloodlist.Size(); i++) {
+				if (bootsblood.Size() >= 48)
+					break;
+				let pool = BloodGeneral(event.bloodlist[i]);
+				if (!pool || !pool.bNOINTERACTION || /*!(pool.pos.z ~== pool.floorz) ||*/ bootsblood.Find (pool) != bootsBlood.Size ())
+					continue;
+				if (pool is "BD_Blood" || pool is "AniBloodPool") {
+					/*let diff = owner.Vec3To (pool);
+					double combinedRadius = owner.radius + pool.radius;
+					if ((diff.XY dot diff.XY) < (combinedRadius * combinedRadius))*/
+					let diff = owner.Distance2D(pool);
+					if (pool.floorz == owner.floorz && diff <= owner.radius)
+						bootsblood.Push(pool);
+				}
+			}
+		}
+		if (bootsblood.Size() > 12 && (level.time % 6 == 0) && pspeed >= 2) {
+			drip = true;
+			let print = BD_BloodyFootPrint(Spawn("BD_BloodyFootPrint",(owner.pos.x,owner.pos.y,owner.floorz)));
+			if (print) {
+				print.side = side;
+				print.angle = owner.angle;
+				side = !side;
+			}
+		}
+		else if (bootsblood.Size() == 0)
+			drip = false;
+	}
+}
+
+Class BD_BloodyFootPrint : BloodGeneral {
+	bool side;
+	Default {
+		-MISSILE
+		+NOINTERACTION
+		+MOVEWITHSECTOR
+		+RELATIVETOFLOOR
+		renderstyle 'Translucent';
+		alpha 1.0;
+		radius 4;
+		scale 1;
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		if (CheckWater() || CheckLandingSize(8)) {
+			destroy();
+			return;
+		}
+		SetZ(floorz+frandom(0,0.01));
+		int hoff = -1;
+		if (side)
+			hoff = 1;
+		Warp(self,0,4*hoff);
+	}
+	override void Tick() {
+		super.Tick();
+		if (!isFrozen())
+			A_FadeOut(0.001);
+	}
+	states {
+		Spawn:
+			0000 A -1 NoDelay {
+				if (side)
+					frame = 1;				
+			}
+			stop;
+	}
+}
 
 Class BD_Blood : BloodGeneral replaces Blood {
 	double restscale;
@@ -35,7 +154,8 @@ Class BD_Blood : BloodGeneral replaces Blood {
 		gravity 0.5;
 		renderstyle "Translucent";
 		alpha 0.8;
-		height 8;
+		height 1;
+		radius 1;
 		deathsound "none";
 	}
 	/* 
@@ -114,8 +234,8 @@ Class BD_Blood : BloodGeneral replaces Blood {
 				A_Stop();
 				BD_BloodDecal();
 				A_Scream();
-				A_SetScale(restscale*randompick(1,-1),restscale*randompick(1,-1));
-				if (pos.z >= ceilingz-10){	//Spawn ceiling blood if it reaches the ceiling. I use ceiling-10 so that it happens more often; blood doesn't ACTUALLY often hit the ceiling
+				//Spawn ceiling blood if it reaches the ceiling. I use ceiling-10 so that it happens more often; blood doesn't ACTUALLY often hit the ceiling
+				if (pos.z >= ceilingz-10){
 					let a = CeilingSplat(Spawn("CeilingSplat",(pos.x,pos.y,ceilingz)));
 					if (a) {
 						a.translation = translation;
@@ -130,11 +250,13 @@ Class BD_Blood : BloodGeneral replaces Blood {
 					destroy();
 					return ResolveState(null);
 				}	
-				
-				if (floorpic == skyflatnum || pos.z != floorz || waterlevel > 1) { //if the blood hits wall, or sky, or ends up underwater
+				//if the blood hits wall, or sky, or ends up underwater:
+				if (floorpic == skyflatnum || pos.z > floorz || waterlevel > 1) { 
 					destroy();
 					return ResolveState(null);
 				}
+				A_SetScale(restscale);
+				angle = random(0,359);
 				if (CheckLandingSize(24))
 					scale*=0.5;
 				if	(CheckLandingSize(18))
@@ -145,15 +267,11 @@ Class BD_Blood : BloodGeneral replaces Blood {
 					destroy();
 					return ResolveState(null);
 				}
-				A_SetSize(16*scale.x,5);
-				
-				//bFLATSPRITE = true;
+//				A_SetSize(16*scale.x,5);				
 				bNOINTERACTION = true;
 				A_ChangeLinkFlags(blockmap:true);
 				bMOVEWITHSECTOR = true;
 				bRELATIVETOFLOOR = true;
-				A_SetScale(abs(scale.x),abs(scale.y));
-				angle = random(0,36);
 				A_SetRenderStyle(1,STYLE_Normal);
 				return ResolveState(null);
 			}
@@ -163,12 +281,6 @@ Class BD_Blood : BloodGeneral replaces Blood {
 					return ResolveState("Water");
 				return ResolveState(null);
 			}
-			/*2PLT A 0 { 
-				frame = random(0,16);
-				if (CheckWater())
-					return ResolveState("Water");
-				return ResolveState(null);
-			}*/
 
 			#### # -1;
 			stop;
@@ -200,6 +312,7 @@ Class BD_Blood : BloodGeneral replaces Blood {
 //resting version of blood drop without any animation
 Class BD_BloodPool : BD_Blood {
 	Default {
+		-MISSILE
 		+NOINTERACTION
 		+FLATSPRITE
 		+MOVEWITHSECTOR
@@ -215,7 +328,7 @@ Class BD_BloodPool : BD_Blood {
 	states {
 		spawn:
 			TNT1 A 0 NoDelay {
-				A_SetScale(restscale*randompick(1,-1),restscale*randompick(1,-1));
+				angle = random(0,359);
 				if (CheckLandingSize(24))
 					scale*=0.5;
 				if	(CheckLandingSize(18))
@@ -226,11 +339,11 @@ Class BD_BloodPool : BD_Blood {
 					destroy();
 					return ResolveState(null);
 				}
-				SetOrigin((pos.x,pos.y,floorz),false);
+				SetOrigin((pos.x,pos.y,floorz+frandom(0,0.01)),false);
 				//A_SetScale(restscale*randompick(1,-1),restscale*randompick(1,-1));	
 				return ResolveState(null);	
 			}
-			2PLT A 0 { frame = random(0,16); }
+			MODL A 0 { frame = random(0,16); }
 			#### # -1; /*10 {
 				if (CheckWater())
 					return ResolveState("Water");
@@ -338,6 +451,7 @@ Class AniBloodPool : BloodGeneral {
 		+MOVEWITHSECTOR
 		-MISSILE
 		height 1;
+		radius 16;
 		renderstyle 'Normal';
 		scale 0.2;
 	}
@@ -347,6 +461,7 @@ Class AniBloodPool : BloodGeneral {
 			destroy();
 			return;
 		}
+		
 		double pscale = scale.x*frandom(1.1,1.8);
 		psize = pscale*22;
 		if (CheckLandingSize (psize) || waterlevel > 0) {
@@ -364,7 +479,8 @@ Class AniBloodPool : BloodGeneral {
 				bcolor = 'red';
 			else
 				Translation = target.BloodTranslation;
-		}		
+		}
+		SetZ(floorz+frandom(0,0.01));
 	}	
 	override void Tick () {
 		super.Tick();
@@ -378,7 +494,6 @@ Class AniBloodPool : BloodGeneral {
 	states	{
 		Spawn:
 			TNT1 A 0 NoDelay {
-				SetOrigin((pos.x,pos.y,floorz+0.5),0);
 				ver = randompick(0,1);
 				if (ver == 0) {
 					if (bcolor == 'green')

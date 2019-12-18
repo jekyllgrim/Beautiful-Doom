@@ -115,7 +115,7 @@ OptionMenu "BDoom_Settings" {
 
 	StaticText "Options below allow to disable parts of the mod,", yellow
 	StaticText "which enables partial compatibility with other mods.", yellow
-	StaticText "(Changes require a level restart)", white
+	StaticText "(Changes require a game restart; you won't be able to load a save)", blue
 	StaticText " "
 	Option "Beautiful Doom weapons",			"bdoom_replaceweapons", "Toggle", ""
 	Option "Beautiful Doom monsters",			"bdoom_replacemonsters", "Toggle", ""
@@ -126,7 +126,7 @@ OptionMenu "BDoom_Settings" {
 
 OptionMenu "BDMonsterReplacements" {
 	Title "Beautiful Doom monster replacement settings"
-	StaticText "Changes require a level restart to properly take effect", yellow
+	StaticText "Changes require a game restart; you won't be able to load a save", blue
 	StaticText " "
 	Option "Zombieman",				"bdoom_Zombieman", "Toggle", ""
 	Option "Shotgun Guy",			"bdoom_ShotgunGuy", "Toggle", ""

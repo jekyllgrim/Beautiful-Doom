@@ -1,3 +1,22 @@
+//// BLOODY FOOTPRINTS
+
+material texture "models/footprint/bprint_left.png" {
+	normal "materials/normalmaps/bprint_left.png"
+	specular "materials/specular/bprint_left.png"
+	glossiness 100
+	specularlevel 50
+}
+
+material texture "models/footprint/bprint_right.png" {
+	normal "materials/normalmaps/bprint_right.png"
+	specular "materials/specular/bprint_right.png"
+	glossiness 100
+	specularlevel 50
+}
+
+
+///// BLOOD POOL
+
 material texture "models/bloodpool/bpool1_1.png" {
 	normal "materials/normalmaps/bloodpool/bpool1_1.png"
 	specular "materials/specular/bloodpool/bpool1_1.png"
