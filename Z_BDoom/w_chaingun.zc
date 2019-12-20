@@ -569,7 +569,7 @@ Class BD_Chaingun : BDoomWeapon {
 			RIFA DCBA 1;
 			goto Ready;
 		Reddot:
-			RIFO A 6 bright;
+			RIFO A 7 bright;
 			stop;
 		FlashModern:
 			TNT1 A 1 {
