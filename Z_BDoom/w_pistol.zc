@@ -1,6 +1,5 @@
 Class BD_Pistol : BDoomWeapon {
 	private bool firedright; //check which gun was fired in dual wielding mode (Enhanced Guns)
-	private bool wasempty; //check if the reload was dry (Modern Guns)
 	Default {
 		Obituary "$OB_MPPISTOL";
 		+WEAPON.WIMPY_WEAPON

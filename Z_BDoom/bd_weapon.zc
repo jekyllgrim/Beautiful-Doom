@@ -10,6 +10,8 @@ Class BDoomWeapon : Weapon abstract {
 	protected int NonselTimer; //counts how long the weapon was deselected, used for automatic background reload
 	protected int AutoReloadTime; //the value that NonselTimer is compared to
 	property AutoReloadTime : AutoReloadTime;
+	
+	protected bool wasempty;
 
 	Default {  
 		BDoomWeapon.AutoReloadTime 60;
