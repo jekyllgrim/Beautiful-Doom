@@ -1,8 +1,8 @@
-Class BloodGeneral : DebrisGeneral abstract {
+Class BD_BloodBase : BD_BaseDebris abstract {
 	protected name bcolor;
 	static const name bsprite[] = { "YBL7","YBL8","YBL9" };
 	Default {
-		DebrisGeneral.sfxtype "blood";
+		BD_BaseDebris.sfxtype "blood";
 		+PUFFGETSOWNER
 		-NOGRAVITY
 		+DONTSPLASH
@@ -32,7 +32,7 @@ Class BD_BloodyPrintControl : Inventory {
 	private bool side;
 	private bool drip;
 	property drip : drip;
-	private array <BloodGeneral> bootsblood;
+	private array <BD_BloodBase> bootsblood;
 	Default {
 		BD_BloodyPrintControl.drip false;
 		+INVENTORY.UNDROPPABLE
@@ -81,7 +81,7 @@ Class BD_BloodyPrintControl : Inventory {
 			for (int i = 0; i < event.bloodlist.Size(); i++) {
 				if (bootsblood.Size() >= 48)
 					break;
-				let pool = BloodGeneral(event.bloodlist[i]);
+				let pool = BD_BloodBase(event.bloodlist[i]);
 				if (!pool || !pool.bNOINTERACTION || /*!(pool.pos.z ~== pool.floorz) ||*/ bootsblood.Find (pool) != bootsBlood.Size ())
 					continue;
 				if (pool is "BD_Blood" || pool is "AniBloodPool") {
@@ -108,7 +108,7 @@ Class BD_BloodyPrintControl : Inventory {
 	}
 }
 
-Class BD_BloodyFootPrint : BloodGeneral {
+Class BD_BloodyFootPrint : BD_BloodBase {
 	bool side;
 	Default {
 		-MISSILE
@@ -147,7 +147,7 @@ Class BD_BloodyFootPrint : BloodGeneral {
 	}
 }
 
-Class BD_Blood : BloodGeneral replaces Blood {
+Class BD_Blood : BD_BloodBase replaces Blood {
 	double restscale;
 	Default {
 		scale 0.35;
@@ -236,7 +236,7 @@ Class BD_Blood : BloodGeneral replaces Blood {
 				A_Scream();
 				//Spawn ceiling blood if it reaches the ceiling. I use ceiling-10 so that it happens more often; blood doesn't ACTUALLY often hit the ceiling
 				if (pos.z >= ceilingz-10){
-					let a = CeilingSplat(Spawn("CeilingSplat",(pos.x,pos.y,ceilingz)));
+					let a = BD_CeilingPool(Spawn("BD_CeilingPool",(pos.x,pos.y,ceilingz)));
 					if (a) {
 						a.translation = translation;
 						a.A_SetRenderStyle(alpha,GetRenderStyle());
@@ -354,7 +354,7 @@ Class BD_BloodPool : BD_Blood {
 }
 
 
-Class CeilingSplat : BloodGeneral {
+Class BD_CeilingPool : BD_BloodBase {
 	Default {
 		-MISSILE
 		+NOGRAVITY
@@ -391,7 +391,7 @@ Class CeilingSplat : BloodGeneral {
 			}
 			#### # 5 {
 				SetOrigin((pos.x,pos.y,ceilingz-1),true);
-				A_SpawnitemEx("CeilingBloodDrop",frandom(-2.0,2.0),frandom(-2.0,2.0),-1.,0,0,0,0,SXF_TRANSFERTRANSLATION|SXF_TRANSFERSTENCILCOL|SXF_TRANSFERRENDERSTYLE|SXF_NOPOINTERS,250);
+				A_SpawnitemEx("BD_CeilingBloodDrop",frandom(-2.0,2.0),frandom(-2.0,2.0),-1.,0,0,0,0,SXF_TRANSFERTRANSLATION|SXF_TRANSFERSTENCILCOL|SXF_TRANSFERRENDERSTYLE|SXF_NOPOINTERS,250);
 				A_FadeTo(0.1,0.001,1);
 				return ResolveState(null);
 			}
@@ -402,7 +402,7 @@ Class CeilingSplat : BloodGeneral {
 	}
 }
 
-Class CeilingBloodDrop : BloodGeneral {
+Class BD_CeilingBloodDrop : BD_BloodBase {
 	Default {
 		+FORCEYBILLBOARD
 		+NOINTERACTION
@@ -441,7 +441,7 @@ Class CeilingBloodDrop : BloodGeneral {
 }
 
 
-Class AniBloodPool : BloodGeneral {
+Class AniBloodPool : BD_BloodBase {
 	bool instant; //if true, the blood pool will instantly go through all the phases and reach the required size — for decorative purposes such as Heart Column, where animation is unneeded, but checking for overhang may still important
 	double psize;
 	private int ver;
@@ -622,7 +622,7 @@ Class BloodSpray : BD_Blood {
 }
 
 //long "arterial" spurts
-Class BloodSpurt : BloodGeneral {
+Class BloodSpurt : BD_BloodBase {
 	double bpitch;
 	double pitchchange;
 	double bspeed;

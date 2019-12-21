@@ -78,7 +78,7 @@ states
 		TNT1 A 0 A_Scream();
 		HEAN C 3 {
 			if (bdoom_gibs && !burning)
-				A_SpawnItemEx("CacodemonEye",frandom(-2,2),frandom(-2,2),frandom(28,32),frandom(2,5),0,frandom(0,5),frandom(-10,10),SXF_SETTARGET);
+				A_SpawnItemEx("BD_CacoEye",frandom(-2,2),frandom(-2,2),frandom(28,32),frandom(2,5),0,frandom(0,5),frandom(-10,10),SXF_SETTARGET);
 			}
 		 TNT1 A 0 BD_Bleed();
 		HEAN DE 3;
@@ -98,7 +98,7 @@ states
 		HEAP ABC 4;
 		TNT1 A 0 {
 			if (bdoom_gibs)
-				A_SpawnItemEx("CacodemonEye",frandom(-2,2),frandom(-2,2),frandom(28,32),frandom(2,5),0,frandom(0,5),frandom(-10,10),SXF_SETTARGET);
+				A_SpawnItemEx("BD_CacoEye",frandom(-2,2),frandom(-2,2),frandom(28,32),frandom(2,5),0,frandom(0,5),frandom(-10,10),SXF_SETTARGET);
 			}
 		HEAP CCDDEEFF 2 {
 			if (bdoom_gibs)

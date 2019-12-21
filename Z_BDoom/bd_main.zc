@@ -54,12 +54,12 @@ Class BDoomActor : Actor abstract {
 }
 
 //base class for most debris
-Class DebrisGeneral : BDoomActor abstract {
+Class BD_BaseDebris : BDoomActor abstract {
 	bool landed;
 	name sfxtype; //'debris', 'flames', 'blood', 'gibs' — based on the value the thing gets put into a special array that controls their number, see bd_events.zc
 	property sfxtype : sfxtype;
 	Default {
-		DebrisGeneral.sfxtype "debris";
+		BD_BaseDebris.sfxtype "debris";
 		+ROLLSPRITE
 		+BLOODLESSIMPACT	//for debris that can bump into actors
 		+NOTAUTOAIMED
@@ -114,7 +114,7 @@ Class DebrisGeneral : BDoomActor abstract {
 }
 
 //base class for less expensive version for small debris
-Class SmallDebris : DebrisGeneral abstract {
+Class SmallDebris : BD_BaseDebris abstract {
 	double wrot;
 	double dgravity; //fake gravity
 	double dbrake; //how quickly to reduce horizontal speed of "landed" particles
@@ -158,7 +158,7 @@ Class SmallDebris : DebrisGeneral abstract {
 }
 
 //base class for flares and flame effects
-Class BD_BaseFlare : DebrisGeneral abstract {
+Class BD_BaseFlare : BD_BaseDebris abstract {
 	protected state mdeath;
 	protected state mxdeath;
 	name fcolor;		//flare of the color; can be set as a property or externally
@@ -166,7 +166,7 @@ Class BD_BaseFlare : DebrisGeneral abstract {
 	double falpha;		//alpha; used to when scale needs to be easily set externally from the spawner
 	property fcolor : fcolor;
 	Default {
-		DebrisGeneral.sfxtype "flames";
+		BD_BaseDebris.sfxtype "flames";
 		-MISSILE
 		+RELATIVETOFLOOR
 		+MOVEWITHSECTOR
@@ -218,7 +218,7 @@ Class BD_BaseFlare : DebrisGeneral abstract {
 Class BD_ProjFlare : BD_BaseFlare {
 	double xoffset;
 	Default {
-		DebrisGeneral.sfxtype "debris";
+		BD_BaseDebris.sfxtype "debris";
 		BD_BaseFlare.fcolor "Red";
 		alpha 0.8;
 		scale 0.11;
@@ -246,7 +246,7 @@ Class ParticleFire_General : BD_BaseFlare abstract {
 		renderstyle "Add";
 		scale 0.5;
 		alpha 0.5;
-		DebrisGeneral.sfxtype "flames";
+		BD_BaseDebris.sfxtype "flames";
 	}
 	Override void PostBeginPlay() {
 		super.PostBeginPlay();
@@ -327,7 +327,7 @@ Class FirePiece : BD_BaseFlare abstract {
 
 Class Smoke_General : SmallDebris abstract {
 	Default {
-		DebrisGeneral.sfxtype "debris";
+		BD_BaseDebris.sfxtype "debris";
 		smalldebris.dgravity 0;
 		renderstyle "Add";
 		alpha 0.3;
@@ -918,7 +918,7 @@ Class EnBulletPuff : BDoomPuff {
 }
 
 //decal to spawn on the floors and ceilings
-Class BD_PlaneDecal : DebrisGeneral {
+Class BD_PlaneDecal : BD_BaseDebris {
 	name decaltype;
 	Default {
 		+NOINTERACTION
@@ -1062,7 +1062,7 @@ Class RicochetSpark : SmallDebris {
 
 
 //fake bullet that ricochets from bulletpuffs
-Class RicochetBullet : DebrisGeneral {
+Class RicochetBullet : BD_BaseDebris {
 	Default {
 		+NOINTERACTION
 		//+THRUACTORS

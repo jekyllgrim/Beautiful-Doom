@@ -13,7 +13,7 @@
 ///// BASIC GIBS ////////
 /////////////////////////
 
-class Gibs_General : DebrisGeneral abstract {
+class BD_BaseGib : BD_BaseDebris abstract {
 //	transient CVAR livegibs;
 	name gibtype; //can be set explicitly by the spawner; otherwise becomes equal to the class name of the spawner (which is normally the gib's target)
 	double brot; //how much to adjust rotation during flight
@@ -22,7 +22,7 @@ class Gibs_General : DebrisGeneral abstract {
 	name bcolor;
 	bool bflat;
 	Default {
-		DebrisGeneral.sfxtype "gibs";
+		BD_BaseDebris.sfxtype "gibs";
 		+NOTARGETSWITCH		//so that gibs pushed by explosions don't switch their target field to player
 		-NOBLOCKMAP 
 		+FLOORCLIP
@@ -79,7 +79,7 @@ class Gibs_General : DebrisGeneral abstract {
 	void BD_GibBleed(Class<Actor> spawnclass, double hpos = 0, double vpos = 0, int spawnchance = 100) {				
 		if (random(0,100) > spawnchance)
 			return;
-		let bdrop = DebrisGeneral(	Spawn(spawnclass, (pos.x+frandom(-hpos,hpos),pos.y+frandom(-hpos,hpos),pos.z+vpos ))	);
+		let bdrop = BD_BaseDebris(	Spawn(spawnclass, (pos.x+frandom(-hpos,hpos),pos.y+frandom(-hpos,hpos),pos.z+vpos ))	);
 		if (!bdrop)	return;
 		bdrop.translation = translation;
 		if (target && target is "BDoomMonster") {
@@ -168,7 +168,7 @@ Class BD_GibBloodPool : BD_BloodPool {
 	}
 }
 
-class BasicMeatPiece : Gibs_General {
+class BasicMeatPiece : BD_BaseGib {
 	bool instant;
 	Default {
 		scale 0.45;
@@ -245,7 +245,7 @@ class BasicMeatPiece : Gibs_General {
 			#### # 1 {
 				if (!bSLIDESONWALLS) {
 					if (pos.z >= ceilingz-16){
-						let a = CeilingSplat(Spawn("CeilingSplat",(pos.x,pos.y,ceilingz)));
+						let a = BD_CeilingPool(Spawn("BD_CeilingPool",(pos.x,pos.y,ceilingz)));
 						if (a) {
 							if (bcolor == 'blue')
 								a.A_SetTranslation("BlueBlood");
@@ -357,11 +357,11 @@ class BasicMeatPiece : Gibs_General {
 	}
 }
 	
-Class GibSmudge : DebrisGeneral {
+Class GibSmudge : BD_BaseDebris {
 	BasicMeatPiece meat;
 	bool ceiling;
 	Default {
-		DebrisGeneral.sfxtype "gibs";
+		BD_BaseDebris.sfxtype "gibs";
 		+NOINTERACTION
 		+FORCEYBILLBOARD
 		xscale 0.32;
@@ -658,7 +658,7 @@ class Gib_Head : BasicMeatPiece {
 class Gib_Torso1 : BasicMeatPiece {
 	int finalframe; //last frame used in the flying animation
 	Default {
-		DebrisGeneral.sfxtype "none"; //I don't want torsos to get destroyed because they essentially function as a corpse and show where the monster died
+		BD_BaseDebris.sfxtype "none"; //I don't want torsos to get destroyed because they essentially function as a corpse and show where the monster died
 		gravity 1.0;
 		scale 1.0;
 	}
@@ -712,7 +712,7 @@ class Gib_Torso1 : BasicMeatPiece {
 				if (frame == restframe && vel ~== (0, 0, 0)) { //in contrast to other gibs, torso is always noninteractive, so that it always stays close to the position of the original dead body (so that players can see where the monster died and can predict where the Arch-Vile is going to go to resurrect them)
 					if (bdoom_blood && target && (target is "BDoomMonster")) {
 						let body = BDoomMonster(target);
-						let pool = DebrisGeneral(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
+						let pool = BD_BaseDebris(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
 						if (body && pool) {
 							body.meatlist.push(pool);
 						}
@@ -799,7 +799,7 @@ class CacodemonMeatPiece : BasicMeatPiece {
 	}
 }
 
-Class CacodemonEye : BasicMeatPiece {
+Class BD_CacoEye : BasicMeatPiece {
 	Default {
 		bloodcolor "00 00 CC";
 	}

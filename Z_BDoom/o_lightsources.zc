@@ -3,7 +3,7 @@ Class BD_LightFlare : BD_BaseFlare {
 	bool flicker;				//whether to flicker
 	property flicker : flicker;
 	Default {
-		DebrisGeneral.sfxtype "none";
+		BD_BaseDebris.sfxtype "none";
 		BD_LightFlare.flicker true;
 		}
 	override void Tick() {

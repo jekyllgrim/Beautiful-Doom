@@ -490,7 +490,7 @@ Class SSGDamageCounter : Inventory {
 
 
 
-Class Casing_General : DebrisGeneral {
+Class Casing_General : BD_BaseDebris {
 	double brot;
 	Default {
 		-FLOORCLIP

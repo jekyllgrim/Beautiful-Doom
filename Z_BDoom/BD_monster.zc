@@ -19,7 +19,7 @@ Class BDoomMonster : Actor abstract {
 	protected state vxdeath;
 	
 
-	Array <DebrisGeneral> meatlist; //keeps track of all gibs and blood spawned by the monster, so that they can be FlyBack()'d when it's resurrected
+	Array <BD_BaseDebris> meatlist; //keeps track of all gibs and blood spawned by the monster, so that they can be FlyBack()'d when it's resurrected
 
 	Default {
 		Monster;
@@ -177,7 +177,7 @@ Class BDoomMonster : Actor abstract {
 			#### # 1 {
 				if (vel ~== (0,0,0)) {
 					if (bdoom_blood) {
-						let pool = DebrisGeneral(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
+						let pool = BD_BaseDebris(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
 						if (pool) {
 							pool.target = self;
 							meatlist.Push(pool);
@@ -210,7 +210,7 @@ Class BDoomMonster : Actor abstract {
 				else {
 					int list = meatlist.Size();
 					for (int i; i < list; i++) {
-						let a = DebrisGeneral(meatlist[i]);
+						let a = BD_BaseDebris(meatlist[i]);
 						if (a) 
 							a.destroy();
 					}

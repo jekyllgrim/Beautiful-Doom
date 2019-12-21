@@ -115,13 +115,13 @@ states
 		}
 }
 
-Class PEFlameDebris : DebrisGeneral 
+Class PEFlameDebris : BD_BaseDebris 
 {
 double fades;
 Default {
 	+ROLLSPRITE
 	-NOGRAVITY
-	DebrisGeneral.sfxtype "gibs";
+	BD_BaseDebris.sfxtype "gibs";
 	renderstyle "Add";
 	alpha 0.8;
 	gravity 0.6;

@@ -248,10 +248,10 @@ class BD_ActorOverrideHandler : EventHandler {
 
 // controls the amount of special effect actors, such as gibs, debris, flames
 Class FXAmountControl : EventHandler {
-	Array <DebrisGeneral> bloodlist;
-	Array <DebrisGeneral> giblist;
-	Array <DebrisGeneral> debrislist;
-	Array <DebrisGeneral> flamelist;
+	Array <BD_BaseDebris> bloodlist;
+	Array <BD_BaseDebris> giblist;
+	Array <BD_BaseDebris> debrislist;
+	Array <BD_BaseDebris> flamelist;
 	
 	//clear the arrays upon map start
 	override void WorldLoaded(WorldEvent e) {
@@ -267,8 +267,8 @@ Class FXAmountControl : EventHandler {
 			if (!e.thing.FindInventory("BD_BloodyPrintControl"))
 				e.thing.GiveInventory("BD_BloodyPrintControl",1);
 		}			
-		if (e.thing && e.thing is "DebrisGeneral") {
-			let a = DebrisGeneral(e.thing);
+		if (e.thing && e.thing is "BD_BaseDebris") {
+			let a = BD_BaseDebris(e.thing);
 			if (a) {
 				//console.printf("%s",a.sfxtype);
 				if (a.sfxtype == 'blood')
@@ -285,8 +285,8 @@ Class FXAmountControl : EventHandler {
 
 	//remove the thing from the array when it's removed
 	override void WorldThingDestroyed(WorldEvent e) {
-		if (e.Thing is "DebrisGeneral") {
-			let a = DebrisGeneral(e.thing);
+		if (e.Thing is "BD_BaseDebris") {
+			let a = BD_BaseDebris(e.thing);
 			if (a) {
 				if (a.sfxtype == 'blood')
 					bloodlist.delete	(bloodlist.Find(a));					

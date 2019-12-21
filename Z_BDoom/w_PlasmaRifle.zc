@@ -431,7 +431,7 @@ Class BluePlasmaPiece : SmallDebris {
 }
 
 // not used by Plasma Rifle but referenced and used by BFG
-Class BluePlasmaShred : DebrisGeneral {
+Class BluePlasmaShred : BD_BaseDebris {
 	Default {
 		+NOINTERACTION
 		renderstyle "Add";

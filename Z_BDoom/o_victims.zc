@@ -8,7 +8,7 @@
 
 
 //decorative blood drop for gory decorations
-Class DecorBloodDrop : CeilingBloodDrop
+Class DecorBloodDrop : BD_CeilingBloodDrop
 {
 Default {
 	scale 0.15;
@@ -320,7 +320,7 @@ states
 }
 }
 	
-actor HeadFromPole : Gibs_general
+actor HeadFromPole : BD_BaseGib
 {
 +NOBLOCKMAP
 mass 1

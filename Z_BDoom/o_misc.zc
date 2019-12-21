@@ -46,7 +46,7 @@ Class BD_TeleportFog : TeleportFog {
 
 Class EBarrelPiece : SmallDebris {
 	Default {
-		DebrisGeneral.sfxtype "debris";
+		BD_BaseDebris.sfxtype "debris";
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
