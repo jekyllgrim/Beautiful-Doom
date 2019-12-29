@@ -306,23 +306,34 @@ Class BD_RocketLauncher : BDoomWeapon {
 				return ResolveState(null);
 			}
 			#### ####### 1 A_WeaponOffset(-1.1,0.5,WOF_ADD);
-			#### # 6 A_WeaponOffset(0.0,0.0,WOF_ADD);
+			#### # 6 {
+				A_WeaponOffset(0.0,0.0,WOF_ADD);
+				A_Overlay(-2,"MagHand");
+			}
 			#### # 0 A_PlaySound("Mweapons/rocket/clipout",5);
 			#### # 1 A_WeaponOffset(1.5,0.0,WOF_ADD);
 			#### ### 1 A_WeaponOffset(-0.5,0.0,WOF_ADD);
 			
 			#### # 24 A_WeaponOffset(0.0,0.0,WOF_ADD);
 					
-			#### # 0 A_PlaySound("Mweapons/rocket/clipin",5);
+			#### # 0 {
+				A_PlaySound("Mweapons/rocket/clipin",5);
+			}
 			#### # 1 A_WeaponOffset(-3.0,0.0,WOF_ADD);
 			#### ### 1 A_WeaponOffset(1.0,0.0,WOF_ADD);
-			
+			#### # 0 A_Overlay(-2,"MagHandEnd");
 			#### ####### 1 A_WeaponOffset(1.1,-0.5,WOF_ADD);
 			goto ready;
+		MagHand:
+			RORH ABCD 1;
+			wait;
+		MagHandEnd:
+			RORH CBA 2;
+			stop;
 		ReloadMag:
 			RORT A 1 {
 				let ws = player.FindPSprite (-3);
-				ws.sprite = GEtSpriteIndex("RORT");
+				ws.sprite = GetSpriteIndex("RORT");
 				if (countinv("RLCLip") > 2)
 					ws.frame = 0;
 				else if (countinv("RLCLip") > 1)
@@ -332,7 +343,10 @@ Class BD_RocketLauncher : BDoomWeapon {
 			}
 			#### ######## 1;
 			#### # 6;
-			#### ########## 1 A_Overlayoffset(-3,1.8,2.3,WOF_ADD);
+			#### ########## 1 {
+				A_Overlayoffset(-3,1.8,2.3,WOF_ADD);
+				A_Overlayoffset(-2,1.8,2.3,WOF_ADD);
+			}
 			#### # 7 BD_Reload();
 
 			RORT A 1 {
@@ -344,7 +358,10 @@ Class BD_RocketLauncher : BDoomWeapon {
 				else
 					ws.frame = 2;
 			}
-			#### ########## 1 A_Overlayoffset(-3,-1.8,-2.3,WOF_ADD);
+			#### ########## 1 {
+				A_Overlayoffset(-3,-1.8,-2.3,WOF_ADD);
+				//A_Overlayoffset(-2,-1.8,-2.3,WOF_ADD);
+			}
 			#### #### 1;
 			#### ####### 1;
 			stop;
