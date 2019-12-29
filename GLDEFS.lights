@@ -128,6 +128,29 @@ object ModernGrenade
     frame BOM5 { light ROCKET_X3 }
 }
 
+pointlight MGRENADE_Y
+{
+    color 0.5 0.4 0.0
+    attenuate 1
+    size 24
+	dontlightself 1
+}
+
+pointlight MGRENADE_R
+{
+    color 1.0 0.0 0.0
+    attenuate 1
+    size 16
+	dontlightself 1
+}
+
+object ModernGrenadeFlare
+{
+	frame LENY { light MGRENADE_Y }
+	frame LENR { light MGRENADE_R }
+}
+	
+
 /*object SeekerFlare
 {
     frame LENG { light ALTBFGBALL }
