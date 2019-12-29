@@ -187,8 +187,11 @@ shellin1		"sounds/modern/shotgun/shell_in1.ogg"
 shellin2		"sounds/modern/shotgun/shell_in2.ogg"
 shellin3		"sounds/modern/shotgun/shell_in3.ogg"
 
-$random Mweapons/rifle/fire { rrifle1 rrifle2 rrifle3 }
-$volume Mweapons/rifle/fire 0.5
+groza1 "sounds/modern/rifle/groza_shoot.ogg"
+groza2 "sounds/modern/rifle/groza_shoot2.ogg"
+$random Mweapons/rifle/fire { groza1 groza2 }
+/*$random Mweapons/rifle/fire { rrifle1 rrifle2 rrifle3 }
+$volume Mweapons/rifle/fire 0.5*/
 $limit	Mweapons/rifle/fire 40
 rrifle1			"sounds/modern/rifle/m4fire1.ogg"
 rrifle2			"sounds/modern/rifle/m4fire2.ogg"

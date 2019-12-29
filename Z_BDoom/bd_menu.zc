@@ -149,3 +149,56 @@ Class OptionMenuItemOptionBoth : OptionMenuItemOptionEither
 			return false;
 	}
 }
+
+//a control (keybind) widget that gets greyed out if CVar value is equal to CVarVal, OR, if InverseCheck is true, if it's NOT equal to CVarVal
+class OptionMenuItemControlGC : OptionMenuItemControlBase
+{	
+	CVar mCVar;
+	CVar mGrayCheck;
+	int mCVarVal;
+	int mInverseCheck;
+	OptionMenuItemControlGC Init(String label, Name command, CVar graycheck = null, int CvarVal = 0, int InverseCheck = 0)
+	{
+		Super.Init(label, command, Bindings);
+		mCVar = CVar.FindCVar(command);
+		mGrayCheck = graycheck;
+		mCvarVal = CvarVal;
+		mInverseCheck = InverseCheck;
+		return self;
+	}
+	override int Draw(OptionMenuDescriptor desc, int y, int indent, bool selected)
+	{
+		bool grayed = isGrayed();
+		drawLabel(indent, y, mWaiting? OptionMenuSettings.mFontColorHighlight: 
+			(selected? OptionMenuSettings.mFontColorSelection : OptionMenuSettings.mFontColor),grayed);
+		int overlay = grayed? Color(96,48,0,0) : 0;
+
+		String description;
+		int Key1, Key2;
+
+		[Key1, Key2] = mBindings.GetKeysForCommand(mAction);
+		description = KeyBindings.NameKeys (Key1, Key2);
+		if (description.Length() > 0)
+		{
+			drawValue(indent, y, Font.CR_WHITE, description);
+		}
+		else
+		{
+			drawValue(indent, y, Font.CR_BLACK, "---");
+		}
+		return indent;
+	}
+	virtual bool isGrayed()
+	{
+		if ((mInverseCheck == 1) && mGraycheck && (mGrayCheck.GetInt() != mCvarVal))
+			return true;
+		else if ((mInverseCheck == 0) && mGraycheck && (mGrayCheck.GetInt() == mCvarVal))
+			return true;
+		return false;
+	}
+
+	override bool Selectable()
+	{
+		return !isGrayed();
+	}
+}

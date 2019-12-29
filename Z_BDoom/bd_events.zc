@@ -1,4 +1,53 @@
 class WeaponOverrideHandler : EventHandler {
+	ui bool ShowWeapHelp;
+    override void consoleProcess(ConsoleEvent e) {
+			if (e.name == "ToggleWeaphelp") {
+			if (bdoom_weapons != 0)
+				ShowWeapHelp = !ShowWeapHelp;
+			else
+				ShowWeapHelp = false;
+        }
+    }
+    override void renderOverlay(RenderEvent e) {
+        if (ShowWeapHelp) {
+            let textureName = "";
+            let weap = players[consoleplayer].readyWeapon.GetClassName();
+			if (bdoom_weapons == 1) {
+				switch (weap) {
+					//case 'BD_Fist' 			: TextureName = "graphics/popups/Fist.png"; 		break;
+					//case 'BD_Chainsaw' 		: TextureName = "graphics/popups/Chainsaw.png"; 	break;
+					case 'BD_Pistol' 			: TextureName = "graphics/popups/e_pistol.png"; 	break;
+					case 'BD_Shotgun'			: TextureName = "graphics/popups/e_shot.png"; 		break;
+					case 'BD_SuperShotgun' 	: TextureName = "graphics/popups/e_SSG.png"; 		break;
+					case 'BD_Chaingun' 		: TextureName = "graphics/popups/e_Cgun.png"; 		break;
+					case 'BD_RocketLauncher'	: TextureName = "graphics/popups/e_Rock.png";		break;
+					case 'BD_PlasmaRifle' 	: TextureName = "graphics/popups/e_Plasma.png";	break;
+					case 'BD_BFG9000' 			: TextureName = "graphics/popups/e_BFG.png"; 		break;
+				}
+			}
+			else if (bdoom_weapons == 2) {
+				switch (weap) {
+					//case 'BD_Fist' 			: TextureName = "graphics/popups/Fist.png"; 		break;
+					//case 'BD_Chainsaw' 		: TextureName = "graphics/popups/Chainsaw.png"; 	break;
+					case 'BD_Pistol' 			: TextureName = "graphics/popups/m_pistol.png"; 	break;
+					case 'BD_Shotgun'			: TextureName = "graphics/popups/m_shot.png"; 		break;
+					case 'BD_SuperShotgun' 	: TextureName = "graphics/popups/m_SSG.png"; 		break;
+					case 'BD_Chaingun' 		: TextureName = "graphics/popups/m_AR.png"; 		break;
+					case 'BD_RocketLauncher'	: TextureName = "graphics/popups/m_Rock.png";		break;
+					case 'BD_PlasmaRifle' 	: TextureName = "graphics/popups/m_Plasma.png";	break;
+					case 'BD_BFG9000' 			: TextureName = "graphics/popups/m_BFG.png"; 		break;
+				}
+			}
+			//StatusBar.BeginHUD (1.0, true, 1920, 1080);
+			vector2 hscale = StatusBar.GetHUDScale();
+			hscale = ( int(hscale.x), int(hscale.x) ); // Force even scalar.
+			double rwidth  = (Screen.getWidth() / double(1920)) / hscale.x;
+			double rheight = (Screen.getHeight() / double(1080)) / hscale.y;
+			vector2 rscale = (1*rwidth, 1*rheight);
+			vector2 rpos = ( 20*rwidth, 50*rheight );
+			StatusBar.DrawImage (textureName, rpos,scale:rscale);
+        }
+    }
 	// These items have no new visuals and only new pickup sounds, so, I insert them via an event handler, without replacing the actual actors
 	override void WorldThingSpawned(WorldEvent e) {
 		/*if (e.thing)
