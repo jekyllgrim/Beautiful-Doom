@@ -224,58 +224,9 @@ Class QuickKickPuff : ModernKickPuff {
 
 //////////////
 
-Class BulletTracer : FastProjectile {
-	Default {
-		-ACTIVATEIMPACT;
-		-ACTIVATEPCROSS;
-		+NOTELEPORT;
-		+BLOODLESSIMPACT;
-		alpha 0.75;
-		renderstyle "add";
-		speed 64;
-		radius 4;
-		height 4;
-		seesound "null";
-		deathsound "null";
-	}    
-	//whizz sound snippet by phantombeta
-	override void Tick () {
-		Super.Tick ();
-		if (isFrozen())
-			return;
-		if (!playeringame [consolePlayer])
-			return;		
-		let curCamera = players [consolePlayer].camera;
-		if (!curCamera) // If the player's "camera" variable is null, set it to their PlayerPawn
-			curCamera = players [consolePlayer].mo;
-		if (!curCamera) // If the player's PlayerPawn is null too, just stop trying
-			return;
-		if (CheckIfCloser (curCamera, 192))
-			A_PlaySound("weapons/tracerwhizz",1,1.0,0,8);
-	}
-	states {
-		Spawn:
-			TNT1 A 2 NoDelay {
-				vel = vel.unit() * 256;
-			}
-			PUFF A 1 bright {
-				if (!bdoom_tracers)
-					destroy();
-			}
-			wait;
-		Death:
-			TNT1 A 1;
-			stop;
-		/*Death:
-			TNT1 A 1 {
-				if (frandom(0.0,1.0) > 0.8)
-					A_SpawnProjectile("RicochetBullet",0,0,random(0,360),2,random(-40,40));
-			}
-			stop;*/
-	}
-}
 
-Class RealBullet : BulletTracer {
+
+Class RealBullet : FastProjectile {
 	protected vector3 SpawnPos; //where the bullet was shot from
 	double bulletdamage; 		//the actual damage value
 	double falloffstrength; 	//how quickly the damage is reduced during travel
@@ -293,35 +244,50 @@ Class RealBullet : BulletTracer {
 		RealBullet.FalloffDistance 1024;
 		RealBullet.falloffstrength 0.3;
 		RealBullet.mindamage 1;
-		+ACTIVATEIMPACT
-		+ACTIVATEPCROSS
-		+NOTELEPORT
-		-BLOODLESSIMPACT
 		+BLOODSPLATTER
-		decal "none";
 		radius 1;
 		height 1;
+		alpha 0.75;
+		speed 64;
+		renderstyle "add";
+		seesound "null";
+		deathsound "null";
 		DamageFunction CalculateDamage();
 	}
-	override void PostBeginPlay()
-		{
+	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		if (target)
 			SpawnPos = target.pos;
+	}
+	//whizz sound snippet by phantombeta
+	override void Tick () {
+		Super.Tick ();
+		if (isFrozen())
+			return;
+		if (!playeringame [consolePlayer])
+			return;		
+		let curCamera = players [consolePlayer].camera;
+		if (!curCamera) // If the player's "camera" variable is null, set it to their PlayerPawn
+			curCamera = players [consolePlayer].mo;
+		if (!curCamera) // If the player's PlayerPawn is null too, just stop trying
+			return;
+		if (CheckIfCloser (curCamera, 192))
+			A_PlaySound("weapons/tracerwhizz",1,1.0,0,8);
 	}
 	double CalculateDamage() {
 		int ddamage;
 		int FalloffFactor = 0;
 		double ddistance = level.Vec3Diff(pos, SpawnPos).length() - falloffdistance;
+		//Essentially falloff factor is retroactively applied "every tick", so there are fewer falloff steps for faster projectiles:
 		if (ddistance > 0)
-			FalloffFactor = int (ddistance / bulletspeed); //this essentially means that falloff factor is retroactively applied "every tick", so there are fewer falloff steps for faster projectiles
-		ddamage = clamp(bulletdamage*(falloffstrength**FalloffFactor),mindamage,100); //falloffstrength is by how much it's reduced, this is applied to damage "every tick"
+			FalloffFactor = int (ddistance / bulletspeed);
+		//falloffstrength is by how much it's reduced—this is applied to damage "every tick"
+		ddamage = clamp(bulletdamage*(falloffstrength**FalloffFactor),mindamage,100);
 		//console.printf("distance: %d Damage: %d",level.Vec3Diff(pos, SpawnPos).length(),ddamage);
 		return ddamage;
 	}
 		
-	states
-		{
+	states {
 		Spawn:
 			TNT1 A 2 NoDelay {
 				vel = vel.unit() * bulletspeed;
@@ -333,10 +299,27 @@ Class RealBullet : BulletTracer {
 			stop;
 		Death:
 			TNT1 A 1 {
-				let puff = Spawn("EnBulletPuff",pos); //A_SpawnItemEx("EnBulletPuff",flags:SXF_SETTARGET|SXF_ORIGINATOR);
+				let puff = Spawn("EnBulletPuff",pos);
 				if (puff)
 					puff.target = self;
 			}
+			stop;
+	}
+}
+
+Class BulletTracer : RealBullet {
+	Default {
+		RealBullet.bulletspeed 256;
+		-ACTIVATEIMPACT;
+		-ACTIVATEPCROSS;
+		+BLOODLESSIMPACT;
+		damage 0;
+		radius 4;
+		height 4;
+	}    
+	states {
+		Death:
+			TNT1 A 1;
 			stop;
 	}
 }
@@ -373,36 +356,33 @@ Class BD_ShotgunPellet : RealBullet {
 Class BD_SSGPellet : RealBullet {
 	private int ripdepth; 		//how much health it can pierce through
 	private actor hitvictim;	//the actor that was hit
+	property ripdepth : ripdepth;
 	Default {
-		RealBullet.bulletDamage 12;
 		damage 0;
+		BD_SSGPellet.ripdepth 300;
+		RealBullet.bulletDamage 12;		
 		RealBullet.Bulletspeed 140;
 		RealBullet.FalloffDistance 300;
 		RealBullet.falloffstrength 0.8;
-		+RIPPER
-	}
-	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		ripdepth = 200;
 	}
 	override int SpecialMissileHit(actor victim) {
-		if (victim && target && (victim != target)) {
+		//deal damage only ONCE even if the pellet rips through
+		//first we make sure the vicitm hasn't been hit yet and isn't the shooter:
+		if (victim && target && (victim != target) && (victim != hitvictim)) {
+				//reduce ripping ability based on victim's current health (thick monsters are harder to pierce):
+				ripdepth -= victim.health; 
+				hitvictim = victim;
 				double xchance = clamp(level.Vec3Diff(pos, SpawnPos).length() * 0.23,25,99); //chance to gib based on distance
-				//console.printf("%d %",100-xchance);
 				if (random(0,100) > xchance)
 					bEXTREMEDEATH = true;
-			if (victim != hitvictim) { //deal damage only ONCE even if the pellet rips through
-				ripdepth -= victim.health; //reduce ripping ability
-				hitvictim = victim;
 				bulletdamage = CalculateDamage();
 				victim.DamageMobj(self,target,bulletdamage,"normal");
 				let mon = BDoomMonster(victim);
 				if (mon)
 					mon.BD_Bleed();
 			}
-		}
 		if (ripdepth <= 0)
-			return 0;
+			return -1;
 		else
 			return 1;
 	}
