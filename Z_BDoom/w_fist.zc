@@ -874,7 +874,7 @@ states	{
 		stop;
 	HitTracer:
 		TNT1 A 0 {
-			if (tracer) {
+			if (tracer && tracer.bISMONSTER) {
 				if (!tracer.bNOGRAVITY) //knock enemy back if they're non-flying (for flying enemies it would make fighting them only more inconvenient)
 					tracer.vel.z += clamp(1.0 * 130 / tracer.mass, 0.0, 1.5);
 				if (target)
