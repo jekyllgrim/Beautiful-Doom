@@ -91,7 +91,32 @@ flickerlight ROCKET_X3
 
 object BD_Rocket
 {
-    frame MISLA { light ROCKET }
+    frame VROK { light ROCKET }
+    frame BOM6A { light ROCKET_X3 }
+    frame BOM6B { light ROCKET_X3 }
+    frame BOM6C { light ROCKET_X3 }
+    frame BOM6D { light ROCKET_X3 }
+    frame BOM6E { light ROCKET_X3 }
+    frame BOM6F { light ROCKET_X2 }
+    frame BOM6G { light ROCKET_X2 }
+    frame BOM6H { light ROCKET_X2 }
+    frame BOM6I { light ROCKET_X2 }
+    frame BOM6j { light ROCKET_X2 }
+    frame BOM6K { light ROCKET_X1 }
+    frame BOM6L { light ROCKET_X1 }
+    frame BOM6M { light ROCKET_X1 }
+    frame BOM6N { light ROCKET_X1 }
+    frame BOM6O { light ROCKET_X1 }
+    frame BOM6P { light ROCKET_X1 }
+    frame BOM6Q { light ROCKET_X1 }
+    frame BOM6R { light ROCKET_X1 }
+    frame BOM6S { light ROCKET_X1 }
+    frame BOM6T { light ROCKET_X1 }
+}
+
+object BD_HomingRocket
+{
+    frame HROK { light ROCKET }
     frame BOM6A { light ROCKET_X3 }
     frame BOM6B { light ROCKET_X3 }
     frame BOM6C { light ROCKET_X3 }
