@@ -34,16 +34,39 @@ states
 
 Class BD_BaseVictim : BDoomActor abstract {
 	protected bool vdead;
+	protected double swingspeed;
+	property swingspeed : swingspeed;
+	protected int spriterange;
+	protected name spritename;
+	property spriterange : spriterange;
+	property spritename : spritename;
+	
+	protected double rollangVel;
+	protected double rollang;
+	protected double damping;
 	Default {
+		BD_BaseVictim.swingspeed 0;
+		BD_BaseVictim.spriterange 0;
+		BD_Basevictim.spritename 'BDB1';
 		+SOLID
+		+SHOOTABLE
 		+DONTTHRUST
 		+DONTFALL
 		+DONTCORPSE
 		+NODAMAGE
+		+ROLLSPRITE
+		+ROLLCENTER
+		+INTERPOLATEANGLES
+		+SPRITEFLIP
+		painsound "";
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		scale.x *= randompick(-1,1);
+		if (default.bSPRITEFLIP)
+			bSPRITEFLIP = randompick(0,1);
+		rollangVel = 0;
+		rollang = 0;
+		damping = 0.02;
 		if (pos.z - floorz < 0 || pos.z - floorz > 96)
 			return;
 		if (!bdoom_blood)
@@ -54,65 +77,6 @@ Class BD_BaseVictim : BDoomActor abstract {
 			a.scale = (0.14,0.14)*frandom(0.8,1.4);
 			a.target = self;
 		}
-	}
-	override void Tick() {
-		super.Tick();
-		if (bSOLID)
-			bSHOOTABLE = bdoom_killableobjects;
-	}
-	states
-		{
-		Loadsprites:
-			BDB1 ABCDEFGHIJK 0;
-			BDB3 ABCDEFGHIJKL 0;
-			stop;
-	}
-}
-
-Class BD_HangingTorso : BD_BaseVictim {
-	protected double swingspeed;
-	property swingspeed : swingspeed;
-	
-	protected double rollangVel;
-	protected double rollang;
-	protected double damping;
-	
-	Default {
-		BD_HangingTorso.swingspeed 0.08;
-		Radius 16;
-		Height 64;
-		xscale 0.8;
-		yscale 0.68;
-		+NOGRAVITY
-		+SPAWNCEILING
-		+ROLLSPRITE
-		+ROLLCENTER
-		+INTERPOLATEANGLES
-		painchance 160;
-	}
-	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		if (!bdoom_gibs)
-			return;
-		for (int i = 4; i > 0; i--) {
-			if (random(0,2) > 0) {
-				let g = BasicMeatPiece(Spawn("BasicMeatPiece",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),floorz+1)));
-				if (g) g.instant = true;
-			}
-		}
-		rollangVel = 0;
-		rollang = 0;
-		damping = 0.02;
-	}
-	override void Tick() {
-		super.Tick();
-		if (isFrozen())
-			return;
-		if (bdoom_debris && abs(roll) < 5) 
-			A_SpawnitemEx("DecorBloodDrop",frandom(-5,5),frandom(-5,5),frandom(22,24),failchance:254);
-		rollang += rollangVel;
-		rollangVel += -(damping * rollang) - rollangVel*damping;
-		roll = rollang * 180.0 / pi;
 	}
 	void BD_StartSwing(double rfactor = 1.0) {
 		double sspeed = 1 * rfactor;
@@ -126,45 +90,184 @@ Class BD_HangingTorso : BD_BaseVictim {
 			rollangVel = swingspeed * BD_Sign(roll);
 		rollangVel *= sspeed;
 	}
-	states {
+	void BD_SetSprite() {
+		sprite = GetSpriteIndex(spritename);
+		frame = random(0,spriterange);
+	}
+	override void Tick() {
+		super.Tick();
+		if (default.bSHOOTABLE)
+			bSHOOTABLE = bdoom_killableobjects;
+		else if (default.bVULNERABLE)
+			bVULNERABLE = bdoom_killableobjects;
+		if (isFrozen())
+			return;
+		if (bdoom_debris && abs(roll) < 5) 
+			A_SpawnitemEx("DecorBloodDrop",frandom(-5,5),frandom(-5,5),frandom(22,24),failchance:254);
+		if (swingspeed ~== 0)
+			return;
+		rollang += rollangVel;
+		rollangVel += -(damping * rollang) - rollangVel*damping;
+		roll = rollang * 180.0 / pi;
+	}
+	states
+		{
+		Loadsprites:
+			BDB1 ABCDEFGHIJK 0;
+			BDB3 ABCDEFGHIJKL 0;
+			BGO2 ABCDE 0;
+			BGO3 ABCDE 0;
+			BGO4 ABCDE 0;
+			BGO5 AB 0;
+			stop;
 		Spawn:
-			BDB1 A 1 NoDelay {
-				frame = random(0,10);
-				}
-			goto idle;
-		Idle:
-			#### # 1 {
-				if (abs(roll) < 1 && rollangVel > 0.01)
-					A_Playsound("victims/ropecreak",CHAN_VOICE|CHAN_NOSTOP,attenuation:4);
+			TNT1 A 0 NoDelay BD_SetSprite;
+			#### # 0 {
+				return ResolveState("Idle");
 			}
+			wait;
+		Idle:
+			#### # 1;
 			loop;
 		Pain:
-			#### # 0 BD_StartSwing();
-			goto Idle;	
+			#### # 0 {
+				BD_StartSwing();
+				A_PlaySound(painsound,CHAN_BODY|CHAN_NOSTOP,attenuation:4);
+			}
+			#### # 0 {
+				return ResolveState("Idle");
+			}
+			wait;
+	}
+}
+
+Class BD_HangingTorso : BD_BaseVictim {	
+	Default {
+		BD_BaseVictim.swingspeed 0.08;
+		BD_BaseVictim.spriterange 10;
+		BD_BaseVictim.spritename 'BDB1';
+		Radius 16;
+		Height 64;
+		xscale 0.8;
+		yscale 0.68;
+		+NOGRAVITY
+		+SPAWNCEILING
+		painchance 160;
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		if (!bdoom_gibs)
+			return;
+		for (int i = 4; i > 0; i--) {
+			if (random(0,2) > 0) {
+				let g = BasicMeatPiece(Spawn("BasicMeatPiece",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),floorz+1)));
+				if (g) g.instant = true;
+			}
+		}
+	}
+	override void Tick() {
+		super.Tick();
+		if (isFrozen())
+			return;
+		if (abs(roll) < 1 && rollangVel > 0.01)
+			A_Playsound("victims/ropecreak",CHAN_VOICE|CHAN_NOSTOP,attenuation:4);
 	}
 }
 
 Class BD_HangingBody : BD_HangingTorso {
 	Default {
-		BD_HangingTorso.swingspeed 0.05;
+		BD_BaseVictim.swingspeed 0.05;
+		BD_BaseVictim.spriterange 11;
+		BD_BaseVictim.spritename 'BDB3';
 		Radius 16;
 		Height 88;
 	}
-	states {
-		Spawn:
-			BDB3 A 0  NoDelay { 
-				frame = random(0,11); 
-				return ResolveState("Idle");
-			}
-			stop;
+}
+
+//hanging body upside-down
+Class BD_Meat2 : BD_BaseVictim {
+	Default {
+		BD_BaseVictim.swingspeed 0.015;
+		BD_BaseVictim.spriterange 4;
+		BD_BaseVictim.spritename 'BGO2';
+		Radius 16;
+		Height 84;
+		xscale 0.9;
+		yscale 0.74;
+		painchance 160;
+		+NOGRAVITY
+		+SPAWNCEILING
+		-SPRITEFLIP
+		painsound "victims/chain";
 	}
 }
 
-Class BD_BloodyTwitch : BD_HangingTorso {
-	protected state slow;
-	protected state shigh;
+//hanging body upside-down, missing leg
+Class BD_Meat3 : BD_Meat2 {
 	Default {
-		BD_HangingTorso.swingspeed 0.01;
+		BD_BaseVictim.spriterange 4;
+		BD_BaseVictim.spritename 'BGO3';
+	}
+}
+
+//hanging legs upside-down
+Class BD_Meat4 : BD_Meat2 {
+	Default {
+		BD_BaseVictim.spriterange 4;
+		BD_BaseVictim.spritename 'BGO4';
+		height 68;
+	}
+}
+
+//hanging single leg upside-down
+Class BD_Meat5 : BD_Meat2 {
+	Default {
+		BD_BaseVictim.swingspeed 0.018;
+		BD_BaseVictim.spriterange 1;
+		BD_BaseVictim.spritename 'BGO5';
+		height 52;
+	}
+}
+
+Class BD_NonsolidMeat2 : BD_Meat2 {
+	Default {
+		-SOLID
+		-SHOOTABLE
+		+VULNERABLE
+		radius 20;
+	}
+}
+
+Class BD_NonsolidMeat3 : BD_Meat3 {
+	Default {
+		-SOLID
+		-SHOOTABLE
+		+VULNERABLE
+		radius 20;
+	}
+}
+
+Class BD_NonsolidMeat4 : BD_Meat4 {
+	Default {
+		-SOLID
+		-SHOOTABLE
+		+VULNERABLE
+		radius 20;
+	}
+}
+
+Class BD_NonsolidMeat5 : BD_Meat5 {
+	Default {
+		-SOLID
+		-SHOOTABLE
+		+VULNERABLE
+		radius 20;
+	}
+}
+
+Class BD_BloodyTwitch : BD_BaseVictim {
+	Default {
+		BD_BaseVictim.swingspeed 0.01;
 		radius 16;
 		height 68;
 		yscale 0.8;
@@ -172,12 +275,9 @@ Class BD_BloodyTwitch : BD_HangingTorso {
 		-NODAMAGE
 		painchance 220;
 		+BUDDHA
+		+NOGRAVITY
+		+SPAWNCEILING
 	}
-	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		slow = FindState("HeadLowered");
-		shigh = FindState("HeadRaised");
-		}
 	override void Tick() {
 		super.Tick();
 		if (isFrozen())
@@ -187,23 +287,6 @@ Class BD_BloodyTwitch : BD_HangingTorso {
 		if (health == 1 && !vdead)
 			SetStateLabel("Die");
 	}
-	/*override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle) {
-		A_PlaySound("victims/chain",CHAN_BODY|CHAN_NOSTOP,attenuation:4);
-		BD_StartSwing();
-		int dmg = super.DamageMobj(inflictor, source, damage, mod, flags, angle);
-		if (vdead)
-			return dmg;
-		if (health - dmg > 1) {
-			A_PlaySound("victims/pain",CHAN_VOICE|CHAN_NOSTOP);
-			if (InStateSequence(curstate,slow))
-				SetStateLabel("LowTwitch");
-			else if (InStateSequence(curstate,shigh))
-				SetStateLabel("TopTwitch");
-			return dmg;
-			}
-		SetStateLabel("Die");
-		return dmg;
-	}*/
 	states {
 		Spawn:
 			TNT1 A 0 NoDelay A_Jump(256,"HeadNeutral","HeadLowered","HeadRaised");
@@ -290,6 +373,9 @@ Class BD_BloodyTwitch : BD_HangingTorso {
 Class BD_NonsolidTwitch : BD_BloodyTwitch {
 	Default {
 		-SOLID
+		-SHOOTABLE
+		+VULNERABLE
+		radius 20;
 	}
 }
 		
@@ -417,97 +503,7 @@ states
 
 
 
-// *********************************
-// Hanging twitching bleeding body
-// *********************************
 
-actor BD_BloodyTwitch : BloodyTwitch replaces BloodyTwitch
-{
-+DONTBLAST
-+SHOOTABLE
-deathheight 68
-health 60
-mass 9999999
-+NOPAIN +DONTFALL
-painsound "shotguy/pain"
-Deathsound "shotguy/Death"
-states
-	{
-	Spawn:
-		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
-		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
-		TNT1 A 0 A_CheckSight(2)
-		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
-		GOR1 A 12
-		GOR1 B 10
-		GOR1 C 12
-		GOR1 B 10
-		goto spawn+1
-	Death:
-		GOR1 A 5 A_scream
-		GOR1 DEF 6
-		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
-		TNT1 A 0 A_CheckSight(2)
-		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
-		GOR1 G 12
-		goto Death+4
-}
-}
-
-// **********************************
-// Hanging chained bodies and body parts
-// They cannot be shot down (due to being chained) so I decided to remove shootable property
-// **********************************
-
-//Meat2 removed due to having no meaningful interaction
-
-Actor BD_Meat3 : Meat3 replaces Meat3
-{
-+LOOKALLAROUND
-states
-	{
-	Spawn:
-		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
-		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
-		TNT1 A 0 A_CheckSight(2)
-		TNT1 A 0 A_Look
-		GOR3 A 10
-		goto spawn+1
-	See:
-		TNT1 A 0 A_FaceTarget
-		GOR3 A 10 A_SpawnitemEx("BloodSpill",6,random(13,15),28,0,0,0,0,0,230)
-		goto spawn+1
-}
-}
-
-Actor BD_Meat4 : Meat4 replaces Meat4
-{
-states
-	{
-	Spawn:
-		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
-		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
-		TNT1 A 0 A_CheckSight(2)
-		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
-		GOR4 A 10
-		goto spawn+1
-}
-}
-
-
-Actor BD_Meat5 : Meat5 replaces Meat5
-{
-states
-	{
-	Spawn:
-		TNT1 A 0 NoDelay A_SetScale(scalex*randompick(-1,1),scaley)
-		TNT1 A 0 A_JumpIf(GetCVAR("bdoom_blood")==0,3)
-		TNT1 A 0 A_CheckSight(2)
-		TNT1 A 0 A_SpawnitemEx("BloodSpill",random(-3,3),random(-3,3),random(-2,0),0,0,0,0,0,230)
-		GOR5 A 10
-		goto spawn+1
-}
-}
 
 // ********************
 // Impaled dead body
@@ -586,35 +582,3 @@ states
 }
 }
 
-// ********************
-// Non-solid versions of the bodies
-// ********************
-
-
-Actor BD_NonsolidTwitch : BD_BloodyTwitch replaces NonsolidTwitch
-{
-radius 20
--SOLID
--SHOOTABLE
-}
-
-Actor BD_NonsolidMeat3 : BD_Meat3 replaces NonsolidMeat3
-{
-radius 20
--SOLID
--SHOOTABLE
-}
-
-Actor BD_NonsolidMeat4 : BD_Meat4 replaces NonsolidMeat4
-{
-radius 20
--SOLID
--SHOOTABLE
-}
-
-Actor BD_NonsolidMeat5 : BD_Meat5 replaces NonsolidMeat5
-{
-radius 20
--SOLID
--SHOOTABLE
-}
