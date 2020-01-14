@@ -31,8 +31,7 @@ Class BDoomWeapon : Weapon abstract {
 		invoker.currentPitchOffset = 0.0;
 }
 
-	override void DoEffect()
-		{
+	override void DoEffect() {
 		Super.DoEffect();
 		if (!owner)
 			return;

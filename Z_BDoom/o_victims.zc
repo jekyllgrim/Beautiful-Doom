@@ -8,28 +8,26 @@
 
 
 //decorative blood drop for gory decorations
-Class DecorBloodDrop : BD_CeilingBloodDrop
-{
-Default {
-	scale 0.15;
-}
-states
-	{
-	spawn:
-		BLOD XYZ 3;
-		TNT1 A 0 { vel.z = -3.4; }
-		BLOD ZZZZZZZZZZZZZZZZZZZZZZZZZ 1 {
-			vel.z = Clamp(vel.z-0.05,-4,0);
-			if (waterlevel > 0) {
-				destroy();
+Class DecorBloodDrop : BD_CeilingBloodDrop {
+	Default {
+		scale 0.15;
+	}
+	states {
+		spawn:
+			BLOD XYZ 3;
+			TNT1 A 0 { vel.z = -3.4; }
+			BLOD ZZZZZZZZZZZZZZZZZZZZZZZZZ 1 {
+				vel.z = Clamp(vel.z-0.05,-4,0);
+				if (waterlevel > 0) {
+					destroy();
+					return ResolveState(null);
+				}
+				if (pos.z <= floorz)
+					return ResolveState("Death");
 				return ResolveState(null);
 			}
-			if (pos.z <= floorz)
-				return ResolveState("Death");
-			return ResolveState(null);
-		}
-		stop;
-}
+			stop;
+	}
 }
 
 Class BD_BaseVictim : BDoomActor abstract {
@@ -64,6 +62,8 @@ Class BD_BaseVictim : BDoomActor abstract {
 		super.PostBeginPlay();
 		if (default.bSPRITEFLIP)
 			bSPRITEFLIP = randompick(0,1);
+		else
+			bSPRITEFLIP = false;
 		rollangVel = 0;
 		rollang = 0;
 		damping = 0.02;
@@ -104,14 +104,13 @@ Class BD_BaseVictim : BDoomActor abstract {
 			return;
 		if (bdoom_debris && abs(roll) < 5) 
 			A_SpawnitemEx("DecorBloodDrop",frandom(-5,5),frandom(-5,5),frandom(22,24),failchance:254);
-		if (swingspeed ~== 0)
+		if (!bROLLSPRITE || swingspeed ~== 0)
 			return;
 		rollang += rollangVel;
 		rollangVel += -(damping * rollang) - rollangVel*damping;
 		roll = rollang * 180.0 / pi;
 	}
-	states
-		{
+	states {
 		Loadsprites:
 			BDB1 ABCDEFGHIJK 0;
 			BDB3 ABCDEFGHIJKL 0;
@@ -119,6 +118,8 @@ Class BD_BaseVictim : BDoomActor abstract {
 			BGO3 ABCDE 0;
 			BGO4 ABCDE 0;
 			BGO5 AB 0;
+			BTWT ABCDEFGHIJKLMNOPQR 0;
+			BTWU ABCDEFGHIJKLMNOPQR 0;
 			stop;
 		Spawn:
 			TNT1 A 0 NoDelay BD_SetSprite;
@@ -289,7 +290,12 @@ Class BD_BloodyTwitch : BD_BaseVictim {
 	}
 	states {
 		Spawn:
-			TNT1 A 0 NoDelay A_Jump(256,"HeadNeutral","HeadLowered","HeadRaised");
+			BTWT A 0 NoDelay {
+				if (random(0,1) == 1)
+					sprite = GetSpriteIndex("BTWU");
+			}
+		Idle:
+			#### A 0 A_Jump(256,"HeadNeutral","HeadLowered","HeadRaised");
 		Pain:
 			#### # 1 {
 				bNOPAIN = true;
@@ -310,61 +316,61 @@ Class BD_BloodyTwitch : BD_BaseVictim {
 			}
 			goto spawn;
 		HeadNeutral:
-			BTWT AB random(20,60) A_Jump(128,"RaiseHead","LowerHead");
+			#### AB random(20,60) A_Jump(128,"RaiseHead","LowerHead");
 			loop;
 		LowerHead:
-			BTWT AFG 6;
+			#### AFG 6;
 		HeadLowered:
-			BTWT GHGI random(20,60);
-			TNT1 A 0 A_Jump(144,"HeadLoweredEnd","LowTwitch","Cough");
+			#### GHGI random(20,60);
+			#### A 0 A_Jump(144,"HeadLoweredEnd","LowTwitch","Cough");
 			loop;
 		HeadLoweredEnd:
-			BTWT FB 6;
+			#### FB 6;
 			goto HeadNeutral;
 		RaiseHead:
-			BTWT BC 6;			
+			#### BC 6;			
 		HeadRaised:
-			BTWT CD random(20,60);
-			TNT1 A 0 A_Jump(112,"HeadRaisedEnd","TopTwitch");
+			#### CD random(20,60);
+			#### A 0 A_Jump(112,"HeadRaisedEnd","TopTwitch");
 			loop;
 		HeadRaisedEnd:
-			BTWT CB 6;
+			#### CB 6;
 			goto HeadNeutral;
 		TopTwitch:
-			TNT1 A 0 {
+			#### A 0 {
 				A_PlaySound("victims/chain",attenuation:4);
 				BD_StartSwing();
 			}
-			BTWT CECECE random(9,12);
-			TNT1 A 0 { bNOPAIN = false; }
+			#### CECECE random(9,12);
+			#### A 0 { bNOPAIN = false; }
 			goto HeadRaised;
 		LowTwitch:
-			TNT1 A 0 {
+			#### A 0 {
 				A_PlaySound("victims/chain",attenuation:4);
 				BD_StartSwing();
 			}
-			BTWT IJIJIJ random(9,12);
-			TNT1 A 0 { bNOPAIN = false; }
+			#### IJIJIJ random(9,12);
+			#### A 0 { bNOPAIN = false; }
 			goto HeadLowered;
 		Cough:
-			BTWT G 4;
-			TNt1 A 0 A_PlaySound("victims/cough",attenuation:5);
-			BTWT KLMN 4;
-			BTWT G 10;
-			TNT1 A 0 A_Jump(96,"HeadLowered");
-			TNt1 A 0 A_PlaySound("victims/cough",attenuation:5);
-			BTWT KLMN 4;
-			BTWT G 14;
+			#### G 4;
+			#### A 0 A_PlaySound("victims/cough",attenuation:5);
+			#### KLMN 4;
+			#### G 10;
+			#### A 0 A_Jump(96,"HeadLowered");
+			#### A 0 A_PlaySound("victims/cough",attenuation:5);
+			#### KLMN 4;
+			#### G 14;
 			goto HeadLowered;
 		Die:
-			BTWT F 5 {
+			#### F 5 {
 				A_PlaySound("victims/death",CHAN_ITEM);
 				vdead = true;
 			}
-			BTWT GOPQ 7;
+			#### GOPQ 7;
 		Dead:
-			BTWT R 20;
-			TNT1 A 0 { bNOPAIN = false; }
+			#### R 20;
+			#### A 0 { bNOPAIN = false; }
 			loop;
 	}
 }
@@ -376,6 +382,24 @@ Class BD_NonsolidTwitch : BD_BloodyTwitch {
 		-SHOOTABLE
 		+VULNERABLE
 		radius 20;
+	}
+}
+
+Class BD_DeadStick : BD_BaseVictim {
+	Default {
+		Radius 16;
+		Height 64;
+		ProjectilePassHeight -16;
+		-ROLLSPRITE
+		-SPRITEFLIP
+		xscale 0.8;
+		yscale 0.68;
+	}
+	states {
+		Spawn:
+			TNT1 A 0 NoDelay A_Jump(256,1,2,3,4,5,6,7,8);
+			BSTD ABCDEFGH -1;
+			stop;
 	}
 }
 		

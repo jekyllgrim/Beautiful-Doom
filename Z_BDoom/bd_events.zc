@@ -60,16 +60,16 @@ class WeaponOverrideHandler : EventHandler {
 		if (!inv)
 			return;
 		switch (inv.GetClassName()) {
-			case 'Clip' 		: inv.pickupsound = "ammo/clip";		break;
-			case 'ClipBox' 		: inv.pickupsound = "ammo/clipbox";		break;
+			case 'Clip' 		: inv.pickupsound = "ammo/clip";			break;
+			case 'ClipBox' 	: inv.pickupsound = "ammo/clipbox";		break;
 			case 'Shell' 		: inv.pickupsound = "ammo/shells";		break;
 			case 'ShellBox' 	: inv.pickupsound = "ammo/shells";		break;
 			case 'RocketAmmo' 	: inv.pickupsound = "ammo/rockets";		break;
 			case 'RocketBox' 	: inv.pickupsound = "ammo/rockets";		break;
-			case 'Cell' 		: inv.pickupsound = "ammo/cells";		break;
-			case 'CellPack' 	: inv.pickupsound = "ammo/cells";		break;
+			case 'Cell' 		: inv.pickupsound = "ammo/cells";			break;
+			case 'CellPack' 	: inv.pickupsound = "ammo/cells";			break;
 			case 'BackPack' 	: inv.pickupsound = "pickups/backpack";	break;
-			case 'RadSuit' 		: inv.pickupsound = "pickups/radsuit";	break;
+			case 'RadSuit' 	: inv.pickupsound = "pickups/radsuit";	break;
 		}
 	}
 
@@ -78,16 +78,16 @@ class WeaponOverrideHandler : EventHandler {
 		if (!bdoom_replaceweapons)
 			return;
 		switch (e.Replacee.GetClassName()) {
-			case 'Fist' 			: e.Replacement = "BD_Fist"; 			break;
-			case 'Berserk' 			: e.Replacement = "BD_Berserk"; 		break;
-			case 'Chainsaw' 		: e.Replacement = "BD_Chainsaw"; 		break;
+			case 'Fist' 			: e.Replacement = "BD_Fist"; 				break;
+			case 'Berserk' 		: e.Replacement = "BD_Berserk"; 			break;
+			case 'Chainsaw' 		: e.Replacement = "BD_Chainsaw"; 			break;
 			case 'Pistol' 			: e.Replacement = "BD_Pistol"; 			break;
-			case 'Shotgun'			: e.Replacement = "BD_Shotgun"; 		break;
-			case 'SuperShotgun' 	: e.Replacement = "BD_SuperShotgun";	break;
-			case 'Chaingun' 		: e.Replacement = "BD_Chaingun"; 		break;
+			case 'Shotgun'			: e.Replacement = "BD_Shotgun"; 			break;
+			case 'SuperShotgun' 	: e.Replacement = "BD_SuperShotgun";		break;
+			case 'Chaingun' 		: e.Replacement = "BD_Chaingun"; 			break;
 			case 'RocketLauncher'	: e.Replacement = "BD_RocketLauncher"; 	break;
-			case 'PlasmaRifle' 		: e.Replacement = "BD_PlasmaRifle"; 	break;
-			case 'BFG9000' 			: e.Replacement = "BD_BFG9000"; 		break;
+			case 'PlasmaRifle' 	: e.Replacement = "BD_PlasmaRifle"; 		break;
+			case 'BFG9000' 		: e.Replacement = "BD_BFG9000"; 			break;
 		}
 		e.IsFinal = true;
 	}
@@ -113,51 +113,29 @@ class WeaponOverrideHandler : EventHandler {
 				switch (oldweap) { //if game attempts to SELECT a vanilla weapon, take it away and select a modded weapon (and give it, if it's missing)
 					case 'Fist' 			: player.pendingWeapon = GetWeapon(mo, "BD_Fist"); 			mo.TakeInventory(oldweap,1); break;
 					case 'Chainsaw' 		: player.pendingWeapon = GetWeapon(mo, "BD_Chainsaw"); 		mo.TakeInventory(oldweap,1); break;
-					case 'Pistol' 			: player.pendingWeapon = GetWeapon(mo, "BD_Pistol"); 		mo.TakeInventory(oldweap,1); break;
+					case 'Pistol' 			: player.pendingWeapon = GetWeapon(mo, "BD_Pistol"); 			mo.TakeInventory(oldweap,1); break;
 					case 'Shotgun'			: player.pendingWeapon = GetWeapon(mo, "BD_Shotgun"); 		mo.TakeInventory(oldweap,1); break;
 					case 'SuperShotgun' 	: player.pendingWeapon = GetWeapon(mo, "BD_SuperShotgun"); 	mo.TakeInventory(oldweap,1); break;
 					case 'Chaingun' 		: player.pendingWeapon = GetWeapon(mo, "BD_Chaingun"); 		mo.TakeInventory(oldweap,1); break;
-					case 'RocketLauncher' 	: player.pendingWeapon = GetWeapon(mo, "BD_RocketLauncher");mo.TakeInventory(oldweap,1); break;
-					case 'PlasmaRifle' 		: player.pendingWeapon = GetWeapon(mo, "BD_PlasmaRifle"); 	mo.TakeInventory(oldweap,1); break;
-					case 'BFG9000' 			: player.pendingWeapon = GetWeapon(mo, "BD_BFG9000"); 		mo.TakeInventory(oldweap,1); break;
+					case 'RocketLauncher' : player.pendingWeapon = GetWeapon(mo, "BD_RocketLauncher");mo.TakeInventory(oldweap,1); break;
+					case 'PlasmaRifle' 	: player.pendingWeapon = GetWeapon(mo, "BD_PlasmaRifle"); 	mo.TakeInventory(oldweap,1); break;
+					case 'BFG9000' 		: player.pendingWeapon = GetWeapon(mo, "BD_BFG9000"); 		mo.TakeInventory(oldweap,1); break;
 				}
 				switch (oldweapr) { //if (a vanilla weapon is READY (such as Pistol at vanilla map start), we also take it away and select the modded counterpart
 					case 'Fist' 			: player.pendingWeapon = GetWeapon(mo, "BD_Fist"); 			mo.TakeInventory(oldweapr,1); break;
 					case 'Chainsaw' 		: player.pendingWeapon = GetWeapon(mo, "BD_Chainsaw"); 		mo.TakeInventory(oldweapr,1); break;
-					case 'Pistol' 			: player.pendingWeapon = GetWeapon(mo, "BD_Pistol"); 		mo.TakeInventory(oldweapr,1); break;
+					case 'Pistol' 			: player.pendingWeapon = GetWeapon(mo, "BD_Pistol"); 			mo.TakeInventory(oldweapr,1); break;
 					case 'Shotgun'			: player.pendingWeapon = GetWeapon(mo, "BD_Shotgun"); 		mo.TakeInventory(oldweapr,1); break;
 					case 'SuperShotgun' 	: player.pendingWeapon = GetWeapon(mo, "BD_SuperShotgun"); 	mo.TakeInventory(oldweapr,1); break;
 					case 'Chaingun' 		: player.pendingWeapon = GetWeapon(mo, "BD_Chaingun"); 		mo.TakeInventory(oldweapr,1); break;
-					case 'RocketLauncher' 	: player.pendingWeapon = GetWeapon(mo, "BD_RocketLauncher");mo.TakeInventory(oldweapr,1); break;
-					case 'PlasmaRifle' 		: player.pendingWeapon = GetWeapon(mo, "BD_PlasmaRifle"); 	mo.TakeInventory(oldweapr,1); break;
-					case 'BFG9000' 			: player.pendingWeapon = GetWeapon(mo, "BD_BFG9000"); 		mo.TakeInventory(oldweapr,1); break;
+					case 'RocketLauncher' : player.pendingWeapon = GetWeapon(mo, "BD_RocketLauncher");	mo.TakeInventory(oldweapr,1); break;
+					case 'PlasmaRifle' 	: player.pendingWeapon = GetWeapon(mo, "BD_PlasmaRifle"); 	mo.TakeInventory(oldweapr,1); break;
+					case 'BFG9000' 		: player.pendingWeapon = GetWeapon(mo, "BD_BFG9000"); 		mo.TakeInventory(oldweapr,1); break;
 				}
 			}
-			/*else { //the reverse effect giving back original weapon. disabled because dangerous. besides officialy this requires level restart anyway
-				switch (oldweap) {
-					case 'BD_Fist' 			: player.pendingWeapon = GetWeapon(mo, "Fist"); 			mo.TakeInventory(oldweap,1); break;
-					case 'BD_Chainsaw' 		: player.pendingWeapon = GetWeapon(mo, "Chainsaw"); 		mo.TakeInventory(oldweap,1); break;
-					case 'BD_Pistol' 		: player.pendingWeapon = GetWeapon(mo, "Pistol"); 			mo.TakeInventory(oldweap,1); break;
-					case 'BD_Shotgun'		: player.pendingWeapon = GetWeapon(mo, "Shotgun"); 			mo.TakeInventory(oldweap,1); break;
-					case 'BD_SuperShotgun' 	: player.pendingWeapon = GetWeapon(mo, "SuperShotgun"); 	mo.TakeInventory(oldweap,1); break;
-					case 'BD_Chaingun' 		: player.pendingWeapon = GetWeapon(mo, "Chaingun"); 		mo.TakeInventory(oldweap,1); break;
-					case 'BD_RocketLauncher': player.pendingWeapon = GetWeapon(mo, "RocketLauncher");	mo.TakeInventory(oldweap,1); break;
-					case 'BD_PlasmaRifle' 	: player.pendingWeapon = GetWeapon(mo, "PlasmaRifle"); 		mo.TakeInventory(oldweap,1); break;
-					case 'BD_BFG9000' 		: player.pendingWeapon = GetWeapon(mo, "BFG9000"); 			mo.TakeInventory(oldweap,1); break;
-				}
-				switch (oldweapr) {
-					case 'BD_Fist' 			: player.pendingWeapon = GetWeapon(mo, "Fist"); 			mo.TakeInventory(oldweapr,1); break;
-					case 'BD_Chainsaw' 		: player.pendingWeapon = GetWeapon(mo, "Chainsaw"); 		mo.TakeInventory(oldweapr,1); break;
-					case 'BD_Pistol' 		: player.pendingWeapon = GetWeapon(mo, "Pistol"); 			mo.TakeInventory(oldweapr,1); break;
-					case 'BD_Shotgun'		: player.pendingWeapon = GetWeapon(mo, "Shotgun"); 			mo.TakeInventory(oldweapr,1); break;
-					case 'BD_SuperShotgun' 	: player.pendingWeapon = GetWeapon(mo, "SuperShotgun"); 	mo.TakeInventory(oldweapr,1); break;
-					case 'BD_Chaingun' 		: player.pendingWeapon = GetWeapon(mo, "Chaingun"); 		mo.TakeInventory(oldweapr,1); break;
-					case 'BD_RocketLauncher': player.pendingWeapon = GetWeapon(mo, "RocketLauncher");	mo.TakeInventory(oldweapr,1); break;
-					case 'BD_PlasmaRifle' 	: player.pendingWeapon = GetWeapon(mo, "PlasmaRifle"); 		mo.TakeInventory(oldweapr,1); break;
-					case 'BD_BFG9000' 		: player.pendingWeapon = GetWeapon(mo, "BFG9000"); 			mo.TakeInventory(oldweapr,1); break;
-				}				
+			else {		
 				mo.speed = mo.default.speed; 	//to ensure the player is no longer affected by speed-altering effects of kicking or modern rifle ADS
-			}*/
+			}
 		}
 	}
 	// Courtesy of Zombie
@@ -181,19 +159,19 @@ class BD_ActorOverrideHandler : EventHandler {
 			switch (e.Replacee.GetClassName()) {
 				case 'Zombieman' 			: if (bdoom_Zombieman) 			e.Replacement = "BD_Zombieman"; 			break;
 				case 'ShotgunGuy' 			: if (bdoom_ShotgunGuy) 			e.Replacement = "BD_ShotgunGuy"; 			break;
-				case 'ChaingunGuy' 			: if (bdoom_ChaingunGuy) 		e.Replacement = "BD_ChaingunGuy"; 		break;
+				case 'ChaingunGuy' 		: if (bdoom_ChaingunGuy) 			e.Replacement = "BD_ChaingunGuy"; 		break;
 				case 'WolfensteinSS'		: if (bdoom_WolfensteinSS) 		e.Replacement = "BD_WolfensteinSS"; 		break;
-				case 'DoomImp' 				: if (bdoom_DoomImp) 			e.Replacement = "BD_DoomImp"; 			break;
+				case 'DoomImp' 			: if (bdoom_DoomImp) 				e.Replacement = "BD_DoomImp"; 			break;
 				case 'Demon' 				: if (bdoom_Demon) 				e.Replacement = "BD_Demon"; 				break;
-				case 'Spectre' 				: if (bdoom_Spectre) 			e.Replacement = "BD_Spectre"; 			break;
+				case 'Spectre' 			: if (bdoom_Spectre) 				e.Replacement = "BD_Spectre"; 			break;
 				case 'Cacodemon' 			: if (bdoom_Cacodemon) 			e.Replacement = "BD_Cacodemon"; 			break;
 				case 'PainElemental'		: if (bdoom_PainElemental) 		e.Replacement = "BD_PainElemental"; 		break;
-				case 'LostSoul'				: if (bdoom_LostSoul) 		e.Replacement = "BD_LostSoul"; 			break;
+				case 'LostSoul'			: if (bdoom_LostSoul) 			e.Replacement = "BD_LostSoul"; 			break;
 				case 'Revenant' 			: if (bdoom_Revenant) 			e.Replacement = "BD_Revenant"; 			break;
-				case 'Arachnotron' 			: if (bdoom_Arachnotron) 		e.Replacement = "BD_Arachnotron"; 		break;
+				case 'Arachnotron' 		: if (bdoom_Arachnotron) 			e.Replacement = "BD_Arachnotron"; 		break;
 				case 'Fatso' 				: if (bdoom_Fatso) 				e.Replacement = "BD_Fatso"; 				break;
 				case 'HellKnight' 			: if (bdoom_HellKnight) 			e.Replacement = "BD_HellKnight"; 			break;
-				case 'BaronOfHell' 			: if (bdoom_BaronOfHell) 		e.Replacement = "BD_BaronOfHell"; 		break;
+				case 'BaronOfHell' 		: if (bdoom_BaronOfHell) 			e.Replacement = "BD_BaronOfHell"; 		break;
 				case 'ArchVile' 			: if (bdoom_ArchVile) 			e.Replacement = "BD_ArchVile"; 			break;
 				case 'Cyberdemon' 			: if (bdoom_Cyberdemon) 			e.Replacement = "BD_Cyberdemon"; 			break;
 				case 'SpiderMastermind' 	: if (bdoom_SpiderMastermind) 	e.Replacement = "BD_SpiderMastermind";	break;
@@ -201,11 +179,11 @@ class BD_ActorOverrideHandler : EventHandler {
 				case 'SpawnShot' 			: if (bdoom_IconOfSin) 			e.Replacement = "BD_SpawnShot";			break;
 			//decorative corpses:
 				case 'DeadZombieman' 		: if (bdoom_Zombieman) 			e.Replacement = "BD_DeadZombieman"; 		break;
-				case 'DeadShotgunGuy' 		: if (bdoom_ShotgunGuy) 		e.Replacement = "BD_DeadShotgunGuy"; 		break;
-				case 'DeadDoomImp' 			: if (bdoom_DoomImp) 			e.Replacement = "BD_DeadDoomImp"; 		break;
+				case 'DeadShotgunGuy' 	: if (bdoom_ShotgunGuy) 			e.Replacement = "BD_DeadShotgunGuy"; 		break;
+				case 'DeadDoomImp' 		: if (bdoom_DoomImp) 				e.Replacement = "BD_DeadDoomImp"; 		break;
 				case 'DeadDemon' 			: if (bdoom_Demon) 				e.Replacement = "BD_DeadDemon"; 			break;
 				case 'DeadCacodemon' 		: if (bdoom_Cacodemon) 			e.Replacement = "BD_DeadCacodemon"; 		break;
-				case 'DeadLostSoul'			: if (bdoom_LostSoul) 		e.Replacement = "BD_DeadLostSoul"; 		break;
+				case 'DeadLostSoul'		: if (bdoom_LostSoul) 			e.Replacement = "BD_DeadLostSoul"; 		break;
 			}
 		}
 		if (bdoom_replaceitems) {
@@ -249,6 +227,7 @@ class BD_ActorOverrideHandler : EventHandler {
 				Case 'NonsolidMeat3'		: e.Replacement = "BD_NonsolidMeat3"; 	break;
 				Case 'NonsolidMeat4'		: e.Replacement = "BD_NonsolidMeat4";		break;
 				Case 'NonsolidMeat5'		: e.Replacement = "BD_NonsolidMeat5";		break;
+				Case 'DeadStick'			: e.Replacement = "BD_DeadStick";			break;
 					//MISC
 				case 'TeleportFog' 		: e.replacement = "BD_TeleportFog";		break;
 				case 'ExplosiveBarrel' 	: e.replacement = "BD_ExplosiveBarrel";	break;
@@ -279,26 +258,26 @@ class BD_ActorOverrideHandler : EventHandler {
 		if (!bdoom_replacemonsters)
 			return;
 		switch (e.Replacement.GetClassName()) {
-			case 'BD_Zombieman' 		: if (bdoom_Zombieman) 			e.Replacee = "Zombieman"; 		break;
-			case 'BD_ShotgunGuy' 		: if (bdoom_ShotgunGuy) 		e.Replacee = "ShotgunGuy"; 		break;
-			case 'BD_ChaingunGuy' 		: if (bdoom_ChaingunGuy) 		e.Replacee = "ChaingunGuy"; 	break;
+			case 'BD_Zombieman' 			: if (bdoom_Zombieman) 			e.Replacee = "Zombieman"; 			break;
+			case 'BD_ShotgunGuy' 			: if (bdoom_ShotgunGuy) 			e.Replacee = "ShotgunGuy"; 		break;
+			case 'BD_ChaingunGuy' 		: if (bdoom_ChaingunGuy) 			e.Replacee = "ChaingunGuy"; 		break;
 			case 'BD_WolfensteinSS'		: if (bdoom_WolfensteinSS) 		e.Replacee = "WolfensteinSS"; 	break;
-			case 'BD_DoomImp' 			: if (bdoom_DoomImp) 			e.Replacee = "DoomImp"; 		break;
-			case 'BD_Demon' 			: if (bdoom_Demon) 				e.Replacee = "Demon"; 			break;
-			case 'BD_Spectre' 			: if (bdoom_Spectre) 			e.Replacee = "Spectre"; 		break;
-			case 'BD_Cacodemon' 		: if (bdoom_Cacodemon) 			e.Replacee = "Cacodemon"; 		break;
+			case 'BD_DoomImp' 				: if (bdoom_DoomImp) 				e.Replacee = "DoomImp"; 			break;
+			case 'BD_Demon' 				: if (bdoom_Demon) 				e.Replacee = "Demon"; 				break;
+			case 'BD_Spectre' 				: if (bdoom_Spectre) 				e.Replacee = "Spectre"; 			break;
+			case 'BD_Cacodemon' 			: if (bdoom_Cacodemon) 			e.Replacee = "Cacodemon"; 			break;
 			case 'BD_PainElemental'		: if (bdoom_PainElemental) 		e.Replacee = "PainElemental"; 	break;
-			case 'BD_LostSoul'			: if (bdoom_LostSoul) 			e.Replacee = "LostSoul"; 		break;
-			case 'BD_Revenant' 			: if (bdoom_Revenant) 			e.Replacee = "Revenant"; 		break;
-			case 'BD_Arachnotron' 		: if (bdoom_Arachnotron) 		e.Replacee = "Arachnotron"; 	break;
-			case 'BD_Fatso' 			: if (bdoom_Fatso) 				e.Replacee = "Fatso"; 			break;
-			case 'BD_HellKnight' 		: if (bdoom_HellKnight) 		e.Replacee = "HellKnight"; 		break;
-			case 'BD_BaronOfHell' 		: if (bdoom_BaronOfHell) 		e.Replacee = "BaronOfHell"; 	break;
-			case 'BD_ArchVile' 			: if (bdoom_ArchVile) 			e.Replacee = "ArchVile"; 		break;
-			case 'BD_Cyberdemon' 		: if (bdoom_Cyberdemon) 		e.Replacee = "Cyberdemon"; 		break;
-			case 'BD_SpiderMastermind' 	: if (bdoom_SpiderMastermind) 	e.Replacee = "SpiderMastermind";break;
-			case 'BD_BossBrain' 		: if (bdoom_IconOfSin) 			e.Replacee = "BossBrain";		break;
-			case 'BD_SpawnShot' 		: if (bdoom_IconOfSin) 			e.Replacee = "SpawnShot";		break;
+			case 'BD_LostSoul'				: if (bdoom_LostSoul) 			e.Replacee = "LostSoul"; 			break;
+			case 'BD_Revenant' 			: if (bdoom_Revenant) 			e.Replacee = "Revenant"; 			break;
+			case 'BD_Arachnotron' 		: if (bdoom_Arachnotron) 			e.Replacee = "Arachnotron"; 		break;
+			case 'BD_Fatso' 				: if (bdoom_Fatso) 				e.Replacee = "Fatso"; 				break;
+			case 'BD_HellKnight' 			: if (bdoom_HellKnight) 			e.Replacee = "HellKnight"; 		break;
+			case 'BD_BaronOfHell' 		: if (bdoom_BaronOfHell) 			e.Replacee = "BaronOfHell"; 		break;
+			case 'BD_ArchVile' 			: if (bdoom_ArchVile) 			e.Replacee = "ArchVile"; 			break;
+			case 'BD_Cyberdemon' 			: if (bdoom_Cyberdemon) 			e.Replacee = "Cyberdemon"; 		break;
+			case 'BD_SpiderMastermind'	: if (bdoom_SpiderMastermind) 	e.Replacee = "SpiderMastermind";	break;
+			case 'BD_BossBrain' 			: if (bdoom_IconOfSin) 			e.Replacee = "BossBrain";			break;
+			case 'BD_SpawnShot' 			: if (bdoom_IconOfSin) 			e.Replacee = "SpawnShot";			break;
 		}
 	}
 }

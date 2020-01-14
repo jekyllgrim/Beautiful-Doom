@@ -782,6 +782,114 @@ Sprite "BTWTR0", 40, 178
 	Patch "BTWTR0", 0, 0
 }
 
+Sprite "BTWUA0", 40, 178
+{
+	Offset 18, 174
+	Patch "BTWUA0", 0, 0
+}
+
+Sprite "BTWUB0", 40, 178
+{
+	Offset 18, 174
+	Patch "BTWUB0", 0, 0
+}
+
+Sprite "BTWUC0", 40, 178
+{
+	Offset 18, 174
+	Patch "BTWUC0", 0, 0
+}
+
+Sprite "BTWUD0", 40, 178
+{
+	Offset 18, 174
+	Patch "BTWUD0", 0, 0
+}
+
+Sprite "BTWUE0", 40, 178
+{
+	Offset 18, 174
+	Patch "BTWUE0", 0, 0
+}
+
+Sprite "BTWUF0", 40, 178
+{
+	Offset 18, 174
+	Patch "BTWUF0", 0, 0
+}
+
+Sprite "BTWUG0", 40, 178
+{
+	Offset 18, 174
+	Patch "BTWUG0", 0, 0
+}
+
+Sprite "BTWUH0", 40, 178
+{
+	Offset 18, 174
+	Patch "BTWUH0", 0, 0
+}
+
+Sprite "BTWUI0", 40, 178
+{
+	Offset 18, 174
+	Patch "BTWUI0", 0, 0
+}
+
+Sprite "BTWUJ0", 40, 178
+{
+	Offset 18, 174
+	Patch "BTWUJ0", 0, 0
+}
+
+Sprite "BTWUK0", 40, 178
+{
+	Offset 18, 174
+	Patch "BTWUK0", 0, 0
+}
+
+Sprite "BTWUL0", 40, 178
+{
+	Offset 18, 174
+	Patch "BTWUL0", 0, 0
+}
+
+Sprite "BTWUM0", 40, 178
+{
+	Offset 18, 174
+	Patch "BTWUM0", 0, 0
+}
+
+Sprite "BTWUN0", 40, 178
+{
+	Offset 18, 174
+	Patch "BTWUN0", 0, 0
+}
+
+Sprite "BTWUO0", 40, 178
+{
+	Offset 18, 174
+	Patch "BTWUO0", 0, 0
+}
+
+Sprite "BTWUP0", 40, 178
+{
+	Offset 18, 174
+	Patch "BTWUP0", 0, 0
+}
+
+Sprite "BTWUQ0", 40, 178
+{
+	Offset 18, 174
+	Patch "BTWUQ0", 0, 0
+}
+
+Sprite "BTWUR0", 40, 178
+{
+	Offset 18, 174
+	Patch "BTWUR0", 0, 0
+}
+
 Graphic "BD_TITLE", 551, 388
 {
 	XScale 4.000
