@@ -120,6 +120,7 @@ Class BD_BaseVictim : BDoomActor abstract {
 			BGO5 AB 0;
 			BTWT ABCDEFGHIJKLMNOPQR 0;
 			BTWU ABCDEFGHIJKLMNOPQR 0;
+			BSTD ABCDEFGH 0;
 			stop;
 		Spawn:
 			TNT1 A 0 NoDelay BD_SetSprite;
@@ -397,8 +398,9 @@ Class BD_DeadStick : BD_BaseVictim {
 	}
 	states {
 		Spawn:
-			TNT1 A 0 NoDelay A_Jump(256,1,2,3,4,5,6,7,8);
-			BSTD ABCDEFGH -1;
+			BSTD A -1 NoDelay { 
+				frame = random (0,7); 
+			}
 			stop;
 	}
 }
