@@ -423,7 +423,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 			
 		//MODERN
 		Select.Modern:		
-			SMT2 A 0 {
+			SST2 A 0 {
 				A_WeaponOffset(-20.0,60.0);
 				A_PlaySound("weapons/ssg/draw");
 			}
@@ -433,16 +433,16 @@ Class BD_SuperShotgun : BDoomWeapon {
 			}
 			goto ready;
 		Deselect.Modern:		
-			SMT2 A 1 A_Lower(18);
+			SST2 A 1 A_Lower(18);
 			loop;		
 		Ready.Modern:
-			SMT2 A 1 BD_WeaponReady(true);
+			SST2 A 1 BD_WeaponReady(true);
 			goto ready;
 		DryReload:
-			SMT2 A 13 A_PlaySound("Mweapons/dry");
+			SST2 A 13 A_PlaySound("Mweapons/dry");
 			goto reload;
 		Fire.Modern:		
-			SMT2 A 1 {
+			SST2 A 1 {
 				If(CountInv("SSGClip") == 0)
 					return ResolveState("DryReload");
 				else If(CountInv("SSGClip") == 1)
@@ -456,12 +456,12 @@ Class BD_SuperShotgun : BDoomWeapon {
 				return ResolveState(null);
 			}
 			TNT1 A 0 A_ZoomFactor(1,ZOOM_NOSCALETURNING);
-			SMT2 BCD 1 A_WeaponOffset(frandom(-0.3,0.3),4,WOF_ADD);
-			SMT2 EEFFAA 1 A_WeaponOffset(frandom(-0.15,0.15),-2,WOF_ADD);
+			SST2 BCD 1 A_WeaponOffset(frandom(-0.3,0.3),4,WOF_ADD);
+			SST2 EEFFAA 1 A_WeaponOffset(frandom(-0.15,0.15),-2,WOF_ADD);
 			TNT1 A 0 A_WeaponOffset(0,32,WOF_INTERPOLATE);
 			goto ready;
 		AltFire.Modern:
-			SMT2 A 1 {
+			SST2 A 1 {
 				If(CountInv("SSGClip") == 0)
 					return ResolveState("DryReload");
 				else If(CountInv("SSGClip") == 2) 
@@ -477,9 +477,9 @@ Class BD_SuperShotgun : BDoomWeapon {
 				return ResolveState(null);
 			}
 			TNT1 A 0 A_ZoomFactor(1,ZOOM_NOSCALETURNING);
-			SMT2 BCD 1 A_WeaponOffset(0,2.5,WOF_ADD);
-			SMT2 EEFFAA 1 A_WeaponOffset(0,-1.25,WOF_ADD);
-			SMT2 A 5 A_WeaponReady(WRF_NOSECONDARY);
+			SST2 BCD 1 A_WeaponOffset(0,2.5,WOF_ADD);
+			SST2 EEFFAA 1 A_WeaponOffset(0,-1.25,WOF_ADD);
+			SST2 A 5 A_WeaponReady(WRF_NOSECONDARY);
 			goto ready;
 		Reload.Modern:
 			TNT1 A 0 {
@@ -487,9 +487,9 @@ Class BD_SuperShotgun : BDoomWeapon {
 					return ResolveState("Ready.Modern");
 				return ResolveState(null);
 			}
-			SMTR ABCDE 1;
+			SSTR ABCDE 1;
 			TNT1 A 0 A_playsound("Mweapons/ssg/open");
-			SMTR FGH 2;
+			SSTR FGH 2;
 			
 			TNT1 A 0 {
 				if (CountInv("SSGClip") == 1 || CountInv("Shell") == 1)
@@ -497,7 +497,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 				return ResolveState(null);
 			}
 				
-			SMTR I 8 {
+			SSTR I 8 {
 				if (Bdoom_debris) {
 					A_Eject("ShotgunCasing",18,0,12,frandom(0,1),FRandom(1,1.5),frandom(2,3));
 					A_Eject("ShotgunCasing",18,-2,12,frandom(0,1),FRandom(1,1.5),frandom(2,3)); 
@@ -505,43 +505,43 @@ Class BD_SuperShotgun : BDoomWeapon {
 					A_Overlay(11,"InSmokeLeft");
 				}
 			}
-			SMTI ABCDE 2;
-			SMTI F 3 {
+			SSTI ABCDE 2;
+			SSTI F 3 {
 				A_TakeInventory("Shell",1);
 				A_GiveInventory("SSGClip",1);
 				A_playsound("Mweapons/ssg/in");
 			}
-			SMTI GHIKL 2;
-			SMTI M 3 {
+			SSTI GHIKL 2;
+			SSTI M 3 {
 				A_TakeInventory("Shell",1);
 				A_GiveInventory("SSGClip",1);
 				A_playsound("Mweapons/ssg/in");
 			}
 			goto Reload.ModernEnd;
 		Reload.Modern1:
-			SMTI Y 8 {
+			SSTI Y 8 {
 				if (Bdoom_debris) {
 					A_Overlay(10,"InSmokeRight");
 					A_Eject("ShotgunCasing",18,0,12,frandom(0,1),FRandom(1,1.5),frandom(2,3));
 				}
 			}
-			SMTJ AB 1;
-			SMTI I 1;
-			SMTI JKL 2;
-			SMTI M 3 {
+			SSTJ AB 1;
+			SSTI I 1;
+			SSTI JKL 2;
+			SSTI M 3 {
 				A_TakeInventory("Shell",1);
 				A_GiveInventory("SSGClip",1);
 				A_playsound("Mweapons/ssg/in");
 			}
 			goto Reload.ModernEnd;
 		Reload.ModernEnd:
-			SMTI NO 2;
-			SMTI X 4;
-			SMTR HG 1;
+			SSTI NO 2;
+			SSTI X 4;
+			SSTR HG 1;
 			TNT1 A 0 A_playsound("Mweapons/ssg/close");		
-			SMTR FE 2;
-			SMTR DCBA 1;
-			SMT2 A 2 A_WeaponReady(WRF_NOSWITCH);
+			SSTR FE 2;
+			SSTR DCBA 1;
+			SST2 A 2 A_WeaponReady(WRF_NOSWITCH);
 			goto ready;
 }
 }
