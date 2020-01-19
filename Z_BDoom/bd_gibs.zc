@@ -36,6 +36,7 @@ class BD_BaseGib : BD_BaseDebris abstract {
 		+BUDDHA //can't use +NODAMAGE here because it severely reduces the pushing effect of explosions
 		+NOPAIN
 		+RELATIVETOFLOOR
+		+VULNERABLE
 		seesound "none";
 		Bouncesound "gibs/meatland";
 		Deathsound "gibs/meatland";
@@ -216,13 +217,13 @@ class BasicMeatPiece : BD_BaseGib {
 		Super.Tick();
 		//disable interactivity if 'bdoom_livegibs' CVAR is false
 		if (landed) {
-			bVULNERABLE = bdoom_livegibs;
-			if (bdoom_livegibs) {
+			if (bdoom_livegibs && default.bVULNERABLE) {
+				bVULNERABLE = true;
 				bNOINTERACTION = false;
 				A_ChangeLinkFlags(false);
 			}
 			else {
-				A_Stop();
+				A_Stop();				
 				bNOINTERACTION = true;
 				A_ChangeLinkFlags(true);
 			}

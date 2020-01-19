@@ -324,32 +324,26 @@ Class BD_BloodPool : BD_Blood {
 			destroy();
 			return;
 		}
+		angle = random(0,359);
+		if (CheckLandingSize(24))
+			scale*=0.5;
+		if	(CheckLandingSize(18))
+			scale*=0.5;
+		if	(CheckLandingSize(12))
+			scale*=0.5;
+		if	(CheckLandingSize(6)){
+			destroy();
+			return;
+		}
+		SetOrigin((pos.x,pos.y,floorz+frandom(0,0.01)),false);
 	}
 	states {
 		spawn:
-			TNT1 A 0 NoDelay {
-				angle = random(0,359);
-				if (CheckLandingSize(24))
-					scale*=0.5;
-				if	(CheckLandingSize(18))
-					scale*=0.5;
-				if	(CheckLandingSize(12))
-					scale*=0.5;
-				if	(CheckLandingSize(6)){
-					destroy();
-					return ResolveState(null);
-				}
-				SetOrigin((pos.x,pos.y,floorz+frandom(0,0.01)),false);
-				//A_SetScale(restscale*randompick(1,-1),restscale*randompick(1,-1));	
-				return ResolveState(null);	
+			MODL A 0 NoDelay { 
+				frame = random(0,16); 
 			}
-			MODL A 0 { frame = random(0,16); }
-			#### # -1; /*10 {
-				if (CheckWater())
-					return ResolveState("Water");
-				return ResolveState(null);
-			}
-			wait;*/ stop;
+			#### # -1;
+			stop;
 	}
 }
 

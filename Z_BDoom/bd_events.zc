@@ -228,6 +228,7 @@ class BD_ActorOverrideHandler : EventHandler {
 				Case 'NonsolidMeat4'		: e.Replacement = "BD_NonsolidMeat4";		break;
 				Case 'NonsolidMeat5'		: e.Replacement = "BD_NonsolidMeat5";		break;
 				Case 'DeadStick'			: e.Replacement = "BD_DeadStick";			break;
+				Case 'LiveStick'			: e.Replacement = "BD_LiveStick";			break;
 					//MISC
 				case 'TeleportFog' 		: e.replacement = "BD_TeleportFog";		break;
 				case 'ExplosiveBarrel' 	: e.replacement = "BD_ExplosiveBarrel";	break;
