@@ -95,9 +95,9 @@ Class BD_Fist : BDoomWeapon {
 					return ResolveState ("Fire.Modern");
 				else if (bdoom_weapons == 1)
 					return ResolveState ("Fire.Enhanced");
+				A_AlertMonsters();
 				if (FindInventory("PowerStrength"))
 					return ResolveState ("FireStrong");
-				A_AlertMonsters();
 				return ResolveState (null);
 			}
 			FI10 BCD 1;
