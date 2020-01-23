@@ -23,23 +23,23 @@ Class BD_Pistol : BDoomWeapon {
 	override void DoEffect() {
 		Super.DoEffect();
 		//Console.Printf("viewheight: %d; viewz: %d; pos.z: %d;  diff: %d", owner.player.viewheight, owner.player.viewz, owner.pos.z, (owner.player.viewz - owner.pos.z - owner.player.viewheight));
-		If (Owner) {
-			if(bdoom_weapons == 2) {
-				Ammo1 = ammo(Owner.FindInventory("PistolClip"));
-				AmmoUse1 = 1;
-				AmmoUse2 = 0;
-				bNOAUTOFIRE = true;
-				bAMMO_OPTIONAL = true;
-				if (!ammo1)
-					Owner.GiveInventory("PistolClip",15);
-			}
-			else {
-				Ammo1 = ammo(Owner.FindInventory("Clip"));
-				AmmoUse1 = 1;
-				AmmoUse2 = 1;
-				bNOAUTOFIRE = false;
-				bAMMO_OPTIONAL = false;
-			}
+		if (!owner)
+			return;
+		if(bdoom_weapons == 2) {
+			Ammo1 = ammo(Owner.FindInventory("PistolClip"));
+			AmmoUse1 = 1;
+			AmmoUse2 = 0;
+			bNOAUTOFIRE = true;
+			bAMMO_OPTIONAL = true;
+			if (!ammo1)
+				Owner.GiveInventory("PistolClip",15);
+		}
+		else {
+			Ammo1 = ammo(Owner.FindInventory("Clip"));
+			AmmoUse1 = 1;
+			AmmoUse2 = 1;
+			bNOAUTOFIRE = false;
+			bAMMO_OPTIONAL = false;
 		}
 	}
 	

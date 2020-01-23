@@ -45,7 +45,7 @@ Class BD_Chaingun : BDoomWeapon {
 		if(bdoom_weapons == 2) {
 			Ammo1 = ammo(Owner.FindInventory("RifleClip") );
 			ammouse1 = 1;
-			ammouse2 = 1;
+			ammouse2 = 0;
 			if (RifleSights)
 				bNOAUTOFIRE = true;
 			else	
@@ -57,7 +57,6 @@ Class BD_Chaingun : BDoomWeapon {
 		else {
 			Ammo1 = ammo(Owner.FindInventory("Clip"));
 			ammouse1 = 1;
-			Ammo2 = ammo(Owner.FindInventory("Clip"));
 			ammouse2 = 1;
 			bNOAUTOFIRE = false;
 			bAMMO_OPTIONAL = false;
@@ -115,13 +114,13 @@ Class BD_Chaingun : BDoomWeapon {
 		Spawn:
 			MGUN A 1 NoDelay {
 				if (bdoom_weapons == 2) {
-					self.sprite = GetSpriteIndex("RIFN");
-					self.frame = 25;
+					sprite = GetSpriteIndex("RIFN");
+					frame = 25;
 					A_SetScale(0.75);
 				}
 				else {
-					self.sprite = GetSpriteIndex("MGUN");
-					self.frame = 0;
+					sprite = GetSpriteIndex("MGUN");
+					frame = 0;
 					A_SetScale(1.0);
 				}
 			}
