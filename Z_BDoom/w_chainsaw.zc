@@ -5,6 +5,7 @@ Class BD_Chainsaw : BDoomWeapon {
 	protected bool started; //is it on?
 	protected bool cleaning; //is in the process of being cooled, for pseudo-refire of enhanced alt.attack (cleaning)
 	protected int sndcounter; //at >75 produces higher-pitched sound
+	protected state parry;
 		
 	Default	{
 		Weapon.Kickback 0;
@@ -32,11 +33,16 @@ Class BD_Chainsaw : BDoomWeapon {
 				bNOAUTOFIRE = false;
 				A_ClearOverlays(3,3);
 			}
+			if (owner.CountInv("BD_ParryProtection") > 0 && (owner.player.readyweapon != self || bdoom_weapons != 1 || InStateSequence(curstate,parry)) )
+				TakeInventory("BD_ParryProtection",1);
 		//Console.Printf("jamstacks "..jamstacks);
 		}
 		Super.DoEffect();
 	}	
-
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		parry = FindState("AltFire");
+	}
 
 	//Thanks to phantombeta for helping me optimize this overlay thing
 	action void BD_BloodOverlay () {
@@ -103,8 +109,9 @@ Class BD_Chainsaw : BDoomWeapon {
 			SAWN A 1 A_Lower();
 			wait;
 		Ready:
-			TNT1 A 0 A_JumpIf(bdoom_weapons ==2,"Ready.Modern");
 			TNT1 A 0 {
+				If(bdoom_weapons ==2)
+					return ResolveState("Ready.Modern");
 				invoker.jamstacks = 0;
 				invoker.started = false;
 				invoker.sndcounter = 0;
@@ -113,12 +120,17 @@ Class BD_Chainsaw : BDoomWeapon {
 					A_PlaySound("weapons/chainsaw/idle",5);
 				else
 					A_PlaySound("weapons/sawidle",5);
+				return ResolveState(null);
 			}
-			SAWB BCDC 2 {
-				if (bdoom_weapons == 1)
-					A_weaponready();
-				else
-					A_weaponready(WRF_NOSECONDARY);
+			SAWB BBCCDDCC 1 {
+				/*if (bdoom_weapons == 1)
+					A_WeaponReady();				
+				else */
+					A_WeaponReady(WRF_NOSECONDARY);
+				//this allows for Enhanced secondary attack but disables autofire for it, so that players can't block by holding the button
+				if (bdoom_weapons == 1 && (player.cmd.buttons & BT_ALTATTACK) && !(player.oldbuttons & BT_ALTATTACK))
+					return ResolveState("AltFire");
+				return ResolveState(null);
 			}
 			TNT1 A 0 {
 				if (bdoom_debris) {
@@ -128,10 +140,15 @@ Class BD_Chainsaw : BDoomWeapon {
 			}
 			loop;
 		Fire: //should be 8 tics with no refire frames
-			TNT1 A 0 A_JumpIf(bdoom_weapons ==1,"Fire.Enhanced");
-			TNT1 A 0 A_JumpIf(bdoom_weapons ==2,"Fire.Modern");
+			TNT1 A 0 {
+				If(bdoom_weapons == 1)
+					return ResolveState("Fire.Enhanced");
+				If(bdoom_weapons == 2)
+					return ResolveState("Fire.Modern");
 			//fake chargeup, attack begins to coincide with vanilla speed
-			TNT1 A 0 A_Saw("","weapons/sawhit",2,"BD_ChainsawPuff") ;
+				A_Saw("","weapons/sawhit",2,"BD_ChainsawPuff") ;
+				return ResolveState(null);
+			}
 			SAWN AABC 1;
 			TNT1 A 0 {
 				A_playsound("weapons/sawfull",4,1.0,TRUE);
@@ -184,35 +201,19 @@ Class BD_Chainsaw : BDoomWeapon {
 			SAWN CBA 1 A_WeaponReady();
 			goto ready;
 		AltFire:
-			TNT1 A 0 A_JumpIf(bdoom_weapons ==2,"AltFire.Modern");
-			TNT1 A 2 A_GunFlash("SawKick",GFF_NOEXTCHANGE);
-			TNT1 A 0 A_jumpifinventory("PowerStrength",1,"AltHoldStrong");
-			KICK AB 1;
-			TNT1 A 0 {
-				A_SetSpeed(0.1);
-				A_playsound("weapons/kick/swing");
+			TNT1 A 0 A_JumpIf(bdoom_weapons == 2,"AltFire.Modern");
+			TNT1 A 0 A_PlaySound("weapons/chainsaw/block",CHAN_VOICE);
+			SAW2 ABC 1;
+			TNT1 A 0 A_GiveInventory("BD_ParryProtection",1);
+			SAW2 EEEEEE 1 A_WeaponOffset(0.5,0.5,WOF_ADD);
+			SAW2 DC 2;
+			SAW2 BA 3 {
+				A_WeaponReady(WRF_NOSECONDARY);
+				/*if ((player.cmd.buttons & BT_ALTATTACK) && !(player.oldbuttons & BT_ALTATTACK))
+					return ResolveState("AltFire");*/
+				TakeInventory("BD_ParryProtection",1);
+				return ResolveState(null);
 			}
-			KICK CD 1 ;
-			TNT1 A 0 A_Recoil(-2);
-			KICK EF 1;
-			KICK G 3 A_CustomPunch(3*random(5,12),TRUE,CPF_NOTURN,"KickPuff",72);
-			KICK HD 2;
-			KICK CBA 3;
-			TNT1 A 4 A_SetSpeed(1); 
-			goto ready;
-		AltHoldStrong:
-			KICK AB 1;
-			TNT1 A 0 {
-				A_SetSpeed(0.2);
-				A_playsound("weapons/kick/swing");
-			}
-			KICK CD 1 ;
-			TNT1 A 0 A_Recoil(-5);
-			KICK EF 1;
-			KICK G 3 A_CustomPunch(30*random(3,10),TRUE,CPF_NOTURN,"KickPuffStrong",80);
-			KICK HD 2;
-			KICK CBA 3;
-			TNT1 A 4 A_SetSpeed(1);
 			goto ready;
 		SawKick:
 			TNT1 A 0 A_PlaySound("weapons/chainsaw/idle",5);
@@ -403,6 +404,36 @@ Class BD_Chainsaw : BDoomWeapon {
 	}
 }
 
+Class BD_ParryProtection : Inventory {
+	Default {
+		inventory.maxamount 1;
+		+INVENTORY.UNDROPPABLE
+		+INVENTORY.UNTOSSABLE
+	}
+	override void ModifyDamage (int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags) {
+		if (inflictor && owner && passive) {
+			let adiff = abs(owner.DeltaAngle(owner.angle,owner.AngleTo(inflictor)));
+			if (adiff <= 48) {
+				newdamage = 0;	//nullify damage
+				if (inflictor.bMISSILE) {	//if we were hit by a projectile...					
+					if (bdoom_sparks) {
+						for (int i = random(7,12); i > 0; i--)
+							inflictor.A_SpawnItemEx("BD_FireParticle",0,0,0,	frandom(-2,2),frandom(-2,2),frandom(-2,2));
+					}
+					inflictor.destroy();	//destroy it
+				}
+				//otherwise do this if the attack was dealt by a monster:
+				else if (inflictor.bISMONSTER && !inflictor.bFRIENDLY && inflictor.health > 0) {	//make sure it's a non-friendly monster who's still alive
+					inflictor.A_FaceTarget();											//make it face us
+					inflictor.vel += AngletoVector (owner.AngleTo (inflictor), 8.0);	//push it away
+					if (inflictor.FindState("Pain")) {									//check if it has a Pain state
+						inflictor.SetStateLabel("Pain");								//make it enter Pain state if so
+					}
+				}
+			}
+		}
+	}
+}
 
 
 Class BD_ChainsawPuff : BDoomPuff {
