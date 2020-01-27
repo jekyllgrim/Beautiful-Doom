@@ -35,6 +35,12 @@ Class BDoomWeapon : Weapon abstract {
 		Super.DoEffect();
 		if (!owner)
 			return;
+		if (!bdoom_replaceweapons) {
+			self.SelectionOrder = self.default.SelectionOrder+50000;
+			return;
+		}
+		else
+			self.SelectionOrder = self.default.SelectionOrder;
 		//Console.Printf("x: %d, y: %d, z:%d", owner.pos.x,owner.pos.y,owner.pos.z);
 		if(bdoom_weapons == 2) {
 				BobRangeX = 0.2;
