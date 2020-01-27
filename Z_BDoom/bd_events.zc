@@ -10,13 +10,22 @@ class WeaponOverrideHandler : EventHandler {
     }
     override void renderOverlay(RenderEvent e) {
         if (ShowWeapHelp) {
-            let textureName = "";
-            let weap = players[consoleplayer].readyWeapon.GetClassName();
+           let textureName = "";
+			PlayerInfo player	= players[consoleplayer];
+			PlayerPawn mo		= player.mo;
+			if (!player || !mo)
+				return;
+            let weap = player.readyWeapon.GetClassName();
 			if (bdoom_weapons == 1) {
 				switch (weap) {
-					//case 'BD_Fist' 			: TextureName = "graphics/popups/Fist.png"; 		break;
-					//case 'BD_Chainsaw' 		: TextureName = "graphics/popups/Chainsaw.png"; 	break;
-					case 'BD_Pistol' 			: TextureName = "graphics/popups/e_pistol.png"; 	break;
+					case 'BD_Fist' 			: TextureName = "graphics/popups/e_fist.png"; 		break;
+					case 'BD_Chainsaw' 		: TextureName = "graphics/popups/e_chainsaw.png"; 	break;
+					case 'BD_Pistol' 			: 
+						if (mo.CountInv('BD_Pistol') > 1)
+							TextureName = "graphics/popups/e_pistol.png"; 	
+						else 
+							TextureName = "graphics/popups/e_2pist.png"; 	
+						break;
 					case 'BD_Shotgun'			: TextureName = "graphics/popups/e_shot.png"; 		break;
 					case 'BD_SuperShotgun' 	: TextureName = "graphics/popups/e_SSG.png"; 		break;
 					case 'BD_Chaingun' 		: TextureName = "graphics/popups/e_Cgun.png"; 		break;
@@ -27,8 +36,8 @@ class WeaponOverrideHandler : EventHandler {
 			}
 			else if (bdoom_weapons == 2) {
 				switch (weap) {
-					//case 'BD_Fist' 			: TextureName = "graphics/popups/Fist.png"; 		break;
-					//case 'BD_Chainsaw' 		: TextureName = "graphics/popups/Chainsaw.png"; 	break;
+					case 'BD_Fist' 			: TextureName = "graphics/popups/m_fist.png"; 		break;
+					case 'BD_Chainsaw' 		: TextureName = "graphics/popups/m_chainsaw.png"; 	break;
 					case 'BD_Pistol' 			: TextureName = "graphics/popups/m_pistol.png"; 	break;
 					case 'BD_Shotgun'			: TextureName = "graphics/popups/m_shot.png"; 		break;
 					case 'BD_SuperShotgun' 	: TextureName = "graphics/popups/m_SSG.png"; 		break;
