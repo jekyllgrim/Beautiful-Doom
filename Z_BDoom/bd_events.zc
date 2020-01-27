@@ -78,16 +78,16 @@ class WeaponOverrideHandler : EventHandler {
 		if (!bdoom_replaceweapons)
 			return;
 		switch (e.Replacee.GetClassName()) {
-			case 'Fist' 			: e.Replacement = "BD_Fist"; 				break;
-			case 'Berserk' 		: e.Replacement = "BD_Berserk"; 			break;
-			case 'Chainsaw' 		: e.Replacement = "BD_Chainsaw"; 			break;
-			case 'Pistol' 			: e.Replacement = "BD_Pistol"; 			break;
-			case 'Shotgun'			: e.Replacement = "BD_Shotgun"; 			break;
-			case 'SuperShotgun' 	: e.Replacement = "BD_SuperShotgun";		break;
-			case 'Chaingun' 		: e.Replacement = "BD_Chaingun"; 			break;
-			case 'RocketLauncher'	: e.Replacement = "BD_RocketLauncher"; 	break;
-			case 'PlasmaRifle' 	: e.Replacement = "BD_PlasmaRifle"; 		break;
-			case 'BFG9000' 		: e.Replacement = "BD_BFG9000"; 			break;
+			case 'Fist' 			: e.Replacement = 'BD_Fist'; 				break;
+			case 'Berserk' 		: e.Replacement = 'BD_Berserk'; 			break;
+			case 'Chainsaw' 		: e.Replacement = 'BD_Chainsaw'; 			break;
+			case 'Pistol' 			: e.Replacement = 'BD_Pistol'; 			break;
+			case 'Shotgun'			: e.Replacement = 'BD_Shotgun'; 			break;
+			case 'SuperShotgun' 	: e.Replacement = 'BD_SuperShotgun';		break;
+			case 'Chaingun' 		: e.Replacement = 'BD_Chaingun'; 			break;
+			case 'RocketLauncher'	: e.Replacement = 'BD_RocketLauncher'; 	break;
+			case 'PlasmaRifle' 	: e.Replacement = 'BD_PlasmaRifle'; 		break;
+			case 'BFG9000' 		: e.Replacement = 'BD_BFG9000'; 			break;
 		}
 		e.IsFinal = true;
 	}
@@ -100,48 +100,76 @@ class WeaponOverrideHandler : EventHandler {
 		for (int pn = 0; pn < MAXPLAYERS; pn++) {
 			if (!playerInGame[pn])
 				continue;
-
 			PlayerInfo player	= players[pn];
 			PlayerPawn mo		= player.mo;
 			if (!player || !mo)
-				return;
-			if (!player.pendingWeapon || !player.readyweapon)
-				return;
-			let oldweap = player.pendingWeapon.GetClassName(); //get the weapon that is being selected
-			let oldweapr = player.readyweapon.GetClassName(); //get the currently selected weapons
-			if (bdoom_replaceweapons) { //check if the replace weapons CVAR is true
-				switch (oldweap) { //if game attempts to SELECT a vanilla weapon, take it away and select a modded weapon (and give it, if it's missing)
-					case 'Fist' 			: player.pendingWeapon = GetWeapon(mo, "BD_Fist"); 			mo.TakeInventory(oldweap,1); break;
-					case 'Chainsaw' 		: player.pendingWeapon = GetWeapon(mo, "BD_Chainsaw"); 		mo.TakeInventory(oldweap,1); break;
-					case 'Pistol' 			: player.pendingWeapon = GetWeapon(mo, "BD_Pistol"); 			mo.TakeInventory(oldweap,1); break;
-					case 'Shotgun'			: player.pendingWeapon = GetWeapon(mo, "BD_Shotgun"); 		mo.TakeInventory(oldweap,1); break;
-					case 'SuperShotgun' 	: player.pendingWeapon = GetWeapon(mo, "BD_SuperShotgun"); 	mo.TakeInventory(oldweap,1); break;
-					case 'Chaingun' 		: player.pendingWeapon = GetWeapon(mo, "BD_Chaingun"); 		mo.TakeInventory(oldweap,1); break;
-					case 'RocketLauncher' : player.pendingWeapon = GetWeapon(mo, "BD_RocketLauncher");mo.TakeInventory(oldweap,1); break;
-					case 'PlasmaRifle' 	: player.pendingWeapon = GetWeapon(mo, "BD_PlasmaRifle"); 	mo.TakeInventory(oldweap,1); break;
-					case 'BFG9000' 		: player.pendingWeapon = GetWeapon(mo, "BD_BFG9000"); 		mo.TakeInventory(oldweap,1); break;
-				}
-				switch (oldweapr) { //if (a vanilla weapon is READY (such as Pistol at vanilla map start), we also take it away and select the modded counterpart
-					case 'Fist' 			: player.pendingWeapon = GetWeapon(mo, "BD_Fist"); 			mo.TakeInventory(oldweapr,1); break;
-					case 'Chainsaw' 		: player.pendingWeapon = GetWeapon(mo, "BD_Chainsaw"); 		mo.TakeInventory(oldweapr,1); break;
-					case 'Pistol' 			: player.pendingWeapon = GetWeapon(mo, "BD_Pistol"); 			mo.TakeInventory(oldweapr,1); break;
-					case 'Shotgun'			: player.pendingWeapon = GetWeapon(mo, "BD_Shotgun"); 		mo.TakeInventory(oldweapr,1); break;
-					case 'SuperShotgun' 	: player.pendingWeapon = GetWeapon(mo, "BD_SuperShotgun"); 	mo.TakeInventory(oldweapr,1); break;
-					case 'Chaingun' 		: player.pendingWeapon = GetWeapon(mo, "BD_Chaingun"); 		mo.TakeInventory(oldweapr,1); break;
-					case 'RocketLauncher' : player.pendingWeapon = GetWeapon(mo, "BD_RocketLauncher");	mo.TakeInventory(oldweapr,1); break;
-					case 'PlasmaRifle' 	: player.pendingWeapon = GetWeapon(mo, "BD_PlasmaRifle"); 	mo.TakeInventory(oldweapr,1); break;
-					case 'BFG9000' 		: player.pendingWeapon = GetWeapon(mo, "BD_BFG9000"); 		mo.TakeInventory(oldweapr,1); break;
-				}
+				continue;
+			if (!player.readyweapon)
+				continue;
+			let oldweap = player.pendingweapon.GetClassName();
+			let oldweapr = player.readyweapon.GetClassName();
+			if (bdoom_replaceweapons) { 
+				switch (oldweap) {
+					case 'Fist' 			:    player.pendingweapon = GetWeapon(mo, "BD_Fist"			); mo.TakeInventory(oldweap,1); break;
+					case 'Chainsaw' 		:    player.pendingweapon = GetWeapon(mo, "BD_Chainsaw"		); mo.TakeInventory(oldweap,1); break;
+					case 'Pistol' 			:    player.pendingweapon = GetWeapon(mo, "BD_Pistol"			); mo.TakeInventory(oldweap,1); break;
+					case 'Shotgun'			:    player.pendingweapon = GetWeapon(mo, "BD_Shotgun"		); mo.TakeInventory(oldweap,1); break;
+					case 'SuperShotgun' 	:    player.pendingweapon = GetWeapon(mo, "BD_SuperShotgun"	); mo.TakeInventory(oldweap,1); break;
+					case 'Chaingun' 		:    player.pendingweapon = GetWeapon(mo, "BD_Chaingun"		); mo.TakeInventory(oldweap,1); break;
+					case 'RocketLauncher'	:    player.pendingweapon = GetWeapon(mo, "BD_RocketLauncher"	); mo.TakeInventory(oldweap,1); break;
+					case 'PlasmaRifle' 	:    player.pendingweapon = GetWeapon(mo, "BD_PlasmaRifle"	); mo.TakeInventory(oldweap,1); break;
+					case 'BFG9000' 		:    player.pendingweapon = GetWeapon(mo, "BD_BFG9000"		); mo.TakeInventory(oldweap,1); break;
+				}				
+				
+				switch (oldweapr) {
+					case 'Fist' 			:    player.pendingweapon = GetWeapon(mo, "BD_Fist"			); mo.TakeInventory(oldweapr,1); break;
+					case 'Chainsaw' 		:    player.pendingweapon = GetWeapon(mo, "BD_Chainsaw"		); mo.TakeInventory(oldweapr,1); break;
+					case 'Pistol' 			:    player.pendingweapon = GetWeapon(mo, "BD_Pistol"			); mo.TakeInventory(oldweapr,1); break;
+					case 'Shotgun'			:    player.pendingweapon = GetWeapon(mo, "BD_Shotgun"		); mo.TakeInventory(oldweapr,1); break;
+					case 'SuperShotgun' 	:    player.pendingweapon = GetWeapon(mo, "BD_SuperShotgun"	); mo.TakeInventory(oldweapr,1); break;
+					case 'Chaingun' 		:    player.pendingweapon = GetWeapon(mo, "BD_Chaingun"		); mo.TakeInventory(oldweapr,1); break;
+					case 'RocketLauncher'	:    player.pendingweapon = GetWeapon(mo, "BD_RocketLauncher"	); mo.TakeInventory(oldweapr,1); break;
+					case 'PlasmaRifle' 	:    player.pendingweapon = GetWeapon(mo, "BD_PlasmaRifle"	); mo.TakeInventory(oldweapr,1); break;
+					case 'BFG9000' 		:    player.pendingweapon = GetWeapon(mo, "BD_BFG9000"		); mo.TakeInventory(oldweapr,1); break;
+				}				
 			}
 			else {		
-				mo.speed = mo.default.speed; 	//to ensure the player is no longer affected by speed-altering effects of kicking or modern rifle ADS
+				//mo.speed = mo.default.speed; 	//to ensure the player is no longer affected by speed-altering effects of kicking or modern rifle ADS
+			/*
+			NOTE: You're NOT supposed to be able to toggle bdoom_replaceweapons whenever you want. You have to restart your game.
+			So, the fact that if you had it enabled, and then disabled it, and you ended up having no weapons, is intentional. Doing it any other way
+			would cause more issues.
+			The part below has only one purpose: if you disable Beautiful Doom Weapons, the block below makes sure they never appear in your inventory.
+			You won't receive them with "give all" or "give weapons". Without this section, you wouldn't be able to avoid using Beautifull Doom guns at all.
+			*/
+				if (mo.FindInventory('BD_Fist'))
+					mo.TakeInventory('BD_Fist',1);
+				if (mo.FindInventory('BD_Chainsaw'))
+					mo.TakeInventory('BD_Chainsaw',1);
+				if (mo.FindInventory('BD_Pistol'))
+					mo.TakeInventory('BD_Pistol',1);
+				if (mo.FindInventory('BD_Shotgun'))
+					mo.TakeInventory('BD_Shotgun',1);
+				if (mo.FindInventory('BD_SuperShotgun'))
+					mo.TakeInventory('BD_SuperShotgun',1);
+				if (mo.FindInventory('BD_Chaingun'))
+					mo.TakeInventory('BD_Chaingun',1);
+				if (mo.FindInventory('BD_RocketLauncher'))
+					mo.TakeInventory('BD_RocketLauncher',1);
+				if (mo.FindInventory('BD_PlasmaRifle'))
+					mo.TakeInventory('BD_PlasmaRifle',1);
+				if (mo.FindInventory('BD_BFG9000'))
+					mo.TakeInventory('BD_BFG9000',1);
 			}
 		}
 	}
 	// Courtesy of Zombie
 	private Weapon GetWeapon(PlayerPawn mo, Class<Weapon> type) {
 		let weap = Weapon(mo.FindInventory(type));
-		return weap ? weap : Weapon(mo.GiveInventoryType(type));
+		if (weap)
+			return weap;
+		else
+			return Weapon(mo.GiveInventoryType(type));
 	}
 }
 
@@ -153,103 +181,103 @@ class BD_ActorOverrideHandler : EventHandler {
 	override void CheckReplacement(ReplaceEvent e) {
 		if (bdoom_blood) {
 			if (e.Replacee.GetClassName() == "Blood")
-				e.Replacement = "BD_Blood";
+				e.Replacement = 'BD_Blood';
 		}
 		if (bdoom_replacemonsters) {	
 			switch (e.Replacee.GetClassName()) {
-				case 'Zombieman' 			: if (bdoom_Zombieman) 			e.Replacement = "BD_Zombieman"; 			break;
-				case 'ShotgunGuy' 			: if (bdoom_ShotgunGuy) 			e.Replacement = "BD_ShotgunGuy"; 			break;
-				case 'ChaingunGuy' 		: if (bdoom_ChaingunGuy) 			e.Replacement = "BD_ChaingunGuy"; 		break;
-				case 'WolfensteinSS'		: if (bdoom_WolfensteinSS) 		e.Replacement = "BD_WolfensteinSS"; 		break;
-				case 'DoomImp' 			: if (bdoom_DoomImp) 				e.Replacement = "BD_DoomImp"; 			break;
-				case 'Demon' 				: if (bdoom_Demon) 				e.Replacement = "BD_Demon"; 				break;
-				case 'Spectre' 			: if (bdoom_Spectre) 				e.Replacement = "BD_Spectre"; 			break;
-				case 'Cacodemon' 			: if (bdoom_Cacodemon) 			e.Replacement = "BD_Cacodemon"; 			break;
-				case 'PainElemental'		: if (bdoom_PainElemental) 		e.Replacement = "BD_PainElemental"; 		break;
-				case 'LostSoul'			: if (bdoom_LostSoul) 			e.Replacement = "BD_LostSoul"; 			break;
-				case 'Revenant' 			: if (bdoom_Revenant) 			e.Replacement = "BD_Revenant"; 			break;
-				case 'Arachnotron' 		: if (bdoom_Arachnotron) 			e.Replacement = "BD_Arachnotron"; 		break;
-				case 'Fatso' 				: if (bdoom_Fatso) 				e.Replacement = "BD_Fatso"; 				break;
-				case 'HellKnight' 			: if (bdoom_HellKnight) 			e.Replacement = "BD_HellKnight"; 			break;
-				case 'BaronOfHell' 		: if (bdoom_BaronOfHell) 			e.Replacement = "BD_BaronOfHell"; 		break;
-				case 'ArchVile' 			: if (bdoom_ArchVile) 			e.Replacement = "BD_ArchVile"; 			break;
-				case 'Cyberdemon' 			: if (bdoom_Cyberdemon) 			e.Replacement = "BD_Cyberdemon"; 			break;
-				case 'SpiderMastermind' 	: if (bdoom_SpiderMastermind) 	e.Replacement = "BD_SpiderMastermind";	break;
-				case 'BossBrain' 			: if (bdoom_IconOfSin) 			e.Replacement = "BD_BossBrain";			break;
-				case 'SpawnShot' 			: if (bdoom_IconOfSin) 			e.Replacement = "BD_SpawnShot";			break;
+				case 'Zombieman' 			: if (bdoom_Zombieman) 			e.Replacement = 'BD_Zombieman'; 			break;
+				case 'ShotgunGuy' 			: if (bdoom_ShotgunGuy) 			e.Replacement = 'BD_ShotgunGuy'; 			break;
+				case 'ChaingunGuy' 		: if (bdoom_ChaingunGuy) 			e.Replacement = 'BD_ChaingunGuy'; 		break;
+				case 'WolfensteinSS'		: if (bdoom_WolfensteinSS) 		e.Replacement = 'BD_WolfensteinSS'; 		break;
+				case 'DoomImp' 			: if (bdoom_DoomImp) 				e.Replacement = 'BD_DoomImp'; 			break;
+				case 'Demon' 				: if (bdoom_Demon) 				e.Replacement = 'BD_Demon'; 				break;
+				case 'Spectre' 			: if (bdoom_Spectre) 				e.Replacement = 'BD_Spectre'; 			break;
+				case 'Cacodemon' 			: if (bdoom_Cacodemon) 			e.Replacement = 'BD_Cacodemon'; 			break;
+				case 'PainElemental'		: if (bdoom_PainElemental) 		e.Replacement = 'BD_PainElemental'; 		break;
+				case 'LostSoul'			: if (bdoom_LostSoul) 			e.Replacement = 'BD_LostSoul'; 			break;
+				case 'Revenant' 			: if (bdoom_Revenant) 			e.Replacement = 'BD_Revenant'; 			break;
+				case 'Arachnotron' 		: if (bdoom_Arachnotron) 			e.Replacement = 'BD_Arachnotron'; 		break;
+				case 'Fatso' 				: if (bdoom_Fatso) 				e.Replacement = 'BD_Fatso'; 				break;
+				case 'HellKnight' 			: if (bdoom_HellKnight) 			e.Replacement = 'BD_HellKnight'; 			break;
+				case 'BaronOfHell' 		: if (bdoom_BaronOfHell) 			e.Replacement = 'BD_BaronOfHell'; 		break;
+				case 'ArchVile' 			: if (bdoom_ArchVile) 			e.Replacement = 'BD_ArchVile'; 			break;
+				case 'Cyberdemon' 			: if (bdoom_Cyberdemon) 			e.Replacement = 'BD_Cyberdemon'; 			break;
+				case 'SpiderMastermind' 	: if (bdoom_SpiderMastermind) 	e.Replacement = 'BD_SpiderMastermind';	break;
+				case 'BossBrain' 			: if (bdoom_IconOfSin) 			e.Replacement = 'BD_BossBrain';			break;
+				case 'SpawnShot' 			: if (bdoom_IconOfSin) 			e.Replacement = 'BD_SpawnShot';			break;
 			//decorative corpses:
-				case 'DeadZombieman' 		: if (bdoom_Zombieman) 			e.Replacement = "BD_DeadZombieman"; 		break;
-				case 'DeadShotgunGuy' 	: if (bdoom_ShotgunGuy) 			e.Replacement = "BD_DeadShotgunGuy"; 		break;
-				case 'DeadDoomImp' 		: if (bdoom_DoomImp) 				e.Replacement = "BD_DeadDoomImp"; 		break;
-				case 'DeadDemon' 			: if (bdoom_Demon) 				e.Replacement = "BD_DeadDemon"; 			break;
-				case 'DeadCacodemon' 		: if (bdoom_Cacodemon) 			e.Replacement = "BD_DeadCacodemon"; 		break;
-				case 'DeadLostSoul'		: if (bdoom_LostSoul) 			e.Replacement = "BD_DeadLostSoul"; 		break;
+				case 'DeadZombieman' 		: if (bdoom_Zombieman) 			e.Replacement = 'BD_DeadZombieman'; 		break;
+				case 'DeadShotgunGuy' 	: if (bdoom_ShotgunGuy) 			e.Replacement = 'BD_DeadShotgunGuy'; 		break;
+				case 'DeadDoomImp' 		: if (bdoom_DoomImp) 				e.Replacement = 'BD_DeadDoomImp'; 		break;
+				case 'DeadDemon' 			: if (bdoom_Demon) 				e.Replacement = 'BD_DeadDemon'; 			break;
+				case 'DeadCacodemon' 		: if (bdoom_Cacodemon) 			e.Replacement = 'BD_DeadCacodemon'; 		break;
+				case 'DeadLostSoul'		: if (bdoom_LostSoul) 			e.Replacement = 'BD_DeadLostSoul'; 		break;
 			}
 		}
 		if (bdoom_replaceitems) {
 			switch (e.Replacee.GetClassName()) {
-				case 'Blursphere' 				: e.Replacement = "BD_Blursphere"; 				break;
-				case 'Soulsphere' 				: e.Replacement = "BD_Soulsphere"; 				break;
-				case 'Megasphere' 				: e.Replacement = "BD_Megasphere"; 				break;
-				case 'InvulnerabilitySphere' 	: e.Replacement = "BD_InvulnerabilitySphere"; 	break;
-				case 'Allmap' 					: e.Replacement = "BD_Allmap"; 					break;
-				case 'Infrared' 				: e.Replacement = "BD_Infrared"; 					break;
-				case 'HealthBonus' 			: e.Replacement = "BD_HealthBonus"; 				break;
-				case 'ArmorBonus' 				: e.Replacement = "BD_ArmorBonus"; 				break;
-				case 'Stimpack' 				: e.Replacement = "BD_Stimpack"; 					break;
-				case 'Medikit' 				: e.Replacement = "BD_Medikit"; 					break;
-				case 'GreenArmor' 				: e.Replacement = "BD_GreenArmor"; 				break;
-				case 'BlueArmor' 				: e.Replacement = "BD_BlueArmor"; 				break;
-				case 'RedCard' 				: e.Replacement = "BD_RedCard"; 					break;
-				case 'BlueCard' 				: e.Replacement = "BD_BlueCard"; 					break;
-				case 'YellowCard' 				: e.Replacement = "BD_YellowCard"; 				break;
-				case 'RedSkull' 				: e.Replacement = "BD_RedSkull"; 					break;
-				case 'BlueSkull' 				: e.Replacement = "BD_BlueSkull"; 				break;
-				case 'YellowSkull' 			: e.Replacement = "BD_YellowSkull"; 				break;
+				case 'Blursphere' 				: e.Replacement = 'BD_Blursphere'; 				break;
+				case 'Soulsphere' 				: e.Replacement = 'BD_Soulsphere'; 				break;
+				case 'Megasphere' 				: e.Replacement = 'BD_Megasphere'; 				break;
+				case 'InvulnerabilitySphere' 	: e.Replacement = 'BD_InvulnerabilitySphere'; 	break;
+				case 'Allmap' 					: e.Replacement = 'BD_Allmap'; 					break;
+				case 'Infrared' 				: e.Replacement = 'BD_Infrared'; 					break;
+				case 'HealthBonus' 			: e.Replacement = 'BD_HealthBonus'; 				break;
+				case 'ArmorBonus' 				: e.Replacement = 'BD_ArmorBonus'; 				break;
+				case 'Stimpack' 				: e.Replacement = 'BD_Stimpack'; 					break;
+				case 'Medikit' 				: e.Replacement = 'BD_Medikit'; 					break;
+				case 'GreenArmor' 				: e.Replacement = 'BD_GreenArmor'; 				break;
+				case 'BlueArmor' 				: e.Replacement = 'BD_BlueArmor'; 				break;
+				case 'RedCard' 				: e.Replacement = 'BD_RedCard'; 					break;
+				case 'BlueCard' 				: e.Replacement = 'BD_BlueCard'; 					break;
+				case 'YellowCard' 				: e.Replacement = 'BD_YellowCard'; 				break;
+				case 'RedSkull' 				: e.Replacement = 'BD_RedSkull'; 					break;
+				case 'BlueSkull' 				: e.Replacement = 'BD_BlueSkull'; 				break;
+				case 'YellowSkull' 			: e.Replacement = 'BD_YellowSkull'; 				break;
 			}
 		}
 		if (bdoom_replaceobjects) {
 			switch (e.Replacee.GetClassName()) {
 					//VICTIMS
-				Case 'HangTLookingDown' 	: e.Replacement = "BD_HangingTorso"; 		break;
-				Case 'HangTLookingUp' 	: e.Replacement = "BD_HangingTorso"; 		break;
-				Case 'HangTNoBrain' 		: e.Replacement = "BD_HangingTorso"; 		break;
-				Case 'HangTSkull' 			: e.Replacement = "BD_HangingTorso"; 		break;
-				Case 'HangBNoBrain' 		: e.Replacement = "BD_HangingBody"; 		break;
-				Case 'HangNoGuts' 			: e.Replacement = "BD_HangingBody"; 		break;
-				Case 'BloodyTwitch'		: e.Replacement = "BD_BloodyTwitch"; 		break;
-				Case 'NonSolidTwitch'		: e.Replacement = "BD_NonsolidTwitch"; 	break;				
-				Case 'Meat2'				: e.Replacement = "BD_Meat2"; 				break;
-				Case 'Meat3'				: e.Replacement = "BD_Meat3"; 				break;
-				Case 'Meat4'				: e.Replacement = "BD_Meat4"; 				break;
-				Case 'Meat5'				: e.Replacement = "BD_Meat5"; 				break;				
-				Case 'NonsolidMeat2'		: e.Replacement = "BD_NonsolidMeat2"; 	break;
-				Case 'NonsolidMeat3'		: e.Replacement = "BD_NonsolidMeat3"; 	break;
-				Case 'NonsolidMeat4'		: e.Replacement = "BD_NonsolidMeat4";		break;
-				Case 'NonsolidMeat5'		: e.Replacement = "BD_NonsolidMeat5";		break;
-				Case 'DeadStick'			: e.Replacement = "BD_DeadStick";			break;
-				Case 'LiveStick'			: e.Replacement = "BD_LiveStick";			break;
+				Case 'HangTLookingDown' 	: e.Replacement = 'BD_HangingTorso'; 		break;
+				Case 'HangTLookingUp' 	: e.Replacement = 'BD_HangingTorso'; 		break;
+				Case 'HangTNoBrain' 		: e.Replacement = 'BD_HangingTorso'; 		break;
+				Case 'HangTSkull' 			: e.Replacement = 'BD_HangingTorso'; 		break;
+				Case 'HangBNoBrain' 		: e.Replacement = 'BD_HangingBody'; 		break;
+				Case 'HangNoGuts' 			: e.Replacement = 'BD_HangingBody'; 		break;
+				Case 'BloodyTwitch'		: e.Replacement = 'BD_BloodyTwitch'; 		break;
+				Case 'NonSolidTwitch'		: e.Replacement = 'BD_NonsolidTwitch'; 	break;				
+				Case 'Meat2'				: e.Replacement = 'BD_Meat2'; 				break;
+				Case 'Meat3'				: e.Replacement = 'BD_Meat3'; 				break;
+				Case 'Meat4'				: e.Replacement = 'BD_Meat4'; 				break;
+				Case 'Meat5'				: e.Replacement = 'BD_Meat5'; 				break;				
+				Case 'NonsolidMeat2'		: e.Replacement = 'BD_NonsolidMeat2'; 	break;
+				Case 'NonsolidMeat3'		: e.Replacement = 'BD_NonsolidMeat3'; 	break;
+				Case 'NonsolidMeat4'		: e.Replacement = 'BD_NonsolidMeat4';		break;
+				Case 'NonsolidMeat5'		: e.Replacement = 'BD_NonsolidMeat5';		break;
+				Case 'DeadStick'			: e.Replacement = 'BD_DeadStick';			break;
+				Case 'LiveStick'			: e.Replacement = 'BD_LiveStick';			break;
 					//MISC
-				case 'TeleportFog' 		: e.replacement = "BD_TeleportFog";		break;
-				case 'ExplosiveBarrel' 	: e.replacement = "BD_ExplosiveBarrel";	break;
-				case 'EvilEye' 			: e.replacement = "BD_EvilEye";			break;
-				case 'FloatingSkull' 		: e.replacement = "BD_FloatingSkull";		break;
-				case 'HeartColumn' 		: e.replacement = "BD_HeartColumn";		break;
-				case 'BigTree' 			: e.replacement = "BD_BigTree";			break;
-				case 'TorchTree' 			: e.replacement = "BD_TorchTree";			break;
+				case 'TeleportFog' 		: e.Replacement = 'BD_TeleportFog';		break;
+				case 'ExplosiveBarrel' 	: e.Replacement = 'BD_ExplosiveBarrel';	break;
+				case 'EvilEye' 			: e.Replacement = 'BD_EvilEye';			break;
+				case 'FloatingSkull' 		: e.Replacement = 'BD_FloatingSkull';		break;
+				case 'HeartColumn' 		: e.Replacement = 'BD_HeartColumn';		break;
+				case 'BigTree' 			: e.Replacement = 'BD_BigTree';			break;
+				case 'TorchTree' 			: e.Replacement = 'BD_TorchTree';			break;
 					//LIGHTS
-				case 'GreenTorch' 			: e.replacement = "TallTorch_Green";		break;
-				case 'RedTorch' 			: e.replacement = "TallTorch_Red";		break;
-				case 'BlueTorch' 			: e.replacement = "TallTorch_Blue";		break;
-				case 'ShortGreenTorch'	: e.replacement = "ShortTorch_Green";		break;
-				case 'ShortRedTorch' 		: e.replacement = "ShortTorch_Red";		break;
-				case 'ShortBlueTorch' 	: e.replacement = "ShortTorch_Blue";		break;
-				case 'Candlestick' 		: e.replacement = "BD_Candlestick";		break;
-				case 'Candelabra' 			: e.replacement = "BD_Candelabra";		break;
-				case 'BurningBarrel' 		: e.replacement = "BD_BurningBarrel";		break;
-				case 'Techlamp' 			: e.replacement = "BD_Techlamp";			break;
-				case 'Techlamp2' 			: e.replacement = "BD_Techlamp2";			break;
-				case 'Column' 				: e.replacement = "BD_Column";			break;
+				case 'GreenTorch' 			: e.Replacement = 'TallTorch_Green';		break;
+				case 'RedTorch' 			: e.Replacement = 'TallTorch_Red';		break;
+				case 'BlueTorch' 			: e.Replacement = 'TallTorch_Blue';		break;
+				case 'ShortGreenTorch'	: e.Replacement = 'ShortTorch_Green';		break;
+				case 'ShortRedTorch' 		: e.Replacement = 'ShortTorch_Red';		break;
+				case 'ShortBlueTorch' 	: e.Replacement = 'ShortTorch_Blue';		break;
+				case 'Candlestick' 		: e.Replacement = 'BD_Candlestick';		break;
+				case 'Candelabra' 			: e.Replacement = 'BD_Candelabra';		break;
+				case 'BurningBarrel' 		: e.Replacement = 'BD_BurningBarrel';		break;
+				case 'Techlamp' 			: e.Replacement = 'BD_Techlamp';			break;
+				case 'Techlamp2' 			: e.Replacement = 'BD_Techlamp2';			break;
+				case 'Column' 				: e.Replacement = 'BD_Column';			break;
 			}
 		}
 		e.IsFinal = true;
@@ -259,32 +287,33 @@ class BD_ActorOverrideHandler : EventHandler {
 		if (!bdoom_replacemonsters)
 			return;
 		switch (e.Replacement.GetClassName()) {
-			case 'BD_Zombieman' 			: if (bdoom_Zombieman) 			e.Replacee = "Zombieman"; 			break;
-			case 'BD_ShotgunGuy' 			: if (bdoom_ShotgunGuy) 			e.Replacee = "ShotgunGuy"; 		break;
-			case 'BD_ChaingunGuy' 		: if (bdoom_ChaingunGuy) 			e.Replacee = "ChaingunGuy"; 		break;
-			case 'BD_WolfensteinSS'		: if (bdoom_WolfensteinSS) 		e.Replacee = "WolfensteinSS"; 	break;
-			case 'BD_DoomImp' 				: if (bdoom_DoomImp) 				e.Replacee = "DoomImp"; 			break;
-			case 'BD_Demon' 				: if (bdoom_Demon) 				e.Replacee = "Demon"; 				break;
-			case 'BD_Spectre' 				: if (bdoom_Spectre) 				e.Replacee = "Spectre"; 			break;
-			case 'BD_Cacodemon' 			: if (bdoom_Cacodemon) 			e.Replacee = "Cacodemon"; 			break;
-			case 'BD_PainElemental'		: if (bdoom_PainElemental) 		e.Replacee = "PainElemental"; 	break;
-			case 'BD_LostSoul'				: if (bdoom_LostSoul) 			e.Replacee = "LostSoul"; 			break;
-			case 'BD_Revenant' 			: if (bdoom_Revenant) 			e.Replacee = "Revenant"; 			break;
-			case 'BD_Arachnotron' 		: if (bdoom_Arachnotron) 			e.Replacee = "Arachnotron"; 		break;
-			case 'BD_Fatso' 				: if (bdoom_Fatso) 				e.Replacee = "Fatso"; 				break;
-			case 'BD_HellKnight' 			: if (bdoom_HellKnight) 			e.Replacee = "HellKnight"; 		break;
-			case 'BD_BaronOfHell' 		: if (bdoom_BaronOfHell) 			e.Replacee = "BaronOfHell"; 		break;
-			case 'BD_ArchVile' 			: if (bdoom_ArchVile) 			e.Replacee = "ArchVile"; 			break;
-			case 'BD_Cyberdemon' 			: if (bdoom_Cyberdemon) 			e.Replacee = "Cyberdemon"; 		break;
-			case 'BD_SpiderMastermind'	: if (bdoom_SpiderMastermind) 	e.Replacee = "SpiderMastermind";	break;
-			case 'BD_BossBrain' 			: if (bdoom_IconOfSin) 			e.Replacee = "BossBrain";			break;
-			case 'BD_SpawnShot' 			: if (bdoom_IconOfSin) 			e.Replacee = "SpawnShot";			break;
+			case 'BD_Zombieman' 			: if (bdoom_Zombieman) 			e.Replacee = 'Zombieman'; 			break;
+			case 'BD_ShotgunGuy' 			: if (bdoom_ShotgunGuy) 			e.Replacee = 'ShotgunGuy'; 		break;
+			case 'BD_ChaingunGuy' 		: if (bdoom_ChaingunGuy) 			e.Replacee = 'ChaingunGuy'; 		break;
+			case 'BD_WolfensteinSS'		: if (bdoom_WolfensteinSS) 		e.Replacee = 'WolfensteinSS'; 	break;
+			case 'BD_DoomImp' 				: if (bdoom_DoomImp) 				e.Replacee = 'DoomImp'; 			break;
+			case 'BD_Demon' 				: if (bdoom_Demon) 				e.Replacee = 'Demon'; 				break;
+			case 'BD_Spectre' 				: if (bdoom_Spectre) 				e.Replacee = 'Spectre'; 			break;
+			case 'BD_Cacodemon' 			: if (bdoom_Cacodemon) 			e.Replacee = 'Cacodemon'; 			break;
+			case 'BD_PainElemental'		: if (bdoom_PainElemental) 		e.Replacee = 'PainElemental'; 	break;
+			case 'BD_LostSoul'				: if (bdoom_LostSoul) 			e.Replacee = 'LostSoul'; 			break;
+			case 'BD_Revenant' 			: if (bdoom_Revenant) 			e.Replacee = 'Revenant'; 			break;
+			case 'BD_Arachnotron' 		: if (bdoom_Arachnotron) 			e.Replacee = 'Arachnotron'; 		break;
+			case 'BD_Fatso' 				: if (bdoom_Fatso) 				e.Replacee = 'Fatso'; 				break;
+			case 'BD_HellKnight' 			: if (bdoom_HellKnight) 			e.Replacee = 'HellKnight'; 		break;
+			case 'BD_BaronOfHell' 		: if (bdoom_BaronOfHell) 			e.Replacee = 'BaronOfHell'; 		break;
+			case 'BD_ArchVile' 			: if (bdoom_ArchVile) 			e.Replacee = 'ArchVile'; 			break;
+			case 'BD_Cyberdemon' 			: if (bdoom_Cyberdemon) 			e.Replacee = 'Cyberdemon'; 		break;
+			case 'BD_SpiderMastermind'	: if (bdoom_SpiderMastermind) 	e.Replacee = 'SpiderMastermind';	break;
+			case 'BD_BossBrain' 			: if (bdoom_IconOfSin) 			e.Replacee = 'BossBrain';			break;
+			case 'BD_SpawnShot' 			: if (bdoom_IconOfSin) 			e.Replacee = 'SpawnShot';			break;
 		}
 	}
 }
 
 // controls the amount of special effect actors, such as gibs, debris, flames
 Class FXAmountControl : EventHandler {
+	Array <BD_BaseDebris> alldebris;
 	Array <BD_BaseDebris> bloodlist;
 	Array <BD_BaseDebris> giblist;
 	Array <BD_BaseDebris> debrislist;
@@ -307,6 +336,7 @@ Class FXAmountControl : EventHandler {
 		if (e.thing && e.thing is "BD_BaseDebris") {
 			let a = BD_BaseDebris(e.thing);
 			if (a) {
+				alldebris.push(a);
 				//console.printf("%s",a.sfxtype);
 				if (a.sfxtype == 'blood')
 					bloodlist.push(a);					
@@ -325,6 +355,7 @@ Class FXAmountControl : EventHandler {
 		if (e.Thing is "BD_BaseDebris") {
 			let a = BD_BaseDebris(e.thing);
 			if (a) {
+				alldebris.delete	(alldebris.Find(a));
 				if (a.sfxtype == 'blood')
 					bloodlist.delete	(bloodlist.Find(a));					
 				else if (a.sfxtype == 'gibs')
