@@ -70,6 +70,12 @@ weapons/chainsaw/hitwall1	DSSAWAL1
 weapons/chainsaw/hitwall2	DSSAWAL2
 weapons/chainsaw/hitwall3	DSSAWAL3
 weapons/chainsaw/hitwall4	DSSAWAL4
+$random weapons/chainsaw/block { sawblock1 sawblock2 sawblock3 }
+sawblock1	sawblok1
+sawblock2	sawblok2
+sawblock3	sawblok3
+
+
 
 // Pistol
 weapons/pistol/fire	PISTSHOT
