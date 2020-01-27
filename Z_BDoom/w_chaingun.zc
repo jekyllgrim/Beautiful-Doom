@@ -74,7 +74,7 @@ Class BD_Chaingun : BDoomWeapon {
 		}
 		else {
 			HeatStacks = 0;						//reset heatstacks if not reset yet
-			owner.player.SetPSprite(5,null);
+			//owner.player.SetPSprite(5,null);
 		}
 		
 		//crosshair and bob handling for ADS
