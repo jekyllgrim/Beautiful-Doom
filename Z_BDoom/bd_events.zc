@@ -22,9 +22,9 @@ class WeaponOverrideHandler : EventHandler {
 					case 'BD_Chainsaw' 		: TextureName = "graphics/popups/e_chainsaw.png"; 	break;
 					case 'BD_Pistol' 			: 
 						if (mo.CountInv('BD_Pistol') > 1)
-							TextureName = "graphics/popups/e_pistol.png"; 	
-						else 
 							TextureName = "graphics/popups/e_2pist.png"; 	
+						else 
+							TextureName = "graphics/popups/e_pistol.png"; 	
 						break;
 					case 'BD_Shotgun'			: TextureName = "graphics/popups/e_shot.png"; 		break;
 					case 'BD_SuperShotgun' 	: TextureName = "graphics/popups/e_SSG.png"; 		break;
