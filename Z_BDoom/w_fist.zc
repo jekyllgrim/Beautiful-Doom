@@ -483,7 +483,7 @@ Class BD_Fist : BDoomWeapon {
 			TNT1 A 0 {
 				if (FindInventory("ModernBerserk_Regen") && (player.cmd.buttons & BT_ALTATTACK) && (player.oldbuttons & BT_ALTATTACK) && invoker.wzoom > 0.93) {
 					invoker.dmgmul = Clamp(invoker.dmgmul+0.35,1,3.5);
-					Console.Printf("dmg mul: %f",invoker.dmgmul);
+					//Console.Printf("dmg mul: %f",invoker.dmgmul);
 					return ResolveState(null);
 				}
 				invoker.wzoom = 1;
