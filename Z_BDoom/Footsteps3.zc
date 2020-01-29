@@ -58,7 +58,10 @@ class BD_Footsteps : Actor
             Super.Tick();
             return;
         }
-        
+        if (!toFollow) {
+			destroy();
+			return;
+		}
         //1) Update the Footstep actor to follow Player.
         SetOrigin(self.toFollow.pos, true);
         self.floorz = self.toFollow.floorz;
@@ -66,7 +69,7 @@ class BD_Footsteps : Actor
         double player_speed2d = sqrt(self.toFollow.vel.x * self.toFollow.vel.x + self.toFollow.vel.y * self.toFollow.vel.y);
         
         //2) Only play footsteps when on ground, and if the player is moving fast enough.
-        if ((CVar.GetCvar("fs_enabled",fplayer).GetInt() == 1) && (player_speed2d > 0.1) && (self.toFollow.pos.z - self.toFollow.floorz <= 0)) {
+        if ((CVar.GetCvar("bdoom_fs_enabled",fplayer).GetInt() == 1) && (player_speed2d > 0.1) && (self.toFollow.pos.z - self.toFollow.floorz <= 0)) {
             
              //trace
              //Console.PrintF("Speed2d = %f",player_speed2d);
@@ -75,7 +78,7 @@ class BD_Footsteps : Actor
             int player_floor_tx_id = int(self.toFollow.floorpic);
            
             //sound volume is amplified by speed.
-            double soundLevel = CVar.GetCvar("fs_volume_mul",fplayer).GetFloat() * player_speed2d;
+            double soundLevel = CVar.GetCvar("bdoom_fs_volume_mul",fplayer).GetFloat() * player_speed2d;
                   
             //3) Find the matching index of player_floor_tx_id in fstep_textures and retreive the sound to play matching the texture we are in.
             int foundIndex  = fstep_textures.Find(player_floor_tx_id);
@@ -98,8 +101,8 @@ class BD_Footsteps : Actor
             if (player_speed2d > 5.0) {
                 player_speed2d = 5.0;
             }
-            //fastest sound playing speed is set to roughly 0.3s => 10 ticks ( * fs_delay_mul)
-            next_update_tics_countdown = (35.0 - ((25.0 / 5.0) * player_speed2d)) * CVar.GetCvar("fs_delay_mul",fplayer).GetFloat();
+            //fastest sound playing speed is set to roughly 0.3s => 10 ticks ( * bdoom_fs_delay_mul)
+            next_update_tics_countdown = (35.0 - ((25.0 / 5.0) * player_speed2d)) * CVar.GetCvar("bdoom_fs_delay_mul",fplayer).GetFloat();
            
         } else {
             // no need to poll for change too often
