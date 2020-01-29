@@ -1,7 +1,7 @@
 class WeaponOverrideHandler : EventHandler {
 	ui bool ShowWeapHelp;
     override void consoleProcess(ConsoleEvent e) {
-			if (e.name == "ToggleWeaphelp") {
+			if (e.name == "BD_ToggleWeaphelp") {
 			if (bdoom_weapons != 0)
 				ShowWeapHelp = !ShowWeapHelp;
 			else
@@ -10,7 +10,7 @@ class WeaponOverrideHandler : EventHandler {
     }
     override void renderOverlay(RenderEvent e) {
         if (ShowWeapHelp) {
-           let textureName = "";
+			let textureName = "";
 			PlayerInfo player	= players[consoleplayer];
 			PlayerPawn mo		= player.mo;
 			if (!player || !mo)
@@ -146,7 +146,7 @@ class WeaponOverrideHandler : EventHandler {
 				//mo.speed = mo.default.speed; 	//to ensure the player is no longer affected by speed-altering effects of kicking or modern rifle ADS
 			/*
 			NOTE: You're NOT supposed to be able to toggle bdoom_replaceweapons whenever you want. You have to restart your game.
-			So, the fact that if you had it enabled, and then disabled it, and you ended up having no weapons, is intentional. Doing it any other way
+			So, the fact that, if you had it enabled and then disabled it, and you ended up having no weapons, is intentional. Doing it any other way
 			would cause more issues.
 			The part below has only one purpose: if you disable Beautiful Doom Weapons, the block below makes sure they never appear in your inventory.
 			You won't receive them with "give all" or "give weapons". Without this section, you wouldn't be able to avoid using Beautifull Doom guns at all.
@@ -322,14 +322,30 @@ class BD_ActorOverrideHandler : EventHandler {
 
 // controls the amount of special effect actors, such as gibs, debris, flames
 Class FXAmountControl : EventHandler {
+	private bool DebrisCleaning;
 	Array <BD_BaseDebris> alldebris;
 	Array <BD_BaseDebris> bloodlist;
 	Array <BD_BaseDebris> giblist;
 	Array <BD_BaseDebris> debrislist;
 	Array <BD_BaseDebris> flamelist;
 	
+	override void NetworkProcess(ConsoleEvent e) {
+		if (e.name != "BD_ClearDebris" || !e.isManual)
+			return;
+		if (e.player != net_arbitrator) {
+			if (e.player == consoleplayer)
+				Console.Printf("Only the host can activate debris cleanup");
+			return;
+		}
+		if (!DebrisCleaning) {
+			Console.Printf("Clearing debris");
+			DebrisCleaning = true;
+		}
+	}
+	
 	//clear the arrays upon map start
 	override void WorldLoaded(WorldEvent e) {
+		alldebris.Clear();
 		bloodlist.Clear();
 		giblist.Clear();
 		flamelist.Clear();
@@ -345,16 +361,22 @@ Class FXAmountControl : EventHandler {
 		if (e.thing && e.thing is "BD_BaseDebris") {
 			let a = BD_BaseDebris(e.thing);
 			if (a) {
-				alldebris.push(a);
 				//console.printf("%s",a.sfxtype);
-				if (a.sfxtype == 'blood')
-					bloodlist.push(a);					
-				else if (a.sfxtype == 'gibs')
-					giblist.push(a);					
+				if (a.sfxtype == 'blood') {
+					alldebris.push(a);
+					bloodlist.push(a);
+				}
+				else if (a.sfxtype == 'gibs') {
+					alldebris.push(a);
+					giblist.push(a);
+				}
+				//we're not gonna push flames into alldebris array because it's pointless: everything that spawns flames does so continuously. Better simply disable them.
 				else if (a.sfxtype == 'flames')
 					flamelist.push(a);					
-				else if (a.sfxtype == 'debris')
+				else if (a.sfxtype == 'debris') {
+					alldebris.push(a);
 					debrislist.push(a);
+				}
 			}
 		}
 	}
@@ -379,6 +401,13 @@ Class FXAmountControl : EventHandler {
 
 	//continuously check if the number of FX actors is bigger than the array. if true, delete the oldest actors
 	override void WorldTick() {
+		if (DebrisCleaning) {
+			while (alldebris.Size() > 0)
+				alldebris[0].destroy();
+			alldebris.Clear();
+			DebrisCleaning = false;
+			return;				
+		}
 		//console.printf("blood array size: %d | gib array size: %d",bloodlist.Size(),giblist.Size());
 		while (bloodlist.Size() > bdoom_bloodnum)
 			bloodlist[0].destroy();			
