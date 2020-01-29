@@ -4,6 +4,8 @@ addmenukey "Quick kick" +user1
 defaultbind Q "+user1"
 defaultbind Mouse4 "+user1"
 
-addmenukey "Show Weapon Help" "event ToggleWeaphelp"
-defaultbind G "event ToggleWeaphelp"
+addmenukey "Show Weapon Help" "event BD_ToggleWeaphelp"
+defaultbind G "event BD_ToggleWeaphelp"
 
+addmenukey "Clear All Debris" "netevent BD_ClearDebris"
+defaultbind J "netevent BD_ClearDebris"

@@ -26,10 +26,10 @@ server 	int  	bdoom_gibnum 			= 500;
 server 	int  	bdoom_flamesnum			= 300;
 
 
-user int cl_spriteshadowdistance = 1024;
-user float	fs_volume_mul = 1.0;
-user float	fs_delay_mul = 1.0;
-user bool	fs_enabled = true;
+user int bdoom_spriteshadowdistance = 1024;
+user float	bdoom_fs_volume_mul = 1.0;
+user float	bdoom_fs_delay_mul = 1.0;
+user bool	bdoom_fs_enabled = true;
 
 //per-monster replacements
 server bool bdoom_Zombieman = true;

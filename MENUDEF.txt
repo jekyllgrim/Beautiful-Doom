@@ -84,6 +84,7 @@ OptionMenu "BDoom_Settings" {
 	StaticText "Mod Keybinds", yellow
 	ControlGC "Quick Kick",						"+user1","bdoom_weapons",2,1
 	ControlGC "Show Weapon Help",				"event ToggleWeaphelp","bdoom_weapons",0,0
+	Control "Janitor (Clear all debris)",		"netevent BD_ClearDebris"
 	StaticText " "
 	
 	StaticText "Weapons", yellow
@@ -107,11 +108,11 @@ OptionMenu "BDoom_Settings" {
 	ScaleSliderGC "Max blood particles",		"bdoom_bloodnum", 100, 3000, 100, "", "bdoom_blood"
 	ScaleSliderGC "Max flames/light FX",		"bdoom_flamesnum", 100, 3000, 100, "", "bdoom_flames"
 	ScaleSliderGC "Max debris/trails/smoke FX",	"bdoom_debrisnum", 100, 3000, 100, "", "bdoom_debris"
-	ScaleSlider  "Maximum Shadow Distance", 	"cl_spriteshadowdistance",	0, 8192, 128, "Disabled"
+	ScaleSlider  "Maximum Shadow Distance", 	"bdoom_spriteshadowdistance",	0, 8192, 128, "Disabled"
 	StaticText " "
 	
 	StaticText "Additional Effects and Sounds", yellow
-	Option "Footstep sounds", 					"fs_enabled", "OnOff", ""
+	Option "Footstep sounds", 					"bdoom_fs_enabled", "OnOff", ""
 	Option "Ricochet & spark sounds", 			"bdoom_sparks", "OnOff", ""
 	Option "Flies over corpses", 				"bdoom_flies", "OnOff", "bdoom_replacemonsters"
 	Option "Explosion shakes", 					"bdoom_shakes", "OnOff", ""
