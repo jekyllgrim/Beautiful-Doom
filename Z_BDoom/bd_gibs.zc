@@ -235,7 +235,7 @@ class BasicMeatPiece : BD_BaseGib {
 		if (!bdoom_blood || bNOBLOOD || !landed || waterlevel != 0)
 			return;
 		if ((abs(vel.x) > 2 || abs(vel.y) > 2) )
-			BD_GibBleed("BD_GibBloodPool",2,-pos.z+floorz,75);
+			BD_GibBleed("BD_GibBloodPool",2,-pos.z+floorz,30);
 	}
 	states {
 		spawn:
@@ -245,7 +245,7 @@ class BasicMeatPiece : BD_BaseGib {
 			}
 			#### # 1 {
 				if (!bSLIDESONWALLS) {
-					if (pos.z >= ceilingz-16){
+					if (pos.z >= ceilingz-16 && ceilingpic != skyflatnum){
 						let a = BD_CeilingPool(Spawn("BD_CeilingPool",(pos.x,pos.y,ceilingz)));
 						if (a) {
 							if (bcolor == 'blue')
@@ -291,7 +291,7 @@ class BasicMeatPiece : BD_BaseGib {
 					}
 				}
 				if (!bNOBLOOD && bdoom_blood && waterlevel == 0) //spawn blood is CVARs allow and not underwater
-					BD_GibBleed("BD_GibBlood",2,frandom(0,2),60);					
+					BD_GibBleed("BD_GibBlood",2,frandom(0,2),30);					
 				roll+=brot;
 				if (waterlevel > 0) {
 					if (!bNOBLOOD && bdoom_blood) //spawn less blood if underwater
@@ -342,6 +342,10 @@ class BasicMeatPiece : BD_BaseGib {
 				if (waterlevel > 0 && frame != restframe)
 					roll += clamp(brot,-0.1,0.1);
 			}
+			wait;
+		FadeOut:
+			#### # 0 A_SetRenderstyle(alpha,Style_Translucent);
+			#### # 1 A_FadeOut(0.01);
 			wait;
 		Raise:
 			#### # 0 FlyBack();
@@ -716,6 +720,7 @@ class Gib_Torso1 : BasicMeatPiece {
 						let pool = BD_BaseDebris(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
 						if (body && pool) {
 							body.meatlist.push(pool);
+							pool.target = body;
 						}
 					}
 					A_SpawnItemEx("CorpseFlySpawner",flags:SXF_SETMASTER);

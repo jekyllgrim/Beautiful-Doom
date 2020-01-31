@@ -279,3 +279,12 @@ pickups/chaingun		CHGNPKUP
 pickups/rocketlauncher	RLANDRAW
 pickups/plasmarifle		PLSDRAW
 pickups/bfg				BFGDRAW
+
+$random cleaner/mop { rwmop1 rwmop2 rwmop3 }
+rwmop1	rwmop1
+rwmop2	rwmop2
+rwmop3	rwmop3
+$random cleaner/bucketdrop { rwbuck1 rwbuck2 rwbuck3 }
+rwbuck1	rwbuck1
+rwbuck2	rwbuck2
+rwbuck3	rwbuck3

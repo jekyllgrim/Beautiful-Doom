@@ -379,3 +379,245 @@ Class BD_TorchTree : TorchTree {
 			stop;
 	}
 }
+
+Class BD_Cleaner : Actor {
+	FXAmountControl fxcontrol;
+	private int targetcounter;
+	Default {
+		monster;
+		+FLOORCLIP
+		+FRIENDLY
+		+NOTARGETSWITCH
+		+NOTARGET
+		health 250;
+		radius 20;
+		height 56;
+		xscale 1.2;
+		yscale 1.1;
+		speed 4;
+		painchance 255;
+		renderstyle 'Translucent';
+		alpha 0.0;
+		mass 500;
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		fxcontrol = FXAmountControl(EventHandler.Find("FXAmountControl"));
+	}
+	actor FindClosestBlood () {
+		if (!fxcontrol)
+			return null;
+		actor closestBlood;
+		double closestDist = double.infinity;
+		for (int i = 0; i < fxcontrol.bloodlist.size(); i ++) {
+			let bdblood = fxcontrol.bloodlist[i];
+			if (!(bdblood.vel ~== (0,0,0)) /*|| !bdblood.target || (bdblood.target && !bdblood.target.bISMONSTER)*/)
+				continue;
+			let dist = Distance2D(bdblood);
+			if (dist < closestDist) {
+				closestDist = dist;
+				closestBlood = bdblood;
+			}
+		}
+		return closestBlood;
+	}
+	actor FindClosestGib () {
+		if (!fxcontrol)
+			return null;
+		actor closestGib;
+		double closestDist = double.infinity;
+		for (int i = 0; i < fxcontrol.giblist.size(); i ++) {
+			let gib = fxcontrol.giblist[i];
+			if (!(gib.vel ~== (0,0,0)) /*|| !gib.target || (gib.target && !gib.target.bISMONSTER)*/)
+				continue;
+			let dist = Distance2D(gib);
+			if (dist < closestDist) {
+				closestDist = dist;
+				closestGib = gib;
+			}
+		}
+		return closestGib;
+	}
+	actor FindClosestMeat() {
+		if (!fxcontrol)
+			return null;
+		actor closestGib;
+		actor closestBlood;
+		double closestDist = double.infinity;
+		for (int i = 0; i < fxcontrol.bloodlist.size(); i ++) {
+			let bdblood = fxcontrol.bloodlist[i];
+			if (!(bdblood.vel ~== (0,0,0)) /*|| !bdblood.target || (bdblood.target && !bdblood.target.bISMONSTER)*/)
+				continue;
+			let dist = Distance2D(bdblood);
+			if (dist < closestDist) {
+				closestDist = dist;
+				closestBlood = bdblood;
+			}
+		}
+		for (int i = 0; i < fxcontrol.giblist.size(); i ++) {
+			let gib = fxcontrol.giblist[i];
+			if (!(gib.vel ~== (0,0,0)) /*|| !gib.target || (gib.target && !gib.target.bISMONSTER)*/)
+				continue;
+			let dist = Distance2D(gib);
+			if (dist < closestDist) {
+				closestDist = dist;
+				closestGib = gib;
+			}
+		}
+		if (closestBlood && closestGib) {
+			if (Distance2D(closestBlood) < Distance2D(closestGib))
+				return closestBlood;
+			else
+				return closestGib;
+		}
+		else if (closestBlood)
+			return closestBlood;
+		return closestGib;
+	}
+		
+	override void Tick() {
+		super.Tick();
+	//	if (target && target.target)
+		//	Console.Printf("Roger's target: %s - %s",target.GetClassName(),target.target.GetClassName());
+		if (target)
+			targetcounter++;
+		if (!fxcontrol)
+			fxcontrol = FXAmountControl(EventHandler.Find("FXAmountControl"));
+	}
+	states {
+		Spawn:
+			TNT1 A 0 NoDelay {
+				A_SpawnItemEx("TeleportFog");
+				bSOLID = false;
+				bSHOOTABLE = false;
+			}
+			RGWI AAAAAAAAAA 5 A_FadeIn(0.1);			
+			TNT1 A 0 {
+				bSOLID = true;
+				bSHOOTABLE = true;
+			}
+			goto See;
+		Despawn:
+			RGWI A 5 {
+				A_SetRenderstyle(1.0,Style_Translucent);
+				A_SpawnItemEx("TeleportFog");
+				bSOLID = false;
+				bSHOOTABLE = false;
+			}
+			RGWI A 6 A_FadeOut(0.1);
+			stop;
+		See:
+			RGWI AABBCCDDEEFF 2 {
+				A_SetRenderstyle(1.0,Style_Normal);
+				bSPRITEFLIP = false;
+				if (target) {
+					speed = 6;
+					let dist = Distance2D(target);
+					if (dist <= 24) {
+						if (target is "BD_BloodBase")
+							return ResolveState("Mop");
+						if (target is "BD_BaseGib")
+							return ResolveState("Bucket");
+					}
+					A_Chase(null,null);
+					//it's close but we've been chasing it for a while, so it's probably unreachable
+					//or it's wherever but we've been chasing it  f o r e  v e r (longer than a minute)
+					if ((dist < 320 && targetcounter > 250) || targetcounter > 2100) {
+						target.destroy();
+						target = null;
+						targetcounter = 0;
+					}
+				}
+				else {
+					speed = default.speed;
+					A_Wander();
+				}
+				return ResolveState(null);
+			}
+			TNT1 A 0 {
+				if (target)
+					return ResolveState("See");
+				let meat = FindClosestMeat();
+				if (meat) {
+					target = meat;
+					return ResolveState("See");
+				}
+				return ResolveState("Despawn");
+			}
+			loop;
+		Mop:
+			RGWM ABCDEFGHII 2;
+		MopLoop:
+			TNT1 A 0 {				
+				A_PlaySound("cleaner/mop",volume:0.6,attenuation:2);
+				if (target) {
+					target.destroy();
+				}
+			}
+			RGWM JJKLMNOP 4 {
+				if (target)
+					target.destroy();
+				let blood = FindClosestBlood();
+				if (blood && Distance2D(blood) < 48) {
+					target = blood;
+				}
+				return ResolveState(null);
+			}
+			TNT1 A 0 {
+				if (target)
+					return ResolveState("MopLoop");
+				let blood = FindClosestBlood();
+				if (blood && Distance2D(blood) < 48) {
+					target = blood;
+					return ResolveState("MopLoop");
+				}
+				return ResolveState(null);
+			}
+			RGWM RSTEDCBA 2;
+			goto See;
+		Loadsprites:
+			RGWX FGHIJKLM 0;
+			RGWY FGHIJKLM 0;
+		Bucket:
+			RGWB ABCD 3;
+		Bucketloop:
+			RGWB E 3;
+			#### # 0 {
+				if (target) {
+					if (target.bloodcolor.B > 4*(target.bloodcolor.R  + target.bloodcolor.G))
+						sprite = GetSpriteIndex("RGWY");
+					else if (target.bloodcolor.G > 4*(target.bloodcolor.R  + target.bloodcolor.B))
+						sprite = GetSpriteIndex("RGWX");
+					target.destroy();
+				}
+			}
+			#### FGHI 3;
+			#### A 0 A_PlaySound("cleaner/bucketdrop",volume:0.5,attenuation:2);
+			#### JKLM 4;
+			RGWB N 4;
+			TNT1 A 0 {
+				if (target)
+					return ResolveState("Bucketloop");
+				let gib = FindClosestGib();
+				if (gib && Distance2D(gib) < 48) {
+					target = gib;
+					return ResolveState("Bucketloop");
+				}
+				return ResolveState(null);
+			}
+			RGWB DCBA 3;
+			goto See;
+		Pain:
+			TNT1 A 0 {
+				bSPRITEFLIP = randompick(0,1);
+			}
+			RGWP ABCBA 4;
+			goto See;
+		Death:
+			TNT1 A 0 A_SetRenderstyle(1.0,Style_Translucent);
+			RGWD ABCDEFG 5;
+			TNT1 A 0 A_SpawnItemEx("TeleportFog");
+			RGWD H 1 A_FadeOut(0.01);
+			wait;
+	}
+}

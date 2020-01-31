@@ -27,6 +27,7 @@ Class BDoomMonster : Actor abstract {
 		BDoomMonster.smokeheight 0;
 		attacksound "none";
 		bloodtype "BD_Blood", "BD_Blood", "BloodSpurt";
+		bloodcolor "CC 00 00";
 	}
 	override Void PostBeginPlay() {
 		super.PostBeginPlay();

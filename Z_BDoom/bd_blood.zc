@@ -13,6 +13,11 @@ Class BD_BloodBase : BD_BaseDebris abstract {
 		decal "none";
 		height 1;
 	}
+	/*override void Tick() {
+		super.Tick();
+		if (target)
+			console.printf("%s - %s",self.GetClassName(),target.GetClassName());
+	}*/
 	states	{
 		LoadSprites:
 			2PLT ABCDEFGHIJKLMNOPQ 0;
@@ -299,6 +304,10 @@ Class BD_Blood : BD_BloodBase replaces Blood {
 				return ResolveState(null);
 			}
 			stop;
+		FadeOut:
+			#### # 0 A_SetRenderstyle(alpha,Style_Translucent);
+			#### # 1 A_FadeOut(0.1);
+			wait;
 		Water:
 			#### # 0 A_SetRenderStyle(alpha,STYLE_Translucent);
 			#### # 1 {
