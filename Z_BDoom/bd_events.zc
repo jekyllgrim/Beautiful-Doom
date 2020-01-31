@@ -1,12 +1,12 @@
 class WeaponOverrideHandler : EventHandler {
 	ui bool ShowWeapHelp;
     override void consoleProcess(ConsoleEvent e) {
-			if (e.name == "BD_ToggleWeaphelp") {
-			if (bdoom_weapons != 0)
-				ShowWeapHelp = !ShowWeapHelp;
-			else
-				ShowWeapHelp = false;
-        }
+		if (e.name != "BD_ShowWeapHelp")
+			return;
+		if (bdoom_weapons != 0)
+			ShowWeapHelp = !ShowWeapHelp;
+		else
+			ShowWeapHelp = false;
     }
     override void renderOverlay(RenderEvent e) {
         if (ShowWeapHelp) {
@@ -187,6 +187,24 @@ Helps to keep the mod compatible with other actor-replacing mods.
 Separate CVARs for each monsters are also supported. */
 
 class BD_ActorOverrideHandler : EventHandler {
+	/*	This function is designed for old wads that replace decorations by directly replacing sprites, not using actors or classes.
+		The function is used to check sprite names in the archives loaded in the game: if it finds that the same sprite lump appears
+		more than once, we conclude that one of the archives replaces said sprite directly, and probably for a good reason.
+		If that's the case, we'll let the original actor spawn instead of the Beautiful Doom version. This is important for mapsets
+		such as Deus Vult 2, which use a lot of custom decorations with vanilla sprite names.
+		All of this only happens if bdoom_safereplacement CVAR is true (default); otherwise replacement is forced.
+	*/
+	bool CheckVanillaReplacement (string lumpname) {
+		if (!bdoom_safereplacement)
+			return false;
+		int firstLump = Wads.FindLump(lumpname,0,1);
+		int nextLump =  Wads.FindLump(lumpname,firstLump +1,1);
+		if(nextLump != -1)
+			return true;
+		else
+			return false;
+	}
+		
 	override void CheckReplacement(ReplaceEvent e) {
 		if (bdoom_blood) {
 			if (e.Replacee.GetClassName() == "Blood")
@@ -248,45 +266,45 @@ class BD_ActorOverrideHandler : EventHandler {
 		if (bdoom_replaceobjects) {
 			switch (e.Replacee.GetClassName()) {
 					//VICTIMS
-				Case 'HangTLookingDown' 	: e.Replacement = 'BD_HangingTorso'; 		break;
-				Case 'HangTLookingUp' 	: e.Replacement = 'BD_HangingTorso'; 		break;
-				Case 'HangTNoBrain' 		: e.Replacement = 'BD_HangingTorso'; 		break;
-				Case 'HangTSkull' 			: e.Replacement = 'BD_HangingTorso'; 		break;
-				Case 'HangBNoBrain' 		: e.Replacement = 'BD_HangingBody'; 		break;
-				Case 'HangNoGuts' 			: e.Replacement = 'BD_HangingBody'; 		break;
-				Case 'BloodyTwitch'		: e.Replacement = 'BD_BloodyTwitch'; 		break;
-				Case 'NonSolidTwitch'		: e.Replacement = 'BD_NonsolidTwitch'; 	break;				
-				Case 'Meat2'				: e.Replacement = 'BD_Meat2'; 				break;
-				Case 'Meat3'				: e.Replacement = 'BD_Meat3'; 				break;
-				Case 'Meat4'				: e.Replacement = 'BD_Meat4'; 				break;
-				Case 'Meat5'				: e.Replacement = 'BD_Meat5'; 				break;				
-				Case 'NonsolidMeat2'		: e.Replacement = 'BD_NonsolidMeat2'; 	break;
-				Case 'NonsolidMeat3'		: e.Replacement = 'BD_NonsolidMeat3'; 	break;
-				Case 'NonsolidMeat4'		: e.Replacement = 'BD_NonsolidMeat4';		break;
-				Case 'NonsolidMeat5'		: e.Replacement = 'BD_NonsolidMeat5';		break;
-				Case 'DeadStick'			: e.Replacement = 'BD_DeadStick';			break;
-				Case 'LiveStick'			: e.Replacement = 'BD_LiveStick';			break;
+				Case 'HangTLookingDown' 	: if (!CheckVanillaReplacement("HDB3A0"))	e.Replacement = 'BD_HangingTorso'; 		break;
+				Case 'HangTLookingUp' 	: if (!CheckVanillaReplacement("HDB5A0"))	e.Replacement = 'BD_HangingTorso'; 		break;
+				Case 'HangTNoBrain' 		: if (!CheckVanillaReplacement("HDB6A0"))	e.Replacement = 'BD_HangingTorso'; 		break;
+				Case 'HangTSkull' 			: if (!CheckVanillaReplacement("HDB4A0"))	e.Replacement = 'BD_HangingTorso'; 		break;
+				Case 'HangBNoBrain' 		: if (!CheckVanillaReplacement("HDB2A0"))	e.Replacement = 'BD_HangingBody'; 		break;
+				Case 'HangNoGuts' 			: if (!CheckVanillaReplacement("HDB1A0"))	e.Replacement = 'BD_HangingBody'; 		break;
+				Case 'BloodyTwitch'		: if (!CheckVanillaReplacement("GOR1A0"))	e.Replacement = 'BD_BloodyTwitch'; 		break;
+				Case 'NonSolidTwitch'		: if (!CheckVanillaReplacement("GOR1A0"))	e.Replacement = 'BD_NonsolidTwitch'; 		break;				
+				Case 'Meat2'				: if (!CheckVanillaReplacement("GOR2A0"))	e.Replacement = 'BD_Meat2'; 				break;
+				Case 'Meat3'				: if (!CheckVanillaReplacement("GOR3A0"))	e.Replacement = 'BD_Meat3'; 				break;
+				Case 'Meat4'				: if (!CheckVanillaReplacement("GOR4A0"))	e.Replacement = 'BD_Meat4'; 				break;
+				Case 'Meat5'				: if (!CheckVanillaReplacement("GOR5A0"))	e.Replacement = 'BD_Meat5'; 				break;				
+				Case 'NonsolidMeat2'		: if (!CheckVanillaReplacement("GOR2A0"))	e.Replacement = 'BD_NonsolidMeat2'; 		break;
+				Case 'NonsolidMeat3'		: if (!CheckVanillaReplacement("GOR3A0"))	e.Replacement = 'BD_NonsolidMeat3'; 		break;
+				Case 'NonsolidMeat4'		: if (!CheckVanillaReplacement("GOR4A0"))	e.Replacement = 'BD_NonsolidMeat4';		break;
+				Case 'NonsolidMeat5'		: if (!CheckVanillaReplacement("GOR5A0"))	e.Replacement = 'BD_NonsolidMeat5';		break;
+				Case 'DeadStick'			: if (!CheckVanillaReplacement("POL1A0"))	e.Replacement = 'BD_DeadStick';			break;
+				Case 'LiveStick'			: if (!CheckVanillaReplacement("POL6A0"))	e.Replacement = 'BD_LiveStick';			break;
 					//MISC
-				case 'TeleportFog' 		: e.Replacement = 'BD_TeleportFog';		break;
-				case 'ExplosiveBarrel' 	: e.Replacement = 'BD_ExplosiveBarrel';	break;
-				case 'EvilEye' 			: e.Replacement = 'BD_EvilEye';			break;
-				case 'FloatingSkull' 		: e.Replacement = 'BD_FloatingSkull';		break;
-				case 'HeartColumn' 		: e.Replacement = 'BD_HeartColumn';		break;
-				case 'BigTree' 			: e.Replacement = 'BD_BigTree';			break;
-				case 'TorchTree' 			: e.Replacement = 'BD_TorchTree';			break;
+				case 'TeleportFog' 		: if (!CheckVanillaReplacement("HDB5A0"))	e.Replacement = 'BD_TeleportFog';			break;
+				case 'ExplosiveBarrel' 	: if (!CheckVanillaReplacement("HDB5A0"))	e.Replacement = 'BD_ExplosiveBarrel';		break;
+				case 'EvilEye' 			: if (!CheckVanillaReplacement("CEYEA0"))	e.Replacement = 'BD_EvilEye';				break;
+				case 'FloatingSkull' 		: if (!CheckVanillaReplacement("FSKUA0"))	e.Replacement = 'BD_FloatingSkull';		break;
+				case 'HeartColumn' 		: if (!CheckVanillaReplacement("COL5A0"))	e.Replacement = 'BD_HeartColumn';			break;
+				case 'BigTree' 			: if (!CheckVanillaReplacement("TRE2A0"))	e.Replacement = 'BD_BigTree';				break;
+				case 'TorchTree' 			: if (!CheckVanillaReplacement("TRE1A0"))	e.Replacement = 'BD_TorchTree';			break;
 					//LIGHTS
-				case 'GreenTorch' 			: e.Replacement = 'TallTorch_Green';		break;
-				case 'RedTorch' 			: e.Replacement = 'TallTorch_Red';		break;
-				case 'BlueTorch' 			: e.Replacement = 'TallTorch_Blue';		break;
-				case 'ShortGreenTorch'	: e.Replacement = 'ShortTorch_Green';		break;
-				case 'ShortRedTorch' 		: e.Replacement = 'ShortTorch_Red';		break;
-				case 'ShortBlueTorch' 	: e.Replacement = 'ShortTorch_Blue';		break;
-				case 'Candlestick' 		: e.Replacement = 'BD_Candlestick';		break;
-				case 'Candelabra' 			: e.Replacement = 'BD_Candelabra';		break;
-				case 'BurningBarrel' 		: e.Replacement = 'BD_BurningBarrel';		break;
-				case 'Techlamp' 			: e.Replacement = 'BD_Techlamp';			break;
-				case 'Techlamp2' 			: e.Replacement = 'BD_Techlamp2';			break;
-				case 'Column' 				: e.Replacement = 'BD_Column';			break;
+				case 'GreenTorch' 			: if (!CheckVanillaReplacement("TGRNA0"))	e.Replacement = 'TallTorch_Green';		break;
+				case 'RedTorch' 			: if (!CheckVanillaReplacement("TREDA0"))	e.Replacement = 'TallTorch_Red';			break;
+				case 'BlueTorch' 			: if (!CheckVanillaReplacement("TBLUA0"))	e.Replacement = 'TallTorch_Blue';			break;
+				case 'ShortGreenTorch'	: if (!CheckVanillaReplacement("SMGTA0"))	e.Replacement = 'ShortTorch_Green';		break;
+				case 'ShortRedTorch' 		: if (!CheckVanillaReplacement("SMRTA0"))	e.Replacement = 'ShortTorch_Red';			break;
+				case 'ShortBlueTorch' 	: if (!CheckVanillaReplacement("SMBTA0"))	e.Replacement = 'ShortTorch_Blue';		break;
+				case 'Candlestick' 		: if (!CheckVanillaReplacement("CANDA0"))	e.Replacement = 'BD_Candlestick';			break;
+				case 'Candelabra' 			: if (!CheckVanillaReplacement("CBRAA0"))	e.Replacement = 'BD_Candelabra';			break;
+				case 'BurningBarrel' 		: if (!CheckVanillaReplacement("FCANA0"))	e.Replacement = 'BD_BurningBarrel';		break;
+				case 'Techlamp' 			: if (!CheckVanillaReplacement("TLMPA0"))	e.Replacement = 'BD_Techlamp';			break;
+				case 'Techlamp2' 			: if (!CheckVanillaReplacement("TLP2A0"))	e.Replacement = 'BD_Techlamp2';			break;
+				case 'Column' 				: if (!CheckVanillaReplacement("COLUA0"))	e.Replacement = 'BD_Column';				break;
 			}
 		}
 		e.IsFinal = true;

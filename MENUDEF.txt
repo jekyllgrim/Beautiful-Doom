@@ -83,7 +83,7 @@ OptionMenu "BDoom_Settings" {
 	Title "Beautiful Doom Settings"
 	StaticText "Mod Keybinds", yellow
 	ControlGC "Quick Kick",						"+user1","bdoom_weapons",2,1
-	ControlGC "Show Weapon Help",				"event ToggleWeaphelp","bdoom_weapons",0,0
+	ControlGC "Show Weapon Help",				"event BD_ShowWeapHelp","bdoom_weapons",0,0
 	Control "Janitor (Clear all debris)",		"netevent BD_ClearDebris"
 	StaticText " "
 	
@@ -92,7 +92,11 @@ OptionMenu "BDoom_Settings" {
 	Option "Muzzle Flashes", 					"bdoom_muzzle", "bdoom_muzzle", "bdoom_replaceweapons"
 	OptionBoth "Bullet Tracers",				"bdoom_tracers", "OnOff", "bdoom_replaceweapons", "bdoom_replacemonsters"
 	OptionBGReload "Reload deselected weapons",	"bdoom_autoreload", "OnOff", "bdoom_weapons", "bdoom_replaceweapons"
-	Option "Shootable Decorations", 			"bdoom_killableobjects", "Toggle", "bdoom_replaceobjects"
+	StaticText " "
+	
+	StaticText "Leave this on if you're playing the mod with another wad", blue
+	StaticText "that replaces some vanilla sprites directly (by name)", blue
+	Option "Safe Decoration Replacement", 		"bdoom_safereplacement", "Toggle", "bdoom_replaceobjects"
 	StaticText " "
 	
 	StaticText "Special Effects", yellow
@@ -102,6 +106,7 @@ OptionMenu "BDoom_Settings" {
 	OptionEither "Force vanilla boss deaths",	"bdoom_nobossgibs", "OnOff", "bdoom_gibs", "bdoom_replacemonsters"
 	Option "Halos & particle flames",			"bdoom_flames", "OnOff", ""
 	Option "Casings, smoke, trails, debris",	"bdoom_debris", "OnOff", "", 1	
+	Option "Shootable Decorations", 			"bdoom_killableobjects", "Toggle", "bdoom_replaceobjects"
 	StaticText " "
 	
 	ScaleSliderGC "Max gibs",					"bdoom_gibnum", 100, 3000, 100, "", "bdoom_gibs", "bdoom_replacemonsters"
@@ -119,9 +124,9 @@ OptionMenu "BDoom_Settings" {
 	Option "Face on Standard HUD", 				"bdoom_hudface", "OnOff", "", 1	
 	StaticText " "
 
-	StaticText "Options below allow to disable parts of the mod,", yellow
+	StaticText "Options below will disable parts of the mod,", yellow
 	StaticText "which enables partial compatibility with other mods.", yellow
-	StaticText "(Changes require a game restart; you won't be able to load a save)", blue
+	StaticText "(Change before starting a map/game; will cause issues if changed during gameplay)", blue
 	StaticText " "
 	Option "Beautiful Doom weapons",			"bdoom_replaceweapons", "Toggle", ""
 	Option "Beautiful Doom monsters",			"bdoom_replacemonsters", "Toggle", ""

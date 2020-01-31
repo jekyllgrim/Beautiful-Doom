@@ -3,14 +3,14 @@ server	bool	bdoom_replaceweapons 	= true;
 server	bool	bdoom_replaceitems		= true;
 server	bool	bdoom_replaceobjects	= true;
 server 	int		bdoom_weapons 			= 1;
-server bool		bdoom_autoreload		= true;
+server	bool	bdoom_autoreload		= true;
 user 	bool 	bdoom_muzzle			= true;
 server 	bool 	bdoom_tracers			= true;
 
 server 	bool 	bdoom_blood 			= true;
 server 	bool 	bdoom_gibs 				= true;
 server 	bool 	bdoom_nobossgibs		= false;
-server bool		bdoom_livegibs			= true;
+server	bool	bdoom_livegibs			= true;
 server 	bool 	bdoom_flames 			= true;
 server 	bool 	bdoom_debris 			= true;
 server 	bool 	bdoom_sparks 			= true;
@@ -19,6 +19,7 @@ server 	bool 	bdoom_shakes 			= true;
 server	bool	bdoom_killableobjects	= true;
 server 	bool 	bdoom_flies				= true;
 user 	bool 	bdoom_hudface			= true;
+server	bool	bdoom_safereplacement	= true;
 
 server 	int  	bdoom_debrisnum 		= 1000;
 server 	int  	bdoom_bloodnum 			= 500;
