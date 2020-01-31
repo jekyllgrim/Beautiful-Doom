@@ -1,4 +1,4 @@
-Class BD_Demon : BDoomMonster //replaces Demon {
+Class BD_Demon : BDoomMonster {
 	Default 	{
 		species "Demon";
 		Health 150;
