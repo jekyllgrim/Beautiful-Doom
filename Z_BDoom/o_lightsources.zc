@@ -5,12 +5,12 @@ Class BD_LightFlare : BD_BaseFlare {
 	Default {
 		BD_BaseDebris.sfxtype "none";
 		BD_LightFlare.flicker true;
-		}
+	}
 	override void Tick() {
 		if (!master) {
 			destroy();
 			return;
-			}	
+		}	
 		super.tick();
 		if (isFrozen() || !bdoom_flames)
 			return;
@@ -19,16 +19,16 @@ Class BD_LightFlare : BD_BaseFlare {
 				alpha = falpha*frandom(0.7,1.0); //for torches I do flickering by changing the alpha
 			else
 				A_SetScale(fscale*frandom(0.9,1.0)); //for lamps I change the size of the flare instead (due to different graphics of the flare this looks better)
-			}
 		}
+	}
 	override void SetColor() { //see bd.main.zc
 		super.SetColor();
 		if (fcolor == 'tech2') {
 			sprite = GetSpriteIndex("LENS");
 			frame = 1;
-			}
 		}
 	}
+}
 
 
 
@@ -55,7 +55,7 @@ Class BD_LightSource : Actor abstract {
 		BD_LightSource.falpha 0.4;
 		ProjectilePassHeight -16;
 		+SOLID
-		}	
+	}	
 
 	override void Tick() {
 		super.Tick();
@@ -67,13 +67,13 @@ Class BD_LightSource : Actor abstract {
 			flare.fcolor = fcolor;
 			flare.falpha = falpha;
 			flare.fscale = fscale;
-			}
+		}
 		if (bdoom_flames && flare)
 			flare.SetOrigin((pos.x,pos.y,pos.z+fspawnheight),true);
 		if (!bdoom_flames && flare)
 			flare.destroy();
-		}
 	}
+}
 
 /* 
 	BASE TORCH
@@ -89,23 +89,23 @@ Class BD_Torch : BD_LightSource abstract {
 		Radius 16;
 		Height 68;
 		ProjectilePassHeight -16;
-		}
+	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		pspawnheight = fspawnheight;
-		}
+	}
 	virtual void SetLightSprite() {
 		if 		(fcolor == 'green')		sprite = GetSpriteIndex("TTRG");
 		else if (fcolor == 'blue')		sprite = GetSpriteIndex("TTRB");
 		else							sprite = GetSpriteIndex("TTRR");
-		}
+	}
 	void SpawnTorchParticle() {
 		if (bdoom_flames && frandom(0,10) > 8.5) {
 			let fpart = BD_FireParticle(Spawn("BD_FireParticle",(pos.x+frandom(-3,3),pos.y+frandom(-3,3),pos.z+pspawnheight+frandom(10,14))));
 			fpart.vel = (frandom(-0.15,0.15),frandom(-0.15,0.15),frandom(0.2,0.5));
 			fpart.fcolor = fcolor;
-			}
 		}
+	}
 	states	{
 		Loadsprites:
 			TTRG ABCDEFGHIJKLMNOPQRSTUVWXYZ 0;
@@ -120,8 +120,8 @@ Class BD_Torch : BD_LightSource abstract {
 		Idle:
 			#### ABCDEFGHIJKLMNOPQRSTUVWXYZ random(2,3) SpawnTorchParticle;
 			loop;
-		}
 	}
+}
 
 /* 
 	TALL TORCHES
@@ -130,20 +130,20 @@ Class BD_Torch : BD_LightSource abstract {
 Class TallTorch_Green : BD_Torch {
 	Default {
 		BD_LightSource.fcolor "green";
-		}
 	}
+}
 
 Class TallTorch_Red : BD_Torch {
 	Default {
 		BD_LightSource.fcolor "red";
-		}
 	}
+}
 
 Class TallTorch_Blue : BD_Torch {
 	Default {
 		BD_LightSource.fcolor "blue";
-		}
 	}
+}
 
 /* 
 	SHORT TORCHES
@@ -157,11 +157,11 @@ Class ShortTorch_Green : BD_Torch {
 		BD_LightSource.fscale 0.18;
 		scale 0.37;
 		BD_LightSource.fcolor "green";
-		}
+	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		pspawnheight = fspawnheight-7; //due to different shape of the flame on small torches the particles need to spawn a bit lower
-		}
+	}
 	override void SetLightSprite() {
 		if (fcolor == 'green')
 			sprite = GetSpriteIndex("STRG");
@@ -169,28 +169,27 @@ Class ShortTorch_Green : BD_Torch {
 			sprite = GetSpriteIndex("STRB");
 		else
 			sprite = GetSpriteIndex("STRR");
-		}
 	}
+}
 
 Class ShortTorch_Red : ShortTorch_Green {
 	Default {
 		BD_LightSource.fcolor "red";
-		}
 	}
+}
 
 Class ShortTorch_Blue : ShortTorch_Green {
 	Default {
 		BD_LightSource.fcolor "blue";
-		}
 	}
+}
 
 /* 
 	CANDLE & CANDELABRA
 */
 
 Class BD_Candlestick : BD_LightSource {
-	Default
-		{
+	Default {
 		BD_LightSource.fspawnheight 12.4;
 		BD_LightSource.fscale 0.065;
 		BD_LightSource.falpha 0.6;
@@ -199,20 +198,18 @@ Class BD_Candlestick : BD_LightSource {
 		Height 14;
 		scale 0.22;
 		-SOLID
-		}
-	states
-		{
-		Spawn:
-			CAND A 0 NoDelay A_Jump(256,random(1,10));
-		Idle:
-			CAND ABCDEFGHIJ random(2,3);
-			loop;
-		}
 	}
+	states {
+		Spawn:
+			BCND A 0 NoDelay A_Jump(256,random(1,10));
+		Idle:
+			BCND ABCDEFGHIJ random(2,3);
+			loop;
+	}
+}
 
 Class BD_Candelabra : BD_LightSource {
-	Default
-		{
+	Default {
 		BD_LightSource.fspawnheight 55.5;
 		BD_LightSource.fscale 0.045;
 		BD_LightSource.falpha 0.6;
@@ -220,23 +217,22 @@ Class BD_Candelabra : BD_LightSource {
 		Radius 16;
 		Height 60;
 		scale 0.19;
-		}
+	}
 	states	{
 		Spawn:
 			CAN3 A 0 NoDelay A_Jump(256,random(1,10));
 		Idle:
 			CAN3 ABCDEFGHIJ random(2,3);
 			loop;
-		}
 	}
+}
 
 /* 
 	BURNING BARREL
 */
 
 Class BD_BurningBarrel : BD_LightSource {
-	Default
-		{
+	Default {
 		Radius 16;
 		Height 32;
 		BD_LightSource.fspawnheight 32;
@@ -244,7 +240,7 @@ Class BD_BurningBarrel : BD_LightSource {
 		BD_LightSource.falpha 0.25;
 		BD_LightSource.fcolor "yellow";
 		scale 0.6;
-		}
+	}
 	states	{
 		Spawn:
 			TNT1 A 0 NoDelay A_Jump(256,random(1,25));
@@ -253,11 +249,11 @@ Class BD_BurningBarrel : BD_LightSource {
 				if (bdoom_flames) {
 					A_SpawnItemEx("BurnSmokePiece",frandom(-4,4),frandom(-4,4),fspawnheight+frandom(16,22),frandom(-0.15,0.15),frandom(-0.15,0.15),frandom(0.2,0.35),0,SXF_SETMASTER,210);
 					A_SpawnItemEx("BlackSmoke",frandom(-4,4),frandom(-4,4),fspawnheight+frandom(4,10),frandom(-0.15,0.15),frandom(-0.15,0.15),frandom(0.4,0.6),0,SXF_SETMASTER,40);
-					}
-				}			
+				}
+			}			
 			loop;
-		}
 	}
+}
 
 /* 
 	TECH LAMPS
@@ -267,8 +263,8 @@ Class ElectroSpark : RicochetSpark {
 	Default {
 		alpha 0.8;
 		smalldebris.dgravity 0.4;
-		}
 	}
+}
 
 Class BD_BaseLamp : BD_LightSource abstract {
 	Default {
@@ -284,15 +280,15 @@ Class BD_BaseLamp : BD_LightSource abstract {
 		height 80;
 		deathheight 80;
 		deathsound "glasscrack";
-		}
+	}
 	/*override void PostBeginPlay() {
 		super.PostBeginPlay();
 		A_PlaySound("lamp/hum",looping:true,attenuation:4);
-		}*/
+	}*/
 	override void Tick() {
 		super.Tick();
 		bVULNERABLE = bdoom_killableobjects;
-		}
+	}
 	void LampBreak() {
 		if (flare)
 			flare.A_SetRenderStyle(falpha,Style_None);
@@ -303,7 +299,7 @@ Class BD_BaseLamp : BD_LightSource abstract {
 			A_SpawnItemEx("BD_GlassPiece",frandom(-1.5,1.5),frandom(-1.5,1.5),fspawnheight+frandom(-1.5,1.5),frandom(-5,5),frandom(-5,5),frandom(3,6),failchance:48);
 		for (int i = 5; i > 0; i--)
 			A_SpawnItemEx("ElectroSpark",frandom(-1.5,1.5),frandom(-1.5,1.5),fspawnheight+frandom(-1.5,1.5),frandom(-2,2),frandom(-2,2),frandom(4,7),failchance:48);
-		}
+	}
 	states	{
 		Loadsprites:
 			BLMP XY 0;
@@ -318,9 +314,9 @@ Class BD_BaseLamp : BD_LightSource abstract {
 				if (bdoom_flames) {
 					if (random(0,10) > 8)
 						return ResolveState("Spark");
-					}
-				return ResolveState(null);
 				}
+				return ResolveState(null);
+			}
 			loop;
 		Spark: //lamps destroyed by explosions still flicker, which spawns some sparks, the dynamic light and the flare returns for a bit as well
 			#### Y random(5,30) {
@@ -330,31 +326,30 @@ Class BD_BaseLamp : BD_LightSource abstract {
 					if (bdoom_debris) {
 						for (int i = 7; i > 0; i--)
 							A_SpawnItemEx("ElectroSpark",frandom(-1.5,1.5),frandom(-1.5,1.5),fspawnheight+frandom(-1.5,1.5),frandom(-1,1),frandom(-1,1),frandom(1,3),failchance:48);
-						}
 					}
 				}
+			}
 			#### # 0 {
 				if (flare)
 					flare.A_SetRenderStyle(falpha,Style_None);
 				return ResolveState("Broken");
-				}
+			}
 			wait;
-		}
 	}
+}
 
 Class BD_Techlamp : BD_BaseLamp {
 	Default	{
 		Height 80;
 		Deathheight 80;
 		BD_LightSource.fspawnheight 67;
-		}
-	states
-		{
+	}
+	states {
 		Spawn:
 			BLMP ABCD 4;
 			Loop;
-		}
 	}
+}
 
 Class BD_Techlamp2 : BD_BaseLamp {
 	Default	{
@@ -362,27 +357,26 @@ Class BD_Techlamp2 : BD_BaseLamp {
 		Deathheight 60;
 		BD_LightSource.fspawnheight 52;
 		BD_LightSource.fscale 0.35;
-		}
+	}
 	states	{
 		Spawn:
 			BLP2 ABCD 4;
 			Loop;
-		}
 	}
+}
 
 
 Class BD_Column : BD_BaseLamp {
-	Default
-		{
+	Default {
 		Height 48;
 		Deathheight 48;
 		BD_LightSource.fspawnheight 40;
 		BD_LightSource.fscale 0.25;
 		BD_LightSource.fcolor "tech2"; //A variation of "tech" halo with a slight yellow tint to match the sprite
-		}
+	}
 	states	{
 		Spawn:
 			BCOL A 5;
 			Loop;
-		}
 	}
+}

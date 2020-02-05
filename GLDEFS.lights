@@ -1133,7 +1133,7 @@ flickerlight2 CANDLE
 
 object BD_Candlestick
 {
-    frame CAND { light CANDLE }
+    frame BCND { light CANDLE }
 }
 
 object BD_EvilEye
