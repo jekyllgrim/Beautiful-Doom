@@ -27,7 +27,7 @@ Class BDoomMonster : Actor abstract {
 		BDoomMonster.smokeheight 0;
 		attacksound "none";
 		bloodtype "BD_Blood", "BD_Blood", "BloodSpurt";
-		bloodcolor "CC 00 00";
+		//bloodcolor "00 FF 00";
 	}
 	override Void PostBeginPlay() {
 		super.PostBeginPlay();
@@ -42,7 +42,7 @@ Class BDoomMonster : Actor abstract {
 	}
 		
 	void BD_Bleed() {
-		if (burning || bdoom_blood)
+		if (burning || !bdoom_blood)
 			return;
 		let bld = BD_Blood(Spawn("BD_Blood", (pos.x + frandom(-5.0,5.0), pos.y + frandom(-5.0,5.0), pos.z + frandom(16,default.height))));
 		if (bld) {
