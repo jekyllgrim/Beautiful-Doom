@@ -19,7 +19,6 @@ class BD_BaseGib : BD_BaseDebris abstract {
 	double brot; //how much to adjust rotation during flight
 	double bmass; //the mass the gib gains after it lands
 	int restframe; //last frame used in death animation
-	name bcolor;
 	bool bflat;
 	Default {
 		BD_BaseDebris.sfxtype "gibs";
@@ -52,16 +51,7 @@ class BD_BaseGib : BD_BaseDebris abstract {
 		A_FaceMovementDirection();
 		if (!target || !(target is "BDoomMonster"))
 			return;
-		if (target.bloodcolor) {
-			if (target.bloodcolor.G > 4*(target.bloodcolor.R  + target.bloodcolor.B))
-				bcolor = 'green';
-			else if (target.bloodcolor.B > 4*(target.bloodcolor.R  + target.bloodcolor.G))
-				bcolor = 'blue';
-			else if (target.bloodcolor.R > 4*(target.bloodcolor.B  + target.bloodcolor.G) || target.bloodcolor == 0)
-				bcolor = 'red';			
-			else
-				Translation = target.BloodTranslation;
-		}
+		SetBloodTranslation (changetranslation: false);
 	}
 	virtual void GibBeginPlay() {
 		if (gibtype == "none" && target)

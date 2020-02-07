@@ -1,5 +1,4 @@
 Class BD_BloodBase : BD_BaseDebris abstract {
-	protected name bcolor;
 	static const name bsprite[] = { "YBL7","YBL8","YBL9" };
 	Default {
 		BD_BaseDebris.sfxtype "blood";
@@ -152,7 +151,7 @@ Class BD_BloodyFootPrint : BD_BloodBase {
 	}
 }
 
-Class BD_Blood : BD_BloodBase replaces Blood {
+Class BD_Blood : BD_BloodBase {
 	double restscale;
 	Default {
 		scale 0.35;
@@ -185,25 +184,7 @@ Class BD_Blood : BD_BloodBase replaces Blood {
 				trg.meatlist.push(self);
 			}
 		}
-		if (target && target.bloodcolor) {
-			//obvious green prevalence
-			if (target.bloodcolor.G > 4*(target.bloodcolor.R  + target.bloodcolor.B)) {
-				bcolor = 'green';
-				A_SetTranslation("GreenBlood");
-			}
-			//obvious blue prevalence
-			else if (target.bloodcolor.B > 4*(target.bloodcolor.R  + target.bloodcolor.G)) {
-				bcolor = 'blue';
-				A_SetTranslation("BlueBlood");
-			}
-			//obvious red prevalence. bloodcolor = 0 means default bloodcolor (68 00 00 or specified in MAPINFO). If changed in MAPINFO, it'll be a mismatch, but whaddaya do
-			else if (target.bloodcolor.R > 4*(target.bloodcolor.B  + target.bloodcolor.G) || target.bloodcolor == 0) {
-				bcolor = 'red';
-			}
-			//if played with another wad that contains very peculiar blood, like yellow or purple, translate sprites along with it. They won't spawn decals themselves.
-			else
-				Translation = target.BloodTranslation;
-		}
+		SetBloodTranslation();
 		restscale = frandom(0.1,0.18);
 		Super.PostBeginPlay();
 	}
@@ -472,17 +453,7 @@ Class AniBloodPool : BD_BloodBase {
 			return;
 		}
 		angle = random(0,359);
-
-		if (target && target.bloodcolor) {
-			if (target.bloodcolor.G > 4*(target.bloodcolor.R  + target.bloodcolor.B))
-				bcolor = 'green';
-			else if (target.bloodcolor.B > 4*(target.bloodcolor.R  + target.bloodcolor.G))
-				bcolor = 'blue';
-			else if (target.bloodcolor.R > 4*(target.bloodcolor.B  + target.bloodcolor.G) || target.bloodcolor == 0)
-				bcolor = 'red';
-			else
-				Translation = target.BloodTranslation;
-		}
+		SetBloodTranslation(changetranslation:false);
 		SetZ(floorz+frandom(0,0.01));
 	}	
 	override void Tick () {
@@ -596,9 +567,6 @@ Class AniBloodPool : BD_BloodBase {
 			stop;
 	}
 }
-
-//for projectile bullets
-Class BD_BloodSplatter : BD_Blood replaces BloodSplatter {}
 
 //thinner and faster version for spurts
 Class BloodSpray : BD_Blood {

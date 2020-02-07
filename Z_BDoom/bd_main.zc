@@ -3,7 +3,8 @@
 ////////////////////////////////////////////////////////////
 
 Class BDoomActor : Actor abstract {
-	protected double pi;		
+	protected double pi;
+	protected name bcolor;
 	bool CheckLandingSize (double cradius = 0, bool checkceiling = false) {
 		bool ret = false;
 		if (checkceiling) {
@@ -46,6 +47,60 @@ Class BDoomActor : Actor abstract {
 				return true;
 		}
 		return false;
+	}
+	void SetBloodTranslation(bool changetranslation = true) {
+		if (!target)
+			return;
+		//if target doesn't have a bloodcolor defined, check gameinfo
+		if (target.bloodcolor == 0) {
+			//obvious green prevalence
+			let bloodR = gameinfo.defaultbloodcolor.R;
+			let bloodG = gameinfo.defaultbloodcolor.G;
+			let bloodB = gameinfo.defaultbloodcolor.B;
+			if (bloodG > 4*(bloodR  + bloodB)) {
+				bcolor = 'green';
+				if (changetranslation)
+					A_SetTranslation("GreenBlood");
+			}
+			//obvious blue prevalence
+			else if (bloodB > 4*(bloodR  + bloodG)) {
+				bcolor = 'blue';
+				if (changetranslation)
+					A_SetTranslation("BlueBlood");
+			}
+			//obvious red prevalence
+			else if (bloodR > 4*(bloodB  + bloodG)) {
+				bcolor = 'red';
+			}
+			//if the color is peculiar, like yellow or purple, translate sprites to that. They won't spawn decals themselves.
+			//else
+				//translation = "168:191=[bloodR,bloodG,bloodB]:[[bloodR*0.3,bloodG*0.3,bloodB*0.3]";
+		}
+		//otherwise check target's bloodcolor definition
+		else {
+			let bloodG = target.bloodcolor.G;
+			let bloodB = target.bloodcolor.B;
+			let bloodR = target.bloodcolor.R;
+			//obvious green prevalence
+			if (bloodG > 4*(bloodR  + bloodB)) {
+				bcolor = 'green';
+				if (changetranslation)
+					A_SetTranslation("GreenBlood");
+			}
+			//obvious blue prevalence
+			else if (bloodB > 4*(bloodR  + bloodG)) {
+				bcolor = 'blue';
+				if (changetranslation)
+					A_SetTranslation("BlueBlood");
+			}
+			//obvious red prevalence
+			else if (bloodR > 4*(bloodB  + bloodG)) {
+				bcolor = 'red';
+			}
+			//if the color is peculiar, like yellow or purple, translate sprites to that. They won't spawn decals themselves.
+			else				
+				Translation = target.BloodTranslation;
+		}
 	}
 	override void BeginPlay() {
 		super.BeginPlay();
