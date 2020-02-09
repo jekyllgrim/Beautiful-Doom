@@ -170,7 +170,7 @@ Class BD_Blood : BD_BloodBase {
 	for blue and green and then BloodTranslation for any other color (if it's used).
 	 */
 	override void PostBeginPlay() {
-		if (!bdoom_blood || !target){
+		if (!bdoom_blood /*|| !target*/){
 			destroy();
 			return;
 		}
