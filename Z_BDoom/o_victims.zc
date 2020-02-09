@@ -536,7 +536,7 @@ Class BD_ColonGibs : Actor {
 				b.target = self;
 		}
 		for (int i = random(2,3); i > 0; i--) {
-			let g = BasicMeatPiece(Spawn("BasicMeatPiece",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),floorz)));
+			let g = BasicMeatPiece(Spawn("BasicMeatPiece",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),floorz+1)));
 			if (g) 
 				g.instant = true;
 		}
