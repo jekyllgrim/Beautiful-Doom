@@ -5,7 +5,6 @@
 // RIFLE
 
 brightmap sprite "RIFNA0" { map "Brightmaps/RIFNA0.png" }
-
 brightmap sprite "RIFBA0" { map "Brightmaps/RIFNA0.png" }
 brightmap sprite "RIFBB0" { map "Brightmaps/RIFNA0.png" }
 brightmap sprite "RIFBC0" { map "Brightmaps/RIFNA0.png" }
