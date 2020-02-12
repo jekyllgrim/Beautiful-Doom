@@ -451,25 +451,25 @@ disablefullbright }
 
 // CANDLESTICK
 
-brightmap sprite CANDA0 { map "brightmaps/candle.png"
+brightmap sprite BCNDA0 { map "brightmaps/candle.png"
 disablefullbright }
-brightmap sprite CANDB0 { map "brightmaps/candle.png"
+brightmap sprite BCNDB0 { map "brightmaps/candle.png"
 disablefullbright }
-brightmap sprite CANDC0 { map "brightmaps/candle.png"
+brightmap sprite BCNDC0 { map "brightmaps/candle.png"
 disablefullbright }
-brightmap sprite CANDD0 { map "brightmaps/candle.png"
+brightmap sprite BCNDD0 { map "brightmaps/candle.png"
 disablefullbright }
-brightmap sprite CANDE0 { map "brightmaps/candle.png"
+brightmap sprite BCNDE0 { map "brightmaps/candle.png"
 disablefullbright }
-brightmap sprite CANDF0 { map "brightmaps/candle.png"
+brightmap sprite BCNDF0 { map "brightmaps/candle.png"
 disablefullbright }
-brightmap sprite CANDG0 { map "brightmaps/candle.png"
+brightmap sprite BCNDG0 { map "brightmaps/candle.png"
 disablefullbright }
-brightmap sprite CANDH0 { map "brightmaps/candle.png"
+brightmap sprite BCNDH0 { map "brightmaps/candle.png"
 disablefullbright }
-brightmap sprite CANDI0 { map "brightmaps/candle.png"
+brightmap sprite BCNDI0 { map "brightmaps/candle.png"
 disablefullbright }
-brightmap sprite CANDJ0 { map "brightmaps/candle.png"
+brightmap sprite BCNDJ0 { map "brightmaps/candle.png"
 disablefullbright }
 
 // CANELABRA
