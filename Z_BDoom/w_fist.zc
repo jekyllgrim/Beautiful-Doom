@@ -1144,23 +1144,92 @@ Class KickPuffStrong : FistPuffStrong {
 
 //// BERSERK
 
+Class BD_OverlayControl : CustomInventory {	
+	private double aalpha;
+	Default	{
+		+INVENTORY.UNDROPPABLE
+		+INVENTORY.UNTOSSABLE
+		+INVENTORY.UNCLEARABLE
+		+INVENTORY.AUTOACTIVATE
+		inventory.maxamount 1;
+	}
+	/*override void DoEffect () {
+		super.DoEffect();
+		if (!owner || !owner.player)
+			return;
+		if (!owner.FindInventory("ModernBerserk_Regen"))
+			return;
+		let psp = owner.player.FindPSprite(PSP_Weapon);
+		let bers = owner.player.FindPSprite(500);
+		if(!psp || bdoom_weapons != 2 || bers) {
+			//Console.Printf("Player dead or overlay already active");
+			return;
+		}
+		let bbers = owner.player.GetPSprite(500);
+		if (bbers) {
+			//Console.Printf("Proceeding to draw berserk overlay...");
+			bbers.caller = self;
+			bbers.SetState(ResolveState("BerserkOverlay"));
+			aalpha = 0.1;
+		}
+	}*/
+	states {
+		Use:
+			TNT1 A 1 {
+				A_Overlay(-999,"OverlayControl");
+			}
+			wait;
+		OverlayControl:
+			TNT1 A 1 {
+				if (FindInventory("ModernBerserk_Regen")) {
+					let psp = player.FindPSprite(PSP_Weapon);
+					let bers = player.FindPSprite(500);
+					if(!psp || bdoom_weapons != 2 || bers) // Player dead or overlay already active
+						return ResolveState(null);
+					A_Overlay(500,"BerserkOverlay",true);
+					A_OverlayFlags(500,PSPF_ALPHA|PSPF_FORCEALPHA,true);
+					A_OverlayFlags(500,PSPF_ADDWEAPON|PSPF_ADDBOB,false);					
+					invoker.aalpha = 0.1;
+				}
+				return ResolveState(null);
+			}
+			loop;
+		BerserkOverlay:
+			/*TNT1 A 0 {
+				//console.printf("berserk overlay");
+				A_OverlayFlags(OverlayID(),PSPF_ALPHA|PSPF_FORCEALPHA,true);
+				A_OverlayFlags(OverlayID(),PSPF_ADDWEAPON|PSPF_ADDBOB,false);
+			}*/
+			BDOL BBBBBBBBBBBBBBBBBBBB 1 {
+				invoker.aalpha = clamp(invoker.aalpha+0.02,0.1,0.5);
+				A_OverlayAlpha(OverlayID(),invoker.aalpha);
+			}
+			BDOL BBBBBBBBBBBBBBBBBBBB 1 {
+				invoker.aalpha = clamp(invoker.aalpha-0.02,0.1,0.5);
+				A_OverlayAlpha(OverlayID(),invoker.aalpha);
+			}
+			TNT1 A 0 {
+				if (!FindInventory("ModernBerserk_Regen"))
+					return ResolveState("BerserkEnd");
+				return ResolveState(null);
+			}
+			loop;
+		BerserkEnd:
+			BDOL BBBBBBBBBB 1 {
+				invoker.aalpha = clamp(invoker.aalpha-0.02,0.0,0.5);
+				A_OverlayAlpha(OverlayID(),invoker.aalpha);
+			}
+			stop;
+	}
+}
+
 Class BD_Berserk : CustomInventory  {	
-	private int counter;
 	Default	{
 		+COUNTITEM
 		+INVENTORY.ALWAYSPICKUP
 		+INVENTORY.ISHEALTH
 		Inventory.PickupMessage "$GOTBERSERK";
 		inventory.pickupsound "pickups/berserk";
-	}
-	override void AttachToOwner(Actor user) {
-		super.AttachToOwner(user);
-		counter = 40;
-	}
-	override void DoEffect() {
-		super.DoEffect();
-		if (!owner) return;
-		counter-=1;
 	}
 	States {
 		Spawn:
@@ -1190,7 +1259,7 @@ Class ModernBerserk_Regen : PowerRegeneration {
 	Default {
 		powerup.duration -40;
 		powerup.strength 5;
-		powerup.color "DD 00 00", 0.5;
+		//powerup.color "00 00 00";
 	}
 }
 
@@ -1198,7 +1267,7 @@ Class ModernBerserk_Speed : PowerSpeed {
 	Default {
 		powerup.duration -40;
 		speed 1.3;
-		powerup.color "00 00 00";
+		//powerup.color "00 00 00";
 	}
 }
 
@@ -1207,6 +1276,6 @@ Class ModernBerserk_Protection : PowerProtection {
 		+NOPAIN;
 		powerup.duration -40;
 		Damagefactor 0.5;
-		powerup.color "00 00 00";
+		//powerup.color "00 00 00";
 	}
 }
