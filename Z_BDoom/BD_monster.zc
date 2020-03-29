@@ -65,8 +65,7 @@ Class BDoomMonster : Actor abstract {
 			A_CustomBulletAttack(horz_spread, vert_spread, numbullets, damageperbullet, puff, 0, CBAF_NORANDOM);
 	}
 
-	state BD_Refire(int ChanceToEnd = 0, statelabel endstate = "See") 
-		{ 
+	state BD_Refire(int ChanceToEnd = 0, statelabel endstate = "See") { 
 		if (bdoom_weapons < 2)
 			return ResolveState("See");
 		else if (monsterclip == 0)

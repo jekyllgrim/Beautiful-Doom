@@ -29,11 +29,11 @@ Class BDoomWeapon : Weapon abstract {
 
 		invoker.currentAngleOffset = 0.0;
 		invoker.currentPitchOffset = 0.0;
-}
+	}
 
 	override void DoEffect() {
 		Super.DoEffect();
-		if (!owner)
+		if (!owner || !owner.player)
 			return;
 		if (!bdoom_replaceweapons) {
 			self.SelectionOrder = self.default.SelectionOrder+50000;
@@ -161,7 +161,6 @@ Class BDoomWeapon : Weapon abstract {
 			wait;
 		QuickKick:
 			TNT1 A 0 {
-				//invoker.iskicking = true;
 				A_OverlayOffset(-10,28,32);
 				A_OverlayFlags(-10,PSPF_ADDBOB|PSPF_ADDWEAPON,false);
 				A_OverlayFlags(-10,PSPF_FLIP|PSPF_MIRROR ,true);
@@ -363,7 +362,6 @@ Class BD_SSGPellet : RealBullet {
 	private actor hitvictim;	//the actor that was hit
 	property ripdepth : ripdepth;
 	Default {
-		damage 0;
 		BD_SSGPellet.ripdepth 300;
 		RealBullet.bulletDamage 12;		
 		RealBullet.Bulletspeed 140;
@@ -373,7 +371,7 @@ Class BD_SSGPellet : RealBullet {
 	override int SpecialMissileHit(actor victim) {
 		//deal damage only ONCE even if the pellet rips through
 		//first we make sure the vicitm hasn't been hit yet and isn't the shooter:
-		if (victim && target && (victim != target) && (victim != hitvictim)) {
+		if (victim && target && (victim != target) && (victim != hitvictim)) { 
 				//reduce ripping ability based on victim's current health (thick monsters are harder to pierce):
 				ripdepth -= victim.health; 
 				hitvictim = victim;
@@ -382,14 +380,12 @@ Class BD_SSGPellet : RealBullet {
 					bEXTREMEDEATH = true;
 				bulletdamage = CalculateDamage();
 				victim.DamageMobj(self,target,bulletdamage,"normal");
-				let mon = BDoomMonster(victim);
-				if (mon)
-					mon.BD_Bleed();
+				victim.TraceBleed(bulletdamage,self);
+				victim.SpawnBlood(pos,AngleTo(victim),bulletdamage);
 			}
 		if (ripdepth <= 0)
-			return -1;
-		else
-			return 1;
+			return 0;
+		return 1;
 	}
 }
 

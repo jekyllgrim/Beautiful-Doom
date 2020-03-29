@@ -52,13 +52,15 @@ class WeaponOverrideHandler : EventHandler {
 			hscale = ( int(hscale.x), int(hscale.x) ); // Force even scalar.
 			double rwidth  = (Screen.getWidth() / double(1920)) / hscale.x;
 			double rheight = (Screen.getHeight() / double(1080)) / hscale.y;
-			vector2 rscale = (1*rwidth, 1*rheight);
+			vector2 rscale = (rwidth, rheight);
 			vector2 rpos = ( 1*rwidth, 50*rheight );
 			StatusBar.DrawImage (textureName, rpos,scale:rscale);
         }
     }
 	// These items have no new visuals and only new pickup sounds, so, I insert them via an event handler, without replacing the actual actors
 	override void WorldThingSpawned(WorldEvent e) {
+		if (e.thing && e.thing.player && !e.thing.FindInventory("BD_OverlayControl"))
+			e.thing.GiveInventory("BD_OverlayControl",1);
 		if (!bdoom_replaceitems)
 			return;
 		if (!(e.thing is "Inventory"))

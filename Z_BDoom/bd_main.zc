@@ -625,8 +625,7 @@ Class WallSmoke : Smoke_General {
 		renderstyle "Translucent";
 		alpha 0.3;
 	}
-	override void PostBeginPlay()
-		{
+	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		A_SetScale(frandom(0.028,0.032),frandom(0.028,0.032));
 		wrot = (random(3,10)*randompick(-1,1));
@@ -1178,3 +1177,19 @@ Class SphereSpawner : Actor {
 			stop;
 	}
 }
+
+/*
+//////////////// OVERLAY
+
+Class BD_OverlayControl : CustomInventory {
+	Default {
+		+INVENTORY.UNDROPPABLE
+		+INVENTORY.UNTOSSABLE
+		+INVENTORY.UNCLEARABLE
+		inventory.maxamount 1;
+	}
+	
+	override void DoEffect() {
+		if (!owner || !owner.player)
+			return;
+		

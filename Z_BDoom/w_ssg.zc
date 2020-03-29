@@ -547,11 +547,12 @@ Class BD_SuperShotgun : BDoomWeapon {
 }
 
 Class SSGClip : ammo {
-Default {
-inventory.icon "HSHLY0";
-	inventory.amount 1;
-	inventory.maxamount 2;
-	ammo.backpackamount 0;
-	ammo.backpackmaxamount 2;
-}
+	Default {
+	inventory.icon "HSHLY0";
+		inventory.amount 1;
+		inventory.maxamount 2;
+		ammo.backpackamount 0;
+		ammo.backpackmaxamount 2;
+		+INVENTORY.IGNORESKILL
+	}
 }

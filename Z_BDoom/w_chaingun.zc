@@ -631,10 +631,11 @@ Class BD_Chaingun : BDoomWeapon {
 
 Class RifleClip : ammo {
 	Default {
-	inventory.icon "HMAGZ0";
+		inventory.icon "HMAGZ0";
 		inventory.amount 1;
 		inventory.maxamount 40;
 		ammo.backpackamount 0;
 		ammo.backpackmaxamount 40;
+		+INVENTORY.IGNORESKILL
 	}
 }

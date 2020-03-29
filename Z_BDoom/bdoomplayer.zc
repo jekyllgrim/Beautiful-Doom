@@ -1,28 +1,24 @@
-Class BD_DoomPlayer : Doomplayer
-{
-Default {
-player.startitem "BD_Pistol";
-player.startitem "Clip", 50;
-player.startitem "BD_Fist";
-player.startitem "PistolClip", 15;
-player.startitem "ShotgunClip", 8;
-player.startitem "RifleClip", 40;
-player.startitem "SSGClip", 12;
-player.startitem "RLClip", 8;
-player.displayname "Beautiful Marine";
-gibhealth 50
-}
-override void Tick ()
-	{
-    Super.Tick ();
-    if (CountInv ("Pistol") > 0)
-		{
-		GiveInventory ("SuperPistol", 1);
-		TakeInventory ("Pistol", 0x7FFFFFFF);
+Class BD_DoomPlayer : Doomplayer {
+	Default {
+		player.startitem "BD_Pistol";
+		player.startitem "Clip", 50;
+		player.startitem "BD_Fist";
+		player.startitem "PistolClip", 15;
+		player.startitem "ShotgunClip", 8;
+		player.startitem "RifleClip", 40;
+		player.startitem "SSGClip", 12;
+		player.startitem "RLClip", 8;
+		player.displayname "Beautiful Marine";
+		gibhealth 50
+	}
+	override void Tick ()	{
+		Super.Tick ();
+		if (CountInv ("Pistol") > 0)	{
+			GiveInventory ("SuperPistol", 1);
+			TakeInventory ("Pistol", 0x7FFFFFFF);
 		}
 	}
-states
-	{
+	states	{
 	Death:
 		TNT1 A 0 A_PlayerSkinCheck("AltSkinDeath");
 		TNT1 A 0 A_jump(256,"death1","Death2","Death3","Death4");
@@ -89,8 +85,7 @@ states
 		TNT1 A 0 A_SpawnItemEx("DoomguyHand",		random(-4,4),random(-4,4),random(5,48),	velx*random(1,2),vely*random(1,2),random(5,10),	random(-10,10),	SXF_ABSOLUTEMOMENTUM | SXF_TRANSFERTRANSLATION, 48);
 		TNT1 A 0 A_SpawnItemEx("DoomguyLeg1",		random(-4,4),random(-4,4),random(5,48),	velx*random(1,2),vely*random(1,2),random(5,10),	random(-10,10),	SXF_ABSOLUTEMOMENTUM | SXF_TRANSFERTRANSLATION, 48);
 		TNT1 A 0 A_SpawnItemEx("DoomguyLeg2",		random(-4,4),random(-4,4),random(5,48),	velx*random(1,2),vely*random(1,2),random(5,10),	random(-10,10),	SXF_ABSOLUTEMOMENTUM | SXF_TRANSFERTRANSLATION, 48);
-		TNT1 A 0 A_SpawnItemEx("DoomguyHead",		random(-4,4),random(-4,4),random(5,48),	velx*random(1,2),vely*random(1,2),random(5,10),	random(-10,10),	SXF_ABSOLUTEMOMENTUM | SXF_TRANSFERTRANSLATION, 48)
-;
+		TNT1 A 0 A_SpawnItemEx("DoomguyHead",		random(-4,4),random(-4,4),random(5,48),	velx*random(1,2),vely*random(1,2),random(5,10),	random(-10,10),	SXF_ABSOLUTEMOMENTUM | SXF_TRANSFERTRANSLATION, 48);
 		POSX M 4;
 		POSX N 4 A_XScream();
 		POSX O 4 A_NoBlocking();
