@@ -27,7 +27,6 @@ server 	int  	bdoom_gibnum 			= 500;
 server 	int  	bdoom_flamesnum			= 300;
 
 
-user int bdoom_spriteshadowdistance = 1024;
 user float	bdoom_fs_volume_mul = 1.0;
 user float	bdoom_fs_delay_mul = 1.0;
 user bool	bdoom_fs_enabled = true;
