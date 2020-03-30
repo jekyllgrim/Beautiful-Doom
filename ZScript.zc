@@ -19,7 +19,6 @@ version "4.2.1"
 #include "Z_Bdoom/w_bfg.zc"
 #include "Z_Bdoom/o_inventory.zc"
 
-#include "Z_Bdoom/SpriteShadow.zc"
 #include "Z_Bdoom/Footsteps3.zc"
 
 #include "Z_Bdoom/BD_Monster.zc"
