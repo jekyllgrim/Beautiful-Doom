@@ -103,6 +103,7 @@ Class BD_BloodyPrintControl : Inventory {
 			if (print) {
 				print.side = side;
 				print.angle = owner.angle;
+				print.translation = bootsblood[bootsBlood.Size()-1].BloodTranslation;
 				side = !side;
 			}
 		}
@@ -176,6 +177,8 @@ Class BD_Blood : BD_BloodBase {
 			return;
 		}
 		if (target && (target is "BDoomMonster")) {
+			CopyBloodColor(target);
+			translation = target.BloodTranslation;
 			let trg = BDoomMonster(target);
 			if (trg) {
 				if (trg.burning){
@@ -386,8 +389,7 @@ Class BD_CeilingBloodDrop : BD_BloodBase {
 
 Class AniBloodPool : BD_BloodBase {
 	bool instant; //if true, the blood pool will instantly go through all the phases and reach the required size — for decorative purposes such as Heart Column, where animation is unneeded, but checking for overhang may still important
-	double psize;
-	private int ver;
+	protected double pscale;
 	Default {
 		+NOINTERACTION
 		+RELATIVETOFLOOR
@@ -396,7 +398,7 @@ Class AniBloodPool : BD_BloodBase {
 		height 1;
 		radius 16;
 		renderstyle 'Normal';
-		scale 0.2;
+		scale 0.1;
 	}
 	override void PostBeginPlay() {
 		Super.PostBeginPlay();
@@ -404,18 +406,11 @@ Class AniBloodPool : BD_BloodBase {
 			destroy();
 			return;
 		}
-		
-		double pscale = scale.x*frandom(1.1,1.8);
-		psize = pscale*22;
-		if (CheckLandingSize (psize) || waterlevel > 0) {
-			destroy();
-			return;
-		}
 		angle = random(0,359);
+		pscale = 1.03;
 		if (target)
 			translation = Target.BloodTranslation;
-		//SetBloodTranslation(changetranslation:false);
-		SetZ(floorz+frandom(0,0.01));
+		SetZ(floorz+frandom(0,0.1));
 	}	
 	override void Tick () {
 		super.Tick();
@@ -428,103 +423,11 @@ Class AniBloodPool : BD_BloodBase {
 	}
 	states	{
 		Spawn:
-			TNT1 A 0 NoDelay {
-				ver = randompick(0,1);
-				if (ver == 0) {
-					if (bcolor == 'green')
-						sprite = GetSpriteIndex("G000");
-					else if (bcolor == 'blue')
-						sprite = GetSpriteIndex("B000");
-					else
-						sprite = GetSpriteIndex("R000");
-				}
-				else {
-					if (bcolor == 'green')
-						sprite = GetSpriteIndex("G010");
-					else if (bcolor == 'blue')
-						sprite = GetSpriteIndex("B010");
-					else
-						sprite = GetSpriteIndex("R010");
-				}
+			MODL A 1 {
+				scale *= pscale;
+				pscale = Clamp(pscale*0.9995,1,2);				
 			}
-			#### ABCDEFGHI 2 {
-				if (instant)
-					A_SetTics(0);
-				if (CheckLandingSize (psize))
-					return ResolveState("Rest");
-				psize+=2.0;
-				return ResolveState(null);
-			}
-			#### JKLMNOPQRSTU 2 {
-				if (instant)
-					A_SetTics(0);
-				if (CheckLandingSize (psize))
-					return ResolveState("Rest");
-				psize+=1.2;
-				return ResolveState(null);
-			}
-			#### VWXYZ 3 {
-				if (instant)
-					A_SetTics(0);
-				if (CheckLandingSize (psize))
-					return ResolveState("Rest");
-				psize+=1.0;
-				return ResolveState(null);
-			}
-			//running out of alphabet letters
-			TNT1 A 0 {
-				if (ver == 0) {
-					if (bcolor == 'green')
-						sprite = GetSpriteIndex("G001");
-					else if (bcolor == 'blue')
-						sprite = GetSpriteIndex("B001");
-					else
-						sprite = GetSpriteIndex("R001");
-				}
-				else {
-					if (bcolor == 'green')
-						sprite = GetSpriteIndex("G011");
-					else if (bcolor == 'blue')
-						sprite = GetSpriteIndex("B011");
-					else
-						sprite = GetSpriteIndex("R011");
-				}
-			}
-			#### ABCD 3 {
-				if (instant)
-					A_SetTics(0);
-				if (CheckLandingSize (psize))
-					return ResolveState("Rest");
-				psize+=1.0;
-				return ResolveState(null);
-			}
-			goto rest;
-		Rest:
-			#### # -1;
-			stop;
-		Raise:
-			#### # 0 {
-				A_SetRenderstyle(alpha,STYLE_Translucent);
-				//console.printf("fade blood pool");
-			}
-			#### # 1 {
-				scale*=0.92;
-				A_FadeOut(0.03);
-			}
-			wait;
-		LoadSprites:
-			R000 ABCDEFGHIJKLMNOPQRSTUVWXYZ 0;
-			R001 ABCD 0;
-			R010 ABCDEFGHIJKLMNOPQRSTUVWXYZ 0;
-			R011 ABCD 0;
-			G000 ABCDEFGHIJKLMNOPQGSTUVWXYZ 0;
-			G001 ABCD 0;
-			G010 ABCDEFGHIJKLMNOPQGSTUVWXYZ 0;
-			G011 ABCD 0;
-			B000 ABCDEFGHIJKLMNOPQBSTUVWXYZ 0;
-			B001 ABCD 0;
-			B010 ABCDEFGHIJKLMNOPQBSTUVWXYZ 0;
-			B011 ABCD 0;
+			MODL A -1 A_Jumpif(pscale > 1,"Spawn");
 			stop;
 	}
 }

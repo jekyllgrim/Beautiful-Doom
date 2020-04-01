@@ -1153,26 +1153,6 @@ Class BD_OverlayControl : CustomInventory {
 		+INVENTORY.AUTOACTIVATE
 		inventory.maxamount 1;
 	}
-	/*override void DoEffect () {
-		super.DoEffect();
-		if (!owner || !owner.player)
-			return;
-		if (!owner.FindInventory("ModernBerserk_Regen"))
-			return;
-		let psp = owner.player.FindPSprite(PSP_Weapon);
-		let bers = owner.player.FindPSprite(500);
-		if(!psp || bdoom_weapons != 2 || bers) {
-			//Console.Printf("Player dead or overlay already active");
-			return;
-		}
-		let bbers = owner.player.GetPSprite(500);
-		if (bbers) {
-			//Console.Printf("Proceeding to draw berserk overlay...");
-			bbers.caller = self;
-			bbers.SetState(ResolveState("BerserkOverlay"));
-			aalpha = 0.1;
-		}
-	}*/
 	states {
 		Use:
 			TNT1 A 1 {
