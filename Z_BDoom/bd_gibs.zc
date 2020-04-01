@@ -51,7 +51,8 @@ class BD_BaseGib : BD_BaseDebris abstract {
 		A_FaceMovementDirection();
 		if (!target || !(target is "BDoomMonster"))
 			return;
-		SetBloodTranslation (changetranslation: false);
+		CopyBloodColor(target);
+		//SetBloodTranslation (changetranslation: false);
 	}
 	virtual void GibBeginPlay() {
 		if (gibtype == "none" && target)
@@ -70,9 +71,11 @@ class BD_BaseGib : BD_BaseDebris abstract {
 	void BD_GibBleed(Class<Actor> spawnclass, double hpos = 0, double vpos = 0, int spawnchance = 100) {				
 		if (random(0,100) > spawnchance)
 			return;
-		let bdrop = BD_BaseDebris(	Spawn(spawnclass, (pos.x+frandom(-hpos,hpos),pos.y+frandom(-hpos,hpos),pos.z+vpos ))	);
-		if (!bdrop)	return;
-		bdrop.translation = translation;
+		let bdrop = BD_BaseDebris(Spawn(spawnclass, (pos.x+frandom(-hpos,hpos),pos.y+frandom(-hpos,hpos),pos.z+vpos ))	);
+		if (!bdrop)
+			return;
+		bdrop.translation = BloodTranslation;
+		bdrop.scale *= 0.6;
 		if (target && target is "BDoomMonster") {
 			bdrop.target = target;
 			let mon = BDoomMonster(target);
@@ -140,11 +143,7 @@ class BD_BaseGib : BD_BaseDebris abstract {
 Class BD_GibBlood : BD_Blood {
 	Default {
 		Scale 0.15;
-		deathsound "gibs/BD_Blood";
-	}
-	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		restscale = frandom(0.07,0.11);
+		deathsound "gibs/blooddrop";
 	}
 }
 
@@ -152,10 +151,6 @@ Class BD_GibBlood : BD_Blood {
 Class BD_GibBloodPool : BD_BloodPool {
 	Default {
 		scale 0.1;
-	}
-	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		restscale = frandom(0.06,0.085);
 	}
 }
 
@@ -225,7 +220,7 @@ class BasicMeatPiece : BD_BaseGib {
 		if (!bdoom_blood || bNOBLOOD || !landed || waterlevel != 0)
 			return;
 		if ((abs(vel.x) > 2 || abs(vel.y) > 2) )
-			BD_GibBleed("BD_GibBloodPool",2,-pos.z+floorz,30);
+			BD_GibBleed("BD_BloodPool",2,-pos.z+floorz,30);
 	}
 	states {
 		spawn:
@@ -234,19 +229,19 @@ class BasicMeatPiece : BD_BaseGib {
 				scale.x*=randompick(-1,1);
 			}
 			#### # 1 {
+				A_FaceMovementDirection();
 				if (!bSLIDESONWALLS) {
-					if (pos.z >= ceilingz-16 && ceilingpic != skyflatnum){
-						let a = BD_CeilingPool(Spawn("BD_CeilingPool",(pos.x,pos.y,ceilingz)));
-						if (a) {
-							if (bcolor == 'blue')
-								a.A_SetTranslation("BlueBlood");
-							else if (bcolor == 'green')
-								a.A_SetTranslation("GreenBlood");
+					if (pos.z >= ceilingz-16 && ceilingpic != skyflatnum) {
+						let bld = BD_Blood(Spawn("BD_Blood",(pos.x,pos.y,ceilingz)));
+						if (bld) {
 							if (target && target is "BDoomMonster")	{
-								a.target = target;
-								let m = BDoomMonster(target);
-								if (m) m.meatlist.Push(a);
+								bld.target = target;
+								bld.translation = target.BloodTranslation;
+								let mon = BDoomMonster(target);
+								if (mon) 
+									mon.meatlist.Push(bld);
 							}
+							bld.SetStateLabel("Death");
 						}
 						SetOrigin((pos.x,pos.y,ceilingz-height),true);
 						A_Scream();
@@ -262,15 +257,10 @@ class BasicMeatPiece : BD_BaseGib {
 					}
 					if (blockingline && (blockingline.flags & blockingline.ML_BLOCKING)) {
 						A_Scream();
-						if (bcolor == 'blue')
-							A_SprayDecal("BloodSplatBlue",radius+8);
-						else if (bcolor == 'green')
-							A_SprayDecal("BloodSplatGreen",radius+8);
-						else
-							A_SprayDecal("BloodSplatRed",radius+8);
 						let smudge = GibSmudge(Spawn("GibSmudge",pos));
 						if (smudge) {
 							smudge.master = self;
+							smudge.translation = BloodTranslation;
 							//smudge.bWALLSPRITE = true;
 							//smudge.angle = atan2(blockingline.delta.y, blockingline.delta.x) + 90;
 						}
@@ -281,11 +271,11 @@ class BasicMeatPiece : BD_BaseGib {
 					}
 				}
 				if (!bNOBLOOD && bdoom_blood && waterlevel == 0) //spawn blood is CVARs allow and not underwater
-					BD_GibBleed("BD_GibBlood",2,frandom(0,2),30);					
+					BD_GibBleed("BD_Blood",2,frandom(0,2),30);					
 				roll+=brot;
 				if (waterlevel > 0) {
 					if (!bNOBLOOD && bdoom_blood) //spawn less blood if underwater
-						A_SpawnItemEx("BD_GibBlood",frandom(-2,2),frandom(-2,2),frandom(0,2),0,frandom(0,1),frandom(0,1),random(175,185),SXF_TRANSFERPOINTERS,212);
+						BD_GibBleed("BD_Blood",frandom(-2,2),frandom(-2,2),18);
 					if (abs(brot) > 0.5) //slow down rotation
 						brot *= 0.98;
 					else //when not rotating anymore, stop moving
@@ -653,7 +643,7 @@ class Gib_Head : BasicMeatPiece {
 class Gib_Torso1 : BasicMeatPiece {
 	int finalframe; //last frame used in the flying animation
 	Default {
-		BD_BaseDebris.sfxtype "none"; //I don't want torsos to get destroyed because they essentially function as a corpse and show where the monster died
+		BD_BaseDebris.sfxtype "none"; //I don't want torsos to get destroyed because they essentially function as bld corpse and show where the monster died
 		gravity 1.0;
 		scale 1.0;
 	}

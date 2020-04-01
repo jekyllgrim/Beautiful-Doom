@@ -1104,115 +1104,115 @@ material texture "models/bloodpool_green/bpool2_9.png" {
 ///// FLOOR SPLATS ///////////////////////
 //////////////////////////////////////////
 
-material texture "models/FloorSplats/bsplatA.png" {
+material texture "graphics/FloorSplats/bsplatA.png" {
 	normal "materials/normalmaps/FloorSplats/bsplatA.png"
 	specular "materials/specular/FloorSplats/bsplatA.png"
 	glossiness 100
 	specularlevel 50
 }
-material texture "models/FloorSplats/bsplatB.png" {
+material texture "graphics/FloorSplats/bsplatB.png" {
 	normal "materials/normalmaps/FloorSplats/bsplatB.png"
 	specular "materials/specular/FloorSplats/bsplatB.png"
 	glossiness 100
 	specularlevel 50
 }
-material texture "models/FloorSplats/bsplatC.png" {
+material texture "graphics/FloorSplats/bsplatC.png" {
 	normal "materials/normalmaps/FloorSplats/bsplatC.png"
 	specular "materials/specular/FloorSplats/bsplatC.png"
 	glossiness 100
 	specularlevel 50
 }
-material texture "models/FloorSplats/bsplatD.png" {
+material texture "graphics/FloorSplats/bsplatD.png" {
 	normal "materials/normalmaps/FloorSplats/bsplatD.png"
 	specular "materials/specular/FloorSplats/bsplatD.png"
 	glossiness 100
 	specularlevel 50
 }
-material texture "models/FloorSplats/bsplatE.png" {
+material texture "graphics/FloorSplats/bsplatE.png" {
 	normal "materials/normalmaps/FloorSplats/bsplatE.png"
 	specular "materials/specular/FloorSplats/bsplatE.png"
 	glossiness 100
 	specularlevel 50
 }
-material texture "models/FloorSplats/bsplatF.png" {
+material texture "graphics/FloorSplats/bsplatF.png" {
 	normal "materials/normalmaps/FloorSplats/bsplatF.png"
 	specular "materials/specular/FloorSplats/bsplatF.png"
 	glossiness 100
 	specularlevel 50
 }
-material texture "models/FloorSplats/bsplatG.png" {
+material texture "graphics/FloorSplats/bsplatG.png" {
 	normal "materials/normalmaps/FloorSplats/bsplatG.png"
 	specular "materials/specular/FloorSplats/bsplatG.png"
 	glossiness 100
 	specularlevel 50
 }
-material texture "models/FloorSplats/bsplatH.png" {
+material texture "graphics/FloorSplats/bsplatH.png" {
 	normal "materials/normalmaps/FloorSplats/bsplatH.png"
 	specular "materials/specular/FloorSplats/bsplatH.png"
 	glossiness 100
 	specularlevel 50
 }
-material texture "models/FloorSplats/bsplatI.png" {
+material texture "graphics/FloorSplats/bsplatI.png" {
 	normal "materials/normalmaps/FloorSplats/bsplatI.png"
 	specular "materials/specular/FloorSplats/bsplatI.png"
 	glossiness 100
 	specularlevel 50
 }
-material texture "models/FloorSplats/bsplatJ.png" {
+material texture "graphics/FloorSplats/bsplatJ.png" {
 	normal "materials/normalmaps/FloorSplats/bsplatJ.png"
 	specular "materials/specular/FloorSplats/bsplatJ.png"
 	glossiness 100
 	specularlevel 50
 }
-material texture "models/FloorSplats/bsplatK.png" {
+material texture "graphics/FloorSplats/bsplatK.png" {
 	normal "materials/normalmaps/FloorSplats/bsplatK.png"
 	specular "materials/specular/FloorSplats/bsplatK.png"
 	glossiness 100
 	specularlevel 50
 }
-material texture "models/FloorSplats/bsplatL.png" {
+material texture "graphics/FloorSplats/bsplatL.png" {
 	normal "materials/normalmaps/FloorSplats/bsplatL.png"
 	specular "materials/specular/FloorSplats/bsplatL.png"
 	glossiness 100
 	specularlevel 50
 }
-material texture "models/FloorSplats/bsplatM.png" {
+material texture "graphics/FloorSplats/bsplatM.png" {
 	normal "materials/normalmaps/FloorSplats/bsplatM.png"
 	specular "materials/specular/FloorSplats/bsplatM.png"
 	glossiness 100
 	specularlevel 50
 }
-material texture "models/FloorSplats/bsplatN.png" {
+material texture "graphics/FloorSplats/bsplatN.png" {
 	normal "materials/normalmaps/FloorSplats/bsplatN.png"
 	specular "materials/specular/FloorSplats/bsplatN.png"
 	glossiness 100
 	specularlevel 50
 }
-material texture "models/FloorSplats/bsplatO.png" {
+material texture "graphics/FloorSplats/bsplatO.png" {
 	normal "materials/normalmaps/FloorSplats/bsplatO.png"
 	specular "materials/specular/FloorSplats/bsplatO.png"
 	glossiness 100
 	specularlevel 50
 }
-material texture "models/FloorSplats/bsplatP.png" {
+material texture "graphics/FloorSplats/bsplatP.png" {
 	normal "materials/normalmaps/FloorSplats/bsplatP.png"
 	specular "materials/specular/FloorSplats/bsplatP.png"
 	glossiness 100
 	specularlevel 50
 }
-material texture "models/FloorSplats/bsplatQ.png" {
+material texture "graphics/FloorSplats/bsplatQ.png" {
 	normal "materials/normalmaps/FloorSplats/bsplatQ.png"
 	specular "materials/specular/FloorSplats/bsplatQ.png"
 	glossiness 100
 	specularlevel 50
 }
-material texture "models/FloorSplats/bsplatR.png" {
+material texture "graphics/FloorSplats/bsplatR.png" {
 	normal "materials/normalmaps/FloorSplats/bsplatR.png"
 	specular "materials/specular/FloorSplats/bsplatR.png"
 	glossiness 100
 	specularlevel 50
 }
-material texture "models/FloorSplats/bsplatS.png" {
+material texture "graphics/FloorSplats/bsplatS.png" {
 	normal "materials/normalmaps/FloorSplats/bsplatS.png"
 	specular "materials/specular/FloorSplats/bsplatS.png"
 	glossiness 100
