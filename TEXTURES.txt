@@ -1092,18 +1092,6 @@ Sprite "RIFLB0", 193, 135
 	Patch "RIFLB0", 0, 0
 }
 
-Sprite "RIFLC0", 193, 135
-{
-	Offset -34, -33
-	Patch "RIFLC0", 0, 0
-}
-
-Sprite "RIFLD0", 193, 135
-{
-	Offset -34, -33
-	Patch "RIFLD0", 0, 0
-}
-
 Sprite "RIFMA0", 193, 135
 {
 	Offset -34, -33
