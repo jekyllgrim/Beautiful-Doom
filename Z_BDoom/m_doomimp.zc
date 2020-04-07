@@ -1,27 +1,24 @@
-Class BD_DoomImp : BDoomMonster //replaces DoomImp
-{
-Default
-	{
-	species "DoomImp";
-	Health 60;
-	gibhealth 50;
-	Radius 20;
-	Height 56;
-	Mass 100;
-	Speed 8;
-	PainChance 200;
-	Monster;
-	+FLOORCLIP
-	SeeSound "imp/sight";
-	PainSound "imp/pain";
-	DeathSound "imp/death";
-	ActiveSound "imp/active";
-	HitObituary "$OB_IMPHIT";
-	Obituary "$OB_IMP";
-	Tag "$FN_IMP";
+Class BD_DoomImp : BDoomMonster {
+	Default	{
+		species "DoomImp";
+		Health 60;
+		gibhealth 50;
+		Radius 20;
+		Height 56;
+		Mass 100;
+		Speed 8;
+		PainChance 200;
+		Monster;
+		+FLOORCLIP
+		SeeSound "imp/sight";
+		PainSound "imp/pain";
+		DeathSound "imp/death";
+		ActiveSound "imp/active";
+		HitObituary "$OB_IMPHIT";
+		Obituary "$OB_IMP";
+		Tag "$FN_IMP";
 	}
-states
-	{
+	states	{
 	Death.Fire:
 		stop;
 	Spawn:
@@ -39,7 +36,7 @@ states
 		Goto See;	
 	Missile:
 		TNT1 A 0 a_facetarget();
-		TRO2 IIJJ 2 A_SpawnItemEx("ParticleFire_DoomImp",4,27,31,	0,0,frandom(0.8,1.0),0);
+		TRO2 IIJJ 2 A_SpawnItemEx("ParticleFire_DoomImp",3,27,31,	0,0,frandom(0.8,1.0),0);
 		TNT1 A 0 a_facetarget();
 		TRO2 KKLL 2 A_SpawnItemEx("ParticleFire_DoomImp",12,16,33,	0,0,frandom(0.8,1.0),0);
 		TRO2 M 3 A_CustomComboAttack("BD_DoomImpBall", 32, 3 * random(1, 8), "imp/melee");
@@ -59,17 +56,17 @@ states
 			else
 				return A_Jump(256,"Death.Vanilla","Death1","Death2");
 			return ResolveState(null);
-			}
+		}
 	Death.Vanilla:
 		TROM A 2 {
 			A_Scream();
 			BD_Bleed();
-			}
+		}
 		TROM B 2;
 		TROM C 2 {
 			A_NoBlocking();
 			BD_Bleed();
-			}
+		}
 		TROM DEFG 2;
 		TNT1 A 0 BD_Bleed();
 		TROM HIJKL 3;
@@ -78,42 +75,35 @@ states
 		TRON A 3 {
 			A_Scream();
 			BD_Bleed();
-			}
+		}
 		TRON B 2 {
 			A_NoBlocking();
 			BD_Bleed();
-			}
+		}
 		TRON CDE 3;
 		TNT1 A 0 BD_Bleed();
 		TRON FGHIJ 3;
 		goto deathbleed;
 	Death.Saw:
 		TNT1 A 0 {
-			if (!bdoom_gibs || random(0,1) > 0)
-				return ResolveState("Death");
-			scale.x = scale.x*randompick(-1,1);
-			A_FaceTarget();
-			A_Pain();
-			return ResolveState(null);
-			}		
-		TROY AZAZZZ random(8,10) A_SpawnItemEx("BloodSpurt",	1,0,frandom(30,38),0,0,0,random(-40,40),SXF_SETTARGET,96);
-		TROY Z 5 {
-			A_Pain();
-			A_NoBlocking();
-			}
-		TROY AAZZ random(8,10) A_SpawnItemEx("BloodSpurt", 1,0,frandom(30,38),0,0,0,random(-40,40),SXF_SETTARGET,96);
-		TROY Z 5 A_Scream();
-		TROY BCDEF 3	A_SpawnItemEx("Blood",0,frandom(-4,-8),frandom(12,18),	0,frandom(2,4),frandom(4,6),	random(-20,20),	SXF_SETMASTER,128);
-		TROY GHIJ 2 	A_SpawnItemEx("Blood",0,frandom(-8,-12),frandom(8,12),	0,frandom(2,4),frandom(4,6),	random(-20,20),	SXF_SETMASTER,128);
-		TROY K 3 A_PlaySound("gibs/meatland");
-		TROY L 3 A_PlaySound("gibs/meatland");
-		TROY MN 3;
+			scale.x*=randompick(-1,1);
+		}
+		TROY ABCD 3;
+		TNT1 A 0 A_NoBlocking();
+		TROY EFG 3;
+		TROY HIJKL 3 A_SpawnItemEx("BloodSpurt",	1,0,frandom(30,38),0,0,0,random(-40,40),SXF_SETTARGET,128);
+		TROY MN 2;
+		TROY O 2 {
+			A_PlaySound("gibs/meatland",CHAN_7);
+			A_PlaySound("body/fall",CHAN_6);
+		}
+		TROY PQRS 3;
 		goto deathbleed;
 	DecapDeath:
 		TROD A 3 {
 			A_SpawnItemEx("Gib_Head",frandom(-2,2),frandom(-2,2),frandom(50,54),	frandom(2,5),0,frandom(1,5),random(150,210),SXF_SETTARGET);
-			A_SpawnItemEx("Gib_Hand",0,-20*scale.x,25,								vel.x*0.35,frandom(-2,-4)*scale.x,frandom(2,3),	0,SXF_SETTARGET);
-			}
+			A_SpawnItemEx("Gib_Hand",0,-20*scale.x,25,								vel.x*0.35,frandom(-2,-3)*scale.x,frandom(2,3),	0,SXF_SETTARGET);
+		}
 		TROD BCDF 3 BD_Bleed();
 		TROD F 3 A_NoBlocking();
 		TROD GHIJ 3;
@@ -121,23 +111,23 @@ states
 	DecapDeath2: //stomach rip
 		TROP A 3 A_Scream();
 		TROP BC 3 BD_Bleed();
-		TROP CCDDCE random(4,7) {
+		TROP CCDDCE random(3,7) {
 			if (!burning && random(0,100) > 40) {
 				A_PlaySound("gibs/bloodspurt");
 				A_SpawnItemEx("FrontalSpurt",2,frandom(-0.3,0.3),frandom(14,15),0,0,0,random(-30,-40)*scale.x,SXF_SETTARGET,80);
-				}
 			}
+		}
 		TNT1 A 0 {
 			A_NoBlocking();
 			A_Pain();
 			}
-		TROP FFF random(4,7) {
+		TROP FFF random(3,7) {
 			if (!burning && random(0,100) > 40) {
 				A_PlaySound("gibs/bloodspurt");
 				A_SpawnItemEx("FrontalSpurt",2,frandom(0,0.5),frandom(11,12),0,0,0,random(-30,-40)*scale.x,SXF_SETTARGET,80);
-				}
 			}
-		TROP GHI 4;
+		}
+		TROP GHI 3;
 		TROP J 3 A_PlaySound("body/fall");
 		TROP K 3;
 		goto deathbleed;
@@ -150,18 +140,16 @@ states
 		TGIB gh 2 A_NoBlocking();
 		TGIB ijklmnO 2;
 		goto deathbleed;
-		}
+	}
 }
 
-Class ParticleFire_DoomImp : ParticleFire_General
-{
-Default {
-	renderstyle "Add";
-	scale 0.4;
-	alpha 0.5;
+Class ParticleFire_DoomImp : ParticleFire_General {
+	Default {
+		renderstyle "Add";
+		scale 0.3;
+		alpha 0.5;
 	}
-states
-	{
+states {
 	Spawn:
 		TNT1 A 0 NoDelay A_SetScale(scale.x*randompick(-1,1),scale.y);
 		FIPR ABCDEFGHIJKLMNOPQRST 1  A_FadeOut(0.03);
@@ -169,26 +157,24 @@ states
 	}
 }
 
-Class BD_DoomImpBall : DoomImpBall //replaces DoomImpBall
-{
-Default {
-	+BLOODLESSIMPACT
-	Damagetype "Fire";
-	scale 0.5;
-	decal "Scorch";
-	renderstyle "Add";
-	alpha 0.6;
+Class BD_DoomImpBall : DoomImpBall {
+	Default {
+		+BLOODLESSIMPACT
+		Damagetype "Fire";
+		scale 0.5;
+		decal "Scorch";
+		renderstyle "Add";
+		alpha 0.6;
 	}
-override void PostBeginPlay () {
-	super.PostBeginPlay();
-	if (bdoom_debris) {
-		let f = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
-		f.fcolor = "yellow";
-		f.master = self;
+	override void PostBeginPlay () {
+		super.PostBeginPlay();
+		if (bdoom_debris) {
+			let f = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
+			f.fcolor = "yellow";
+			f.master = self;
 		}
 	}
-States
-	{
+	States	{
 	Spawn:
 		IMPB AABBCC 1 NoDelay {
 			if (bdoom_debris)
@@ -196,15 +182,13 @@ States
 			}
 		Loop;
 	Death:
-		IMPB DEFGH 4  A_FadeOUt(0.1);
+		IMPB DEFGH 3  A_FadeOUt(0.1);
 		stop;
-		}
+	}
 }
 
-Class FirePiece_Imp : FirePiece
-{
-states
-	{
+Class FirePiece_Imp : FirePiece {
+	states	{
 	Spawn:
 		FIRP ABCDEFGHIJ 2 bright NoDelay A_FadeOut(0.08);
 		stop;
