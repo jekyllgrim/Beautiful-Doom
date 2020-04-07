@@ -128,7 +128,7 @@ Class BD_ZombieMan : BDoomMonster {
 			}
 			POSY K 3 {
 				A_NoBlocking();
-				A_PlaySound("gibs/meatland");
+				A_PlaySound("body/fall");
 			}
 			POSY L 4;
 			POSY M 3 A_PlaySound("gibs/meatland");
