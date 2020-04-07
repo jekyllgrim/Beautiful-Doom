@@ -454,3 +454,124 @@ class FootstepsInit : EventHandler {
 		}
 	}
 }
+
+
+///////////////
+/*	Handler by 3saster that searches ANIMDEFS and ANIMATED lumps to see
+	if a given texture name is defined in any of those as an animated texture.
+	Used for 3D blood pools sprayed on the floor/ceiling: they quickly disappear
+	if they land on an animated texture (including liquids).
+*/
+
+Class BD_Animated_Handler : StaticEventHandler
+{
+	// These must be stored as numbers, in order to get the textures
+	// from ANIMATED in between the start and end
+	// Oddly, we can convert a TextureID to int, but not the other way
+	Array<int> animNums;
+	
+	bool isAnimated(textureID tex)
+	{
+		return ( animNums.Find(int(tex)) != animNums.Size() );
+	}
+
+	override void OnRegister()
+	{
+		// ANIMATED
+		int currLump = Wads.FindLump("ANIMATED",0,1);
+		while( currLump != -1 )
+		{
+			addANIMATED(currLump);
+			currLump = Wads.FindLump("ANIMATED",currLump+1,1);
+		}
+		
+		// ANIMDEFS
+		currLump = Wads.FindLump("ANIMDEFS",0,1);
+		while( currLump != -1 )
+		{
+			addANIMDEFS(currLump);
+			currLump = Wads.FindLump("ANIMDEFS",currLump+1,1);
+		}
+	}
+	
+	void addANIMATED(int lump)
+	{
+		string data = Wads.ReadLump(lump);
+		// Read each record
+		for(int pos = 0; data.ByteAt(pos) != 255; pos += 23 )
+		{
+			string start = data.Mid(pos+10,9);
+			string end   = data.Mid(pos+1 ,9);
+			
+			int texStart = int(TexMan.CheckForTexture(start, TexMan.Type_Any));
+			int texEnd   = int(TexMan.CheckForTexture(end,   TexMan.Type_Any));
+				
+			// If animated texture exists and is not in array, add it
+			if( texStart > 0 && texEnd > 0 && texStart != texEnd )
+				for(int i = texStart; i <= texEnd; i++)
+				{
+					if( animNums.Find(i) == animNums.Size() )
+						animNums.Push(i);
+				}
+		}
+	}
+	
+	void addANIMDEFS(int lump)
+	{
+		string data = Wads.ReadLump(lump);
+		// Delete comments
+		while(data.IndexOf("//") != -1)
+		{
+			int start = data.IndexOf("//");
+			int end   = data.IndexOf("\n",start)+1;
+			data.Remove(start,end-start);
+		}
+		while(data.IndexOf("/*") != -1)
+		{
+			int start = data.IndexOf("/*");
+			int end   = data.IndexOf("*/",start)+2;
+			data.Remove(start,end-start);
+		}
+		// Remove non-space whitespace
+		for(int i = 0; i <= 31; i++)
+			data.Replace(string.format("%c",i)," ");
+		data.Replace(string.format("%c",127)," ");
+		// Remove superflous spaces
+		string cleandata = data;
+		cleandata.Replace("  "," ");
+		while(data != cleandata)
+		{
+			data = cleandata;
+			cleandata.Replace("  "," ");
+		}
+		
+		// Tokenize
+		Array<String> tokens;
+		data.Split(tokens, " ");
+		
+		// Search for token after texture/flat
+		int i = 0;
+		while(i < tokens.Size())
+		{
+			// texture.flat appears as next token; skip that
+			if(tokens[i] ~== "warp" || tokens[i] ~== "warp2")
+				i += 2;
+			// Found an animated texture; read "pic" stuff until another token is found
+			else if(tokens[i] ~== "texture" || tokens[i] ~== "flat")
+			{
+				while( !(tokens[i] ~== "pic") && i < tokens.Size())
+					i++;
+				while( tokens[i] ~== "pic" && i < tokens.Size() )
+				{
+					int texture = int(TexMan.CheckForTexture(tokens[i+1], TexMan.Type_Any));
+					if( texture > 0 && animNums.Find(texture) == animNums.Size() )
+						animNums.Push(texture);
+					i += 4;
+				}
+			}
+			else
+				i++;
+		}
+	}
+	
+}
