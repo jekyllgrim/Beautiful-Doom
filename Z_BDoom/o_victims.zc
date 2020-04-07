@@ -81,7 +81,7 @@ Class BD_BaseVictim : BDoomActor abstract {
 		let a = AniBloodPool(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
 		if (a) {
 			a.instant = true;
-			a.scale = (0.2,0.2)*frandom(0.8,1.4);
+			//a.scale = (0.2,0.2)*frandom(0.8,1.4);
 			a.target = self;
 		}
 	}
@@ -554,7 +554,7 @@ Class BD_SmallBloodPool : Actor {
 		let a = AniBloodPool(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
 		if (a) {
 			a.instant = true;
-			a.scale = (0.16,0.16)*frandom(0.8,1.4);
+			//a.scale = (0.16,0.16)*frandom(0.8,1.4);
 			a.target = self;
 		}
 	destroy();
