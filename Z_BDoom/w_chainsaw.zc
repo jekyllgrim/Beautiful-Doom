@@ -230,7 +230,8 @@ Class BD_Chainsaw : BDoomWeapon {
 	/////////// MODERN
 
 		Select.Modern:
-			SAWN A 0 {
+			TNT1 A 0 {
+				A_PlaySound("Mweapons/saw/select");
 				A_Overlay(3,"BloodOverlay");
 				A_WeaponOffset(-35.0,74.0);
 			}
