@@ -160,6 +160,7 @@ weapons/bfg/railcool	BFGLEND
 
 Mweapons/dry		"sounds/modern/wempty.ogg"
 
+Mweapons/saw/select		"sounds/modern/saw/saw_select.ogg"
 Mweapons/saw/start		"sounds/modern/saw/saw_start.ogg"
 Mweapons/saw/stop		"sounds/modern/saw/saw_stop.ogg"
 Mweapons/saw/loop		"sounds/modern/saw/saw_loop.ogg"
