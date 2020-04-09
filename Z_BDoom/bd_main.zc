@@ -41,9 +41,8 @@ Class BDoomActor : Actor abstract {
 			return true;
 		//if (checker.GetFloorTerrain().isLiquid == true)
 		//	return true;
-		let event = BD_Animated_Handler(EventHandler.Find("BD_Animated_Handler"));
+		let event = BD_Animated_Handler(StaticEventHandler.Find("BD_Animated_Handler"));
 		if (event && event.IsAnimated(checker.floorpic)) {
-			console.printf("true");
 			return event.IsAnimated(checker.floorpic);
 		}
 		/*string flr = TexMan.GetName(checker.floorpic);

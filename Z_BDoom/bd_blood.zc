@@ -245,7 +245,7 @@ Class BD_Blood : BD_BloodBase {
 				bMOVEWITHSECTOR = true;
 				bRELATIVETOFLOOR = true;
 				A_SetRenderStyle(1,STYLE_Normal);
-				if (BDoomActor.CheckWater())
+				if (BDoomActor.CheckWater(self))
 					return ResolveState("Water");
 				SetOrigin((pos.x,pos.y,floorz+frandom(0.25,0.5)),false);
 				return ResolveState(null);
@@ -284,10 +284,13 @@ Class BD_Blood : BD_BloodBase {
 			#### # 1 A_FadeOut(0.1);
 			wait;
 		Water:
-			#### # 0 A_SetRenderStyle(alpha,STYLE_Translucent);
+			#### # 0 {
+				A_SetRenderStyle(alpha,STYLE_Translucent);
+				//console.printf("blood in water");
+			}
 			#### # 1 {
-				A_FadeOut(0.04);
-				scale*=1.03;
+				A_FadeOut(0.05);
+				scale*=1.01;
 			}
 			wait;
 	}
