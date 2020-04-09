@@ -3,7 +3,7 @@ Advanced engine needed  : GZDoom 4.2.0
 Primary purpose         : No levels included
 ===========================================================================
 Title                   : Beautiful Doom
-Filename                : BDoom***.pk3
+Filename                : 
 Release date            : TBA
 Authors                 : Jekyll Grim Payne (aka Agent_Ash), Gifty
 Email Address           : jekyllgrim@gmail.com
@@ -18,7 +18,7 @@ Check out his mod: https://forum.zdoom.org/viewtopic.php?t=45550
 * phantombeta, Marisa Kirisame, Gutawer, josh771, Accensus, Caligari87, Nash, 
 Zombie, D2JK — Zscript help and contributions
 
-* 3saster — code contributions, various fixes and improvements
+* 3saster — animated texture handler, code contributions, various fixes and improvements
 						
 * Mike12 - for original assault rifle sprites
 
@@ -29,7 +29,7 @@ https://www.doomworld.com/vb/wads-mods/62403-doom-2-minor-sprite-fixing-project-
 https://www.doomworld.com/vb/wads-mods/58879-the-hi-res-doom-sound-pack-is-updated/
 For older Smooth Weapon Animation mod
 
-* The Zombie Killer - ACS footsteps
+* The Zombie Killer aka Zombie - Footsteps
 http://forum.zdoom.org/viewtopic.php?f=37&t=35388
 	
 * Nash - Nashgore and SpriteShadows
