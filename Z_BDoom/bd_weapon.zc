@@ -9,9 +9,12 @@ Class BDoomWeapon : Weapon abstract {
 	property offsetTics : offsetTics;
 	protected int NonselTimer; //counts how long the weapon was deselected, used for automatic background reload
 	protected int AutoReloadTime; //the value that NonselTimer is compared to
-	property AutoReloadTime : AutoReloadTime;
+	property AutoReloadTime : AutoReloadTime;	
 	
 	protected bool wasempty;
+	
+	protected bool dontforcebob;
+	property dontforcebob : dontforcebob;
 
 	Default {  
 		BDoomWeapon.AutoReloadTime 60;
@@ -47,7 +50,7 @@ Class BDoomWeapon : Weapon abstract {
 				BobRangeY = 0.2;
 				BobStyle = 5;
 				BobSpeed = 2.0;
-				if (owner.player.readyweapon)
+				if (owner.player.readyweapon && owner.player.readyweapon == self && !dontforcebob)
 					owner.player.WeaponState |= WF_WEAPONBOBBING;
 		}
 		else {

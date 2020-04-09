@@ -8,7 +8,9 @@ class BD_BFG9000 : BDoomWeapon {
 	int railcounter; //used for Heavy Laser alt attack
 	string PrevSpecies;
 	protected double wzoom;
+	ModernBFG_PrepOrb preporb;
 	Default {
+		BDoomWeapon.dontforcebob True;
 		Height 20;
 		weapon.ammotype2 	"Cell";
 		weapon.ammouse2 	1;
@@ -42,6 +44,8 @@ class BD_BFG9000 : BDoomWeapon {
 			}
 			//console.printf("Player Species: %s",owner.species);
 		}
+		if (owner.player.readyweapon != self && preporb)
+			preporb.destroy();
 	}
 	States {
 		Spawn:
@@ -243,6 +247,11 @@ class BD_BFG9000 : BDoomWeapon {
 				invoker.wcharge = 0;
 				A_Overlay(3,"ChargeLights");
 				A_PLaySound("Mweapons/bfg/charge",6);
+				invoker.preporb = ModernBFG_PrepOrb(Spawn("ModernBFG_PrepOrb",player.mo.pos));
+				if (invoker.preporb) {
+					invoker.preporb.master = player.mo;
+					invoker.preporb.bfg = BD_BFG9000(invoker);
+				}
 			}
 		Hold.Modern:
 			BBGN A 14 {
@@ -262,8 +271,11 @@ class BD_BFG9000 : BDoomWeapon {
 			goto FireBFG;
 		OverCharge:	
 			BBGN A 22 {
-				if (invoker.wcharge >= 12)
+				if (invoker.wcharge >= 12) {
+					if (invoker.preporb)
+						invoker.preporb.destroy();
 					return ResolveState("FireSelf");
+				}
 				invoker.wcharge++;
 				return ResolveState(null);
 			}
@@ -271,6 +283,8 @@ class BD_BFG9000 : BDoomWeapon {
 			goto FireBFG;
 		FireBFG:
 			TNT1 A 0 {
+				if (invoker.preporb)
+					invoker.preporb.destroy();
 				A_ClearRefire();
 				A_ClearOverlays(3,3);
 				invoker.wzoom = 0.98;
@@ -389,6 +403,54 @@ class BD_BFG9000 : BDoomWeapon {
 	}
 }
 
+Class ModernBFG_PrepOrb : Actor {
+	BD_BFG9000 bfg;
+	Default {
+		+NOINTERACTION
+		+FORCEXYBILLBOARD
+		+ROLLSPRITE
+		+BRIGHT
+		renderstyle 'Add';
+		alpha 0.9;
+		scale 0.02;
+	}
+	override void Tick() {
+		super.Tick();
+		if (!master || !master.player)
+			return;
+		Vector3 ofs = master.player.mo.pos+(0,0,master.player.viewz - master.pos.z);
+		Vector3 x, y, z;
+		[x, y, z] = Matrix4.getaxes(master.player.mo.pitch,master.player.mo.angle,master.player.mo.roll);
+		SetOrigin(ofs+x*16-z*3.5,true);
+		if (bfg) {
+			roll += 5*bfg.wcharge;
+			double jitter = 0.1 * bfg.wcharge;
+			scale = (default.scale * (1 + jitter));			
+			//SetOrigin(pos + (frandom(-jitter,jitter),frandom(-jitter,jitter),frandom(-jitter,jitter)),false);
+		}
+	}
+	states {
+	Spawn:
+		COIR ABCDEFGHIJKLMNOPQRSTUV 2 {
+			if (!bdoom_debris)
+				return;
+			if (!bfg)
+				return;
+			for (int i = 0; i < bfg.wcharge; i++) {
+				let xoff = frandom(-10,10);
+				let yoff = frandom(-10,10);
+				let zoff = frandom(-10,10);
+				let colshift = random(0,200);
+				A_SpawnParticle(Color(0x00+colshift,0xFF,0x00+colshift),SPF_FULLBRIGHT|SPF_NOTIMEFREEZE,lifetime:10,size:0.3,
+								xoff:xoff,yoff:yoff,zoff:zoff,
+								velx:xoff*-0.1,vely:yoff*-0.1,velz:zoff*-0.1,
+								startalphaf:0.8,fadestepf:0,sizestep:0.3
+							);
+			}
+		}
+		loop;
+	}
+}
 
 Class BD_BFGBall : BFGBall {
 	Class<Actor> trailactor;	
@@ -829,20 +891,15 @@ Class ModernBFGBall : BD_BFGBall {
 					return ResolveState("SelfDestruct");
 				A_PlaySound("weapons/bfg/fly",CHAN_6,0.6,TRUE,attenuation:3);
 				A_PlaySound("Mweapons/bfg/orbcharge",CHAN_7);
-				/*if(bdoom_debris) {
-					let f = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
-					f.fcolor = 'green';
-					f.vel = vel;
-					f.master = self;
-					f.scale = scale;
-				}*/
 				return ResolveState(null);
 			}
 		SpawnDo:
 			COIR ABCDEFGHIJKLMNOPQRSTUV 2 {
 				A_FaceMovementDirection();
-				if (vel.length() < 0.5)
+				if (vel.length() < 0.5) {
 					SetStateLabel("Death");
+					A_KillChildren();
+				}
 			}
 			loop;
 		Death.Sky:
@@ -874,6 +931,22 @@ Class ModernBFGBall : BD_BFGBall {
 					}
 				}
 			}
+			TNT1 A 0 {
+				let ring = Spawn("ModernBFGBall_XRing",pos);
+				if (ring) {
+					ring.pitch = frandom(15,20)*randompick(-1,1);
+					ring.angle = random(0,360);
+					ring.master = self;
+					ring.scale = scale*1.1;
+				}
+				let ring2 = Spawn("ModernBFGBall_XRing",pos);
+				if (ring2) {
+					ring2.pitch = frandom(70,85)*randompick(-1,1);
+					ring2.angle = random(0,360);
+					ring2.master = self;
+					ring2.scale = scale*1.1;
+				}
+			}
 			COIX ABCDEFGHIJKLM 1 { 
 				scale *= 1.2;
 				alpha *= 0.75;
@@ -891,6 +964,44 @@ Class ModernBFGBall : BD_BFGBall {
 			stop;
 	}
 }
+
+Class ModernBFGBall_XRing : Actor {
+	protected double wroll;
+	protected double scalemul;
+	Default {
+		+NOINTERACTION
+		+FLATSPRITE
+		+ROLLSPRITE
+		+BRIGHT
+		renderstyle 'Add';
+		alpha 0.8;
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		wroll = frandom(5,10) * randompick(-1,1);
+		roll = random(0,360);
+		scalemul = 0.1;
+	}
+	override void Tick() {
+		super.Tick();
+		if (isFrozen())
+			return;
+		if (master) {
+			SetOrigin(master.pos,true);
+		}
+		A_SetRoll(roll+wroll,SPF_INTERPOLATE);
+		wroll *= 2;
+		scale *= (1 + scalemul);
+		scalemul *= 0.95;
+	}
+	States {
+	Spawn:
+		COIG ABCDEFGHIJKLMN 1;
+		COIG OPQR 1 A_FadeOut(0.2);
+		stop;
+	}
+}
+	
 	
 Class MBFGTetherPuff : NullPuff {
 	Default {
