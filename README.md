@@ -32,7 +32,8 @@ It's possible to play the version that is currently in the repository but hasn't
 	
 		gzdoom.exe -file Beautiful-Doom-master.pk3
 		
-5. Enjoy!
+5. If you see errors, try downloading a development version of GZDoom: https://devbuilds.drdteam.org/gzdoom/ Github builds may include features that haven't yet made their way into a stable GZDoom release.
+6. Enjoy!
 
 
 MODERN WEAPON SET
