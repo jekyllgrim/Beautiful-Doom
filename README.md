@@ -5,7 +5,7 @@ Beautiful Doom © Jekyll Grim Payne, 2008–2020
 Beautiful Doom mod thread at ZDoom Forums:
 https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752ec93aed
 
-*** HOW TO PLAY THE LATEST RELEASE ***
+## HOW TO PLAY THE LATEST RELEASE
 
 Releases aren't always super-stable or bug-free, but they should be playable. Some releases are development versions which don't have all the planned features implemented yet.
 
@@ -17,7 +17,7 @@ gzdoom.exe -file Beautiful-Doom.zip
 3. (Optional) Rename .zip to .pk3 to remember you don't need to unpack it.
 
 
-*** HOW TO PLAY THE VERSION CURRENTLY IN DEVELOPMENT ***
+## HOW TO PLAY THE VERSION CURRENTLY IN DEVELOPMENT
 
 It's possible to play the version that is currently in the repository but hasn't been made into a separate release yet:
 
@@ -35,8 +35,7 @@ It's possible to play the version that is currently in the repository but hasn't
 5. If you're getting errors, trying running it in the latest development build of GZDoom: https://devbuilds.drdteam.org/gzdoom/ . Github builds may contain features that haven't made it into a stable GZDoom release yet.
 6. Enjoy!
 
-
-*** USE OF RESOURCES AND PERMISSIONS ***
+## USE OF RESOURCES AND PERMISSIONS
 
 If you want to use any of my resources, you have to contact me first and ask for permission. Reach me:
 Email: jekyllgrim@gmail.com
@@ -50,7 +49,7 @@ Before asking if you can borrow an asset for your own project, make sure your wo
 - It's not a low-effort repack/rehash/edit of other people's works
 - The resource you want to use is already available in one of the stable RELEASE versions of Beautiful Doom (if it's only on GitHub, it's not free to use)
 
-** CREDITS **
+### CREDITS
 
 If you feel anyone was forgotten, or that I'm using somebody's assets without permisssion — please contact me, and I'll make sure to resolve it as soon as possible:
 Email: jekyllgrim@gmail.com
@@ -74,9 +73,9 @@ Discord: Agent_Ash#4401
 * David G., DenisBelmondo, alando1 — additional death sprites
 * WildWeasel - several special effects
 
-*** Some features of the ZScript version ***
+## Some features of the ZScript version
 
-** MODERN WEAPON SET **
+### MODERN WEAPON SET
 One of the main new features of the ZScript version of Beautiful Doom is a third weapon set. All weapons require reloading, weapons that aren't automatic require pressing trigger manually. All bullet weapons use projectile bullets instead of hitscans. Weapons have different sway and recoil. Also all of them use varied and realistic sounds, mostly from real weapons.
 * Quick Kick: a melee attack that can be used while handling or reloading other weapons. Affected by Berserk.
 * Fist: has a combo system with finishers and stuff. Supports combos; the longer you're punching an enemy, the higher is the chance of stun-locking them. The Quick Kick is uniquely modified to be a part of the combo for this weapon.
@@ -89,7 +88,7 @@ One of the main new features of the ZScript version of Beautiful Doom is a third
 * Plasma Rifle: similar to original but builds up heat that needs to be dissipated manually (with Alt Fire or Reload buttons). Also deals damage in tiny explosions, so it's AOE.
 * BFG 9000: the orb explodes and damages monsters with railguns, without taking the shooter's position into account. Can be charged by holding the Fire button; the higher the charge, the more damage it deals and the further it'll fly. It's possible to spend between 10 and 80 cells on one shot. Warning: overcharging is possible and will damage you.
 
-**Various improvements **
+### Various improvements
 * A lot of stuff moved to Zscript
 * Added Modern weaponset (see above)
 * Revamped blood and gibs graphics and physics
