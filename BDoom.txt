@@ -75,7 +75,7 @@ Known Issues			: "Smarter" sprite clipping mode is recommended. If you
 
 ** CHANGELOG **
 
-See CHANGELOG.txt for changelog of releases.
+https://github.com/jekyllgrim/Beautiful-Doom/releases
  
 
 ****************************************************************************
@@ -96,10 +96,8 @@ to allow further distribution.
 
 * Where to get the file that this text file describes *
 
-GitHub (development builds):
+GitHub:
 https://github.com/jekyllgrim/Beautiful-Doom
-
-Dropbox (release builds):
-https://www.dropbox.com/sh/ulachff6zorv95w/AAA3OLR2hApKI9Iwe6WDlBIGa?dl=0
+https://github.com/jekyllgrim/Beautiful-Doom/releases
 
 ****************************************************************************
