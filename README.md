@@ -67,7 +67,7 @@ Discord: Agent_Ash#4401
 * Nash Muhandes
   * Nashgore (some gib sprites are still being used): https://forum.zdoom.org/viewtopic.php?t=62641
   * SpriteShadows (was included in several versions, currently excluded): https://github.com/nashmuhandes/SpriteShadow
-  * GZDoom contributions (CopyBloodColor() function and opaqueblood ANIMDEFS keyword which made the current blood system possible)
+  * GZDoom contributions (`CopyBloodColor()` function and `opaqueblood` ANIMDEFS keyword which made the current blood system possible)
 * Enjay - new switches and TERRAIN splashes, various help
 * Michael Henderson - Ultra Heavy Laser sound effect (used in Enhanced BFG alternative attack): https://youtu.be/whLbGbpt-E4
 * David G., DenisBelmondo, alando1 — additional death sprites
