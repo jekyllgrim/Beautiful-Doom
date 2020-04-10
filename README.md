@@ -32,7 +32,7 @@ It's possible to play the version that is currently in the repository but hasn't
 	
 		gzdoom.exe -file Beautiful-Doom-master.pk3
 		
-5. If you're getting errors, trying running it in the latest development build of GZDoom: https://devbuilds.drdteam.org/gzdoom/ . Github builds may contain features that haven't made it into a stable GZDoom release yet.
+5. If you're getting errors, try running it with the latest [development build of GZDoom](https://devbuilds.drdteam.org/gzdoom/). Github builds may contain features that haven't made it into a stable GZDoom release yet.
 6. Enjoy!
 
 ## USE OF RESOURCES AND PERMISSIONS
@@ -56,20 +56,18 @@ Email: jekyllgrim@gmail.com
 Discord: Agent_Ash#4401
 
 * Gifty - for Smooth Doom and smooth monsters animations which are widely used, both edited and unedited, in Beautiful Doom. Check out his mod: https://forum.zdoom.org/viewtopic.php?t=45550	
-* phantombeta (@Doom2fan), Marisa Kirisame (@MarisaKirisame), Gutawer, josh771, Accensus, Caligari87, Nash Muhandes (@nashmuhandes), Zombie, D2JK, Arctangent, 3saster — scripting help and contributions
+* [phantombeta](https://github.com/Doom2fan), [Marisa Kirisame](https://github.com/MarisaKirisame), Gutawer, josh771, Accensus, Caligari87, [Nash Muhandes](https://github.com/nashmuhandes), Zombie, D2JK, Arctangent, [3saster](https://github.com/3saster) — scripting help and contributions
 * 3saster — animated texture handler, code contributions, various fixes and improvements
-* Mike12 - original assault rifle sprites (edited versions are used in Modern Assault Rifle): https://forum.zdoom.org/viewtopic.php?f=37&t=30390
-* Revenant100 - Minor Sprite Fixing project: https://www.doomworld.com/vb/wads-mods/62403-doom-2-minor-sprite-fixing-project-v1-2-release-updated-1-1-13/
-* perkristian
-  * Doom HD sound pack (included in Vanilla Guns): https://www.doomworld.com/vb/wads-mods/58879-the-hi-res-doom-sound-pack-is-updated/ 
-  * Original Smooth Weapons
-* The Zombie Killer aka Zombie - footsteps: http://forum.zdoom.org/viewtopic.php?f=37&t=35388
+* Mike12 - original [assault rifle sprites](https://forum.zdoom.org/viewtopic.php?f=37&t=30390) (edited versions are used in Modern Assault Rifle)
+* Revenant100 - [Minor Sprite Fixing project](https://www.doomworld.com/vb/wads-mods/62403-doom-2-minor-sprite-fixing-project-v1-2-release-updated-1-1-13/)
+* perkristian - [Doom HD sound pack](https://www.doomworld.com/vb/wads-mods/58879-the-hi-res-doom-sound-pack-is-updated/) (included in Vanilla Guns), Original Smooth Weapons
+* The Zombie Killer aka Zombie - [footsteps](http://forum.zdoom.org/viewtopic.php?f=37&t=35388)
 * Nash Muhandes
-  * Nashgore (some gib sprites are still being used): https://forum.zdoom.org/viewtopic.php?t=62641
-  * SpriteShadows (was included in several versions, currently excluded): https://github.com/nashmuhandes/SpriteShadow
+  * [Nashgore](https://forum.zdoom.org/viewtopic.php?t=62641) (some gib sprites are still being used)
+  * [SpriteShadows](https://github.com/nashmuhandes/SpriteShadow) (was included in several versions, currently excluded)
   * GZDoom contributions (`CopyBloodColor()` function and `opaqueblood` ANIMDEFS keyword which made the current blood system possible)
 * Enjay - new switches and TERRAIN splashes, various help
-* Michael Henderson - Ultra Heavy Laser sound effect (used in Enhanced BFG alternative attack): https://youtu.be/whLbGbpt-E4
+* Michael Henderson - [Ultra Heavy Laser sound effect](https://youtu.be/whLbGbpt-E4) (used in Enhanced BFG alternative attack)
 * David G., DenisBelmondo, alando1 — additional death sprites
 * WildWeasel - several special effects
 
