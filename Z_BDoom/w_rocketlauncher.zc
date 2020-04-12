@@ -221,47 +221,49 @@ Class BD_RocketLauncher : BDoomWeapon {
 			}
 			goto ready;
 		Fire0.Modern:
-			RORN A 1;
 			RORN B 1;
 			RORN C 1 A_FireProjectile(invoker.proj,useammo:true,spawnheight:-5,pitch:invoker.vangle);
 			RORN D 2 A_SetPitch(pitch - invoker.pitchshift,SPF_INTERPOLATE);
 			RORN C 2;
 			RORN B 2;
 			TNT1 A 0 A_PlaySound("Mweapons/rocket/drum",CHAN_VOICE,volume:0.5);
-			RORV ABCDA 2;
+			RORV ABCD 2;
+			RORV A 2 A_Overlay(2,"RocketLoad");			
 			RORN A 1;
 			goto ready;
 		Fire1.Modern:
-			RORN A 1;
 			RORN B 1;
 			RORN C 1 A_FireProjectile(invoker.proj,useammo:true,spawnheight:-5,pitch:invoker.vangle);
 			RORN D 2 A_SetPitch(pitch - invoker.pitchshift,SPF_INTERPOLATE);
 			RORN C 2;
 			RORN B 2;
 			TNT1 A 0 A_PlaySound("Mweapons/rocket/drum",CHAN_VOICE,volume:0.5);
-			RORV ABCEF 2;
+			RORV ABCE 2;
+			RORV F 2 A_Overlay(2,"RocketLoad");	
 			RORE A 1;
 			goto ready;
 		Fire2.Modern:
-			RORE A 1;
 			RORE B 1;
 			RORN C 1 A_FireProjectile(invoker.proj,useammo:true,spawnheight:-5,pitch:invoker.vangle);
 			RORN D 2 A_SetPitch(pitch - invoker.pitchshift,SPF_INTERPOLATE);
 			RORN C 2;
 			RORE B 2;
 			TNT1 A 0 A_PlaySound("Mweapons/rocket/drum",CHAN_VOICE,volume:0.5);
-			RORV FGCCC 2;
+			RORV FGCC 2;
+			RORV C 2 A_Overlay(2,"RocketLoad");	
 			RORE C 1;
 			goto ready;
 		Fire3.Modern:
-			RORE C 1;
 			RORE D 1;
 			RORE E 2 A_FireProjectile(invoker.proj,useammo:true,spawnheight:-5,pitch:invoker.vangle);
 			RORN D 2 A_SetPitch(pitch - invoker.pitchshift,SPF_INTERPOLATE);
 			RORE E 2;
 			RORE D 2;
-			RORV C 3;
+			RORV C 3 A_Overlay(2,"RocketLoad");
 			goto ready;
+		RocketLoad:
+			RORW ABC 1;
+			stop;
 		Flash.Modern:
 			RLAF A 2 Bright A_Light1();
 			RLAF B 2 Bright;
@@ -350,13 +352,16 @@ Class BD_RocketLauncher : BDoomWeapon {
 					return ResolveState("ReloadEnd1");
 				return ResolveState(null);
 			}
-			RORV FGCCC 2;
+			RORV FGCC 2;
+			RORV C 2 A_Overlay(2,"RocketLoad");
 			goto ready;
 		ReloadEnd0:
-			RORV ABCDA 2;
+			RORV ABCD 2;
+			RORV A 2 A_Overlay(2,"RocketLoad");
 			goto ready;
 		ReloadEnd1:
-			RORV ABCEF 2;
+			RORV ABCE 2;
+			RORV F 2 A_Overlay(2,"RocketLoad");
 			goto ready;			
 	}
 }
