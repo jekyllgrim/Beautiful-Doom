@@ -217,6 +217,11 @@ Class BDoomWeapon : Weapon abstract {
 			MUZ6 ABCD 0;
 			MUZ7 ABCDEF 0;
 			MUZ8 ABCDEF 0;
+			ROR1 ABCDEFGHIJKL 0;
+			ROR2 ABCDEFGHIJKL 0;
+			ROR3 ABCDEFGHIJKL 0;
+			RORR ABCDE 0;
+			RORS ABCDE 0;
 			stop;
 			
 	}

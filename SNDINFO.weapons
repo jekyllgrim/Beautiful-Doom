@@ -211,17 +211,6 @@ Mweapons/rifle/clipout	"sounds/modern/rifle/m4clipout.ogg"
 Mweapons/rifle/unaim	"sounds/modern/rifle/m4unaim.ogg"
 Mweapons/rifle/select	"sounds/modern/rifle/m4select.ogg"
 
-$random Mweapons/assg/fire { assg1 assg2 assg3 assg4 }
-assg1			"sounds/modern/assg/assg_fire1.ogg"
-assg2			"sounds/modern/assg/assg_fire2.ogg"
-assg3			"sounds/modern/assg/assg_fire3.ogg"
-assg4			"sounds/modern/assg/assg_fire4.ogg"
-Mweapons/assg/clipin		"sounds/modern/assg/assg_clipin.ogg"
-Mweapons/assg/clipout		"sounds/modern/assg/assg_clipout.ogg"
-Mweapons/assg/cock			"sounds/modern/assg/assg_cock.ogg"
-Mweapons/assg/trigger		"sounds/modern/assg/assg_trigger.ogg"
-Mweapons/assg/open		"sounds/modern/assg/assg_open.ogg"
-
 $random Mweapons/ssg/fire1 { ssgf1 ssgf2 ssgf3 ssgf4 }
 $volume	Mweapons/ssg/fire1 0.5
 $random Mweapons/ssg/firedual { ssgdual1 ssgdual2 ssgdual3 ssgdual4 }
@@ -248,6 +237,7 @@ $random Mweapons/rocket/fire { rocket1 rocket2 rocket3 }
 rocket1			"sounds/modern/launcher/rocket1.ogg"
 rocket2			"sounds/modern/launcher/rocket2.ogg"
 rocket3			"sounds/modern/launcher/rocket3.ogg"
+Mweapons/rocket/drum	"sounds/modern/launcher/rock_drum.ogg"
 $random Mweapons/grenade/fire { grenade1 grenade2 grenade3 }
 grenade1			"sounds/modern/launcher/gren1.ogg"
 grenade2			"sounds/modern/launcher/gren2.ogg"
