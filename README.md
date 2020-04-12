@@ -56,12 +56,12 @@ Email: jekyllgrim@gmail.com
 Discord: Agent_Ash#4401
 
 * Gifty: [Smooth Doom](https://forum.zdoom.org/viewtopic.php?t=45550) and smooth monsters animations which are widely used, both edited and unedited, in Beautiful Doom
-* [phantombeta](https://github.com/Doom2fan), [Marisa Kirisame](https://github.com/MarisaKirisame), Gutawer, josh771, Accensus, Caligari87, [Nash Muhandes](https://github.com/nashmuhandes), Zombie, D2JK, Arctangent, [3saster](https://github.com/3saster): scripting help and contributions
+* [phantombeta](https://github.com/Doom2fan), [Marisa Kirisame](https://github.com/MarisaKirisame), Gutawer, josh771, Accensus, Caligari87, [Nash Muhandes](https://github.com/nashmuhandes), [Zombie](https://github.com/DaZombieKiller), D2JK, Arctangent, [3saster](https://github.com/3saster): scripting help and contributions
 * 3saster: animated texture handler, code contributions, various fixes and improvements
 * Mike12: original [assault rifle sprites](https://forum.zdoom.org/viewtopic.php?f=37&t=30390) (edited versions are used in Modern Assault Rifle)
 * Revenant100: [Minor Sprite Fixing project](https://www.doomworld.com/vb/wads-mods/62403-doom-2-minor-sprite-fixing-project-v1-2-release-updated-1-1-13/)
 * perkristian: [Doom HD sound pack](https://www.doomworld.com/vb/wads-mods/58879-the-hi-res-doom-sound-pack-is-updated/) (included in Vanilla Guns), Original Smooth Weapons
-* The Zombie Killer aka Zombie: [footsteps](http://forum.zdoom.org/viewtopic.php?f=37&t=35388)
+* The Zombie Killer aka Zombie: [footsteps](https://github.com/DaZombieKiller/zk-resources/tree/master/project_footsteps)
 * Nash Muhandes:
   * [Nashgore](https://forum.zdoom.org/viewtopic.php?t=62641) (some gib sprites are still being used)
   * [SpriteShadows](https://github.com/nashmuhandes/SpriteShadow) (was included in several versions, currently excluded)
