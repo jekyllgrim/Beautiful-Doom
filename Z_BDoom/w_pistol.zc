@@ -25,13 +25,13 @@ Class BD_Pistol : BDoomWeapon {
 		if (!owner)
 			return;
 		if(bdoom_weapons == 2) {
+			if (!Owner.FindInventory("PistolClip"))
+				Owner.GiveInventory("PistolClip",15);
 			Ammo1 = ammo(Owner.FindInventory("PistolClip"));
 			AmmoUse1 = 1;
 			AmmoUse2 = 0;
 			bNOAUTOFIRE = true;
 			bAMMO_OPTIONAL = true;
-			if (!ammo1)
-				Owner.GiveInventory("PistolClip",15);
 		}
 		else {
 			Ammo1 = ammo(Owner.FindInventory("Clip"));

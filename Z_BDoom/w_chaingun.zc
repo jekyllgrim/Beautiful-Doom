@@ -43,7 +43,9 @@ Class BD_Chaingun : BDoomWeapon {
 		if (!owner)
 			return;
 		if(bdoom_weapons == 2) {
-			Ammo1 = ammo(Owner.FindInventory("RifleClip") );
+			if (!Owner.FindInventory("RifleClip"))
+				Owner.GiveInventory("RifleClip",40);
+			Ammo1 = ammo(Owner.FindInventory("RifleClip"));
 			ammouse1 = 1;
 			ammouse2 = 0;
 			if (RifleSights)
@@ -51,8 +53,6 @@ Class BD_Chaingun : BDoomWeapon {
 			else	
 				bNOAUTOFIRE = false;
 			bAMMO_OPTIONAL = true;
-			if (!ammo1)
-				Owner.GiveInventory("RifleClip",40);
 		}
 		else {
 			Ammo1 = ammo(Owner.FindInventory("Clip"));

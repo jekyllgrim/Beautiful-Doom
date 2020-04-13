@@ -27,25 +27,25 @@ Class BD_SuperShotgun : BDoomWeapon {
 		Super.Tick();
 	}
 	override void DoEffect() {
-		if (owner) {
-			if(bdoom_weapons == 2) {
-				Ammo1 = ammo(Owner.FindInventory("SSGClip") );
-				ammouse1 = 2;
-				ammouse2 = 0;
-				bNOAUTOFIRE = true;
-				bAMMO_OPTIONAL = true;
-				if (!ammo1)
-					Owner.GiveInventory("SSGClip",2);
-			}
-			else {
-				Ammo1 = ammo(Owner.FindInventory("Shell"));
-				ammouse1 = 2;
-				ammouse2 = 1;
-				bNOAUTOFIRE = false;
-				bAMMO_OPTIONAL = false;
-			}
-		}
 		Super.DoEffect();
+		if (!owner)
+			return;
+		if(bdoom_weapons == 2) {
+			if (!Owner.FindInventory("SSGClip"))
+				Owner.GiveInventory("SSGClip",2);
+			Ammo1 = ammo(Owner.FindInventory("SSGClip") );
+			ammouse1 = 2;
+			ammouse2 = 0;
+			bNOAUTOFIRE = true;
+			bAMMO_OPTIONAL = true;
+		}
+		else {
+			Ammo1 = ammo(Owner.FindInventory("Shell"));
+			ammouse1 = 2;
+			ammouse2 = 1;
+			bNOAUTOFIRE = false;
+			bAMMO_OPTIONAL = false;
+		}
 	}
 	states {
 		Loadsprites:
