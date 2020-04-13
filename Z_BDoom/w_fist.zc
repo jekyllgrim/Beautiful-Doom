@@ -818,7 +818,7 @@ Class ModernFistPuff_Berserk : ModernFistPuff {
 			TNT1 A 0 {
 				if (bdoom_debris) {
 					for (int i = 3; i > 0; i--)
-						A_SpawnItemEx("ShotSmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
+						A_SpawnItemEx("Wallsmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
 					for (int i = 4; i > 0; i--)
 						A_SpawnItemEx("Wallpart",0,0,0,	frandom(2,5),0,frandom(2,4),	random(0,360),0,64);
 				}
@@ -840,7 +840,7 @@ states	{
 		TNT1 A 0 {
 			if (bdoom_debris) {
 				for (int i = 4; i > 0; i--)
-					A_SpawnItemEx("ShotSmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
+					A_SpawnItemEx("Wallsmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
 				for (int i = 5; i > 0; i--)
 					A_SpawnItemEx("Wallpart",0,0,0,	frandom(2,5),0,frandom(2,4),	random(0,360),0,64);
 			}
@@ -891,7 +891,7 @@ Class ModernKickPuff : ModernFistPuffHeavy {
 			TNT1 A 0 {
 				if (bdoom_debris) {
 					for (int i = 6; i > 0; i--)
-						A_SpawnItemEx("ShotSmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
+						A_SpawnItemEx("Wallsmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
 					for (int i = 7; i > 0; i--)
 						A_SpawnItemEx("Wallpart",0,0,0,	frandom(2,5),0,frandom(2,4),	random(0,360),0,64);
 				}
@@ -960,7 +960,7 @@ Class ModernFistPuffUppercut : ModernFistPuffHeavy {
 			TNT1 A 0 {
 				if (bdoom_debris) {
 					for (int i = 4; i > 0; i--)
-						A_SpawnItemEx("ShotSmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
+						A_SpawnItemEx("Wallsmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
 					for (int i = 7; i > 0; i--)
 						A_SpawnItemEx("RicochetSpark",random(-3,3),random(-3,3),random(-1,1),	frandom(1,1.5),0,frandom(1,3.5),random(0,360),0,40);
 					for (int i = 7; i > 0; i--)
@@ -1005,7 +1005,7 @@ Class ModernFistPuffUppercut_Berserk : ModernFistPuffUppercut {
 			TNT1 A 0 {
 				if (bdoom_debris) {
 					for (int i = 6; i > 0; i--)
-						A_SpawnItemEx("ShotSmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
+						A_SpawnItemEx("Wallsmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
 					for (int i = 11; i > 0; i--)
 						A_SpawnItemEx("RicochetSpark",random(-3,3),random(-3,3),random(-1,1),	frandom(1,1.5),0,frandom(1,3.5),random(0,360),0,40);
 					for (int i = 7; i > 0; i--)
@@ -1070,7 +1070,7 @@ Class FistPuffStrong : FistPuff{
 			TNT1 A 0 {
 				if (bdoom_debris) {
 					for (int i = 4; i > 0; i--)
-						A_SpawnItemEx("ShotSmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
+						A_SpawnItemEx("Wallsmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
 					for (int i = 7; i > 0; i--)
 						A_SpawnItemEx("Wallpart",0,0,0,	frandom(2,5),0,frandom(2,4),	random(0,360),0,64);
 				}
@@ -1089,7 +1089,7 @@ Class KickPuff : FistPuff {
 			TNT1 A 0 {
 				if (bdoom_debris) {
 					for (int i = 5; i > 0; i--)
-						A_SpawnItemEx("ShotSmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
+						A_SpawnItemEx("Wallsmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
 					for (int i = 6; i > 0; i--)
 						A_SpawnItemEx("Wallpart",0,0,0,	frandom(2,5),0,frandom(2,4),	random(0,360),0,64);
 				}
@@ -1113,7 +1113,7 @@ Class KickPuffStrong : FistPuffStrong {
 			TNT1 A 0 {
 				if (bdoom_debris) {
 					for (int i = 6; i > 0; i--)
-						A_SpawnItemEx("ShotSmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
+						A_SpawnItemEx("Wallsmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
 					for (int i = 10; i > 0; i--)
 						A_SpawnItemEx("Wallpart",0,0,0,	frandom(2,5),0,frandom(2,4),	random(0,360),0,64);
 				}

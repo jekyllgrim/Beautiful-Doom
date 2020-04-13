@@ -222,6 +222,7 @@ Class BDoomWeapon : Weapon abstract {
 			ROR3 ABCDEFGHIJKL 0;
 			RORR ABCDE 0;
 			RORS ABCDE 0;
+			RORN ABC 0; RORE ABC 0; RORV ABC 0; RORT ABC 0;
 			stop;
 			
 	}

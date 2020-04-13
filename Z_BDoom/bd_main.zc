@@ -347,12 +347,13 @@ Class Smoke_General : SmallDebris abstract {
 		}
 		super.PostbeginPlay();
 		roll = random(0,359);
+		bSPRITEFLIP = randompick(0,1);
 	}
 	states	{
 		Spawn:
 			SMOK ABCDEFGHIJKLMNOPQ 1 NoDelay {
 				if (!master)
-					A_SpawnItemEx("BasicSmokeTrail",frandom(-2,2),frandom(-2,2),frandom(-2,2),0,0,0,0,SXF_SETMASTER);
+					A_SpawnItemEx("BasicSmokeTrail",frandom(-2,2),frandom(-2,2),frandom(-2,2),flags:SXF_SETMASTER);
 				A_Fadeout(0.01);
 			}
 			stop;
@@ -366,33 +367,6 @@ Class BasicSmokeTrail : Smoke_General abstract {
 	states	{
 		Spawn:
 			SMOK DEFGHIJKLMNOPQ 1 NoDelay A_Fadeout(0.01);
-			stop;
-	}
-}
-
-//old smoke used by puffs
-class ShotSmoke : Smoke_General { 
-	Default {
-		alpha 0.4;
-		scale 0.18;
-	}
-	states	{
-		Spawn:
-			SMK1 ABCDEFGHIJKLMNOPQR 1 NoDelay {
-				A_SpawnItemEx("ShotSmokeTrail",frandom(-1.5,1.5),frandom(-1.5,1.5),frandom(-1.5,1.5),0,0,0,0,SXF_SETMASTER);
-				A_Fadeout(0.01);
-			}
-			stop;
-	}
-}
-
-Class ShotSmokeTrail : BasicSmokeTrail {
-	Default {
-		alpha 0.15;
-	}
-	states {
-		Spawn:
-			SMK1 DEFGHIJKLMNOPQR 1 NoDelay A_Fadeout(0.01);
 			stop;
 	}
 }
@@ -431,7 +405,7 @@ class WeaponSmoke : Smoke_General {
 	states	{
 		Spawn:		
 			SMK1 ABCDEFGHIJKLMNOPQR 1 NoDelay {
-				A_SpawnItemEx("WeaponSmokeTrail",random(-2,2),random(-2,2),random(-2,2),0,0,0,0);
+				A_SpawnItemEx("WeaponSmokeTrail",random(-2,2),random(-2,2),random(-2,2));
 				A_FadeOut(0.01);
 			}
 			stop;
@@ -467,28 +441,28 @@ class BlackSmoke : Smoke_General {
 }
 
 Class BlackSmokeTrail : BasicSmokeTrail {
-Default {
-	renderstyle "Translucent";
-	alpha 0.08;
-}
+	Default {
+		renderstyle "Translucent";
+		alpha 0.08;
+	}
 }
 
 //dark small piece of smoke with a hint of flame — for "dirty" fires like burning barrel
 Class BurnSmokePiece : Smoke_General {
-Default {
-	renderstyle "Translucent";
-	alpha 0.3;
-	scale 0.05;
-}
-override void PostBeginPlay() {
-	super.PostBeginPlay();
-	scale*=frandom(0.6,1);
-}
-states {
-	Spawn:
-		BSMO ABCDEFGHIJKLMNOPQRSTU 1 NoDelay A_FadeOut(0.005);
-		stop;
-}
+	Default {
+		renderstyle "Translucent";
+		alpha 0.3;
+		scale 0.05;
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		scale*=frandom(0.6,1);
+	}
+	states {
+		Spawn:
+			BSMO ABCDEFGHIJKLMNOPQRSTU 1 NoDelay A_FadeOut(0.005);
+			stop;
+	}
 }
 
 //even bigger smoke for bigger explosions
@@ -582,14 +556,14 @@ Class WallSmoke : Smoke_General {
 				a_Setscale(clamp(scale.x*1.02,0.01,0.1),clamp(scale.y*1.02,0.01,0.1));
 				vel*=0.97;
 				roll+=wrot;
-				wrot *= 0.98;
+				//wrot *= 0.98;
 			}
 			SM22 ABCDEFGHIJK 2 {
 				alpha*=0.99;
 				a_Setscale(clamp(scale.x*1.01,0.01,0.1),clamp(scale.y*1.01,0.01,0.1));
 				vel*=0.93;
 				roll+=wrot;
-				wrot *= 0.97;
+				//wrot *= 0.97;
 				if (alpha < 0.1)
 					A_FadeOut(0.005);
 			}
