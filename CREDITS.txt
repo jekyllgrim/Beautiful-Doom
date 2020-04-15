@@ -1,0 +1,29 @@
+Original idea, coding, sprite edits, original sprites: Jekyll Grim Payne aka Agent_Ash
+
+Gifty: Smooth Doom and smooth monsters animations which are widely used, both edited and unedited, in Beautiful Doom
+
+phantombeta, Marisa Kirisame, Gutawer, josh771, Accensus, Caligari87, Nash Muhandes, Zombie, D2JK, Arctangent, 3saster: scripting help and contributions
+
+3saster: animated texture handler, code contributions, various fixes and improvements
+
+Mike12: original assault rifle sprites (edited versions are used in Modern Assault Rifle)
+
+Revenant100: Minor Sprite Fixing project
+
+perkristian: Doom HD sound pack (included in Vanilla Guns), Original Smooth Weapons
+
+The Zombie Killer aka Zombie: footsteps
+
+Nash Muhandes:
+Nashgore (some gib sprites are still being used)
+SpriteShadows (was included in several versions, currently excluded)
+GZDoom contributions (CopyBloodColor() function and opaqueblood ANIMDEFS keyword which made the current blood system possible)
+
+Enjay: new switches and TERRAIN splashes, various help
+
+Michael Henderson: Ultra Heavy Laser sound effect (used in Enhanced BFG alternative attack)
+
+David G., DenisBelmondo, alando1: additional death sprites
+
+WildWeasel: several special effects
+
