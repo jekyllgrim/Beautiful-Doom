@@ -1,5 +1,5 @@
 Class BD_SuperShotgun : BDoomWeapon {
-	bool ShotFired;
+	private bool ShotFired;
 	Default {
 		Tag "$TAG_SUPERSHOTGUN";
 		inventory.pickupmessage "$GOTSHOTGUN2"; 
