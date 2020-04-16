@@ -1,2 +1,0 @@
-//FOOTSTEP
-BD_BLOOD
