@@ -110,34 +110,37 @@ Class BD_PlasmaRifle : BDoomWeapon {
 			PLGC DCBA 1;
 			goto ready;
 		Flash1:
-			TNT1 A 0 A_Jump(256,1,4,7,10);
-			PLZ1 ABC 1 bright A_light1();
-			goto lightdone;
-			PLZ1 BCD 1 bright A_light1();
-			goto lightdone;
-			PLZ1 CDE 1 bright A_light1();
-			goto lightdone;
-			PLZ1 DEF 1 bright A_light1();
+			PZ11 A 1 bright {
+				A_Light1();
+				if (random(0,1) == 1) {
+					let psp = Player.FindPSprite(OverlayID());
+					if (psp)
+						psp.sprite = GetSpriteIndex("PZ12");
+				}			
+			}
+			#### BC 1 bright;
 			goto lightdone;
 		Flash2:
-			TNT1 A 0 A_Jump(256,1,4,7,10);
-			PLZ2 ABC 1 bright A_light1();
-			goto lightdone;
-			PLZ2 BCD 1 bright A_light1();
-			goto lightdone;
-			PLZ2 CDE 1 bright A_light1();
-			goto lightdone;
-			PLZ2 DEF 1 bright A_light1();
+			PZ21 A 1 bright {
+				A_Light1();
+				if (random(0,1) == 1) {
+					let psp = Player.FindPSprite(OverlayID());
+					if (psp)
+						psp.sprite = GetSpriteIndex("PZ22");
+				}			
+			}
+			#### BC 1 bright;
 			goto lightdone;
 		Flash3:
-			TNT1 A 0 A_Jump(256,1,4,7,10);
-			PLZ3 ABC 1 bright A_light1();
-			goto lightdone;
-			PLZ3 BCD 1 bright A_light1();
-			goto lightdone;
-			PLZ3 CDE 1 bright A_light1();
-			goto lightdone;
-			PLZ3 DEF 1 bright A_light1();
+			PZ31 A 1 bright {
+				A_Light1();
+				if (random(0,1) == 1) {
+					let psp = Player.FindPSprite(OverlayID());
+					if (psp)
+						psp.sprite = GetSpriteIndex("PZ32");
+				}			
+			}
+			#### BC 1 bright;
 			goto lightdone;
 
 	// ENHANCED
@@ -421,7 +424,7 @@ Class BluePlasmaPiece : SmallDebris {
 		renderstyle "Add";
 		alpha 1.0;
 		scale 0.08;
-		smalldebris.dgravity 0.8;
+		gravity 0.8;
 	}
 	states {
 		Spawn:
@@ -580,7 +583,7 @@ Class ModernPlasmaPiece : SmallDebris {
 		renderstyle "Add";
 		alpha 1.0;
 		scale 0.023;
-		smalldebris.dgravity 0.5;
+		gravity 0.5;
 	}
 	states {
 		Spawn:
