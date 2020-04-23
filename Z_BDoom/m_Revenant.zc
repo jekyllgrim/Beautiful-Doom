@@ -20,7 +20,7 @@ Class BD_Revenant : BDoomMonster {
 		Obituary "$OB_UNDEAD";
 		Tag "$FN_REVEN";
 		gibhealth 60;
-		}
+	}
 	void BD_SkelMissile()	{
 			if (target == null) return;
 			A_FaceTarget();
@@ -31,8 +31,8 @@ Class BD_Revenant : BDoomMonster {
 			{
 				missile.SetOrigin(missile.Vec3Offset(missile.Vel.X, missile.Vel.Y, 0.), false);
 				missile.tracer = target;
-			}
 		}
+	}
 	states {
 		Spawn:
 			REVI AB 10 A_Look();
@@ -86,7 +86,7 @@ Class BD_Revenant : BDoomMonster {
 				if (random(1,2) == 2)
 					return ResolveState("Death1");
 				return ResolveState(null);
-				}
+			}
 			REVM abc 3;
 			REVM d 3 a_scream();
 			REVM e 2 a_noblocking();
@@ -107,30 +107,30 @@ Class BD_Revenant : BDoomMonster {
 					return ResolveState("Death");
 				scale.x *= randompick(-1,1);
 				return ResolveState(null);
-				}
+			}
 			REVX a 3;
 			REVX b 3;
 			REVX c 2 a_scream();
 			REVX d 2 a_noblocking();
 			REVX efghij 3;
 			REVX k -1;
-		}
 	}
+}
 
 
 Class BD_RevenantTracerSmoke : BD_RocketTrail {
 	Default {
 		alpha 0.45;
 		scale 0.12;
-		}
 	}
+}
 
 
 Class BD_RevenantTracer : RevenantTracer {
 	void BD_Tracer() {
 			if (level.maptime & 3)	return;
 			A_Tracer2(16.875);
-		}
+	}
 	override void Tick () {
 		Vector3 oldPos = self.pos;    
 		Super.Tick();
@@ -144,15 +144,15 @@ Class BD_RevenantTracer : RevenantTracer {
 		for( int i = 0; i < steps; i++ )  {
 			Spawn("TracerTrail", oldPos );
 			oldPos = level.vec3Offset( oldPos, direction );
-			}
 		}
+	}
 	states {
 		Spawn:
 			TNT1 A 0 NoDelay {
 				A_PlaySound("revenant/tracerfly",4,1.0,true,5);
 				//if (bdoom_debris)
 					//A_spawnItemEx("BD_RevenantTracerFlare",flags:SXF_SETMASTER|SXF_ORIGINATOR);
-				}
+			}
 			SKEB AB 2  BD_Tracer();
 			goto spawn+1;
 		Death:
@@ -160,11 +160,11 @@ Class BD_RevenantTracer : RevenantTracer {
 				A_StopSound(4);
 				bFORCEXYBILLBOARD = true;
 				alpha = 0.8;
-				}
+			}
 			FBXP ABC 3  A_FadeOut(0.1);
 			FBXP DEF 4  A_FadeOut(0.1);
 			stop;
-		}
+	}
 }
 
 Class TracerTrail : BD_BaseFlare {
@@ -172,15 +172,15 @@ Class TracerTrail : BD_BaseFlare {
 		BD_BaseFlare.fcolor "red";
 		alpha 0.8;
 		scale 0.04;
-		}
+	}
 	override void Tick() {
 		if (isFrozen())
 			return;
 		super.Tick();
 		A_FadeOut(0.04);
 		scale*=0.99;
-		}
 	}
+}
 
 
 Class BD_RevenantTracerFlare : BD_ProjFlare {
@@ -188,7 +188,7 @@ Class BD_RevenantTracerFlare : BD_ProjFlare {
 		BD_BaseFlare.fcolor "red";
 		alpha 0.9;
 		scale 0.13;
-		}
+	}
 	override void Tick() {
 		super.Tick();
 		if (bdoom_debris && master)
@@ -196,6 +196,6 @@ Class BD_RevenantTracerFlare : BD_ProjFlare {
 		else {
 			self.Destroy();
 			return;
-			}
 		}
 	}
+}
