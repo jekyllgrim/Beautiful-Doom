@@ -21,6 +21,23 @@ Class BDoomWeapon : Weapon abstract {
 		BDoomWeapon.maxOffsetTics 1; //required default values for A_CameraSway. Otherwise it'll crash due to division by zero
 		BDoomWeapon.offsetTics -1;
 	}
+	
+	action void BD_ClearPSprite(int layer1, int layer2 = 0, int layer3 = 0, int layer4 = 0, int layer5 = 0) {
+		array <int> layers = { layer1, layer2, layer3, layer4, layer5 };
+		PlayerInfo plr;
+		if (self && self.player)
+			plr = self.player;
+		else if (invoker.owner && invoker.owner.player)
+			plr = invoker.owner.player;
+		else
+			return;
+		for (int i = layers.Size() - 1; i >= 0; i--) {
+			if (layers[i] != 0) {
+				plr.SetPSprite(layers[i],null);
+			}
+		}
+		return;
+	}		
 
 	// Camera sway function by josh771
 	action void A_CameraSway(double aoffset, double poffset, int tics) {
@@ -43,7 +60,8 @@ Class BDoomWeapon : Weapon abstract {
 		PSP_MFLASH = -5,
 		PSP_EFLASH = 20,
 		PSP_LIGHTS = 10,
-		PSP_HLIGHTS = 15
+		PSP_HLIGHTS = 15,
+		PSP_CHAINBLOOD = 8
 	};
 
 	override void DoEffect() {
@@ -229,6 +247,12 @@ Class BDoomWeapon : Weapon abstract {
 			MUZ6 ABCD 0;
 			MUZ7 ABCDEF 0;
 			MUZ8 ABCDEF 0;
+			PZ11 ABC 0;
+			PZ12 ABC 0;
+			PZ21 ABC 0;
+			PZ22 ABC 0;
+			PZ31 ABC 0;
+			PZ32 ABC 0;
 			ROR1 ABCDEFGHIJKL 0;
 			ROR2 ABCDEFGHIJKL 0;
 			ROR3 ABCDEFGHIJKL 0;
@@ -412,11 +436,10 @@ Class BD_SSGPellet : RealBullet {
 }
 
 
-class BD_MuzzleSmoke : Smoke_General {
+class BD_MuzzleSmoke : BD_BaseSmoke {
 	Default {
 		alpha 0.15;
 		scale 0.07;
-		speed 1;
 	}
 	override void PostBeginPlay() {
 		vel = vel.unit() * frandom(1,3);
@@ -615,114 +638,3 @@ Class ChaingunCasing : Casing_General {
 		bouncesound "chaingun/casing";
 	}
 }
-
-
-// Unused code for the attempt to make actor-based muzzle flashes. My Math Fu is not strong enough to make them always perfectly stick to the camera and gun position.
-
-/*
-Class BD_MuzzleFlashParticle : Actor {
-	Default {
-		+NOINTERACTION
-		+FORCEXYBILLBOARD
-		+BRIGHT
-		+ROLLSPRITE
-		+ROLLCENTER
-		renderstyle "Add";
-		alpha 0.4;
-		scale 0.03;
-	}
-	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		roll = random(0,359);
-	}
-	states {
-		Spawn:
-			BOM1 # 1 A_FadeOut(0.1);
-			wait;
-	}
-}
-
-Class BD_MuzzleSpark : BD_MuzzleFlashParticle {
-	Default {
-		alpha 0.9;
-		scale 0.03;
-		speed 1;
-	}
-	override void PostBeginPlay() {
-		vel = vel.unit() * 12;
-		super.PostBeginPlay();
-	}
-	states {
-		Spawn:
-			SPRK A 1 {
-				A_FadeOut(0.5);
-				//scale*=0.5;
-				vel*=0.8;
-			}
-			wait;
-	}
-}
-
-Class BD_MuzzleFlare : BD_BaseFlare {
-	Default {
-		alpha 0.5;
-		scale 0.07;
-	}
-	override void Tick() {
-		//if (master)
-			//SetOrigin(master.pos,true);
-		super.Tick();
-	}
-	states {
-		Spawn:
-			LENY A 1 A_FadeOut(0.14);
-			wait;
-	}
-}
-		
-Class BD_MuzzleFlash : BD_MuzzleFlashParticle {
-	int mcount;
-	Default {
-		//+MISSILE
-		//speed 32;
-		scale 0.035;
-		alpha 0.8;
-	}
-	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		scale*=frandom(0.9,1.1);
-		vel = vel.Unit () * 1;
-		if (target && (target is "PlayerPawn")) {
-			let plr = PlayerPawn(target);
-			vel += plr.vel;
-			angle = plr.angle;
-			pitch = plr.pitch;
-			//Console.Printf("player pitch: %d, flash pitch: %d", plr.pitch, pitch);
-			double zdiff = plr.player.viewz - plr.pos.z - plr.player.viewheight;
-			SetZ(pos.z+zdiff);
-		}
-		for (int i = random(5,11); i > 0; i--) {
-			//A_SpawnItemEx("BD_MuzzleSpark",frandom(-2,2),frandom(-2,2),frandom(-2,2),frandom(16,19),0,frandom(-5,5),angle:random(-40,40));
-			A_Spawnprojectile("BD_MuzzleSpark",frandom(-2,2),frandom(-2,2),frandom(-40,40),CMF_AIMDIRECTION,pitch+frandom(-40,40));
-		}
-		for (int i = 7; i > 0; i--) {
-			A_Spawnprojectile("BD_MuzzleSmoke",frandom(-0.5,0.5),frandom(-0.5,0.5),0,CMF_AIMDIRECTION,pitch);
-		}
-		let flare = BD_MuzzleFlare(Spawn("BD_MuzzleFlare",pos));
-		if (flare) {
-			flare.vel = vel;
-			flare.master = self;
-			flare.scale = scale*2;
-		}
-	}
-	states {
-		Spawn:
-			BOM1 I 1 NoDelay { frame = random(5,9); }
-			BOM1 # 1 {
-				A_FadeOut(0.27);
-				scale*=1.1;
-			}
-			wait;
-	}
-}
-*/
