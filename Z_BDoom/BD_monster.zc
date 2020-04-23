@@ -83,15 +83,21 @@ Class BDoomMonster : Actor abstract {
 			return;
 		if (health > 0 && InStateSequence(curstate,ssee))
 			scale.x = 1;
-		if (burning && !InStateSequence(curstate,ssee))
-			{
-			burntimer++;
-			if (burntimer < 256)
-				A_SpawnItemEx("BlackSmoke",frandom(-16,16),frandom(-16,16),smokeheight + frandom(8,16),0,0,frandom(0.4,0.9),0,0,80);
-			else {
-				A_SpawnItemEx("BlackSmoke",frandom(-16,16),frandom(-16,16),smokeheight + frandom(8,16),0,0,frandom(0.4,0.9),0,0,burntimer*0.8);
+		if (!burning)
+			return;
+		if (!InStateSequence(curstate,ssee)) {
+			if (burntimer > 350) {
+				burntimer = 0;
+				burning = false;
+				return;
 			}
-		}		
+			burntimer++;
+			for (int i = random(0,4); i > 0; i--) {
+				double rad = radius*0.5;
+				A_SpawnItemEx("BlackSmoke",frandom(-rad,rad),frandom(-rad,rad),/*smokeheight + */frandom(8,20),0,0,frandom(0.4,0.9),failchance:burntimer*0.75);
+			}
+			//console.printf("burntimer: %d, smoke chance: %f",burntimer,chance);
+		}
 		else {
 			burning = false;
 			burntimer = 0;
@@ -201,15 +207,13 @@ Class BDoomMonster : Actor abstract {
 						//Console.Printf("Raise, %s",gib.GetClassName());
 					}
 				}
-			}
-					
+			}					
 			#### # 2 {
 				//raised = true;
 				if (self.frame > 0)
 					self.frame-=1;
 				else {
-					int list = meatlist.Size();
-					for (int i; i < list; i++) {
+					for (int i = meatlist.Size()-1; i >= 0; i--) {
 						let a = BD_BaseDebris(meatlist[i]);
 						if (a) 
 							a.destroy();
@@ -332,7 +336,7 @@ Class TranslatedBurningBody : Actor {
 		alpha 1.0;
 	}
 	override void Tick() {
-		super.Tick();
+		//super.Tick();
 		if (isFrozen())
 			return;
 		if (waterlevel > 1) {
@@ -343,20 +347,19 @@ Class TranslatedBurningBody : Actor {
 			fadetime++;
 		else
 			A_FadeOut(fadespeed);
+		if (!master) {
+			destroy();
+			return;
+		}
+		sprite = master.sprite;
+		frame = master.frame;
+		scale = master.scale;
+		SetOrigin(master.pos,true);
 	}
 	states {
 		Spawn:
-			TNT1 A 1 NoDelay {
-				if (!master) {
-					destroy();
-					return;
-				}
-				sprite = master.sprite;
-				frame = master.frame;
-				scale = master.scale;
-				SetOrigin(master.pos,true);
-			}
-			loop;
+			#### # -1;
+			stop;
 	}
 }
 
