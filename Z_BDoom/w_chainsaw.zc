@@ -31,7 +31,7 @@ Class BD_Chainsaw : BDoomWeapon {
 			else { 
 				bNOALERT = false;
 				bNOAUTOFIRE = false;
-				A_ClearOverlays(3,3);
+				//BD_ClearPsprite(PSP_CHAINBLOOD);
 			}
 			if (owner.CountInv("BD_ParryProtection") > 0 && (owner.player.readyweapon != self || bdoom_weapons != 1 || InStateSequence(curstate,parry)) )
 				TakeInventory("BD_ParryProtection",1);
@@ -45,13 +45,12 @@ Class BD_Chainsaw : BDoomWeapon {
 	}
 
 	//Thanks to phantombeta for helping me optimize this overlay thing
-	action void BD_BloodOverlay () {
-		let po = player.FindPSprite (3);
+	action void BD_BloodOverlay () {			
+		let po = player.FindPSprite (PSP_CHAINBLOOD);
 		let main = player.FindPSprite (PSP_Weapon);
 	 
 		if (!po || !main)
-			return;
-	 
+			return;	 
 		int stage = 0;
 			 if (invoker.jamstacks >  4  && invoker.jamstacks < 30) stage = 1;
 		else if (invoker.jamstacks >= 30 && invoker.jamstacks < 52) stage = 2;
@@ -232,7 +231,7 @@ Class BD_Chainsaw : BDoomWeapon {
 		Select.Modern:
 			TNT1 A 0 {
 				A_PlaySound("Mweapons/saw/select");
-				A_Overlay(3,"BloodOverlay");
+				A_Overlay(PSP_CHAINBLOOD,"BloodOverlay");
 				A_WeaponOffset(-35.0,74.0);
 			}
 			SAWN AAAAAA 1 {
@@ -255,9 +254,9 @@ Class BD_Chainsaw : BDoomWeapon {
 
 		Ready.Modern:
 			TNT1 A 0 {
-				let po = player.FindPSprite (3);
+				let po = player.FindPSprite (PSP_CHAINBLOOD);
 				if (!po)
-					A_Overlay(3,"BloodOverlay");
+					A_Overlay(PSP_CHAINBLOOD,"BloodOverlay");
 			}
 			SAWN A 1 {
 				if (bdoom_weapons != 2)
@@ -380,24 +379,28 @@ Class BD_Chainsaw : BDoomWeapon {
 			SAW2 EDCBA 2;
 			SAWN A 2;
 			goto ready;
-
-
 		BloodOverlay:
-			TNT1 A 1 BD_BloodOverlay();
+			TNT1 A 1 {
+				if (player.readyweapon != invoker) {
+					BD_ClearPsprite(OverlayID());
+					return;
+				}
+				BD_BloodOverlay();
+			}
 			loop;
 		Loadsprites:
 			SX1F AB 0;		SX2F AB 0;		SX3F AB 0;		SX4F AB 0;			//attack
-			SX1N ABC 0;		SX2N ABC 0;		SX3N ABC 0;		SX4N ABC 0;			//idle
+			SX1N ABC 0;	SX2N ABC 0;		SX3N ABC 0;		SX4N ABC 0;			//idle
 			SX1B ABCD 0; 	SX2B ABCD 0; 	SX3B ABCD 0; 	SX4B ABCD 0;		//on
 			SX1S ABCDEF 0;	SX2S ABCDEF 0;	SX3S ABCDEF 0;	SX4S ABCDEF 0;		//start
 			SX12 ABCDEFG 0; SX22 ABCDEFG 0;	SX32 ABCDEFG 0;	SX42 ABCDEFG 0;		//clean
 			SZ1F AB 0;		SZ2F AB 0;		SZ3F AB 0;		SZ4F AB 0;			//attack
-			SZ1N ABC 0;		SZ2N ABC 0;		SZ3N ABC 0;		SZ4N ABC 0;			//idle
+			SZ1N ABC 0;	SZ2N ABC 0;		SZ3N ABC 0;		SZ4N ABC 0;			//idle
 			SZ1B ABCD 0; 	SZ2B ABCD 0; 	SZ3B ABCD 0; 	SZ4B ABCD 0;		//on
 			SZ1S ABCDEF 0;	SZ2S ABCDEF 0;	SZ3S ABCDEF 0;	SZ4S ABCDEF 0;		//start
 			SZ12 ABCDEFG 0; SZ22 ABCDEFG 0;	SZ32 ABCDEFG 0;	SZ42 ABCDEFG 0;		//clean
 			SY1F AB 0;		SY2F AB 0;		SY3F AB 0;		SY4F AB 0;			//attack
-			SY1N ABC 0;		SY2N ABC 0;		SY3N ABC 0;		SY4N ABC 0;			//idle
+			SY1N ABC 0;	SY2N ABC 0;		SY3N ABC 0;		SY4N ABC 0;			//idle
 			SY1B ABCD 0; 	SY2B ABCD 0; 	SY3B ABCD 0; 	SY4B ABCD 0;		//on
 			SY1S ABCDEF 0;	SY2S ABCDEF 0;	SY3S ABCDEF 0;	SY4S ABCDEF 0;		//start
 			SY12 ABCDEFG 0; SY22 ABCDEFG 0;	SY32 ABCDEFG 0;	SY42 ABCDEFG 0;		//clean
@@ -552,7 +555,7 @@ Class ChainsawBloodSpill : BD_CeilingBloodDrop {
 	}
 }
 
-class SawSmoke : Smoke_General {
+class SawSmoke : BD_BaseSmoke {
 	Default {
 		alpha 0.3;
 		scale 0.22;
