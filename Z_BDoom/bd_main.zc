@@ -29,7 +29,7 @@ Class BDoomActor : Actor abstract {
 		else
 			return -1;
 	}
-	static const name LiquidFloors[] = { 
+	static const name BD_LiquidFloors[] = { 
 		"BLOOD1", "BLOOD2", "BLOOD3", "SLIME01", "SLIME02", "SLIME03", "SLIME04", "SLIME05", "SLIME06", "SLIME07", "SLIME08", "SLIME09", "SLIME10", "SLIME11", "SLIME12"
 	};
 	static bool CheckWater(actor checker = null) {
@@ -45,19 +45,23 @@ Class BDoomActor : Actor abstract {
 		if (event && event.IsAnimated(checker.floorpic)) {
 			return event.IsAnimated(checker.floorpic);
 		}
-		/*string flr = TexMan.GetName(checker.floorpic);
-		if (flr.IndexOf("WATER") >= 0 || flr.IndexOf("LAVA") >= 0 || flr.IndexOf("NUKAGE") >= 0)
-			return true;
-		for (int i = 0; i < LiquidFloors.Size(); i++) {
-			if (flr == LiquidFloors[i])
-				return true;
-		}*/
 		return false;
 	}
 	override void BeginPlay() {
 		super.BeginPlay();
 		pi = 3.141592653589793;
 	}	
+	States {
+	Loadsprites:
+		LENR A 0;
+		LENB A 0;
+		LENG A 0;
+		LENY A 0;
+		LENC A 0;
+		LENS AB 0;
+		SPRK ABC 0;
+		stop;
+	}
 }
 
 //base class for most debris
@@ -80,7 +84,7 @@ Class BD_BaseDebris : BDoomActor abstract {
 		+FLOORCLIP
 		+INTERPOLATEANGLES
 		-ALLOWPARTICLES
-		renderstyle "Translucent";
+		renderstyle 'Translucent';
 		alpha 1.0;
 		radius 1;
 		height 1;
@@ -120,52 +124,69 @@ Class BD_BaseDebris : BDoomActor abstract {
 	}
 }
 
-//base class for less expensive version for small debris
+//base inexpensive class for non-interactive particles and small debris
 Class SmallDebris : BD_BaseDebris abstract {
 	double wrot;
-	double dgravity; //fake gravity
-	double dbrake; //how quickly to reduce horizontal speed of "landed" particles
-	bool removeonfall; //whether to remove immediately as it reaches the floor
-	property dgravity : dgravity;
+	double dbrake; //how quickly to reduce horizontal speed of "landed" particles to simulate sliding along the floor
+	protected bool removeonfall; //whether to remove immediately as it reaches the floor
+	protected bool moving; //gets set to true if the actor receives any velocity when spawned
 	property removeonfall : removeonfall;
 	property dbrake : dbrake;
 	Default {
 		+NOINTERACTION
-		+CLIENTSIDEONLY
-		-MISSILE
-		-RELATIVETOFLOOR
-		-FLOORCLIP //this flag can screw up pos.z detection
-		smalldebris.dgravity 0.8;
+		gravity 0.8;
 		SmallDebris.removeonfall true;
 		SmallDebris.dbrake 0;
 	}
+	//a chad tick override that skips Actor's super.tick!
 	override void Tick() {
-		super.tick();
 		if (isFrozen())
 			return;
-		if (pos.z > floorz)
-			vel.z-=dgravity;
-		else if (removeonfall) {
+		if (alpha < 0){
 			destroy();
 			return;
 		}
-		else {
-			if (!landed) {
-				if (pos.z < floorz)
-					SetOrigin((pos.x,pos.y,floorz),0);
-				vel.z = 0;
-				bMOVEWITHSECTOR = true;
-				bRELATIVETOFLOOR = true;
-				landed = true;
+		//This block manually advances states. Ripped straight from FastProjectile class:
+		if (tics != -1) {
+			if (tics > 0) 
+				tics--;
+			while (!tics) {
+				if (!SetState (CurState.NextState)) // mobj was removed
+					return;
 			}
-			vel.x *= dbrake;
-			vel.y *= dbrake;
-		}		
+		}
+		if (!moving)
+			return;
+		if (gravity != 0) {
+			if (pos.z > floorz)		//simulates falling
+				vel.z-=gravity;
+			else if (removeonfall) {	//if allready fallen and removeonfall is true, remove
+				destroy();
+				return;
+			}
+			else {
+				SetZ(floorz);	//otherwise stick to the floor
+				vel.z = 0;
+				vel.x *= dbrake;			//simulate sliding along the floor
+				vel.y *= dbrake;
+			}
+		}
+		SetOrigin(pos+vel,true);		//finally, manually move the object
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		if (vel.length() != 0)
+			moving = true;
+	}
+	states {
+	Spawn:
+		#### # -1;
+		stop;
 	}
 }
 
 //base class for flares and flame effects
-Class BD_BaseFlare : BD_BaseDebris abstract {
+Class BD_BaseFlare : SmallDebris abstract {
 	protected state mdeath;
 	protected state mxdeath;
 	name fcolor;		//flare of the color; can be set as a property or externally
@@ -173,15 +194,12 @@ Class BD_BaseFlare : BD_BaseDebris abstract {
 	double falpha;		//alpha; used to when scale needs to be easily set externally from the spawner
 	property fcolor : fcolor;
 	Default {
-		BD_BaseDebris.sfxtype "flames";
-		-MISSILE
-		+RELATIVETOFLOOR
-		+MOVEWITHSECTOR
-		+NOINTERACTION
+		BD_BaseDebris.sfxtype 'flames';
 		+BRIGHT
-		renderstyle "Add";
+		renderstyle 'Add';
 		alpha 0.4;
 		scale 0.4;
+		gravity 0;
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
@@ -189,6 +207,7 @@ Class BD_BaseFlare : BD_BaseDebris abstract {
 			mdeath = master.FindState("Death");
 			mxdeath = master.FindState("XDeath");
 		}
+		SetColor();
 	}
 	virtual void SetColor() { //fcolor is meant to be set by the actor that spawns the flare
 		switch (fcolor) {
@@ -205,19 +224,9 @@ Class BD_BaseFlare : BD_BaseDebris abstract {
 			alpha = falpha;
 	}
 	states {
-		Spawn:
-			TNT1 A 0 NoDelay SetColor();
-			#### # 1;
-			wait;
-		Loadsprites:
-			LENR A 0;
-			LENB A 0;
-			LENG A 0;
-			LENY A 0;
-			LENC A 0;
-			LENS AB 0;
-			SPRK ABC 0;
-			stop;
+	Spawn:
+		#### # -1;
+		stop;
 	}
 }
 
@@ -229,17 +238,17 @@ Class BD_ProjFlare : BD_BaseFlare {
 		BD_BaseFlare.fcolor "Red";
 		alpha 0.8;
 		scale 0.11;
-		-RELATIVETOFLOOR
-		-MOVEWITHSECTOR
 	}
 	override void Tick() {
-		super.Tick();
-		if (master)
-			A_Warp(AAPTR_Master,xoffset,0,0,flags:WARPF_INTERPOLATE);
+		if (!master || !bdoom_debris) {
+			destroy();
+			return;
+		}
 		if (isFrozen())
 			return;
-		if (!master || !bdoom_debris || (master && (master.InstateSequence(master.curstate,mdeath) || 
-										 master.InstateSequence(master.curstate,mxdeath)) )) {
+		super.Tick();
+		Warp(master,xoffset,0,0,flags:WARPF_INTERPOLATE);
+		if (master.InstateSequence(master.curstate,mdeath) || master.InstateSequence(master.curstate,mxdeath)) {
 			Destroy();
 			return;
 		}
@@ -247,13 +256,12 @@ Class BD_ProjFlare : BD_BaseFlare {
 }
 
 
-
 Class ParticleFire_General : BD_BaseFlare abstract {
 	Default {
-		renderstyle "Add";
+		renderstyle 'Add';
 		scale 0.5;
 		alpha 0.5;
-		BD_BaseDebris.sfxtype "flames";
+		BD_BaseDebris.sfxtype 'flames';
 	}
 	Override void PostBeginPlay() {
 		super.PostBeginPlay();
@@ -268,6 +276,7 @@ Class BD_FireParticle : BD_BaseFlare {
 		scale 0.04;
 	}
 	override void SetColor() {
+		sprite = GetSpriteIndex("SPRK");
 		if (fcolor == 'green')
 			frame = 1;
 		else if (fcolor == 'blue')
@@ -275,24 +284,18 @@ Class BD_FireParticle : BD_BaseFlare {
 		else if (fcolor == 'yellow')
 			frame = 3;
 	}
-	states	{
-		Loadsprites:
-			SPRK ABCD 0;
-		Spawn:
-			SPRK A 0 NoDelay SetColor();
-			SPRK # 1 bright {
-				A_FadeOut(0.01);
-				scale*=0.95;
-			}
-			wait;
+	override void Tick() {
+		super.Tick();
+		A_FadeOut(0.01);
+		scale*=0.95;
 	}
 }
 
 Class ParticleFire_Red : ParticleFire_General {
 	states {
-		Spawn:
-			FIPR ABCDEFGHIJKLMNOPQRST 1 bright Nodelay A_FadeOut(0.03);
-			stop;
+	Spawn:
+		FIPR ABCDEFGHIJKLMNOPQRST 1 A_FadeOut(0.03);
+		stop;
 	}
 }
 
@@ -301,10 +304,10 @@ Class ParticleFire_Yellow : ParticleFire_General {
 		alpha 0.6;
 		scale 0.35;
 	}
-	states		{
-		Spawn:
-			FIPY ABCDEFGHIJKL 2 bright Nodelay A_FadeOut(0.06);
-			stop;
+	states{
+	Spawn:
+		FIPY ABCDEFGHIJKL 2 A_FadeOut(0.06);
+		stop;
 	}
 }
 
@@ -332,173 +335,134 @@ Class FirePiece : BD_BaseFlare abstract {
 //// SMOKE ////;
 ///////////////
 
-Class Smoke_General : SmallDebris abstract {
+Class BD_BaseSmoke : SmallDebris abstract {
 	Default {
-		BD_BaseDebris.sfxtype "debris";
-		smalldebris.dgravity 0;
-		renderstyle "Add";
+		BD_BaseDebris.sfxtype 'debris';
+		gravity 0;
+		renderstyle 'Add';
 		alpha 0.3;
 		scale 0.1;
 	}
 	override void PostBeginPlay() {
+		super.PostBeginPlay();
 		if (waterlevel > 1) {
 			self.destroy();
 			return;
 		}
-		super.PostbeginPlay();
-		roll = random(0,359);
-		bSPRITEFLIP = randompick(0,1);
+		scale.x *= frandom(0.8,1.2)*randompick(-1,1);
+		scale.y *= frandom(0.8,1.2);
 	}
 	states	{
-		Spawn:
-			SMOK ABCDEFGHIJKLMNOPQ 1 NoDelay {
-				if (!master)
-					A_SpawnItemEx("BasicSmokeTrail",frandom(-2,2),frandom(-2,2),frandom(-2,2),flags:SXF_SETMASTER);
-				A_Fadeout(0.01);
-			}
-			stop;
-	}
-}
-
-Class BasicSmokeTrail : Smoke_General abstract {
-	Default {
-		alpha 0.15;
-	}
-	states	{
-		Spawn:
-			SMOK DEFGHIJKLMNOPQ 1 NoDelay A_Fadeout(0.01);
-			stop;
-	}
-}
-
-//spawned over weapon barrels after shooting
-class BarrelSmoke : Smoke_General {
-	Default {
-		alpha 0.05;
-		scale 0.02;
-	}
-	/*override void Tick() {
-		if (target) {
-			vel.x = target.vel.x;
-			vel.y = target.vel.y;
+	Spawn:
+		#### # 1 {
+			A_Fadeout(0.01);
 		}
-		super.Tick();
-	}*/
-	states {
-		Spawn:
-			SMK1 ABCDEF 2 NoDelay A_FadeIn(0.025);
-			SMK1 GHIJKLMNOPQR 2 {
-				vel.z = clamp(vel.z*0.6,0.04,0.1);
-				A_FadeOut(0.005);
-				roll+-8;
-			}
-			stop;
+		loop;
 	}
 }
 
-//bigger smoke to spawn over heated weapon body
-class WeaponSmoke : Smoke_General {
+//white smoke to spawn over heated weapons
+class WeaponSmoke : BD_BaseSmoke {
 	Default {
 		alpha 0.25;
 		scale 0.15;
 	}
-	states	{
-		Spawn:		
-			SMK1 ABCDEFGHIJKLMNOPQR 1 NoDelay {
-				A_SpawnItemEx("WeaponSmokeTrail",random(-2,2),random(-2,2),random(-2,2));
-				A_FadeOut(0.01);
-			}
-			stop;
-	}
-}
-
-Class WeaponSmokeTrail : BasicSmokeTrail {
-	Default {
-		alpha 0.1;
-		scale 0.12;
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		roll = random(0,359);
 	}
 	states	{
-		Spawn:
-			SMK1 DEFGHIJKLMNOPQR 1 NoDelay A_Fadeout(0.01);
-			stop;
+	Spawn:		
+		SMOK ABCDEFGHIJKLMNOPQR 1 {
+			A_FadeOut(0.01);
+		}
+		stop;
 	}
 }
 
-//big dark smoke used for some explosions
-class BlackSmoke : Smoke_General {
+//medium-sized dark smoke that raises over burnt/plasmaburnt bodies
+class BlackSmoke : BD_BaseSmoke {
 	Default {
-		renderstyle "Translucent";
-		alpha 0.15;
-	}
-	states	{
-		Spawn:
-			SMOK ABCDEFGHIJKLMNOPQ 2 NoDelay {
-				A_SpawnItemEx("BlackSmokeTrail",frandom(-2,2),frandom(-2,2),frandom(-2,2));
-				A_FadeOut(0.01);
-			}
-			wait;
-	}
-}
-
-Class BlackSmokeTrail : BasicSmokeTrail {
-	Default {
-		renderstyle "Translucent";
-		alpha 0.08;
-	}
-}
-
-//dark small piece of smoke with a hint of flame — for "dirty" fires like burning barrel
-Class BurnSmokePiece : Smoke_General {
-	Default {
-		renderstyle "Translucent";
+		renderstyle 'Translucent';
 		alpha 0.3;
-		scale 0.05;
+		scale 0.3;
+	}
+	override void Tick() {
+		if (isFrozen())
+			return;
+		vel *= 0.99;
+		super.Tick();
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		scale*=frandom(0.6,1);
+		roll += frandom(-40,40);
 	}
-	states {
-		Spawn:
-			BSMO ABCDEFGHIJKLMNOPQRSTU 1 NoDelay A_FadeOut(0.005);
-			stop;
+	states	{
+	Spawn:
+		SMOK ABCDEFGHIJKLMNOPQ 2 NoDelay {
+			A_FadeOut(0.01);
+		}
+		SMOK R 2 {
+			A_FadeOut(0.005);
+			scale *= 0.99;
+		}
+		wait;
 	}
 }
 
 //even bigger smoke for bigger explosions
 class BigBlackSmoke : BlackSmoke {
 	Default {
-		alpha 0.2;
-		scale 0.2;
+		alpha 0.6;
+		scale 0.45;
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		wrot = frandom(0.3,1.2) * randompick(-1,1);
+	}
+	override void Tick() {
+		super.Tick();
+		if (isFrozen())
+			return;
+		if (GetAge() > 20)
+			roll+=wrot;
+		A_FadeOut(0.012);
+		scale *= 1.01;
 	}
 	states {
-		Spawn:
-			TNT1 A 0 NoDelay {
-				A_SetScale(scale.x*frandom(0.8,1.2)*randompick(-1,1), scale.y*frandom(0.8,1.2)*randompick(-1,1));
-			}
-			SMOK ABCDEFGHIJKLMNOPQ 2 {
-				if (self.GetClassName() == "BigBlackSmoke")
-					A_SpawnItemEx("BigBlackSmokeTrail",frandom(-2,2),frandom(-2,2),frandom(-2,2),0,0,0,0,SXF_SETMASTER);
-				A_FadeOut(0.02);
-				a_Setscale(clamp(scale.x*1.03,default.scale.x,default.scale.x*2.2),clamp(scale.y*1.03,default.scale.y,default.scale.y*2.2));
-			}
-			wait;
+	Spawn:
+		SMOK ABCDEFGH 2;
+		SMOK IJKLMNOPQR 3;
+		wait;
 	}
 }
 
-Class BigBlackSmokeTrail : BigBlackSmoke {}
+//dark small piece of smoke with a hint of flame — for "dirty" fires like burning barrel
+Class BurnSmokePiece : BD_BaseSmoke {
+	Default {
+		renderstyle 'Translucent';
+		alpha 0.3;
+		scale 0.08;
+	}
+	states {
+	Spawn:
+		BSMO ABCDEFGHIJKLMNOPQRSTU 1 A_FadeOut(0.005);
+		stop;
+	}
+}
+
 
 //basic smoke behind a rocket
-Class BD_RocketTrail : Smoke_General {
+Class BD_RocketTrail : BD_BaseSmoke {
 	Default {
 		scale 0.1;
-		renderstyle "Translucent";
+		renderstyle 'Translucent';
 		alpha 0.3;
 	}
 	states {
-		Spawn:
-			SMOK ABCDEFGHIJKLMNOPQ 1 NoDelay A_FadeOut(0.03);
-			stop;
+	Spawn:
+		SMOK ABCDEFGHIJKLMNOPQ 1 NoDelay A_FadeOut(0.03);
+		stop;
 	}
 }
 
@@ -511,7 +475,7 @@ Class SmokeBallTrail : BD_RocketTrail {
 //a particle that spawns thin smoke behind itself
 Class SmokingPiece : SmallDebris {
 	Default {
-		smalldebris.dgravity 0.7;
+		gravity 0.7;
 		alpha 1.0;
 	}
 	states
@@ -525,7 +489,7 @@ Class SmokingPiece : SmallDebris {
 		}
 }
 
-Class SmokingPieceSmoke : BasicSmokeTrail {
+Class SmokingPieceSmoke : BD_BaseSmoke {
 	Default {
 		scale 0.04;
 		alpha 0.3;
@@ -537,11 +501,11 @@ Class SmokingPieceSmoke : BasicSmokeTrail {
 ///////////////
 
 //smoke coming out of wood walls
-Class WallSmoke : Smoke_General {
+Class WallSmoke : BD_BaseSmoke {
 	Default {
 		+ROLLCENTER
 		scale 0.018;
-		renderstyle "Translucent";
+		renderstyle 'Translucent';
 		alpha 0.3;
 	}
 	override void PostBeginPlay() {
@@ -683,7 +647,7 @@ Class EnBulletPuff : BDoomPuff {
 		+NOINTERACTION
 		+PUFFGETSOWNER
 		decal "none";
-		renderstyle "Add";
+		renderstyle 'Add';
 		scale 0.075;
 		alpha 0.8;
 		mass 1;
@@ -834,8 +798,9 @@ Class EnBulletPuff : BDoomPuff {
 		PuffSpawn:
 			TNT1 A 0 {
 				if (bdoom_debris) {
-					if (random(0,100) < rchance)
-						A_SpawnProjectile("RicochetBullet",0,0,random(0,359),CMF_AIMDIRECTION,random(-45,45));
+					if (random(0,100) < rchance) {
+						A_SpawnItemEx("RicochetBullet",xvel:50,zvel:frandom(-10,10),angle:random(0,359));
+					}
 					if (smoke == 1) {
 						if (puffdata.HitType == TRACE_HitFloor) {
 							for (int i = 0; i < 10; i++)
@@ -857,7 +822,7 @@ Class EnBulletPuff : BDoomPuff {
 					if (debris) {
 						if (puffdata.HitType == TRACE_HitFloor) {
 							for (int i = 0; i < 5; i++)
-								A_SpawnItemEx("Wallpart", 0,0,0, frandom(-1,1),frandom(-1,1),frandom(2,5), 0,SXF_SETTARGET,64);
+								A_SpawnItemEx("Wallpart", 0,0,1, frandom(-1,1),frandom(-1,1),frandom(2,5), 0,SXF_SETTARGET,64);
 						}
 						else if (puffdata.HitType == TRACE_HitCeiling) {
 							for (int i = 0; i < 5; i++)
@@ -897,7 +862,7 @@ Class EnBulletPuff : BDoomPuff {
 	}
 }
 
-//decal to spawn on the floors and ceilings
+//3d-model "decal" to spawn on the floors and ceilings
 Class BD_PlaneDecal : BD_BaseDebris {
 	name decaltype;
 	Default {
@@ -907,42 +872,44 @@ Class BD_PlaneDecal : BD_BaseDebris {
 		renderstyle 'Shaded';
 	}
 	states {
-		//even though these are not real sprites, they still need to be defined for MODELDEF to attach the model properly
-		load:
-			CHIP ABCDE 0;
-			METL ABCDE 0;
-			WOOD ABCDE 0;
-			BRIK ABCD 0;
-		Spawn:
-			TNT1 A 0 NoDelay {				
-				switch (decaltype) {
-					case 'BulletChip'	: sprite = GetSpriteIndex("CHIP");	frame = random(0,4); alpha = 0.85; angle = random(0,360); break;
-					case 'BulletMChip'	: sprite = GetSpriteIndex("METL");	frame = random(0,4); alpha = 0.55; angle = random(0,360);break;
-					case 'BulletWChip'	: sprite = GetSpriteIndex("WOOD");	frame = random(0,4); alpha = 1.0; break;
-					case 'BulletSChip'	: sprite = GetSpriteIndex("BRIK");	frame = random(0,3); alpha = 0.75; angle = random(0,360);break;
-				}
+	//even though these are not real sprites, they still need to be defined for MODELDEF to attach the model properly
+	load:
+		CHIP ABCDE 0;
+		METL ABCDE 0;
+		WOOD ABCDE 0;
+		BRIK ABCD 0;
+	Spawn:
+		TNT1 A 0 NoDelay {				
+			switch (decaltype) {
+				case 'BulletChip'	: sprite = GetSpriteIndex("CHIP");	frame = random(0,4); alpha = 0.85; angle = random(0,360); break;
+				case 'BulletMChip'	: sprite = GetSpriteIndex("METL");	frame = random(0,4); alpha = 0.55; angle = random(0,360);break;
+				case 'BulletWChip'	: sprite = GetSpriteIndex("WOOD");	frame = random(0,4); alpha = 1.0; break;
+				case 'BulletSChip'	: sprite = GetSpriteIndex("BRIK");	frame = random(0,3); alpha = 0.75; angle = random(0,360);break;
 			}
-			#### # -1;
-			stop;
+		}
+		#### # -1;
+		stop;
 	}
 }
 
-//a very small dark piece of debris spawned by hitting a wall
+/*
+	A very small dark piece of debris spawned by hitting a wall.
+	Its shape and translation change depending on the "material" of the texture
+	that was shot.
+*/
 Class WallPart : SmallDebris {
 	Default {
 		SmallDebris.removeonfall false;
 		SmallDebris.dbrake 0.8;
-		-NOGRAVITY
-		Renderstyle "Translucent";
+		Renderstyle 'Translucent';
 		alpha 1.0;
 		scale 0.16;
-		smalldebris.dgravity 0.4;
+		gravity 0.4;
 		translation "DebrisStone";
 	}
-	override void PostBeginPlay()
-		{
+	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		wrot = random(8,14)*randompick(-1,1);
+		wrot = frandom(8,14)*randompick(-1,1);
 		scale*=frandom(0.8,1.2)*randompick(-1,1);
 		if (!target || !(target is "EnBulletPuff"))
 			return;
@@ -980,11 +947,10 @@ Class WallPart : SmallDebris {
 		Bloody:
 			TNT1 A 0 {
 				A_SetScale(0.1,0.1);
-				static const string bsprite[] =
-				{
+				static const string bsprite[] = {
 					"YBL7","YBL8","YBL9"
-			};
-				self.sprite = GetSpriteIndex(bsprite[random(0,2)]);
+				};
+				sprite = GetSpriteIndex(bsprite[random(0,2)]);
 			}
 			#### ABCDEFGHIJKLMNOPQRS 1 A_Fadeout(0.08);
 			stop;		
@@ -993,12 +959,12 @@ Class WallPart : SmallDebris {
 
 Class BD_GlassPiece : WallPart {
 	Default {
-		renderstyle "Add";
+		renderstyle 'Add';
 		alpha 0.4;
 	}
 	states {
-		Bloody:
-			stop;
+	Bloody:
+		stop;
 	}
 }
 
@@ -1006,7 +972,7 @@ Class BD_GlassPiece : WallPart {
 
 Class RocketDebris : WallPart {
 	Default {
-		smalldebris.dgravity 0.75;
+		gravity 0.75;
 		scale 0.24;
 	}
 }
@@ -1016,22 +982,23 @@ Class RicochetSpark : SmallDebris {
 	Default {
 		SmallDebris.removeonfall false;
 		SmallDebris.dbrake 0.9;
-		renderstyle "Add";
+		renderstyle 'Add';
 		alpha 1.0;
 		radius 3;
 		height 3;
 		scale 0.03;
+		+BRIGHT
 	}
 	override Void PostBeginPlay() {
 		if (waterlevel > 1) {
-			self.destroy();
+			destroy();
 			return;
 		}
 		super.PostbeginPlay();
 	}
 	states {
 		Spawn:
-			SPRK A 1 bright	{
+			SPRK A 1 {
 				A_FadeOut(0.03);
 				scale *= 0.95;
 			}
@@ -1039,63 +1006,20 @@ Class RicochetSpark : SmallDebris {
 	}
 }
 
-
-
 //fake bullet that ricochets from bulletpuffs
-Class RicochetBullet : BD_BaseDebris {
+Class RicochetBullet : SmallDebris {
 	Default {
-		+NOINTERACTION
-		//+THRUACTORS
-		//+DONTSPLASH
-		//bouncetype "Hexen";
-		speed 40;
-		seesound "none";
-		deathsound "none";
-		renderstyle "Add";
+		renderstyle 'Add';
 		alpha 0.8;
+		+BRIGHT
 	}
 	states {
-		Spawn:
-			TNT1 A 0 NoDelay {
-				//if (bdoom_sparks == 1)
-					//A_PlaySound("weapons/ricochet");
-			}
-			PUFF A 2;
-			stop;
+	Spawn:
+		PUFF A 3;
+		stop;
 	}
 }
 
-
-Class SphereSpawner : Actor {
-	int langle;
-	int lpitch;
-	Default {
-		+NOINTERACTION
-		+FORCEXYBILLBOARD
-	}
-	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		langle = 0;
-		lpitch = -90;
-	}
-	states {
-		Spawn:
-			TNT1 A 1 NoDelay {
-				while (langle <= 350) {
-						while (lpitch <= 90) {
-							FLineTraceData ltr;
-							LineTrace(langle,8,lpitch,TRF_THRUACTORS,data:ltr);
-							let vec = level.vec3diff (pos,ltr.hitlocation);						
-							A_SpawnParticle("0000FF",SPF_FULLBRIGHT,100,1,0,vec.x,vec.y,vec.z);
-							lpitch+=10;
-						}
-						lpitch = -90;
-						langle+=10;
-				}
-			}
-			stop;
-	}
-}
 
 /*
 //////////////// OVERLAY

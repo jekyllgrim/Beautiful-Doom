@@ -247,8 +247,7 @@ Class BD_BurningBarrel : BD_LightSource {
 		Idle:
 			BURB ABCDEFGHIJKLMNOPQRSTUVWXYZ random(2,3) {
 				if (bdoom_flames) {
-					A_SpawnItemEx("BurnSmokePiece",frandom(-4,4),frandom(-4,4),fspawnheight+frandom(16,22),frandom(-0.15,0.15),frandom(-0.15,0.15),frandom(0.2,0.35),0,SXF_SETMASTER,210);
-					A_SpawnItemEx("BlackSmoke",frandom(-4,4),frandom(-4,4),fspawnheight+frandom(4,10),frandom(-0.15,0.15),frandom(-0.15,0.15),frandom(0.4,0.6),0,SXF_SETMASTER,40);
+					A_SpawnItemEx("BurnSmokePiece",frandom(-4,4),frandom(-4,4),fspawnheight+frandom(16,22),frandom(-0.15,0.15),frandom(-0.15,0.15),frandom(0.2,0.35),failchance:210);					//A_SpawnItemEx("BlackSmoke",frandom(-4,4),frandom(-4,4),fspawnheight+frandom(4,10),frandom(-0.15,0.15),frandom(-0.15,0.15),frandom(0.4,0.6)failchance:40);
 				}
 			}			
 			loop;
@@ -262,7 +261,7 @@ Class BD_BurningBarrel : BD_LightSource {
 Class ElectroSpark : RicochetSpark {
 	Default {
 		alpha 0.8;
-		smalldebris.dgravity 0.4;
+		gravity 0.4;
 	}
 }
 

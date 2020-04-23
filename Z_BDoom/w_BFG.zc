@@ -723,7 +723,7 @@ Class BFGPlasmaPiece : BluePlasmaPiece {
 		translation "GreenPlasma";
 		alpha 1.0;
 		scale 0.1;
-		smalldebris.dgravity 0.0;
+		gravity 0.0;
 	}
 }
 

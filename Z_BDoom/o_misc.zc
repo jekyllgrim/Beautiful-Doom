@@ -116,24 +116,22 @@ Class BD_ExplosiveBarrel : ExplosiveBarrel {
 				scale.x *= randompick(-1,1);
 				A_SprayDecal("BarrelScorch",128);			
 				if (bdoom_debris) {
-					for (int i = 5; i > 0; i--)
-						A_SpawnItemEx("SmokingPiece",	frandom(-6,6),frandom(-6,6),frandom(4,24),	frandom(-5,5),frandom(-5,5),frandom(7,12),failchance:64);
-					for (int i = 7; i > 0; i--)
-						A_SpawnItemEx("EBarrelPiece",	frandom(-6,6),frandom(-6,6),frandom(4,24),	frandom(-10,10),frandom(-10,10),frandom(8,15),failchance:64);
+					for (int i = random(3,6); i > 0; i--)
+						A_SpawnItemEx("SmokingPiece",	frandom(-6,6),frandom(-6,6),frandom(4,24),	frandom(-5,5),frandom(-5,5),frandom(7,12));
+					for (int i = random(4,7); i > 0; i--)
+						A_SpawnItemEx("EBarrelPiece",	frandom(-6,6),frandom(-6,6),frandom(4,24),	frandom(-10,10),frandom(-10,10),frandom(8,15));
 				}
 			}
-			BEXP DE 2 {
-				if (bdoom_debris)
-					A_SpawnItemEx("BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(16,56),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.8,2.2),failchance:32);
-			}
-			BEXP FFGGH 1 {
-				if (bdoom_debris)
-					A_SpawnItemEx("BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(16,56),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.8,2.2),failchance:32);
+			BEXP DDEEFFGGH 1 {
+				if (bdoom_debris) {
+					for (int i = random(0,4); i > 0; i--)
+						A_SpawnItemEx("BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(1,52),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.2,1));
+				}
 			}
 			BEXP H 1 A_Explode();
 			BEXP IJKLMNOPQ 3 {
 				if (bdoom_debris)
-					A_SpawnItemEx("BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(16,56),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.8,2.2),failchance:32);
+					A_SpawnItemEx("BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(1,52),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.2,1),failchance:32);
 			}
 			TNT1 A 1050 A_BarrelDestroy;
 			TNT1 A 5 {
@@ -157,17 +155,6 @@ Class ExplodedBarrel : Actor {
 		{
 			"BXP2","BXP3","BXP4"
 	};
-	/*override void Tick() {
-		super.tick();
-		if (isFrozen() || !bdoom_debris)
-			return;
-		timer++;
-		if (random(0,10) > 9 && timer >= 20) {
-			for (int i = random(1,3); i > 0; i--)
-				A_SpawnItemEx("BlackSmoke",frandom(-8,8),frandom(-8,8),frandom(6,8),0,0,frandom(0.2,0.6),failchance:(128));
-			timer = 0;
-		}
-	}*/
 	states {
 		Loadsprites:
 			BXP2 ABCDE 0;
@@ -327,7 +314,7 @@ Class BigTreeLeaf : SmallDebris {
 		scale*=frandom(0.9,1.1);
 		scale.x*=randompick(-1,1);
 		scale.y*=randompick(-1,1);
-		dgravity = frandom(0.002,0.005);	
+		gravity = frandom(0.002,0.005);	
 	}
 	override void Tick() {
 		if (!isFrozen()) {

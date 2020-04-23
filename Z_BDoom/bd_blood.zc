@@ -489,7 +489,7 @@ Class FrontalSpurt : BloodSpurt {
 //shorter and smaller version of bloodspurt
 Class NeckSpray : SmallDebris {
 	Default {
-		smalldebris.dgravity 0.5;
+		gravity 0.5;
 		scale 0.12;
 		alpha 0.7;
 	}
