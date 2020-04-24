@@ -132,10 +132,9 @@ class BD_BFG9000 : BDoomWeapon {
 				A_ClearOverlays(PSP_LIGHTS,PSP_LIGHTS);
 			}
 			BBGN CDEF 2;
-			BBGN GH 2 A_ReFire();
-			BBGN IIJJAAAAAAAAAAAA 1 {
-				A_Eject("WeaponSmoke",frandom(16,26),frandom(-3,3),frandom(-3,3));
+			BBGN GGHHIIJJAAAAAAAAAAAA 1 {
 				A_ReFire();
+				A_Eject("WeaponSmoke",12, frandom(-3,3),frandom(0,6), frandom(-0.1,0.1),frandom(-0.1,0.1),frandom(0.1,0.4));
 			}
 			goto ready;
 		LightsOn:
@@ -205,7 +204,7 @@ class BD_BFG9000 : BDoomWeapon {
 			}
 			BBGN BCDEFGHIJAAA 2 {
 				if (bdoom_debris)
-					A_Eject("WeaponSmoke",frandom(16,26),frandom(-3,3),frandom(-3,3));
+					A_Eject("WeaponSmoke",12, frandom(-3,3),frandom(0,6), frandom(-0.1,0.1),frandom(-0.1,0.1),frandom(0.1,0.4));
 			}
 			BBGN A 5 {
 				If(invoker.railcounter >= 100)
@@ -215,11 +214,13 @@ class BD_BFG9000 : BDoomWeapon {
 			}
 			goto ready;	
 		AltEndLong: //Played only if you held the button until the end
-			BBGN AAAAAAAA 2 {
+			BBGN AAAAAAAAAAAAAAAA 1 {
 				if (bdoom_debris)
-					A_Eject("WeaponSmoke",frandom(16,26),frandom(-3,3),frandom(-3,3));
+					A_Eject("WeaponSmoke",12, frandom(-3,3),frandom(0,6), frandom(-0.1,0.1),frandom(-0.1,0.1),frandom(0.1,0.4));
 			}
-			BBGN A 5 { 
+			BBGN AAAAA 1 { 
+				if (bdoom_debris)
+					A_Eject("WeaponSmoke",12, frandom(-3,3),frandom(0,6), frandom(-0.1,0.1),frandom(-0.1,0.1),frandom(0.1,0.4));
 				invoker.railcounter = 0; 
 			}
 			goto ready;	
@@ -390,7 +391,7 @@ class BD_BFG9000 : BDoomWeapon {
 					A_ZoomFactor(1.0,ZOOM_NOSCALETURNING);
 					return ResolveState("Ready");
 				}
-				A_Eject("WeaponSmoke",frandom(16,26),frandom(-3,3),frandom(-3,3));
+				A_Eject("WeaponSmoke",12, frandom(-3,3),frandom(0,6), frandom(-0.1,0.1),frandom(-0.1,0.1),frandom(0.1,0.4));
 				return ResolveState(null);
 			}
 			wait;					
@@ -421,7 +422,7 @@ class BD_BFG9000 : BDoomWeapon {
 			BBGN IIJJ 1 {
 				invoker.wzoom = Clamp ( invoker.wzoom *= 1.004, 0.8, 1);
 				A_ZoomFactor(invoker.wzoom,ZOOM_NOSCALETURNING);
-				A_Eject("WeaponSmoke",frandom(16,26),frandom(-3,3),frandom(-3,3));
+				A_Eject("WeaponSmoke",12, frandom(-3,3),frandom(0,6), frandom(-0.1,0.1),frandom(-0.1,0.1),frandom(0.1,0.4));
 			}
 			TNT1 A 0 {
 				A_Overlay(PSP_LIGHTS,"LightsBlink");		
@@ -430,7 +431,7 @@ class BD_BFG9000 : BDoomWeapon {
 			BBGN AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 {
 				invoker.wzoom = Clamp ( invoker.wzoom *= 1.004, 0.8, 1);
 				A_ZoomFactor(invoker.wzoom,ZOOM_NOSCALETURNING);
-				A_Eject("WeaponSmoke",frandom(16,26),frandom(-3,3),frandom(-3,3));
+				A_Eject("WeaponSmoke",12, frandom(-3,3),frandom(0,6), frandom(-0.1,0.1),frandom(-0.1,0.1),frandom(0.1,0.4));
 			}
 			TNT1 A 0 A_ZoomFactor(1,ZOOM_NOSCALETURNING);
 			goto ready;
