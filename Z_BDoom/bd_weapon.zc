@@ -61,7 +61,10 @@ Class BDoomWeapon : Weapon abstract {
 		PSP_EFLASH = 20,
 		PSP_LIGHTS = 10,
 		PSP_HLIGHTS = 15,
-		PSP_CHAINBLOOD = 8
+		PSP_CHAINBLOOD = 80,
+		PSP_CHAINBLOODR = 81,
+		PSP_CHAINBLOODG = 82,
+		PSP_CHAINBLOODB = 83
 	};
 
 	override void DoEffect() {
@@ -175,14 +178,18 @@ Class BDoomWeapon : Weapon abstract {
 	}
 
 	//Casing spawn function with cool math by Marisa Kirisame (see mk_matrix)
-	action void A_Eject(class<Actor> itemtype, double xofs = 0, double yofs = 0, double zofs = 0, double xvel = 0, double yvel = 0, double zvel = 0) {
+	action actor A_Eject(class<Actor> itemtype, double xofs = 0, double yofs = 0, double zofs = 0, double xvel = 0, double yvel = 0, double zvel = 0) {
 		Vector3 ofs = player.mo.pos+(0,0,player.viewheight-GetFloorTerrain().footclip);
 		Vector3 x, y, z;
 		[x, y, z] = Matrix4.getaxes(player.mo.pitch,player.mo.angle,player.mo.roll);
 		let c = Spawn(itemtype,ofs+x*xofs+y*yofs-z*zofs);
-		c.vel = x*xvel+y*yvel+z*zvel;
-		c.target = self; //get pointer to spawner — if spawned by monster it'll disappear after bouncing
-		c.angle = angle;
+		if (c) {
+			c.vel = x*xvel+y*yvel+z*zvel;
+			c.target = self; //get pointer to spawner — if spawned by monster it'll disappear after bouncing
+			c.angle = angle;
+			return c;
+		}
+		return null;
 	}
 
 	states	{
