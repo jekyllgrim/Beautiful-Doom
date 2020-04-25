@@ -136,9 +136,7 @@ Class BDoomWeapon : Weapon abstract {
 				owner.GiveInventory(ammo1.GetClass(),1);
 			}
 			Console.Printf("%s reloaded",GetTag());
-		}
-				
-			
+		}			
 	}
 
 	action void BD_WeaponReady (bool allowSecondary = false, bool allowReload = true, bool allowKick = true) {
