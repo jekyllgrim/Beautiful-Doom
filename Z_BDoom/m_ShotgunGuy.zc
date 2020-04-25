@@ -1,26 +1,25 @@
-Class BD_ShotgunGuy : BDoomMonster //replaces ShotgunGuy
-{
-Default {
-	Health 30;
-	Radius 20;
-	Height 56;
-	Mass 100;
-	Speed 8;
-	PainChance 170;
-	Monster;
-	+FLOORCLIP
-	SeeSound "shotguy/sight";
-	AttackSound "none";
-	PainSound "shotguy/pain";
-	DeathSound "shotguy/death";
-	ActiveSound "shotguy/active";
-	Obituary "$OB_SHOTGUY";
-	Tag "$FN_SHOTGUN";
-	DropItem "Shotgun";
-	+DOHARMSPECIES
-	BDoomMonster.monsterclip 8;
+Class BD_ShotgunGuy : BDoomMonster {
+	Default {
+		Health 30;
+		Radius 20;
+		Height 56;
+		Mass 100;
+		Speed 8;
+		PainChance 170;
+		Monster;
+		+FLOORCLIP
+		SeeSound "shotguy/sight";
+		AttackSound "none";
+		PainSound "shotguy/pain";
+		DeathSound "shotguy/death";
+		ActiveSound "shotguy/active";
+		Obituary "$OB_SHOTGUY";
+		Tag "$FN_SHOTGUN";
+		DropItem "Shotgun";
+		+DOHARMSPECIES
+		BDoomMonster.monsterclip 8;
 	}
-states
+	states
 	{
 	Spawn:
 		SARR AB 10 A_Look();
@@ -29,7 +28,7 @@ states
 		TNT1 A 0 {
 			A_SetScale(default.scale.x,default.scale.y);
 			bFRIGHTENED = false;
-			}
+		}
 	    SPO1 ABCDDCBA 3 A_Chase();
 		loop; 	
 	Crush:
@@ -48,9 +47,9 @@ states
 		SPSR B 4 {
 			if (bdoom_weapons == 1)
 				A_playsound("weapons/shotgun/pump",5);
-			If(bdoom_Debris == 1)
+			If(bdoom_debris)
 				A_SpawnItemEx("ShotgunCasing",0,0,28,		frandom(2,4),0,random(2,4),	random(-30,-40),SXF_SETTARGET);
-			}
+		}
 		SPSR A 3;
 		goto See;
 	MissileModern:		
@@ -64,15 +63,15 @@ states
 			A_CustomBulletAttack(20.0, 1.5, 6, 0, "NUllPuff", 0, CBAF_NORANDOM,AAPTR_TARGET,"BD_ZombiePellet",30,8);
 			monsterclip--;
 			return ResolveState(null);
-			}
+		}
 		SPO1 E 3;
 		SPSR C 3;
 		SPSR A 3;
 		SPSR B 3 {
 			A_playsound("Mweapons/shotgun/pump",5);
-			If(bdoom_Debris == 1)
+			If(bdoom_debris)
 				A_SpawnItemEx("ShotgunCasing",0,0,28,		frandom(2,4),0,random(2,4),	random(-30,-40),SXF_SETTARGET);
-			}
+		}
 		SPSR AC 4;
 		SPO1 E 15 {
 			if (monsterclip == 0)
@@ -80,57 +79,60 @@ states
 			else if (target && Distance2D(target) > 512)
 				return ResolveState("See");
 			return ResolveState(null);
-			}
+		}
 		SPO1 E 15;
 		TNT1 A 0 BD_Refire(96,"See");
 		goto MissileModern+3;
 	Reload:
 		TNT1 A 0 {
 			bFRIGHTENED = true;
-			}
+		}
 	    SPO1 ABCDDCBA 3 A_Chase(null,null);
-		TNT1 A 0 A_PlaySound("Mweapons/shotgun/shellin");
-	    SPO1 ABCD 3 A_Chase(null,null);
-		TNT1 A 0 A_PlaySound("Mweapons/shotgun/shellin");
-	    SPO1 DCBA 3 A_Chase(null,null);
-		TNT1 A 0 A_PlaySound("Mweapons/shotgun/shellin");
-	    SPO1 ABCD 3 A_Chase(null,null);
-		TNT1 A 0 A_PlaySound("Mweapons/shotgun/shellin");
-	    SPO1 DCBA 3 A_Chase(null,null);
-		TNT1 A 0 A_PlaySound("Mweapons/shotgun/shellin");
-	    SPO1 ABCD 3 A_Chase(null,null);
-		TNT1 A 0 A_PlaySound("Mweapons/shotgun/shellin");
-	    SPO1 DCBA 3 A_Chase(null,null);
-		TNT1 A 0 A_PlaySound("Mweapons/shotgun/shellin");
+	ReloadDo:
+		TNT1 A 0 {
+			A_PlaySound("Mweapons/shotgun/shellin");
+			if (monsterclip <8)
+				monsterclip++;
+			else {
+				bFRIGHTENED = false;
+				return ResolveState("See");
+			}
+			return ResolveState(null);
+		}
 	    SPO1 ABCD 3 A_Chase(null,null);
 		TNT1 A 0 {
 			A_PlaySound("Mweapons/shotgun/shellin");
-			monsterclip = 8;
-			bFRIGHTENED = false;
+			if (monsterclip <8)
+				monsterclip++;
+			else {
+				bFRIGHTENED = false;
+				return ResolveState("See");
 			}
+			return ResolveState(null);
+		}
 	    SPO1 DCBA 3 A_Chase(null,null);
-		goto see;
+		loop;
 	Pain:
 		SSPA a 3;
 		SSPA b 3 a_pain();
 		goto see;
 	Death:
 		TNT1 A 0 {
-			if (bdoom_gibs == 1 && health < -10 && !burning)
+			if (bdoom_gibs && health < -10 && !burning)
 				return ResolveState("DecapDeath");
 			else
 				return A_Jump(256,"Death.Vanilla","Death1","Death2");
 			return ResolveState(null);
-			}
+		}
 	Death.Vanilla:
 		SPOM A 3 {
 			A_Scream();
 			BD_Bleed();
-			}
+		}
 		SPOM B 3 {
 			A_NoBlocking();
 			BD_Bleed();
-			}
+		}
 		SPOM CDEFG 3;
 		SPOM H 3;
 		SPOM I 1;
@@ -141,7 +143,7 @@ states
 		SPON C 3 {
 			A_NoBlocking();
 			BD_Bleed();
-			}
+		}
 		SPON D 3 BD_Bleed();
 		SPON EFGHI 3;
 		SPON JKL 4;
@@ -151,54 +153,43 @@ states
 		TNT1 A 0 { 
 			scale.x*=randompick(-1,1);
 			A_Scream();
-			}
+		}
 		SPOO ABC 2 {
 			if (!burning)
 				A_SpawnItemEx("Blood",random(-2,2),0,random(32,34),	random(4,6),0,random(3,5),random(-70,-90)*scale.x,SXF_SETTARGET);
-			}
+		}
 		TNT1 A 0 A_NoBlocking();
 		SPOO DEF 3 {
 			if (!burning)
 				A_SpawnItemEx("Blood",random(-2,2),0,random(24,26),	random(4,6),0,random(3,5),random(-70,-90)*scale.x,SXF_SETTARGET);
-			}
+		}
 		SPOO GHI 3 {
 			if (!burning)
 				A_SpawnItemEx("Blood",random(-2,2),0,random(10,16),	random(4,6),0,random(3,5),random(-70,-90)*scale.x,SXF_SETTARGET);
-			}
+		}
 		SPOO KLM 3;
 		SPOO N 1;
 		goto deathbleed;
-	Death.Saw:
+	Death.Saw:	
+		SPOY ABC 3;
+		SPOY D 3 A_PlaySound("body/fall");
 		TNT1 A 0 {
-			if (!bdoom_gibs || random(0,1) > 0)
-				return ResolveState("Death");
-			scale.x*=randompick(-1,1);
-			A_FaceTarget();
-			A_Pain();
-			return ResolveState(null);
-			}
-		SPOY AAZZ random(8,10) A_SpawnItemEx("BloodSpurt",	1,0,frandom(30,38),0,0,0,random(-40,40),SXF_SETTARGET,96);
-		SPOY Z 5 {
-			A_Pain();
 			A_NoBlocking();
-			}
-		SPOY AAZZ random(8,10) A_SpawnItemEx("BloodSpurt",	1,0,frandom(30,38),0,0,0,random(-40,40),SXF_SETTARGET,96);
-		SPOY Z 5 A_Scream();
-		SPOY BCDEFG 3 {
-			if (bdoom_blood && !burning)
-				A_SpawnItemEx("Blood",	random(-4,4),random(0,6),	random(12,18),	random(2,4),0,random(4,6),	random(-20,20),SXF_SETTARGET,128);
-			}
-		TNT1 A 0 A_PlaySound("gibs/meatland");
-		SPOY HI 2 		{
-			if (bdoom_blood && !burning)
-				A_SpawnItemEx("Blood",	random(-4,4),random(0,6),	random(12,18),	random(2,4),0,random(4,6),	random(-20,20),SXF_SETTARGET,128);
-			}
-		TNT1 A 0 A_PlaySound("gibs/meatland");
-		SPOY JK 3 {
-			if (bdoom_blood && !burning)
-				A_SpawnItemEx("Blood",	random(-4,4),random(0,6),	random(12,18),	random(2,4),0,random(4,6),	random(-20,20),SXF_SETTARGET,128);
-			}
-		SPOY L 1;
+			A_FaceTarget();
+		}
+		SPOY EFGH 3 A_SpawnItemEx("BD_Blood",1,0,frandom(18,42),frandom(2,4),0,frandom(4,6),random(-10,-15),SXF_SETTARGET);
+		SPOY IJKLM 4;
+		SPOY OP 3;
+		SPOY Q 2 {
+			A_PlaySound("gibs/meatland",CHAN_7);
+			A_PlaySound("body/fall",CHAN_6);
+		}
+		SPOY R 3;
+		SPOY S 2 {
+			A_PlaySound("gibs/meatland",CHAN_7);
+			A_PlaySound("body/fall",CHAN_6);
+		}
+		SPOY TUVWXY 2;
 		goto deathbleed;
 	DecapDeath:
 		SPOD A 3 A_SpawnItemEx("Gib_Head",frandom(-1,1),frandom(-1,1),52,frandom(2,5),0,frandom(1,5),random(150,210),SXF_SETTARGET);
@@ -207,13 +198,13 @@ states
 		SPOD DE 3 {
 			if (bdoom_blood && !burning)
 				A_SpawnItemEx("Blood",0,0,	random(48,52),	random(0,2),random(0,2),random(4,6),0,SXF_SETTARGET,96);
-			}
+		}
 		SPOD LLMMLM random(7,11) {
 			if (random(0,100) < 40 && bdoom_blood) {
 				A_PlaySound("gibs/bloodspurt");
 				A_SpawnItemEx("NeckSpurt",frandom(-0.3,0.3),frandom(-0.3,0.3),33,0,0,0,random(0,359),SXF_SETTARGET);
-				}
 			}
+		}
 		SPOD FG 2;
 		SPOD HIJ 3;
 		SPOD K 3 A_PlaySound("body/fall");
@@ -228,5 +219,5 @@ states
 		SGIB f 2;
 		SGIB ghijklmnopq 2;
 		goto deathbleed;
-		}
+	}
 }

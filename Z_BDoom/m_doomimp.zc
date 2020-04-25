@@ -91,7 +91,7 @@ Class BD_DoomImp : BDoomMonster {
 		TROY ABCD 3;
 		TNT1 A 0 A_NoBlocking();
 		TROY EFG 3;
-		TROY HIJKL 3 A_SpawnItemEx("BloodSpurt",	1,0,frandom(30,38),0,0,0,random(-40,40),SXF_SETTARGET,128);
+		TROY HIJKL 3 A_SpawnItemEx("BD_Blood",1,0,frandom(18,42),frandom(2,4),0,frandom(4,6),random(-10,-15)*scale.x,SXF_SETTARGET);
 		TROY MN 2;
 		TROY O 2 {
 			A_PlaySound("gibs/meatland",CHAN_7);
