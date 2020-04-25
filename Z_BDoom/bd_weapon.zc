@@ -15,7 +15,12 @@ Class BDoomWeapon : Weapon abstract {
 	
 	protected bool dontforcebob;
 	property dontforcebob : dontforcebob;
-
+	
+	
+	protected state wreload;
+	protected state wready;
+	protected state wqkick;
+	
 	Default {  
 		BDoomWeapon.AutoReloadTime 60;
 		BDoomWeapon.maxOffsetTics 1; //required default values for A_CameraSway. Otherwise it'll crash due to division by zero
@@ -71,26 +76,29 @@ Class BDoomWeapon : Weapon abstract {
 		Super.DoEffect();
 		if (!owner || !owner.player)
 			return;
-		if (!bdoom_replaceweapons) {
+		if (!bdoom_replaceweapons)
 			self.SelectionOrder = self.default.SelectionOrder+50000;
-			return;
-		}
 		else
 			self.SelectionOrder = self.default.SelectionOrder;
 		//Console.Printf("x: %d, y: %d, z:%d", owner.pos.x,owner.pos.y,owner.pos.z);
 		if(bdoom_weapons == 2) {
-				BobRangeX = 0.2;
-				BobRangeY = 0.2;
-				BobStyle = 5;
-				BobSpeed = 2.0;
-				if (owner.player.readyweapon && owner.player.readyweapon == self && !dontforcebob)
-					owner.player.WeaponState |= WF_WEAPONBOBBING;
+			BobRangeX = 0.2;
+			BobRangeY = 0.2;
+			BobStyle = 5;
+			BobSpeed = 2.0;
+			//force bobbing all the time:
+			if (owner.player.readyweapon && owner.player.readyweapon == self && !dontforcebob)
+				owner.player.WeaponState |= WF_WEAPONBOBBING;
+			//allow switching weapons during reload:
+			let psp = owner.player.FindPSprite(PSP_Weapon);			
+			if (psp && (InStateSequence(psp.curstate,FindState("Reload.Modern"))	|| InStateSequence(psp.curstate, FindState("Reload"))	))
+				owner.player.WeaponState |= WF_WEAPONSWITCHOK;
 		}
 		else {
-				BobRangeX = 1.0;
-				BobRangeY = 1.0;
-				BobStyle = 0;
-				BobSpeed = 1.0;
+			BobRangeX = 1.0;
+			BobRangeY = 1.0;
+			BobStyle = 0;
+			BobSpeed = 1.0;
 		}
 		//CameraSway in action	
 		if (offsetTics >= 0) {
@@ -189,6 +197,10 @@ Class BDoomWeapon : Weapon abstract {
 		}
 		return null;
 	}
+	/*override void PostBeginPlay() {
+		super.PostBeginPlay();
+		wready = FindState("Ready")
+		wqkick = FindState("QuickKick");*/
 
 	states	{
 		QKick:
@@ -241,7 +253,10 @@ Class BDoomWeapon : Weapon abstract {
 			TNT1 A 7 ;
 			stop;
 		DryReload:
-			#### # 10 A_PlaySound("Mweapons/dry");
+			#### # 8 {
+				A_ClearRefire();
+				A_StartSound("Mweapons/dry",0);
+			}
 			#### # 0 A_Jump(256,"Reload");
 			wait;
 		LoadSprites:
