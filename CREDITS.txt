@@ -27,3 +27,5 @@ David G., DenisBelmondo, alando1: additional death sprites
 
 WildWeasel: several special effects
 
+Alternative monst death sprites:
+Blox, Eriance, ItsNatureToDie, Kinsie, Minigunner, Neoworm, Phi108, Vader, osjclatchford
