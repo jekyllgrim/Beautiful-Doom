@@ -108,25 +108,19 @@ Class BD_Demon : BDoomMonster {
 			goto deathbleed;
 		Death.Saw:
 			TNT1 A 0 {
-				if (!bdoom_gibs || random(0,10) < 6)
-					return ResolveState("Death");
 				scale.x*=randompick(-1,1);
-				a_FaceTarget();
-				A_Pain();
-				return resolvestate(null);
 			}
-		
-			SARY AZAZZZ random(8,10) A_SpawnItemEx("BloodSpurt",	1,frandom(-4,4),frandom(28,33),0,0,0,random(-40,40),SXF_SETTARGET,96);
-			SARY Z 5 {
-				A_Pain();
+			SARY ABC 3;
+			TNT1 A 0 {
 				A_NoBlocking();
+				A_FaceTarget();
 			}
-			SARY AAZZ random(8,10) A_SpawnItemEx("BloodSpurt", 1,frandom(-4,4),frandom(28,33),0,0,0,random(-40,40),SXF_SETTARGET,96);
-			TNT1 A 0 A_Scream();
-			SARY BCDEF 3 BD_Bleed();
-			SARY G 3;
-			SARY H 3 A_PlaySound("body/fall");
-			SARY I 3 A_PlaySound("body/fall");
+			SARY DEFG 3 A_SpawnItemEx("BD_Blood",1,0,frandom(22,42),frandom(2,4),0,frandom(4,6),random(-10,-15),SXF_SETTARGET);
+			SARY H 3 {
+				A_PlaySound("gibs/meatland",CHAN_7);
+				A_PlaySound("body/fall",CHAN_6);
+			}
+			SARY IJKLMNOPQ 3;
 			goto deathbleed;
 	}
 }
