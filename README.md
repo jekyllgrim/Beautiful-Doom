@@ -31,7 +31,7 @@ It's possible to play the version that is currently in the repository but hasn't
 	Or, if you renamed it: 
 	
 		gzdoom.exe -file Beautiful-Doom-master.pk3
-		
+	
 5. If you're getting errors, try running it with the latest [development build of GZDoom](https://devbuilds.drdteam.org/gzdoom/). Github builds may contain features that haven't made it into a stable GZDoom release yet.
 6. Enjoy!
 
@@ -70,6 +70,7 @@ Discord: Agent_Ash#4401
 * Michael Henderson: [Ultra Heavy Laser sound effect](https://youtu.be/whLbGbpt-E4) (used in Enhanced BFG alternative attack)
 * David G., DenisBelmondo, alando1: additional death sprites
 * WildWeasel: several special effects
+* Blox, Eriance, ItsNatureToDie, Kinsie, Minigunner, Neoworm, Phi108, Vader, osjclatchford: alternative monster death sprites
 
 ## Some features of the ZScript version
 
@@ -87,7 +88,6 @@ One of the main new features of the ZScript version of Beautiful Doom is a third
 * BFG 9000: the orb explodes and damages monsters with railguns, without taking the shooter's position into account. Can be charged by holding the Fire button; the higher the charge, the more damage it deals and the further it'll fly. It's possible to spend between 10 and 80 cells on one shot. Warning: overcharging is possible and will damage you.
 
 ### Various improvements
-* A lot of stuff moved to Zscript
+* The mod is fully ZScript-ified
 * Added Modern weaponset (see above)
 * Revamped blood and gibs graphics and physics
-* Added SpriteShadow mod by Nash Muhandes
