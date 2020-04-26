@@ -172,11 +172,11 @@ Class BD_ShotgunGuy : BDoomMonster {
 		goto deathbleed;
 	Death.Saw:	
 		SPOY ABC 3;
-		SPOY D 3 A_PlaySound("body/fall");
-		TNT1 A 0 {
+		SPOY D 3 {
+			A_PlaySound("body/fall");
 			A_NoBlocking();
-			A_FaceTarget();
 		}
+		TNT1 A 0 A_FaceTarget();
 		SPOY EFGH 3 A_SpawnItemEx("BD_Blood",1,0,frandom(18,42),frandom(2,4),0,frandom(4,6),random(-10,-15),SXF_SETTARGET);
 		SPOY IJKLM 4;
 		SPOY OP 3;

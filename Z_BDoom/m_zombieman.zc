@@ -119,19 +119,16 @@ Class BD_ZombieMan : BDoomMonster {
 				scale.x*=randompick(-1,1);
 			}
 			POSY ABCD 6;
-			TNT1 A 0 A_Scream;
+			TNT1 A 0 A_NoBlocking();
 			POSY EFGHIJ 3 {
 				if(bdoom_blood) {
 					A_FaceTarget();
 					A_SpawnItemEx("Blood",	frandom(-4,4),frandom(0,6),frandom(28,36),frandom(2,4),0,frandom(4,6),	random(-80,-90)*scale.x,SXF_SETTARGET,80);
 				}
 			}
-			POSY K 3 {
-				A_NoBlocking();
-				A_PlaySound("body/fall");
-			}
+			POSY K 3 A_PlaySound("body/fall",CHAN_5);
 			POSY L 4;
-			POSY M 3 A_PlaySound("gibs/meatland");
+			POSY M 3 A_PlaySound("gibs/meatland",CHAN_6);
 			POSY NOP 7;
 			goto deathbleed;
 		DecapDeath:
