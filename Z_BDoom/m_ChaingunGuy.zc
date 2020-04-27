@@ -48,7 +48,7 @@ Class BD_ChaingunGuy : BDoomMonster {
 		CPAS A 10 {
 			if (bdoom_weapons == 2)
 				sprite = GetSpriteIndex("RPAS");
-			A_Look();+++
+			A_Look();
 		}
 		CPAR A 10 {
 			if (bdoom_weapons == 2)
