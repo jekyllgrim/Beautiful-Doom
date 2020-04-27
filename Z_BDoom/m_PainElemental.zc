@@ -1,34 +1,30 @@
-Class BD_PainElemental : BDoomMonster //replaces PainElemental		
-{
-Default
-	{
-	species "PainElemental";
-	Health 400;
-	Radius 31;
-	Height 56;
-	Mass 400;
-	Speed 8;
-	PainChance 128;
-	Monster;
-	+FLOAT 
-	+NOGRAVITY
-	SeeSound "pain/sight";
-	PainSound "pain/pain";
-	DeathSound "pain/death";
-	ActiveSound "pain/active";
-	Tag "$FN_PAIN";
-	
-	+FORCEXYBILLBOARD
-	+FLOATBOB
-	FloatBobStrength 0.35;
+Class BD_PainElemental : BDoomMonster {
+	Default	{
+		species "PainElemental";
+		Health 400;
+		Radius 31;
+		Height 56;
+		Mass 400;
+		Speed 8;
+		PainChance 128;
+		Monster;
+		+FLOAT 
+		+NOGRAVITY
+		SeeSound "pain/sight";
+		PainSound "pain/pain";
+		DeathSound "pain/death";
+		ActiveSound "pain/active";
+		Tag "$FN_PAIN";		
+		+FORCEXYBILLBOARD
+		+FLOATBOB
+		FloatBobStrength 0.35;
 	}
-override void Tick() {
-	super.Tick();
-	if (!InStateSequence(curstate,FindState("Spawn")))
-		bFLOATBOB = false;
+	override void Tick() {
+		super.Tick();
+		if (!InStateSequence(curstate,FindState("Spawn")))
+			bFLOATBOB = false;
 	}
-states
-	{
+	states {
 	Death.Fire:
 		stop;
 	Death.Greenfire:
@@ -62,20 +58,20 @@ states
 		TNT1 A 0 {
 			scale.x *= randompick(-1,1); 
 			gravity = 0.05;
-			}
+		}
 		SPAI AB 4 {
 			if (bdoom_blood)
 				A_SpawnItemEx("Blood",frandom(-14,14),frandom(-14,14),frandom(12,36),	frandom(-4,4),frandom(-4,4),frandom(3,5),0,SXF_SETTARGET);
-			}
+		}
 		spai c 4 {
 			a_scream();
 			if (bdoom_blood)
 				A_SpawnItemEx("Blood",frandom(-14,14),frandom(-14,14),frandom(12,36),	frandom(-4,4),frandom(-4,4),frandom(3,5),0,SXF_SETTARGET);
-			}
+		}
 		spai def 4 {
 			if (bdoom_blood)
 				A_SpawnItemEx("Blood",frandom(-14,14),frandom(-14,14),frandom(12,36),	frandom(-4,4),frandom(-4,4),frandom(3,5),0,SXF_SETTARGET);
-			}
+		}
 		TNT1 A 0 {
 			A_SetRenderstyle(0.8,Style_ADD);
 			if (bdoom_gibs) {
@@ -91,20 +87,20 @@ states
 				for (int i = 0; i < 14; i++) {
 					A_SpawnItemEx("BasicMeatPiece",	frandom(-10,10),frandom(-10,10),frandom(6,40),	frandom(-5,5),frandom(-5,5),frandom(3,6),0, 	SXF_SETTARGET,32);
 					A_SpawnItemEx("BasicMeatPiece_Heavy",	frandom(-10,10),frandom(-10,10),frandom(6,40),	frandom(-5,5),frandom(-5,5),frandom(3,6),0, 	SXF_SETTARGET,160);
-					}
+				}
 				for (int i = 0; i < 7; i++)
 					A_SpawnItemEx("PEFlameDebris",	frandom(-6,6),frandom(-6,6),frandom(10,38),		frandom(-7,7),frandom(-7,7),frandom(2,6),0, 	SXF_SETTARGET,32);				
 				A_SpawnItemEx("PEExplosion",frandom(-4,4),frandom(-4,4),frandom(14,30),	frandom(-1,1),frandom(-1,1),frandom(-1,1));
-				}
 			}
+		}
 		spai g 4 {
 			if (bdoom_gibs)
 				A_SpawnItemEx("PEExplosion",frandom(-4,4),frandom(-4,4),frandom(14,30),	frandom(-1,1),frandom(-1,1),frandom(-1,1));
-			}
+		}
 		SPAI H 3 bright {
 			if (bdoom_gibs)
 				A_SpawnItemEx("PEExplosion",frandom(-4,4),frandom(-4,4),frandom(14,30),	frandom(-1,1),frandom(-1,1),frandom(-1,1));
-			}
+		}
 		spai i 3 bright a_paindie;
 		spai jk 3 bright;
 		stop;
@@ -112,68 +108,63 @@ states
 		stop;
 	XDeath:
 		stop;
-		}
+	}
 }
 
-Class PEFlameDebris : BD_BaseDebris 
-{
-double fades;
-Default {
-	+ROLLSPRITE
-	-NOGRAVITY
-	BD_BaseDebris.sfxtype "gibs";
-	renderstyle "Add";
-	alpha 0.8;
-	gravity 0.6;
-	scale 0.25;
+Class PEFlameDebris : BD_BaseDebris {
+	double fades;
+	Default {
+		+ROLLSPRITE
+		-NOGRAVITY
+		BD_BaseDebris.sfxtype "gibs";
+		renderstyle "Add";
+		alpha 0.8;
+		gravity 0.6;
+		scale 0.25;
 	}
-override void PostBeginPlay() {
-	super.PostBeginPlay();
-	fades = frandom(0.002,0.02);
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		fades = frandom(0.002,0.02);
 	}
-states
-	{
+	states {
 	Spawn:
 		FIRP AABBCCBB 1 bright NoDelay {
 			A_SpawnItemEx("FirePiece",0,frandom(-3,3),frandom(-3,3),0,0,frandom(0.2,0.3));
 			roll+=10;
-			}
+		}
 		loop;
 	Death:
 		FIRP AABBCCBB 1 bright {
 			A_SpawnItemEx("ParticleFire_PE",frandom(-3,3),frandom(-3,3),frandom(1,4),frandom(-0.2,0.2),frandom(-0.2,0.2),frandom(0.4,0.6),0,0,128);
 			A_FadeOut(fades);
-			}
+		}
 		loop;
 	}
 }
 
-Class PEExplosion : BD_BaseFlare
-{
-Default {
-	+ROLLSPRITE
-	alpha 0.75;
+Class PEExplosion : BD_BaseFlare{
+	Default {
+		+ROLLSPRITE
+		alpha 0.75;
 	}
-override void PostBeginPlay() {
-	super.PostBeginPlay();
-	roll = random(0,359);
-	A_Setscale(frandom(0.28,0.35));
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		roll = random(0,359);
+		A_Setscale(frandom(0.28,0.35));
 	}
-states
-	{
+	states {
 	Spawn:
 		BOM1 ABCDEFGHIJKLMNOPQRSTUVWX 1 bright {
 			roll+10;
 			A_FadeOut(0.01);
-			}
+		}
 		stop;
 	}
 }
 
 
-Class ParticleFire_PE : ParticleFire_Red
-{
-Default {
-	scale 0.14;
+Class ParticleFire_PE : ParticleFire_Red {
+	Default {
+		scale 0.14;
 	}
 }

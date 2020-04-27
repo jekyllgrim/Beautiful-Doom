@@ -1,29 +1,26 @@
-Class BD_BaronOfHell : BDoomMonster //replaces BaronOfHell
-{
-Default
-	{
-	species "Bruiser";
-	Health 1000;
-	Radius 24;
-	Height 64;
-	Mass 1000;
-	Speed 8;
-	PainChance 50;
-	Monster;
-	+FLOORCLIP
-	+BOSSDEATH
-	SeeSound "baron/sight";
-	PainSound "baron/pain";
-	DeathSound "baron/death";
-	ActiveSound "baron/active";
-	Obituary "$OB_BARON";
-	HitObituary "$OB_BARONHIT";
-	Tag "$FN_BARON";
-	bloodcolor "00 70 00";
-	gibhealth 60;
+Class BD_BaronOfHell : BDoomMonster {
+	Default	{
+		species "Bruiser";
+		Health 1000;
+		Radius 24;
+		Height 64;
+		Mass 1000;
+		Speed 8;
+		PainChance 50;
+		Monster;
+		+FLOORCLIP
+		+BOSSDEATH
+		SeeSound "baron/sight";
+		PainSound "baron/pain";
+		DeathSound "baron/death";
+		ActiveSound "baron/active";
+		Obituary "$OB_BARON";
+		HitObituary "$OB_BARONHIT";
+		Tag "$FN_BARON";
+		bloodcolor "00 70 00";
+		gibhealth 60;
 	}
-states
-	{
+	states	{
 	Death.Fire:
 	Death.GreenFire:
 		goto Death.PlasmaDamage;
@@ -54,7 +51,7 @@ states
 		TNT1 A 0 {
 			scale.x = randompick(-1,1);
 			return A_Jump(256,"Death.Vanilla","Death1","Death2");
-			}
+		}
 	Death.Vanilla:
 		BS1M A 3;
 		BS1M b 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(8,32),frandom(2.0,4.0),frandom(2.0,4.0),frandom(1.0,4.0),random(0,360),SXF_SETTARGET);
@@ -69,7 +66,7 @@ states
 		BS1N c 3 {
 			A_scream();
 			A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,80);
-			}
+		}
 		BS1N defg 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
 		BS1N h 3 A_NoBlocking;
 		BS1N ijkl 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
@@ -100,23 +97,21 @@ states
 	}
 }
 
-Class BD_HellKnight : BD_BaronOfHell //replaces HellKnight
-{
-Default {
-	Health 500;
-	-BOSSDEATH;
-	SeeSound "knight/sight";
-	ActiveSound "knight/active";
-	PainSound "knight/pain";
-	DeathSound "knight/death";
-	HitObituary "$OB_KNIGHTHIT";
-	Obituary "$OB_KNIGHT";
-	Tag "$FN_HELL";
-	bloodcolor "00 70 00";
-	gibhealth 60;
+Class BD_HellKnight : BD_BaronOfHell {
+	Default {
+		Health 500;
+		-BOSSDEATH;
+		SeeSound "knight/sight";
+		ActiveSound "knight/active";
+		PainSound "knight/pain";
+		DeathSound "knight/death";
+		HitObituary "$OB_KNIGHTHIT";
+		Obituary "$OB_KNIGHT";
+		Tag "$FN_HELL";
+		bloodcolor "00 70 00";
+		gibhealth 60;
 	}
-states
-	{
+	states	{
 	Spawn:
 		KNII ABB 10 A_Look;
 		loop;
@@ -144,7 +139,7 @@ states
 		TNT1 A 0 {
 			scale.x = randompick(-1,1);
 			return A_Jump(256,"Death.Vanilla","Death1","Death2");
-			}
+		}
 	Death.Vanilla:
 		BS2M A 3;
 		BS2M b 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(8,32),frandom(2.0,4.0),frandom(2.0,4.0),frandom(1.0,4.0),random(0,360),SXF_SETTARGET);
@@ -160,7 +155,7 @@ states
 		BS2N c 3 {
 			A_scream();
 			A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,80);
-			}
+		}
 		BS2N defg 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
 		BS2N h 3 A_NoBlocking;
 		BS2N ijkl 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
@@ -188,59 +183,55 @@ states
 }
 
 
-Class BD_BaronBall : BaronBall //replaces BaronBall
-{
-int broll;
-Default  {
-	+BLOODLESSIMPACT
-	+ROLLSPRITE
-	damagetype "GreenFire";
-	decal "BaronScorch";
-	renderstyle "Add";
-	scale 1.4;
+Class BD_BaronBall : BaronBall {
+	int broll;
+	Default  {
+		+BLOODLESSIMPACT
+		+ROLLSPRITE
+		damagetype "GreenFire";
+		decal "BaronScorch";
+		renderstyle "Add";
+		scale 1.4;
 	}
-override void PostBeginPlay () {
-	super.PostBeginPlay();
-	if (bdoom_debris) {
-		let f = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
-		f.master = self;
-		f.alpha = 0.6;
-		f.scale = (0.12,0.12);
-		f.fcolor = "green";
+	override void PostBeginPlay () {
+		super.PostBeginPlay();
+		if (bdoom_debris) {
+			let f = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
+			f.master = self;
+			f.alpha = 0.6;
+			f.scale = (0.12,0.12);
+			f.fcolor = "green";
 		}
-	broll = random(14,20)*randompick(-1,1);
+		broll = random(14,20)*randompick(-1,1);
 	}
-States
-	{
+	States	{
 	Spawn:
 		BARB AABB 1 bright {
 			if (bdoom_debris)
 				A_SpawnItemEx("FirePiece_Baron",frandom(8,12),frandom(-4,4),frandom(-4,4),frandom(0.5,0.8),0,0,180,0);
-			}
+		}
 		loop;
 	Death:
 		BARB CDEFGH 3 bright A_SetRoll(roll+broll,SPF_INTERPOLATE);
 		stop;
-		}
+	}
 }
 
-Class FirePiece_Baron : BD_BaseFlare
-{
-Default {
-	alpha 0.5;
-	scale 0.05;
+Class FirePiece_Baron : BD_BaseFlare {
+	Default {
+		alpha 0.5;
+		scale 0.05;
 	}
-override void PostBeginPlay() {
-	super.PostBeginPlay();
-	scale *= frandom(0.8,1.2);
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		scale *= frandom(0.8,1.2);
 	}
-states
-	{
+	states	{
 	Spawn:
 		SPRK B 1 bright Nodelay {
 			A_FadeOut(0.03);
 			scale*=0.95;
-			}
+		}
 		wait;
 	}
 }
