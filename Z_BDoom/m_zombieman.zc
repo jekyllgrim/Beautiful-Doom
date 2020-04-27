@@ -1,6 +1,7 @@
 Class BD_ZombieMan : BDoomMonster {
-
 	Default {
+		species "ZombieMan";
+		+DOHARMSPECIES
 		Health 20;
 		radius 20;
 		Height 56;
@@ -13,11 +14,9 @@ Class BD_ZombieMan : BDoomMonster {
 		Obituary "$OB_ZOMBIE";
 		Tag "$FN_ZOMBIE";
 		BdoomMonster.monsterclip 15;
-		+DOHARMSPECIES
 		dropitem "BD_Pistol",40,1;
 		dropitem "Clip",256;
 	}
-		
 	states {
 		Spawn:
 			PSSS AB 10 A_Look();

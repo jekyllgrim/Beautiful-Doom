@@ -2,6 +2,8 @@ Class BD_ChaingunGuy : BDoomMonster {
 	private bool attacking;
 	private state ddeath1;
 	Default {
+		species "ChaingunGuy";
+		+DOHARMSPECIES
 		Health 70;
 		gibhealth 40;
 		Radius 20;
@@ -20,7 +22,6 @@ Class BD_ChaingunGuy : BDoomMonster {
 		Tag "$FN_HEAVY";
 		Dropitem "Chaingun";
 		BdoomMonster.monsterclip 40;
-		+DOHARMSPECIES
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();

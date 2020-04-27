@@ -1,5 +1,7 @@
 Class BD_ShotgunGuy : BDoomMonster {
 	Default {
+		species "ShotgunGuy";
+		+DOHARMSPECIES
 		Health 30;
 		Radius 20;
 		Height 56;
@@ -16,7 +18,6 @@ Class BD_ShotgunGuy : BDoomMonster {
 		Obituary "$OB_SHOTGUY";
 		Tag "$FN_SHOTGUN";
 		DropItem "Shotgun";
-		+DOHARMSPECIES
 		BDoomMonster.monsterclip 8;
 	}
 	states
