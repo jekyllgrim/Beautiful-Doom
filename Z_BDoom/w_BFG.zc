@@ -526,7 +526,7 @@ Class BD_BFGBall : BFGBall {
 		}
 		if (self is "ModernBFGBall")
 			return;
-		if (pos.z <= floorz+80 && floorpic != skyflatnum && random(0,32) > 28) {
+		if (pos.z <= floorz+100 && floorpic != skyflatnum && random(0,32) > 28) {
 			let lt = BFGLightningSpawner(Spawn("BFGLightningSpawner",pos));
 			if (lt) {
 				lt.master = self;
@@ -607,7 +607,7 @@ Class BFGTrail : BD_BaseFlare {
 	States {	
 		Spawn:
 			LENG A 1 {
-				A_FadeOut(0.04);
+				A_FadeOut(0.08);
 				scale*=0.95;
 			}
 			loop;
@@ -662,23 +662,6 @@ Class BFGBallRay : PlasmaRailBall {
 			}
 			PEXP ABCDEFGHIJKLM 1 A_FadeOut(0.08);
 			stop;
-	}
-}
-
-//flares around decorative lightning particles
-Class BFGBallRayFlare : BD_BaseFlare {
-	Default {
-		alpha 0.1;
-		scale 0.07;
-	}
-	States {
-		Spawn:
-			TNT1 A 0 NoDelay {
-				if (target)
-					vel = target.vel;
-			}
-			LENG A 1 A_FadeOut(0.01);
-			loop;
 	}
 }
 
@@ -1097,22 +1080,23 @@ Class MBFGRailParticle : BD_BaseFlare {
 			orb = BD_BFGBall(target);
 	}
 	States {
-		Spawn:
-			SPRK B 1 {
-				A_FadeOut(0.002);
-				scale*=0.98;
-				if (target) {
-					if (orb && orb.dead) {
-						vel = (frandom(-5,5),frandom(-5,5),frandom(-5,5));
-						target = null;
-					}
-					else
-						vel = target.vel;
+	Spawn:
+		SPRK B 1 {
+			A_FadeOut(0.002);
+			scale*=0.98;
+			if (target) {
+				if (orb && orb.dead) {
+					vel = (frandom(-5,5),frandom(-5,5),frandom(-5,5));
+					target = null;
+					moving = true;
 				}
 				else
-					vel *= 0.9;
+					vel = target.vel;
 			}
-			wait;
+			else
+				vel *= 0.9;
+		}
+		wait;
 	}
 }
 	
