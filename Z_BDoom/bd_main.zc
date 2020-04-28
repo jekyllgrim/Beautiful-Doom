@@ -39,8 +39,8 @@ Class BDoomActor : Actor abstract {
 			return true;
 		if (checker.floorpic == skyflatnum)
 			return true;
-		//if (checker.GetFloorTerrain().isLiquid == true)
-		//	return true;
+		if (checker.GetFloorTerrain().isLiquid == true)
+			return true;
 		let event = BD_Animated_Handler(StaticEventHandler.Find("BD_Animated_Handler"));
 		if (event && event.IsAnimated(checker.floorpic)) {
 			return event.IsAnimated(checker.floorpic);
@@ -60,6 +60,7 @@ Class BDoomActor : Actor abstract {
 		LENC A 0;
 		LENS AB 0;
 		SPRK ABC 0;
+		SMO2 ABCDEF 0;
 		stop;
 	}
 }
@@ -265,7 +266,7 @@ Class ParticleFire_General : BD_BaseFlare abstract {
 	}
 	Override void PostBeginPlay() {
 		super.PostBeginPlay();
-		scale.x*=randompick(-1,1);
+		bSPRITEFLIP = randompick(0,1);
 	}
 }
 
@@ -349,8 +350,9 @@ Class BD_BaseSmoke : SmallDebris abstract {
 			self.destroy();
 			return;
 		}
-		scale.x *= frandom(0.8,1.2)*randompick(-1,1);
+		scale.x *= frandom(0.8,1.2);
 		scale.y *= frandom(0.8,1.2);
+		bSPRITEFLIP = randompick(0,1);
 	}
 	states	{
 	Spawn:
@@ -512,17 +514,18 @@ Class WallSmoke : BD_BaseSmoke {
 		super.PostBeginPlay();
 		A_SetScale(frandom(0.028,0.032),frandom(0.028,0.032));
 		wrot = (random(3,10)*randompick(-1,1));
+		frame = random(0,5);
 	}
 	states {
-		Spawn:
-			SM21 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 NoDelay {
+	Spawn:
+		SMO2 # 1 NoDelay {
+			if (GetAge() < 26) {
 				A_Fadeout(0.006);
 				a_Setscale(clamp(scale.x*1.02,0.01,0.1),clamp(scale.y*1.02,0.01,0.1));
 				vel*=0.97;
 				roll+=wrot;
-				//wrot *= 0.98;
 			}
-			SM22 ABCDEFGHIJK 2 {
+			else {
 				alpha*=0.99;
 				a_Setscale(clamp(scale.x*1.01,0.01,0.1),clamp(scale.y*1.01,0.01,0.1));
 				vel*=0.93;
@@ -531,7 +534,8 @@ Class WallSmoke : BD_BaseSmoke {
 				if (alpha < 0.1)
 					A_FadeOut(0.005);
 			}
-			wait;
+		}
+		loop;
 	}
 }
 
@@ -541,15 +545,16 @@ Class RingSmoke : WallSmoke {
 		alpha 0.4;
 	}
 	states {
-		Spawn:
-			SM21 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 NoDelay {
+	Spawn:
+		SMO2 # 1 NoDelay {
+			if (GetAge() < 26) {
 				A_Fadeout(0.015);
 				a_Setscale(clamp(scale.x*1.01,0.01,0.05),clamp(scale.y*1.01,0.01,0.05));
 				vel*=0.9;
 				roll+=wrot;
 				wrot *= 0.96;
 			}
-			SM22 ABCDEFGHIJK 1 {
+			else {
 				A_Fadeout(0.01);
 				a_Setscale(clamp(scale.x*1.01,0.01,0.05),clamp(scale.y*1.01,0.01,0.05));
 				vel*=0.9;
@@ -558,21 +563,8 @@ Class RingSmoke : WallSmoke {
 				if (alpha < 0.1)
 					A_FadeOut(0.005);
 			}
-			wait;
-			
-			/*SM21 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 NoDelay {
-				A_Fadeout(0.005);
-				a_Setscale(clamp(scale.x*1.01,0.01,0.1),clamp(scale.y*1.01,0.01,0.1));
-				vel*=0.9;
-				roll+=wrot;
-			}
-			SM22 ABCDEFGHIJK 1 {
-				A_Fadeout(0.005);
-				a_Setscale(clamp(scale.x*1.01,0.01,0.1),clamp(scale.y*1.01,0.01,0.1));
-				vel*=0.9;
-				roll+=wrot;
-			}
-			wait;*/
+		}
+		loop;
 	}
 }
 
@@ -910,7 +902,8 @@ Class WallPart : SmallDebris {
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		wrot = frandom(8,14)*randompick(-1,1);
-		scale*=frandom(0.8,1.2)*randompick(-1,1);
+		scale*=frandom(0.8,1.2);
+		bSPRITEFLIP = randompick(0,1);
 		if (!target || !(target is "EnBulletPuff"))
 			return;
 		let puff = EnBulletPuff(target);
