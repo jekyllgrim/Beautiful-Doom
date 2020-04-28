@@ -104,7 +104,7 @@ Class BD_Chainsaw : BDoomWeapon {
 				return ResolveState(null);
 			}
 			BSAW ABCD 2 {
-				if (bdoom_weapons == 1)
+				if (bdoom_weapons == 2)
 					A_WeaponReady();
 				else
 					A_WeaponReady(WRF_NOSECONDARY);
@@ -117,7 +117,7 @@ Class BD_Chainsaw : BDoomWeapon {
 				return ResolveState(null);
 			}
 			BSAW DCCBBA 1 {
-				if (bdoom_weapons == 1)
+				if (bdoom_weapons == 2)
 					A_WeaponReady();
 				else
 					A_WeaponReady(WRF_NOSECONDARY);
@@ -167,10 +167,14 @@ Class BD_Chainsaw : BDoomWeapon {
 			BSAW AEFG 1;
 			TNT1 A 0 {
 				A_playsound("weapons/chainsaw/loop",CHAN_BODY,looping:TRUE);
-				A_CustomPunch(2*random(1,10),1,0,"BD_ChainsawPuff");
+				A_CustomPunch(2*random(1,10),1,CPF_NOTURN ,"BD_ChainsawPuff");
 			}
 		Hold.Enhanced:
 			BSAW HIJK 1 A_WeaponOffset(frandom(-1,1),frandom(32,33),WOF_INTERPOLATE);
+			TNT1 A 0 {
+				A_playsound("weapons/chainsaw/loop",CHAN_BODY,looping:TRUE);
+				A_CustomPunch(2*random(1,10),1,CPF_NOTURN ,"BD_ChainsawPuff");
+			}
 			TNT1 A 0 A_Refire("Hold.Enhanced");
 			TNT1 A 0 A_PlaySound("weapons/chainsaw/stop",CHAN_BODY);
 			BSAW GFE 1 A_WeaponReady(WRF_NOSECONDARY);
