@@ -488,27 +488,27 @@ Class EnSSGPuff : EnBulletPuff {
 		+PUFFONACTORS
 	}
 	states {
-		Crash:
-			TNT1 A 0;
-			goto super::Spawn;
-		XDeath:
-			TNT1 A 1 {
-				if (!tracer || !target)
-					return;
-				let xd = tracer.FindState("XDeath");
-				if (!xd || (xd && InStateSequence(tracer.curstate,xd)))
-					return;
-				if (!tracer.FindInventory("SSGDamageCounter"))
-					tracer.GiveInventory("SSGDamageCounter",1);
-				let dmg = SSGDamageCounter(tracer.FindInventory("SSGDamageCounter"));
-				if (dmg) {
-					dmg.totaldamage += 5*frandom(1,3);
-					//Console.Printf("accumulated damage: %d | monster health: %d/%d",dmg.totaldamage,tracer.health,tracer.default.health);
-					if (dmg.totaldamage > tracer.default.health)
-						bEXTREMEDEATH = true;
-				}
+	Crash:
+		TNT1 A 0;
+		goto super::Spawn;
+	XDeath:
+		TNT1 A 1 {
+			if (!tracer || !target)
+				return ResolveState(null);
+			let xd = tracer.FindState("XDeath");
+			if (!xd || (xd && InStateSequence(tracer.curstate,xd)))
+				return ResolveState(null);
+			if (!tracer.FindInventory("SSGDamageCounter"))
+				tracer.GiveInventory("SSGDamageCounter",1);
+			let dmg = SSGDamageCounter(tracer.FindInventory("SSGDamageCounter"));
+			if (dmg) {
+				dmg.totaldamage += 5*frandom(1,2.2);
+				Console.Printf("accumulated damage: %d | monster health: %d/%d",dmg.totaldamage,tracer.health,tracer.default.health);
+				if (dmg.totaldamage > tracer.default.health * 1.2)
+					bEXTREMEDEATH = true;
 			}
-			stop;
+		}
+		stop;
 	}
 }
 	
@@ -523,11 +523,12 @@ Class SSGDamageCounter : Inventory {
 		if (!owner || isFrozen())
 			return;
 		super.DoEffect();
-		if (owner.health <= 0 || GetAge() > 1) {
+		if (owner.health <= 0 || GetAge() > 3) {
 			destroy();
 			return;
 		}
 	}
+	override void Tick() {}
 }
 
 //***************
