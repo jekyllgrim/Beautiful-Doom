@@ -1139,6 +1139,7 @@ Class BD_OverlayControl : CustomInventory {
 		+INVENTORY.AUTOACTIVATE
 		inventory.maxamount 1;
 	}
+	override void Tick() {}
 	states {
 		Use:
 			TNT1 A 1 {
