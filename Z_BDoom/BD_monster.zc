@@ -131,7 +131,7 @@ Class BDoomMonster : Actor abstract {
 			return;
 		A_PlaySound("gibs/gibbed",volume:0.65);
 		
-		for (int i = 18; i > 0; i--) {
+		/*for (int i = 18; i > 0; i--) {
 			if (random(0,10) > 1) {
 				let bfnt = BD_Blood( Spawn("BFountainSpray",(pos.x+frandom(-5,5),pos.y+frandom(-5,5),pos.z+frandom(8,28))) );
 				if (bfnt) {
@@ -140,7 +140,10 @@ Class BDoomMonster : Actor abstract {
 					meatlist.push(bfnt);
 				}
 			}
-		}
+		}*/
+		for (int i = random(1,3); i > 0; i--)
+			A_SpawnItemEx("BFountainSpray",frandom(-4,4),frandom(-4,4),height - frandom(0,8),flags:SXF_SETTARGET|SXF_USEBLOODCOLOR|SXF_NOCHECKPOSITION);
+		
 		//generic-looking meat
 		for (int i = 6; i > 0; i--)
 			BD_GibSpawn("BasicMeatPiece",hpos: 4,vpos: frandom(8,28), hvel: 1.6, vvel: frandom(5,10), spawnchance: 70);

@@ -17,116 +17,13 @@ Class BD_BloodBase : BD_BaseDebris abstract {
 			YBL7 ABCDEFGHIJKLMNOPQRS 0;
 			YBL8 ABCDEFGHIJKLMNOPQRS 0;
 			YBL9 ABCDEFGHIJKLMNOPQRS 0;
+			XBL7 ABCDEFGHIJKLMNOPQRS 0;
+			XBL8 ABCDEFGHIJKLMNOPQRS 0;
+			XBL9 ABCDEFGHIJKLMNOPQRS 0;
 			stop;
 		Fade:
 			#### # 1 A_FadeOut(0.02);
 			loop;
-	}
-}
-
-Class BD_BloodyPrintControl : Inventory {
-	FXAmountControl event;
-	private int bloodtrack; //how much blood was "collected by our boots"
-	private bool side;
-	private bool drip;
-	property drip : drip;
-	private array <BD_BloodBase> bootsblood;
-	Default {
-		BD_BloodyPrintControl.drip false;
-		+INVENTORY.UNDROPPABLE
-		+INVENTORY.UNTOSSABLE
-		inventory.maxamount 1;
-	}
-	static const name LiquidFloors[] = { 
-		"BLOOD1", "BLOOD2", "BLOOD3", "SLIME01", "SLIME02", "SLIME03", "SLIME04", "SLIME05", "SLIME06", "SLIME07", "SLIME08", "SLIME09", "SLIME10", "SLIME11", "SLIME12"
-	};
-	override void DoEffect() {
-		super.DoEffect();		
-		if (!owner || !bdoom_blood || !owner.player || level.isFrozen())
-			return;
-		//debug
-		//Console.Printf("blood on boots: %d | vel: %d",bootsblood.Size(),owner.vel.length());
-		event = FXAmountControl(EventHandler.find("FXAmountControl"));
-		if (!event)
-			return;
-		//blood isn't collected on boots and prints aren't spawned if we're not on the floor or are barely moving
-		if (!(owner.pos.z ~== owner.floorz))
-			return;
-		if (BDoomActor.CheckWater(owner)) {
-			bootsblood.Clear();
-			return;
-		}
-		double pspeed = owner.vel.length();
-		if (drip && (level.time % 6 == 0))
-			bootsblood.delete(0);
-		if (bootsblood.Size() < 48 && pspeed > 4) {
-			for (int i = 0; i < event.bloodlist.Size(); i++) {
-				if (bootsblood.Size() >= 48)
-					break;
-				let pool = BD_BloodBase(event.bloodlist[i]);
-				if (!pool || !pool.bNOINTERACTION || /*!(pool.pos.z ~== pool.floorz) ||*/ bootsblood.Find (pool) != bootsBlood.Size ())
-					continue;
-				if (pool is "BD_Blood" || pool is "AniBloodPool") {
-					/*let diff = owner.Vec3To (pool);
-					double combinedRadius = owner.radius + pool.radius;
-					if ((diff.XY dot diff.XY) < (combinedRadius * combinedRadius))*/
-					let diff = owner.Distance2D(pool);
-					if (pool.floorz == owner.floorz && diff <= owner.radius)
-						bootsblood.Push(pool);
-				}
-			}
-		}
-		if (bootsblood.Size() > 12 && (level.time % 6 == 0) && pspeed >= 2) {
-			drip = true;
-			let print = BD_BloodyFootPrint(Spawn("BD_BloodyFootPrint",(owner.pos.x,owner.pos.y,owner.floorz)));
-			if (print) {
-				print.side = side;
-				print.angle = owner.angle;
-				print.translation = bootsblood[bootsBlood.Size()-1].BloodTranslation;
-				side = !side;
-			}
-		}
-		else if (bootsblood.Size() == 0)
-			drip = false;
-	}
-}
-
-Class BD_BloodyFootPrint : BD_BloodBase {
-	bool side;
-	Default {
-		-MISSILE
-		+NOINTERACTION
-		+MOVEWITHSECTOR
-		+RELATIVETOFLOOR
-		renderstyle 'Translucent';
-		alpha 1.0;
-		radius 4;
-		scale 1;
-	}
-	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		if (BDoomActor.CheckWater(self) || CheckLandingSize(8)) {
-			destroy();
-			return;
-		}
-		SetZ(floorz+frandom(0,0.01));
-		int hoff = -1;
-		if (side)
-			hoff = 1;
-		Warp(self,0,4*hoff);
-	}
-	override void Tick() {
-		super.Tick();
-		if (!isFrozen())
-			A_FadeOut(0.001);
-	}
-	states {
-		Spawn:
-			0000 A -1 NoDelay {
-				if (side)
-					frame = 1;				
-			}
-			stop;
 	}
 }
 
@@ -173,9 +70,11 @@ Class BD_Blood : BD_BloodBase {
 		spawn:
 			TNT1 AAA 0; //override hardcoded frame-skipping behavior for Blood
 			TNT1 A 0 {
-				A_SetScale(scale.x*randompick(-1,1)*frandom(0.7,1.2),scale.y*randompick(-1,1)*frandom(0.7,1.2));
+				A_SetScale(scale.x*frandom(0.7,1.2),scale.y*frandom(0.7,1.2));
+				bSPRITEFLIP = randompick(0,1);
 				roll = random(0,359);
 				sprite = GetSpriteIndex(bsprite[random(0,2)]);
+				return ResolveState("BloodDo");
 			}
 		BloodDo:
 			#### ABCDEFGHIJKLMNOPQRS 1 {
@@ -343,7 +242,7 @@ Class BD_CeilingBloodDrop : BD_BloodBase {
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		scale*= frandom(0.8,1.1);
-		scale.x*=randompick(-1,1);	
+		bSPRITEFLIP = randompick(0,1);
 	}
 	states {
 		spawn:
@@ -363,7 +262,8 @@ Class BD_CeilingBloodDrop : BD_BloodBase {
 			TNT1 A 0 {
 				vel.z = 0.0;
 				SetOrigin((pos.x,pos.y,floorz),0);
-				scale.x = frandom(0.22,0.25)*randompick(-1,1);
+				scale.x = frandom(0.22,0.25);
+				bSPRITEFLIP = randompick(0,1);
 			}
 			BLOD GHIJK 3;
 			stop;
@@ -494,13 +394,14 @@ Class NeckSpray : SmallDebris {
 		alpha 0.7;
 	}
 	static const string bsprite[] =	{ "YBL7","YBL8","YBL9" };
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		bSPRITEFLIP = randompick(0,1);
+		roll = random(0,359);
+		sprite = GetSpriteIndex(bsprite[random(0,2)]);
+	}
 	states {
 		spawn:
-			TNT1 A 0 NoDelay {
-				A_SetScale(scale.x*randompick(-1,1),scale.y*randompick(-1,1));
-				roll = random(0,359);
-				sprite = GetSpriteIndex(bsprite[random(0,2)]);
-			}
 			#### ABCDEFGHIJKLMNOPQRS 2 {
 				A_FadeOut(0.07);
 				return ResolveState(null);
@@ -511,26 +412,136 @@ Class NeckSpray : SmallDebris {
 
 
 //large quickly disappearing spray creating a "bloody mist" upon xdeath
-Class BFountainSpray : BD_Blood {
+Class BFountainSpray : SmallDebris {
+	Default {
+		BD_BaseDebris.sfxtype "blood";
+		+ROLLCENTER
+		renderstyle "Translucent";
+		scale 0.32;
+		alpha 0.7;
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		bSPRITEFLIP = randompick(0,1);
+		roll = random(0,359);
+	}
+	states {
+	Spawn:
+		MISX ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 {
+			scale *= 1.1;
+			a_fadeout(0.05);
+		}
+		stop;
+	}
+}
+
+
+
+//// FOOTPRINTS
+
+Class BD_BloodyPrintControl : Inventory {
+	FXAmountControl event;
+	private int bloodtrack; //how much blood was "collected by our boots"
+	private bool side;
+	private bool drip;
+	property drip : drip;
+	private array <BD_BloodBase> bootsblood;
+	Default {
+		BD_BloodyPrintControl.drip false;
+		+INVENTORY.UNDROPPABLE
+		+INVENTORY.UNTOSSABLE
+		inventory.maxamount 1;
+	}
+	static const name LiquidFloors[] = { 
+		"BLOOD1", "BLOOD2", "BLOOD3", "SLIME01", "SLIME02", "SLIME03", "SLIME04", "SLIME05", "SLIME06", "SLIME07", "SLIME08", "SLIME09", "SLIME10", "SLIME11", "SLIME12"
+	};
+	override void Tick() {}
+	override void DoEffect() {
+		super.DoEffect();		
+		if (!owner || !bdoom_blood || !owner.player || level.isFrozen())
+			return;
+		//debug
+		//Console.Printf("blood on boots: %d | vel: %d",bootsblood.Size(),owner.vel.length());
+		event = FXAmountControl(EventHandler.find("FXAmountControl"));
+		if (!event)
+			return;
+		//blood isn't collected on boots and prints aren't spawned if we're not on the floor or are barely moving
+		if (!(owner.pos.z ~== owner.floorz))
+			return;
+		if (BDoomActor.CheckWater(owner)) {
+			bootsblood.Clear();
+			return;
+		}
+		double pspeed = owner.vel.length();
+		if (drip && (level.time % 6 == 0))
+			bootsblood.delete(0);
+		if (bootsblood.Size() < 48 && pspeed > 4) {
+			for (int i = 0; i < event.bloodlist.Size(); i++) {
+				if (bootsblood.Size() >= 48)
+					break;
+				let pool = BD_BloodBase(event.bloodlist[i]);
+				if (!pool || !pool.bNOINTERACTION || /*!(pool.pos.z ~== pool.floorz) ||*/ bootsblood.Find (pool) != bootsBlood.Size ())
+					continue;
+				if (pool is "BD_Blood" || pool is "AniBloodPool") {
+					/*let diff = owner.Vec3To (pool);
+					double combinedRadius = owner.radius + pool.radius;
+					if ((diff.XY dot diff.XY) < (combinedRadius * combinedRadius))*/
+					let diff = owner.Distance2D(pool);
+					if (pool.floorz == owner.floorz && diff <= owner.radius)
+						bootsblood.Push(pool);
+				}
+			}
+		}
+		if (bootsblood.Size() > 12 && (level.time % 6 == 0) && pspeed >= 2) {
+			drip = true;
+			let print = BD_BloodyFootPrint(Spawn("BD_BloodyFootPrint",(owner.pos.x,owner.pos.y,owner.floorz)));
+			if (print) {
+				print.side = side;
+				print.angle = owner.angle;
+				print.translation = bootsblood[bootsBlood.Size()-1].BloodTranslation;
+				side = !side;
+			}
+		}
+		else if (bootsblood.Size() == 0)
+			drip = false;
+	}
+}
+
+Class BD_BloodyFootPrint : BD_BloodBase {
+	bool side;
 	Default {
 		-MISSILE
 		+NOINTERACTION
-		scale 0.45;
-		renderstyle "Translucent";
-		alpha 0.6;
+		+MOVEWITHSECTOR
+		+RELATIVETOFLOOR
+		renderstyle 'Translucent';
+		alpha 1.0;
+		radius 4;
+		scale 1;
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		if (BDoomActor.CheckWater(self) || CheckLandingSize(8)) {
+			destroy();
+			return;
+		}
+		SetZ(floorz+frandom(0,0.01));
+		int hoff = -1;
+		if (side)
+			hoff = 1;
+		Warp(self,0,4*hoff);
+	}
+	override void Tick() {
+		super.Tick();
+		if (!isFrozen())
+			A_FadeOut(0.001);
 	}
 	states {
-		BloodDo:
-			#### ABCDEFGHIJKKLLMMNNOOOPPPQQQRRRSSS 1 {
-				if (waterlevel > 0) {
-					destroy();
-					return ResolveState(null);
-				}
-				vel.z = clamp(vel.z - 0.3,-1.5,10.0);
-				a_Setscale(clamp(scale.x * 1.02,0.0,1.5),clamp(scale.y * 1.02,0.0,1.5));
-				a_fadeout(0.015);
-				return ResolveState(null);
+		Spawn:
+			0000 A -1 NoDelay {
+				if (side)
+					frame = 1;				
 			}
-			wait;
+			stop;
 	}
 }
