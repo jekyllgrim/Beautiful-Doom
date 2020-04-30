@@ -494,11 +494,11 @@ Class EnSSGPuff : EnBulletPuff {
 	XDeath:
 		TNT1 A 1 {
 			if (!tracer || !target)
-				return ResolveState(null);
+				return;
 			let xd = tracer.FindState("XDeath");
 			if (!xd || (xd && InStateSequence(tracer.curstate,xd)))
-				return ResolveState(null);
-			if (!tracer.FindInventory("SSGDamageCounter"))
+				return;
+			/*if (!tracer.FindInventory("SSGDamageCounter"))
 				tracer.GiveInventory("SSGDamageCounter",1);
 			let dmg = SSGDamageCounter(tracer.FindInventory("SSGDamageCounter"));
 			if (dmg) {
@@ -506,7 +506,8 @@ Class EnSSGPuff : EnBulletPuff {
 				Console.Printf("accumulated damage: %d | monster health: %d/%d",dmg.totaldamage,tracer.health,tracer.default.health);
 				if (dmg.totaldamage > tracer.default.health * 1.2)
 					bEXTREMEDEATH = true;
-			}
+			}*/			
+			Console.Printf("monster health: %d",tracer.health);
 		}
 		stop;
 	}
