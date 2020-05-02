@@ -37,6 +37,10 @@ Class BD_BaseBloodPool : SmallDebris abstract {
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
+		if (floorpic == skyflatnum){
+			destroy();
+			return;
+		}
 		if (!sectorz)
 			sectorz = floorz+frandom(0.1,0.3);
 		angle = random(0,360);
@@ -46,6 +50,12 @@ Class BD_BaseBloodPool : SmallDebris abstract {
 	override void Tick() {
 		super.Tick();
 		SetOrigin((pos.x,pos.y,sectorz),true);
+		if (isFrozen())
+			return;
+		if (BDoomActor.CheckWater(self)) {
+			A_SetRenderstyle(alpha,STYLE_Translucent);
+			A_FadeOut(0.01);
+		}
 	}
 }
 	
@@ -226,10 +236,6 @@ Class BD_BloodPool : BD_BaseBloodPool {
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		if (floorpic == skyflatnum || waterlevel > 0 || BDoomActor.CheckWater(self)){
-			destroy();
-			return;
-		}
 		if (CurSector.FloorPlane.Normal == (0,0,1)) {
 			if (CheckLandingSize(24))
 				scale*=0.5;
@@ -297,8 +303,9 @@ Class BD_CeilingBloodDrop : SmallDebris {
 
 
 Class AniBloodPool : BD_BaseBloodPool {
-	bool instant; //if true, the blood pool will instantly go through all the phases and reach the required size — for decorative purposes such as Heart Column, where animation is unneeded, but checking for overhang may still important
+	bool instant; //if true, the blood pool will instantly reqch max size — for decorative purposes such as Heart Column, where animation is unneeded, but checking for overhang may still important
 	protected double pscale;
+	protected double maxsize;
 	Default {
 		renderstyle 'Normal';
 		scale 0.05;
@@ -309,26 +316,17 @@ Class AniBloodPool : BD_BaseBloodPool {
 			destroy();
 			return;
 		}
-		pscale = frandom(1.017,1.018);
+		pscale = 1.016;
 		if (target)
 			translation = Target.BloodTranslation;
 	}	
-	override void Tick () {
-		super.Tick();
-		if (isFrozen())
-			return;
-		if (BDoomActor.CheckWater(self)) {
-			A_SetRenderstyle(alpha,STYLE_Translucent);
-			A_FadeOut(0.01);
-		}
-	}
 	states	{
 		Spawn:
 			MODL A 1 {
 				scale *= pscale;
 				pscale = Clamp(pscale*0.9999,1,2);				
 			}
-			MODL A -1 A_Jumpif(pscale > 1,"Spawn");
+			MODL A -1 A_Jumpif(pscale > 1.008,"Spawn");
 			stop;
 	}
 }
