@@ -46,12 +46,15 @@ Class BD_BaseVictim : BDoomActor abstract {
 	protected double bleedradius;
 	property BleedFrequency : bleedfrequency;
 	property BleedRadius : bleedradius;
+	protected bool SpawnBloodPool;
+	property SpawnBloodPool : SpawnBloodPool;
 	Default {
 		BD_BaseVictim.BleedFrequency 32;
 		BD_BaseVictim.BleedRadius 5;
 		BD_BaseVictim.swingspeed 0;
 		BD_BaseVictim.spriterange 0;
 		BD_Basevictim.spritename 'BDB1';
+		BD_BaseVictim.SpawnBloodPool true;
 		+SOLID
 		+SHOOTABLE
 		+VULNERABLE
@@ -78,11 +81,13 @@ Class BD_BaseVictim : BDoomActor abstract {
 			return;
 		if (!bdoom_blood)
 			return;
-		let a = AniBloodPool(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
-		if (a) {
-			a.instant = true;
-			//a.scale = (0.2,0.2)*frandom(0.8,1.4);
-			a.target = self;
+		if (SpawnBloodPool) {
+			let a = AniBloodPool(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
+			if (a) {
+				a.instant = true;
+				//a.scale = (0.2,0.2)*frandom(0.8,1.4);
+				a.target = self;
+			}
 		}
 	}
 	void BD_StartSwing(double rfactor = 1.0) {
@@ -157,6 +162,7 @@ Class BD_HangingTorso : BD_BaseVictim {
 		BD_BaseVictim.swingspeed 0.08;
 		BD_BaseVictim.spriterange 10;
 		BD_BaseVictim.spritename 'BDB1';
+		BD_BaseVictim.SpawnBloodPool false;
 		Radius 16;
 		Height 64;
 		xscale 0.8;
@@ -528,6 +534,7 @@ Class BD_ColonGibs : Actor {
 	Default {
 		+NOINTERACTION
 	}
+	override void Tick() {}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		for (int i = random(1,2); i > 0; i--) {
@@ -549,12 +556,12 @@ Class BD_SmallBloodPool : Actor {
 	Default {
 		+NOINTERACTION
 	}
+	override void Tick() {}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		let a = AniBloodPool(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
 		if (a) {
 			a.instant = true;
-			//a.scale = (0.16,0.16)*frandom(0.8,1.4);
 			a.target = self;
 		}
 	destroy();
