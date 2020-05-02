@@ -53,6 +53,8 @@ Class BDoomActor : Actor abstract {
 		if (!a)
 			return;
 		Vector3 norm;
+		a.pitch = 0;
+		a.roll = 0;
 		if (!sec) {
 			if (ceiling)
 				norm = a.CurSector.ceilingplane.normal;
@@ -63,11 +65,7 @@ Class BDoomActor : Actor abstract {
 			norm = sec.normal;
 		if (abs(norm.z) ~== 1) {
 			if (ceiling)
-				a.pitch = 180;
-			else {
-				a.pitch = 0;
-				a.roll = 0;
-			}
+				a.pitch *= 180;
 			return;		
 		}
 		double ang = DeltaAngle(VectorAngle(norm.x, norm.y), a.angle);

@@ -29,7 +29,10 @@ Class BD_BloodBase : BD_BaseDebris abstract {
 
 Class BD_BaseBloodPool : SmallDebris abstract {
 	protected double sectorz;
+	protected bool RandomAngle;
+	property RandomAngle : RandomAngle;
 	Default {
+		BD_BaseBloodPool.RandomAngle true;
 		BD_BaseDebris.sfxtype "blood";
 		SmallDebris.removeonfall false;
 		SmallDebris.dbrake 0;
@@ -43,7 +46,8 @@ Class BD_BaseBloodPool : SmallDebris abstract {
 		}
 		if (!sectorz)
 			sectorz = floorz+frandom(0.1,0.3);
-		angle = random(0,360);
+		if (RandomAngle)
+			angle = random(0,360);
 		if (CurSector.FloorPlane.Normal != (0,0,1))	
 			AlignToPlane(self);
 	}
@@ -309,6 +313,7 @@ Class AniBloodPool : BD_BaseBloodPool {
 	Default {
 		renderstyle 'Normal';
 		scale 0.05;
+		radius 16;
 	}
 	override void PostBeginPlay() {
 		Super.PostBeginPlay();
@@ -316,17 +321,23 @@ Class AniBloodPool : BD_BaseBloodPool {
 			destroy();
 			return;
 		}
-		pscale = 1.016;
+		pscale = 1.017;
 		if (target)
 			translation = Target.BloodTranslation;
-	}	
+	}
+	override void Tick() {
+		super.Tick();
+		if (isfrozen())
+			return;
+		if (pscale > 1) {
+			scale *= pscale;
+			pscale = Clamp(pscale*0.9999,1,2);	
+			Console.Printf("scale: %f",scale.x);
+		}
+	}
 	states	{
 		Spawn:
-			MODL A 1 {
-				scale *= pscale;
-				pscale = Clamp(pscale*0.9999,1,2);				
-			}
-			MODL A -1 A_Jumpif(pscale > 1.008,"Spawn");
+			MODL A -1;
 			stop;
 	}
 }
@@ -522,29 +533,14 @@ Class BD_BloodyPrintControl : Inventory {
 	}
 }
 
-Class BD_BloodyFootPrint : BD_BloodBase {
+Class BD_BloodyFootPrint : BD_BaseBloodPool {
 	bool side;
 	Default {
-		-MISSILE
-		+NOINTERACTION
-		+MOVEWITHSECTOR
-		+RELATIVETOFLOOR
+		BD_BaseBloodPool.RandomAngle false;
 		renderstyle 'Translucent';
 		alpha 1.0;
 		radius 4;
 		scale 1;
-	}
-	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		if (BDoomActor.CheckWater(self) || CheckLandingSize(8)) {
-			destroy();
-			return;
-		}
-		SetZ(floorz+frandom(0,0.01));
-		int hoff = -1;
-		if (side)
-			hoff = 1;
-		Warp(self,0,4*hoff);
 	}
 	override void Tick() {
 		super.Tick();
