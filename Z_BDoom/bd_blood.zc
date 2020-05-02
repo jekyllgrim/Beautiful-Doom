@@ -309,7 +309,6 @@ Class BD_CeilingBloodDrop : SmallDebris {
 Class AniBloodPool : BD_BaseBloodPool {
 	bool instant; //if true, the blood pool will instantly reqch max size — for decorative purposes such as Heart Column, where animation is unneeded, but checking for overhang may still important
 	protected double pscale;
-	protected double maxsize;
 	Default {
 		renderstyle 'Normal';
 		scale 0.05;
@@ -322,12 +321,26 @@ Class AniBloodPool : BD_BaseBloodPool {
 			return;
 		}
 		pscale = 1.017;
+		if (instant)
+			A_SetScale(0.208);
+		if (CurSector.FloorPlane.Normal == (0,0,1)) {
+			if (CheckLandingSize(18))
+				scale*=0.5;
+			if (CheckLandingSize(15))
+				scale*=0.5;
+			if (CheckLandingSize(9))
+				scale*=0.5;
+			if (CheckLandingSize(8)) {
+				destroy();
+				return;
+			}
+		}
 		if (target)
 			translation = Target.BloodTranslation;
 	}
 	override void Tick() {
 		super.Tick();
-		if (isfrozen())
+		if (isfrozen() || instant)
 			return;
 		if (pscale > 1) {
 			scale *= pscale;
