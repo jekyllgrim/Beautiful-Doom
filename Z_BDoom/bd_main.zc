@@ -64,8 +64,9 @@ Class BDoomActor : Actor abstract {
 		else
 			norm = sec.normal;
 		if (abs(norm.z) ~== 1) {
-			if (ceiling)
-				a.pitch *= 180;
+			if (ceiling) {
+				a.pitch += 180;
+			}
 			return;		
 		}
 		double ang = DeltaAngle(VectorAngle(norm.x, norm.y), a.angle);
