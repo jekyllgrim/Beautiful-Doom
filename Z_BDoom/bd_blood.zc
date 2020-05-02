@@ -1,7 +1,7 @@
 Class BD_BloodBase : BD_BaseDebris abstract {
 	static const name bsprite[] = { "YBL7","YBL8","YBL9" };
 	Default {
-		BD_BaseDebris.sfxtype "blood";
+		BD_BaseDebris.sfxtype 'blood';
 		+PUFFGETSOWNER
 		-NOGRAVITY
 		+DONTSPLASH
@@ -27,6 +27,29 @@ Class BD_BloodBase : BD_BaseDebris abstract {
 	}
 }
 
+Class BD_BaseBloodPool : SmallDebris abstract {
+	protected double sectorz;
+	Default {
+		BD_BaseDebris.sfxtype "blood";
+		SmallDebris.removeonfall false;
+		SmallDebris.dbrake 0;
+		gravity 0;
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		if (!sectorz)
+			sectorz = floorz+frandom(0.1,0.3);
+		angle = random(0,360);
+		if (CurSector.FloorPlane.Normal != (0,0,1))	
+			AlignToPlane(self);
+	}
+	override void Tick() {
+		super.Tick();
+		SetOrigin((pos.x,pos.y,sectorz),true);
+	}
+}
+	
+
 Class BD_Blood : BD_BloodBase {
 	double restscale;
 	protected bool onceiling;
@@ -35,7 +58,7 @@ Class BD_Blood : BD_BloodBase {
 		gravity 0.5;
 		renderstyle "Translucent";
 		alpha 0.8;
-		height 1;
+		height 2;
 		radius 4;
 		deathsound "";
 		decal "";
@@ -98,28 +121,29 @@ Class BD_Blood : BD_BloodBase {
 					return ResolveState(null);
 				}
 				frame = random(0,12);
-				angle = random(0,359);
 				bNOINTERACTION = true;
 				A_ChangeLinkFlags(blockmap:true);
-				bNOGRAVITY = true;
+				angle = random(0,359);
 				if (pos.z >= ceilingz-10) {
 					if (ceilingpic == skyflatnum) {
 						destroy();
 						return ResolveState(null);
 					}
-					if (CheckLandingSize(24,true))
-						scale*=0.5;
-					if (CheckLandingSize(18,true))
-						scale*=0.5;
-					if (CheckLandingSize(12,true))
-						scale*=0.5;
-					if (CheckLandingSize(6,true)){
-						destroy();
-						return ResolveState(null);
+					AlignToPlane(self,ceiling:true);
+					if (CurSector.CeilingPlane.Normal == (0,0,-1)) {
+						if (CheckLandingSize(24,true))
+							scale*=0.5;
+						if (CheckLandingSize(18,true))
+							scale*=0.5;
+						if (CheckLandingSize(12,true))
+							scale*=0.5;
+						if (CheckLandingSize(6,true)){
+							destroy();
+							return ResolveState(null);
+						}
 					}
 					onceiling = true;
-					SetOrigin((pos.x,pos.y,ceilingz-0.3),true);
-					roll = 180;
+					SetOrigin((pos.x,pos.y,ceilingz-1),true);
 					A_SetRenderStyle(0.8,Style_Translucent);
 					return ResolveState("OnCeiling");
 				}	
@@ -128,25 +152,26 @@ Class BD_Blood : BD_BloodBase {
 						destroy();
 						return ResolveState(null);
 					}
-					angle = random(0,359);
-					if (CheckLandingSize(24))
-						scale*=0.5;
-					if (CheckLandingSize(18))
-						scale*=0.5;
-					if (CheckLandingSize(12))
-						scale*=0.5;
-					if (CheckLandingSize(6)) {
-						destroy();
-						return ResolveState(null);
+					AlignToPlane(self);
+					if (CurSector.FloorPlane.Normal == (0,0,1)) {
+						if (CheckLandingSize(24))
+							scale*=0.5;
+						if (CheckLandingSize(18))
+							scale*=0.5;
+						if (CheckLandingSize(12))
+							scale*=0.5;
+						if (CheckLandingSize(6)) {
+							destroy();
+							return ResolveState(null);
+						}
 					}
 				}
-				roll = 0;
 				bMOVEWITHSECTOR = true;
 				bRELATIVETOFLOOR = true;
+				SetOrigin((pos.x,pos.y,floorz+frandom(0.2,0.5)),false);
 				A_SetRenderStyle(1,STYLE_Normal);
 				if (BDoomActor.CheckWater(self))
 					return ResolveState("Water");
-				SetOrigin((pos.x,pos.y,floorz+frandom(0.25,0.5)),false);
 				return ResolveState(null);
 			}
 			//MODL ABCDEFGHIJKLMNOPQRS 20;
@@ -195,12 +220,9 @@ Class BD_Blood : BD_BloodBase {
 	}
 }
 
-Class BD_BloodPool : BD_Blood {
+Class BD_BloodPool : BD_BaseBloodPool {
 	Default {
-		-MISSILE
-		+NOINTERACTION
-		+MOVEWITHSECTOR
-		+RELATIVETOFLOOR
+		scale 0.35;
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
@@ -208,36 +230,36 @@ Class BD_BloodPool : BD_Blood {
 			destroy();
 			return;
 		}
-		angle = random(0,359);
-		if (CheckLandingSize(24))
-			scale*=0.5;
-		if	(CheckLandingSize(18))
-			scale*=0.5;
-		if	(CheckLandingSize(12))
-			scale*=0.5;
-		if	(CheckLandingSize(6)){
-			destroy();
-			return;
+		if (CurSector.FloorPlane.Normal == (0,0,1)) {
+			if (CheckLandingSize(24))
+				scale*=0.5;
+			if	(CheckLandingSize(18))
+				scale*=0.5;
+			if	(CheckLandingSize(12))
+				scale*=0.5;
+			if	(CheckLandingSize(6)){
+				destroy();
+				return;
+			}
 		}
-		SetOrigin((pos.x,pos.y,floorz+frandom(0.25,0.5)),false);
+		frame = random(0,12); 
 	}
 	states {
 		spawn:
-			MODL A 0 NoDelay { 
-				frame = random(0,12); 
-			}
-			#### # -1;
+			MODL # -1;
 			stop;
 	}
 }
 
-Class BD_CeilingBloodDrop : BD_BloodBase {
+Class BD_CeilingBloodDrop : SmallDebris {
 	Default {
+		BD_BaseDebris.sfxtype 'blood';
 		+FORCEYBILLBOARD
-		+NOINTERACTION
-		-FLOORCLIP
 		scale 0.1;
 		alpha 0.75;
+		gravity 0.05;
+		SmallDebris.removeonfall false;
+		SmallDebris.dbrake 0;
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
@@ -247,7 +269,10 @@ Class BD_CeilingBloodDrop : BD_BloodBase {
 	states {
 		spawn:
 			BLOD UVWWXXYYY 2;
-			TNT1 A 0 { vel.z = -3.4; }
+			TNT1 A 0 { 
+				gravity = 0.3; 
+				moving = true;
+			}
 			BLOD ZZZZZZZZZZZZZZZZZZZZZZZZZ 1 {
 				if (waterlevel > 0) {
 					destroy();
@@ -271,16 +296,10 @@ Class BD_CeilingBloodDrop : BD_BloodBase {
 }
 
 
-Class AniBloodPool : BD_BloodBase {
+Class AniBloodPool : BD_BaseBloodPool {
 	bool instant; //if true, the blood pool will instantly go through all the phases and reach the required size — for decorative purposes such as Heart Column, where animation is unneeded, but checking for overhang may still important
 	protected double pscale;
 	Default {
-		+NOINTERACTION
-		+RELATIVETOFLOOR
-		+MOVEWITHSECTOR
-		-MISSILE
-		height 1;
-		radius 16;
 		renderstyle 'Normal';
 		scale 0.05;
 	}
@@ -290,11 +309,9 @@ Class AniBloodPool : BD_BloodBase {
 			destroy();
 			return;
 		}
-		angle = random(0,359);
 		pscale = frandom(1.017,1.018);
 		if (target)
 			translation = Target.BloodTranslation;
-		SetZ(floorz+frandom(0,0.1));
 	}	
 	override void Tick () {
 		super.Tick();
@@ -414,7 +431,7 @@ Class NeckSpray : SmallDebris {
 //large quickly disappearing spray creating a "bloody mist" upon xdeath
 Class BFountainSpray : SmallDebris {
 	Default {
-		BD_BaseDebris.sfxtype "blood";
+		BD_BaseDebris.sfxtype 'blood';
 		+ROLLCENTER
 		renderstyle "Translucent";
 		scale 0.32;

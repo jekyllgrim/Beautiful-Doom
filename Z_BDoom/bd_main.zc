@@ -47,6 +47,37 @@ Class BDoomActor : Actor abstract {
 		}
 		return false;
 	}
+	// function that aligns flat models to slopes by Boondorl:
+	// (Note: when hitting a slope, I don't do an overhang check because I can't be bothered with the maths required to do that)
+	static void AlignToPlane(Actor a, SecPlane sec = null, bool ceiling = false) {
+		if (!a)
+			return;
+		Vector3 norm;
+		if (!sec) {
+			if (ceiling)
+				norm = a.CurSector.ceilingplane.normal;
+			else
+				norm = a.CurSector.floorplane.normal;
+		}
+		else
+			norm = sec.normal;
+		if (abs(norm.z) ~== 1) {
+			if (ceiling)
+				a.pitch += 180;				
+			return;		
+		}
+		double ang = DeltaAngle(VectorAngle(norm.x, norm.y), a.angle);
+		double pch = 90 - asin(norm.z);
+		if (pch > 90)
+			pch -= 180;
+			
+		a.pitch = pch * cos(ang);
+		a.roll = pch * sin(ang);	
+		if (ceiling) {
+			a.pitch += 180;
+			a.roll *= -1;
+		}
+	}
 	override void BeginPlay() {
 		super.BeginPlay();
 		pi = 3.141592653589793;
@@ -71,9 +102,8 @@ Class BD_BaseDebris : BDoomActor abstract {
 	name sfxtype; //'debris', 'flames', 'blood', 'gibs' — based on the value the thing gets put into a special array that controls their number, see bd_events.zc
 	property sfxtype : sfxtype;
 	Default {
-		BD_BaseDebris.sfxtype "debris";
+		BD_BaseDebris.sfxtype 'debris';
 		+ROLLSPRITE
-		+BLOODLESSIMPACT	//for debris that can bump into actors
 		+NOTAUTOAIMED
 		+MISSILE			//enters Death when it hits the floor
 		+NOBLOCKMAP
@@ -82,7 +112,6 @@ Class BD_BaseDebris : BDoomActor abstract {
 		+NOTELEPORT
 		+FORCEXYBILLBOARD
 		+THRUACTORS
-		+FLOORCLIP
 		+INTERPOLATEANGLES
 		-ALLOWPARTICLES
 		renderstyle 'Translucent';
@@ -134,7 +163,6 @@ Class SmallDebris : BD_BaseDebris abstract {
 	property removeonfall : removeonfall;
 	property dbrake : dbrake;
 	Default {
-		+NOINTERACTION
 		gravity 0.8;
 		SmallDebris.removeonfall true;
 		SmallDebris.dbrake 0;
@@ -820,7 +848,7 @@ Class EnBulletPuff : BDoomPuff {
 						for (int i = random(4,7); i > 0; i--) {
 							actor wpart = Spawn("Wallpart",Puffdata.Hitlocation + (0,0,ofz));
 							if (wpart) {
-								wpart.vel = (hitnormal + (frandom(-0.2,0.2),frandom(-0.2,0.2),frandom(-0.2,0.2))) * frandom(2.5,4);
+								wpart.vel = (hitnormal + (frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(-0.4,0.4))) * frandom(2.5,4);
 								wpart.target = self;
 							}
 						}
@@ -837,16 +865,17 @@ Class EnBulletPuff : BDoomPuff {
 				}
 				if (decaltype) {
 					//spawn an actor with 3D model to emulate floor/ceiling decals
-					if (puffdata.HitType == TRACE_HitFloor && !CheckLandingSize(2)) {
+					if (puffdata.HitType == TRACE_HitFloor) {
 						let pld = BD_PlaneDecal(Spawn("BD_PlaneDecal",(pos.x,pos.y,floorz)));
-						if (pld) 
+						if (pld) {
 							pld.decaltype = decaltype;
+						}
 					}
-					else if (puffdata.HitType == TRACE_HitCeiling && !CheckLandingSize(2,true)) {
+					else if (puffdata.HitType == TRACE_HitCeiling) {
 						let pld = BD_PlaneDecal(Spawn("BD_PlaneDecal",(pos.x,pos.y,ceilingz)));
 						if (pld) {
 							pld.decaltype = decaltype;
-							pld.roll = 180;
+							pld.ceiling = true;
 						}
 					}
 					//or spray the decal we need
@@ -862,12 +891,39 @@ Class EnBulletPuff : BDoomPuff {
 
 //3d-model "decal" to spawn on the floors and ceilings
 Class BD_PlaneDecal : BD_BaseDebris {
+	bool ceiling;
 	name decaltype;
 	Default {
-		+NOINTERACTION
-		+RELATIVETOFLOOR
-		+MOVEWITHSECTOR
 		renderstyle 'Shaded';
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		switch (decaltype) {
+			case 'BulletChip'	: sprite = GetSpriteIndex("CHIP");	frame = random(0,4); alpha = 0.85; angle = random(0,360); break;
+			case 'BulletMChip'	: sprite = GetSpriteIndex("METL");	frame = random(0,4); alpha = 0.55; angle = random(0,360);break;
+			case 'BulletWChip'	: sprite = GetSpriteIndex("WOOD");	frame = random(0,4); alpha = 1.0; break;
+			case 'BulletSChip'	: sprite = GetSpriteIndex("BRIK");	frame = random(0,3); alpha = 0.75; angle = random(0,360);break;
+		}
+		if (ceiling) {
+			if (CurSector.CeilingPlane.Normal == (0,0,-1) && CheckLandingSize(2,checkceiling:true)) {
+				destroy();
+				return;
+			}
+			AlignToPlane(self,ceiling:true);
+		}
+		else {
+			if (CurSector.FloorPlane.Normal == (0,0,1) && CheckLandingSize(2)) {
+				destroy();
+				return;
+			}
+			AlignToPlane(self);
+		}
+	}
+	override void Tick() {
+		if (ceiling)
+			SetOrigin((pos.x,pos.y,ceilingz),true);
+		else
+			SetOrigin((pos.x,pos.y,floorz),true);
 	}
 	states {
 	//even though these are not real sprites, they still need to be defined for MODELDEF to attach the model properly
@@ -876,17 +932,6 @@ Class BD_PlaneDecal : BD_BaseDebris {
 		METL ABCDE 0;
 		WOOD ABCDE 0;
 		BRIK ABCD 0;
-	Spawn:
-		TNT1 A 0 NoDelay {				
-			switch (decaltype) {
-				case 'BulletChip'	: sprite = GetSpriteIndex("CHIP");	frame = random(0,4); alpha = 0.85; angle = random(0,360); break;
-				case 'BulletMChip'	: sprite = GetSpriteIndex("METL");	frame = random(0,4); alpha = 0.55; angle = random(0,360);break;
-				case 'BulletWChip'	: sprite = GetSpriteIndex("WOOD");	frame = random(0,4); alpha = 1.0; break;
-				case 'BulletSChip'	: sprite = GetSpriteIndex("BRIK");	frame = random(0,3); alpha = 0.75; angle = random(0,360);break;
-			}
-		}
-		#### # -1;
-		stop;
 	}
 }
 
@@ -901,7 +946,7 @@ Class WallPart : SmallDebris {
 		SmallDebris.dbrake 0.8;
 		Renderstyle 'Translucent';
 		alpha 1.0;
-		scale 0.16;
+		scale 0.13;
 		gravity 0.4;
 		translation "DebrisStone";
 	}

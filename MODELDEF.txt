@@ -136,6 +136,7 @@ Model BD_SpiderBullet
 Model BD_PlaneDecal
 {
 	UseActorRoll
+	UseActorPitch
 	zoffset 1.0
 	Scale 2.2 2.2 2.2
 	
@@ -189,6 +190,7 @@ Model BD_PlaneDecal
 Model BD_BloodyFootPrint
 {
 	UseActorRoll
+	UseActorPitch
 	zoffset 1.0
 	Scale 6 3 3
 	AngleOffset -90
@@ -208,6 +210,7 @@ Model BD_BloodyFootPrint
 Model AniBloodPool
 {
 	UseActorRoll
+	UseActorPitch
 	zoffset 1.0
 	Scale 100.0 100.0 1
 
@@ -220,6 +223,7 @@ Model AniBloodPool
 Model BD_Blood
 {
 	UseActorRoll
+	UseActorPitch
 	zoffset 1.0
 	Scale 60 60 60
 	//Path ""
@@ -268,6 +272,7 @@ Model BD_Blood
 Model BD_BloodPool
 {
 	UseActorRoll
+	UseActorPitch
 	zoffset 1.0
 	Scale 60 60 60
 	//Path ""
