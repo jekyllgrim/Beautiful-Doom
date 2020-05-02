@@ -111,8 +111,8 @@ OptionMenu "BDoom_Settings" {
 	
 	ScaleSliderGC "Max gibs",					"bdoom_gibnum", 100, 3000, 100, "", "bdoom_gibs", "bdoom_replacemonsters"
 	ScaleSliderGC "Max blood particles",		"bdoom_bloodnum", 100, 3000, 100, "", "bdoom_blood"
-	ScaleSliderGC "Max flames/light FX",		"bdoom_flamesnum", 100, 3000, 100, "", "bdoom_flames"
-	ScaleSliderGC "Max debris/trails/smoke FX",	"bdoom_debrisnum", 100, 3000, 100, "", "bdoom_debris"
+	ScaleSliderGC "Max flames/light FX",		"bdoom_flamesnum", 100, 5000, 100, "", "bdoom_flames"
+	ScaleSliderGC "Max debris/trails/smoke FX",	"bdoom_debrisnum", 100, 5000, 100, "", "bdoom_debris"
 	StaticText " "
 	
 	StaticText "Additional Effects and Sounds", yellow
