@@ -463,20 +463,18 @@ Class BluePlasmaShredTrail : BluePlasmaShred {
 
 
 // used as a particle of the railgun
-Class PlasmaRailBall : Actor {
+Class PlasmaRailBall : BD_BaseFlare {
 	Default {
-		+NOINTERACTION
-		+BRIGHT
-		renderstyle "Add";
 		alpha 0.8;
 		scale 0.02;
 	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		If(bdoom_debris)
+			A_SpawnItemEx("PlamaRailFlare",flags:SXF_SETMASTER);
+	}
 	states {
 		Spawn:
-			TNT1 A 0 NoDelay {
-				If(bdoom_debris)
-					A_SpawnItemEx("PlamaRailFlare",flags:SXF_SETMASTER);
-			}
 			PEXP ABCDEF 1 A_FadeOut(0.0025);
 			PEXP GHIJKLM 2 A_FadeOut(0.0025);
 			stop;
@@ -511,9 +509,11 @@ Class PlasmaRailPuff : Actor {
 	}
 	states	{
 		Spawn:
-			TNT1 AAA 0 NoDelay {
-				if (bdoom_debris)
-					A_SpawnItemEx("WeaponSmoke",frandom(-2,2),frandom(-2,2),frandom(0,6),0,0,1,0);
+			TNT1 A 0 NoDelay {
+				if (bdoom_debris) {
+					for (int i = random(20,24); i > 0; i--)
+						A_SpawnItemEx("BlackSmoke",frandom(-2,2),frandom(-2,2),frandom(0,6),frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5));
+				}
 			}
 			PEXP ABCDEFGHIJKLM 1 bright;
 			stop;
@@ -609,7 +609,7 @@ Class ModernFlarePlasmaTrail : BD_BaseFlare {
 	}
 }
 
-Class MPlasmaBallRay : PlasmaRailBall {
+Class MPlasmaBallRay : BD_BaseFlare {
 	Default {
 		alpha 0.5;
 		scale 0.015;
@@ -618,7 +618,7 @@ Class MPlasmaBallRay : PlasmaRailBall {
 	states {
 		Spawn:
 			TNT1 A 0 NoDelay {
-				if(Bdoom_debris==1)
+				if(Bdoom_debris)
 					A_SpawnItem("MPlasmaBallRayFlare");
 			}
 			PEXP ABCDEFGHIJKLM 1 bright A_FadeOut(0.02);
