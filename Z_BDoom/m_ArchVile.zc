@@ -242,19 +242,18 @@ Class ArchFlameSeeker : Actor {
 		A_ChangeVelocity(fspeed,0,0,CVF_RELATIVE|CVF_REPLACE);
 		ftimer--;	
 	}
-	states
-		{
-		Spawn:
-			TNT1 A 1 NoDelay {
-				if (tracer) 
-					A_FaceTracer(20,flags:FAF_BOTTOM);
-				let flame = Spawn("ArchFlameSeekerTrail",pos);
-				if (flame && target) {
-					flame.master = self;
-					//flame.scale = 
-				}
+	states {
+	Spawn:
+		TNT1 A 1 NoDelay {
+			if (tracer) 
+				A_FaceTracer(20,flags:FAF_BOTTOM);
+			let flame = Spawn("ArchFlameSeekerTrail",pos);
+			if (flame && target) {
+				flame.master = self;
+				//flame.scale = 
 			}
-			loop;
+		}
+		loop;
 	}
 }
 
@@ -276,35 +275,35 @@ Class ArchFlameSeekerTrail : ParticleFire_General {
 		flare.alpha = 0.2;
 	}
 	states {
-		Spawn:
-			FIPY AB 3;
-		Idle:
-			FIPY CDEFGHIJ 3 {
-				if (!master)
-					return ResolveState("End");
-				return ResolveState(null);
-			}
-			loop;
-		End:
-			FIPY KKLL 2 {
-				if (flare)
-					flare.A_FadeOut(0.04);
-			}
-			FIPY MM 2 {
-				if (flare)
-					flare.A_FadeOut(0.04);
-				for (int i = random(2,3); i > 0; i--)
-					A_SpawnParticle(Color(0xff,0x65+random(0,100),0x00),
-									SPF_FULLBRIGHT|SPF_RELVEL|SPF_RELACCEL,
-									lifetime:100,size:frandom(4,6),
-									angle:frandom(0,359),
-									xoff:frandom(-3,3),yoff:frandom(-3,3),zoff:frandom(4,12),
-									velx:frandom(1,3),velz:frandom(0,2),	accelx:-0.1,accelz:-0.08,
-									startalphaf:0.9,sizestep:-0.2
-								);
-			}
-			stop;
-}
+	Spawn:
+		FIPY AB 3;
+	Idle:
+		FIPY CDEFGHIJ 3 {
+			if (!master)
+				return ResolveState("End");
+			return ResolveState(null);
+		}
+		loop;
+	End:
+		FIPY KKLL 2 {
+			if (flare)
+				flare.A_FadeOut(0.04);
+		}
+		FIPY MM 2 {
+			if (flare)
+				flare.A_FadeOut(0.04);
+			for (int i = random(2,3); i > 0; i--)
+				A_SpawnParticle(Color(0xff,0x65+random(0,100),0x00),
+								SPF_FULLBRIGHT|SPF_RELVEL|SPF_RELACCEL,
+								lifetime:100,size:frandom(4,6),
+								angle:frandom(0,359),
+								xoff:frandom(-3,3),yoff:frandom(-3,3),zoff:frandom(4,12),
+								velx:frandom(1,3),velz:frandom(0,2),	accelx:-0.1,accelz:-0.08,
+								startalphaf:0.9,sizestep:-0.2
+							);
+		}
+		stop;
+	}
 }
 	
 
@@ -340,19 +339,17 @@ Class ReverseArchFlameParticle : BD_BaseFlare {
 		vector3 dir = level.Vec3Diff (pos, target.pos + (0, 0, target.height / 2.));
 		vel = dir.unit() * 3;
 	}
-	states
-		{
-		Spawn:
-			SPRK DDDDDDDDDD 1 bright Nodelay {
-				scale.x = clamp(scale.x+0.005,0.01,0.06);
-				scale.y = clamp(scale.y+0.005,0.01,0.06);
-				A_FadeIn(0.05);
-			}
-			SPRK D 1 bright {
-				A_Fadeout(0.1);
-			}
-			wait;
-			
+	states {
+	Spawn:
+		SPRK DDDDDDDDDD 1 bright Nodelay {
+			scale.x = clamp(scale.x+0.005,0.01,0.06);
+			scale.y = clamp(scale.y+0.005,0.01,0.06);
+			A_FadeIn(0.05);
+		}
+		SPRK D 1 bright {
+			A_Fadeout(0.1);
+		}
+		wait;			
 	}
 }
 
