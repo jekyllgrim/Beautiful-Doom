@@ -239,7 +239,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 			wait;
 		Ready.Enhanced:
 			SH2N A 1 {
-				A_WeaponReady();
+				A_WeaponReady(WRF_ALLOWRELOAD);
 				let s = player.FindPSprite (PSP_Weapon);
 				if (invoker.ShotFired)
 					s.frame = 1;
@@ -250,7 +250,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		Fire.Enhanced:
 			SH2N A 3 {
 				If(invoker.ShotFired)
-					return ResolveState("Reload.Enhanced1");
+					return ResolveState("AltFire");
 				return ResolveState(null);
 			}
 			SH2N B 1 {
@@ -382,6 +382,11 @@ Class BD_SuperShotgun : BDoomWeapon {
 			stop;
 			
 		Reload.Enhanced:
+			TNT1 A 0 {
+				If(invoker.ShotFired)
+					return ResolveState("Reload.Enhanced1");
+				return ResolveState(null);
+			}
 			SH2R ABCDEFGH 1;
 			SH2R I 1 A_playsound("weapons/ssg/open");
 			SH2R JKL 1;
