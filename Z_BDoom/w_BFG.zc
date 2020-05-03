@@ -438,16 +438,16 @@ class BD_BFG9000 : BDoomWeapon {
 	}
 }
 
-Class ModernBFG_PrepOrb : Actor {
+Class ModernBFG_PrepOrb : SmallDebris {
 	BD_BFG9000 bfg;
 	Default {
-		+NOINTERACTION
 		+FORCEXYBILLBOARD
 		+ROLLSPRITE
 		+BRIGHT
 		renderstyle 'Add';
 		alpha 0.9;
 		scale 0.02;
+		gravity 0;
 	}
 	override void Tick() {
 		super.Tick();
@@ -461,7 +461,6 @@ Class ModernBFG_PrepOrb : Actor {
 			roll += 5*bfg.wcharge;
 			double jitter = 0.1 * bfg.wcharge;
 			scale = (default.scale * (1 + jitter));			
-			//SetOrigin(pos + (frandom(-jitter,jitter),frandom(-jitter,jitter),frandom(-jitter,jitter)),false);
 		}
 	}
 	states {
@@ -471,7 +470,7 @@ Class ModernBFG_PrepOrb : Actor {
 				return;
 			if (!bfg)
 				return;
-			for (int i = 0; i < bfg.wcharge; i++) {
+			for (int i = 0; i < bfg.wcharge; i++) {/*
 				let xoff = frandom(-10,10);
 				let yoff = frandom(-10,10);
 				let zoff = frandom(-10,10);
@@ -480,9 +479,53 @@ Class ModernBFG_PrepOrb : Actor {
 								xoff:xoff,yoff:yoff,zoff:zoff,
 								velx:xoff*-0.1,vely:yoff*-0.1,velz:zoff*-0.1,
 								startalphaf:0.8,fadestepf:0,sizestep:0.3
-							);
+							);*/
+				let orb = Spawn("BFGpreorbParticle",pos+(frandom(-10,10),frandom(-10,10),frandom(-10,10)));
+				if (orb) {
+					orb.target = self;
+					orb.master = master;
+				}
 			}
 		}
+		loop;
+	}
+}
+
+Class BFGpreorbParticle : BD_BaseFlare {
+	int ftimer;
+	Default {
+		translation "GreenPlasma";
+		alpha 0.01;
+		scale 0.035;
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		scale *= frandom(0.8,1.2);
+		ftimer = 10;
+		moving = true;
+	}
+	override void Tick() {
+		if (!target) {
+			destroy();
+			return;
+		}
+		if (isFrozen())
+			return;
+		double tdist = Distance3D(target);
+		A_FaceTarget(0,0,flags:FAF_MIDDLE);
+		double fspeed = tdist / ftimer;
+		Vel3DFromAngle(fspeed,angle,pitch);
+		if (ftimer > 1)
+			ftimer--;
+		else {
+			destroy();
+			return;
+		}
+		super.Tick();
+	}
+	states {
+	Spawn:
+		PLBS A 1 A_FadeIn(0.1,FTF_CLAMP);
 		loop;
 	}
 }
@@ -614,54 +657,65 @@ Class BFGTrail : BD_BaseFlare {
 	}
 }
 
-Class BFGLightningSpawner : Actor {
+Class BFGLightningSpawner : SmallDebris {
 	bool upward;
 	double broll;
 	Default {
-		+NOINTERACTION
+		gravity 0;
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		broll = frandom(3,6);
+		broll = frandom(1,2.5);
 		angle = random(0,360);
 		pitch = frandom(78,89);
 		if (upward) {
 			broll*=-1;
 			pitch*=-1;
 		}
+		if (master) {
+			SetOrigin(master.pos,false);
+			vel = master.vel;
+			moving = true;
+		}
+	}
+	override void Tick() {
+		super.Tick();
+		if (isFrozen())
+			return;
+		pitch -= broll;
+		if (bdoom_debris && master)
+			A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,4,"NullPuff",0,0,160,20,0,4,"BFGBallRay");
+		if (GetAge() > 20) {
+			destroy();
+			return;
+		}
 	}
 	States {
 		Spawn:
-			TNT1 A 0 NoDelay {
-				if (master) {
-					SetOrigin(master.pos,false);
-					vel = master.vel;
-				}
-			}
-			TNT1 AAAAAAAAAA 2 {
-				pitch -= broll;
-				if (bdoom_debris && master)
-					A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,4,"NullPuff",0,0,160,20,0,4,"BFGBallRay");
-			}
-			stop;
+			TNT1 A 1;
+			loop;
 			
 	}
 }
 
 //particles of the decorative lightning of the orb
-Class BFGBallRay : PlasmaRailBall {
+Class BFGBallRay : BD_BaseFlare {
 	Default {
 		alpha 0.5;
+		scale 0.015;
 		translation "GreenPlasma";
 	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		if (target) {
+			vel = target.vel;
+			moving = true;
+		}
+	}
 	States {
-		Spawn:
-			TNT1 A 0 Nodelay {
-				if (target)
-					vel = target.vel; //transfer velocity so that the lightning is always next to the bfg orb and not lagging behind
-			}
-			PEXP ABCDEFGHIJKLM 1 A_FadeOut(0.08);
-			stop;
+	Spawn:
+		PEXP ABCDEFGHIJKLM 1 A_FadeOut(0.08);
+		stop;
 	}
 }
 
@@ -702,12 +756,23 @@ Class BFGExtraParticle : BD_BaseFlare {
 }
 
 //small particles spawned by BFG hits
-Class BFGPlasmaPiece : BluePlasmaPiece {
+Class BFGPlasmaPiece : BD_BaseFlare {
 	Default {
 		translation "GreenPlasma";
 		alpha 1.0;
-		scale 0.1;
-		gravity 0.0;
+		scale 0.1;		
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		scale *= frandom(0.8,1.2);
+	}
+	states {
+		Spawn:
+			PLBS A 1 bright {
+				A_FadeOut(0.03);
+				vel *= 0.95;
+			}
+			loop;
 	}
 }
 
