@@ -1,4 +1,5 @@
 Class BDoomMonster : Actor abstract {
+	double hitheight;
 	TranslatedBurningBody burncorpse;
 	BurningBodyFlame burnflame;
 	protected double smokeheight;
@@ -16,8 +17,7 @@ Class BDoomMonster : Actor abstract {
 	protected state ppain;
 	protected state ddeath;
 	protected state xxdeath;
-	protected state vxdeath;
-	
+	protected state vxdeath;	
 
 	Array <BD_BaseDebris> meatlist; //keeps track of all gibs and blood spawned by the monster, so that they can be FlyBack()'d when it's resurrected
 
@@ -27,7 +27,6 @@ Class BDoomMonster : Actor abstract {
 		BDoomMonster.smokeheight 0;
 		attacksound "none";
 		bloodtype "BD_Blood", "BD_Blood", "BloodSpurt";
-		//bloodcolor "00 FF 00";
 	}
 	override Void PostBeginPlay() {
 		super.PostBeginPlay();
@@ -115,32 +114,19 @@ Class BDoomMonster : Actor abstract {
 		let meat = BasicMeatPiece(Spawn(spawnclass, (pos.x + frandom(-hpos,hpos), pos.y + frandom(-hpos,hpos), pos.z + vpos)));
 		if (meat) {
 			meat.gibtype = GetClassName();
-			meat.vel = (vel.x*frandom(hvel*0.3,hvel),vel.y*frandom(hvel*0.3,hvel),vvel);
+			meat.vel = (Clamp(vel.x*frandom(hvel*0.3,hvel),-10,10),Clamp(vel.y*frandom(hvel*0.3,hvel),-10,10),Clamp(vvel,0,10));
 			meat.target = self;
 			meat.translation = translation;
 			meatlist.push(meat);
 			return meat;
 		}
-		else
-			return null;
+		return null;
 	}
 
-	void BD_Gibs()
-		{
+	void BD_Gibs()	{
 		if (bdoom_gibs == 0)
 			return;
 		A_PlaySound("gibs/gibbed",volume:0.65);
-		
-		/*for (int i = 18; i > 0; i--) {
-			if (random(0,10) > 1) {
-				let bfnt = BD_Blood( Spawn("BFountainSpray",(pos.x+frandom(-5,5),pos.y+frandom(-5,5),pos.z+frandom(8,28))) );
-				if (bfnt) {
-					//fountain spray isn't meat to inherit velocity from the monster, since it has to create a cloud of blood, not a bunch of directed spurt
-					bfnt.vel = (frandom(0.05,0.15),frandom(0.05,0.15),frandom(4.5,6.5));	bfnt.target = self;	bfnt.translation = translation;
-					meatlist.push(bfnt);
-				}
-			}
-		}*/
 		for (int i = random(1,3); i > 0; i--)
 			A_SpawnItemEx("BFountainSpray",frandom(-4,4),frandom(-4,4),height - frandom(0,8),flags:SXF_SETTARGET|SXF_USEBLOODCOLOR|SXF_NOCHECKPOSITION);
 		
@@ -167,8 +153,7 @@ Class BDoomMonster : Actor abstract {
 		if (torso1) torso1.scale.x = randompick(-1,1);
 		
 		let torso2 = BasicMeatPiece(	BD_GibSpawn("Gib_Torso2",hpos: 8,vpos: frandom(18,28), hvel: 1, vvel: vel.z*frandom(0.7,0.95))	);
-		if (torso2 && torso1 && torso1.scale.x == -1) torso2.scale.x = -1;
-		
+		if (torso2 && torso1 && torso1.scale.x == -1) torso2.scale.x = -1;		
 	}
 		
 	states {
