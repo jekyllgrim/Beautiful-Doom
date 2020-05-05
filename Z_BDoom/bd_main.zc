@@ -102,6 +102,7 @@ Class BDoomActor : Actor abstract {
 //base class for most debris
 Class BD_BaseDebris : BDoomActor abstract {
 	bool landed;
+	protected bool moving; //gets set to true if the actor receives any velocity when spawned
 	name sfxtype; //'debris', 'flames', 'blood', 'gibs' — based on the value the thing gets put into a special array that controls their number, see bd_events.zc
 	property sfxtype : sfxtype;
 	Default {
@@ -128,13 +129,12 @@ Class BD_BaseDebris : BDoomActor abstract {
 	virtual void FlyBack() {
 		if (!target)
 			return;
+		SetZ(pos.z+5);
+		moving = true;
 		landed = false;
 		bFLATSPRITE = false;
-		bNOGRAVITY = false;
-		bNOINTERACTION = false;
-		bRELATIVETOFLOOR = false;
-		bMOVEWITHSECTOR = false;
 		bTHRUACTORS = true;
+		bNOGRAVITY = false;
 		gravity = 1.0;
 		A_FaceTarget();
 		
@@ -145,7 +145,7 @@ Class BD_BaseDebris : BDoomActor abstract {
 		double vvel = (vdisp + 0.5 * ftime*ftime) / ftime;
 		double hvel = dist / ftime;
 		
-		Thrust(hvel,angle);
+		VelFromAngle(hvel,angle);
 		vel.z = vvel;
 	}
 	override void PostBeginPlay() {
@@ -162,7 +162,6 @@ Class SmallDebris : BD_BaseDebris abstract {
 	double wrot;
 	double dbrake; //how quickly to reduce horizontal speed of "landed" particles to simulate sliding along the floor
 	protected bool removeonfall; //whether to remove immediately as it reaches the floor
-	protected bool moving; //gets set to true if the actor receives any velocity when spawned
 	property removeonfall : removeonfall;
 	property dbrake : dbrake;
 	Default {
@@ -668,227 +667,235 @@ Class EnBulletPuff : BDoomPuff {
 	protected string decaltype;			//type of decals to leave (wood hole, metal dent, stone chip, generic hole). Decals are strings, not names
 	protected FLineTraceData puffdata;	//gets all the data about hit location
 	Default {
-		+NOINTERACTION
 		+PUFFGETSOWNER
+		+HITTRACER
+		+PUFFONACTORS
+		+ALWAYSPUFF
 		decal "none";
 		renderstyle 'Add';
 		scale 0.075;
 		alpha 0.8;
 		mass 1;
-		height 1;
-		radius 1;
 	}
 	states {
-		Spawn:
-			TNT1 A 0 NoDelay {
-				// First we fire linetrace, using angle and pitch of target (which is either the player or the bullet projectile)
-				if (target) {
-					angle = target.angle;
-					pitch = target.pitch;
+	XDeath:
+		TNT1 A 1 {
+			let mon = BDoomMonster(tracer);
+			if (mon) {				
+				mon.hitheight = pos.z - mon.pos.z;
+			}
+		}
+		stop;
+	Spawn:
+		TNT1 A 0 NoDelay {
+			// First we fire linetrace, using angle and pitch of target (which is either the player or the bullet projectile)
+			if (target) {
+				angle = target.angle;
+				pitch = target.pitch;
+			}
+			// When spawned by hitscans and by bullets pos.z ends up different. Make sure linetrace is not executed inside floor/ceiling
+			double traceheight = pos.z;
+			if (pos.z <= floorz)
+				traceheight = floorz+1;
+			else if (pos.z >= ceilingz)
+				traceheight = ceilingz-1;
+			//console.printf("posz: %d | floorz: %d | ceilingz: %d | angle: %d | pitch: %d",pos.z,floorz,ceilingz,angle,pitch);
+			LineTrace(angle,16,pitch,TRF_THRUACTORS|TRF_NOSKY|TRF_ABSPOSITION,traceheight,pos.x,pos.y,data:puffdata);	
+			hittex = texman.GetName(puffdata.HitTexture);	
+			hitnormal = -puffdata.HitDir;
+			if ( puffdata.HitType == TRACE_HitFloor ) {
+				if ( puffdata.Hit3DFloor ) 
+					hitnormal = -puffdata.Hit3DFloor.top.Normal;
+				else 
+					hitnormal = puffdata.HitSector.floorplane.Normal;
+			}
+			else if ( puffdata.HitType == TRACE_HitCeiling )	{
+				if ( puffdata.Hit3DFloor ) 
+					hitnormal = -puffdata.Hit3DFloor.bottom.Normal;
+				else 
+					hitnormal = puffdata.HitSector.ceilingplane.Normal;
+			}
+			else if ( puffdata.HitType == TRACE_HitWall ) {
+				hitnormal = (-puffdata.HitLine.delta.y,puffdata.HitLine.delta.x,0).unit();
+				if ( !puffdata.LineSide ) 
+					hitnormal *= -1;
+			}
+			
+			// regular liquids — splash sound, no visuals
+			for (int i = 0; i < LiquidWalls.Size(); i++) {
+				if (hittex.IndexOf(LiquidWalls[i]) >= 0 ) {
+					A_PlaySound("world/watersplashsmall",0,1.0,0,3);
+					//console.Printf("Liquid Texture: %s",hittex);
+					self.destroy();
+					return ResolveState(null);
 				}
-				// When spawned by hitscans and by bullets pos.z ends up different. Make sure linetrace is not executed inside floor/ceiling
-				double traceheight = pos.z;
-				if (pos.z <= floorz)
-					traceheight = floorz+1;
-				else if (pos.z >= ceilingz)
-					traceheight = ceilingz-1;
-				//console.printf("posz: %d | floorz: %d | ceilingz: %d | angle: %d | pitch: %d",pos.z,floorz,ceilingz,angle,pitch);
-				LineTrace(angle,16,pitch,TRF_THRUACTORS|TRF_NOSKY|TRF_ABSPOSITION,traceheight,pos.x,pos.y,data:puffdata);	
-				hittex = texman.GetName(puffdata.HitTexture);	
-				hitnormal = -puffdata.HitDir;
-				if ( puffdata.HitType == TRACE_HitFloor ) {
-					if ( puffdata.Hit3DFloor ) 
-						hitnormal = -puffdata.Hit3DFloor.top.Normal;
-					else 
-						hitnormal = puffdata.HitSector.floorplane.Normal;
+			}
+			// hot liquids — sizzle sound, no visuals
+			for (int i = 0; i < HotWalls.Size(); i++) {
+				if (hittex.IndexOf(HotWalls[i]) >= 0 ) {
+					A_PlaySound("world/lavasizzlesmall",0,1.0,0,3);
+					//console.Printf("Hot Texture: %s",hittex);
+					self.destroy();
+					return ResolveState(null);
 				}
-				else if ( puffdata.HitType == TRACE_HitCeiling )	{
-					if ( puffdata.Hit3DFloor ) 
-						hitnormal = -puffdata.Hit3DFloor.bottom.Normal;
-					else 
-						hitnormal = puffdata.HitSector.ceilingplane.Normal;
+			}
+			// wood walls — long smoke, no ricochet/sparks, decals are textured like wood
+			for (int i = 0; i < WoodWalls.Size(); i++) {
+				if (hittex.IndexOf(WoodWalls[i]) >= 0 ) {
+					decaltype = "BulletWchip";
+					DebrisType = 'wood';
+					debris = true;
+					smoke = 1;
+					rchance = 0;
+					sparkchance = 0;
+					A_Playsound("bullet/wood",0,1.0,0,3);	
+					//console.Printf("Wood Texture: %s",hittex);
+					return ResolveState("PuffSpawn");
 				}
-				else if ( puffdata.HitType == TRACE_HitWall ) {
-					hitnormal = (-puffdata.HitLine.delta.y,puffdata.HitLine.delta.x,0).unit();
-					if ( !puffdata.LineSide ) 
-						hitnormal *= -1;
-				}
-				
-				// regular liquids — splash sound, no visuals
-				for (int i = 0; i < LiquidWalls.Size(); i++) {
-					if (hittex.IndexOf(LiquidWalls[i]) >= 0 ) {
-						A_PlaySound("world/watersplashsmall",0,1.0,0,3);
-						//console.Printf("Liquid Texture: %s",hittex);
-						self.destroy();
-						return ResolveState(null);
-					}
-				}
-				// hot liquids — sizzle sound, no visuals
-				for (int i = 0; i < HotWalls.Size(); i++) {
-					if (hittex.IndexOf(HotWalls[i]) >= 0 ) {
-						A_PlaySound("world/lavasizzlesmall",0,1.0,0,3);
-						//console.Printf("Hot Texture: %s",hittex);
-						self.destroy();
-						return ResolveState(null);
-					}
-				}
-				// wood walls — long smoke, no ricochet/sparks, decals are textured like wood
-				for (int i = 0; i < WoodWalls.Size(); i++) {
-					if (hittex.IndexOf(WoodWalls[i]) >= 0 ) {
-						decaltype = "BulletWchip";
-						DebrisType = 'wood';
-						debris = true;
-						smoke = 1;
-						rchance = 0;
-						sparkchance = 0;
-						A_Playsound("bullet/wood",0,1.0,0,3);	
-						//console.Printf("Wood Texture: %s",hittex);
-						return ResolveState("PuffSpawn");
-					}
-				}
-				// Marble walls — same as stone but spawns marble-colored green/grey debris
-				for (int i = 0; i < MarbleWalls.Size(); i++) {
-					if (hittex.IndexOf(MarbleWalls[i]) >= 0 ) {
-						decaltype = "BulletSchip";
-						DebrisType = 'marble';
-						rchance = 20;
-						debris = true;
-						smoke = 2;
-						A_Playsound("bullet/stone",0,1.0,0,3);	
-						//console.Printf("Marble Texture: %s",hittex);
-						return ResolveState("PuffSpawn");
-					}
-				}
-				// Metallic walls - high ricochet chance, high spark chance, no smoke, decals are shallow dents
-				for (int i = 0; i < MetalWalls.Size(); i++) {
-					if (hittex.IndexOf(MetalWalls[i]) >= 0 ) {
-						decaltype = "BulletMchip";
-						rchance = 40;
-						sparkchance = 50;
-						debris = false;
-						smoke = 0;
-						A_Playsound("bullet/metal",0,1.0,0,3);	
-						//console.Printf("Metal Texture: %s",hittex);
-						return ResolveState("PuffSpawn");
-					}
-				}
-				// Brick walls - low ricochet chance, no sparks, circular smoke, decals are big shallow chips
-				for (int i = 0; i < BrickWalls.Size(); i++) {
-					if (hittex.IndexOf(BrickWalls[i]) >= 0 ) {
-						decaltype = "BulletSchip";
-						DebrisType = 'brick';
-						rchance = 15;
-						debris = true;
-						smoke = 2;
-						A_Playsound("bullet/stone",0,1.0,0,3);	
-						//console.Printf("Brick Texture: %s",hittex);
-						return ResolveState("PuffSpawn");
-					}
-				}	
-				// Walls made of meat/gore - no ricochet, no sparks, no smoke, hits with a flesh sound, spawns a little blood
-				for (int i = 0; i < GoreWalls.Size(); i++) {
-					if (hittex.IndexOf(GoreWalls[i]) >= 0 ) {
-						decaltype = "Bulletchip";
-						DebrisType = 'bloody';
-						debris = true;
-						smoke = 0;
-						A_Playsound("bullet/body",0,1.0,0,3);	
-						//console.Printf("Gore Texture: %s",hittex);
-						return ResolveState("PuffSpawn");
-					}
-				}	
-				// Dry skin walls - same as gore walls but no boood
-				for (int i = 0; i < SkinWalls.Size(); i++) {
-					if (hittex.IndexOf(SkinWalls[i]) >= 0 ) {
-						decaltype = "Bulletchip";
-						DebrisType = 'skin';
-						debris = false;
-						smoke = 0;
-						A_Playsound("bullet/body",0,1.0,0,3);	
-						//console.Printf("Skin Texture: %s",hittex);
-						return ResolveState("PuffSpawn");
-					}
-				}	
-				//Generic - suitable for stone, gray walls, etc. Minor ricochet chance, no sparks, generic debris, circular smoke
-				if (puffdata.HitType != TRACE_HitNone) {
-					decaltype = "Bulletchip";
-					DebrisType = 'stone';
-					rchance = 25;
+			}
+			// Marble walls — same as stone but spawns marble-colored green/grey debris
+			for (int i = 0; i < MarbleWalls.Size(); i++) {
+				if (hittex.IndexOf(MarbleWalls[i]) >= 0 ) {
+					decaltype = "BulletSchip";
+					DebrisType = 'marble';
+					rchance = 20;
 					debris = true;
 					smoke = 2;
 					A_Playsound("bullet/stone",0,1.0,0,3);	
-					//console.Printf("Generic Texture: %s",hittex);	
-					return ResolveState("PuffSpawn");		
+					//console.Printf("Marble Texture: %s",hittex);
+					return ResolveState("PuffSpawn");
 				}
-				return ResolveState(null);
 			}
-			goto PuffSpawn;
-		PuffSpawn:
-			TNT1 A 0 {
-				if (bdoom_debris) {
-					double ofz = 0;
-					if (puffdata.HitType == TRACE_HitFloor)
-						ofz = 1;
-					else if (puffdata.HitType == TRACE_HitCeiling)
-						ofz = -1;
-					if (random(0,100) < rchance) {
-						A_SpawnItemEx("RicochetBullet",xvel:50,zvel:frandom(-10,10),angle:random(0,359));
-					}
-					if (smoke == 1) {
-						for (int i = random(6,9); i > 0; i--) {
-							actor wpart = Spawn("WallSmoke",Puffdata.Hitlocation + (0,0,ofz));
-							if (wpart) {
-								wpart.vel = (hitnormal + (frandom(-0.05,0.05),frandom(-0.05,0.05),frandom(-0.05,0.05))) * frandom(0.1,0.5);
-								wpart.target = self;
-							}
-						}
-					}
-					else if (smoke == 2) {						
-						for (int i = random(10,15); i > 0; i--)
-							A_SpawnItemEx("RingSmoke", 0,0,0, frandom(-0.7,0.7),frandom(-0.7,0.7),frandom(-0.7,0.7));
-					}
-					if (debris) {
-						for (int i = random(4,7); i > 0; i--) {
-							actor wpart = Spawn("Wallpart",Puffdata.Hitlocation + (0,0,ofz));
-							if (wpart) {
-								wpart.vel = (hitnormal + (frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(-0.4,0.4))) * frandom(2.5,4);
-								wpart.target = self;
-							}
-						}
-					}
-					if (random(0,100) < sparkchance) {						
-						for (int i = random(5,8); i > 0; i--) {
-							actor wpart = Spawn("RicochetSpark",Puffdata.Hitlocation + (0,0,ofz));
-							if (wpart) {
-								wpart.vel = (hitnormal + (frandom(-0.7,0.7),frandom(-0.7,0.7),frandom(-0.7,0.7))) * frandom(1,3);
-								wpart.target = self;
-							}
-						}
-					}
+			// Metallic walls - high ricochet chance, high spark chance, no smoke, decals are shallow dents
+			for (int i = 0; i < MetalWalls.Size(); i++) {
+				if (hittex.IndexOf(MetalWalls[i]) >= 0 ) {
+					decaltype = "BulletMchip";
+					rchance = 40;
+					sparkchance = 50;
+					debris = false;
+					smoke = 0;
+					A_Playsound("bullet/metal",0,1.0,0,3);	
+					//console.Printf("Metal Texture: %s",hittex);
+					return ResolveState("PuffSpawn");
 				}
-				if (decaltype) {
-					//spawn an actor with 3D model to emulate floor/ceiling decals
-					if (puffdata.HitType == TRACE_HitFloor) {
-						let pld = BD_PlaneDecal(Spawn("BD_PlaneDecal",(pos.x,pos.y,floorz)));
-						if (pld) {
-							pld.decaltype = decaltype;
-						}
-					}
-					else if (puffdata.HitType == TRACE_HitCeiling) {
-						let pld = BD_PlaneDecal(Spawn("BD_PlaneDecal",(pos.x,pos.y,ceilingz)));
-						if (pld) {
-							pld.decaltype = decaltype;
-							pld.ceiling = true;
-						}
-					}
-					//or spray the decal we need
-					else
-						A_SprayDecal(decaltype,8);
-				}
-				return ResolveState(null);
 			}
-			BPUF ABCD 1 bright;
-			stop;
+			// Brick walls - low ricochet chance, no sparks, circular smoke, decals are big shallow chips
+			for (int i = 0; i < BrickWalls.Size(); i++) {
+				if (hittex.IndexOf(BrickWalls[i]) >= 0 ) {
+					decaltype = "BulletSchip";
+					DebrisType = 'brick';
+					rchance = 15;
+					debris = true;
+					smoke = 2;
+					A_Playsound("bullet/stone",0,1.0,0,3);	
+					//console.Printf("Brick Texture: %s",hittex);
+					return ResolveState("PuffSpawn");
+				}
+			}	
+			// Walls made of meat/gore - no ricochet, no sparks, no smoke, hits with a flesh sound, spawns a little blood
+			for (int i = 0; i < GoreWalls.Size(); i++) {
+				if (hittex.IndexOf(GoreWalls[i]) >= 0 ) {
+					decaltype = "Bulletchip";
+					DebrisType = 'bloody';
+					debris = true;
+					smoke = 0;
+					A_Playsound("bullet/body",0,1.0,0,3);	
+					//console.Printf("Gore Texture: %s",hittex);
+					return ResolveState("PuffSpawn");
+				}
+			}	
+			// Dry skin walls - same as gore walls but no boood
+			for (int i = 0; i < SkinWalls.Size(); i++) {
+				if (hittex.IndexOf(SkinWalls[i]) >= 0 ) {
+					decaltype = "Bulletchip";
+					DebrisType = 'skin';
+					debris = false;
+					smoke = 0;
+					A_Playsound("bullet/body",0,1.0,0,3);	
+					//console.Printf("Skin Texture: %s",hittex);
+					return ResolveState("PuffSpawn");
+				}
+			}	
+			//Generic - suitable for stone, gray walls, etc. Minor ricochet chance, no sparks, generic debris, circular smoke
+			if (puffdata.HitType != TRACE_HitNone) {
+				decaltype = "Bulletchip";
+				DebrisType = 'stone';
+				rchance = 25;
+				debris = true;
+				smoke = 2;
+				A_Playsound("bullet/stone",0,1.0,0,3);	
+				//console.Printf("Generic Texture: %s",hittex);	
+				return ResolveState("PuffSpawn");		
+			}
+			return ResolveState(null);
+		}
+		goto PuffSpawn;
+	PuffSpawn:
+		TNT1 A 0 {
+			if (bdoom_debris) {
+				double ofz = 0;
+				if (puffdata.HitType == TRACE_HitFloor)
+					ofz = 1;
+				else if (puffdata.HitType == TRACE_HitCeiling)
+					ofz = -1;
+				if (random(0,100) < rchance) {
+					A_SpawnItemEx("RicochetBullet",xvel:50,zvel:frandom(-10,10),angle:random(0,359));
+				}
+				if (smoke == 1) {
+					for (int i = random(6,9); i > 0; i--) {
+						actor wpart = Spawn("WallSmoke",Puffdata.Hitlocation + (0,0,ofz));
+						if (wpart) {
+							wpart.vel = (hitnormal + (frandom(-0.05,0.05),frandom(-0.05,0.05),frandom(-0.05,0.05))) * frandom(0.1,0.5);
+							wpart.target = self;
+						}
+					}
+				}
+				else if (smoke == 2) {						
+					for (int i = random(10,15); i > 0; i--)
+						A_SpawnItemEx("RingSmoke", 0,0,0, frandom(-0.7,0.7),frandom(-0.7,0.7),frandom(-0.7,0.7));
+				}
+				if (debris) {
+					for (int i = random(4,7); i > 0; i--) {
+						actor wpart = Spawn("Wallpart",Puffdata.Hitlocation + (0,0,ofz));
+						if (wpart) {
+							wpart.vel = (hitnormal + (frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(-0.4,0.4))) * frandom(2.5,4);
+							wpart.target = self;
+						}
+					}
+				}
+				if (random(0,100) < sparkchance) {						
+					for (int i = random(5,8); i > 0; i--) {
+						actor wpart = Spawn("RicochetSpark",Puffdata.Hitlocation + (0,0,ofz));
+						if (wpart) {
+							wpart.vel = (hitnormal + (frandom(-0.7,0.7),frandom(-0.7,0.7),frandom(-0.7,0.7))) * frandom(1,3);
+							wpart.target = self;
+						}
+					}
+				}
+			}
+			if (decaltype) {
+				//spawn an actor with 3D model to emulate floor/ceiling decals
+				if (puffdata.HitType == TRACE_HitFloor) {
+					let pld = BD_PlaneDecal(Spawn("BD_PlaneDecal",(pos.x,pos.y,floorz)));
+					if (pld) {
+						pld.decaltype = decaltype;
+					}
+				}
+				else if (puffdata.HitType == TRACE_HitCeiling) {
+					let pld = BD_PlaneDecal(Spawn("BD_PlaneDecal",(pos.x,pos.y,ceilingz)));
+					if (pld) {
+						pld.decaltype = decaltype;
+						pld.ceiling = true;
+					}
+				}
+				//or spray the decal we need
+				else
+					A_SprayDecal(decaltype,8);
+			}
+			return ResolveState(null);
+		}
+		BPUF ABCD 1 bright;
+		stop;
 	}
 }
 
