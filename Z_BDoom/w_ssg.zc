@@ -15,6 +15,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		weapon.slotpriority 1;
 		BDoomWeapon.AutoReloadTime 160;
 	}
+			
 	override void Tick() {
 		If (Owner)
 			return;
@@ -105,6 +106,19 @@ Class BD_SuperShotgun : BDoomWeapon {
 				A_Gunflash();
 				A_WeaponOffset(0,10,WOF_ADD);
 				A_PlaySound("weapons/sshotf",5);
+				
+				/*array <Actor> victims;
+				array <Vector3> hitlocs;
+				for (int i = 20; i > 0; i--) {
+					FLineTraceData shot;
+					LineTrace(angle:angle + frandom(-11.2,11.2),distance:8192,pitch:pitch + frandom(-7.1,7.1),TRF_NOSKY,offsetz:player.attackzoffset,data:shot);
+					let hitactor = shot.HitActor();
+					if (hitactor && hitactor.bSHOOTABLE && hitactor != player)
+						victims.push(hitactor);
+					if (shot.HitLocation)
+						hitlocs.push(shot.HitLocation);
+				}*/
+				
 				if (bdoom_tracers)
 					A_FireBullets(11.2, 7.1, 20, 5, "EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0);
 				else
@@ -553,7 +567,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 			SSTR DCBA 1;
 			SST2 A 2 A_WeaponReady(WRF_NOSWITCH);
 			goto ready;
-}
+	}
 }
 
 Class SSGClip : ammo {
@@ -564,5 +578,33 @@ Class SSGClip : ammo {
 		ammo.backpackamount 0;
 		ammo.backpackmaxamount 2;
 		+INVENTORY.IGNORESKILL
+	}
+}
+
+Class EnSSGPuff : EnBulletPuff {
+	Default {
+		+HITTRACER
+		+PUFFONACTORS
+	}
+	states {
+	Crash:
+		TNT1 A 0;
+		goto super::Spawn;
+	XDeath:
+		TNT1 A 1 {
+			if (!tracer || !target)
+				return;
+			let xd = tracer.FindState("XDeath");
+			if (!xd || InStateSequence(tracer.curstate,xd))
+				return;
+			let dist = Distance3D(target);
+			if (dist > 256)
+				return;
+			double xchance = 20 - dist*0.039;
+			//console.printf("Distance to victim: %i, chance: %d",dist,xchance);
+			if (random(0,100) <= xchance)
+				bEXTREMEDEATH = true;
+		}
+		stop;
 	}
 }

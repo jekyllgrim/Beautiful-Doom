@@ -197,10 +197,6 @@ Class BDoomWeapon : Weapon abstract {
 		}
 		return null;
 	}
-	/*override void PostBeginPlay() {
-		super.PostBeginPlay();
-		wready = FindState("Ready")
-		wqkick = FindState("QuickKick");*/
 
 	states	{
 		QKick:
@@ -315,6 +311,7 @@ Class RealBullet : FastProjectile {
 		RealBullet.falloffstrength 0.3;
 		RealBullet.mindamage 1;
 		+BLOODSPLATTER
+		+HITTRACER
 		radius 1;
 		height 1;
 		alpha 0.75;
@@ -365,14 +362,14 @@ Class RealBullet : FastProjectile {
 			PUFF A 1 bright;
 			wait;
 		XDeath:
-			TNT1 A 0;
+			TNT1 A 1 {
+				let mon = BDoomMonster(tracer);
+				if (mon)
+					mon.hitheight = pos.z - mon.pos.z;
+			}
 			stop;
 		Death:
-			TNT1 A 1 {
-				let puff = Spawn("EnBulletPuff",pos);
-				if (puff)
-					puff.target = self;
-			}
+			TNT1 A 1 A_SpawnItemEx("EnBulletPuff",flags:SXF_TRANSFERPOINTERS);
 			stop;
 	}
 }
@@ -482,55 +479,9 @@ class BD_MuzzleSmoke : BD_BaseSmoke {
 }
 
 
-Class EnSSGPuff : EnBulletPuff {
-	Default {
-		+HITTRACER
-		+PUFFONACTORS
-	}
-	states {
-	Crash:
-		TNT1 A 0;
-		goto super::Spawn;
-	XDeath:
-		TNT1 A 1 {
-			if (!tracer || !target)
-				return;
-			let xd = tracer.FindState("XDeath");
-			if (!xd || (xd && InStateSequence(tracer.curstate,xd)))
-				return;
-			/*if (!tracer.FindInventory("SSGDamageCounter"))
-				tracer.GiveInventory("SSGDamageCounter",1);
-			let dmg = SSGDamageCounter(tracer.FindInventory("SSGDamageCounter"));
-			if (dmg) {
-				dmg.totaldamage += 5*frandom(1,2.2);
-				Console.Printf("accumulated damage: %d | monster health: %d/%d",dmg.totaldamage,tracer.health,tracer.default.health);
-				if (dmg.totaldamage > tracer.default.health * 1.2)
-					bEXTREMEDEATH = true;
-			}*/			
-			Console.Printf("monster health: %d",tracer.health);
-		}
-		stop;
-	}
-}
+
 	
-Class SSGDamageCounter : Inventory {
-	int totaldamage;
-	Default {
-		+INVENTORY.UNDROPPABLE
-		+INVENTORY.UNTOSSABLE
-		inventory.maxamount 1;
-	}
-	override void DoEffect() {
-		if (!owner || isFrozen())
-			return;
-		super.DoEffect();
-		if (owner.health <= 0 || GetAge() > 3) {
-			destroy();
-			return;
-		}
-	}
-	override void Tick() {}
-}
+
 
 //***************
 // EMPTY CASINGS
