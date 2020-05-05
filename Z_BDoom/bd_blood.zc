@@ -206,7 +206,6 @@ Class BD_Blood : BD_BloodBase {
 		loop;			
 	Raise:
 		#### # 0 {
-			console.printf("raise");
 			if (onceiling)
 				return ResolveState("Fade");
 			sprite = GetSpriteIndex(bsprite[random(0,2)]);
