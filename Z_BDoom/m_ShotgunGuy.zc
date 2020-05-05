@@ -20,8 +20,7 @@ Class BD_ShotgunGuy : BDoomMonster {
 		DropItem "Shotgun";
 		BDoomMonster.monsterclip 8;
 	}
-	states
-	{
+	states {
 	Spawn:
 		SARR AB 10 A_Look();
 		loop;
@@ -119,10 +118,13 @@ Class BD_ShotgunGuy : BDoomMonster {
 		goto see;
 	Death:
 		TNT1 A 0 {
-			if (bdoom_gibs && health < -10 && !burning)
-				return ResolveState("DecapDeath");
-			else
-				return A_Jump(256,"Death.Vanilla","Death1","Death2");
+			if (hitheight > default.height*0.75) {
+				if (bdoom_gibs && random(1,3) == 3 && !burning)
+					return ResolveState("DeathHeadshot");
+				return ResolveState("DeathHeadshot1");
+			}
+			else if (random(1,2) == 2)
+				return ResolveState("Death1");
 			return ResolveState(null);
 		}
 	Death.Vanilla:
@@ -150,7 +152,7 @@ Class BD_ShotgunGuy : BDoomMonster {
 		SPON JKL 4;
 		SPON M 1;
 		goto deathbleed;
-	Death2: //fall left/right
+	DeathHeadshot: //fall left/right
 		TNT1 A 0 { 
 			scale.x*=randompick(-1,1);
 			A_Scream();
@@ -170,6 +172,24 @@ Class BD_ShotgunGuy : BDoomMonster {
 		}
 		SPOO KLM 3;
 		SPOO N 1;
+		goto deathbleed;
+	DeathHeadshot1:
+		SPOD A 3 A_SpawnItemEx("Gib_Head",frandom(-1,1),frandom(-1,1),52,frandom(2,5),0,frandom(1,5),random(150,210),SXF_SETTARGET);
+		SPOD B 3 BD_Bleed();
+		SPOD C 3 A_NoBlocking();
+		SPOD DE 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("Blood",0,0,	random(48,52),	random(0,2),random(0,2),random(4,6),0,SXF_SETTARGET,96);
+		}
+		SPOD LLMMLM random(7,11) {
+			if (random(0,100) < 40 && bdoom_blood) {
+				A_PlaySound("gibs/bloodspurt");
+				A_SpawnItemEx("NeckSpurt",frandom(-0.3,0.3),frandom(-0.3,0.3),33,0,0,0,random(0,359),SXF_SETTARGET);
+			}
+		}
+		SPOD FG 2;
+		SPOD HIJ 3;
+		SPOD K 3 A_PlaySound("body/fall");
 		goto deathbleed;
 	Death.Saw:	
 		SPOY ABC 3;
@@ -191,24 +211,6 @@ Class BD_ShotgunGuy : BDoomMonster {
 			A_PlaySound("body/fall",CHAN_6);
 		}
 		SPOY TUVWXY 2;
-		goto deathbleed;
-	DecapDeath:
-		SPOD A 3 A_SpawnItemEx("Gib_Head",frandom(-1,1),frandom(-1,1),52,frandom(2,5),0,frandom(1,5),random(150,210),SXF_SETTARGET);
-		SPOD B 3 BD_Bleed();
-		SPOD C 3 A_NoBlocking();
-		SPOD DE 3 {
-			if (bdoom_blood && !burning)
-				A_SpawnItemEx("Blood",0,0,	random(48,52),	random(0,2),random(0,2),random(4,6),0,SXF_SETTARGET,96);
-		}
-		SPOD LLMMLM random(7,11) {
-			if (random(0,100) < 40 && bdoom_blood) {
-				A_PlaySound("gibs/bloodspurt");
-				A_SpawnItemEx("NeckSpurt",frandom(-0.3,0.3),frandom(-0.3,0.3),33,0,0,0,random(0,359),SXF_SETTARGET);
-			}
-		}
-		SPOD FG 2;
-		SPOD HIJ 3;
-		SPOD K 3 A_PlaySound("body/fall");
 		goto deathbleed;
 		
 	XDeath:
