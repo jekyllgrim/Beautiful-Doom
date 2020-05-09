@@ -37,8 +37,6 @@ Class BDoomActor : Actor abstract {
 			return false;
 		if (checker.waterlevel > 0)
 			return true;
-		if (checker.floorpic == skyflatnum)
-			return true;
 		if (checker.GetFloorTerrain().isLiquid == true)
 			return true;
 		let event = BD_Animated_Handler(StaticEventHandler.Find("BD_Animated_Handler"));
@@ -65,10 +63,12 @@ Class BDoomActor : Actor abstract {
 			norm = sec.normal;
 		if (abs(norm.z) ~== 1) {
 			if (ceiling) {
+				a.roll += 180;
 				a.pitch += 180;
 			}
 			return;		
 		}
+		a.angle = 0;
 		double ang = DeltaAngle(VectorAngle(norm.x, norm.y), a.angle);
 		double pch = 90 - asin(norm.z);
 		if (pch > 90)
@@ -101,7 +101,8 @@ Class BDoomActor : Actor abstract {
 
 //base class for most debris
 Class BD_BaseDebris : BDoomActor abstract {
-	bool landed;
+	protected bool landed;
+	protected bool onceiling;
 	protected bool moving; //gets set to true if the actor receives any velocity when spawned
 	name sfxtype; //'debris', 'flames', 'blood', 'gibs' — based on the value the thing gets put into a special array that controls their number, see bd_events.zc
 	property sfxtype : sfxtype;
@@ -159,20 +160,25 @@ Class BD_BaseDebris : BDoomActor abstract {
 
 //base inexpensive class for non-interactive particles and small debris
 Class SmallDebris : BD_BaseDebris abstract {
+	protected double sectorz;
 	double wrot;
 	double dbrake; //how quickly to reduce horizontal speed of "landed" particles to simulate sliding along the floor
 	protected bool removeonfall; //whether to remove immediately as it reaches the floor
+	protected bool hitceiling;
+	property hitceiling : hitceiling; //whether to react to approaching ceiling
 	property removeonfall : removeonfall;
-	property dbrake : dbrake;
+	property dbrake : dbrake;	
 	Default {
 		gravity 0.8;
-		SmallDebris.removeonfall true;
+		SmallDebris.removeonfall false;
 		SmallDebris.dbrake 0;
+		SmallDebris.hitceiling false;
 	}
 	//a chad tick override that skips Actor's super.tick!
 	override void Tick() {
 		if (isFrozen())
 			return;
+		UpdateWaterLevel();
 		if (alpha < 0){
 			destroy();
 			return;
@@ -186,27 +192,59 @@ Class SmallDebris : BD_BaseDebris abstract {
 					return;
 			}
 		}
+		//if marked as landed, stick to floor (or ceiling)
+		if (landed) {
+			if (onceiling)
+				SetOrigin((pos.x,pos.y,ceilingz-sectorz),true);
+			else {
+				SetOrigin((pos.x,pos.y,floorz+sectorz),true);
+				//simulate sliding across the floor if brake value isn't 0:
+				if (dbrake > 0) {
+					vel.xy *= dbrake;
+				}
+			}
+		}
+		//do nothing if marked as immovable:
 		if (!moving)
 			return;
-		if (gravity != 0) {
-			if (pos.z > floorz)		//simulates falling
-				vel.z-=gravity;
-			else if (removeonfall) {	//if allready fallen and removeonfall is true, remove
-				destroy();
-				return;
-			}
-			else {
-				SetZ(floorz);	//otherwise stick to the floor
-				vel.z = 0;
-				vel.x *= dbrake;			//simulate sliding along the floor
-				vel.y *= dbrake;
+		//otherwise simulate movement if not marked as landed:
+		if (!landed) {
+			if ((pos.z >= ceilingz - 10) && hitceiling) 	//hit ceiling is close enough
+				BD_Hitceiling();
+			else if (pos.z > floorz+sectorz)				//otherwise keep falling
+				vel.z -= gravity;
+			else  {			
+				BD_HitFloor();	
 			}
 		}
 		SetOrigin(pos+vel,true);		//finally, manually move the object
 	}
+	virtual void BD_HitFloor() {			//hit floor if close enough
+		if (removeonfall) {
+			destroy();
+			return;
+		}
+		if (floorpic == skyflatnum) { 
+			destroy();
+			return;
+		}
+		landed = true;
+		vel.z = 0;
+		SetZ(floorz+sectorz);
+		if (FindState("Death"))
+			SetStateLabel("Death");
+	}
+	virtual void BD_Hitceiling() {		
+		if (ceilingpic == skyflatnum) {
+			destroy();
+			return;
+		}
+		onceiling = true;
+		SetZ(ceilingz-sectorz);
+	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		if (vel.length() != 0)
+		if (vel.length() != 0) //mark as movable if given any non-zero velocity
 			moving = true;
 	}
 	states {
@@ -354,9 +392,9 @@ Class FirePiece : BD_BaseFlare abstract {
 		alpha 0.5;
 	}
 	states	{
-		Spawn:		
-			FIRP ABCDEFGHIJ 2 bright NoDelay A_FadeOut(0.05);
-			stop;
+	Spawn:		
+		FIRP ABCDEFGHIJ 2 bright NoDelay A_FadeOut(0.05);
+		stop;
 	}
 }
 
@@ -509,6 +547,7 @@ Class SmokingPiece : SmallDebris {
 	Default {
 		gravity 0.7;
 		alpha 1.0;
+		SmallDebris.removeonfall true;
 	}
 	states
 			{
@@ -550,17 +589,18 @@ Class WallSmoke : BD_BaseSmoke {
 	Spawn:
 		SMO2 # 1 NoDelay {
 			if (GetAge() < 26) {
+				wrot *= 0.98;
 				A_Fadeout(0.006);
-				a_Setscale(clamp(scale.x*1.02,0.01,0.1),clamp(scale.y*1.02,0.01,0.1));
+				a_Setscale(clamp(scale.x*1.02,0.01,0.06),clamp(scale.y*1.02,0.01,0.06));
 				vel*=0.97;
 				roll+=wrot;
 			}
 			else {
-				alpha*=0.99;
-				a_Setscale(clamp(scale.x*1.01,0.01,0.1),clamp(scale.y*1.01,0.01,0.1));
+				alpha*=0.997;
+				wrot *= 0.97;
+				a_Setscale(clamp(scale.x*1.01,0.01,0.06),clamp(scale.y*1.01,0.01,0.06));
 				vel*=0.93;
 				roll+=wrot;
-				//wrot *= 0.97;
 				if (alpha < 0.1)
 					A_FadeOut(0.005);
 			}
@@ -952,7 +992,6 @@ Class BD_PlaneDecal : BD_BaseDebris {
 */
 Class WallPart : SmallDebris {
 	Default {
-		SmallDebris.removeonfall false;
 		SmallDebris.dbrake 0.8;
 		Renderstyle 'Translucent';
 		alpha 1.0;
@@ -982,32 +1021,32 @@ Class WallPart : SmallDebris {
 			A_SetTranslation("DebrisBrick");
 	}
 	states {
-		Spawn:
-			TNT1 A 0 NoDelay {
-				if (target && target is "EnBulletPuff") {
-					let puff = EnBulletPuff(target);
-					if (puff.DebrisType == 'bloody')
-					return ResolveState("Bloody");
-				}
-				return ResolveState(null);
+	Spawn:
+		TNT1 A 0 NoDelay {
+			if (target && target is "EnBulletPuff") {
+				let puff = EnBulletPuff(target);
+				if (puff.DebrisType == 'bloody')
+				return ResolveState("Bloody");
 			}
-			BPRT AAAAAAAAAAAAAAAAAAAAAAAAA 1 {
-				A_FadeOut(0.005);
-				scale*=0.98;
-				if (pos.z > floorz)
-					roll+=wrot;
-			}
-			wait;
-		Bloody:
-			TNT1 A 0 {
-				A_SetScale(0.1,0.1);
-				static const string bsprite[] = {
-					"YBL7","YBL8","YBL9"
-				};
-				sprite = GetSpriteIndex(bsprite[random(0,2)]);
-			}
-			#### ABCDEFGHIJKLMNOPQRS 1 A_Fadeout(0.08);
-			stop;		
+			return ResolveState(null);
+		}
+		BPRT A 1 {
+			A_FadeOut(0.005);
+			scale*=0.98;
+			if (pos.z > floorz)
+				roll+=wrot;
+		}
+		wait;
+	Bloody:
+		TNT1 A 0 {
+			A_SetScale(0.1,0.1);
+			static const string bsprite[] = {
+				"YBL7","YBL8","YBL9"
+			};
+			sprite = GetSpriteIndex(bsprite[random(0,2)]);
+		}
+		#### ABCDEFGHIJKLMNOPQRS 1 A_Fadeout(0.08);
+		stop;		
 	}
 }
 
@@ -1034,7 +1073,7 @@ Class RocketDebris : WallPart {
 //small spark spawned by chainsaw, knuckle, bullets on metal
 Class RicochetSpark : SmallDebris {
 	Default {
-		SmallDebris.removeonfall false;
+		SmallDebris.removeonfall true;
 		SmallDebris.dbrake 0.9;
 		renderstyle 'Add';
 		alpha 1.0;
