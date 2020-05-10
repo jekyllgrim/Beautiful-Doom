@@ -442,7 +442,7 @@ Class ModernBFG_PrepOrb : SmallDebris {
 	BD_BFG9000 bfg;
 	Default {
 		+FORCEXYBILLBOARD
-		+ROLLSPRITE
+		+NOINTERACTION
 		+BRIGHT
 		renderstyle 'Add';
 		alpha 0.9;
@@ -567,77 +567,77 @@ Class BD_BFGBall : BFGBall {
 				oldPos = level.vec3Offset( oldPos, direction );
 			}
 		}
-		if (self is "ModernBFGBall")
-			return;
-		if (pos.z <= floorz+100 && floorpic != skyflatnum && random(0,32) > 28) {
-			let lt = BFGLightningSpawner(Spawn("BFGLightningSpawner",pos));
-			if (lt) {
-				lt.master = self;
+		if (Getclassname() == "BD_BFGBall") {
+			if (pos.z <= floorz+100 && floorpic != skyflatnum && random(0,32) > 28) {
+				let lt = BFGLightningSpawner(Spawn("BFGLightningSpawner",pos));
+				if (lt) {
+					lt.master = self;
+				}
 			}
-		}
-		if (pos.z >= ceilingz-128 && ceilingpic != skyflatnum && random(0,32) > 28) {
-			let lt = BFGLightningSpawner(Spawn("BFGLightningSpawner",pos));
-			if (lt) {
-				lt.master = self;
-				lt.upward = true;
+			if (pos.z >= ceilingz-128 && ceilingpic != skyflatnum && random(0,32) > 28) {
+				let lt = BFGLightningSpawner(Spawn("BFGLightningSpawner",pos));
+				if (lt) {
+					lt.master = self;
+					lt.upward = true;
+				}
 			}
 		}
 	}
 	States {
-		Spawn:
-			TNT1 A 0 NoDelay {
-				A_PlaySound("weapons/bfg/fly",6,1.0,TRUE,1);
-				if(bdoom_debris) {
-					let f = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
-					f.fcolor = 'green';
-					f.vel = vel;
-					f.master = self;
-					f.scale = scale;
-				}
+	Spawn:
+		TNT1 A 0 NoDelay {
+			A_PlaySound("weapons/bfg/fly",6,1.0,TRUE,1);
+			if(bdoom_debris) {
+				let f = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
+				f.fcolor = 'green';
+				f.vel = vel;
+				f.master = self;
+				f.scale = scale;
 			}
-		Spawn1:
-			BFGB ABCDEFGH 1 {
-				A_FaceMovementDirection();
-				//if (bdoom_debris)
-					//A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,4,"NullPuff",random(0,360),random(0,360),64,20,0,4,"BFGBallRay");
+		}
+	Spawn1:
+		BFGB ABCDEFGH 1 {
+			A_FaceMovementDirection();
+			//if (bdoom_debris)
+				//A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,4,"NullPuff",random(0,360),random(0,360),64,20,0,4,"BFGBallRay");
+		}
+		loop;
+	Death.Sky:
+		TNT1 A 1 A_RemoveChildren(1,RMVF_EVERYTHING);
+		stop;
+	Death:
+		TNT1 A 0 {
+			A_RemoveChildren(1,RMVF_EVERYTHING);
+			A_StopSound(6);
+			A_SprayDecal("BFGLightning",radius+32);
+			A_SetScale(1.0,1.0);
+			If(bdoom_shakes  == 0)
+				A_Quake(4,34,0,256,"");
+			If(bdoom_weapons==1)
+				A_PlaySound("weapons/bfg/explosion",6);
+			else
+				A_PlaySound("weapons/bfgx",6);
+			
+			/*for (int i = random(56,80); i > 0; i--)
+				A_SpawnParticle("51fb45",SPF_FULLBRIGHT|SPF_RELVEL|SPF_RELACCEL|SPF_RELANG|SPF_RELPOS,48,4,random(0,359), 0,0,0, frandom(2,5),0,frandom(-3,3), -0.08,0,randompick(-0.08,0.08));*/
+			for (int i = random(8,12); i > 0; i--)
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(96,128),duration:56,sparsity:1.0,spawnclass:"MBFGRailParticle");
+		}
+		BFGX ABCD 4 {
+			dead = true;
+			if (bdoom_debris) {
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(96,128),duration:56,sparsity:1.0,spawnclass:"BFGBallRay");
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(96,128),duration:56,sparsity:1.0,spawnclass:"BFGBallRay");
 			}
-			loop;
-		Death.Sky:
-			TNT1 A 1 A_RemoveChildren(1,RMVF_EVERYTHING);
-			stop;
-		Death:
-			TNT1 A 0 {
-				A_RemoveChildren(1,RMVF_EVERYTHING);
-				A_StopSound(6);
-				A_SprayDecal("BFGLightning",radius+32);
-				A_SetScale(1.0,1.0);
-				If(bdoom_shakes  == 0)
-					A_Quake(4,34,0,256,"");
-				If(bdoom_weapons==1)
-					A_PlaySound("weapons/bfg/explosion",6);
-				else
-					A_PlaySound("weapons/bfgx",6);
-				
-				/*for (int i = random(56,80); i > 0; i--)
-					A_SpawnParticle("51fb45",SPF_FULLBRIGHT|SPF_RELVEL|SPF_RELACCEL|SPF_RELANG|SPF_RELPOS,48,4,random(0,359), 0,0,0, frandom(2,5),0,frandom(-3,3), -0.08,0,randompick(-0.08,0.08));*/
-				for (int i = random(8,12); i > 0; i--)
-					A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(96,128),duration:56,sparsity:1.0,spawnclass:"MBFGRailParticle");
+		}
+		BFGX E 4 A_BFGSpray("BD_BFGExtra");
+		BFGX FGHIJK 4 {
+			if (bdoom_debris) {		
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(96,128),duration:56,sparsity:1.0,spawnclass:"BFGBallRay");
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(96,128),duration:56,sparsity:1.0,spawnclass:"BFGBallRay");
 			}
-			BFGX ABCD 4 {
-				dead = true;
-				if (bdoom_debris) {
-					A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(96,128),duration:56,sparsity:1.0,spawnclass:"BFGBallRay");
-					A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(96,128),duration:56,sparsity:1.0,spawnclass:"BFGBallRay");
-				}
-			}
-			BFGX E 4 A_BFGSpray("BD_BFGExtra");
-			BFGX FGHIJK 4 {
-				if (bdoom_debris) {		
-					A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(96,128),duration:56,sparsity:1.0,spawnclass:"BFGBallRay");
-					A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(96,128),duration:56,sparsity:1.0,spawnclass:"BFGBallRay");
-				}
-			}
-			stop;
+		}
+		stop;
 	}
 }
 
@@ -661,21 +661,21 @@ Class BFGLightningSpawner : SmallDebris {
 	bool upward;
 	double broll;
 	Default {
-		gravity 0;
+		+NOINTERACTION
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
+		if (master) {
+			Warp(master,-52);
+			vel = master.vel;
+			moving = true;
+		}
 		broll = frandom(1,2.5);
-		angle = random(0,360);
+		angle = random(0,359);
 		pitch = frandom(78,89);
 		if (upward) {
 			broll*=-1;
 			pitch*=-1;
-		}
-		if (master) {
-			SetOrigin(master.pos,false);
-			vel = master.vel;
-			moving = true;
 		}
 	}
 	override void Tick() {
@@ -683,18 +683,12 @@ Class BFGLightningSpawner : SmallDebris {
 		if (isFrozen())
 			return;
 		pitch -= broll;
-		if (bdoom_debris && master)
-			A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,4,"NullPuff",0,0,160,20,0,4,"BFGBallRay");
+		if (bdoom_debris)
+			A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:4,pufftype:"NullPuff",range:200,sparsity:0,driftspeed:4,spawnclass:"BFGBallRay");
 		if (GetAge() > 20) {
 			destroy();
 			return;
 		}
-	}
-	States {
-		Spawn:
-			TNT1 A 1;
-			loop;
-			
 	}
 }
 

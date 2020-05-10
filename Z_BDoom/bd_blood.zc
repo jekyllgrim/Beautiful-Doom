@@ -1,6 +1,5 @@
 Class BD_BloodBase : SmallDebris abstract {
 	static const name bsprite[] = { "YBL7","YBL8","YBL9" };
-	protected state bdeath;
 	Default {
 		BD_BaseDebris.sfxtype 'blood';
 		+PUFFGETSOWNER
@@ -33,27 +32,8 @@ Class BD_BloodBase : SmallDebris abstract {
 				trg.meatlist.push(self);
 			}
 		}
-		bdeath = FindState("Death");
-		if (!sectorz)
-			sectorz = frandom(0.1,0.3);
-	}
-	override void Tick() {
-		super.Tick();
-		if (isFrozen())
-			return;
-		//check if blood hit a wall:
-		A_FaceMovementDirection();
-		FLineTraceData hit;
-		LineTrace(angle,12,0,flags:TRF_THRUACTORS|TRF_NOSKY,data:hit);
-		//if so, spawn decal and destroy:
-		if (hit.HitLine && (hit.HitLine.flags & hit.HitLine.ML_BLOCKING)) {
-			int dmg = 1;
-			if (target)
-				dmg = target.GetMaxHealth() - target.health;
-			TraceBleedAngle(dmg,angle,pitch);
-			destroy();
-			return;
-		}
+		if (!Voffset)
+			Voffset = frandom(0.1,0.3);
 	}
 	states	{
 	LoadSprites:
@@ -90,6 +70,30 @@ Class BD_Blood : BD_BloodBase {
 		roll = random(0,359);
 		sprite = GetSpriteIndex(bsprite[random(0,2)]);
 	}
+	override void Tick() {
+		super.Tick();
+		if (d_spawn && InStateSequence(curstate,d_spawn)) {
+			A_FaceMovementDirection(flags:FMDF_NOPITCH);
+			FLineTraceData hit;
+			LineTrace(angle,16,0,flags:TRF_THRUACTORS|TRF_NOSKY,data:hit);
+			if (hit.HitLine && (hit.HitLine.flags & hit.HitLine.ML_BLOCKING)) {				
+				int dmg = 5;
+				if (target)
+					dmg = target.GetMaxHealth() - target.health;
+				TraceBleedAngle(dmg,angle,0);
+				destroy();
+				return;
+			}
+		}
+	}
+	override void BD_HitWall() {
+		Console.printf("%s hits wall",GetClassName());
+		int dmg = 5;
+		if (target)
+			dmg = target.GetMaxHealth() - target.health;
+		TraceBleedAngle(dmg,angle,pitch);
+		destroy();
+	}
 	override void BD_HitFloor() {
 		super.BD_HitFloor();
 		A_Stop();
@@ -111,7 +115,6 @@ Class BD_Blood : BD_BloodBase {
 			}
 		}
 		A_SetRenderStyle(1,STYLE_Normal);
-		SetStateLabel("Death");
 	}
 	override void BD_Hitceiling() {
 		super.BD_Hitceiling();
@@ -119,7 +122,8 @@ Class BD_Blood : BD_BloodBase {
 		A_Scream();
 		sprite = GetSpriteIndex("MODL");
 		frame = random(0,12);
-		angle = random(0,359);
+		landed = true;
+		onceiling = true;
 		AlignToPlane(self,ceiling:true);
 		if (CurSector.CeilingPlane.Normal == (0,0,-1)) {
 			if (CheckLandingSize(24,true))
@@ -133,19 +137,16 @@ Class BD_Blood : BD_BloodBase {
 				return;
 			}
 		}
-		onceiling = true;
-		landed = true;
 		A_SetRenderStyle(0.8,Style_Translucent);
-		SetStateLabel("OnCeiling");
 	}
 	states {
 	spawn:
 		#### AAA 0; //override hardcoded frame-skipping behavior for Blood
-		#### ABCDEFGHIJKLMNOPQRS 1 {
+		#### ABCDEFGHIJKLMNOPQRS 2 {
 			if (waterlevel > 0)
 				SetStateLabel("Water");
 		}
-		stop;
+		wait;
 	Death:
 		#### # -1 { 
 			if (BDoomActor.CheckWater(self))
@@ -153,7 +154,7 @@ Class BD_Blood : BD_BloodBase {
 			return ResolveState(null);
 		}
 		stop;
-	OnCeiling:
+	HitCeiling:
 		#### # 6 {
 			int chance = Clamp (320 - (128 * alpha),64,250);
 			A_SpawnitemEx("BD_CeilingBloodDrop",frandom(-3,3),frandom(-3,3),-1,flags:SXF_TRANSFERTRANSLATION|SXF_NOPOINTERS,chance);
@@ -203,6 +204,13 @@ Class BD_Blood : BD_BloodBase {
 	}
 }
 
+
+Class TestBlood : BD_Blood {
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		VelFromAngle(10,angle);
+	}
+}
 
 
 Class BD_BaseBloodPool : BD_BloodBase abstract {

@@ -393,7 +393,7 @@ Class BD_Plasmaball : Plasmaball {
 				if (bdoom_debris) {
 					A_SpawnItem("WeaponSmoke");
 					for (int i = 12; i > 0; i --) {
-							A_spawnItemEx("BluePlasmaPiece",0,0,0,frandom(-3,3),frandom(-3,3),frandom(3,6),flags:SXF_TRANSFERTRANSLATION,failchance:48);
+							A_spawnItemEx("BluePlasmaPiece",0,0,1,frandom(-3,3),frandom(-3,3),frandom(3,6),flags:SXF_TRANSFERTRANSLATION,failchance:48);
 					}
 				}
 			}
@@ -419,17 +419,14 @@ Class BD_PlasmaTrail : BD_BaseFlare {
 }
 
 //a tiny bright blue "spark"
-Class BluePlasmaPiece : SmallDebris {
+Class BluePlasmaPiece : RicochetSpark {
 	Default {
-		renderstyle "Add";
-		alpha 1.0;
 		scale 0.08;
-		gravity 0.8;
 	}
 	states {
-		Spawn:
-			PLBS A 1 bright A_FadeOut(0.03);
-			loop;
+	Spawn:
+		PLBS A 1 bright A_FadeOut(0.05);
+		loop;
 	}
 }
 

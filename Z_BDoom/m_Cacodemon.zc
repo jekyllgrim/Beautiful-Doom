@@ -283,13 +283,11 @@ Class CacoballRay : BD_BaseFlare {
 	}
 }
 
-Class CacoBallLightning : BD_ProjFlare {
+Class CacoBallLightning : BD_BaseFlare {
 	bool upward;
 	double ceilz;
 	double flrz;
 	Default {
-		+BRIGHT
-		renderstyle "Add";
 		scale 0.12;
 		alpha 0.0;
 	}
@@ -334,21 +332,22 @@ Class CacoBallLightning : BD_ProjFlare {
 			}
 		}
 	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();	
+		if (master) {
+			Warp(master,-10);
+			vel = master.vel;
+			moving = true;
+		}
+	}
 	states	{
 	Spawn:
-		TNT1 A 0 NoDelay {
-			if (master) {
-				SetOrigin(master.pos,false);
-				vel = master.vel;
-			}
-		}
-	Idle:
 		CLTN ABCDEFGH 2;
 		loop;
 	}
 }
 
-Class CacoBallPiece : BD_BaseFlare {
+Class CacoBallPiece : RicochetSpark {
 	Default {
 		alpha 1.0;
 		scale 0.065;

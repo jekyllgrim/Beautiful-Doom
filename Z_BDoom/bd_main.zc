@@ -5,6 +5,7 @@
 Class BDoomActor : Actor abstract {
 	protected double pi;
 	protected name bcolor;
+	
 	bool CheckLandingSize (double cradius = 0, bool checkceiling = false) {
 		bool ret = false;
 		if (checkceiling) {
@@ -23,15 +24,18 @@ Class BDoomActor : Actor abstract {
 		}
 		return ret;
 	}
+	
 	int BD_Sign (int i) {
 		if (i >= 0)
 			return 1;
 		else
 			return -1;
 	}
+	
 	static const name BD_LiquidFloors[] = { 
 		"BLOOD1", "BLOOD2", "BLOOD3", "SLIME01", "SLIME02", "SLIME03", "SLIME04", "SLIME05", "SLIME06", "SLIME07", "SLIME08", "SLIME09", "SLIME10", "SLIME11", "SLIME12"
 	};
+	
 	static bool CheckWater(actor checker = null) {
 		if (!checker)
 			return false;
@@ -45,6 +49,7 @@ Class BDoomActor : Actor abstract {
 		}
 		return false;
 	}
+	
 	// function that aligns flat models to slopes by Boondorl:
 	// (Note: when hitting a slope, I don't do an overhang check because I can't be bothered with the maths required to do that)
 	static void AlignToPlane(Actor a, SecPlane sec = null, bool ceiling = false) {
@@ -63,7 +68,6 @@ Class BDoomActor : Actor abstract {
 			norm = sec.normal;
 		if (abs(norm.z) ~== 1) {
 			if (ceiling) {
-				a.roll += 180;
 				a.pitch += 180;
 			}
 			return;		
@@ -81,10 +85,12 @@ Class BDoomActor : Actor abstract {
 			a.roll *= -1;
 		}
 	}
+	
 	override void BeginPlay() {
 		super.BeginPlay();
 		pi = 3.141592653589793;
 	}	
+	
 	States {
 	Loadsprites:
 		LENR A 0;
@@ -101,9 +107,8 @@ Class BDoomActor : Actor abstract {
 
 //base class for most debris
 Class BD_BaseDebris : BDoomActor abstract {
-	protected bool landed;
-	protected bool onceiling;
-	protected bool moving; //gets set to true if the actor receives any velocity when spawned
+	protected bool landed;			//true if object landed on the floor (or ceiling, if can stick to ceiling)
+	protected bool moving; 		//marks actor as moving; sets to true automatically if actor spawns with non-zero vel
 	name sfxtype; //'debris', 'flames', 'blood', 'gibs' — based on the value the thing gets put into a special array that controls their number, see bd_events.zc
 	property sfxtype : sfxtype;
 	Default {
@@ -160,30 +165,41 @@ Class BD_BaseDebris : BDoomActor abstract {
 
 //base inexpensive class for non-interactive particles and small debris
 Class SmallDebris : BD_BaseDebris abstract {
-	protected double sectorz;
-	double wrot;
-	double dbrake; //how quickly to reduce horizontal speed of "landed" particles to simulate sliding along the floor
-	protected bool removeonfall; //whether to remove immediately as it reaches the floor
-	protected bool hitceiling;
-	property hitceiling : hitceiling; //whether to react to approaching ceiling
-	property removeonfall : removeonfall;
+	protected bool onceiling;		//true if object is stuck on ceiling (must be combined with landed)
+	protected double Voffset;		//small randomized plane offset to reduce z-fighting for blood pools and such
+	double wrot;					//gets added to roll to imitate rotation during flying
+	double dbrake; 				//how quickly to reduce horizontal speed of "landed" particles to simulate sliding along the floor
 	property dbrake : dbrake;	
+	protected bool removeonfall;	//if true, object is removed when reaching the floor
+	property removeonfall : removeonfall;
+	protected bool hitceiling;		//if true, react to reaching the ceiling (otherwise ignore)
+	property hitceiling : hitceiling;
+	
+	protected vector2 wallnormal;
+	protected vector3 wallpos;
+	
+	protected state d_spawn;
+	protected state d_death;
+	protected state d_ceiling;
+	protected state d_wall;
+	
 	Default {
 		gravity 0.8;
 		SmallDebris.removeonfall false;
 		SmallDebris.dbrake 0;
 		SmallDebris.hitceiling false;
 	}
+
 	//a chad tick override that skips Actor's super.tick!
 	override void Tick() {
-		if (isFrozen())
-			return;
-		UpdateWaterLevel();
 		if (alpha < 0){
 			destroy();
 			return;
 		}
-		//This block manually advances states. Ripped straight from FastProjectile class:
+		if (isFrozen())
+			return;
+		UpdateWaterLevel();
+		//animation:
 		if (tics != -1) {
 			if (tics > 0) 
 				tics--;
@@ -192,32 +208,53 @@ Class SmallDebris : BD_BaseDebris abstract {
 					return;
 			}
 		}
-		//if marked as landed, stick to floor (or ceiling)
-		if (landed) {
-			if (onceiling)
-				SetOrigin((pos.x,pos.y,ceilingz-sectorz),true);
-			else {
-				SetOrigin((pos.x,pos.y,floorz+sectorz),true);
-				//simulate sliding across the floor if brake value isn't 0:
-				if (dbrake > 0) {
+		if (!bNOINTERACTION) {
+			if (d_spawn && InStateSequence(curstate,d_spawn)) {
+				//check if hit ceiling: (if hitceiling is true)
+				if (hitceiling && pos.z >= ceilingz - 10) {
+					BD_Hitceiling();
+					if (!self)
+						return;
+				}
+				//check if hit wall:
+				else  {
+					A_FaceMovementDirection(flags:FMDF_NOPITCH);
+					FLineTraceData hit;
+					LineTrace(angle,16,0,flags:TRF_THRUACTORS|TRF_NOSKY,data:hit);
+					if (hit.HitLine && (hit.HitLine.flags & hit.HitLine.ML_BLOCKING)) {
+						wallnormal = (-hit.HitLine.delta.y,hit.HitLine.delta.x).unit();
+						wallpos = hit.HitLocation;
+						if (!hit.LineSide ) 
+							wallnormal *= -1;						
+						BD_HitWall();
+					}
+					if (!self)
+						return;
+				}
+			}
+			//stick to surface if already landed:
+			if (landed) {
+				if (onceiling)
+					SetOrigin((pos.x,pos.y,ceilingz-Voffset),true);
+				else {
+					SetOrigin((pos.x,pos.y,floorz+Voffset),true);
 					vel.xy *= dbrake;
 				}
 			}
-		}
-		//do nothing if marked as immovable:
-		if (!moving)
-			return;
-		//otherwise simulate movement if not marked as landed:
-		if (!landed) {
-			if ((pos.z >= ceilingz - 10) && hitceiling) 	//hit ceiling is close enough
-				BD_Hitceiling();
-			else if (pos.z > floorz+sectorz)				//otherwise keep falling
-				vel.z -= gravity;
-			else  {			
-				BD_HitFloor();	
+			//simulate falling if not yet landed:
+			else {
+				if (pos.z > floorz+Voffset && gravity != 0)
+					vel.z -= gravity;
+				else {
+					BD_HitFloor();	
+					if (!self)
+						return;
+				}
 			}
 		}
-		SetOrigin(pos+vel,true);		//finally, manually move the object
+		//finally, manually move the object:
+		if (moving)
+			SetOrigin(pos+vel,true);
 	}
 	virtual void BD_HitFloor() {			//hit floor if close enough
 		if (removeonfall) {
@@ -230,22 +267,32 @@ Class SmallDebris : BD_BaseDebris abstract {
 		}
 		landed = true;
 		vel.z = 0;
-		SetZ(floorz+sectorz);
-		if (FindState("Death"))
-			SetStateLabel("Death");
+		SetZ(floorz+Voffset);
+		if (d_death)
+			SetState(d_death);
 	}
-	virtual void BD_Hitceiling() {		
+	virtual void BD_Hitceiling() {
 		if (ceilingpic == skyflatnum) {
 			destroy();
 			return;
 		}
-		onceiling = true;
-		SetZ(ceilingz-sectorz);
+		SetZ(ceilingz-Voffset);
+		if (d_ceiling)
+			SetState(d_ceiling);
 	}
+	virtual void BD_HitWall() {
+		if (d_wall)
+			SetState(d_wall);	
+	}
+	
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		if (vel.length() != 0) //mark as movable if given any non-zero velocity
+		if (vel.length() != 0 || gravity != 0) //mark as movable if given any non-zero velocity
 			moving = true;
+		d_spawn = FindState("Spawn");
+		d_death = FindState("Death");
+		d_ceiling = FindState("HitCeiling");
+		d_wall = FindState("HitWall");
 	}
 	states {
 	Spawn:
@@ -265,6 +312,7 @@ Class BD_BaseFlare : SmallDebris abstract {
 	Default {
 		BD_BaseDebris.sfxtype 'flames';
 		+BRIGHT
+		+NOINTERACTION
 		renderstyle 'Add';
 		alpha 0.4;
 		scale 0.4;
@@ -309,13 +357,13 @@ Class BD_ProjFlare : BD_BaseFlare {
 		scale 0.11;
 	}
 	override void Tick() {
+		super.Tick();
 		if (!master || !bdoom_debris) {
 			destroy();
 			return;
 		}
 		if (isFrozen())
 			return;
-		super.Tick();
 		Warp(master,xoffset,0,0,flags:WARPF_INTERPOLATE);
 		if (master.InstateSequence(master.curstate,mdeath) || master.InstateSequence(master.curstate,mxdeath)) {
 			Destroy();
@@ -327,10 +375,8 @@ Class BD_ProjFlare : BD_BaseFlare {
 
 Class ParticleFire_General : BD_BaseFlare abstract {
 	Default {
-		renderstyle 'Add';
 		scale 0.5;
 		alpha 0.5;
-		BD_BaseDebris.sfxtype 'flames';
 	}
 	Override void PostBeginPlay() {
 		super.PostBeginPlay();
@@ -355,6 +401,8 @@ Class BD_FireParticle : BD_BaseFlare {
 	}
 	override void Tick() {
 		super.Tick();
+		if (isFrozen())
+			return;
 		A_FadeOut(0.01);
 		scale*=0.95;
 	}
@@ -406,6 +454,7 @@ Class FirePiece : BD_BaseFlare abstract {
 
 Class BD_BaseSmoke : SmallDebris abstract {
 	Default {
+		+NOINTERACTION
 		BD_BaseDebris.sfxtype 'debris';
 		gravity 0;
 		renderstyle 'Add';
@@ -549,21 +598,25 @@ Class SmokingPiece : SmallDebris {
 		alpha 1.0;
 		SmallDebris.removeonfall true;
 	}
-	states
-			{
-			Spawn:
-				TNT1 A 1 NoDelay {
-					A_SpawnItem("SmokingPieceSmoke");
-					A_FadeOut(0.025);
-				}
-				loop;
+	states	{
+	Spawn:
+		TNT1 A 1 NoDelay {
+			A_SpawnItem("SmokingPieceSmoke");
+			A_FadeOut(0.025);
 		}
+		loop;
+	}
 }
 
 Class SmokingPieceSmoke : BD_BaseSmoke {
 	Default {
 		scale 0.04;
 		alpha 0.3;
+	}
+	states {
+	Spawn:
+		SMOK ABCDEFGHIJKLMNOPQ 1 NoDelay A_FadeOut(0.03);
+		stop;
 	}
 }
 
@@ -1073,7 +1126,6 @@ Class RocketDebris : WallPart {
 //small spark spawned by chainsaw, knuckle, bullets on metal
 Class RicochetSpark : SmallDebris {
 	Default {
-		SmallDebris.removeonfall true;
 		SmallDebris.dbrake 0.9;
 		renderstyle 'Add';
 		alpha 1.0;
@@ -1090,12 +1142,12 @@ Class RicochetSpark : SmallDebris {
 		super.PostbeginPlay();
 	}
 	states {
-		Spawn:
-			SPRK A 1 {
-				A_FadeOut(0.03);
-				scale *= 0.95;
-			}
-			loop;
+	Spawn:
+		SPRK A 1 {
+			A_FadeOut(0.03);
+			scale *= 0.95;
+		}
+		loop;
 	}
 }
 
