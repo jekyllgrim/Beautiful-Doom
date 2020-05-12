@@ -132,14 +132,14 @@ class BD_BaseGib : SmallDebris abstract {
 				destroy();
 				return;
 			}
-		}
-		else
-			outboundscounter = 0;	
-		//Spawn blood trails when sliding across the floor:
-		if (!bdoom_blood || bNOBLOOD || !landed || waterlevel != 0)
+		}		
+		/*
+		//Spawn blood trails when sliding
+		if (!bdoom_blood || bNOBLOOD || waterlevel != 0)
 			return;
 		if ((abs(vel.x) > 2 || abs(vel.y) > 2) )
-			BD_GibBleed("BD_BloodPool",2,-pos.z+floorz,30);
+			BD_GibBleed("BD_BloodPool",2,pos.z+0.5,30);
+			*/
 	}
 	states {
 	LoadSprites:
@@ -227,10 +227,13 @@ class BasicMeatPiece : BD_BaseGib {
 	}
 	override void Tick() {
 		super.Tick();
-		if (isFrozen() || waterlevel <= 1)
+		if (isFrozen())
 			return;
-		vel *= 0.9;		
-		gravity = Clamp(gravity * 0.9,watergravity,10);
+		if (waterlevel > 1) {
+			vel.xy *= 0.95;
+			vel.z = Clamp(vel.z *= 0.75,-2,4);
+			gravity = 0;
+		}
 	}
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
@@ -254,7 +257,7 @@ class BasicMeatPiece : BD_BaseGib {
 				BD_GibBleed("BD_Blood",frandom(-2,2),frandom(-2,2),25);
 			else {				
 				if (!bNOBLOOD && bdoom_blood) //spawn less blood if underwater
-					BD_GibBleed("BD_Blood",frandom(-2,2),frandom(-2,2),18);
+					BD_GibBleed("BD_Blood",frandom(-2,2),frandom(-2,2),10);
 				if (abs(wrot) > 0.5) //slow down rotation
 					wrot *= 0.98;
 				else //when not rotating anymore, stop moving
@@ -713,6 +716,8 @@ class Gib_Torso1 : BasicMeatPiece {
 			stop;
 		Death:
 			#### # 4 {
+				if (waterlevel > 0)
+					return ResolveState(null);
 				if (frame < restframe) //landing ainmation (usually blood comes out of the torso,etc.)
 					frame++;
 				if (frame == restframe && vel ~== (0, 0, 0)) { //in contrast to other gibs, torso is always noninteractive, so that it always stays close to the position of the original dead body (so that players can see where the monster died and can predict where the Arch-Vile is going to go to resurrect them)
