@@ -25,7 +25,6 @@ class BD_BaseGib : SmallDebris abstract {
 		radius 8;
 		height 5;
 		alpha 1.0;
-		bouncefactor 0.5;
 		translation "0:255=0:255";
 	}
 	override void PostBeginPlay() {
@@ -45,11 +44,12 @@ class BD_BaseGib : SmallDebris abstract {
 		super.BD_HitCeiling();
 		if (d_ceiling) {
 			if (!bNOBLOOD) {
-				let bld = BD_Blood(Spawn("BD_Blood",(pos.x,pos.y,ceilingz-2)));
+				let bld = BD_Blood(Spawn("BD_Blood",(pos.x,pos.y,ceilingz-1)));
 				if (bld) {
 					if (target && target is "BDoomMonster")	{
 						bld.target = target;
 						bld.translation = target.BloodTranslation;
+						bld.vel.z = 0.1;
 						let mon = BDoomMonster(target);
 						if (mon) 
 							mon.meatlist.Push(bld);
@@ -60,26 +60,21 @@ class BD_BaseGib : SmallDebris abstract {
 			A_Scream();
 			VOffset = height;
 		}
-		else
-			vel.z = 0;
+		else {
+			vel.z = -gravity;
+			vel.xy *= 0.5;
+			//Console.printf("%s hit ceiling, velz: %i",GetClassName(),vel.z);
+		}
 		SetOrigin((pos.x,pos.y,ceilingz-height),true);
 	}		
 	override void BD_HitWall() {
 		super.BD_HitWall();
-		Console.printf("%s hits wall",GetClassName());
 		if (!bNOBLOOD)
-			TraceBleedAngle(1,angle,pitch);
+			TraceBleedAngle(1,angle,0);
 		//if "WallSlide" state exists, stick to wall:
 		if (d_wall) {
 			SetOrigin(wallpos + wallnormal * radius,true);
 			A_Stop();
-		}
-		//otherwise bounce the gib off the wall:
-		else {
-			wrot *= -1;
-			vel = vel - (wallnormal,0) * 2 * (vel dot (wallnormal,0));
-			vel *= bouncefactor;
-			A_FaceMovementDirection();
 		}
 	}
 	override void BD_HitFloor() {
@@ -97,14 +92,16 @@ class BD_BaseGib : SmallDebris abstract {
 			frame = restframe;
 			roll = 0;
 		}
-		let bld = BD_Blood(Spawn("BD_BloodPool",(pos.x,pos.y,floorz)));
-		if (bld) {
-			if (target && target is "BDoomMonster")	{
-				bld.target = target;
-				bld.translation = target.BloodTranslation;
-				let mon = BDoomMonster(target);
-				if (mon) 
-					mon.meatlist.Push(bld);
+		if (!bNOBLOOD) {
+			let bld = BD_Blood(Spawn("BD_BloodPool",(pos.x,pos.y,floorz)));
+			if (bld) {
+				if (target && target is "BDoomMonster")	{
+					bld.target = target;
+					bld.translation = target.BloodTranslation;
+					let mon = BDoomMonster(target);
+					if (mon) 
+						mon.meatlist.Push(bld);
+				}
 			}
 		}
 		A_SetMass(bmass);
@@ -210,7 +207,10 @@ Class BD_GibBlood : BD_Blood {
 }
 
 class BasicMeatPiece : BD_BaseGib {
+	double watergravity;
+	property watergravity : watergravity;
 	Default {
+		BasicMeatPiece.watergravity 0.01;
 		scale 0.45;
 		radius 2;
 	}
@@ -224,6 +224,13 @@ class BasicMeatPiece : BD_BaseGib {
 		if (self.GetClassName() == "BasicMeatPiece")
 			bSLIDESONWALLS = false;
 		GibBeginPlay();
+	}
+	override void Tick() {
+		super.Tick();
+		if (isFrozen() || waterlevel <= 1)
+			return;
+		vel *= 0.9;		
+		gravity = Clamp(gravity * 0.9,watergravity,10);
 	}
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
@@ -242,9 +249,10 @@ class BasicMeatPiece : BD_BaseGib {
 			bSPRITEFLIP = randompick(0,1);
 		}
 		#### # 1 {
+			roll += wrot;
 			if (waterlevel == 0)
 				BD_GibBleed("BD_Blood",frandom(-2,2),frandom(-2,2),25);
-			else {
+			else {				
 				if (!bNOBLOOD && bdoom_blood) //spawn less blood if underwater
 					BD_GibBleed("BD_Blood",frandom(-2,2),frandom(-2,2),18);
 				if (abs(wrot) > 0.5) //slow down rotation
@@ -272,7 +280,7 @@ class BasicMeatPiece : BD_BaseGib {
 		}
 		#### # 1;
 		wait;
-	Hitceiling:
+	HitCeiling:
 		#### # 1 {
 			A_SetTics(random(50,100));		
 			gravity = frandom(0.0022,0.0025);
@@ -384,17 +392,32 @@ Class GibSmudge : SmallDebris {
 	}
 }
 
+Class BD_BasicLimb : BasicMeatPiece {
+	Default {
+		+BOUNCEONFLOORS
+		+BOUNCEONWALLS		
+		wallbouncefactor 0.4;
+		bouncefactor 0.2;
+	}
+}
+
 class BasicMetalPiece : BasicMeatPiece {
 	Default {
-		+ROLLCENTER
+		BasicMeatPiece.watergravity 0.08;
 		seesound "none";
 		bouncesound "gibs/metallic";
 		deathsound "gibs/metallic";
 		-CORPSE
 		+MISSILE
-		bouncetype "Doom";
+		+BOUNCEONFLOORS
+		+BOUNCEONWALLS
+		wallbouncefactor 0.5;
 		bouncefactor 0.4;
-		+NOBLOOD
+		+NOBLOOD		
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		Voffset = 2;
 	}
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
@@ -430,7 +453,7 @@ class BasicMetalPiece : BasicMeatPiece {
 			stop;
 		HitWall:
 			stop;
-		Hitceiling:
+		HitCeiling:
 			stop;
 	}
 }
@@ -447,7 +470,6 @@ class BasicMeatPiece_Heavy : BasicMeatPiece {
 
 class Gib_Intestine : BasicMeatPiece {
 	Default {
-		bouncetype "none";
 		scale 0.32;
 		gravity 0.5;
 	}
@@ -493,9 +515,8 @@ class Gib_Kidneys : BasicMeatPiece { //I don't know what that sprite is but it l
 	}
 }
 
-class Gib_Hand : BasicMeatPiece {
+class Gib_Hand : BD_BasicLimb {
 	Default {
-		+ROLLCENTER
 		scale 0.8;
 	}
 	override void GibBeginPlay() {
@@ -536,14 +557,13 @@ class Gib_Hand : BasicMeatPiece {
 	states {		
 	HitWall:
 		stop;
-	Hitceiling:
+	HitCeiling:
 		stop;
 	}
 }
 
-class Gib_Leg : BasicMeatPiece {
+class Gib_Leg : BD_BasicLimb {
 	Default {
-		+ROLLCENTER
 		scale 0.8;
 	}
 	override void GibBeginPlay() {
@@ -583,14 +603,13 @@ class Gib_Leg : BasicMeatPiece {
 	states {		
 	HitWall:
 		stop;
-	Hitceiling:
+	HitCeiling:
 		stop;
 	}
 }
 
-class Gib_Head : BasicMeatPiece {
+class Gib_Head : BD_BasicLimb {
 	Default {
-		+ROLLCENTER
 		scale 0.8;
 	}
 	override void GibBeginPlay() {
@@ -633,7 +652,7 @@ class Gib_Head : BasicMeatPiece {
 	states {		
 	HitWall:
 		stop;
-	Hitceiling:
+	HitCeiling:
 		stop;
 	}
 }
@@ -690,7 +709,7 @@ class Gib_Torso1 : BasicMeatPiece {
 			wait;
 		HitWall:
 			stop;
-		Hitceiling:
+		HitCeiling:
 			stop;
 		Death:
 			#### # 4 {
@@ -799,7 +818,7 @@ Class BD_CacoEye : BasicMeatPiece {
 
 //// LOST SOUL pieces
 
-class LS_Horn : BasicMeatPiece {
+class LS_Horn : BD_BasicLimb {
 	Default {
 		scale 1.0;
 		+NOBLOOD;
@@ -855,17 +874,19 @@ class PainElementalHand : BasicMeatPiece {
 	}
 }
 
-class PainElementalJaw : PainElementalHand {
+class PainElementalJaw : BD_BasicLimb {
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("PAPP");
+		restframe = 1;
 	}
 }
 
-class PainElementalHorn : PainElementalHand {
+class PainElementalHorn : BD_BasicLimb {
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("PARP");
+		restframe = 1;
 	}
 }
 
@@ -921,7 +942,7 @@ Class BasicBossGib : BasicMeatPiece {
 	States {
 	HitWall:
 		stop;
-	Hitceiling:
+	HitCeiling:
 		stop;
 	}
 }

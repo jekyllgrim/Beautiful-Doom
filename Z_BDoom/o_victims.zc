@@ -13,20 +13,13 @@ Class DecorBloodDrop : BD_CeilingBloodDrop {
 		scale 0.18;
 	}
 	states {
-		spawn:
-			BLOD XYZ 3;
-			TNT1 A 0 { vel.z = -3; }
-			BLOD ZZZZZZZZZZZZZZZZZZZZZZZZZ 1 {
-				vel.z = Clamp(vel.z-0.05,-4,0);
-				if (waterlevel > 0) {
-					destroy();
-					return ResolveState(null);
-				}
-				if (pos.z <= floorz)
-					return ResolveState("Death");
-				return ResolveState(null);
-			}
-			stop;
+	spawn:
+		CEBL CDE 3;
+		TNT1 A 0 { 
+			gravity = frandom(0.28,0.32); 
+		}
+		CEBL F 25;
+		stop;
 	}
 }
 

@@ -70,28 +70,13 @@ Class BD_Blood : BD_BloodBase {
 		roll = random(0,359);
 		sprite = GetSpriteIndex(bsprite[random(0,2)]);
 	}
-	override void Tick() {
-		super.Tick();
-		if (d_spawn && InStateSequence(curstate,d_spawn)) {
-			A_FaceMovementDirection(flags:FMDF_NOPITCH);
-			FLineTraceData hit;
-			LineTrace(angle,16,0,flags:TRF_THRUACTORS|TRF_NOSKY,data:hit);
-			if (hit.HitLine && (hit.HitLine.flags & hit.HitLine.ML_BLOCKING)) {				
-				int dmg = 5;
-				if (target)
-					dmg = target.GetMaxHealth() - target.health;
-				TraceBleedAngle(dmg,angle,0);
-				destroy();
-				return;
-			}
-		}
-	}
 	override void BD_HitWall() {
-		Console.printf("%s hits wall",GetClassName());
+		A_Stop();
+		//Console.printf("%s hits wall, angle %i pitch %i",GetClassName(),angle,pitch);
 		int dmg = 5;
 		if (target)
-			dmg = target.GetMaxHealth() - target.health;
-		TraceBleedAngle(dmg,angle,pitch);
+			dmg = target.GetMaxHealth() - target.health;		
+		TraceBleedAngle(dmg,angle,0);
 		destroy();
 	}
 	override void BD_HitFloor() {
@@ -157,7 +142,7 @@ Class BD_Blood : BD_BloodBase {
 	HitCeiling:
 		#### # 6 {
 			int chance = Clamp (320 - (128 * alpha),64,250);
-			A_SpawnitemEx("BD_CeilingBloodDrop",frandom(-3,3),frandom(-3,3),-1,flags:SXF_TRANSFERTRANSLATION|SXF_NOPOINTERS,chance);
+			A_SpawnitemEx("BD_CeilingBloodDrop",frandom(-3,3),frandom(-3,3),0,flags:SXF_TRANSFERTRANSLATION|SXF_NOPOINTERS,chance);
 			A_FadeOut(0.001);
 		}
 		loop;			
@@ -276,6 +261,7 @@ Class BD_CeilingBloodDrop : BD_BloodBase {
 		scale 0.1;
 		alpha 0.75;
 		gravity 0;
+		SmallDebris.hitceiling false;
 	}
 	override void PostBeginPlay() {
 		SmallDebris.PostBeginPlay();
@@ -283,15 +269,16 @@ Class BD_CeilingBloodDrop : BD_BloodBase {
 		bSPRITEFLIP = randompick(0,1);
 		moving = true;
 	}
+	override void Tick() {	
+		super.Tick();
+		if (waterlevel > 0)
+			destroy();
+	}
 	states {
 	spawn:
-		BLOD UVWWXXYYY 2;
-		TNT1 A 0 { 
-			gravity = 0.3; 
-		}
-		BLOD ZZZZZZZZZZZZZZZZZZZZZZZZZ 1 {
-			if (waterlevel > 0)
-				destroy();
+		CEBL ABCDDEEEE 2 A_SetTics(random(1,3));
+		CEBL F 25 { 
+			gravity = frandom(0.28,0.32); 
 		}
 		stop;
 	Death:
@@ -299,7 +286,7 @@ Class BD_CeilingBloodDrop : BD_BloodBase {
 			scale.x = frandom(0.22,0.25);
 			bSPRITEFLIP = randompick(0,1);
 		}
-		BLOD GHIJK 3;
+		CEBL GHIJK 3;
 		stop;
 	}
 }

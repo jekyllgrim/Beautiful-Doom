@@ -211,22 +211,32 @@ Class SmallDebris : BD_BaseDebris abstract {
 		if (!bNOINTERACTION) {
 			if (d_spawn && InStateSequence(curstate,d_spawn)) {
 				//check if hit ceiling: (if hitceiling is true)
-				if (hitceiling && pos.z >= ceilingz - 10) {
+				if (hitceiling && pos.z >= ceilingz - 10 && vel.z > 0) {
 					BD_Hitceiling();
 					if (!self)
 						return;
 				}
 				//check if hit wall:
-				else  {
+				else /*if (pos.z > floorz+Voffset)*/ {
 					A_FaceMovementDirection(flags:FMDF_NOPITCH);
 					FLineTraceData hit;
 					LineTrace(angle,16,0,flags:TRF_THRUACTORS|TRF_NOSKY,data:hit);
-					if (hit.HitLine && (hit.HitLine.flags & hit.HitLine.ML_BLOCKING)) {
+					if (hit.HitLine/* && (hit.HitLine.flags & hit.HitLine.ML_BLOCKING)*/) {
 						wallnormal = (-hit.HitLine.delta.y,hit.HitLine.delta.x).unit();
 						wallpos = hit.HitLocation;
-						if (!hit.LineSide ) 
+						if (!hit.LineSide)
 							wallnormal *= -1;						
-						BD_HitWall();
+						if (bBOUNCEONWALLS || pos.z <= floorz+Voffset){										
+							wrot *= -1;
+							vel = vel - (wallnormal,0) * 2 * (vel dot (wallnormal,0));
+							if (wallbouncefactor)
+								vel *= wallbouncefactor;
+							else
+								vel *= bouncefactor;
+							A_FaceMovementDirection();
+						}
+						else
+							BD_HitWall();
 					}
 					if (!self)
 						return;
@@ -243,10 +253,15 @@ Class SmallDebris : BD_BaseDebris abstract {
 			}
 			//simulate falling if not yet landed:
 			else {
-				if (pos.z > floorz+Voffset && gravity != 0)
+				if (pos.z > floorz+Voffset)
 					vel.z -= gravity;
 				else {
-					BD_HitFloor();	
+					if (bBOUNCEONFLOORS && abs(vel.z) > 1) {
+						SetZ(floorz+Voffset);
+						vel.z *= -bouncefactor;
+					}
+					else
+						BD_HitFloor();	
 					if (!self)
 						return;
 				}
