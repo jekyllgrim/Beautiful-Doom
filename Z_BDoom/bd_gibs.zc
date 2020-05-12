@@ -78,20 +78,27 @@ class BD_BaseGib : SmallDebris abstract {
 		}
 	}
 	override void BD_HitFloor() {
-		Super.BD_HitFloor();
+		if (floorpic == skyflatnum) { 
+			destroy();
+			return;
+		}
+		landed = true;
+		vel.z = 0;
+		if (waterlevel > 0)
+			return;
+		SetZ(floorz+Voffset);
+		if (d_death)
+			SetState(d_death);
 		A_Scream();
-		bSLIDESONWALLS = true;
 		gravity = default.gravity;
 		if (bflat) {
 			bFLATSPRITE = true;
 			pitch = 0;
 		}
-		if (waterlevel == 0) {
-			if (!instant)
-				A_Scream();
-			frame = restframe;
-			roll = 0;
-		}
+		if (!instant)
+			A_Scream();
+		frame = restframe;
+		roll = 0;
 		if (!bNOBLOOD) {
 			let bld = BD_Blood(Spawn("BD_BloodPool",(pos.x,pos.y,floorz)));
 			if (bld) {
@@ -210,7 +217,7 @@ class BasicMeatPiece : BD_BaseGib {
 	double watergravity;
 	property watergravity : watergravity;
 	Default {
-		BasicMeatPiece.watergravity 0.01;
+		BasicMeatPiece.watergravity 0;
 		scale 0.45;
 		radius 2;
 	}
@@ -231,9 +238,11 @@ class BasicMeatPiece : BD_BaseGib {
 			return;
 		if (waterlevel > 1) {
 			vel.xy *= 0.95;
-			vel.z = Clamp(vel.z *= 0.75,-2,4);
-			gravity = 0;
+			vel.z = Clamp(vel.z *= 0.8,-2,4);
+			gravity = watergravity;
 		}
+		else
+			gravity = default.gravity;
 	}
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
@@ -431,10 +440,6 @@ class BasicMetalPiece : BasicMeatPiece {
 		restframe = frame;
 		roll = random(0,359);
 		A_SetScale(frandom(0.3,0.8)*randompick(-1,1));
-	}
-	override void BD_HitFloor()  {
-		super.BD_HitFloor();
-		bMISSILE = false;
 	}
 	states {
 		spawn:
@@ -970,6 +975,9 @@ class CyberHead : BasicBossGib {
 }
 
 Class CyberHandLeft : CyberHead {
+	Default {
+		BasicMeatPiece.watergravity 1;
+	}
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		wrot = -5;
@@ -985,6 +993,9 @@ Class CyberHandLeft : CyberHead {
 }
 
 Class CyberHandRight : CyberHandLeft {
+	Default {
+		BasicMeatPiece.watergravity 0.1;
+	}
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("HND9"); 
@@ -1000,6 +1011,9 @@ Class CyberHandRight : CyberHandLeft {
 }
 
 Class CyberLegLeft : CyberHandRight {
+	Default {
+		BasicMeatPiece.watergravity 1;
+	}
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("LEG9"); 
@@ -1008,6 +1022,9 @@ Class CyberLegLeft : CyberHandRight {
 }
 
 Class CyberLegRight : CyberHandLeft {
+	Default {
+		BasicMeatPiece.watergravity 0.1;
+	}
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("LEG7"); 
@@ -1023,6 +1040,9 @@ Class CyberLegRight : CyberHandLeft {
 }
 
 Class CyberTorso1 : CyberHandRight {
+	Default {
+		BasicMeatPiece.watergravity 1;
+	}
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("TRC1"); 
@@ -1151,7 +1171,8 @@ class SpiderGunGib : SpiderMetalPiece {
 
 class SpiderLegRight : BasicBossGib {
 	int endroll;
-	Default {
+	Default {		
+		BasicMeatPiece.watergravity 1;
 		+NOBLOOD
 		seesound "none";
 		deathsound "gibs/metallic";
@@ -1175,9 +1196,6 @@ class SpiderLegRight : BasicBossGib {
 			SPP5 # 1 {
 				if (abs(roll) < abs(endroll))
 					roll+=wrot;
-				if (waterlevel == 3)
-					return ResolveState("Rest");
-				return ResolveState(null);
 			}
 			wait;
 		Death:

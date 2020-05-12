@@ -70,6 +70,22 @@ Class BD_Blood : BD_BloodBase {
 		roll = random(0,359);
 		sprite = GetSpriteIndex(bsprite[random(0,2)]);
 	}
+	override void Tick() {
+		super.Tick();
+		if (isFrozen())
+			return;
+		if (waterlevel > 1) {
+			A_SetRenderStyle(alpha,STYLE_Translucent);
+			A_FadeOut(0.01);
+			vel *= 0.9;
+			scale*=1.02;
+			gravity = 0;
+		}
+		else {
+			A_SetRenderStyle(alpha,STYLE_Normal);
+			gravity = default.gravity;
+		}
+	}
 	override void BD_HitWall() {
 		A_Stop();
 		//Console.printf("%s hits wall, angle %i pitch %i",GetClassName(),angle,pitch);
@@ -127,10 +143,7 @@ Class BD_Blood : BD_BloodBase {
 	states {
 	spawn:
 		#### AAA 0; //override hardcoded frame-skipping behavior for Blood
-		#### ABCDEFGHIJKLMNOPQRS 2 {
-			if (waterlevel > 1)
-				SetStateLabel("Water");
-		}
+		#### ABCDEFGHIJKLMNOPQRS 2;
 		wait;
 	Death:
 		#### # -1 { 
@@ -164,19 +177,6 @@ Class BD_Blood : BD_BloodBase {
 			return ResolveState(null);
 		}
 		stop;
-	Water:
-		#### # 0 {
-			A_SetRenderStyle(alpha,STYLE_Translucent);
-			gravity = 0;
-		}
-		#### # 2 {
-			if (frame < 18)
-				frame++;
-			A_FadeOut(0.01);
-			vel *= 0.9;
-			scale*=1.02;
-		}
-		wait;
 	WaterLand:
 		#### # 0 A_SetRenderStyle(alpha,STYLE_Translucent);
 		#### # 1 {
