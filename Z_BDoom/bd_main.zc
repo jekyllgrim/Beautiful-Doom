@@ -217,11 +217,11 @@ Class SmallDebris : BD_BaseDebris abstract {
 						return;
 				}
 				//check if hit wall:
-				else /*if (pos.z > floorz+Voffset)*/ {
+				else if (pos.z > floorz+Voffset) {
 					A_FaceMovementDirection(flags:FMDF_NOPITCH);
 					FLineTraceData hit;
 					LineTrace(angle,16,0,flags:TRF_THRUACTORS|TRF_NOSKY,data:hit);
-					if (hit.HitLine/* && (hit.HitLine.flags & hit.HitLine.ML_BLOCKING)*/) {
+					if (hit.HitLine) {
 						wallnormal = (-hit.HitLine.delta.y,hit.HitLine.delta.x).unit();
 						wallpos = hit.HitLocation;
 						if (!hit.LineSide)
@@ -248,7 +248,21 @@ Class SmallDebris : BD_BaseDebris abstract {
 					SetOrigin((pos.x,pos.y,ceilingz-Voffset),true);
 				else {
 					SetOrigin((pos.x,pos.y,floorz+Voffset),true);
-					vel.xy *= dbrake;
+					if (!(vel.x ~== 0) || !(vel.y ~== 0)) {
+						vel.xy *= dbrake;
+						A_FaceMovementDirection(flags:FMDF_NOPITCH);
+						FLineTraceData hit;
+						LineTrace(angle,12,0,flags:TRF_THRUACTORS|TRF_NOSKY,data:hit);
+						if (hit.HitLine) {
+							wallnormal = (-hit.HitLine.delta.y,hit.HitLine.delta.x).unit();
+							wallpos = hit.HitLocation;
+							if (!hit.LineSide)
+								wallnormal *= -1;
+							vel = vel - (wallnormal,0) * 2 * (vel dot (wallnormal,0));
+							vel *= bouncefactor * 0.5;
+							A_FaceMovementDirection();
+						}
+					}
 				}
 			}
 			//simulate falling if not yet landed:
