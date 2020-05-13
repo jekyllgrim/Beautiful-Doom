@@ -23,7 +23,7 @@ class BD_BaseGib : SmallDebris abstract {
 		gravity 0.6;
 		mass 1;
 		radius 8;
-		height 5;
+		height 12;
 		alpha 1.0;
 		translation "0:255=0:255";
 	}
@@ -69,7 +69,7 @@ class BD_BaseGib : SmallDebris abstract {
 	}		
 	override void BD_HitWall() {
 		super.BD_HitWall();
-		if (!bNOBLOOD)
+		if (!bNOBLOOD && waterlevel == 0)
 			TraceBleedAngle(1,angle,0);
 		//if "WallSlide" state exists, stick to wall:
 		if (d_wall) {
@@ -425,6 +425,7 @@ class BasicMetalPiece : BasicMeatPiece {
 		+BOUNCEONWALLS
 		wallbouncefactor 0.5;
 		bouncefactor 0.4;
+		height 8;
 		+NOBLOOD		
 	}
 	override void PostBeginPlay() {
@@ -442,27 +443,24 @@ class BasicMetalPiece : BasicMeatPiece {
 		A_SetScale(frandom(0.3,0.8)*randompick(-1,1));
 	}
 	states {
-		spawn:
-			GMET A 0 NoDelay GibBeginPlay();
-			#### # 1 {			
-				roll+=wrot;
-				if (waterlevel > 0) {
-					if (abs(wrot) > 1)
-						wrot *= 0.98;
-					if (pos.z > floorz)
-						vel.z = -0.5;
-					else
-						return ResolveState("Rest");
-				}
-				return ResolveState(null);
+	spawn:
+		GMET # 1 {			
+			roll+=wrot;
+			if (waterlevel > 0) {
+				if (abs(wrot) > 0.5)
+					wrot *= 0.98;
+				else
+					return ResolveState("Rest");
 			}
-			wait;
-		Raise:
-			stop;
-		HitWall:
-			stop;
-		HitCeiling:
-			stop;
+			return ResolveState(null);
+		}
+		wait;
+	Raise:
+		stop;
+	HitWall:
+		stop;
+	HitCeiling:
+		stop;
 	}
 }
 
@@ -906,6 +904,7 @@ class PainElementalHorn : BD_BasicLimb {
 Class BasicBossGib : BasicMeatPiece {
 	Default {
 		scale 1.0;
+		height 20;
 	}
 	override void GibBeginPlay() {
 		bmass = 200;
@@ -1192,7 +1191,6 @@ class SpiderLegRight : BasicBossGib {
 	}
 	states {
 		spawn:
-			SPP5 A 0 NoDelay GibBeginPlay();
 			SPP5 # 1 {
 				if (abs(roll) < abs(endroll))
 					roll+=wrot;
@@ -1225,9 +1223,6 @@ Class SpiderHandRight : BasicBossGib {
 	}
 	states {
 		spawn:
-			SPP4 A 0 NoDelay {
-				GibBeginPlay();
-			}
 			SPP4 A 1 {
 				A_SpawnItemEx("BD_GibBlood",frandom(-2,2),frandom(-2,2),frandom(0,2),0,frandom(0,1),frandom(0,1),random(175,185),SXF_TRANSFERPOINTERS,144);
 				roll+=wrot;

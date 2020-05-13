@@ -58,7 +58,7 @@ Class BD_Blood : BD_BloodBase {
 		scale 0.35;
 		gravity 0.5;
 		alpha 0.8;
-		height 2;
+		height 8;
 		radius 4;
 		SmallDebris.hitceiling true;		
 	}
@@ -74,7 +74,7 @@ Class BD_Blood : BD_BloodBase {
 		super.Tick();
 		if (isFrozen())
 			return;
-		if (waterlevel > 1) {
+		if (waterlevel > 2) {
 			A_SetRenderStyle(alpha,STYLE_Translucent);
 			A_FadeOut(0.01);
 			vel *= 0.9;
@@ -91,8 +91,9 @@ Class BD_Blood : BD_BloodBase {
 		//Console.printf("%s hits wall, angle %i pitch %i",GetClassName(),angle,pitch);
 		int dmg = 5;
 		if (target)
-			dmg = target.GetMaxHealth() - target.health;		
-		TraceBleedAngle(dmg,angle,0);
+			dmg = target.GetMaxHealth() - target.health;
+		if (waterlevel == 0)
+			TraceBleedAngle(dmg,angle,0);
 		destroy();
 	}
 	override void BD_HitFloor() {
@@ -267,10 +268,19 @@ Class BD_CeilingBloodDrop : BD_BloodBase {
 		bSPRITEFLIP = randompick(0,1);
 		moving = true;
 	}
-	override void Tick() {	
+	override void Tick() {
 		super.Tick();
-		if (waterlevel > 0)
-			destroy();
+		if (isFrozen())
+			return;
+		if (waterlevel > 2) {
+			A_FadeOut(0.01);
+			vel *= 0.9;
+			scale*=1.02;
+			gravity = 0;
+		}
+		else {
+			gravity = default.gravity;
+		}
 	}
 	states {
 	spawn:
