@@ -145,7 +145,7 @@ Class BD_BaseDebris : BDoomActor abstract {
 		A_FaceTarget();
 		
 		double dist = Distance2D(target);							//horizontal distance to target
-		double vdisp = target.pos.z - pos.z + frandom(8,32);		//height difference between gib and target + randomized height
+		double vdisp = target.pos.z - pos.z + frandom[bdsfx](8,32);		//height difference between gib and target + randomized height
 		double ftime = 20;											//time of flight
 		
 		double vvel = (vdisp + 0.5 * ftime*ftime) / ftime;
@@ -267,9 +267,7 @@ Class SmallDebris : BD_BaseDebris abstract {
 			}
 			//simulate falling if not yet landed:
 			else {
-				if (pos.z > floorz+Voffset)
-					vel.z -= gravity;
-				else {
+				if (pos.z <= floorz+Voffset) {
 					if (bBOUNCEONFLOORS && abs(vel.z) > 1) {
 						SetZ(floorz+Voffset);
 						vel.z *= -bouncefactor;
@@ -279,6 +277,8 @@ Class SmallDebris : BD_BaseDebris abstract {
 					if (!self)
 						return;
 				}
+				else if (!bNOGRAVITY) 
+						vel.z -= gravity;
 			}
 		}
 		//finally, manually move the object:
@@ -496,8 +496,8 @@ Class BD_BaseSmoke : SmallDebris abstract {
 			self.destroy();
 			return;
 		}
-		scale.x *= frandom(0.8,1.2);
-		scale.y *= frandom(0.8,1.2);
+		scale.x *= frandom[bdsfx](0.8,1.2);
+		scale.y *= frandom[bdsfx](0.8,1.2);
 		bSPRITEFLIP = randompick(0,1);
 	}
 	states	{
@@ -517,7 +517,7 @@ class WeaponSmoke : BD_BaseSmoke {
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		roll = random(0,359);
+		roll = random[bdsfx](0,359);
 	}
 	states	{
 	Spawn:		
@@ -543,7 +543,7 @@ class BlackSmoke : BD_BaseSmoke {
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		roll += frandom(-40,40);
+		roll += frandom[bdsfx](-40,40);
 	}
 	states	{
 	Spawn:
@@ -566,7 +566,7 @@ class BigBlackSmoke : BlackSmoke {
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		wrot = frandom(0.3,1.2) * randompick(-1,1);
+		wrot = frandom[bdsfx](0.3,1.2) * randompick(-1,1);
 	}
 	override void Tick() {
 		super.Tick();
@@ -663,9 +663,9 @@ Class WallSmoke : BD_BaseSmoke {
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		A_SetScale(frandom(0.028,0.032),frandom(0.028,0.032));
-		wrot = (random(3,10)*randompick(-1,1));
-		frame = random(0,5);
+		A_SetScale(frandom[bdsfx](0.028,0.032),frandom[bdsfx](0.028,0.032));
+		wrot = (random[bdsfx](3,10)*randompick(-1,1));
+		frame = random[bdsfx](0,5);
 	}
 	states {
 	Spawn:
@@ -960,36 +960,36 @@ Class EnBulletPuff : BDoomPuff {
 					ofz = 1;
 				else if (puffdata.HitType == TRACE_HitCeiling)
 					ofz = -1;
-				if (random(0,100) < rchance) {
-					A_SpawnItemEx("RicochetBullet",xvel:50,zvel:frandom(-10,10),angle:random(0,359));
+				if (random[bdsfx](0,100) < rchance) {
+					A_SpawnItemEx("RicochetBullet",xvel:50,zvel:frandom[bdsfx](-10,10),angle:random[bdsfx](0,359));
 				}
 				if (smoke == 1) {
-					for (int i = random(6,9); i > 0; i--) {
+					for (int i = random[bdsfx](6,9); i > 0; i--) {
 						actor wpart = Spawn("WallSmoke",Puffdata.Hitlocation + (0,0,ofz));
 						if (wpart) {
-							wpart.vel = (hitnormal + (frandom(-0.05,0.05),frandom(-0.05,0.05),frandom(-0.05,0.05))) * frandom(0.1,0.5);
+							wpart.vel = (hitnormal + (frandom[bdsfx](-0.05,0.05),frandom[bdsfx](-0.05,0.05),frandom[bdsfx](-0.05,0.05))) * frandom[bdsfx](0.1,0.5);
 							wpart.target = self;
 						}
 					}
 				}
 				else if (smoke == 2) {						
-					for (int i = random(10,15); i > 0; i--)
-						A_SpawnItemEx("RingSmoke", 0,0,0, frandom(-0.7,0.7),frandom(-0.7,0.7),frandom(-0.7,0.7));
+					for (int i = random[bdsfx](10,15); i > 0; i--)
+						A_SpawnItemEx("RingSmoke", 0,0,0, frandom[bdsfx](-0.7,0.7),frandom[bdsfx](-0.7,0.7),frandom[bdsfx](-0.7,0.7));
 				}
 				if (debris) {
-					for (int i = random(4,7); i > 0; i--) {
+					for (int i = random[bdsfx](4,7); i > 0; i--) {
 						actor wpart = Spawn("Wallpart",Puffdata.Hitlocation + (0,0,ofz));
 						if (wpart) {
-							wpart.vel = (hitnormal + (frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(-0.4,0.4))) * frandom(2.5,4);
+							wpart.vel = (hitnormal + (frandom[bdsfx](-0.4,0.4),frandom[bdsfx](-0.4,0.4),frandom[bdsfx](-0.4,0.4))) * frandom[bdsfx](2.5,4);
 							wpart.target = self;
 						}
 					}
 				}
-				if (random(0,100) < sparkchance) {						
-					for (int i = random(5,8); i > 0; i--) {
+				if (random[bdsfx](0,100) < sparkchance) {						
+					for (int i = random[bdsfx](5,8); i > 0; i--) {
 						actor wpart = Spawn("RicochetSpark",Puffdata.Hitlocation + (0,0,ofz));
 						if (wpart) {
-							wpart.vel = (hitnormal + (frandom(-0.7,0.7),frandom(-0.7,0.7),frandom(-0.7,0.7))) * frandom(1,3);
+							wpart.vel = (hitnormal + (frandom[bdsfx](-0.7,0.7),frandom[bdsfx](-0.7,0.7),frandom[bdsfx](-0.7,0.7))) * frandom[bdsfx](1,3);
 							wpart.target = self;
 						}
 					}
@@ -1031,10 +1031,10 @@ Class BD_PlaneDecal : BD_BaseDebris {
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		switch (decaltype) {
-			case 'BulletChip'	: sprite = GetSpriteIndex("CHIP");	frame = random(0,4); alpha = 0.85; angle = random(0,360); break;
-			case 'BulletMChip'	: sprite = GetSpriteIndex("METL");	frame = random(0,4); alpha = 0.55; angle = random(0,360);break;
-			case 'BulletWChip'	: sprite = GetSpriteIndex("WOOD");	frame = random(0,4); alpha = 1.0; break;
-			case 'BulletSChip'	: sprite = GetSpriteIndex("BRIK");	frame = random(0,3); alpha = 0.75; angle = random(0,360);break;
+			case 'BulletChip'	: sprite = GetSpriteIndex("CHIP");	frame = random[bdsfx](0,4); alpha = 0.85; angle = random[bdsfx](0,360); break;
+			case 'BulletMChip'	: sprite = GetSpriteIndex("METL");	frame = random[bdsfx](0,4); alpha = 0.55; angle = random[bdsfx](0,360);break;
+			case 'BulletWChip'	: sprite = GetSpriteIndex("WOOD");	frame = random[bdsfx](0,4); alpha = 1.0; break;
+			case 'BulletSChip'	: sprite = GetSpriteIndex("BRIK");	frame = random[bdsfx](0,3); alpha = 0.75; angle = random[bdsfx](0,360);break;
 		}
 		if (ceiling) {
 			if (CurSector.CeilingPlane.Normal == (0,0,-1) && CheckLandingSize(2,checkceiling:true)) {
@@ -1083,18 +1083,18 @@ Class WallPart : SmallDebris {
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		wrot = frandom(8,14)*randompick(-1,1);
-		scale*=frandom(0.8,1.2);
+		wrot = frandom[bdsfx](8,14)*randompick(-1,1);
+		scale*=frandom[bdsfx](0.8,1.2);
 		bSPRITEFLIP = randompick(0,1);
 		if (!target || !(target is "EnBulletPuff"))
 			return;
 		let puff = EnBulletPuff(target);
 		if (puff.DebrisType == 'wood') {
 			A_SetTranslation("DebrisWood");
-			A_setScale(frandom(0.14,0.18),frandom(0.06,0.09));
+			A_setScale(frandom[bdsfx](0.14,0.18),frandom[bdsfx](0.06,0.09));
 		}
 		else if (puff.DebrisType == 'marble') {
-			if (random(0,1) == 1)
+			if (random[bdsfx](0,1) == 1)
 				A_SetTranslation("DebrisMarble1");
 			else
 				A_SetTranslation("DebrisMarble2");
@@ -1125,7 +1125,7 @@ Class WallPart : SmallDebris {
 			static const string bsprite[] = {
 				"YBL7","YBL8","YBL9"
 			};
-			sprite = GetSpriteIndex(bsprite[random(0,2)]);
+			sprite = GetSpriteIndex(bsprite[random[bdsfx](0,2)]);
 		}
 		#### ABCDEFGHIJKLMNOPQRS 1 A_Fadeout(0.08);
 		stop;		
