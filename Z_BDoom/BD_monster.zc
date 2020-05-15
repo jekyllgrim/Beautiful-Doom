@@ -91,9 +91,10 @@ Class BDoomMonster : Actor abstract {
 				return;
 			}
 			burntimer++;
-			for (int i = random(0,4); i > 0; i--) {
+			for (int i = random(0,2); i > 0; i--) {
 				double rad = radius*0.5;
-				A_SpawnItemEx("BlackSmoke",frandom(-rad,rad),frandom(-rad,rad),/*smokeheight + */frandom(8,20),0,0,frandom(0.4,0.9),failchance:burntimer*0.75);
+				int fchance = burntimer*0.7;
+				A_SpawnItemEx("BlackSmoke",frandom(-rad,rad),frandom(-rad,rad),/*smokeheight + */frandom(8,20),0,0,frandom(0.4,0.9),failchance:fchance);
 			}
 			//console.printf("burntimer: %d, smoke chance: %f",burntimer,chance);
 		}
@@ -357,6 +358,7 @@ Class BurningBodyFlame : Actor {
 		+NOINTERACTION
 		+MOVEWITHSECTOR
 		+RELATIVETOFLOOR
+		+BRIGHT
 		renderstyle "Add";
 		alpha 0.8;
 		xscale 1.0;
@@ -364,6 +366,8 @@ Class BurningBodyFlame : Actor {
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
+		if (!master)
+			return;
 		scale.x = master.radius*0.06; //radius of 20 = xscale 1.0
 		scale.y = scale.x*0.5;
 	}
@@ -371,7 +375,7 @@ Class BurningBodyFlame : Actor {
 		super.Tick();
 		if (isFrozen())
 			return;
-		if (waterlevel > 1) {
+		if (waterlevel > 0) {
 			destroy();
 			return;
 		}
@@ -383,17 +387,31 @@ Class BurningBodyFlame : Actor {
 		burntimer++;
 		if (burntimer > 100) {
 			scale.y*=0.995;
+			scale.x*=0.9995;
 			A_FadeOut(0.005);
 		}
+		color col = Color(0xff,0x65+random(0,100),0x00);
+		if (InStateSequence(curstate,FindState("SpawnGreen")))
+			col = Color(0x00,0xff,0x30+random(0,100));
+		for (double i = frandom(0.3,0.6); i < alpha; i += 0.1 )
+			A_SpawnParticle(
+				col,
+				SPF_FULLBRIGHT|SPF_RELVEL|SPF_RELACCEL,
+				lifetime:random(20,60),size:frandom(2,4),
+				angle:frandom(0,359),
+				xoff:frandom(-12,12),yoff:frandom(-12,12),zoff:frandom(8,32),
+				velx:frandom(1,2),velz:frandom(0.5,2),accelx:frandom(-0.1,-0.3),accelz:-0.05,
+				startalphaf:0.9,sizestep:-0.2
+			);
 	}
 	states{
 		Spawn:
-			BBR1 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 bright;
-			BBR2 ABCDEF 1 bright;
+			BBR1 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1;
+			BBR2 ABCDEF 1;
 			loop;
 		SpawnGreen:
-			BGR1 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 bright;
-			BGR2 ABCDEF 1 bright;
+			BGR1 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1;
+			BGR2 ABCDEF 1;
 			loop;
 	}
 }
