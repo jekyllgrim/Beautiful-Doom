@@ -117,7 +117,6 @@ Class BD_BaseDebris : BDoomActor abstract {
 		+NOTAUTOAIMED
 		+MISSILE			//enters Death when it hits the floor
 		+NOBLOCKMAP
-		+NOGRAVITY
 		+DROPOFF
 		+NOTELEPORT
 		+FORCEXYBILLBOARD
@@ -278,7 +277,7 @@ Class SmallDebris : BD_BaseDebris abstract {
 						return;
 				}
 				else if (!bNOGRAVITY) 
-						vel.z -= gravity;
+					vel.z -= gravity;
 			}
 		}
 		//finally, manually move the object:

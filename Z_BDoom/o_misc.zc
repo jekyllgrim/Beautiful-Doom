@@ -317,11 +317,9 @@ Class BigTreeLeaf : SmallDebris {
 		moving = true;
 	}
 	override void Tick() {
-		if (!isFrozen()) {
-			vel.x*=0.99;
-			vel.y*=0.99;
-		}
 		super.Tick();
+		if (!isFrozen())
+			vel.xy *= 0.99;
 	}
 	override void BD_HitWall() {
 		vel = vel - (wallnormal,0) * (vel dot (wallnormal,0));
@@ -335,13 +333,9 @@ Class BigTreeLeaf : SmallDebris {
 				vel.x = Clamp (frandom(-1.5,1.5),-1.5,1.5);
 				vel.y = Clamp (frandom(-1.5,1.5),-1.5,1.5);
 			}
-			if (pos.z <= floorz+1) {
-				return ResolveState("Land");
-			}
-			return ResolveState(null);
 		}
 		loop;
-	Land:
+	Death:
 		LEFB ABCDEFGHI 5 {
 			if (vel.length() < 0.03) {
 				bFLATSPRITE = true;
