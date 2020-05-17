@@ -275,6 +275,9 @@ Class BDoomWeapon : Weapon abstract {
 			RORR ABCDE 0;
 			RORS ABCDE 0;
 			RORN ABC 0; RORE ABC 0; RORV ABC 0; RORT ABC 0;
+			PLHE Z 0;
+			PLH1 ABCDEFGHIJ 0;
+			PLH2 ABCDEFGHIJ 0;
 			BBGG ABCD 0;
 			stop;
 			
