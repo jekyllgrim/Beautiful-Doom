@@ -60,6 +60,7 @@ Class BD_Chainsaw : BDoomWeapon {
 			Stop;
 		Select:
 			TNT1 A 0 {
+				BD_SetSprite("BSAW","1SAW");
 				If(bdoom_weapons == 2)
 					return ResolveState("Select.Modern");
 				if (bdoom_weapons == 1)
@@ -69,13 +70,13 @@ Class BD_Chainsaw : BDoomWeapon {
 				A_WeaponOffset(12,57);
 				return ResolveState(null);
 			}
-			BSAW FEDCBA 1 {
+			#### FEDCBA 1 {
 				A_WeaponReady(WRF_NOFIRE|WRF_NOBOB);
 				A_WeaponOffset(-2,-5,WOF_ADD);
 			}
 			goto ready;
 		Deselect:
-			TNT1 A 0 {
+			#### A 0 {
 				A_ClearRefire();
 				A_Stopsound(CHAN_BODY);
 				A_Stopsound(CHAN_5);
@@ -88,10 +89,11 @@ Class BD_Chainsaw : BDoomWeapon {
 				invoker.sndcounter = 0;
 				return ResolveState(null);
 			}
-			BSAW G 1 A_Lower();
+			#### G 1 A_Lower();
 			wait;
 		Ready:
 			TNT1 A 0 {
+				BD_SetSprite("BSAW","1SAW");
 				If(bdoom_weapons ==2)
 					return ResolveState("Ready.Modern");
 				invoker.jamstacks = 0;
@@ -103,33 +105,33 @@ Class BD_Chainsaw : BDoomWeapon {
 					A_PlaySound("weapons/sawidle",5);
 				return ResolveState(null);
 			}
-			BSAW GHIJ 2 {
+			#### GHIJ 2 {
 				if (bdoom_weapons == 2)
 					A_WeaponReady();
 				else
 					A_WeaponReady(WRF_NOSECONDARY);
 			}
-			TNT1 A 0 {
+			#### A 0 {
 				if (bdoom_weapons == 1)
 					A_PlaySound("weapons/chainsaw/idle",5);
 				else
 					A_PlaySound("weapons/sawidle",5);
 				return ResolveState(null);
 			}
-			BSAW JIIHHG 1 {
+			#### JIIHHG 1 {
 				if (bdoom_weapons == 2)
 					A_WeaponReady();
 				else
 					A_WeaponReady(WRF_NOSECONDARY);
 			}
-			TNT1 A 0 {
+			#### A 0 {
 				if (bdoom_debris && random(0,1) == 1) {
 					A_Eject("SawSmoke",frandom(16,18),frandom(6,8),frandom(8,9.5),zvel:frandom(0.3,0.7));
 				}
 			}
 			loop;
 		Fire: //should be 8 tics with no refire frames
-			TNT1 A 0 {
+			#### A 0 {
 				If(bdoom_weapons == 1)
 					return ResolveState("Fire.Enhanced");
 				If(bdoom_weapons == 2)
@@ -138,83 +140,81 @@ Class BD_Chainsaw : BDoomWeapon {
 				A_Saw("","weapons/sawhit",2,"BD_ChainsawPuff") ;
 				return ResolveState(null);
 			}
-			BSAW KLMN 1;
-			TNT1 A 0 {
+			#### KLMN 1;
+			#### A 0 {
 				A_playsound("weapons/sawfull",CHAN_BODY,looping:TRUE);
 				A_Saw("","weapons/sawhit",2,"BD_ChainsawPuff");
 			}
-			BSAW NOPQ 1 A_WeaponOffset(frandom(-1,1),frandom(32,33),WOF_INTERPOLATE);
-			TNT1 A 0 A_Refire();
-			TNT1 A 0 A_Stopsound(CHAN_BODY);
-			BSAW MLK 1 A_WeaponReady(WRF_NOSECONDARY);
+			#### NOPQ 1 A_WeaponOffset(frandom(-1,1),frandom(32,33),WOF_INTERPOLATE);
+			#### A 0 A_Refire();
+			#### A 0 A_Stopsound(CHAN_BODY);
+			#### MLK 1 A_WeaponReady(WRF_NOSECONDARY);
 			goto ready;
 		Hold:
-			TNT1 A 0 A_Saw("","weapons/sawhit",2,"BD_ChainsawPuff");
-			BSAW NOPQ 1 A_WeaponOffset(frandom(-1,1),frandom(32,33),WOF_INTERPOLATE);
-			TNT1 A 0 A_Saw("","weapons/sawhit",2,"BD_ChainsawPuff");
-			BSAW NOPQ 1 A_WeaponOffset(frandom(-1,1),frandom(32,33),WOF_INTERPOLATE);
-			TNT1 A 0 A_Refire();
-			TNT1 A 0 A_Stopsound(CHAN_BODY);
-			BSAW MLK 1 A_WeaponReady(WRF_NOSECONDARY);
+			#### A 0 A_Saw("","weapons/sawhit",2,"BD_ChainsawPuff");
+			#### NOPQ 1 A_WeaponOffset(frandom(-1,1),frandom(32,33),WOF_INTERPOLATE);
+			#### A 0 A_Saw("","weapons/sawhit",2,"BD_ChainsawPuff");
+			#### NOPQ 1 A_WeaponOffset(frandom(-1,1),frandom(32,33),WOF_INTERPOLATE);
+			#### A 0 A_Refire();
+			#### A 0 A_Stopsound(CHAN_BODY);
+			#### MLK 1 A_WeaponReady(WRF_NOSECONDARY);
 			goto ready;
 
 	//// ENHANCED
 		Deselect.Enhanced:
-			BSAW G 1 A_Lower(12);
+			#### G 1 A_Lower(12);
 			wait;
 		Fire.Enhanced:
-			TNT1 A 0 A_PlaySound("weapons/chainsaw/start",CHAN_BODY);
-			BSAW KLM 1;
-			TNT1 A 0 {
+			#### A 0 A_PlaySound("weapons/chainsaw/start",CHAN_BODY);
+			#### KLM 1;
+			#### A 0 {
 				A_playsound("weapons/chainsaw/loop",CHAN_BODY,looping:TRUE);
 				A_CustomPunch(2*random(1,10),1,CPF_NOTURN ,"BD_ChainsawPuff");
 			}
 		Hold.Enhanced:
-			BSAW NOPQ 1 A_WeaponOffset(frandom(-1,1),frandom(32,33),WOF_INTERPOLATE);
-			TNT1 A 0 {
+			#### NOPQ 1 A_WeaponOffset(frandom(-1,1),frandom(32,33),WOF_INTERPOLATE);
+			#### A 0 {
 				A_playsound("weapons/chainsaw/loop",CHAN_BODY,looping:TRUE);
 				A_CustomPunch(2*random(1,10),1,CPF_NOTURN ,"BD_ChainsawPuff");
 			}
-			TNT1 A 0 A_Refire("Hold.Enhanced");
-			TNT1 A 0 A_PlaySound("weapons/chainsaw/stop",CHAN_BODY);
-			BSAW MLK 1 A_WeaponReady(WRF_NOSECONDARY);
+			#### A 0 A_Refire("Hold.Enhanced");
+			#### A 0 A_PlaySound("weapons/chainsaw/stop",CHAN_BODY);
+			#### MLK 1 A_WeaponReady(WRF_NOSECONDARY);
 			goto ready;			
 
 	/////////// MODERN
 
 		Select.Modern:
-			TNT1 A 0 {
+			#### A 0 {
 				A_PlaySound("Mweapons/saw/select");
 				A_WeaponOffset(-35.0,74.0);
 			}
-			BSAW GGGGGG 1 {
+			#### GGGGGG 1 {
 				A_WeaponOffset(5.0,-6.0,WOF_ADD);
 				A_WeaponReady(WRF_NOFIRE|WRF_NOBOB);
 			}
 			goto ready;
 		Deselect.Modern:
-			TNT1 A 0 {
+			#### A 0 {
 				A_ClearRefire();
 				invoker.started = false;
 				invoker.sndcounter = 0;
 				A_Stopsound(CHAN_BODY);
 				A_Stopsound(CHAN_5);
 			}
-			BSAW G 1 A_Lower(12);
+			#### G 1 A_Lower(12);
 			wait;
 
 		Ready.Modern:
-			BSAW G 1 {
-				if (bdoom_weapons != 2)
-					return ResolveState("Ready");
-				else If(invoker.started == true)
+			#### G 1 {
+				If(invoker.started == true)
 					return ResolveState("ReadyOn");
 				A_WeaponReady();
 				return ResolveState(null);
 			}
-			wait;
+			goto ready;
 		ReadyOn:
-			TNT1 A 0 {
+			#### A 0 {
 				A_PlaySound("Mweapons/saw/ready",CHAN_5,looping:TRUE);
 				invoker.started = true;
 				A_AlertMonsters(312);
@@ -226,20 +226,20 @@ Class BD_Chainsaw : BDoomWeapon {
 					}
 				}
 			}
-			BSAW GHIJIH 2 A_WeaponReady();
-			TNT1 A 0 {
+			#### GHIJIH 2 A_WeaponReady();
+			#### A 0 {
 				if (bdoom_debris)
 					A_Eject("SawSmoke",frandom(16,18),frandom(6,8),frandom(8,9.5),zvel:frandom(0.3,0.7));
 				invoker.jamstacks = clamp(invoker.jamstacks-1,0,1024);
 			}
 			goto ready;
 		AltFire:
-			TNT1 A 0 {
+			#### A 0 {
 				if(invoker.started == false)
 					return ResolveState("Fire.Modern");
 				return ResolveState(null);
 			}
-			BSAW RSTU 1;
+			#### RSTU 1;
 		AltFireDo.Modern:
 			TNT1 A 0 A_PlaySound("Mweapons/saw/start",4);
 			BSAW VXVXVWXYV 1  {
@@ -269,20 +269,22 @@ Class BD_Chainsaw : BDoomWeapon {
 					return ResolveState("AltFireDo.Modern");
 				return ResolveState(null);
 			}
-			BSAW UTSR 1;
+			#### A 0 BD_SetSprite("BSAW","1SAW");
+			#### UTSR 1;
 			goto ready;	
 
 		Fire.Modern:
-			TNT1 A 0 {
+			#### A 0 {
+				BD_SetSprite("BSAW","1SAW");
 				if (invoker.started == true)
 					return ResolveState("Attack");
 				A_PlaySound("Mweapons/saw/cock");
 				A_AlertMonsters(312);
 				return ResolveState(null);
 			}			
-			BSAW ABCDEF 1;
-			BSAW EDCBA 2;
-			BSAW G 2 {
+			#### ABCDEF 1;
+			#### EDCBA 2;
+			#### G 2 {
 				if (random(0,128) > invoker.jamstacks)
 					return ResolveState("ReadyOn");
 				invoker.jamstacks = clamp(invoker.jamstacks - 8,0,1024); 		
@@ -292,11 +294,11 @@ Class BD_Chainsaw : BDoomWeapon {
 			}
 			goto ready;		
 		Attack:	
-			TNT1 A 0 {
+			#### A 0 {
 				A_Stopsound(CHAN_5);
 				A_PlaySound("Mweapons/saw/start",4);
 			}
-			BSAW KLM 2;
+			#### KLM 2;
 		Hold.Modern:
 			TNT1 A 2 {
 				if(invoker.sndcounter < 75)
@@ -322,32 +324,36 @@ Class BD_Chainsaw : BDoomWeapon {
 			TNT1 A 0 A_Refire("Hold.Modern");
 			goto AttackEnd;
 		HoldDo.Modern:
-			BSAW NOPQ 1 A_WeaponOffset(
+			#### # 0 BD_SetSprite("BSAW","1SAW");
+			#### NOPQ 1 A_WeaponOffset(
 				frandom(-0.3 + invoker.jamstacks * -0.01, 0.3 + invoker.jamstacks * 0.01),
 				frandom(32,32.8 + invoker.jamstacks * 0.01), 
 				WOF_INTERPOLATE
 			);
 			loop;
 		AttackEnd:	
-			TNT1 A 0 {
+			#### A 0 {
+				BD_SetSprite("BSAW","1SAW");
 				BD_ClearPsprite(PSP_GUN2);
 				invoker.sndcounter = 0;
 				A_PlaySound("Mweapons/saw/stop",CHAN_BODY);
 			}
-			BSAW MLKG 2;
+			#### MLKG 2;
 			goto ready;
 		Jam:
 			TNT1 A 0 {
+				BD_SetSprite("BSAW","1SAW");
 				A_PlaySound("Mweapons/saw/stuck",CHAN_BODY,volume:0.5);
 				invoker.started = false;
 				invoker.sndcounter = 0;
 				invoker.hittarget = false;
 				A_ClearRefire();
 			}
-			BSAW RSTU 1;
+			#### RSTU 1;
 			BSAW VVVV 1 A_WeaponOffset(random(-1,1),random(32,33),WOF_INTERPOLATE);
 			BSAW V 9;
-			BSAW UTSRA 2;
+			TNT1 A 0 BD_SetSprite("BSAW","1SAW");
+			#### UTSRA 2;
 			goto ready;
 		BloodOverlay:
 			#### # 1 {
