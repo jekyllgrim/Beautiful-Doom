@@ -27,6 +27,16 @@ Class BDoomWeapon : Weapon abstract {
 		BDoomWeapon.offsetTics -1;
 	}
 	
+	action void BD_SetSprite(name sprite1, name sprite2) {
+		let psp = player.FindPSprite(OverlayID());
+		if (!psp)
+			return;
+		if (!GetCVar("bdoom_blackgloves"))
+			psp.sprite = GetSpriteIndex(sprite1);
+		else
+			psp.sprite = GetSpriteIndex(sprite2);
+	}
+	
 	action void BD_ClearPSprite(int layer1, int layer2 = 0, int layer3 = 0, int layer4 = 0, int layer5 = 0) {
 		array <int> layers = { layer1, layer2, layer3, layer4, layer5 };
 		PlayerInfo plr;
