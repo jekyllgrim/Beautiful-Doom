@@ -187,6 +187,7 @@ Class SmallDebris : BD_BaseDebris abstract {
 		SmallDebris.removeonfall false;
 		SmallDebris.dbrake 0;
 		SmallDebris.hitceiling false;
+		+MOVEWITHSECTOR
 	}
 
 	//a chad tick override that skips Actor's super.tick!
@@ -247,7 +248,6 @@ Class SmallDebris : BD_BaseDebris abstract {
 					SetOrigin((pos.x,pos.y,ceilingz-Voffset),true);
 				else {
 					SetZ(floorz+Voffset);
-					//SetOrigin((pos.x,pos.y,floorz+Voffset),true);
 					if (!(vel.x ~== 0) || !(vel.y ~== 0)) {
 						vel.xy *= dbrake;
 						A_FaceMovementDirection(flags:FMDF_NOPITCH);
