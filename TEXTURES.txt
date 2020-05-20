@@ -1458,6 +1458,240 @@ Sprite "PIMTA0", 166, 90
 	Patch "PIMTA0", 0, 0
 }
 
+Sprite "QIMEA0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMEA0", 0, 0
+}
+
+Sprite "QIMEB0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMEB0", 0, 0
+}
+
+Sprite "QIMEC0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMEC0", 0, 0
+}
+
+Sprite "QIMED0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMED0", 0, 0
+}
+
+Sprite "QIMEE0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMEE0", 0, 0
+}
+
+Sprite "QIMEF0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMEF0", 0, 0
+}
+
+Sprite "QIMEG0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMEG0", 0, 0
+}
+
+Sprite "QIMEH0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMEH0", 0, 0
+}
+
+Sprite "QIMEI0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMEI0", 0, 0
+}
+
+Sprite "QIMEJ0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMEJ0", 0, 0
+}
+
+Sprite "QIMEK0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMEK0", 0, 0
+}
+
+Sprite "QIMEL0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMEL0", 0, 0
+}
+
+Sprite "QIMEM0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMEM0", 0, 0
+}
+
+Sprite "QIMEN0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMEN0", 0, 0
+}
+
+Sprite "QIMEO0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMEO0", 0, 0
+}
+
+Sprite "QIMFA0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMFA0", 0, 0
+}
+
+Sprite "QIMNA0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMNA0", 0, 0
+}
+
+Sprite "QIMNB0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMNB0", 0, 0
+}
+
+Sprite "QIMNC0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMNC0", 0, 0
+}
+
+Sprite "QIMND0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMND0", 0, 0
+}
+
+Sprite "QIMNE0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMNE0", 0, 0
+}
+
+Sprite "QIMNF0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMNF0", 0, 0
+}
+
+Sprite "QIMRA0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMRA0", 0, 0
+}
+
+Sprite "QIMRB0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMRB0", 0, 0
+}
+
+Sprite "QIMRC0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMRC0", 0, 0
+}
+
+Sprite "QIMRD0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMRD0", 0, 0
+}
+
+Sprite "QIMRE0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMRE0", 0, 0
+}
+
+Sprite "QIMRF0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMRF0", 0, 0
+}
+
+Sprite "QIMRG0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMRG0", 0, 0
+}
+
+Sprite "QIMRH0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMRH0", 0, 0
+}
+
+Sprite "QIMRI0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMRI0", 0, 0
+}
+
+Sprite "QIMRJ0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMRJ0", 0, 0
+}
+
+Sprite "QIMRK0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMRK0", 0, 0
+}
+
+Sprite "QIMRL0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMRL0", 0, 0
+}
+
+Sprite "QIMRM0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMRM0", 0, 0
+}
+
+Sprite "QIMRN0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMRN0", 0, 0
+}
+
+Sprite "QIMRO0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMRO0", 0, 0
+}
+
+Sprite "QIMRP0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMRP0", 0, 0
+}
+
+Sprite "QIMTA0", 166, 90
+{
+	Offset -123, -78
+	Patch "QIMTA0", 0, 0
+}
+
 Sprite "SST2A0", 140, 69
 {
 	Offset -90, -99

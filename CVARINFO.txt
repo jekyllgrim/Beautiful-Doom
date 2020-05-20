@@ -6,6 +6,7 @@ server 	int		bdoom_weapons 			= 1;
 server	bool	bdoom_autoreload		= true;
 user 	bool 	bdoom_muzzle			= true;
 server 	bool 	bdoom_tracers			= true;
+user	bool	bdoom_blackgloves		= false;
 
 server 	bool 	bdoom_blood 			= true;
 server 	bool 	bdoom_gibs 				= true;

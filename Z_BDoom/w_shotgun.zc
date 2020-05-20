@@ -67,6 +67,7 @@ Class BD_Shotgun : BDoomWeapon {
 		SHOG A 1 {
 			if (bdoom_weapons == 2)
 				return ResolveState("Ready.Modern");
+			BD_SetSprite("SHOG","QHOG");
 			if (bdoom_weapons == 1)
 				 A_WeaponReady();
 			else
@@ -75,14 +76,15 @@ Class BD_Shotgun : BDoomWeapon {
 		}
 		loop;
 	Deselect:
-		SHOG A 1 {
+		TNT1 A 1 {
 			if(bdoom_weapons == 2)
 				return ResolveState("Deselect.Modern");
 			else if(bdoom_weapons == 1)
-				return ResolveState("Deselect.Enhanced");
-			A_Lower();
+				return ResolveState("Deselect.Enhanced");		
+			BD_SetSprite("SHOG","QHOG");	
 			return ResolveState(null);
 		}
+		#### A 1 A_Lower();
 		wait;
 	Select:
 		TNT1 A 0 { 
@@ -90,9 +92,14 @@ Class BD_Shotgun : BDoomWeapon {
 				A_PlaySound("weapons/shotgun/draw");
 			if(bdoom_weapons == 2)
 				return ResolveState("Select.Modern");
+			A_WeaponOffset(0,86);
+			BD_SetSprite("SHOG","QHOG");	
 			return ResolveState(null);
 		}
-		SHOS FEDCBA 1 A_WeaponReady(WRF_NOFIRE);
+		#### JIGFED 1 {
+			A_WeaponOffset(0,-9,WOF_ADD);
+			A_WeaponReady(WRF_NOFIRE|WRF_NOBOB);
+		}
 		goto ready;
 	Fire: //pre-fire 3 tics, fire 34 tics, refire 7 tics;
 		SHOG A 3 { 
@@ -103,6 +110,7 @@ Class BD_Shotgun : BDoomWeapon {
 				A_PlaySound("weapons/shotgun/fire");
 			else
 				A_PlaySound("weapons/shotgf");
+			BD_SetSprite("SHOG","QHOG");	
 			return ResolveState(null);
 		}
 		SHOF A 3 {
@@ -111,23 +119,25 @@ Class BD_Shotgun : BDoomWeapon {
 				A_FireBullets (5.6, 0, 7, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0);
 			else 
 				A_FireBullets (5.6, 0, 7, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
+			BD_SetSprite("SHOF","QHOF");	
 		}
-		SHOG BDFHIJKL 1;
-		SHOG M 2 {
+		TNT1 A 0 BD_SetSprite("SHOG","QHOG");
+		#### BDFHIJKL 1;
+		#### M 2 {
 			if (bdoom_weapons == 1)
 				 A_playsound("weapons/shotgun/pump",5);
 		}
-		SHOG N 3;
-		SHOG O 3 { 
+		#### N 3;
+		#### O 3 { 
 			If(bdoom_debris)
 				A_Eject("ShotgunCasing",20,frandom(-7,-8),6.5,frandom(0,1),FRandom(3,5),frandom(3,4));
 		}
-		SHOG NLKJIHGFE 1;
-		SHOG DCB 2 {
+		#### NLKJIHGFE 1;
+		#### DCB 2 {
 			if (bdoom_weapons == 1)
 				A_WeaponReady(WRF_NOPRIMARY);
 		}
-		SHOG A 7 A_ReFire();
+		#### A 7 A_ReFire();
 		Goto Ready;
 	Flash:
 		TNT1 A 2 {
@@ -170,21 +180,35 @@ Class BD_Shotgun : BDoomWeapon {
 		stop;
 
 	Deselect.Enhanced:
-		SHOG A 1 A_Lower(12);
+		TNT1 A 0 BD_SetSprite("SHOG","QHOG");
+		#### A 1 A_Lower(12);
 		loop;
 	Altfire:
-		SHOS ABCDEF 1;
+		TNT1 A 0 BD_SetSprite("SHOG","QHOG");
+		#### DEGHIJ 1 A_WeaponOffset(0,9,WOF_ADD);
 	AltHold:
-		TNT1 A 0 A_JumpIfInventory("PowerStrength",1,"AltHoldStrong");
-		TNT1 A 0 A_playsound("weapons/fist/swing");
-		SHOM ABC 1;
-		SHOM D 3 A_CustomPunch(6*random(2,6),TRUE,CPF_NOTURN,"ShotgunMeleePuff",72);
-		SHOM EF 2;
-		SHOM GHI 2;
-		SHOM JJ 1 A_WeaponReady(WRF_NOSECONDARY);
+		TNT1 A 0 {
+			A_WeaponOffset(0,32);
+			if (FindInventory("PowerStrength"))
+				return ResolveState("AltHoldStrong");
+			A_playsound("weapons/fist/swing");
+			BD_SetSprite("SHOM","QHOM");
+			return ResolveState(null);
+		}
+		#### ABC 1;
+		#### D 3 A_CustomPunch(6*random(2,6),TRUE,CPF_NOTURN,"ShotgunMeleePuff",72);
+		#### EF 2;
+		#### GHI 2;
+		#### JJ 1 A_WeaponReady(WRF_NOSECONDARY);
 		TNT1 A 3 A_WeaponReady(WRF_NOSECONDARY);
 		TNT1 A 0 A_ReFire("AltHold");
-		SHOS FEDCBA 1 A_WeaponReady(WRF_NOSECONDARY);
+		TNT1 A 0 A_WeaponOffset(0,86);
+		TNT1 A 0 BD_SetSprite("SHOG","QHOG");
+		#### JIHGED 1 {
+			A_WeaponOffset(0,-9,WOF_ADD);
+			A_WeaponReady(WRF_NOSECONDARY|WRF_NOBOB);
+		}
+		TNT1 A 0 A_WeaponOffset(0,32);
 		goto ready;
 	AltHoldStrong:
 		TNT1 A 0 A_playsound("weapons/fist/swing");
@@ -195,8 +219,9 @@ Class BD_Shotgun : BDoomWeapon {
 		SHOM GHI 2 A_WeaponReady(WRF_NOSECONDARY);
 		SHOM JJ 1 A_WeaponReady(WRF_NOSECONDARY);
 		TNT1 A 1 A_WeaponReady(WRF_NOSECONDARY);
-		TNT1 A 0 A_ReFire("AltHoldStrong");
-		SHOS FEDCBA 1 A_WeaponReady(WRF_NOSECONDARY);
+		TNT1 A 0 A_ReFire("AltHoldStrong");		
+		TNT1 A 0 A_WeaponOffset(0,86);
+		SHOG DEGHIJ 1 A_WeaponOffset(0,-9,WOF_ADD);
 		goto ready;
 
 // MODERN GUNS
