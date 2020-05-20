@@ -246,7 +246,8 @@ Class SmallDebris : BD_BaseDebris abstract {
 				if (onceiling)
 					SetOrigin((pos.x,pos.y,ceilingz-Voffset),true);
 				else {
-					SetOrigin((pos.x,pos.y,floorz+Voffset),true);
+					SetZ(floorz+Voffset);
+					//SetOrigin((pos.x,pos.y,floorz+Voffset),true);
 					if (!(vel.x ~== 0) || !(vel.y ~== 0)) {
 						vel.xy *= dbrake;
 						A_FaceMovementDirection(flags:FMDF_NOPITCH);
@@ -312,7 +313,10 @@ Class SmallDebris : BD_BaseDebris abstract {
 		if (d_wall)
 			SetState(d_wall);	
 	}
-	
+	override void BeginPlay() {
+		super.BeginPlay();		
+		ChangeStatnum(110);
+	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		if (vel.length() != 0 || gravity != 0) //mark as movable if given any non-zero velocity
