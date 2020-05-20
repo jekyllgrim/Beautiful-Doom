@@ -67,7 +67,7 @@ Class BD_Chainsaw : BDoomWeapon {
 					A_PlaySound("weapons/chainsaw/draw");
 				else
 					A_PlaySound("weapons/sawup",5);
-				A_WeaponOffset(12,6);
+				A_WeaponOffset(12,62);
 				return ResolveState(null);
 			}
 			#### FEDCBA 1 {
