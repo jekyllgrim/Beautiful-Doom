@@ -132,8 +132,8 @@ Class BD_Shotgun : BDoomWeapon {
 			If(bdoom_debris)
 				A_Eject("ShotgunCasing",20,frandom(-7,-8),6.5,frandom(0,1),FRandom(3,5),frandom(3,4));
 		}
-		#### NLKJIHGFE 1;
-		#### DCB 2 {
+		#### NNMLKJIHGFE 1;
+		#### DCB 1 {
 			if (bdoom_weapons == 1)
 				A_WeaponReady(WRF_NOPRIMARY);
 		}
