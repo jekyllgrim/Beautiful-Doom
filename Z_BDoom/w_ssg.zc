@@ -430,20 +430,28 @@ Class BD_SuperShotgun : BDoomWeapon {
 		SST2 A 0 {
 			A_WeaponOffset(-20.0,60.0);
 			A_PlaySound("weapons/ssg/draw");
+			BD_SetSprite("SST2","QST2");
 		}
 		#### #### 1 {
 			A_WeaponOffset(5.0,-7.0,WOF_ADD);
 			A_WeaponReady(WRF_NOFIRE|WRF_NOBOB);
 		}
 		goto ready;
-	Deselect.Modern:		
-		SST2 A 1 A_Lower(18);
-		loop;		
+	Deselect.Modern:
+		TNT1 A 0 BD_SetSprite("SST2","QST2");
+		#### A 1 A_Lower(18);
+		wait;		
 	Ready.Modern:
-		SST2 A 1 BD_WeaponReady(true);
+		SST2 A 1 {
+			BD_WeaponReady(true);
+			BD_SetSprite("SST2","QST2");
+		}
 		goto ready;
 	DryReload:
-		SST2 A 8 A_PlaySound("Mweapons/dry");
+		SST2 A 8 {
+			A_PlaySound("Mweapons/dry");
+			BD_SetSprite("SST2","QST2");
+		}
 		goto Reload;
 	Fire.Modern:		
 		SST2 A 1 {
@@ -457,12 +465,13 @@ Class BD_SuperShotgun : BDoomWeapon {
 			A_Gunflash("Flash");
 			A_PlaySound("Mweapons/ssg/firedual",5);
 			A_ZoomFactor(0.98,ZOOM_NOSCALETURNING);
+			BD_SetSprite("SST2","QST2");
 			return ResolveState(null);
 		}
-		TNT1 A 0 A_ZoomFactor(1,ZOOM_NOSCALETURNING);
-		SST2 BCD 1 A_WeaponOffset(frandom(-0.3,0.3),4,WOF_ADD);
-		SST2 EEFFAA 1 A_WeaponOffset(frandom(-0.15,0.15),-2,WOF_ADD);
-		TNT1 A 0 A_WeaponOffset(0,32,WOF_INTERPOLATE);
+		#### A 0 A_ZoomFactor(1,ZOOM_NOSCALETURNING);
+		#### BCD 1 A_WeaponOffset(frandom(-0.3,0.3),4,WOF_ADD);
+		#### EEFFAA 1 A_WeaponOffset(frandom(-0.15,0.15),-2,WOF_ADD);
+		#### A 0 A_WeaponOffset(0,32,WOF_INTERPOLATE);
 		goto Reload;
 	AltFire.Modern:
 		SST2 A 1 {
@@ -478,35 +487,37 @@ Class BD_SuperShotgun : BDoomWeapon {
 			A_SetPitch(pitch-frandom(2.3,3.0),SPF_INTERPOLATE);
 			A_setAngle(angle+frandom(-0.5,0.5),SPF_INTERPOLATE);
 			A_ZoomFactor(0.986,ZOOM_NOSCALETURNING);
+			BD_SetSprite("SST2","QST2");
 			return ResolveState(null);
 		}
-		TNT1 A 0 A_ZoomFactor(1,ZOOM_NOSCALETURNING);
-		SST2 BCD 1 A_WeaponOffset(0,2.5,WOF_ADD);
-		SST2 EEFFAA 1 A_WeaponOffset(0,-1.25,WOF_ADD);
-		TNT1 A 0 {
+		#### A 0 A_ZoomFactor(1,ZOOM_NOSCALETURNING);
+		#### BCD 1 A_WeaponOffset(0,2.5,WOF_ADD);
+		#### EEFFAA 1 A_WeaponOffset(0,-1.25,WOF_ADD);
+		#### A 0 {
 			If(CountInv("SSGClip") == 0)
 				return ResolveState("Reload");
 			return ResolveState(null);
 		}
-		SST2 A 5 A_WeaponReady(WRF_NOSECONDARY);
+		#### A 5 A_WeaponReady(WRF_NOSECONDARY);
 		goto ready;
 	Reload.Modern:
 		TNT1 A 0 {
 			if (CountInv("SSGCLip") == 2 || CountInv("Shell") < 1)
 				return ResolveState("Ready.Modern");
+			BD_SetSprite("SSTR","QSTR");
 			return ResolveState(null);
 		}
-		SSTR ABCDE 1;
-		TNT1 A 0 A_playsound("Mweapons/ssg/open");
-		SSTR FGH 2;
+		#### ABCDE 1;
+		#### A 0 A_playsound("Mweapons/ssg/open");
+		#### FGH 2;
 		
-		TNT1 A 0 {
+		#### A 0 {
 			if (CountInv("SSGClip") == 1 || CountInv("Shell") == 1)
 				return ResolveState("Reload1");
 			return ResolveState(null);
 		}
 			
-		SSTR I 8 {
+		#### I 8 {
 			if (Bdoom_debris) {
 				A_Eject("ShotgunCasing",18,0,12,frandom(0,1),FRandom(1,1.5),frandom(2,3));
 				A_Eject("ShotgunCasing",18,-2,12,frandom(0,1),FRandom(1,1.5),frandom(2,3)); 
@@ -514,43 +525,52 @@ Class BD_SuperShotgun : BDoomWeapon {
 				A_Overlay(11,"InSmokeLeft");
 			}
 		}
-		SSTI ABCDE 2;
-		SSTI F 3 {
+		TNT1 A 0 BD_SetSprite("SSTI","QSTI");
+		#### ABCDE 2;
+		#### F 3 {
 			A_TakeInventory("Shell",1);
 			A_GiveInventory("SSGClip",1);
 			A_playsound("Mweapons/ssg/in");
 		}
-		SSTI GHIKL 2;
-		SSTI M 3 {
+		#### GHIKL 2;
+		#### M 3 {
 			A_TakeInventory("Shell",1);
 			A_GiveInventory("SSGClip",1);
 			A_playsound("Mweapons/ssg/in");
 		}
 		goto ReloadEnd;
 	Reload1:
-		SSTI Y 8 {
+		#### Y 8 {
+			BD_SetSprite("SSTI","QSTI");
 			if (Bdoom_debris) {
 				A_Overlay(10,"InSmokeRight");
 				A_Eject("ShotgunCasing",18,0,12,frandom(0,1),FRandom(1,1.5),frandom(2,3));
 			}
 		}
-		SSTJ AB 1;
-		SSTI I 1;
-		SSTI JKL 2;
-		SSTI M 3 {
+		TNT1 A 0 BD_SetSprite("SSTJ","QSTJ");
+		#### AB 1;
+		TNT1 A 0 BD_SetSprite("SSTI","QSTI");
+		#### I 1;
+		#### JKL 2;
+		#### M 3 {
 			A_TakeInventory("Shell",1);
 			A_GiveInventory("SSGClip",1);
 			A_playsound("Mweapons/ssg/in");
 		}
 		goto ReloadEnd;
 	ReloadEnd:
-		SSTI NO 2;
-		SSTI X 4;
-		SSTR HG 1;
-		TNT1 A 0 A_playsound("Mweapons/ssg/close");		
-		SSTR FE 2;
-		SSTR DCBA 1;
-		SST2 A 2 A_WeaponReady(WRF_NOSWITCH);
+		TNT1 A 0 BD_SetSprite("SSTI","QSTI");
+		#### NO 2;
+		#### X 4;
+		TNT1 A 0 BD_SetSprite("SSTR","QSTR");
+		#### HG 1;
+		#### A 0 A_playsound("Mweapons/ssg/close");		
+		#### FE 2;
+		#### DCBA 1;
+		SST2 A 2 {
+			A_WeaponReady(WRF_NOSWITCH);
+			BD_SetSprite("SST2","QST2");
+		}
 		goto ready;	
 	}
 }
