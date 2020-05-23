@@ -353,12 +353,12 @@ Class BD_Pistol : BDoomWeapon {
 
 	Ready.Modern:
 		PIMN A 1 {
-			BD_ClearPsprite(PSP_GUN2,PSP_GUN3);
-			BD_SetSprite("PIMN","QIMN");
+			BD_ClearPsprite(PSP_GUN2,PSP_GUN3);			
 			BD_WeaponReady();
-			let s = player.FindPSprite (PSP_Weapon);
 			if (countinv("PistolClip") < 1)
-				s.sprite = GetSpriteIndex("PIMT");
+				BD_SetSprite("QIMT","PIMT");
+			else
+				BD_SetSprite("PIMN","QIMN");
 		}
 		goto ready;
 	DryReload:
