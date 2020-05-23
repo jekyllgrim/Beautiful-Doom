@@ -73,7 +73,7 @@ Class BDoomWeapon : Weapon abstract {
 		PSP_HEAT = 5,
 		PSP_KICK = -20,
 		PSP_MFLASH = -5,
-		PSP_EFLASH = 20,
+		PSP_EFLASH = 50,
 		PSP_LIGHTS = 10,
 		PSP_HLIGHTS = 15,
 		PSP_CHAINBLOOD = 80,
@@ -135,8 +135,7 @@ Class BDoomWeapon : Weapon abstract {
 			else if	(InStateSequence(psp.curstate, FindState("Ready.Modern")) )
 				owner.player.setPSprite(PSP_Weapon,ResolveState("QKick"));
 			//do this if used during Reload: weapon sprite will stay the same, kick will be shown and executed independently in overlay
-			else if (InStateSequence(psp.curstate,FindState("Reload.Modern"))	||
-					InStateSequence(psp.curstate, FindState("Reload"))			)
+			else if (InStateSequence(psp.curstate, FindState("Reload")))
 				owner.player.setPSprite(PSP_KICK,FindState("QuickKick"));
 		}
 	//BACKGROUND RELOAD
@@ -456,8 +455,10 @@ Class BD_SSGPellet : RealBullet {
 					bEXTREMEDEATH = true;
 				bulletdamage = CalculateDamage();
 				victim.DamageMobj(self,target,bulletdamage,"normal");
-				victim.TraceBleed(bulletdamage,self);
-				victim.SpawnBlood(pos,AngleTo(victim),bulletdamage);
+				if (!victim.bNOBLOOD && (victim.bSHOOTABLE)) {
+					victim.TraceBleed(bulletdamage,self);
+					victim.SpawnBlood(pos,AngleTo(victim),bulletdamage);
+				}
 			}
 		if (ripdepth <= 0)
 			return 0;
