@@ -2,21 +2,6 @@
 // ------------------ BRIGHTMAPS ------------------
 // ------------------------------------------------
 
-// RIFLE
-
-brightmap sprite "RIFNA0"	{ map "Brightmaps/RIFNA0.png" }
-brightmap sprite "RIFBA0"	{ map "Brightmaps/RIFNA0.png" }
-brightmap sprite "RIFBB0"	{ map "Brightmaps/RIFNA0.png" }
-brightmap sprite "RIFBC0"	{ map "Brightmaps/RIFNA0.png" }
-brightmap sprite "RIFBD0"	{ map "Brightmaps/RIFNA0.png" }
-brightmap sprite "RIFBE0"	{ map "Brightmaps/RIFNA0.png" }
-brightmap sprite "RIFBF0"	{ map "Brightmaps/RIFNA0.png" }
-brightmap sprite "RIFBG0"	{ map "Brightmaps/RIFNA0.png" }
-brightmap sprite "RIFBH0"	{ map "Brightmaps/RIFNA0.png" }
-brightmap sprite "RIFBI0"	{ map "Brightmaps/RIFNA0.png" }
-brightmap sprite "RIFBJ0"	{ map "Brightmaps/RIFNA0.png" }
-brightmap sprite "RIFBK0"	{ map "Brightmaps/RIFNA0.png" }
-
 // MODERN SHOTGUN
 
 brightmap sprite "SHOLF0"	{ map "Brightmaps/ModernShotgun/SHOLF0.png" }
