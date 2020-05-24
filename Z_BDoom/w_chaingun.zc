@@ -213,19 +213,19 @@ Class BD_Chaingun : BDoomWeapon {
 			TNT1 A 1 {
 				A_Light2();
 				if(GetCVAR("bdoom_muzzle")==0)
-					A_Overlay(100,"FlashVanilla");
+					A_Overlay(PSP_EFLASH,"FlashVanilla");
 				else {
 					for (int i = random (2,3); i > 0; i --)
 						A_Eject("BD_MuzzleSmoke",12,0,4,32);
-					A_Overlay(100,"FlashEnhanced");
-					A_Overlay(-100,"FlashMuzzle");
+					A_Overlay(PSP_EFLASH,"FlashEnhanced");
+					A_Overlay(PSP_MFLASH,"FlashMuzzle");
 					if (random(0,1) == 1) 
-						A_OverlayFlags(-100,PSPF_FLIP,true);
+						A_OverlayFlags(PSP_MFLASH,PSPF_FLIP,true);
 				}
-				A_OverlayFlags(100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
-				A_OverlayFlags(-100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
-				A_OverlayRenderstyle(100,STYLE_Add);
-				A_OverlayRenderstyle(-100,STYLE_Add);
+				A_OverlayFlags(PSP_EFLASH,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
+				A_OverlayFlags(PSP_MFLASH,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
+				A_OverlayRenderstyle(PSP_EFLASH,STYLE_Add);
+				A_OverlayRenderstyle(PSP_MFLASH,STYLE_Add);
 			}
 			TNT1 A 1 A_Light1();
 			goto lightdone;
@@ -234,17 +234,17 @@ Class BD_Chaingun : BDoomWeapon {
 			goto lightdone;
 		FlashEnhanced:
 			MGGM A 1 bright;
-			MGGM B 1 bright A_OverlayAlpha(100,0.8);
-			MGGM C 1 bright A_OverlayAlpha(100,0.6);
-			MGGM D 1 bright A_OverlayAlpha(100,0.4);
+			MGGM B 1 bright A_OverlayAlpha(PSP_EFLASH,0.8);
+			MGGM C 1 bright A_OverlayAlpha(PSP_EFLASH,0.6);
+			MGGM D 1 bright A_OverlayAlpha(PSP_EFLASH,0.4);
 			goto lightdone;
 		FlashMuzzle:
 			MUZ2 A 1 bright {
-					A_OverlayOffset(-100,frandom(-0.5,0.5),frandom(-0.5,0.5));
-					let fl = player.FindPSprite(-100);
+					A_OverlayOffset(PSP_MFLASH,frandom(-0.5,0.5),frandom(-0.5,0.5));
+					let fl = player.FindPSprite(OverlayID());
 					fl.frame = random(0,3);
 				}
-			#### # 1 bright A_OverlayAlpha(-100,0.8);
+			#### # 1 bright A_OverlayAlpha(PSP_MFLASH,0.8);
 			stop;
 		FlashHeated:
 			MGGH B 1 bright {
@@ -351,19 +351,19 @@ Class BD_Chaingun : BDoomWeapon {
 			TNT1 A 1 {
 				A_Light2();
 				if(GetCVAR("bdoom_muzzle")==0)
-					A_Overlay(100,"AltFlashVanilla");
+					A_Overlay(PSP_EFLASH,"AltFlashVanilla");
 				else {
 					for (int i = random (2,3); i > 0; i --)
 						A_Eject("BD_MuzzleSmoke",12,0,4,32);
-					A_Overlay(100,"AltFlashEnhanced");
-					A_Overlay(-100,"AltFlashMuzzle");
+					A_Overlay(PSP_EFLASH,"AltFlashEnhanced");
+					A_Overlay(PSP_MFLASH,"AltFlashMuzzle");
 					if (random(0,1) == 1) 
-						A_OverlayFlags(-100,PSPF_FLIP,true);
+						A_OverlayFlags(PSP_MFLASH,PSPF_FLIP,true);
 				}
-				A_OverlayFlags(100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
-				A_OverlayFlags(-100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
-				A_OverlayRenderstyle(100,STYLE_Add);
-				A_OverlayRenderstyle(-100,STYLE_Add);
+				A_OverlayFlags(PSP_EFLASH,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
+				A_OverlayFlags(PSP_MFLASH,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
+				A_OverlayRenderstyle(PSP_EFLASH,STYLE_Add);
+				A_OverlayRenderstyle(PSP_MFLASH,STYLE_Add);
 			}
 			TNT1 A 1 A_Light1();
 			goto lightdone;
@@ -372,15 +372,15 @@ Class BD_Chaingun : BDoomWeapon {
 			goto lightdone;
 		AltFlashEnhanced:
 			MGGM A 1 bright;
-			MGGM C 1 bright A_OverlayAlpha(100,0.6);
+			MGGM C 1 bright A_OverlayAlpha(PSP_EFLASH,0.6);
 			goto lightdone;
 		AltFlashMuzzle:
 			MUZ2 A 1 bright {
-					A_OverlayOffset(-100,frandom(-0.5,0.5),frandom(-0.5,0.5));
-					let fl = player.FindPSprite(-100);
+					A_OverlayOffset(PSP_MFLASH,frandom(-0.5,0.5),frandom(-0.5,0.5));
+					let fl = player.FindPSprite(OverlayID());
 					fl.frame = random(0,3);
 				}
-			#### # 1 bright A_OverlayAlpha(-100,0.25);
+			#### # 1 bright A_OverlayAlpha(PSP_MFLASH,0.25);
 			stop;
 
 		//MODERN
@@ -583,9 +583,9 @@ Class BD_Chaingun : BDoomWeapon {
 			TNT1 A 1 {
 				A_Light2();
 				if (invoker.riflesights)
-					A_Overlay(100,"FlashModernSights");
+					A_Overlay(PSP_EFLASH,"FlashModernSights");
 				else
-					A_Overlay(100,"FlashModernHighlights");
+					A_Overlay(PSP_EFLASH,"FlashModernHighlights");
 				
 				if (GetCVAR("bdoom_muzzle") == 1) {
 					for (int i = random (2,3); i > 0; i --) {
@@ -594,18 +594,18 @@ Class BD_Chaingun : BDoomWeapon {
 						else
 							A_Eject("BD_MuzzleSmoke",12,0,4,32);
 					}
-					A_Overlay(-100,"FlashModernMuzzle");
+					A_Overlay(PSP_MFLASH,"FlashModernMuzzle");
 					if (invoker.riflesights)
-						A_OverlayOffset(-100,0,27);
+						A_OverlayOffset(PSP_MFLASH,0,27);
 					else
-						A_OverlayOffset(-100,0,30);
-					A_OverlayFlags(-100,PSPF_ADDWEAPON,false);
+						A_OverlayOffset(PSP_MFLASH,0,30);
+					A_OverlayFlags(PSP_MFLASH,PSPF_ADDWEAPON,false);
 				}
 						
-				A_OverlayFlags(100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
-				A_OverlayFlags(-100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
-				A_OverlayRenderstyle(100,STYLE_Add);
-				A_OverlayRenderstyle(-100,STYLE_Add);
+				A_OverlayFlags(PSP_EFLASH,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
+				A_OverlayFlags(PSP_MFLASH,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
+				A_OverlayRenderstyle(PSP_EFLASH,STYLE_Add);
+				A_OverlayRenderstyle(PSP_MFLASH,STYLE_Add);
 			}
 			TNT1 A 1 A_Light1();
 			goto lightdone;

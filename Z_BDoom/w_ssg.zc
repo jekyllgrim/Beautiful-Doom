@@ -155,61 +155,46 @@ Class BD_SuperShotgun : BDoomWeapon {
 		#### BAA 1 A_ReFire("Fire");
 		goto ready;
 	Flash:
-		TNT1 A 3 {
+		TNT1 A 2 {
 			A_Light2();
 			if(GetCVAR("bdoom_muzzle")==0)
-				A_Overlay(100,"FlashVanilla");
+				A_Overlay(PSP_EFLASH,"FlashVanilla");
 			else {
 				double vofs = 0;
 				if (bdoom_weapons == 2) 
 					vofs = -2.3;
 				for (int i = random (4,6); i > 0; i --)
 					A_Eject("BD_MuzzleSmoke",7,frandom(-1,1),4+vofs,32);
-				A_Overlay(100,"FlashEnhanced");
-				A_Overlay(-100,"FlashMuzzle");
+				A_Overlay(PSP_EFLASH,"FlashEnhanced");
+				A_Overlay(PSP_MFLASH,"FlashMuzzle");
 				if (random(0,1) == 1) 
-					A_OverlayFlags(-100,PSPF_FLIP,true);
-				A_OverlayFlags(-100,PSPF_ADDWEAPON,false);
-				A_OverlayOffset(-100,0,44);
-				A_OverlayFlags(-100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
-				A_OverlayRenderstyle(-100,STYLE_Add);
+					A_OverlayFlags(PSP_MFLASH,PSPF_FLIP,true);
+				A_OverlayFlags(PSP_MFLASH,PSPF_ADDWEAPON,false);
+				A_OverlayOffset(PSP_MFLASH,0,44);
+				A_OverlayFlags(PSP_MFLASH,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
+				A_OverlayRenderstyle(PSP_MFLASH,STYLE_Add);
 			}
-			A_OverlayFlags(100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
-			A_OverlayRenderstyle(100,STYLE_Add);
+			A_OverlayFlags(PSP_EFLASH,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
+			A_OverlayRenderstyle(PSP_EFLASH,STYLE_Add);
 			if (bdoom_weapons == 2) {
-				A_OverlayOffset(100, 0,-12,WOF_ADD);
-				A_OverlayOffset(-100, 0,-12,WOF_ADD);
+				A_OverlayOffset(PSP_EFLASH, 0,-12,WOF_ADD);
+				A_OverlayOffset(PSP_MFLASH, 0,-12,WOF_ADD);
 				A_SetTics(1);
 			}
 		}
-		TNT1 A 2 {
+		TNT1 A 1 {
 			A_light1();
 			if (bdoom_weapons == 2)
-				A_SetTics(1);
+				BD_ClearPSprite(PSP_EFLASH,PSP_MFLASH);
 		}
 		goto lightdone;
 	FlashVanilla:
-		SH2L A 2 bright {
-			if (bdoom_weapons == 2)
-				A_SetTics(1);
-		}
-		SH2L B 1 bright {
-			if (bdoom_weapons == 2)
-				A_SetTics(0);
-		}
+		SH2L A 2 bright;
+		SH2L B 1 bright;
 		stop;		
 	FlashEnhanced:
-		SH2L I 2 bright {
-			A_OverlayAlpha(OverlayID(),1);
-			if (bdoom_weapons == 2)
-				A_SetTics(1);
-		}
-		#### # 1 bright {
-			A_OverlayAlpha(OverlayID(),0.8);
-			if (bdoom_weapons == 2)
-				return ResolveState("Null");
-			return ResolveState(null);
-		}
+		SH2L I 2 bright A_OverlayAlpha(OverlayID(),1);
+		#### # 1 bright A_OverlayAlpha(OverlayID(),0.8);
 		#### # 1 bright A_OverlayAlpha(OverlayID(),0.5);
 		stop;
 	FlashMuzzle:
@@ -220,12 +205,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 				A_SetTics(1);
 		}
 		#### # 1 bright A_OverlayAlpha(OverlayID(),0.8);
-		#### # 1 bright {
-			A_OverlayAlpha(OverlayID(),0.5);
-			if (bdoom_weapons == 2)
-				return ResolveState("Null");
-			return ResolveState(null);
-		}
+		#### # 1 bright A_OverlayAlpha(OverlayID(),0.5);
 		stop;			
 	
 	Deselect.Enhanced:
@@ -338,17 +318,17 @@ Class BD_SuperShotgun : BDoomWeapon {
 			A_Light2();
 			if(GetCVAR("bdoom_muzzle")==0) {
 				if	(invoker.shotfired || (bdoom_weapons == 2 && CountInv("SSGCLip") < 2))
-					A_Overlay(100,"FlashVanillaLeft");
+					A_Overlay(PSP_EFLASH,"FlashVanillaLeft");
 				else
-					A_Overlay(100,"FlashVanillaRight");
+					A_Overlay(PSP_EFLASH,"FlashVanillaRight");
 			}
 			else {
-				A_Overlay(100,"FlashEnhancedSide");
-				A_Overlay(-100,"FlashMuzzleSide");
-				A_OverlayFlags(-100,PSPF_ADDWEAPON,false);
-				A_OverlayOffset(-100,0,44);
-				A_OverlayFlags(-100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
-				A_OverlayRenderstyle(-100,STYLE_Add);
+				A_Overlay(PSP_EFLASH,"FlashEnhancedSide");
+				A_Overlay(PSP_MFLASH,"FlashMuzzleSide");
+				A_OverlayFlags(PSP_MFLASH,PSPF_ADDWEAPON,false);
+				A_OverlayOffset(PSP_MFLASH,0,44);
+				A_OverlayFlags(PSP_MFLASH,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
+				A_OverlayRenderstyle(PSP_MFLASH,STYLE_Add);
 				double vofs = 0;
 				if (bdoom_weapons == 2) 
 					vofs = -2.3;
@@ -359,70 +339,47 @@ Class BD_SuperShotgun : BDoomWeapon {
 				else {
 					for (int i = random (2,3); i > 0; i --)
 						A_Eject("BD_MuzzleSmoke",7,1,4+vofs,32);
-					A_OverlayFlags(-100,PSPF_FLIP|PSPF_MIRROR,true);
-					A_OverlayFlags(100,PSPF_FLIP|PSPF_MIRROR,true);
+					A_OverlayFlags(PSP_MFLASH,PSPF_FLIP|PSPF_MIRROR,true);
+					A_OverlayFlags(PSP_EFLASH,PSPF_FLIP|PSPF_MIRROR,true);
 				}
 			}
 			if (bdoom_weapons == 2) {
-				A_OverlayOffset(100, 0,-12,WOF_ADD);
-				A_OverlayOffset(-100, 0,-12,WOF_ADD);
+				A_OverlayOffset(PSP_EFLASH, 0,-12,WOF_ADD);
+				A_OverlayOffset(PSP_MFLASH, 0,-12,WOF_ADD);
 				A_SetTics(1);
 			}
-			A_OverlayFlags(100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
-			A_OverlayFlags(-100,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
-			A_OverlayRenderstyle(100,STYLE_Add);
-			A_OverlayRenderstyle(-100,STYLE_Add);
+			A_OverlayFlags(PSP_EFLASH,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
+			A_OverlayFlags(PSP_MFLASH,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
+			A_OverlayRenderstyle(PSP_EFLASH,STYLE_Add);
+			A_OverlayRenderstyle(PSP_MFLASH,STYLE_Add);
 		}
-		TNT1 A 1 A_light1();
+		TNT1 A 1 {
+			A_light1();
+			if (bdoom_weapons == 2)
+				BD_ClearPSprite(PSP_EFLASH,PSP_MFLASH);
+		}				
 		goto lightdone;
 	FlashVanillaLeft:
-		SH2L C 2 bright {
-			if (bdoom_weapons == 2)
-				A_SetTics(1);
-		}
-		SH2L D 1 bright {
-			if (bdoom_weapons == 2)
-				A_SetTics(0);
-		}
+		SH2L C 2 bright;
+		SH2L D 1 bright;
 		stop;		
 	FlashVanillaRight:
-		SH2L E 2 bright {
-			if (bdoom_weapons == 2)
-				A_SetTics(1);
-		}
-		SH2L F 1 bright {
-			if (bdoom_weapons == 2)
-				A_SetTics(0);
-		}
+		SH2L E 2 bright;
+		SH2L F 1 bright;
 		stop;		
 	FlashEnhancedSide:
-		SH2L G 2 bright {
-			A_OverlayAlpha(OverlayID(),1);
-			if (bdoom_weapons == 2)
-				A_SetTics(1);
-		}
-		#### # 1 bright {
-			A_OverlayAlpha(OverlayID(),0.8);
-			if (bdoom_weapons == 2)
-				return ResolveState("Null");
-			return ResolveState(null);
-		}
+		SH2L G 2 bright A_OverlayAlpha(OverlayID(),1);
+		#### # 1 bright A_OverlayAlpha(OverlayID(),0.8);
 		#### # 1 bright A_OverlayAlpha(OverlayID(),0.5);
 		stop;
 	FlashMuzzleSide:
 		MUZ3 A 2 bright {
 			let fl = player.FindPSprite(OverlayID());
-			fl.frame = random(0,3);
-			if (bdoom_weapons == 2)
-				A_SetTics(1);
+			if (fl)
+				fl.frame = random(0,3);
 		}
 		#### # 1 bright A_OverlayAlpha(OverlayID(),0.8);
-		#### # 1 bright {
-			A_OverlayAlpha(OverlayID(),0.5);
-			if (bdoom_weapons == 2)
-				return ResolveState("Null");
-			return ResolveState(null);
-		}
+		#### # 1 bright A_OverlayAlpha(OverlayID(),0.5);
 		stop;	
 		
 	//MODERN
