@@ -60,7 +60,7 @@ Class BD_Chainsaw : BDoomWeapon {
 			Stop;
 		Select:
 			TNT1 A 0 {
-				BD_SetSprite("BSAW","1SAW");
+				BD_SetSprite("BSAW","QSAW");
 				If(bdoom_weapons == 2)
 					return ResolveState("Select.Modern");
 				if (bdoom_weapons == 1)
@@ -93,7 +93,7 @@ Class BD_Chainsaw : BDoomWeapon {
 			wait;
 		Ready:
 			TNT1 A 0 {
-				BD_SetSprite("BSAW","1SAW");
+				BD_SetSprite("BSAW","QSAW");
 				If(bdoom_weapons ==2)
 					return ResolveState("Ready.Modern");
 				invoker.jamstacks = 0;
@@ -269,13 +269,13 @@ Class BD_Chainsaw : BDoomWeapon {
 					return ResolveState("AltFireDo.Modern");
 				return ResolveState(null);
 			}
-			#### A 0 BD_SetSprite("BSAW","1SAW");
+			#### A 0 BD_SetSprite("BSAW","QSAW");
 			#### UTSR 1;
 			goto ready;	
 
 		Fire.Modern:
 			#### A 0 {
-				BD_SetSprite("BSAW","1SAW");
+				BD_SetSprite("BSAW","QSAW");
 				if (invoker.started == true)
 					return ResolveState("Attack");
 				A_PlaySound("Mweapons/saw/cock");
@@ -324,7 +324,7 @@ Class BD_Chainsaw : BDoomWeapon {
 			TNT1 A 0 A_Refire("Hold.Modern");
 			goto AttackEnd;
 		HoldDo.Modern:
-			#### # 0 BD_SetSprite("BSAW","1SAW");
+			#### # 0 BD_SetSprite("BSAW","QSAW");
 			#### NOPQ 1 A_WeaponOffset(
 				frandom(-0.3 + invoker.jamstacks * -0.01, 0.3 + invoker.jamstacks * 0.01),
 				frandom(32,32.8 + invoker.jamstacks * 0.01), 
@@ -333,7 +333,7 @@ Class BD_Chainsaw : BDoomWeapon {
 			loop;
 		AttackEnd:	
 			#### A 0 {
-				BD_SetSprite("BSAW","1SAW");
+				BD_SetSprite("BSAW","QSAW");
 				BD_ClearPsprite(PSP_GUN2);
 				invoker.sndcounter = 0;
 				A_PlaySound("Mweapons/saw/stop",CHAN_BODY);
@@ -342,7 +342,7 @@ Class BD_Chainsaw : BDoomWeapon {
 			goto ready;
 		Jam:
 			TNT1 A 0 {
-				BD_SetSprite("BSAW","1SAW");
+				BD_SetSprite("BSAW","QSAW");
 				A_PlaySound("Mweapons/saw/stuck",CHAN_BODY,volume:0.5);
 				invoker.started = false;
 				invoker.sndcounter = 0;
@@ -352,7 +352,7 @@ Class BD_Chainsaw : BDoomWeapon {
 			#### RSTU 1;
 			BSAW VVVV 1 A_WeaponOffset(random(-1,1),random(32,33),WOF_INTERPOLATE);
 			BSAW V 9;
-			TNT1 A 0 BD_SetSprite("BSAW","1SAW");
+			TNT1 A 0 BD_SetSprite("BSAW","QSAW");
 			#### UTSRA 2;
 			goto ready;
 		BloodOverlay:
