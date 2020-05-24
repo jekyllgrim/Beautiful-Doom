@@ -351,7 +351,7 @@ Class BD_Pistol : BDoomWeapon {
 			BD_ClearPsprite(PSP_GUN2,PSP_GUN3);			
 			BD_WeaponReady();
 			if (countinv("PistolClip") < 1)
-				BD_SetSprite("QIMT","PIMT");
+				BD_SetSprite("PIMT","QIMT");
 			else
 				BD_SetSprite("PIMN","QIMN");
 		}
