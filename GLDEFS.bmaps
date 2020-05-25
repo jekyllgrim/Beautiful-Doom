@@ -2,6 +2,89 @@
 // ------------------ BRIGHTMAPS ------------------
 // ------------------------------------------------
 
+// MODERN PISTOL
+
+brightmap sprite "PIMEA0" { map "brightmaps/pistol/PIMEA0.png" }
+brightmap sprite "PIMEB0" { map "brightmaps/pistol/PIMEB0.png" }
+brightmap sprite "PIMEC0" { map "brightmaps/pistol/PIMEC0.png" }
+brightmap sprite "PIMED0" { map "brightmaps/pistol/PIMED0.png" }
+brightmap sprite "PIMEE0" { map "brightmaps/pistol/PIMEE0.png" }
+brightmap sprite "PIMEF0" { map "brightmaps/pistol/PIMEF0.png" }
+brightmap sprite "PIMEG0" { map "brightmaps/pistol/PIMEG0.png" }
+brightmap sprite "PIMEH0" { map "brightmaps/pistol/PIMEH0.png" }
+brightmap sprite "PIMEI0" { map "brightmaps/pistol/PIMEI0.png" }
+brightmap sprite "PIMEJ0" { map "brightmaps/pistol/PIMEJ0.png" }
+brightmap sprite "PIMEK0" { map "brightmaps/pistol/PIMEK0.png" }
+brightmap sprite "PIMEL0" { map "brightmaps/pistol/PIMEL0.png" }
+brightmap sprite "PIMEM0" { map "brightmaps/pistol/PIMEM0.png" }
+brightmap sprite "PIMEN0" { map "brightmaps/pistol/PIMEN0.png" }
+brightmap sprite "PIMEO0" { map "brightmaps/pistol/PIMEO0.png" }
+brightmap sprite "PIMFA0" { map "brightmaps/pistol/PIMFA0.png" }
+brightmap sprite "PIMNA0" { map "brightmaps/pistol/PIMNA0.png" }
+brightmap sprite "PIMNB0" { map "brightmaps/pistol/PIMNB0.png" }
+brightmap sprite "PIMNC0" { map "brightmaps/pistol/PIMNC0.png" }
+brightmap sprite "PIMND0" { map "brightmaps/pistol/PIMND0.png" }
+brightmap sprite "PIMNE0" { map "brightmaps/pistol/PIMNE0.png" }
+brightmap sprite "PIMNF0" { map "brightmaps/pistol/PIMNF0.png" }
+brightmap sprite "PIMRA0" { map "brightmaps/pistol/PIMRA0.png" }
+brightmap sprite "PIMRB0" { map "brightmaps/pistol/PIMRB0.png" }
+brightmap sprite "PIMRC0" { map "brightmaps/pistol/PIMRC0.png" }
+brightmap sprite "PIMRD0" { map "brightmaps/pistol/PIMRD0.png" }
+brightmap sprite "PIMRE0" { map "brightmaps/pistol/PIMRE0.png" }
+brightmap sprite "PIMRF0" { map "brightmaps/pistol/PIMRF0.png" }
+brightmap sprite "PIMRG0" { map "brightmaps/pistol/PIMRG0.png" }
+brightmap sprite "PIMRH0" { map "brightmaps/pistol/PIMRH0.png" }
+brightmap sprite "PIMRI0" { map "brightmaps/pistol/PIMRI0.png" }
+brightmap sprite "PIMRJ0" { map "brightmaps/pistol/PIMRJ0.png" }
+brightmap sprite "PIMRK0" { map "brightmaps/pistol/PIMRK0.png" }
+brightmap sprite "PIMRL0" { map "brightmaps/pistol/PIMRL0.png" }
+brightmap sprite "PIMRM0" { map "brightmaps/pistol/PIMRM0.png" }
+brightmap sprite "PIMRN0" { map "brightmaps/pistol/PIMRN0.png" }
+brightmap sprite "PIMRO0" { map "brightmaps/pistol/PIMRO0.png" }
+brightmap sprite "PIMRP0" { map "brightmaps/pistol/PIMRP0.png" }
+brightmap sprite "PIMTA0" { map "brightmaps/pistol/PIMTA0.png" }
+
+brightmap sprite "QIMEA0" { map "brightmaps/pistol/PIMEA0.png" }
+brightmap sprite "QIMEB0" { map "brightmaps/pistol/PIMEB0.png" }
+brightmap sprite "QIMEC0" { map "brightmaps/pistol/PIMEC0.png" }
+brightmap sprite "QIMED0" { map "brightmaps/pistol/PIMED0.png" }
+brightmap sprite "QIMEE0" { map "brightmaps/pistol/PIMEE0.png" }
+brightmap sprite "QIMEF0" { map "brightmaps/pistol/PIMEF0.png" }
+brightmap sprite "QIMEG0" { map "brightmaps/pistol/PIMEG0.png" }
+brightmap sprite "QIMEH0" { map "brightmaps/pistol/PIMEH0.png" }
+brightmap sprite "QIMEI0" { map "brightmaps/pistol/PIMEI0.png" }
+brightmap sprite "QIMEJ0" { map "brightmaps/pistol/PIMEJ0.png" }
+brightmap sprite "QIMEK0" { map "brightmaps/pistol/PIMEK0.png" }
+brightmap sprite "QIMEL0" { map "brightmaps/pistol/PIMEL0.png" }
+brightmap sprite "QIMEM0" { map "brightmaps/pistol/PIMEM0.png" }
+brightmap sprite "QIMEN0" { map "brightmaps/pistol/PIMEN0.png" }
+brightmap sprite "QIMEO0" { map "brightmaps/pistol/PIMEO0.png" }
+brightmap sprite "QIMFA0" { map "brightmaps/pistol/PIMFA0.png" }
+brightmap sprite "QIMNA0" { map "brightmaps/pistol/PIMNA0.png" }
+brightmap sprite "QIMNB0" { map "brightmaps/pistol/PIMNB0.png" }
+brightmap sprite "QIMNC0" { map "brightmaps/pistol/PIMNC0.png" }
+brightmap sprite "QIMND0" { map "brightmaps/pistol/PIMND0.png" }
+brightmap sprite "QIMNE0" { map "brightmaps/pistol/PIMNE0.png" }
+brightmap sprite "QIMNF0" { map "brightmaps/pistol/PIMNF0.png" }
+brightmap sprite "QIMRA0" { map "brightmaps/pistol/PIMRA0.png" }
+brightmap sprite "QIMRB0" { map "brightmaps/pistol/PIMRB0.png" }
+brightmap sprite "QIMRC0" { map "brightmaps/pistol/PIMRC0.png" }
+brightmap sprite "QIMRD0" { map "brightmaps/pistol/PIMRD0.png" }
+brightmap sprite "QIMRE0" { map "brightmaps/pistol/PIMRE0.png" }
+brightmap sprite "QIMRF0" { map "brightmaps/pistol/PIMRF0.png" }
+brightmap sprite "QIMRG0" { map "brightmaps/pistol/PIMRG0.png" }
+brightmap sprite "QIMRH0" { map "brightmaps/pistol/PIMRH0.png" }
+brightmap sprite "QIMRI0" { map "brightmaps/pistol/PIMRI0.png" }
+brightmap sprite "QIMRJ0" { map "brightmaps/pistol/PIMRJ0.png" }
+brightmap sprite "QIMRK0" { map "brightmaps/pistol/PIMRK0.png" }
+brightmap sprite "QIMRL0" { map "brightmaps/pistol/PIMRL0.png" }
+brightmap sprite "QIMRM0" { map "brightmaps/pistol/PIMRM0.png" }
+brightmap sprite "QIMRN0" { map "brightmaps/pistol/PIMRN0.png" }
+brightmap sprite "QIMRO0" { map "brightmaps/pistol/PIMRO0.png" }
+brightmap sprite "QIMRP0" { map "brightmaps/pistol/PIMRP0.png" }
+brightmap sprite "QIMTA0" { map "brightmaps/pistol/PIMTA0.png" }
+
+
 // MODERN SHOTGUN
 
 brightmap sprite "SHOLF0"	{ map "Brightmaps/ModernShotgun/SHOLF0.png" }
@@ -29,6 +112,77 @@ brightmap sprite "SHORM0"	{ map "Brightmaps/ModernShotgun/SHORM0.png" }
 brightmap sprite "SHORN0"	{ map "Brightmaps/ModernShotgun/SHORM0.png" }
 brightmap sprite "SHORO0"	{ map "Brightmaps/ModernShotgun/SHORO0.png" }
 brightmap sprite "SHORP0"	{ map "Brightmaps/ModernShotgun/SHORP0.png" }
+
+brightmap sprite "QHOLF0"	{ map "Brightmaps/ModernShotgun/SHOLF0.png" }
+brightmap sprite "QHONA0"	{ map "Brightmaps/ModernShotgun/SHONA0.png" }
+brightmap sprite "QHONB0"	{ map "Brightmaps/ModernShotgun/SHONB0.png" }
+brightmap sprite "QHONC0"	{ map "Brightmaps/ModernShotgun/SHONC0.png" }
+brightmap sprite "QHOND0"	{ map "Brightmaps/ModernShotgun/SHOND0.png" }
+brightmap sprite "QHONE0"	{ map "Brightmaps/ModernShotgun/SHONE0.png" }
+brightmap sprite "QHONF0"	{ map "Brightmaps/ModernShotgun/SHONF0.png" }
+brightmap sprite "QHONG0"	{ map "Brightmaps/ModernShotgun/SHONG0.png" }
+brightmap sprite "QHONH0"	{ map "Brightmaps/ModernShotgun/SHONH0.png" }
+brightmap sprite "QHORA0"	{ map "Brightmaps/ModernShotgun/SHONA0.png" }
+brightmap sprite "QHORB0"	{ map "Brightmaps/ModernShotgun/SHONA0.png" }
+brightmap sprite "QHORC0"	{ map "Brightmaps/ModernShotgun/SHONA0.png" }
+brightmap sprite "QHORD0"	{ map "Brightmaps/ModernShotgun/SHORD0.png" }
+brightmap sprite "QHORE0"	{ map "Brightmaps/ModernShotgun/SHORD0.png" }
+brightmap sprite "QHORF0"	{ map "Brightmaps/ModernShotgun/SHORF0.png" }
+brightmap sprite "QHORG0"	{ map "Brightmaps/ModernShotgun/SHORF0.png" }
+brightmap sprite "QHORH0"	{ map "Brightmaps/ModernShotgun/SHORH0.png" }
+brightmap sprite "QHORI0"	{ map "Brightmaps/ModernShotgun/SHORH0.png" }
+brightmap sprite "QHORJ0"	{ map "Brightmaps/ModernShotgun/SHORJ0.png" }
+brightmap sprite "QHORK0"	{ map "Brightmaps/ModernShotgun/SHORJ0.png" }
+brightmap sprite "QHORL0"	{ map "Brightmaps/ModernShotgun/SHORL0.png" }
+brightmap sprite "QHORM0"	{ map "Brightmaps/ModernShotgun/SHORM0.png" }
+brightmap sprite "QHORN0"	{ map "Brightmaps/ModernShotgun/SHORM0.png" }
+brightmap sprite "QHORO0"	{ map "Brightmaps/ModernShotgun/SHORO0.png" }
+brightmap sprite "QHORP0"	{ map "Brightmaps/ModernShotgun/SHORP0.png" }
+
+// MODERN RIFLE
+
+brightmap sprite "RIFAA0" { map "brightmaps/rifle/RIFAA0.png" }
+brightmap sprite "RIFAB0" { map "brightmaps/rifle/RIFAB0.png" }
+brightmap sprite "RIFAC0" { map "brightmaps/rifle/RIFAC0.png" }
+brightmap sprite "RIFAD0" { map "brightmaps/rifle/RIFAD0.png" }
+brightmap sprite "RIFNA0" { map "brightmaps/rifle/RIFNA0.png" }
+brightmap sprite "RIFNB0" { map "brightmaps/rifle/RIFNB0.png" }
+brightmap sprite "RIFNC0" { map "brightmaps/rifle/RIFNC0.png" }
+brightmap sprite "RIFND0" { map "brightmaps/rifle/RIFND0.png" }
+brightmap sprite "RIFNE0" { map "brightmaps/rifle/RIFNE0.png" }
+brightmap sprite "RIFRA0" { map "brightmaps/rifle/RIFRA0.png" }
+brightmap sprite "RIFRB0" { map "brightmaps/rifle/RIFRB0.png" }
+brightmap sprite "RIFRC0" { map "brightmaps/rifle/RIFRC0.png" }
+brightmap sprite "RIFRD0" { map "brightmaps/rifle/RIFRD0.png" }
+brightmap sprite "RIFRE0" { map "brightmaps/rifle/RIFRE0.png" }
+brightmap sprite "RIFRF0" { map "brightmaps/rifle/RIFRF0.png" }
+brightmap sprite "RIFRG0" { map "brightmaps/rifle/RIFRG0.png" }
+brightmap sprite "RIFRO0" { map "brightmaps/rifle/RIFRO0.png" }
+brightmap sprite "RIFSA0" { map "brightmaps/rifle/RIFSA0.png" }
+brightmap sprite "RIFSB0" { map "brightmaps/rifle/RIFSB0.png" }
+brightmap sprite "RIFSC0" { map "brightmaps/rifle/RIFSC0.png" }
+
+brightmap sprite "QIFAA0" { map "brightmaps/rifle/RIFAA0.png" }
+brightmap sprite "QIFAB0" { map "brightmaps/rifle/RIFAB0.png" }
+brightmap sprite "QIFAC0" { map "brightmaps/rifle/RIFAC0.png" }
+brightmap sprite "QIFAD0" { map "brightmaps/rifle/RIFAD0.png" }
+brightmap sprite "QIFNA0" { map "brightmaps/rifle/RIFNA0.png" }
+brightmap sprite "QIFNB0" { map "brightmaps/rifle/RIFNB0.png" }
+brightmap sprite "QIFNC0" { map "brightmaps/rifle/RIFNC0.png" }
+brightmap sprite "QIFND0" { map "brightmaps/rifle/RIFND0.png" }
+brightmap sprite "QIFNE0" { map "brightmaps/rifle/RIFNE0.png" }
+brightmap sprite "QIFRA0" { map "brightmaps/rifle/RIFRA0.png" }
+brightmap sprite "QIFRB0" { map "brightmaps/rifle/RIFRB0.png" }
+brightmap sprite "QIFRC0" { map "brightmaps/rifle/RIFRC0.png" }
+brightmap sprite "QIFRD0" { map "brightmaps/rifle/RIFRD0.png" }
+brightmap sprite "QIFRE0" { map "brightmaps/rifle/RIFRE0.png" }
+brightmap sprite "QIFRF0" { map "brightmaps/rifle/RIFRF0.png" }
+brightmap sprite "QIFRG0" { map "brightmaps/rifle/RIFRG0.png" }
+brightmap sprite "QIFRO0" { map "brightmaps/rifle/RIFRO0.png" }
+brightmap sprite "QIFSA0" { map "brightmaps/rifle/RIFSA0.png" }
+brightmap sprite "QIFSB0" { map "brightmaps/rifle/RIFSB0.png" }
+brightmap sprite "QIFSC0" { map "brightmaps/rifle/RIFSC0.png" }
+
 
 // TALL TORCH
 brightmap sprite TTRGA0		{ map "brightmaps/talltorch.png" disablefullbright }

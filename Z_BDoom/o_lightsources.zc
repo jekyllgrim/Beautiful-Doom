@@ -5,6 +5,7 @@ Class BD_LightFlare : BD_BaseFlare {
 	Default {
 		BD_BaseDebris.sfxtype "none";
 		BD_LightFlare.flicker true;
+		+RELATIVETOFLOOR
 	}
 	override void Tick() {
 		if (!master) {
