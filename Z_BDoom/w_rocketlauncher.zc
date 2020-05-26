@@ -309,29 +309,24 @@ Class BD_RocketLauncher : BDoomWeapon {
 			}
 			goto ready;	
 		ReloadMag:
-			ROR1 A 0 {
+			TNT1 A 0 {
 				int mag = CountInv("RLClip");
-				let ws = player.FindPSprite(OverlayID());
-				if (!ws)
-					return ResolveState(null);
-				//Console.Printf("Rockets left: %d",mag);
 				if (mag < 2)
-					ws.sprite = GetSpriteIndex("ROR3");
+					BD_SetSprite("ROR3","QOR3");
 				else if (mag < 3)
-					ws.sprite = GetSpriteIndex("ROR2");
-				return ResolveState(null);
+					BD_SetSprite("ROR2","QOR2");
+				else
+					BD_SetSprite("ROR1","QOR1");
 			}
 			#### ABCDEFGH 2;
 			#### IJKLM 2;
 			TNT1 A 20;
-			ROR1 A 0 {
+			TNT1 A 0 {
 				int rock = CountInv("RocketAmmo");
-				let ws = player.FindPSprite(OverlayID());
-				if (!ws)
-					return ResolveState(null);
 				if (rock < 2)
-					ws.sprite = GetSpriteIndex("ROR2");
-				return ResolveState(null);
+					BD_SetSprite("ROR2","QOR2");
+				else
+					BD_SetSprite("ROR1","QOR1");
 			}
 			#### MLKJI 2;
 			#### H 4;
@@ -341,7 +336,7 @@ Class BD_RocketLauncher : BDoomWeapon {
 			TNT1 A 0 {
 				A_PlaySound("Mweapons/rocket/drum",CHAN_VOICE,volume:0.35);
 				invoker.wasempty = false;
-				let mag = CountInv("RLClip");
+				int mag = CountInv("RLClip");
 				if (mag > 2)
 					return ResolveState("ReloadEnd0");
 				else if (mag > 1)

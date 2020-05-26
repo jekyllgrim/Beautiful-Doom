@@ -1380,6 +1380,240 @@ Sprite "ROR3M0", 165, 57
 	Patch "ROR3L0", 8, 4
 }
 
+Sprite "QOR1A0", 165, 57
+{
+	Offset -99, -111
+	Patch "ROR1A0", 0, 0
+}
+
+Sprite "QOR1B0", 165, 57
+{
+	Offset -99, -111
+	Patch "ROR1B0", 0, 0
+}
+
+Sprite "QOR1C0", 165, 57
+{
+	Offset -99, -111
+	Patch "ROR1C0", 0, 0
+}
+
+Sprite "QOR1D0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR1D0", 0, 0
+}
+
+Sprite "QOR1E0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR1E0", 0, 0
+}
+
+Sprite "QOR1F0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR1F0", 0, 0
+}
+
+Sprite "QOR1G0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR1G0", 0, 0
+}
+
+Sprite "QOR1H0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR1H0", 0, 0
+}
+
+Sprite "QOR1I0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR1I0", 0, 0
+}
+
+Sprite "QOR1J0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR1J0", 0, 0
+}
+
+Sprite "QOR1K0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR1K0", 0, 0
+}
+
+Sprite "QOR1L0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR1L0", 0, 0
+}
+
+Sprite "QOR1M0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR1L0", 9, 4
+}
+
+Sprite "QOR2A0", 165, 57
+{
+	Offset -99, -111
+	Patch "ROR2A0", 0, 0
+}
+
+Sprite "QOR2B0", 165, 57
+{
+	Offset -99, -111
+	Patch "ROR2B0", 0, 0
+}
+
+Sprite "QOR2C0", 165, 57
+{
+	Offset -99, -111
+	Patch "ROR2C0", 0, 0
+}
+
+Sprite "QOR2D0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR2D0", 0, 0
+}
+
+Sprite "QOR2E0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR2E0", 0, 0
+}
+
+Sprite "QOR2F0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR2F0", 0, 0
+}
+
+Sprite "QOR2G0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR2G0", 0, 0
+}
+
+Sprite "QOR2H0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR2H0", 0, 0
+}
+
+Sprite "QOR2I0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR2I0", 0, 0
+}
+
+Sprite "QOR2J0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR2J0", 0, 0
+}
+
+Sprite "QOR2K0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR2K0", 0, 0
+}
+
+Sprite "QOR2L0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR2L0", 0, 0
+}
+
+Sprite "QOR2M0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR1L0", 9, 4
+}
+
+Sprite "QOR3A0", 165, 57
+{
+	Offset -99, -111
+	Patch "ROR3A0", 0, 0
+}
+
+Sprite "QOR3B0", 165, 57
+{
+	Offset -99, -111
+	Patch "ROR3B0", 0, 0
+}
+
+Sprite "QOR3C0", 165, 57
+{
+	Offset -99, -111
+	Patch "ROR3C0", 0, 0
+}
+
+Sprite "QOR3D0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR3D0", 0, 0
+}
+
+Sprite "QOR3E0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR3E0", 0, 0
+}
+
+Sprite "QOR3F0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR3F0", 0, 0
+}
+
+Sprite "QOR3G0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR3G0", 0, 0
+}
+
+Sprite "QOR3H0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR3H0", 0, 0
+}
+
+Sprite "QOR3I0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR3I0", 0, 0
+}
+
+Sprite "QOR3J0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR3J0", 0, 0
+}
+
+Sprite "QOR3K0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR3K0", 0, 0
+}
+
+Sprite "QOR3L0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR3L0", 0, 0
+}
+
+Sprite "QOR3M0", 165, 57
+{
+	Offset -99, -111
+	Patch "QOR3L0", 8, 4
+}
+
 Sprite "RORRA0", 165, 57
 {
 	Offset -99, -111
