@@ -101,7 +101,7 @@ OptionMenu "BDoom_Settings" {
 	
 	StaticText "Special Effects", yellow
 	Option "Enhanced gibs & deaths",			"bdoom_gibs", "OnOff", "bdoom_replacemonsters"
-	Option "Gibs pushable by explosions",		"bdoom_livegibs", "Toggle", "bdoom_gibs"
+	//Option "Gibs pushable by explosions",		"bdoom_livegibs", "Toggle", "bdoom_gibs"
 	Option "Enhanced blood",					"bdoom_blood", "OnOff"
 	OptionEither "Force vanilla boss deaths",	"bdoom_nobossgibs", "OnOff", "bdoom_gibs", "bdoom_replacemonsters"
 	Option "Halos & particle flames",			"bdoom_flames", "OnOff", ""
@@ -116,6 +116,7 @@ OptionMenu "BDoom_Settings" {
 	StaticText " "
 	
 	StaticText "Additional Effects and Sounds", yellow
+	Option "Player gloves color",				"bdoom_blackgloves", "bdgloves", "bdoom_weapons"
 	Option "Footstep sounds", 					"bdoom_fs_enabled", "OnOff", ""
 	Option "Ricochet & spark sounds", 			"bdoom_sparks", "OnOff", ""
 	Option "Flies over corpses", 				"bdoom_flies", "OnOff", "bdoom_replacemonsters"
@@ -156,6 +157,11 @@ OptionMenu "BDMonsterReplacements" {
 	Option "Arch-Vile",				"bdoom_ArchVile", "Toggle", ""
 	Option "Cyberdemon",			"bdoom_Cyberdemon", "Toggle", ""
 	Option "Spider Mastermind",		"bdoom_SpiderMastermind", "Toggle", "", 1	
+}
+
+OptionValue "bdgloves" {
+	0, "Classic"
+	1, "Edgy"
 }
 
 OptionValue "Toggle" {
