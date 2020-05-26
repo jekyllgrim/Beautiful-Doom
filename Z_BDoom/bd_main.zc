@@ -603,7 +603,7 @@ Class BurnSmokePiece : BD_BaseSmoke {
 }
 
 
-//basic smoke behind a rocket
+//basic dark smoke behind a rocket
 Class BD_RocketTrail : BD_BaseSmoke {
 	Default {
 		scale 0.1;
@@ -642,7 +642,7 @@ Class SmokingPiece : SmallDebris {
 
 Class SmokingPieceSmoke : BD_BaseSmoke {
 	Default {
-		scale 0.04;
+		scale 0.05;
 		alpha 0.3;
 	}
 	states {
