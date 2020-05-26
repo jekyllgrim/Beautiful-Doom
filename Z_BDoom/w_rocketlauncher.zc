@@ -490,10 +490,6 @@ Class ModernRocket : BD_Rocket {
 		speed 25;
 		seesound "Mweapons/rocket/fire";
 	}
-	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		trailactor = "ModernRocketTrail";
-	}
 	//lovely snippet for smoke trail by Arctangent
 	override void Tick () {
 		Vector3 oldPos = pos;
@@ -506,8 +502,10 @@ Class ModernRocket : BD_Rocket {
 			int steps = int( distance );
 			
 			for( int i = 0; i < steps; i++ )  {
-				actor mo = Spawn(trailactor, oldPos );
-				mo.vel = (frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5));
+				actor mo = Spawn("BD_ModernRocketTrail", oldPos );
+				if (mo) {
+					mo.vel = (frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5));
+				}
 				oldPos = level.vec3Offset( oldPos, direction );
 			}
 		}
@@ -575,6 +573,24 @@ Class ModernRocket : BD_Rocket {
 	}
 }
 
+Class BD_ModernRocketTrail : WallSmoke {
+	Default {
+		scale 0.03;
+		alpha 0.3;
+	}
+	states {
+	Spawn:
+		SMO2 # 1 NoDelay {
+			wrot *= 0.98;
+			A_Fadeout(0.006);
+			a_Setscale(clamp(scale.x*1.03,0.01,0.08),clamp(scale.y*1.03,0.01,0.08));
+			vel*=0.94;
+			roll+=wrot;
+		}
+		loop;
+	}
+}
+
 
 Class ModernGrenade : ModernRocket {
 	private state sspawn;
@@ -604,7 +620,6 @@ Class ModernGrenade : ModernRocket {
 			if (a)
 				a.master = self;
 			}
-		trailactor = "ModernGrenadeTrail";
 		sspawn = FindState("Spawn");
 	}
 	override void Tick() {
@@ -677,56 +692,6 @@ Class ModernGrenadeFlare : BD_BaseFlare {
 		TNT1 A 3;
 		LENR A 4 bright;
 		stop;
-	}
-}
-
-
-Class ModernRocketTrail : WallSmoke {
-	Default {
-		alpha 0.1;
-	}
-	states
-		{
-		Spawn:
-			SM21 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 NoDelay {
-				A_Fadeout(0.002);
-				a_Setscale(clamp(scale.x*1.07,0.01,0.1),clamp(scale.y*1.07,0.01,0.1));
-				vel*=0.98;
-				roll+=wrot;
-				wrot *= 0.98;
-			}
-			SM22 ABCDEFGHIJK 2 {
-				A_Fadeout(0.002);
-				a_Setscale(clamp(scale.x*1.07,0.01,0.1),clamp(scale.y*1.07,0.01,0.1));
-				vel*=0.99;
-				roll+=wrot;
-				wrot *= 0.98;
-			}
-			wait;
-	}
-}
-	
-Class ModernGrenadeTrail : WallSmoke {
-	Default {
-		alpha 0.3;
-	}
-	states {
-		Spawn:
-			SM21 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 NoDelay {
-				A_Fadeout(0.006);
-				a_Setscale(clamp(scale.x*1.07,0.01,0.1),clamp(scale.y*1.07,0.01,0.1));
-				vel*=0.95;
-				roll+=wrot;
-				wrot *= 0.98;
-			}
-			SM22 ABCDEFGHIJK 2 {
-				A_Fadeout(0.005);
-				a_Setscale(clamp(scale.x*1.07,0.01,0.1),clamp(scale.y*1.07,0.01,0.1));
-				vel*=0.95;
-				roll+=wrot;
-				wrot *= 0.98;
-			}
-			wait;
 	}
 }
 
