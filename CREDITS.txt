@@ -19,6 +19,10 @@ Nashgore (some gib sprites are still being used)
 SpriteShadows (was included in several versions, currently excluded)
 GZDoom contributions (CopyBloodColor() function and opaqueblood ANIMDEFS keyword which made the current blood system possible)
 
+Eriance: Modern SSG reload frames
+
+Dr_Cosmobyte: Modern SSG idle frames
+
 Enjay: new switches and TERRAIN splashes, various help
 
 Michael Henderson: Ultra Heavy Laser sound effect (used in Enhanced BFG alternative attack)
@@ -27,5 +31,5 @@ David G., DenisBelmondo, alando1: additional death sprites
 
 WildWeasel: several special effects
 
-Alternative monst death sprites:
+Alternative monster death sprites:
 Blox, Eriance, ItsNatureToDie, Kinsie, Minigunner, Neoworm, Phi108, Vader, osjclatchford
