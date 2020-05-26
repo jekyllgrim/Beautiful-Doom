@@ -87,7 +87,6 @@ brightmap sprite "QIMTA0" { map "brightmaps/pistol/PIMTA0.png" }
 
 // MODERN SHOTGUN
 
-brightmap sprite "SHOLF0"	{ map "Brightmaps/ModernShotgun/SHOLF0.png" }
 brightmap sprite "SHONA0"	{ map "Brightmaps/ModernShotgun/SHONA0.png" }
 brightmap sprite "SHONB0"	{ map "Brightmaps/ModernShotgun/SHONB0.png" }
 brightmap sprite "SHONC0"	{ map "Brightmaps/ModernShotgun/SHONC0.png" }
@@ -113,7 +112,6 @@ brightmap sprite "SHORN0"	{ map "Brightmaps/ModernShotgun/SHORM0.png" }
 brightmap sprite "SHORO0"	{ map "Brightmaps/ModernShotgun/SHORO0.png" }
 brightmap sprite "SHORP0"	{ map "Brightmaps/ModernShotgun/SHORP0.png" }
 
-brightmap sprite "QHOLF0"	{ map "Brightmaps/ModernShotgun/SHOLF0.png" }
 brightmap sprite "QHONA0"	{ map "Brightmaps/ModernShotgun/SHONA0.png" }
 brightmap sprite "QHONB0"	{ map "Brightmaps/ModernShotgun/SHONB0.png" }
 brightmap sprite "QHONC0"	{ map "Brightmaps/ModernShotgun/SHONC0.png" }
