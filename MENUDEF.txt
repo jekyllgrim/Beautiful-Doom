@@ -19,10 +19,11 @@ LISTMENU "MainMenu" {
 	IfOption(ReadThis) {
 		TextItem "$MNU_INFO", "i", "ReadThisMenu"
 	}
-	TextItem "Beautiful Credits", "", "BDoom_Credits"
+	//TextItem "Beautiful Credits", "", "BDoom_Credits"
 	TextItem "$MNU_QUITGAME", "q", "QuitMenu"
 }
 
+/*
 ListMenu "BDoom_Credits" {
 	Font "SmallFont"
 
@@ -72,7 +73,7 @@ ListMenu "BDoom_Credits" {
 	StaticText 110,	192, "D2JK", 					green
 	StaticText 110,	200, "3saster", 				green
 	StaticText 110,	208, "kodi", 					green
-}
+}*/
 
 AddOptionMenu "OptionsMenu"
 {
@@ -137,7 +138,7 @@ OptionMenu "BDoom_Settings" {
 
 OptionMenu "BDMonsterReplacements" {
 	Title "Beautiful Doom monster replacement settings"
-	StaticText "Changes require a game restart; you won't be able to load a save", blue
+	StaticText "Changes require a map restart; you won't be able to load a save", blue
 	StaticText " "
 	Option "Zombieman",				"bdoom_Zombieman", "Toggle", ""
 	Option "Shotgun Guy",			"bdoom_ShotgunGuy", "Toggle", ""
