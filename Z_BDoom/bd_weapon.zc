@@ -450,12 +450,20 @@ Class BD_SSGPellet : RealBullet {
 				//reduce ripping ability based on victim's current health (thick monsters are harder to pierce):
 				ripdepth -= victim.health; 
 				hitvictim = victim;
-				double xchance = clamp(level.Vec3Diff(pos, SpawnPos).length() * 0.23,25,99); //chance to gib based on distance
-				if (random(0,100) > xchance)
-					bEXTREMEDEATH = true;
 				bulletdamage = CalculateDamage();
 				victim.DamageMobj(self,target,bulletdamage,"normal");
-				if (!victim.bNOBLOOD && (victim.bSHOOTABLE)) {
+				if (!victim.bNOBLOOD && victim.bSHOOTABLE) {
+					if (Distance3D(target) <= 320) {
+						let xd = victim.FindState("XDeath");
+						if (xd && !InStateSequence(victim.curstate,xd)) {
+							if (!victim.FindInventory("BD_SSGGibControl"))
+								victim.GiveInventory("BD_SSGGibControl",1);
+							let ssgib = BD_SSGGibControl(victim.FindInventory("BD_SSGGibControl"));
+							if (ssgib)
+								ssgib.dmgtotal -= bulletdamage*2;
+							//Console.Printf("%s dmgtotal: %d/%d",victim.GetClassName(),ssgib.dmgtotal,victim.GetGibHealth());
+						}
+					}
 					victim.TraceBleed(bulletdamage,self);
 					victim.SpawnBlood(pos,AngleTo(victim),bulletdamage);
 				}

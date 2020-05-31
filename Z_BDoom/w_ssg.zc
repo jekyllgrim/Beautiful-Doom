@@ -15,7 +15,26 @@ Class BD_SuperShotgun : BDoomWeapon {
 		weapon.slotpriority 1;
 		BDoomWeapon.AutoReloadTime 160;
 	}
-			
+	/*action void BD_FireSSG(double spread_horz = 0, double spread_vert = 0, int numbullets = 1, int damage = 0) {
+		let plr = self;
+		if (!plr)
+			return;
+		double atkheight = plr.height * 0.5 + plr.attackzoffset;
+		for (int i = numbullets; i > 0; i-- ) {
+			FLineTraceData atk;
+			LineTrace(spread_horz,8192,spread_vert,offsetz:atkheight,data:atk);
+			let vic = atk.HitActor;
+			if (!vic || !(vic.bISMONSTER || vic.player) || !vic.bSHOOTABLE)
+				continue;
+			int dmg = damage * frandom(1,3);
+			let control = BD_SSGGibControl(vic.FindInventory("BD_SSGGibControl"));
+			if (!control)
+				let control = BD_SSGGibControl(vic.GiveInventory("BD_SSGGibControl",1));
+			if (!control)
+				continue;
+			vic.DamageMobj(self,self,dmg,'normal');
+		}
+	}*/	
 	override void Tick() {
 		If (Owner)
 			return;
@@ -559,14 +578,52 @@ Class EnSSGPuff : EnBulletPuff {
 			let xd = tracer.FindState("XDeath");
 			if (!xd || InStateSequence(tracer.curstate,xd))
 				return;
-			let dist = Distance3D(target);
-			if (dist > 256)
+			if (Distance3D(target) > 320)
 				return;
-			double xchance = 20 - dist*0.039;
-			//console.printf("Distance to victim: %i, chance: %d",dist,xchance);
-			if (random(0,100) <= xchance)
-				bEXTREMEDEATH = true;
+			if (!tracer.FindInventory("BD_SSGGibControl"))
+				tracer.GiveInventory("BD_SSGGibControl",1);
+			let ssgib = BD_SSGGibControl(tracer.FindInventory("BD_SSGGibControl"));
+			if (!ssgib)
+				return;
+			ssgib.dmgtotal -= (5*frandom(1,3));
+			//Console.Printf("%s dmgtotal: %d/%d",tracer.GetClassName(),ssgib.dmgtotal,tracer.GetGibHealth());
 		}
 		stop;
 	}
+}
+
+Class BD_SSGGibControl : Inventory {
+	int dmgtotal;
+	Default {
+		+INVENTORY.UNDROPPABLE
+		+INVENTORY.UNTOSSABLE
+		inventory.maxamount 1;
+	}
+	override void DoEffect() {
+		super.DoEffect();
+		if (GetAge() > 5) {
+			destroy();
+			return;
+		}
+		if (!owner || !owner.bISMONSTER) {
+			destroy();
+			return;
+		}
+		if (owner.health > 0)
+			return;
+		let xd = owner.FindState("XDeath");
+		if (!xd || InStateSequence(owner.curstate,xd)) {
+			destroy();
+			return;
+		}
+		else /*if (InStateSequence(owner.curstate,owner.FindState("Death")))*/ {
+			if (dmgtotal <= owner.GetGibHealth()) {
+				if (random(1,2) == 2)
+					owner.SetState(xd);
+				destroy();
+				return;
+			}
+		}
+	}
+	override void Tick() {}
 }
