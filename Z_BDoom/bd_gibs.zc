@@ -115,7 +115,9 @@ class BD_BaseGib : SmallDebris abstract {
 		A_SetMass(bmass);
 		bDROPPED = true;
 	}
-	void BD_GibBleed(Class<Actor> spawnclass, double hpos = 0, double vpos = 0, int spawnchance = 100) {				
+	void BD_GibBleed(Class<Actor> spawnclass, double hpos = 0, double vpos = 0, int spawnchance = 100) {	
+		if (bNOBLOOD || !bdoom_blood)
+			return;
 		if (random[bdsfx](0,100) > spawnchance)
 			return;
 		let bdrop = BD_BaseDebris(Spawn(spawnclass, (pos.x+frandom[bdsfx](-hpos,hpos),pos.y+frandom[bdsfx](-hpos,hpos),pos.z+vpos ))	);
@@ -286,14 +288,17 @@ class BasicMeatPiece : BD_BaseGib {
 	HitWall:
 		#### # 1 {
 			gravity = frandom[bdsfx](0.0018,0.0022);
-			A_SetTics(random[bdsfx](35,90));
+			A_SetTics(random[bdsfx](50,90));
 			roll = randompick(0,180);
 			let smudge = GibSmudge(Spawn("GibSmudge",pos));
 			if (smudge) {
 				smudge.master = self;
 				smudge.translation = BloodTranslation;
+				if (wall) {
+					smudge.bWALLSPRITE = true;
+					smudge.angle = atan2(wall.delta.y, wall.delta.x) + 90;
+				}
 			}
-			gravity = frandom[bdsfx](0.0018,0.0022);
 		}
 		#### # 0 {
 			gravity = bmass*frandom[bdsfx](0.0006,0.0007);
@@ -400,13 +405,12 @@ Class GibSmudge : SmallDebris {
 		else {
 			 destroy();
 			 return;
-			 }
+		}
 	}
 	states {
 	Spawn:
-		GIBD B -1 NoDelay {
-			if (ceiling)
-				frame = 2;
+		GIBD A -1 NoDelay {
+			frame = random(0,3);
 		}
 		stop;			
 	}
@@ -837,7 +841,7 @@ Class BD_CacoEye : BasicMeatPiece {
 class LS_Horn : BD_BasicLimb {
 	Default {
 		scale 1.0;
-		+NOBLOOD;
+		+NOBLOOD
 		seesound "";
 		deathsound "";
 		bouncesound "";
@@ -848,6 +852,7 @@ class LS_Horn : BD_BasicLimb {
 		restframe = 0;
 		bmass = 40;
 		wrot = frandom[bdsfx](14,20)*randompick(1,-1);
+		bSPRITEFLIP = random[bdsfx](0,1);
 	}
 	states {
 		Raise:

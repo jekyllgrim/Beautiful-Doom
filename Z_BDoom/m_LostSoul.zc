@@ -100,9 +100,16 @@ Class BD_LostSoul : LostSoul {
 }
 
 Class LS_FlameShard : SmallDebris {
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		alpha = frandom(0.5,1);
+	}
 	states	{
 	Spawn:
-		TNT1 A 1 NoDelay A_SpawnItemEx("FirePiece",0,frandom(-3,3),frandom(-3,3),0,0,frandom(0.2,0.3));
+		TNT1 A 1 {
+			A_SpawnItemEx("FirePiece",0,frandom(-3,3),frandom(-3,3),0,0,frandom(0.2,0.3));
+			A_FadeOut(0.008);
+		}
 		loop;
 	}
 }
