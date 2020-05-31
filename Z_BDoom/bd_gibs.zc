@@ -30,7 +30,7 @@ class BD_BaseGib : SmallDebris abstract {
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		A_FaceMovementDirection();
-		if (!target || !(target is "BDoomMonster"))
+		if (!target) //|| !(target is "BDoomMonster"))
 			return;
 		CopyBloodColor(target);
 		if (!Voffset)
@@ -54,6 +54,8 @@ class BD_BaseGib : SmallDebris abstract {
 						if (mon) 
 							mon.meatlist.Push(bld);
 					}
+					else 
+						bld.translation = BloodTranslation;
 				}
 			}
 			A_Stop();
@@ -101,7 +103,7 @@ class BD_BaseGib : SmallDebris abstract {
 		frame = restframe;
 		roll = 0;
 		if (!bNOBLOOD) {
-			let bld = BD_Blood(Spawn("BD_BloodPool",(pos.x,pos.y,floorz)));
+			let bld = BD_BaseDebris(Spawn("BD_BloodPool",(pos.x,pos.y,floorz)));
 			if (bld) {
 				if (target && target is "BDoomMonster")	{
 					bld.target = target;
@@ -110,6 +112,8 @@ class BD_BaseGib : SmallDebris abstract {
 					if (mon) 
 						mon.meatlist.Push(bld);
 				}
+				else
+					bld.translation = BloodTranslation;
 			}
 		}
 		A_SetMass(bmass);
