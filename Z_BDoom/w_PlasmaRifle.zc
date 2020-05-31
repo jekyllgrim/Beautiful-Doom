@@ -301,6 +301,7 @@ Class BD_PlasmaRifle : BDoomWeapon {
 				A_OverlayOffset(PSP_HLIGHTS,0.0,3);
 			}
 			PLGF B 1 {
+				A_ZoomFactor(0.999,ZOOM_NOSCALETURNING);
 				A_WeaponOffset(frandom(-0.3,0.3),frandom(0,0.5),WOF_ADD);
 				A_OverlayOffset(PSP_GUN3,0.0,3);
 				A_OverlayOffset(PSP_LIGHTS,0.0,3);
