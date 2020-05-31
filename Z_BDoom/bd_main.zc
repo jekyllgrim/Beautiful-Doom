@@ -176,6 +176,7 @@ Class SmallDebris : BD_BaseDebris abstract {
 	
 	protected vector2 wallnormal;
 	protected vector3 wallpos;
+	protected line wall;
 	
 	protected state d_spawn;
 	protected state d_death;
@@ -222,6 +223,7 @@ Class SmallDebris : BD_BaseDebris abstract {
 					FLineTraceData hit;
 					LineTrace(angle,16,0,flags:TRF_THRUACTORS|TRF_NOSKY,data:hit);
 					if (hit.HitLine) {
+						wall = hit.HitLine;
 						wallnormal = (-hit.HitLine.delta.y,hit.HitLine.delta.x).unit();
 						wallpos = hit.HitLocation;
 						if (!hit.LineSide)
