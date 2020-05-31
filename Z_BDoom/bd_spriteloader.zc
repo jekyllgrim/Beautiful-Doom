@@ -196,9 +196,7 @@ Class BD_SpriteLoader : Actor {
 		gib5 a 0;
 		gib5 X 0;
 		gib5 z 0;
-		GIBD A 0;
-		GIBD B 0;
-		GIBD C 0;
+		GIBD ABCD 0;
 		HED3 A 0;
 		HED3 B 0;
 		HED3 C 0;
