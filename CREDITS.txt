@@ -1,6 +1,6 @@
-Original idea, coding, sprite edits, original sprites: Jekyll Grim Payne aka Agent_Ash
+Agent_Ash aka Jekyll Grim Payne: original idea, main code, spriting, animation
 
-Gifty: Smooth Doom and smooth monsters animations which are widely used, both edited and unedited, in Beautiful Doom
+Gifty: Smooth monster animations which are widely used, both edited and unedited, in Beautiful Doom
 
 phantombeta, Marisa Kirisame, Gutawer, josh771, Accensus, Caligari87, Nash Muhandes, Zombie, D2JK, Arctangent, 3saster: scripting help and contributions
 
@@ -17,19 +17,14 @@ The Zombie Killer aka Zombie: footsteps
 Nash Muhandes:
 Nashgore (some gib sprites are still being used)
 SpriteShadows (was included in several versions, currently excluded)
-GZDoom contributions (CopyBloodColor() function and opaqueblood ANIMDEFS keyword which made the current blood system possible)
+GZDoom contributions (CopyBloodColor() function and 'opaqueblood' ANIMDEFS keyword which made the current blood system possible)
 
-Eriance: Modern SSG reload frames
-
-Dr_Cosmobyte: Modern SSG idle frames
+Eriance, Dr_Cosmobyte: Modern SSG key frames
 
 Enjay: new switches and TERRAIN splashes, various help
 
 Michael Henderson: Ultra Heavy Laser sound effect (used in Enhanced BFG alternative attack)
 
-David G., DenisBelmondo, alando1: additional death sprites
+alando1, Blox, David G., DenisBelmondo, Eriance, ItsNatureToDie, Kinsie, Minigunner, Neoworm, osjclatchford, Phi108, Vader: additional death sprites
 
 WildWeasel: several special effects
-
-Alternative monster death sprites:
-Blox, Eriance, ItsNatureToDie, Kinsie, Minigunner, Neoworm, Phi108, Vader, osjclatchford
