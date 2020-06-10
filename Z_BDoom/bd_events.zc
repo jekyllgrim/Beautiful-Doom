@@ -589,9 +589,9 @@ Class BD_Animated_Handler : StaticEventHandler
 			// Found an animated texture; read "pic" stuff until another token is found
 			else if(tokens[i] ~== "texture" || tokens[i] ~== "flat")
 			{
-				while( !(tokens[i] ~== "pic") && i < tokens.Size())
+				while( i < tokens.Size() && !(tokens[i] ~== "pic") )
 					i++;
-				while( tokens[i] ~== "pic" && i < tokens.Size() )
+				while( i < tokens.Size() && tokens[i] ~== "pic" )
 				{
 					int texture = int(TexMan.CheckForTexture(tokens[i+1], TexMan.Type_Any));
 					if( texture > 0 && animNums.Find(texture) == animNums.Size() )
