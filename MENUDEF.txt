@@ -97,7 +97,8 @@ OptionMenu "BDoom_Settings" {
 	
 	StaticText "Leave this on if you're playing the mod with another wad", blue
 	StaticText "that replaces some vanilla sprites directly (by name)", blue
-	Option "Safe Decoration Replacement", 		"bdoom_safereplacement", "Toggle", "bdoom_replaceobjects"
+	StaticText "or uses DEHACKED to change actor code", blue
+	OptionBoth "Safe Replacement", 					"bdoom_safereplacement", "SafeReplacement", "bdoom_replaceobjects", "bdoom_replacemonsters"
 	StaticText " "
 	
 	StaticText "Special Effects", yellow
@@ -163,6 +164,12 @@ OptionMenu "BDMonsterReplacements" {
 OptionValue "bdgloves" {
 	0, "Classic"
 	1, "Edgy"
+}
+
+OptionValue "SafeReplacement" {
+	0, "Disabled"
+	1, "DEHACKED only"
+	2, "DEHACKED and sprites"
 }
 
 OptionValue "Toggle" {

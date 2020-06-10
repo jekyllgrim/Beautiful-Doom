@@ -1,7 +1,7 @@
 
 gameinfo
 {
-	AddEventHandlers = "WeaponOverrideHandler", "BD_ActorOverrideHandler", "FXAmountControl", "FootstepsInit", "BD_Animated_Handler"
+	AddEventHandlers = "BD_DEHACKED_Handler", "WeaponOverrideHandler", "BD_ActorOverrideHandler", "FXAmountControl", "FootstepsInit", "BD_Animated_Handler"
 	
 	PrecacheClasses = 	"QuickKickPuff",
 						"BulletTracer",

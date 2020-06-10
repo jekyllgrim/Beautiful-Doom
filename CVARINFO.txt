@@ -20,7 +20,7 @@ server 	bool 	bdoom_shakes 			= true;
 server	bool	bdoom_killableobjects	= true;
 server 	bool 	bdoom_flies				= true;
 user 	bool 	bdoom_hudface			= true;
-server	bool	bdoom_safereplacement	= true;
+server	int		bdoom_safereplacement	= 2;
 
 server 	int  	bdoom_debrisnum 		= 1000;
 server 	int  	bdoom_bloodnum 			= 500;
