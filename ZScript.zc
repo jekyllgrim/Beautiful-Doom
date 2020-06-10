@@ -1,4 +1,4 @@
-version "4.2.1"
+version "4.2.4"
 
 #include "Z_Bdoom/bd_main.zc"
 #include "Z_Bdoom/bd_blood.zc"
@@ -6,6 +6,7 @@ version "4.2.1"
 #include "Z_BDoom/bd_events.zc"
 #include "Z_BDoom/bd_menu.zc"
 #include "Z_BDoom/bd_spriteloader.zc"
+#include "Z_BDoom/dehacked_tables.zc"
 
 #include "Z_Bdoom/bd_weapon.zc"
 #include "Z_Bdoom/mk_matrix.zsc"
