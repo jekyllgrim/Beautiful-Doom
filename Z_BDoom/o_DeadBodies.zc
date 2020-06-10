@@ -19,7 +19,7 @@ Class BD_DeadZombieMan : BD_DeadBody {
 	states
 		{
 		Spawn:
-			TNT1 A 0 NoDelay A_Jump(256,1,2,3,4);
+			TNT1 A 0 NoDelay A_Jump(256,1,2,3,4,5);
 			POSM I -1;
 			stop;
 			POSO L -1;
@@ -28,6 +28,8 @@ Class BD_DeadZombieMan : BD_DeadBody {
 			stop;
 			POSD H -1;
 			stop;
+			POSY P -1;
+			stop;
 	}
 }
 
@@ -35,7 +37,7 @@ Class BD_DeadShotgunGuy : BD_DeadBody {
 	states
 		{
 		Spawn:
-			TNT1 A 0 NoDelay A_Jump(256,1,2,3,4);
+			TNT1 A 0 NoDelay A_Jump(256,1,2,3,4,5);
 			SPOM I -1;
 			stop;
 			SPON M -1;
@@ -44,6 +46,8 @@ Class BD_DeadShotgunGuy : BD_DeadBody {
 			stop;
 			SPOD K -1;
 			stop;
+			SPOY Y -1;
+			stop;
 	}
 }
 
@@ -51,7 +55,7 @@ Class BD_DeadDoomImp : BD_DeadBody {
 	states
 		{
 		Spawn:
-			TNT1 A 0 NoDelay A_Jump(256,1,2,3,4);
+			TNT1 A 0 NoDelay A_Jump(256,1,2,3,4,5);
 			TROM L -1;
 			stop;
 			TRON J -1;
@@ -59,6 +63,8 @@ Class BD_DeadDoomImp : BD_DeadBody {
 			TROP K -1;
 			stop;
 			TROD K -1;
+			stop;
+			TROY S -1;
 			stop;
 	}
 }
@@ -76,7 +82,7 @@ Class BD_DeadDemon : BD_DeadBody {
 			stop;
 			SARD J -1;
 			stop;
-			SARY I -1;
+			SARY Q -1;
 			stop;
 	}
 }
