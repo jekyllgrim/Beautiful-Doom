@@ -620,14 +620,22 @@ Class BD_DEHACKED_Handler : StaticEventHandler
 	// Was this actor likely modified by DEHACKED?
 	bool isDehacked(string classname)
 	{
-		class<Actor> cls = classname;
-		for(int i=0; i<dehackedActors.Size(); i++)
+		// Special handling for Hell Knight...
+		if(classname ~== "HellKnight")
 		{
-			// Must be done this way to check for inheretence
-			if(cls && cls is dehackedActors[i])
-				return true;
+			return (dehackedActors.Find(classname) != dehackedActors.Size());
 		}
-		return false;
+		else
+		{
+			class<Actor> cls = classname;
+			for(int i=0; i<dehackedActors.Size(); i++)
+			{
+				// Must be done this way to check for inheritance
+				if(cls && cls is dehackedActors[i])
+					return true;
+			}
+			return false;
+		}
 	}
 	
 	override void OnRegister()
