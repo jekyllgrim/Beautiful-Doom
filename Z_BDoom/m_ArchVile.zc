@@ -34,8 +34,6 @@ Class BD_ArchVile : BDoomMonster {
 			return;
 		else if (!bdoom_flames)
 			return;
-		/*if ( InStateSequence(curstate,FindState("See")) && pos.z == floorz)
-			A_SpawnItemEx("ArchFlameDebris",frandom(-10,0),frandom(-8,8),4,failchance:240);*/
 		if ( InStateSequence(curstate,ssee)
 			||InStateSequence(curstate,ppain) ) {
 			A_SpawnItemEx("ArchFlameParticle",frandom(-20,-10),frandom(-10,10),frandom(24,70),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.2,0.6));
@@ -338,6 +336,7 @@ Class ReverseArchFlameParticle : BD_BaseFlare {
 		}
 		vector3 dir = level.Vec3Diff (pos, target.pos + (0, 0, target.height / 2.));
 		vel = dir.unit() * 3;
+		moving = true;
 	}
 	states {
 	Spawn:
@@ -353,23 +352,6 @@ Class ReverseArchFlameParticle : BD_BaseFlare {
 	}
 }
 
-Class ArchFlameDebris : BD_BaseFlare {
-	Default {
-		+RELATIVETOFLOOR
-	}
-	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		SetOrigin((pos.x,pos.y,floorz),0);
-	}
-	states
-		{
-		Spawn:
-			TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA random(1,3) bright NoDelay {
-				A_SpawnItemEx("ParticleFire_PE",frandom(-3,3),frandom(-3,3),frandom(1,4),frandom(-0.2,0.2),frandom(-0.2,0.2),frandom(0.4,0.6),0,0,128);
-			}
-			stop;
-	}
-}
 
 //rotating pentagram that appears below resurrecting monsters
 Class ArchPentagram : Actor {
