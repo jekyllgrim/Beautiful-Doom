@@ -10,7 +10,7 @@ class WeaponOverrideHandler : EventHandler {
     }
     override void renderOverlay(RenderEvent e) {
         if (ShowWeapHelp) {
-			let textureName = "";
+			string textureName = "";
 			PlayerInfo player	= players[consoleplayer];
 			PlayerPawn mo		= player.mo;
 			if (!player || !mo)
@@ -47,14 +47,18 @@ class WeaponOverrideHandler : EventHandler {
 					case 'BD_BFG9000' 			: TextureName = "graphics/popups/m_BFG.png"; 		break;
 				}
 			}
-			//StatusBar.BeginHUD (1.0, true, 1920, 1080);
-			vector2 hscale = StatusBar.GetHUDScale();
-			hscale = ( int(hscale.x), int(hscale.y)*1.2 ); // Force even scalar.
-			double rwidth  = (Screen.getWidth() / double(1920)) / hscale.x;
-			double rheight = (Screen.getHeight() / double(1080)) / hscale.y;
-			vector2 rscale = (rwidth, rheight);
-			vector2 rpos = ( 1*rwidth, 200*rheight );
-			StatusBar.DrawImage (textureName, rpos,scale:rscale);
+			//this is by Lewisk3
+			TextureID texture = TexMan.CheckForTexture(textureName, TexMan.Type_Any);
+			vector2 texsize;
+			vector2 pos = (300,100);
+			[texsize.x, texsize.y] = TexMan.GetSize(texture);			
+			Screen.DrawTexture(texture, false, pos.x, pos.y,
+				DTA_VirtualWidthF, 1920,
+				DTA_VirtualHeightF, 1080,
+				DTA_KeepRatio, true,
+				DTA_DestWidth, int(texsize.x),
+				DTA_DestHeight, int(texsize.y)
+			);
         }
     }
 	// These items have no new visuals and only new pickup sounds, so, I insert them via an event handler, without replacing the actual actors
