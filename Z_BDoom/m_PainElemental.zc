@@ -129,13 +129,13 @@ Class PEFlameDebris : BD_BaseDebris {
 	states {
 	Spawn:
 		FIRP AABBCCBB 1 bright NoDelay {
-			A_SpawnItemEx("FirePiece",0,frandom(-3,3),frandom(-3,3),0,0,frandom(0.2,0.3));
+			A_SpawnItemEx("BD_ImpFireParticle",0,frandom(-3,3),frandom(-3,3),0,0,frandom(0.2,0.3));
 			roll+=10;
 		}
 		loop;
 	Death:
 		FIRP AABBCCBB 1 bright {
-			A_SpawnItemEx("ParticleFire_PE",frandom(-3,3),frandom(-3,3),frandom(1,4),frandom(-0.2,0.2),frandom(-0.2,0.2),frandom(0.4,0.6),0,0,128);
+			A_SpawnItemEx("BD_LSFireParticle",0,frandom(-3,3),frandom(-3,3),0,0,frandom(0.5,0.9));
 			A_FadeOut(fades);
 		}
 		loop;
@@ -159,12 +159,5 @@ Class PEExplosion : BD_BaseFlare{
 			A_FadeOut(0.01);
 		}
 		stop;
-	}
-}
-
-
-Class ParticleFire_PE : ParticleFire_Red {
-	Default {
-		scale 0.14;
 	}
 }

@@ -208,7 +208,7 @@ Class BD_BaronBall : BaronBall {
 	Spawn:
 		BARB AABB 1 bright {
 			if (bdoom_debris)
-				A_SpawnItemEx("FirePiece_Baron",frandom(8,12),frandom(-4,4),frandom(-4,4),frandom(0.5,0.8),0,0,180,0);
+				A_SpawnItemEx("BD_BaronFireParticle",frandom(8,12),frandom(-4,4),frandom(-4,4),frandom(0.5,0.8),0,0,180,0);
 		}
 		loop;
 	Death:
@@ -217,22 +217,10 @@ Class BD_BaronBall : BaronBall {
 	}
 }
 
-Class FirePiece_Baron : BD_BaseFlare {
+Class BD_BaronFireParticle : BD_ImpFireParticle {
 	Default {
-		alpha 0.5;
-		scale 0.05;
-	}
-	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		scale *= frandom(0.8,1.2);
-	}
-	states	{
-	Spawn:
-		SPRK B 1 bright Nodelay {
-			A_FadeOut(0.03);
-			scale*=0.95;
-		}
-		wait;
+		translation "0:255=%[0.00,0.00,0.00]:[0.32,1.98,0.75]";
+		scale 0.3;
 	}
 }
 

@@ -424,6 +424,10 @@ Class BD_FireParticle : BD_BaseFlare {
 		alpha 0.5;
 		scale 0.04;
 	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		scale *= frandom (0.8,1.1);
+	}
 	override void SetColor() {
 		sprite = GetSpriteIndex("SPRK");
 		if (fcolor == 'green')
@@ -465,18 +469,6 @@ Class ParticleFire_Yellow : ParticleFire_General {
 Class ParticleFire_Green : ParticleFire_Red {
 	Default {
 	translation "0:3=112:127","5:8=112:127","9:12=112:127","13:15=112:127","16:47=112:127","48:79=112:127","96:111=112:127","112:127=112:127","128:151=112:127","152:159=112:127","160:167=112:127","169:191=112:127","193:207=112:127","208:223=112:127","224:231=112:127","232:235=112:127","236:239=112:127","240:247=112:127","248:249=112:127","250:254=112:127","255:255=112:127";
-	}
-}
-
-Class FirePiece : BD_BaseFlare abstract {
-	Default {
-		scale 0.2;
-		alpha 0.5;
-	}
-	states	{
-	Spawn:		
-		FIRP ABCDEFGHIJ 2 bright NoDelay A_FadeOut(0.05);
-		stop;
 	}
 }
 
