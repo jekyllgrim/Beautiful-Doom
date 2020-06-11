@@ -2,9 +2,9 @@ Agent_Ash aka Jekyll Grim Payne: original idea, main code, spriting, animation
 
 Gifty: Smooth monster animations which are widely used, both edited and unedited, in Beautiful Doom
 
-phantombeta, Marisa Kirisame, Gutawer, josh771, Accensus, Caligari87, Nash Muhandes, Zombie, D2JK, Arctangent, 3saster: scripting help and contributions
+3saster, Accensus, Arctangent, Caligari87, D2JK, Gutawer, josh771, Lewisk3, Marisa Kirisame, Nash Muhandes, phantombeta, Zombie: scripting help and contributions
 
-3saster: animated texture handler, code contributions, various fixes and improvements
+3saster: animated texture handler, DEHACKED parser, code contributions, various fixes and improvements
 
 Mike12: original assault rifle sprites (edited versions are used in Modern Assault Rifle)
 
