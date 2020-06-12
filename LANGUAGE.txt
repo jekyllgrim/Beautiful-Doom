@@ -1,10 +1,216 @@
-// Footsteps
-// Language Definitions
-
-// This is where the footstep sounds for each texture are defined.
-// The definition MUST be STEP_<texturename>
-
 [enu default]
+
+//// Beautiful Doom Settings Menu 
+
+BDMENU_QKICK = 			"Can be used with Modern Guns during ready and reload animations";
+BDMENU_WEAPONHELP = 	"Show tool tip for the currently selected weapon\n(Enhanced/Modern Guns only)";
+BDMENU_CLEARDEBRIS = 	"Assign a key that will instantly clear debris, gibs and blood on the level";
+BDMENU_PLAYERWEAPONS = 	"Vanilla: classic weapons with smooth animations and HD sounds.\nEnhanced: slightly rebalanced weapons with alternative attacks.\nModern: new visuals, magazines, reloads, recoil, bullet travel time.";
+BDMENU_TRACERS =		"Enable/disable bullet tracers for Vanilla/Enhanced weapons and monsters.\nPurely visual effect (bullets are still instant).";
+BDMENU_AUTORELOAD =		"When enabled Modern Guns will reload automatically if deselected long enough.\nBackground reload takes x2 the amount of time of the normal reload duration.";
+BDMENU_GIBSTOGGLE =		"Special effects and detailed gibs for monster deaths.\nMay impact performance. Requires Beautiful Monsters to be enabled.";
+BDMENU_BLOODTOGGLE = 	"Particle blood and dynamic blood pools. May impact performance.";
+BDMENU_NOBOSSGIBS = 	"Show classic boss death animations even when enhanced gibs are enabled.\nOtherwise bosses will use special death animations with lots of effects.";
+BDMENU_FLAMES =			"Dynamic particle flames and halos around light sources.\nMay impact performance.";
+BDMENU_DEBRIS = 		"Enable/disable spent bullet casings, particle smoke, projectile trails,\nsparks, debris spawned by shooting walls, etc.";
+BDMENU_KILLABLEOBJECTS = "When enabled, some decorations will react to being shot, and it will be\npossible to kill decorative victims and destroy lamps by explosions";
+BDMENU_GLOVES = 		"Change the color of your gloves at any point";
+BDMENU_FOOTSTEPS = 		"Enable/disable the sounds of player footsteps\n(In multiplayer this option is defined by the host)";
+BDMENU_SPARKS =			"If you're annoyed by the loud ricochet sounds or the chainsaw screeching\nwhen hitting a wall, this option can disable those.";
+BDMENU_FLIES = 			"When enabled flies will appear over killed monsters after a few minutes";
+BDMENU_SHAKES = 		"Enable/disable screen shaking from nearby explosions";
+BDMENU_HUDFACE = 		"Enable/disable Doomguy's face on the statusbar version of the HUD.\nBy default the face is only shown on the fullscreen version.";
+BDMENU_SAFEREPLACEMENT ="When enabled the mod will try to not replace monsters and decorations\nwhen another version of that monster or decoration is also loaded.\nLeave this on when running the mod with another mod.\nDEHACKED only: won't override actors that have DEHACKED definitions.\nDEHACKED and sprites: also won't override actors that have their sprites replaced.";
+BDMENU_REPLACEWEAPONS = "Enable/disable Beautiful Doom weapons.\nWhen disabled can be played with anoter weapon mod.";
+BDMENU_REPLACEMONSTERS = "Enable/disable Beautiful Doom monsters.\nWhen disabled the mod can be played with other monster packs.\nNote: Monster-specific Beautiful Doom effects, such as gibbing,\nwill not work if this option is disabled.";
+BDMENU_REPLACEITEMS = 	"Enable/disable Beautiful Doom items.\nWhen disabled can be played with anoter mod that has its own items.";
+BDMENU_REPLACEOBJECTS = "Enable/disable Beautiful Doom decorations.\nCan affect performance. Use it if you want vanilla decorations.\nNote: You don't need this for compatibility with other mods,\nsince Safe Actor Replacement (above) should take care of that.";
+
+						
+						
+
+
+//// Tooltips menu
+
+OPTMNU_TLTPTOOLTIP = "Tooltips Settings";
+
+TLTPTOOLTIPMNU_TITLE = "Tooltips Options";
+TLTPTOOLTIPMNU_VERSION = "Tooltips - The Ultimate Menu Helper Mod v0.3.2.1";
+TLTPTOOLTIPMNU_TAGLINE = "- An Overengineered Solution to a Problem No One Has -";
+
+//
+// Category Headings
+//
+TLTPTOOLTIPMNU_TITLE_BASICSETTINGS = "- Basic Settings -";
+TLTPTOOLTIPMNU_TITLE_BORDERSETTINGS = "- Border Settings -";
+TLTPTOOLTIPMNU_TITLE_BACKGROUNDSETTINGS = "- Background Settings -";
+TLTPTOOLTIPMNU_TITLE_LOCATIONSETTINGS = "- Display Location & Alignment Settings -";
+TLTPTOOLTIPMNU_TITLE_FONTSETTINGS = "- Font Settings -";
+
+TLTPTOOLTIPMNU_TITLE_LISTTEST = "Tooltips List Menu Test";
+TLTPTOOLTIPMNU_TITLE_LISTTEXT = "I'm a Tooltips List Menu Text Item!";
+
+//
+// Control Names
+//
+
+// - Basic Settings
+TLTPTOOLTIPMNU_BASICSETTINGS_TLTPTOGGLE = "Tooltips Toggle";
+TLTPTOOLTIPMNU_BASICSETTINGS_DELAYTOGGLE = "Display Delay";
+TLTPTOOLTIPMNU_BASICSETTINGS_DELAYSKIP = "Skip Delay for Valid Items";
+TLTPTOOLTIPMNU_BASICSETTINGS_DELAYTIME = "Delay Time";
+TLTPTOOLTIPMNU_BASICSETTINGS_TIMEOUTTOGGLE = "Display Timeout";
+TLTPTOOLTIPMNU_BASICSETTINGS_TIMEOUTVALUE = "Timeout Delay";
+TLTPTOOLTIPMNU_BASICSETTINGS_DRAWORDER = "Menu Draw Order";
+
+// - Border Settings
+TLTPTOOLTIPMNU_BORDERSETTINGS_BORDERTOGGLE = "Border Toggle";
+TLTPTOOLTIPMNU_BORDERSETTINGS_BORDERTYPE = "Border Type";
+TLTPTOOLTIPMNU_BORDERSETTINGS_BORDER_H_THICKNESS = "Horizontal Border Thickness";
+TLTPTOOLTIPMNU_BORDERSETTINGS_BORDER_V_THICKNESS = "Vertical Border Thickness";
+TLTPTOOLTIPMNU_BORDERSETTINGS_BORDERCOLOR = "Border Color";
+TLTPTOOLTIPMNU_BORDERSETTINGS_BORDERALPHA = "Border Alpha";
+
+// - Background Settings
+TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND = "Background Toggle";
+TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_OPTION = "Background Image Options";
+TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_MODE = "Background Display Mode";
+TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_H_PADDING = "Background Horizontal Padding";
+TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_V_PADDING = "Background Vertical Padding";
+
+// - Location Settings
+TLTPTOOLTIPMNU_DISPLAYSETTINGS_LOCATION = "Tooltip Location";
+TLTPTOOLTIPMNU_DISPLAYSETTINGS_H_MARGIN = "Position Horizontal Margin";
+TLTPTOOLTIPMNU_DISPLAYSETTINGS_V_MARGIN = "Position Vertical Margin";
+TLTPTOOLTIPMNU_DISPLAYSETTINGS_ALIGNMENT = "Text Alignment";
+
+// - Font Settings
+TLTPTOOLTIPMNU_DISPLAYSETTINGS_FONT = "Font Options";
+TLTPTOOLTIPMNU_DISPLAYSETTINGS_FONT_NAME = "Custom Font Name";
+TLTPTOOLTIPMNU_DISPLAYSETTINGS_FONT_COLORTOGGLE = "Color Override";
+TLTPTOOLTIPMNU_DISPLAYSETTINGS_FONT_COLOR = "Color Options";
+
+
+//
+// Tootips
+//
+TLTPTOOLTIPMNU_TOOLTIP_TLTPTOGGLE = "This has to be on for Tooltips to show tooltips in Tooltips menus.";
+TLTPTOOLTIPMNU_TOOLTIP_DELAYTOGGLE = "If on, the number of tics, set below,\nmust pass before a tooltip can display.";
+TLTPTOOLTIPMNU_TOOLTIP_DELAYSKIP = "If enabled, changes to the selected menu item will skip the delay\ntime if the new selected item is a valid item. Note that there is\nan internal delay that cannot be overridden.";
+TLTPTOOLTIPMNU_TOOLTIP_DELAYTIME = "Delay Time can be set from 1 to 35 tics (1 second).";
+TLTPTOOLTIPMNU_TOOLTIP_TIMEOUTTOGGLE = "If enabled, tooltips will vanish after a given\nperiod of time, which can be set below.";
+TLTPTOOLTIPMNU_TOOLTIP_TIMEOUTVALUE = "The time to timeout is set in seconds.";
+TLTPTOOLTIPMNU_TOOLTIP_DRAWORDER = "Determines if tooltips are drawn on top of,\nor underneath,the rest of the menu.";
+
+TLTPTOOLTIPMNU_TOOLTIP_BORDERTOGGLE = "On for borders to be drawn, false otherwise.";
+TLTPTOOLTIPMNU_TOOLTIP_BORDERTYPE = "Frame draws the border graphic, Line draws a line.";
+TLTPTOOLTIPMNU_TOOLTIP_BORDER_H_THICKNESS = "Only useful if the type is Line, controls the\nthickness of horizontal border lines.";
+TLTPTOOLTIPMNU_TOOLTIP_BORDER_V_THICKNESS = "Only useful if the type is Line, controls the\nthickness of vertical border lines.";
+TLTPTOOLTIPMNU_TOOLTIP_BORDERCOLOR = "Choose a color from the menu for the border.";
+TLTPTOOLTIPMNU_TOOLTIP_BORDERALPHA = "Alpha only works for Line borders.";
+
+TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND = "If on, a background image will be displayed\nbehind the tooltip. Pick which one below.";
+TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_OPTION = "All background choices are defined in Tooltip's LANGUAGE\nfile, which you can tweak to whatever you'd like.";
+TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_MODE = "Stretch draws the background once across the entire tooltip area.\nTile draws the background multiple times to cover the tooltip area.";
+TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_H_PADDING = "This value represents how many pixels of background overdraw\nwill be used when calculating draw width dimensions.";
+TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_V_PADDING = "This value represents how many pixels of background overdraw\nwill be used when calculating draw height dimensions.";
+
+TLTPTOOLTIPMNU_TOOLTIP_LOCATION = "Tooltips can be bound to either the screen edge, or the location of the\nmouse cursor. The mouse must be enabled in menus for the mouse option to\nfunction, otherwise Tooltips defaults to the lower right corner.";
+TLTPTOOLTIPMNU_TOOLTIP_H_MARGIN = "This value represents how many pixels the tooltip\nwill be offset horizontally from a particular edge.\nIt gets ignored for Top/Bottom Center locations.";
+TLTPTOOLTIPMNU_TOOLTIP_V_MARGIN = "This value represents how many pixels the tooltip\nwill be offset vertically from a particluar edge.";
+TLTPTOOLTIPMNU_TOOLTIP_ALIGNMENT = "Text can be alignment can be set to the\ntypical \"left\", \"right\", and \"center\".";
+
+TLTPTOOLTIPMNU_TOOLTIP_FONT = "Tooltips supports the Console, New Small, and custom fonts!To use a custom\nfont, it must be defined in a FONTDEFS, then this option must be set to Custom.\nLastly input the name of the font in the text input below.";
+TLTPTOOLTIPMNU_TOOLTIP_FONT_NAME = "Type in the name of a custom font as defined in FONTDEFS.";
+TLTPTOOLTIPMNU_TOOLTIP_FONT_COLORTOGGLE = "If on, tooltips text colors will ignore the menu's settings\nin favor of the chosen color below.";
+TLTPTOOLTIPMNU_TOOLTIP_FONT_COLOR = "The predefined, CR text colors are supportted.";
+
+TLTPTOOLTIPMNU_TOOLTIP_LISTMENU = "Click here to open a test list menu.";
+TLTPTOOLTIPMNU_TOOLTIP_LISTTEXT = "I'm the tooltip!";
+
+//
+// Option Values
+//
+
+TLTPTOOLTIPMNU_DRAWORDER_OPTION_TOP = "On Top";
+TLTPTOOLTIPMNU_DRAWORDER_OPTION_BOTTOM = "Underneath";
+
+TLTPTOOLTIPMNU_BORDERTYPE_OPTION_FRAME = "Frame";
+TLTPTOOLTIPMNU_BORDERTYPE_OPTION_LINE = "Line";
+
+// Don't change the first two values - these are the menu text
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_NONE = "None";
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_DEFAULT = "Default";
+// Doom
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_DOOM_BRICK = "Gray Brick";
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_DOOM_MARBLE = "Green Marble";
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_DOOM_METAL = "Silver Metal";
+// Chex
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_CHEX_BRICK = "Stone";
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_CHEX_MARBLE = "Computer";
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_CHEX_METAL = "Door";
+// Strife
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_STRIFE_BRICK = "Gray Brick";
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_STRIFE_MARBLE = "Green Window";
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_STRIFE_METAL = "Pipes";
+// Heretic/Hexen
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_HERETIC_BRICK = "Gray Brick";
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_HERETIC_STONE = "Green Stone";
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_HERETIC_WOOD = "Wood";
+
+// Don't change the first two values - these are the graphic names
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_NONE_NAME = "NOTHING";
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_DEFAULT_NAME = "TGRAY";
+// Doom Texture Names
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_BRICK_NAME = "ROCK2";
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_MARBLE_NAME = "GSTONE1";
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_METAL_NAME = "SHAWN2";
+// Chex
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_CHEX_BRICK_NAME = "STONE";
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_CHEX_MARBLE_NAME = "COMP2";
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_CHEX_METAL_NAME = "BIGDOOR4";
+// Strife
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_STRIFE_BRICK_NAME = "BRKGRY01";
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_STRIFE_MARBLE_NAME = "WINDW04";
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_STRIFE_METAL_NAME = "PIPWAL11";
+// Heretic/Hexen Texture Names
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_HERETIC_BRICK_NAME = "GRSTNPB";
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_HERETIC_MARBLE_NAME = "GRNBLOK1";
+TLTPTOOLTIPMNU_BACKGROUND_OPTION_HERETIC_WOOD_NAME = "WOODWL";
+
+
+TLTPTOOLTIPMNU_BACKGROUND_MODE_OPTION_STRETCH = "Stretch";
+TLTPTOOLTIPMNU_BACKGROUND_MODE_OPTION_TILE = "Tile";
+
+TLTPTOOLTIPMNU_LOCATION_OPTION_MOUSE = "Mouse Cursor";
+TLTPTOOLTIPMNU_LOCATION_OPTION_UPPERLEFT = "Upper Left";
+TLTPTOOLTIPMNU_LOCATION_OPTION_LOWERLEFT = "Lower Left";
+TLTPTOOLTIPMNU_LOCATION_OPTION_UPPERRIGHT = "Upper Right";
+TLTPTOOLTIPMNU_LOCATION_OPTION_LOWERRIGHT = "Lower Right";
+TLTPTOOLTIPMNU_LOCATION_OPTION_TOPCENTER = "Top Center";
+TLTPTOOLTIPMNU_LOCATION_OPTION_BOTTOMCENTER = "Bottom Center";
+
+TLTPTOOLTIPMNU_ALIGNMENT_OPTION_LEFT = "Left";
+TLTPTOOLTIPMNU_ALIGNMENT_OPTION_RIGHT = "Right";
+TLTPTOOLTIPMNU_ALIGNMENT_OPTION_CENTER = "Center";
+
+// Font menu text
+TLTPTOOLTIPMNU_FONT_OPTION_CUSTOM = "Custom";
+TLTPTOOLTIPMNU_FONT_OPTION_CONSOLE = "Console Font";
+TLTPTOOLTIPMNU_FONT_OPTION_NEWSMALL = "New Small Font";
+// Font lump names
+TLTPTOOLTIPMNU_FONT_OPTION_CONSOLE_NAME = "consolefont";
+TLTPTOOLTIPMNU_FONT_OPTION_NEWSMALL_NAME = "newsmallfont";
+
+
+/* Footsteps
+ Language Definitions
+
+ This is where the footstep sounds for each texture are defined.
+ The definition MUST be STEP_<texturename>
+*/
+
+
 // Flats
 // This is a list of flats that have footstep sounds associated with them.
 // Items are separated by a colon ( : )
@@ -216,3 +422,6 @@ STEP_FLOOR6_2 = "step/gravel";
 
 
 STEP_F_SKY1 = "";
+
+
+[enu default]

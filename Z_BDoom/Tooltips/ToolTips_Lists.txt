@@ -1,0 +1,932 @@
+/* LICENSE
+ * 
+ * Copyright Andy Adams "Saicannasha/Nero" (nightowlgraphicarts@gmail.com) 2020
+ *
+ * This file is a part of ToolTips.pk3.
+ *
+ * ToolTips.pk3 is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * ToolTips.pk3 is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * ToolTips.pk3.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Tooltips is either directly or indirectly related to the following mods:
+ * Any licenses governing their use also apply to Tooltips.
+ * Tips <https://forum.zdoom.org/viewtopic.php?f=105&t=66539>
+ * Nash's Gore Mod <https://forum.zdoom.org/viewtopic.php?f=46&t=62641#p1080654>
+ * 
+ */
+ 
+/* CREDITS
+ *
+ * m8f - Tips; the latest Tooltips has next to no relation to its ancestor, but old versions were a mod of Tips.
+ * Nash - Nash Gore Menu; code base for 0.3 onward with heavy modification
+ * Ivory Duke - Hovering Tooltip Menu; no real code relation but a foundation for drawing and mouse code
+ * AFADoomer - general help with questions
+ *
+ */
+ 
+ /*
+  * FILE - ToolTips_Lists.txt
+  *
+  * ListMenu Descendents
+  *
+  * VERSION 0.3.2.1
+  *
+  */
+
+/*
+*	TLTP Text Item
+*/
+class ListMenuItemTLTPTextItem : ListMenuItemTextItem
+{
+	String mTooltip;
+	Name cr_TipColor;
+	
+	ListMenuItemTLTPTextItem Init(ListMenuDescriptor desc, String text, String tooltip, Name tipColor, String hotkey, Name child, int param = 0)
+	{
+		mTooltip = tooltip;
+		cr_TipColor = tipColor;
+		Super.Init(desc, text, hotkey, child, param);
+		return self;
+	}
+}
+
+
+/*
+*	TLTP Patch Item
+*/
+class ListMenuItemTLTPPatchItem : ListMenuItemPatchItem
+{
+	String mTooltip;
+	Name cr_TipColor;
+	
+	ListMenuItemTLTPPatchItem Init(ListMenuDescriptor desc, TextureID patch, String tooltip, Name tipColor, String hotkey, Name child, int param = 0)
+	{
+		mTooltip = tooltip;
+		cr_TipColor = tipColor;
+		Super.Init(desc, patch, hotkey, child, param);
+		return self;
+	}
+}
+
+/*
+*	TLTP List Menu
+*/
+class TLTPListMenu : ListMenu
+{
+	enum TLTPBACKGROUND
+	{
+		bDefault = 1,
+		DoomBrick,
+		DoomMarble,
+		DoomMetal,
+		ChexBrick,
+		ChexMarble,
+		ChexMetal,
+		StrifeBrick,
+		StrifeMarble,
+		StrifeMetal,
+		HereticBrick,
+		HereticStone,
+		HereticWood,
+	};
+	
+	enum TLTPLOCATION
+	{
+		Mouse,
+		UpperLeft,
+		LowerLeft,
+		UpperRight,
+		LowerRight,
+		TopCenter,
+		BottomCenter,
+	};
+	
+	enum TLTPALIGNMENT
+	{
+		Left,
+		Right,
+		Center,
+	};
+	
+	enum TLTPFONT
+	{
+		Custom,
+		Console,
+		NewSmall,
+	};
+
+	const BACKBUTTONFAILSAFE = 15;
+	const SKIPTIME = 5;
+	const MOUSECURSORFAILSAFE = 15;
+	
+	bool bShowTips, 
+		bDrawBackground, bBackgroundMode,
+		bDisplayDelay, 
+		bDisplaySkip, bCanDisplaySkip, bDisplayTime,
+		bTimeOut, bCanTimeOut,
+		bDrawOrder, 
+		bDrawBorder, bBorderType, 
+		bFontColorOverride,
+		bValidCursor,
+		bValidObject;
+		
+	TextureID txid_Background;
+	
+	Vector2 vMouse;
+	
+	string tt, sCustomFont, sDefaultCursor;
+	
+	Name cr;
+	
+	int iTxtAlignment, iTipLocation, iFontId,
+		iDelayTime, iCurrentTime, iSkipTime,
+		iTimeOutVal, iCurrentTimeOutVal,
+		iOldItem, iCurrentItem,
+		iPosition_HorizontalMargin, iPosition_VerticalMargin,
+		iBackground_HorizontalPadding, iBackground_VerticalPadding,
+		iBorder_HorizontalThickness, iBorder_VerticalThickness,
+		iFontColorOverride,
+		iTickerTime;
+		
+	Color cBorderColor;
+	
+	float fBorderAlpha;
+	
+		
+	TLTPListMenu Init(Menu parent, ListMenuDescriptor desc)
+	{
+		iSkipTime = 0;
+		iCurrentTimeOutVal = 0;
+		
+		Super.Init(parent, desc);
+		return self;
+	}
+	
+	override bool MouseEvent(int type, int x, int y)
+	{
+		vMouse = (x, y);
+		return Super.MouseEvent(type, x, y);
+	}
+	
+	// Use this for an updater
+	override void Ticker()
+	{
+		if (iTickerTime < 5)
+			iTickerTime++;
+		
+		// Get the tooltip string and its text color
+		if (mDesc.mSelectedItem > -1 && mDesc.mItems[mDesc.mSelectedItem].Selectable()) // Index 0 should be something - usually the title
+		{
+			if (mDesc.mItems[mDesc.mSelectedItem] is "ListMenuItemTLTPTextItem")
+			{
+				tt = StringTable.Localize(ListMenuItemTLTPTextItem(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
+				cr = ListMenuItemTLTPTextItem(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
+				bValidObject = true;
+			}
+			else if (mDesc.mItems[mDesc.mSelectedItem] is "ListMenuItemTLTPPatchItem")
+			{
+				tt = StringTable.Localize(ListMenuItemTLTPPatchItem(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
+				cr = ListMenuItemTLTPPatchItem(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
+				bValidObject = true;
+			}
+			else
+				bValidObject = false;
+		}
+		else
+			bValidObject = false;
+		
+		// Update Settings
+		bShowTips = Cvar.GetCVar('tltp_show_tips', players[consoleplayer]).GetBool();
+		bTimeOut = CVar.GetCVar('tltp_time_out', players[consoleplayer]).GetBool();
+		iTimeOutVal = CVar.GetCVar('tltp_time_out_val', players[consoleplayer]).GetInt();
+		bDrawOrder = CVar.GetCVar('tltp_draw_order', players[consoleplayer]).GetBool();
+		
+		bDrawBorder = CVar.GetCVar('tltp_border_toggle', players[consoleplayer]).GetBool();
+		bBorderType = CVar.GetCVar('tltp_border_type', players[consoleplayer]).GetBool();
+		iBorder_HorizontalThickness = CVar.GetCVar('tltp_border_horizontal_thickness', players[consoleplayer]).GetInt();
+		iBorder_VerticalThickness = CVar.GetCVar('tltp_border_vertical_thickness', players[consoleplayer]).GetInt();
+		cBorderColor = Color(CVar.GetCVar('tltp_border_color', players[consoleplayer]).GetInt());
+		fBorderAlpha = CVar.GetCVar('tltp_border_alpha', players[consoleplayer]).GetFloat();
+		
+		bDrawBackground = CVar.GetCVar('tltp_show_background', players[consoleplayer]).GetBool();
+		bBackgroundMode = CVar.GetCVar('tltp_background_mode', players[consoleplayer]).GetBool();
+		iBackground_HorizontalPadding = CVar.GetCVar('tltp_background_horizontal_padding', players[consoleplayer]).GetInt();
+		iBackground_VerticalPadding = CVar.GetCVar('tltp_background_vertical_padding', players[consoleplayer]).GetInt();
+		
+		bDisplayDelay = CVar.GetCVar('tltp_show_delay', players[consoleplayer]).GetBool();
+		bDisplaySkip = CVar.GetCVar('tltp_delay_skip', players[consoleplayer]).GetBool();
+		iDelayTime = CVar.GetCVar('tltp_delay_tics', players[consoleplayer]).GetInt();
+		
+		iTipLocation = CVar.GetCVar('tltp_tooltip_location', players[consoleplayer]).GetInt();
+		iPosition_HorizontalMargin = CVar.GetCVar('tltp_location_horizontal_margin', players[consoleplayer]).GetInt();
+		iPosition_VerticalMargin = CVar.GetCVar('tltp_location_vertical_margin', players[consoleplayer]).GetInt();
+		iTxtAlignment = CVar.GetCVar('tltp_tooltip_alignment', players[consoleplayer]).GetInt();
+		iFontId = CVar.GetCVar('tltp_tooltip_font', players[consoleplayer]).GetInt();
+		sCustomFont = CVar.GetCVar('tltp_tooltip_font_name', players[consoleplayer]).GetString();
+		bFontColorOverride = CVar.GetCVar('tltp_font_color_override', players[consoleplayer]).GetBool();
+		iFontColorOverride = CVar.GetCVar('tltp_font_color', players[consoleplayer]).GetInt();
+		
+		// Delay Time
+		if (bDisplayDelay && iDelayTime > iCurrentTime)
+		{
+			if (bCanDisplaySkip)
+			{
+				iCurrentTime = iDelayTime;
+				bCanDisplaySkip = false;
+			}
+			else
+				iCurrentTime++;	
+		}
+		else
+			bDisplayTime = true;
+		
+		// Selected Item Track
+		iCurrentItem = mDesc.mSelectedItem;
+		if (iCurrentItem != iOldItem)
+		{
+			// Display skipping
+			if(bDisplaySkip && iOldItem > -1 && mDesc.mItems.Size() > 0 && mDesc.mItems[iOldItem].Selectable())
+				bCanDisplaySkip = true;
+			
+			// This is an update delay that helps when the selected item changes rapidly
+			// This has an impact on display skipping which checks iOldItem
+			if (iSkipTime == SKIPTIME)
+			{
+				iOldItem = iCurrentItem;
+				iSkipTime = 0;
+			}
+			else
+				iSkipTime++;
+			
+			iCurrentTime = 0;
+			iCurrentTimeOutVal = 0;
+			bDisplayTime = false;
+		}
+		else if (mDesc.mSelectedItem == -1 || !mDesc.mItems[mDesc.mSelectedItem].Selectable())
+			bDisplayTime = false;
+		
+		// Timeout
+		if (bDisplayTime && iTimeOutVal * 35 > iCurrentTimeOutVal)
+		{
+			bCanTimeOut = false;
+			iCurrentTimeOutVal++;
+		}
+		else
+			bCanTimeOut = true;
+					
+		// Get what background to use - this relies on settings
+		if (bDrawBackground)
+			txid_Background = TexMan.CheckForTexture(backgroundSerializer(CVar.GetCVar('tltp_background_name', players[consoleplayer]).GetInt()), TexMan.TYPE_ANY);
+		
+		// Figure out what the default cursor should be
+		switch (gameinfo.gametype)
+		{
+			case GAME_Doom:
+				sDefaultCursor = "doomcurs";
+				break;
+			case GAME_Heretic:
+				sDefaultCursor = "herecurs";
+				break;
+			case GAME_Hexen:
+				sDefaultCursor = "hexncurs";
+				break;
+			case GAME_Strife:
+				sDefaultCursor = "strfcurs";
+				break;
+			case GAME_Chex:
+				sDefaultCursor = "chexcurs";
+				break;
+		}
+	}
+	
+	// This gets the actual texture name from the selected option
+	string backgroundSerializer(int nameId)
+	{
+		switch (nameId)
+		{
+			case bDefault: return StringTable.Localize("$TLTPTOOLTIPMNU_BACKGROUND_OPTION_DEFAULT_NAME");
+			
+			case DoomBrick: return StringTable.Localize("$TLTPTOOLTIPMNU_BACKGROUND_OPTION_BRICK_NAME");
+			case DoomMarble: return StringTable.Localize("$TLTPTOOLTIPMNU_BACKGROUND_OPTION_MARBLE_NAME");
+			case DoomMetal: return StringTable.Localize("$TLTPTOOLTIPMNU_BACKGROUND_OPTION_METAL_NAME");
+			
+			case ChexBrick: return StringTable.Localize("$TLTPTOOLTIPMNU_BACKGROUND_OPTION_CHEX_BRICK_NAME");
+			case ChexMarble: return StringTable.Localize("$TLTPTOOLTIPMNU_BACKGROUND_OPTION_CHEX_MARBLE_NAME");
+			case ChexMetal: return StringTable.Localize("$TLTPTOOLTIPMNU_BACKGROUND_OPTION_CHEX_METAL_NAME");
+			
+			case StrifeBrick: return StringTable.Localize("$TLTPTOOLTIPMNU_BACKGROUND_OPTION_STRIFE_BRICK_NAME");
+			case StrifeMarble: return StringTable.Localize("$TLTPTOOLTIPMNU_BACKGROUND_OPTION_STRIFE_MARBLE_NAME");
+			case StrifeMetal: return StringTable.Localize("$TLTPTOOLTIPMNU_BACKGROUND_OPTION_STRIFE_METAL_NAME");
+			
+			case HereticBrick: return StringTable.Localize("$TLTPTOOLTIPMNU_BACKGROUND_OPTION_HERETIC_BRICK_NAME");
+			case HereticStone: return StringTable.Localize("$TLTPTOOLTIPMNU_BACKGROUND_OPTION_HERETIC_MARBLE_NAME");
+			case HereticWood: return StringTable.Localize("$TLTPTOOLTIPMNU_BACKGROUND_OPTION_HERETIC_WOOD_NAME");
+			default: return StringTable.Localize("$TLTPTOOLTIPMNU_BACKGROUND_OPTION_NONE_NAME");
+		}
+	}
+	
+	// Send in iFontId
+	string fontSerializer(int fontId)
+	{
+		switch (fontId)
+		{
+			case Custom: return StringTable.Localize("$TLTPTOOLTIPMNU_FONT_OPTION_CUSTOM");
+			case Console: return StringTable.Localize("$TLTPTOOLTIPMNU_FONT_OPTION_CONSOLE_NAME");
+			default:
+			case NewSmall: return StringTable.Localize("$TLTPTOOLTIPMNU_FONT_OPTION_NEWSMALL_NAME");
+		}
+	}
+	
+	/* 
+		LocationMult has the final say in the padding/margin equation 
+		It decides if the equation is used or not, and if that equation is
+		positive or negative.
+		
+		The boolean is used to control for which dimension, x or y to return for.
+		The function return is the result of the tip location enum and the dimension;
+		-1 inverts the equation, 0 nulls the equation, 1 does nothing as this function
+		should be multiplied by the equation.
+	*/
+	int locationMult(bool dim = true)
+	{
+		switch (iTipLocation)
+		{
+			case TopCenter: return dim ? 0 : 1;
+			case Mouse:
+			case UpperLeft: return 1;
+			case LowerLeft: return dim ? 1 : -1;
+			case UpperRight: return dim ? -1 : 1;
+			default:
+			//case Mouse:
+			case LowerRight: return -1;
+			case BottomCenter: return dim ? 0 : -1;
+		}
+	}
+	
+	/*
+		PaddingMult determines if the padding is factored into the
+		padding/margin equation.  Functionality is identical to locationMult.
+	*/
+	int paddingMult(bool dim = true)
+	{
+		switch (iTipLocation)
+		{
+			case TopCenter :
+			case Mouse:
+			case UpperLeft : return 0;
+			case LowerLeft : return dim ? 0 : 2;
+			case UpperRight: return dim ? 2 : 0;
+			default:
+			//case Mouse:
+			case LowerRight:
+			case BottomCenter: return 2;
+		}
+	}
+	
+	int textPosition(bool dim = true)
+	{
+		switch (iTipLocation)
+		{		
+			default:
+			case Mouse:
+			case UpperLeft:
+			case LowerLeft:
+			case UpperRight:
+			case LowerRight: return dim ? (((iBackground_HorizontalPadding + iPosition_HorizontalMargin) * CleanXFac_1) + iBorder_VerticalThickness) * locationMult() :
+							(((iBackground_VerticalPadding + iPosition_VerticalMargin) * CleanYFac_1) + iBorder_HorizontalThickness) * locationMult(false);
+			case TopCenter:
+			case BottomCenter: return dim ? (iBackground_HorizontalPadding * 2) + iBorder_VerticalThickness : 
+							(((iBackground_VerticalPadding + iPosition_VerticalMargin) * CleanyFac_1) + iBorder_HorizontalThickness) * locationMult(false);
+		}
+	}
+
+	override void Drawer()
+	{	
+		if (!bDrawOrder)
+			Super.Drawer();
+	
+		// Check if tooltips should even be drawn
+		if (iTickerTime == 5 && bValidObject && bShowTips && (bDisplayDelay ? bDisplayTime : true) && (bTimeOut ? !bCanTimeOut : true))
+		{	
+			// Everything initializes in order where it's needed and checks done.
+			// Eliminated nLines for readability, the code can just use blTLines.Count().
+			// height is now dfntHeight - double Font Height - also more readable.  Height?  Height of what?
+			int width, longestIndex;
+			BrokenLines blTLines;		
+			bool bHaveBackground, bHaveBorder, bAtHorizontalEdge, bAtVerticalEdge;
+			double x, y, xt, yt, dfntHeight;
+			
+			// Get the Font and its height
+			Font tlfont = Font.FindFont(fontSerializer(iFontId));
+			if (tlfont)
+				dfntHeight = tlfont.GetHeight();
+			else
+			{
+				// is the font custom?
+				if (iFontId == 0)
+				{
+					tlfont = Font.FindFont(sCustomFont);
+					if (tlfont)
+						dfntHeight = tlfont.GetHeight();
+					else // ok still no good, default
+						dfntHeight = NewSmallFont.GetHeight();
+				}
+				// nope something else screwed up, just default.
+				else
+					dfntHeight = NewSmallFont.GetHeight();			
+			}
+			
+			// Should set width to the longest line - or screen width
+			width = Screen.GetWidth(); // Lines get broken off at either their \n or the screen width
+			if (tlfont)
+				blTLines = tlfont.BreakLines(tt, width);
+			else // Failsafe - use the NewSmallFont - pretty much breaks other fonts though - could just force NewSmallFont from here though
+				blTLines = NewSmallFont.BreakLines(tt, width);
+			// Figure out which line is the longest and set the width to that
+			width = 0;  // Have to set width back to 0 otherwise no string will be the longest
+			for (int i = 0; i < blTLines.Count(); i++)
+			{
+				if (width < (tlfont ? tlfont.StringWidth(blTLines.StringAt(i)) : NewSmallFont.StringWidth(blTLines.StringAt(i))) * CleanXfac_1)
+				{
+					width = (tlfont ? tlfont.StringWidth(blTLines.StringAt(i)) : NewSmallFont.StringWidth(blTLines.StringAt(i))) * CleanXfac_1;
+					longestIndex = i;
+					bHaveBackground = false;  // why is this here?  because the background and frame rely on a valid width
+					bHaveBorder = false;
+				}
+			}
+			// Check if the width is greater than the screen, if it is, set the width to the screen width
+			if ((tlfont ? tlfont.StringWidth(blTLines.StringAt(longestIndex)) : NewSmallFont.StringWidth(blTLines.StringAt(longestIndex))) * CleanXfac_1 > Screen.GetWidth() * CleanXfac_1)
+				width = Screen.GetWidth();
+			
+			// Draw Loop
+			for (int i = 0; i < blTLines.Count(); ++i)
+			{	
+				// Background
+				if (bDrawBackground && txid_Background.IsValid() && !bHaveBackground)
+				{
+					// This gives us the starting xy coordinates for the graphic
+					[xt, yt] = getPositionXY(width, 
+											(tlfont ? tlfont.StringWidth(blTLines.StringAt(longestIndex)) : NewSmallFont.StringWidth(blTLines.StringAt(longestIndex))), 
+											dfntHeight, 
+											i, 
+											blTLines.Count());
+					// ...and lock it's position to the screen
+					if (iTipLocation == Mouse)
+					{
+						if (xt + (((((iBackground_HorizontalPadding * paddingMult()) + iPosition_HorizontalMargin) * CleanXFac_1) + iBorder_VerticalThickness) * locationMult()) + 
+							(width + (iBackground_HorizontalPadding * 2) * CleanXFac_1) +
+							iBorder_VerticalThickness > Screen.GetWidth())
+						{
+							xt = Screen.GetWidth() - 
+								((((((iBackground_HorizontalPadding * paddingMult()) + iPosition_HorizontalMargin) * CleanXFac_1) + iBorder_VerticalThickness) * locationMult()) + 
+								(width + (iBackground_HorizontalPadding * 2) * CleanXFac_1) +
+								iBorder_VerticalThickness);
+							bAtHorizontalEdge = true;
+						}
+						else
+							bAtHorizontalEdge = false;
+						
+						if (yt + (((((iBackground_VerticalPadding * paddingMult(false)) + iPosition_VerticalMargin) * CleanYFac_1) + iBorder_HorizontalThickness) * locationMult(false)) +
+							(blTLines.Count() * int(dfntHeight) * CleanYFac_1) + ((iBackground_VerticalPadding * 2) * CleanYFac_1) +
+							iBorder_HorizontalThickness > Screen.GetHeight())
+						{
+							if (bValidCursor)
+								yt = VMouse.y - ((blTLines.Count() * int(dfntHeight) * CleanYFac_1) + (((iBackground_VerticalPadding + iPosition_VerticalMargin) * 2) * CleanYFac_1) + (iBorder_HorizontalThickness*2));
+							else
+								yt = VMouse.y - ((blTLines.Count() * int(dfntHeight) * CleanYFac_1) + ((iBackground_VerticalPadding * 2) * CleanYFac_1));
+							
+							bAtVerticalEdge = true;
+						}
+						else
+							bAtVerticalEdge = false;
+					}
+					
+					// tile mode
+					if (bBackgroundMode)
+					{
+						// Basic steps:
+						// 1 - Set the clipping rectangle
+						// 2 - Get the width/height of the texture
+						// 3 - figure out how many tiles are needed
+						// 4 - draw
+						// 5 - turn off clipping rectangle - don't forget that
+						// One thing that can happen is that the width will be short a tile.  Adding 2 to the loop seemed to fix that.
+						// The other thing is the height loop, wtiles can evaluate to 0, so it's condition is <= instead of the typical <
+						// which guarantees at least one row of tiles get drawn.
+						Screen.SetClipRect(xt + (((((iBackground_HorizontalPadding * paddingMult()) + iPosition_HorizontalMargin) * CleanXFac_1) + iBorder_VerticalThickness) * locationMult()), 
+										yt + (((((iBackground_VerticalPadding * paddingMult(false)) + iPosition_VerticalMargin) * CleanYFac_1) + iBorder_HorizontalThickness) * locationMult(false)), 
+										width + (iBackground_HorizontalPadding * 2) * CleanXFac_1, 
+										(blTLines.Count() * int(dfntHeight) * CleanYFac_1) + ((iBackground_VerticalPadding * 2) * CleanYFac_1));  // idk why but the padding has to be multiplied by 2
+						int tx, ty;
+						Vector2 txy = TexMan.GetScaledSize(txid_Background);
+						tx = txy.x; 
+						ty = txy.y;
+						int wtiles = width / tx;
+						int htiles = (blTLines.Count() * int(dfntHeight) * CleanYFac_1) / ty;
+						// This looks bad, a double loop, but odds are the outer loop is the only one to actually do anything
+						// Could do something wild with like up to 3 simultaneous draws if neccessary, keep in mind this draws in columns
+						// - 3 is just an arbitrary number because the calls have to be defined somewhere.
+						// - Best case would be to decide number of draws by the height of each column, more h loops makes more draws to iterate w faster
+						// - The upside is that larger textures make this go faster as well
+						int w = 0;
+						do
+						{
+							int h = 0;
+							do
+							{
+								Screen.DrawTexture(txid_Background, false, 
+									xt + (tx * w) + (((((iBackground_HorizontalPadding * paddingMult()) + iPosition_HorizontalMargin) * CleanXFac_1) + iBorder_VerticalThickness) * locationMult()), 
+									yt + (ty * h) + (((((iBackground_VerticalPadding * paddingMult(false)) + iPosition_VerticalMargin) * CleanYFac_1) + iBorder_HorizontalThickness) * locationMult(false)), 
+									DTA_DestWidth, tx, 
+									DTA_DestHeight, ty);
+								h++;
+							} while ((((h - 1) * ty) + ty) < (blTLines.Count() * int(dfntHeight) * CleanYFac_1) + ((iBackground_VerticalPadding * 2) * CleanYFac_1));
+							w++;
+						} while ((((w - 1) * tx) + tx) <= width + (iBackground_HorizontalPadding * 2) * CleanXFac_1);
+						/* Gonna keep this here for now until I'm 100% sure the above code is working
+						for (int w = 0; w < wtiles + 2; w++)  // Or switch this over to a do/while and check that ((w * tx) + tx) < the clipping width
+						{
+							for (int h = 0; h <= htiles + 1; h++)
+								Screen.DrawTexture(txid_Background, false, 
+									xt + (tx * w) + (((((iBackground_HorizontalPadding * paddingMult()) + iPosition_HorizontalMargin) * CleanXFac_1) + iBorder_VerticalThickness) * locationMult()), 
+									yt + (ty * h) + (((((iBackground_VerticalPadding * paddingMult(false)) + iPosition_VerticalMargin) * CleanYFac_1) + iBorder_HorizontalThickness) * locationMult(false)), 
+									DTA_DestWidth, tx, 
+									DTA_DestHeight, ty);
+						}*/
+						Screen.ClearClipRect();
+					}
+					else // This is the stretch option
+						Screen.DrawTexture(txid_Background, false, 
+							xt + (((((iBackground_HorizontalPadding * paddingMult()) + iPosition_HorizontalMargin) * CleanXFac_1) + iBorder_VerticalThickness) * locationMult()), 
+							yt + (((((iBackground_VerticalPadding * paddingMult(false)) + iPosition_VerticalMargin) * CleanYFac_1) + iBorder_HorizontalThickness) * locationMult(false)), 
+							DTA_DestWidth, width + (iBackground_HorizontalPadding * 2) * CleanXFac_1, 
+							DTA_DestHeight, (blTLines.Count() * int(dfntHeight) * CleanYFac_1) + ((iBackground_VerticalPadding * 2) * CleanYFac_1));
+					bHaveBackground = true;
+				}
+				
+				// Border
+				if (bDrawBorder && !bHaveBorder)
+				{
+					double bx, by;
+					// Oh we call getPositionXY again?  Yeah, it's the root of all this evil.
+					[bx, by] = getPositionXY(width, 
+											(tlfont ? tlfont.StringWidth(blTLines.StringAt(longestIndex)) : NewSmallFont.StringWidth(blTLines.StringAt(longestIndex))), 
+											dfntHeight, 
+											i, 
+											blTLines.Count());
+											
+					if (iTipLocation == Mouse)
+					{
+						if (bAtHorizontalEdge)
+							bx = Screen.GetWidth() - 
+								((((((iBackground_HorizontalPadding * paddingMult()) + iPosition_HorizontalMargin) * CleanXFac_1) + iBorder_VerticalThickness) * locationMult()) + 
+								(width + (iBackground_HorizontalPadding * 2) * CleanXFac_1) +
+								iBorder_VerticalThickness);
+						
+						if (bAtVerticalEdge)
+						{
+							if (bValidCursor)
+								by = VMouse.y - ((blTLines.Count() * int(dfntHeight) * CleanYFac_1) + (((iBackground_VerticalPadding + iPosition_VerticalMargin) * 2) * CleanYFac_1) + (iBorder_HorizontalThickness*2));
+							else
+								by = VMouse.y - ((blTLines.Count() * int(dfntHeight) * CleanYFac_1) + ((iBackground_VerticalPadding * 2) * CleanYFac_1));						
+						}
+					}
+											
+					if (!bBorderType)
+					{	// MAPINFO FRAME
+						Screen.DrawFrame(bx + (((((iBackground_HorizontalPadding * paddingMult()) + iPosition_HorizontalMargin) * CleanXFac_1) + iBorder_VerticalThickness) * locationMult()), 
+								by + (((((iBackground_VerticalPadding * paddingMult(false)) + iPosition_VerticalMargin) * CleanYFac_1) + iBorder_HorizontalThickness) * locationMult(false)), 
+								width + (iBackground_HorizontalPadding * 2) * CleanXFac_1, 
+								(blTLines.Count() * int(dfntHeight) * CleanYFac_1) + ((iBackground_VerticalPadding * 2) * CleanYFac_1));
+					}
+					else 
+					{	// LINES - Quite a bit of this repeats, originally it was all one call in a loop but the variation made it impossible to manage.
+						// One aspect of my philosophy with UI is that you should always have all variables available, don't start adding stuff together in wrappers.
+						// This all gets really confusing either way, but my way helps me lose stuff less.  This line doesn't move?  Oh yeah, forgot the margin variable, and so on.
+						// Top --------------------------------------------------------------------------
+						Screen.DrawThickLine(bx + (((((iBackground_HorizontalPadding * paddingMult()) + iPosition_HorizontalMargin) * CleanXFac_1) + iBorder_VerticalThickness) * locationMult()) - 
+											iBorder_VerticalThickness, 
+											
+											by + (((((iBackground_VerticalPadding * paddingMult(false)) + iPosition_VerticalMargin) * CleanYFac_1) + iBorder_HorizontalThickness) * locationMult(false)) - 
+											(iBorder_HorizontalThickness > 1 ? (iBorder_HorizontalThickness % 2 == 0 ? iBorder_HorizontalThickness / 2 : ((iBorder_HorizontalThickness - 1) / 2) + 1) : iBorder_HorizontalThickness), 
+											// Where's the other side of the tooltip?  Oh yeah, it takes a string of math like this to find it.  bx is a "raw" value so all the other stuff has to get added in, and certain positions require different stuff
+											bx + (((((iBackground_HorizontalPadding * paddingMult()) + iPosition_HorizontalMargin) * CleanXFac_1) + iBorder_VerticalThickness) * locationMult()) + 
+											(width + (iBackground_HorizontalPadding * 2) * CleanXFac_1) +
+											iBorder_VerticalThickness, 
+											
+											by + (((((iBackground_VerticalPadding * paddingMult(false)) + iPosition_VerticalMargin) * CleanYFac_1) + iBorder_HorizontalThickness) * locationMult(false)) - 
+											(iBorder_HorizontalThickness > 1 ? (iBorder_HorizontalThickness % 2 == 0 ? iBorder_HorizontalThickness / 2 : ((iBorder_HorizontalThickness - 1) / 2) + 1) : iBorder_HorizontalThickness), 
+											
+											iBorder_HorizontalThickness, cBorderColor, 255 * fBorderAlpha);
+											
+						// Bottom --------------------------------------------------------------------------					
+						Screen.DrawThickLine(bx + (((((iBackground_HorizontalPadding * paddingMult()) + iPosition_HorizontalMargin) * CleanXFac_1) + iBorder_VerticalThickness) * locationMult()) - 
+											iBorder_VerticalThickness, 
+											
+											by + (((((iBackground_VerticalPadding * paddingMult(false)) + iPosition_VerticalMargin) * CleanYFac_1) + iBorder_HorizontalThickness) * locationMult(false)) +
+											(blTLines.Count() * int(dfntHeight) * CleanYFac_1) + ((iBackground_VerticalPadding * 2) * CleanYFac_1) + 
+											iBorder_HorizontalThickness - (iBorder_HorizontalThickness > 1 ? (iBorder_HorizontalThickness % 2 == 0 ? iBorder_HorizontalThickness / 2 : ((iBorder_HorizontalThickness - 1) / 2) + 1) : iBorder_HorizontalThickness), 
+											
+											bx + (((((iBackground_HorizontalPadding * paddingMult()) + iPosition_HorizontalMargin) * CleanXFac_1) + iBorder_VerticalThickness) * locationMult()) + 
+											(width + (iBackground_HorizontalPadding * 2) * CleanXFac_1) +
+											iBorder_VerticalThickness, 
+											
+											by + (((((iBackground_VerticalPadding * paddingMult(false)) + iPosition_VerticalMargin) * CleanYFac_1) + iBorder_HorizontalThickness) * locationMult(false)) +
+											(blTLines.Count() * int(dfntHeight) * CleanYFac_1) + ((iBackground_VerticalPadding * 2) * CleanYFac_1) + 
+											iBorder_HorizontalThickness - (iBorder_HorizontalThickness > 1 ? (iBorder_HorizontalThickness % 2 == 0 ? iBorder_HorizontalThickness / 2 : ((iBorder_HorizontalThickness - 1) / 2) + 1) : iBorder_HorizontalThickness), 
+											
+											iBorder_HorizontalThickness, cBorderColor, 255 * fBorderAlpha);
+											
+						// Left --------------------------------------------------------------------------					
+						Screen.DrawThickLine(bx + (((((iBackground_HorizontalPadding * paddingMult()) + iPosition_HorizontalMargin) * CleanXFac_1) + iBorder_VerticalThickness) * locationMult()) - 
+											(iBorder_VerticalThickness % 2 == 0 ? iBorder_VerticalThickness / 2 : (iBorder_VerticalThickness > 1 ? (iBorder_VerticalThickness - 1) / 2 : 0)), 
+											
+											by + (((((iBackground_VerticalPadding * paddingMult(false)) + iPosition_VerticalMargin) * CleanYFac_1) + iBorder_HorizontalThickness) * locationMult(false)), 
+											
+											bx + (((((iBackground_HorizontalPadding * paddingMult()) + iPosition_HorizontalMargin) * CleanXFac_1) + iBorder_VerticalThickness) * locationMult()) - 
+											(iBorder_VerticalThickness % 2 == 0 ? iBorder_VerticalThickness / 2 : (iBorder_VerticalThickness > 1 ? (iBorder_VerticalThickness - 1) / 2 : 0)), 
+											
+											by + (((((iBackground_VerticalPadding * paddingMult(false)) + iPosition_VerticalMargin) * CleanYFac_1) + iBorder_HorizontalThickness) * locationMult(false)) +
+											(blTLines.Count() * int(dfntHeight) * CleanYFac_1) + ((iBackground_VerticalPadding * 2) * CleanYFac_1), 
+											
+											iBorder_VerticalThickness, cBorderColor, 255 * fBorderAlpha);
+						// Right --------------------------------------------------------------------------	
+						Screen.DrawThickLine(bx + (((((iBackground_HorizontalPadding * paddingMult()) + iPosition_HorizontalMargin) * CleanXFac_1) + iBorder_VerticalThickness) * locationMult()) +
+											(width + (iBackground_HorizontalPadding * 2) * CleanXFac_1) +
+											iBorder_VerticalThickness - (iBorder_VerticalThickness > 1 ? (iBorder_VerticalThickness % 2 == 0 ? iBorder_VerticalThickness / 2 : ((iBorder_VerticalThickness - 1) / 2)) : 0), 
+											
+											by + (((((iBackground_VerticalPadding * paddingMult(false)) + iPosition_VerticalMargin) * CleanYFac_1) + iBorder_HorizontalThickness) * locationMult(false)), 
+											
+											bx + (((((iBackground_HorizontalPadding * paddingMult()) + iPosition_HorizontalMargin) * CleanXFac_1) + iBorder_VerticalThickness) * locationMult()) + 
+											(width + (iBackground_HorizontalPadding * 2) * CleanXFac_1) +
+											iBorder_VerticalThickness - (iBorder_VerticalThickness > 1 ? (iBorder_VerticalThickness % 2 == 0 ? iBorder_VerticalThickness / 2 : ((iBorder_VerticalThickness - 1) / 2)) : 0), 
+											
+											by + (((((iBackground_VerticalPadding * paddingMult(false)) + iPosition_VerticalMargin) * CleanYFac_1) + iBorder_HorizontalThickness) * locationMult(false)) +
+											(blTLines.Count() * int(dfntHeight) * CleanYFac_1) + ((iBackground_VerticalPadding * 2) * CleanYFac_1), 
+											
+											iBorder_VerticalThickness, cBorderColor, 255 * fBorderAlpha);
+					}
+					bHaveBorder = true;
+				}
+				
+				// Text - suprisingly simple, no not really, there's a lot of getting here.
+				[x , y] = getPositionXY(width, 
+									(tlfont ? tlfont.StringWidth(blTLines.StringAt(i)) : NewSmallFont.StringWidth(blTLines.StringAt(i))), 
+									dfntHeight, 
+									i, 
+									blTLines.Count());
+				
+				// And getting there - the mouse needs some special sauce.
+				if (iTipLocation == Mouse)
+				{
+					if (bAtHorizontalEdge)
+					{							
+						switch(iTxtAlignment)
+						{
+							case Left:
+								x = Screen.GetWidth() - 
+									((((((iBackground_HorizontalPadding * paddingMult()) + iPosition_HorizontalMargin) * CleanXFac_1) + iBorder_VerticalThickness) * locationMult()) + 
+									(width + (iBackground_HorizontalPadding * 2) * CleanXFac_1) +
+									iBorder_VerticalThickness);
+								break;
+							case Right:
+							default:
+								x = Screen.GetWidth() - 
+									(((((((iBackground_HorizontalPadding * paddingMult()) + iPosition_HorizontalMargin) * CleanXFac_1) + iBorder_VerticalThickness) * locationMult()) + 
+									(width + (iBackground_HorizontalPadding * 2) * CleanXFac_1) +
+									iBorder_VerticalThickness) - 
+									(width - ((tlfont ? tlfont.StringWidth(blTLines.StringAt(i)) : NewSmallFont.StringWidth(blTLines.StringAt(i))) * CleanXFac_1)));
+								break;
+							case Center:
+								x = Screen.GetWidth() - 
+									(((((((iBackground_HorizontalPadding * paddingMult()) + iPosition_HorizontalMargin) * CleanXFac_1) + iBorder_VerticalThickness) * locationMult()) + 
+									(width + (iBackground_HorizontalPadding * 2) * CleanXFac_1) +
+									iBorder_VerticalThickness) -
+									((width - ((tlfont ? tlfont.StringWidth(blTLines.StringAt(i)) : NewSmallFont.StringWidth(blTLines.StringAt(i))) * CleanXFac_1)) / 2));
+								break;
+						}
+					}
+					
+					if (bAtVerticalEdge)
+					{
+						if (bValidCursor)
+							y = VMouse.y - (((blTLines.Count() - i) * int(dfntHeight) * CleanYFac_1) + (((iBackground_VerticalPadding + iPosition_VerticalMargin) * 2) * CleanYFac_1) + (iBorder_HorizontalThickness*2));
+						else
+							y = y - (MOUSECURSORFAILSAFE + (((((iBackground_VerticalPadding * paddingMult(false)) + iPosition_VerticalMargin) * CleanYFac_1) + iBorder_HorizontalThickness) * locationMult(false)) +
+							(blTLines.Count() * int(dfntHeight) * CleanYFac_1) + ((iBackground_VerticalPadding * 2) * CleanYFac_1) +
+							iBorder_HorizontalThickness);
+					}
+				}
+									
+				Screen.DrawText((tlfont ? tlfont : NewSmallFont), // Font
+								bFontColorOverride ? iFontColorOverride : Font.FindFontColor(cr), // Font color
+								x + textPosition(), 
+								y + textPosition(false), 
+								blTLines.StringAt(i), 
+								DTA_CleanNoMove_1, 
+								true);
+			}
+		}
+		
+		if (bDrawOrder)
+			Super.Drawer();
+	}
+	
+	// Nooooo!  Don't look at the horrible mess that is the position code!
+	// And don't touch!  It's fragile!
+	// This returns "raw" x,y values, the margins and padding are added in during draw - yeah that mess is worse.
+	/*
+		Args:
+		int width - passover from Drawer() - Do not multiply by CleanXFac_1 it's already correct
+		int iOptionWidth - string width
+		double dfntHeight - font height
+		int lineIndex - index in blTLines
+		int linesCount - number of lines in blTLines
+	*/
+	double, double getPositionXY(int width, int iOptionWidth, double dfntHeight, int lineIndex, int linesCount)
+	{
+		double x, y;
+		switch (iTipLocation)
+		{
+			case Mouse:
+				if (m_use_mouse > 0)
+				{
+					let tex = TexMan.CheckForTexture(CVar.GetCVar('vid_cursor', players[consoleplayer]).GetString(), TexMan.TYPE_ANY);
+					Vector2 v;
+					if (tex.IsValid())
+					{
+						v = TexMan.GetScaledSize(tex);
+						y = VMouse.y + v.y + ((dfntHeight * lineIndex) * CleanYFac_1);
+						bValidCursor = true;
+					}
+					else
+					{
+						let dtex = TexMan.CheckForTexture(sDefaultCursor, TexMan.TYPE_ANY);
+						if (dtex.IsValid())
+						{
+							v = TexMan.GetScaledSize(dtex);
+							y = VMouse.y + v.y + ((dfntHeight * lineIndex) * CleanYFac_1);
+							bValidCursor = true;
+						}
+						else
+						{
+							y = VMouse.y + MOUSECURSORFAILSAFE + ((dfntHeight * lineIndex) * CleanYFac_1);
+							bValidCursor = false;
+						}
+					}
+					
+					switch (iTxtAlignment)
+					{
+						case Left:
+							if (tex.IsValid())
+								x = VMouse.x + v.x;
+							else
+								x = VMouse.x + MOUSECURSORFAILSAFE;
+							break;
+						case Right:
+						default:
+							if (tex.IsValid())
+								x = VMouse.x + v.x + width - (iOptionWidth * CleanXFac_1);
+							else
+								x = VMouse.x + MOUSECURSORFAILSAFE + width - (iOptionWidth * CleanXFac_1);
+							break;
+						case Center:
+							if (tex.IsValid())
+								x = VMouse.x + v.x + (width - (iOptionWidth * CleanXFac_1)) / 2;
+							else
+								x = VMouse.x + MOUSECURSORFAILSAFE + (width - (iOptionWidth * CleanXFac_1)) / 2;
+							break;
+					}
+				}
+				else
+					iTipLocation = LowerRight;
+				break;
+			case UpperLeft:
+				switch(iTxtAlignment)
+				{
+					case Left:
+						x = 0;
+						break;
+					case Right:
+					default:
+						x = width - (iOptionWidth * CleanXFac_1);
+						break;
+					case Center:
+						x = (width - (iOptionWidth * CleanXFac_1)) / 2;
+						break;
+				}
+				// Upper left needs to account for the back button
+				if (BackbuttonAlpha > 0 && m_show_backbutton >= 0)
+				{
+					let tex = TexMan.CheckForTexture(gameinfo.mBackButton, TexMan.Type_MiscPatch);
+					if (tex.IsValid())
+					{
+						Vector2 v = TexMan.GetScaledSize(tex);
+						y = ((dfntHeight * lineIndex) + iPosition_VerticalMargin + int(v.Y)) * CleanYFac_1;
+					}
+					else
+						y = (dfntHeight * lineIndex) + iPosition_VerticalMargin + BACKBUTTONFAILSAFE * CleanYFac_1;
+				}
+				else
+					y = (dfntHeight * lineIndex) * CleanYFac_1;
+				break;
+				
+			case UpperRight:
+				switch(iTxtAlignment)
+				{
+					case Left:
+						x = Screen.GetWidth() - width;
+						break;
+					case Right:
+					default:
+						x = Screen.GetWidth() - (iOptionWidth * CleanXFac_1);
+						break;
+					case Center:
+						x = Screen.GetWidth() - (width - ((width - (iOptionWidth * CleanXFac_1)) / 2));
+						break;
+				}
+				y = (dfntHeight * lineIndex) * CleanYFac_1;
+				break;
+				
+			case LowerLeft:
+				switch(iTxtAlignment)
+				{
+					case Left:
+						x = 0;
+						break;
+					case Right:
+					default:
+						x = width - (iOptionWidth * CleanXFac_1);
+						break;
+					case Center:
+						x = (width - (iOptionWidth * CleanXFac_1)) / 2;
+						break;
+				}
+				y = Screen.GetHeight() - (dfntHeight *(linesCount - lineIndex)) * CleanYFac_1;
+				break;
+				
+			case LowerRight:
+			default:
+				switch(iTxtAlignment)
+				{
+					case Left:
+						x = Screen.GetWidth() - width;
+						break;
+					case Right:
+					default:
+						x = Screen.GetWidth() - (iOptionWidth * CleanXFac_1);
+						break;
+					case Center:
+						x = Screen.GetWidth() - (width - ((width - (iOptionWidth * CleanXFac_1)) / 2));
+						break;
+				}
+				y = Screen.GetHeight() - (dfntHeight * (linesCount - lineIndex)) * CleanYFac_1;
+				break;
+				
+			case TopCenter:
+				switch(iTxtAlignment)
+				{
+					case Left:
+						x = (Screen.GetWidth() - width) / 2;
+						break;
+					case Right:
+					default:
+						x = ((Screen.GetWidth() - width) / 2) + (width - (iOptionWidth * CleanXFac_1));
+						break;
+					case Center:
+						x = ((Screen.GetWidth() - width) / 2) + ((width - (iOptionWidth * CleanXFac_1)) / 2);
+						break;
+				}
+				y = (dfntHeight * lineIndex) * CleanYFac_1;						
+				break;
+				
+			case BottomCenter:
+				switch(iTxtAlignment)
+				{
+					case Left:
+						x = (Screen.GetWidth() - width) / 2;
+						break;
+					case Right:
+					default:
+						x = ((Screen.GetWidth() - width) / 2) + (width - (iOptionWidth * CleanXFac_1));
+						break;
+					case Center:
+						x = ((Screen.GetWidth() - width) / 2) + ((width - (iOptionWidth * CleanXFac_1)) / 2);
+						break;
+				}
+				y = Screen.GetHeight() - (dfntHeight * (linesCount - lineIndex)) * CleanYFac_1;
+				break;
+		}
+		return x, y;
+	}
+	
+	/* END OF METHODS */
+}

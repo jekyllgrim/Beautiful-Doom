@@ -23,92 +23,39 @@ LISTMENU "MainMenu" {
 	TextItem "$MNU_QUITGAME", "q", "QuitMenu"
 }
 
-/*
-ListMenu "BDoom_Credits" {
-	Font "SmallFont"
-
-	StaticText -16,	0, "Idea, main code and graphics", 			yellow
-	StaticText 180,	0, "Jekyll Grim Payne aka Agent_Ash", 		green
-
-	StaticText -16,	12, "Smooth Doom animations", 	yellow
-	StaticText 180,	12, "Gifty", 					green
-
-	StaticText -16,	36, "Minor Sprite fixing", 		yellow
-	StaticText 180,	36, "Revenant100", 				green
-
-	StaticText -16,	48, "Assault Rifle sprites", 	yellow
-	StaticText 180,	48, "Mike12", 					green
-
-	StaticText -16,	60, "Smooth guns, HD sounds", 	yellow
-	StaticText 180,	60, "perkristian", 				green
-
-	StaticText -16,	72, "Splashes and switches", 	yellow
-	StaticText 180,	72, "Enjay", 					green
-	
-	StaticText -16,	84, "Sprite shadows", 			yellow
-	StaticText 180,	84, "Nash", 					green
-
-	StaticText -16,	108, "Footstep scripting", 		yellow
-	StaticText 180,	108, "The Zombie Killer", 		green
-
-	StaticText -16,	120, "Heavy Laser sound", 		yellow
-	StaticText 180,	120, "Michael Henderson", 		green
-
-	StaticText -16,	132, "Alt death sprites", 		yellow
-	StaticText 180,	132, "Death Egg", 				green
-	StaticText 180,	140, "David G.", 				green
-	StaticText 180,	148, "DenisBelmondo", 			green
-	StaticText 180,	156, "alando1", 				green
-
-	StaticText -16,	168, "Scripting help", 			yellow
-	StaticText -16,	176, "phantombeta", 			green
-	StaticText -16,	184, "Marisa Kirisame", 		green
-	StaticText -16,	192, "Gutawer", 				green
-	StaticText -16,	200, "josh771", 				green
-	StaticText -16,	208, "Accensus", 				green
-	StaticText -16,	216, "Caligari87", 				green
-
-	StaticText 110,	176, "Nash", 					green
-	StaticText 110,	184, "Zombie", 					green
-	StaticText 110,	192, "D2JK", 					green
-	StaticText 110,	200, "3saster", 				green
-	StaticText 110,	208, "kodi", 					green
-}*/
-
 AddOptionMenu "OptionsMenu"
 {
+	StaticText "Customize Beautiful Doom settings", "Red"
 	Submenu "Beautiful Doom Settings", "BDoom_Settings"
 }
 
 OptionMenu "BDoom_Settings" {
+	Class "TLTPOptionsMenu"
 	Title "Beautiful Doom Settings"
-	StaticText "Mod Keybinds", yellow
-	ControlGC "Quick Kick",						"+user1","bdoom_weapons",2,1
-	ControlGC "Show Weapon Help",				"event BD_ShowWeapHelp","bdoom_weapons",0,0
-	Control "Janitor (Clear all debris)",		"netevent BD_ClearDebris"
+	StaticText "$TLTPTOOLTIPMNU_VERSION", "yellow"
+	Submenu "$OPTMNU_TLTPTOOLTIP", "TooltipOptionsMenu"
 	StaticText " "
 	
-	StaticText "Weapons", yellow
-	Option "Player Weapons",					"bdoom_weapons", "bdoom_weapons", "bdoom_replaceweapons"
+	StaticText "BEAUTIFUL KEYBINDS", yellow
+	ControlGC_TLTP "Quick Kick",				"$BDMENU_QKICK", "White",	"+user1","bdoom_weapons",2,1
+	ControlGC_TLTP "Show Weapon Help",		"$BDMENU_WEAPONHELP", "White",	"event BD_ShowWeapHelp","bdoom_weapons",0,0
+	TLTPControl "Clear all debris",			"$BDMENU_CLEARDEBRIS", "White", "netevent BD_ClearDebris"
+	StaticText " "
+	
+	StaticText "WEAPONS", yellow
+	TLTPOption "Player Weapons",				"$BDMENU_PLAYERWEAPONS", "White","bdoom_weapons", "bdoom_weapons", "bdoom_replaceweapons"
 	Option "Muzzle Flashes", 					"bdoom_muzzle", "bdoom_muzzle", "bdoom_replaceweapons"
-	OptionBoth "Bullet Tracers",				"bdoom_tracers", "OnOff", "bdoom_replaceweapons", "bdoom_replacemonsters"
-	OptionBGReload "Reload deselected weapons",	"bdoom_autoreload", "OnOff", "bdoom_weapons", "bdoom_replaceweapons"
+	OptionBoth "Bullet Tracers",				"$BDMENU_TRACERS", "White","bdoom_tracers", "OnOff", "bdoom_replaceweapons", "bdoom_replacemonsters"
+	OptionBGReload_TLTP "Background reload","$BDMENU_AUTORELOAD", "White", "bdoom_autoreload", "OnOff", "bdoom_weapons", "bdoom_replaceweapons"
 	StaticText " "
 	
-	StaticText "Leave this on if you're playing the mod with another wad", blue
-	StaticText "that replaces some vanilla sprites directly (by name)", blue
-	StaticText "or uses DEHACKED to change actor code", blue
-	OptionBoth "Safe Replacement", 					"bdoom_safereplacement", "SafeReplacement", "bdoom_replaceobjects", "bdoom_replacemonsters"
-	StaticText " "
-	
-	StaticText "Special Effects", yellow
-	Option "Enhanced gibs & deaths",			"bdoom_gibs", "OnOff", "bdoom_replacemonsters"
-	//Option "Gibs pushable by explosions",		"bdoom_livegibs", "Toggle", "bdoom_gibs"
-	Option "Enhanced blood",					"bdoom_blood", "OnOff"
-	OptionEither "Force vanilla boss deaths",	"bdoom_nobossgibs", "OnOff", "bdoom_gibs", "bdoom_replacemonsters"
-	Option "Halos & particle flames",			"bdoom_flames", "OnOff", ""
-	Option "Casings, smoke, trails, debris",	"bdoom_debris", "OnOff", "", 1	
-	Option "Shootable Decorations", 			"bdoom_killableobjects", "Toggle", "bdoom_replaceobjects"
+	StaticText "SPECIAL EFFECTS", yellow
+	TLTPOption "Enhanced gibs & deaths",		"$BDMENU_GIBSTOGGLE", "White","bdoom_gibs", "OnOff", "bdoom_replacemonsters"
+	TLTPOption "Enhanced blood",				"$BDMENU_BLOODTOGGLE", "White","bdoom_blood", "OnOff"
+	OptionEither_TLTP "Force vanilla boss deaths","$BDMENU_NOBOSSGIBS","White",	"bdoom_nobossgibs", "OnOff", "bdoom_gibs", "bdoom_replacemonsters"
+	TLTPOption "Halos & particle flames",		"$BDMENU_FLAMES", "White",	"bdoom_flames", "OnOff", ""
+	TLTPOption "Minor weapon effects",			"$BDMENU_DEBRIS", "White",	"bdoom_debris", "OnOff", "", 1	
+	TLTPOption "Shootable Decorations", 		"$BDMENU_KILLABLEOBJECTS", "White",	"bdoom_killableobjects", "Toggle", "bdoom_replaceobjects"
 	StaticText " "
 	
 	ScaleSliderGC "Max gibs",					"bdoom_gibnum", 100, 3000, 100, "", "bdoom_gibs", "bdoom_replacemonsters"
@@ -117,24 +64,24 @@ OptionMenu "BDoom_Settings" {
 	ScaleSliderGC "Max debris/trails/smoke FX",	"bdoom_debrisnum", 100, 5000, 100, "", "bdoom_debris"
 	StaticText " "
 	
-	StaticText "Additional Effects and Sounds", yellow
-	Option "Player gloves color",				"bdoom_blackgloves", "bdgloves", "bdoom_weapons"
-	Option "Footstep sounds", 					"bdoom_fs_enabled", "OnOff", ""
-	Option "Ricochet & spark sounds", 			"bdoom_sparks", "OnOff", ""
-	Option "Flies over corpses", 				"bdoom_flies", "OnOff", "bdoom_replacemonsters"
-	Option "Explosion shakes", 					"bdoom_shakes", "OnOff", ""
-	Option "Face on Standard HUD", 				"bdoom_hudface", "OnOff", "", 1	
+	StaticText "ADDITIONAL EFFECTS AND SOUNDS", yellow
+	TLTPOption "Player gloves color",			"$BDMENU_GLOVES", "White", "bdoom_blackgloves", "bdgloves", "bdoom_weapons"
+	TLTPOption "Footstep sounds", 				"$BDMENU_FOOTSTEPS", "White", "bdoom_fs_enabled", "OnOff", ""
+	TLTPOption "Ricochet & spark sounds", 		"$BDMENU_SPARKS", "White","bdoom_sparks", "OnOff", ""
+	TLTPOption "Flies over corpses", 			"$BDMENU_FLIES", "White", "bdoom_flies", "OnOff", "bdoom_replacemonsters"
+	TLTPOption "Explosion shakes", 				"$BDMENU_SHAKES", "White", "bdoom_shakes", "OnOff", ""
+	TLTPOption "Face on Standard HUD", 			"$BDMENU_HUDFACE", "White", "bdoom_hudface", "OnOff", "", 1	
 	StaticText " "
 
-	StaticText "Options below will disable parts of the mod,", yellow
-	StaticText "which enables partial compatibility with other mods.", yellow
-	StaticText "(Change before starting a map/game; will cause issues if changed during gameplay)", blue
-	StaticText " "
-	Option "Beautiful Doom weapons",			"bdoom_replaceweapons", "Toggle", ""
-	Option "Beautiful Doom monsters",			"bdoom_replacemonsters", "Toggle", ""
-	Option "Beautiful Doom items",				"bdoom_replaceitems", "Toggle", "", 1	
-	Option "Beautiful Doom decorations",		"bdoom_replaceobjects", "Toggle", "", 1	
-	SubmenuGC "Per-monster replacement settings", "BDMonsterReplacements", "bdoom_replacemonsters"
+	StaticText "COMPATIBILITY WITH OTHER MODS", yellow
+	OptionBoth "Safe actor replacement", 	"$BDMENU_SAFEREPLACEMENT", "white", "bdoom_safereplacement", "SafeReplacement", "bdoom_replaceobjects", "bdoom_replacemonsters"
+	StaticText "Options below can disable parts of the mod:", green
+	StaticText "(Reqires level restart; you won't be able to load a save)", green
+	TLTPOption "Beautiful Doom weapons",		"$BDMENU_REPLACEWEAPONS", "White", "bdoom_replaceweapons", "Toggle", ""
+	TLTPOption "Beautiful Doom monsters",		"$BDMENU_REPLACEMONSTERS","White", "bdoom_replacemonsters", "Toggle", ""
+	TLTPOption "Beautiful Doom items",			"$BDMENU_REPLACEITEMS", "White", "bdoom_replaceitems", "Toggle", "", 1	
+	TLTPOption "Beautiful Doom decorations",	"$BDMENU_REPLACEOBJECTS","White", "bdoom_replaceobjects", "Toggle", "", 1	
+	//SubmenuGC "Per-monster replacement settings", "BDMonsterReplacements", "bdoom_replacemonsters"
 }
 
 OptionMenu "BDMonsterReplacements" {
@@ -186,4 +133,152 @@ OptionValue "bdoom_weapons" {
 OptionValue "bdoom_muzzle" {
 	0, "Vanilla"
 	1, "Enhanced"
+}
+
+
+OptionMenu "TooltipOptionsMenu"
+{
+	Class "TLTPOptionsMenu"
+	Title "$TLTPTOOLTIPMNU_TITLE"
+	StaticText		"$TLTPTOOLTIPMNU_VERSION", "Gold"
+	StaticText 		"$TLTPTOOLTIPMNU_TAGLINE", "Olive"
+	Position -32
+	
+	StaticText		""
+	// Basic Settings
+	StaticText		"$TLTPTOOLTIPMNU_TITLE_BASICSETTINGS", "White"
+	TLTPOption		"$TLTPTOOLTIPMNU_BASICSETTINGS_TLTPTOGGLE", 				"$TLTPTOOLTIPMNU_TOOLTIP_TLTPTOGGLE", 				"White", "tltp_show_tips", "OnOff"
+	TLTPOption		"$TLTPTOOLTIPMNU_BASICSETTINGS_DELAYTOGGLE", 				"$TLTPTOOLTIPMNU_TOOLTIP_DELAYTOGGLE", 				"White", "tltp_show_delay", "OnOff"
+	TLTPOption		"$TLTPTOOLTIPMNU_BASICSETTINGS_DELAYSKIP", 					"$TLTPTOOLTIPMNU_TOOLTIP_DELAYSKIP", 				"White", "tltp_delay_skip", "OnOff"
+	TLTPSlider		"$TLTPTOOLTIPMNU_BASICSETTINGS_DELAYTIME", 					"$TLTPTOOLTIPMNU_TOOLTIP_DELAYTIME", 				"White", "tltp_delay_tics", 1, 35, 1, 0
+	TLTPOption		"$TLTPTOOLTIPMNU_BASICSETTINGS_TIMEOUTTOGGLE",				"$TLTPTOOLTIPMNU_TOOLTIP_TIMEOUTTOGGLE",			"White", "tltp_time_out", "OnOff"
+	TLTPSlider		"$TLTPTOOLTIPMNU_BASICSETTINGS_TIMEOUTVALUE",				"$TLTPTOOLTIPMNU_TOOLTIP_TIMEOUTVALUE",				"White", "tltp_time_out_val", 1, 10, 1, 0
+	TLTPOption		"$TLTPTOOLTIPMNU_BASICSETTINGS_DRAWORDER",					"$TLTPTOOLTIPMNU_TOOLTIP_DRAWORDER",				"White", "tltp_draw_order", "TLTPDrawOrderOptions"
+	
+	StaticText		""
+	// Border Settings
+	StaticText		"$TLTPTOOLTIPMNU_TITLE_BORDERSETTINGS", White
+	TLTPOption		"$TLTPTOOLTIPMNU_BORDERSETTINGS_BORDERTOGGLE", 				"$TLTPTOOLTIPMNU_TOOLTIP_BORDERTOGGLE",				"White", "tltp_border_toggle", "OnOff"
+	TLTPOption		"$TLTPTOOLTIPMNU_BORDERSETTINGS_BORDERTYPE",				"$TLTPTOOLTIPMNU_TOOLTIP_BORDERTYPE",				"White", "tltp_border_type", "TLTPBorderTypeOptions"
+	TLTPSlider		"$TLTPTOOLTIPMNU_BORDERSETTINGS_BORDER_H_THICKNESS",		"$TLTPTOOLTIPMNU_TOOLTIP_BORDER_H_THICKNESS",		"White", "tltp_border_horizontal_thickness", 0, 5, 1, 0
+	TLTPSlider		"$TLTPTOOLTIPMNU_BORDERSETTINGS_BORDER_V_THICKNESS",		"$TLTPTOOLTIPMNU_TOOLTIP_BORDER_V_THICKNESS",		"White", "tltp_border_vertical_thickness", 0, 5, 1, 0
+	TLTPColorPicker "$TLTPTOOLTIPMNU_BORDERSETTINGS_BORDERCOLOR",				"$TLTPTOOLTIPMNU_TOOLTIP_BORDERCOLOR",				"White", "tltp_border_color"
+	TLTPSlider		"$TLTPTOOLTIPMNU_BORDERSETTINGS_BORDERALPHA",				"$TLTPTOOLTIPMNU_TOOLTIP_BORDERALPHA",				"White", "tltp_border_alpha", 0, 1, 0.05, 2
+	
+	StaticText		""
+	// Background Settings
+	StaticText		"$TLTPTOOLTIPMNU_TITLE_BACKGROUNDSETTINGS", "White"
+	TLTPOption		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND", 			"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND", 				"White", "tltp_show_background", "OnOff"
+	IfGame(Doom){ 				TLTPOption		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_OPTION",		"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_OPTION",		"White", "tltp_background_name", "TLTPBackgroundOptions_Doom", "tltp_show_background" }
+	IfGame(Chex){ 				TLTPOption		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_OPTION",		"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_OPTION",		"White", "tltp_background_name", "TLTPBackgroundOptions_Chex", "tltp_show_background" }
+	IfGame(Strife){ 			TLTPOption		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_OPTION",		"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_OPTION",		"White", "tltp_background_name", "TLTPBackgroundOptions_Strife", "tltp_show_background" }
+	IfGame(Heretic, Hexen){ 	TLTPOption		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_OPTION",		"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_OPTION",		"White", "tltp_background_name", "TLTPBackgroundOptions_Heretic", "tltp_show_background" }
+	TLTPOption		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_MODE",		"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_MODE",			"White", "tltp_background_mode", "TLTPBackgroundModeOptions", "tltp_show_background"
+	TLTPSlider		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_H_PADDING", 	"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_H_PADDING", 	"White", "tltp_background_horizontal_padding", 0, 10, 1, 0
+	TLTPSlider		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_V_PADDING", 	"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_V_PADDING", 	"White", "tltp_background_vertical_padding", 0, 10, 1, 0
+	
+	StaticText		""
+	// Location Settings
+	StaticText		"$TLTPTOOLTIPMNU_TITLE_LOCATIONSETTINGS", "White"
+	TLTPOption		"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_LOCATION",					"$TLTPTOOLTIPMNU_TOOLTIP_LOCATION",					"White", "tltp_tooltip_location", "TLTPTooltipLocationOptions"
+	TLTPSlider		"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_H_MARGIN", 				"$TLTPTOOLTIPMNU_TOOLTIP_H_MARGIN", 				"White", "tltp_location_horizontal_margin", 0, 10, 1, 0
+	TLTPSlider		"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_V_MARGIN", 				"$TLTPTOOLTIPMNU_TOOLTIP_V_MARGIN", 				"White", "tltp_location_vertical_margin", 0, 10, 1, 0
+	TLTPOption		"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_ALIGNMENT",				"$TLTPTOOLTIPMNU_TOOLTIP_ALIGNMENT",				"White", "tltp_tooltip_alignment", "TLTPTooltipTextAlignmentOptions"
+	
+	StaticText		""
+	// Font Settings
+	StaticText		"$TLTPTOOLTIPMNU_TITLE_FONTSETTINGS", "White"
+	TLTPOption		"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_FONT",						"$TLTPTOOLTIPMNU_TOOLTIP_FONT",						"White", "tltp_tooltip_font", "TLTPTooltipFontOptions"
+	TLTPTextField 	"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_FONT_NAME", 				"$TLTPTOOLTIPMNU_TOOLTIP_FONT_NAME", 				"White", "tltp_tooltip_font_name"
+	TLTPOption		"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_FONT_COLORTOGGLE", 		"$TLTPTOOLTIPMNU_TOOLTIP_FONT_COLORTOGGLE", 		"White", "tltp_font_color_override", "OnOff"
+	TLTPOption		"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_FONT_COLOR",				"$TLTPTOOLTIPMNU_TOOLTIP_FONT_COLOR",				"White", "tltp_font_color", "TextColors"
+
+	StaticText		""
+	TLTPSubmenu		"$TLTPTOOLTIPMNU_TITLE_LISTTEST", 							"$TLTPTOOLTIPMNU_TOOLTIP_LISTMENU", 				"White", "TooltipListTest"
+}
+
+ListMenu "TooltipListTest"
+{
+	Class "TLTPListMenu"
+	
+	TLTPTextItem "$TLTPTOOLTIPMNU_TITLE_LISTTEXT", 								"$TLTPTOOLTIPMNU_TOOLTIP_LISTTEXT", 				"White", t, ""
+}
+
+OptionValue "TLTPDrawOrderOptions"
+{
+	0, "$TLTPTOOLTIPMNU_DRAWORDER_OPTION_TOP"
+	1, "$TLTPTOOLTIPMNU_DRAWORDER_OPTION_BOTTOM"
+}
+
+OptionValue "TLTPBorderTypeOptions"
+{
+	0, "$TLTPTOOLTIPMNU_BORDERTYPE_OPTION_FRAME"
+	1, "$TLTPTOOLTIPMNU_BORDERTYPE_OPTION_LINE"
+}
+
+OptionValue "TLTPBackgroundOptions_Doom"
+{
+	0, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_NONE"
+	1, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_DEFAULT"
+	2, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_DOOM_BRICK"
+	3, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_DOOM_MARBLE"
+	4, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_DOOM_METAL"
+}
+
+OptionValue "TLTPBackgroundOptions_Chex"
+{
+	0, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_NONE"
+	1, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_DEFAULT"
+	5, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_CHEX_BRICK"
+	6, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_CHEX_MARBLE"
+	7, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_CHEX_METAL"
+}
+
+OptionValue "TLTPBackgroundOptions_Strife"
+{
+	0, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_NONE"
+	1, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_DEFAULT"
+	8, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_STRIFE_BRICK"
+	9, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_STRIFE_MARBLE"
+	10, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_STRIFE_METAL"
+}
+
+OptionValue "TLTPBackgroundOptions_Heretic"
+{
+	0, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_NONE"
+	1, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_DEFAULT"
+	11, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_HERETIC_BRICK"
+	12, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_HERETIC_STONE"
+	13, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_HERETIC_WOOD"
+}
+
+OptionValue "TLTPBackgroundModeOptions"
+{
+	0, "$TLTPTOOLTIPMNU_BACKGROUND_MODE_OPTION_STRETCH"
+	1, "$TLTPTOOLTIPMNU_BACKGROUND_MODE_OPTION_TILE"
+}
+
+OptionValue "TLTPTooltipLocationOptions"
+{
+	0, "$TLTPTOOLTIPMNU_LOCATION_OPTION_MOUSE"
+	1, "$TLTPTOOLTIPMNU_LOCATION_OPTION_UPPERLEFT"
+	2, "$TLTPTOOLTIPMNU_LOCATION_OPTION_LOWERLEFT"
+	3, "$TLTPTOOLTIPMNU_LOCATION_OPTION_UPPERRIGHT"
+	4, "$TLTPTOOLTIPMNU_LOCATION_OPTION_LOWERRIGHT"
+	5, "$TLTPTOOLTIPMNU_LOCATION_OPTION_TOPCENTER"
+	6, "$TLTPTOOLTIPMNU_LOCATION_OPTION_BOTTOMCENTER"
+}
+
+OptionValue "TLTPTooltipTextAlignmentOptions"
+{
+	0, "$TLTPTOOLTIPMNU_ALIGNMENT_OPTION_LEFT"
+	1, "$TLTPTOOLTIPMNU_ALIGNMENT_OPTION_RIGHT" 
+	2, "$TLTPTOOLTIPMNU_ALIGNMENT_OPTION_CENTER"
+}
+
+OptionValue "TLTPTooltipFontOptions"
+{
+	0, "$TLTPTOOLTIPMNU_FONT_OPTION_CUSTOM"
+	1, "$TLTPTOOLTIPMNU_FONT_OPTION_CONSOLE"
+	2, "$TLTPTOOLTIPMNU_FONT_OPTION_NEWSMALL"
 }

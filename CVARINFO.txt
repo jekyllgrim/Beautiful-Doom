@@ -52,3 +52,39 @@ server bool bdoom_ArchVile = true;
 server bool bdoom_Cyberdemon = true;
 server bool bdoom_SpiderMastermind = true;
 server bool bdoom_IconOfSin	= true;
+
+
+//// MENU TOOLTIPS
+
+user bool tltp_show_tips = true;
+user bool tltp_show_delay = false;
+user bool tltp_delay_skip = true;
+user int tltp_delay_tics = 35;
+user bool tltp_time_out = true;
+user int tltp_time_out_val = 5;
+user bool tltp_draw_order = false;
+
+user bool tltp_border_toggle = true;
+user bool tltp_border_type = false;
+user int tltp_border_horizontal_thickness = 3;
+user int tltp_border_vertical_thickness = 3;
+user color tltp_border_color;
+user float tltp_border_alpha = 1.0;
+
+user bool tltp_show_background = true;
+user int tltp_background_name = 1;
+user bool tltp_background_mode = true;
+user int tltp_background_horizontal_padding = 10;
+user int tltp_background_vertical_padding = 5;
+
+user int tltp_tooltip_location = 4;
+user int tltp_location_horizontal_margin = 10;
+user int tltp_location_vertical_margin = 10;
+user int tltp_tooltip_alignment = 1;
+
+user int tltp_tooltip_font = 2;
+user string tltp_tooltip_font_name;
+user bool tltp_font_color_override;
+user int tltp_font_color = 9;
+
+user bool tltp_i_disabledOptions = true;

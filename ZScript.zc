@@ -46,3 +46,6 @@ version "4.2.4"
 #include "Z_Bdoom/o_lightsources.zc"
 #include "Z_Bdoom/o_misc.zc"
 #include "Z_Bdoom/o_victims.zc"
+
+#include "Z_Bdoom/Tooltips/ToolTips_Lists.txt"
+#include "Z_Bdoom/Tooltips/ToolTips_Options.txt"
