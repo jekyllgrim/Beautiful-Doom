@@ -81,7 +81,8 @@ OptionMenu "BDoom_Settings" {
 	TLTPOption "Beautiful Doom monsters",		"$BDMENU_REPLACEMONSTERS","White", "bdoom_replacemonsters", "Toggle", ""
 	TLTPOption "Beautiful Doom items",			"$BDMENU_REPLACEITEMS", "White", "bdoom_replaceitems", "Toggle", "", 1	
 	TLTPOption "Beautiful Doom decorations",	"$BDMENU_REPLACEOBJECTS","White", "bdoom_replaceobjects", "Toggle", "", 1	
-	//SubmenuGC "Per-monster replacement settings", "BDMonsterReplacements", "bdoom_replacemonsters"
+	StaticText ""
+	SubmenuGC "Per-monster replacement settings", "BDMonsterReplacements", "bdoom_replacemonsters"
 }
 
 OptionMenu "BDMonsterReplacements" {
