@@ -1,10 +1,10 @@
 ===========================================================================
-Advanced engine needed  : GZDoom 4.2.0
+Advanced engine needed  : GZDoom 4.4.1
 Primary purpose         : No levels included
 ===========================================================================
 Title                   : Beautiful Doom
-Filename                : 
-Release date            : TBA
+Filename                : BeautifulDoom200612.pk3
+Release date            : 12.06.2020
 Authors                 : Jekyll Grim Payne (aka Agent_Ash), Gifty
 Email Address           : jekyllgrim@gmail.com
 Other Files By Author   : runngun2.wad, wizardr2.wad (aka wizard2.wad),
