@@ -5402,6 +5402,10 @@ Class BD_SpriteLoader : Actor {
 		PLGC C 0;
 		PLGC D 0;
 		PLGC E 0;
+		QLGC B 0;
+		QLGC C 0;
+		QLGC D 0;
+		QLGC E 0;
 		PLGF A 0;
 		PLGF B 0;
 		PLGF C 0;
