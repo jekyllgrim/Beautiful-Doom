@@ -98,7 +98,7 @@ Class BD_ZombieMan : BDoomMonster {
 	Death1: //fall forward
 		POSO A 3 BD_Bleed();
 		POSO B 3 A_Scream();
-		POSO C 3;
+		POSO C 3 A_NoBlocking();
 		POSO DDDMMD random(4,7) {
 			if (!burning && random(0,100) < 40) {
 				A_PlaySound("gibs/bloodspurt");
@@ -141,8 +141,9 @@ Class BD_ZombieMan : BDoomMonster {
 			A_SpawnItemEx("Gib_Hand",0,14,24,	frandom(-2,2),frandom(3,4),frandom(2,3),	0,SXF_SETTARGET);
 			return ResolveState(null);
 		}
-		POSD BCDE 2 BD_Bleed();
+		POSD BC 2 BD_Bleed();
 		TNT1 A 0 A_NoBlocking();
+		POSD DE 2 BD_Bleed();
 		POSD FGH 2;
 		goto deathbleed;
 	Death.Saw:
