@@ -241,7 +241,10 @@ Class BD_SuperShotgun : BDoomWeapon {
 	Ready.Enhanced:
 		SH2N A 1 {
 			BD_SetSprite("SH2N","QH2N");
-			A_WeaponReady(WRF_ALLOWRELOAD);
+			if (invoker.shotfired)
+				A_WeaponReady(WRF_ALLOWRELOAD);
+			else
+				A_WeaponReady();
 			let s = player.FindPSprite (PSP_Weapon);
 			if (invoker.ShotFired)
 				s.frame = 1;
