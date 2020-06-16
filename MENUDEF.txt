@@ -65,7 +65,7 @@ OptionMenu "BDoom_Settings" {
 	StaticText " "
 	
 	StaticText "ADDITIONAL EFFECTS AND SOUNDS", yellow
-	TLTPOption "Player gloves color",			"$BDMENU_GLOVES", "White", "bdoom_blackgloves", "bdgloves", "bdoom_weapons"
+	TLTPOption "Player gloves color",			"$BDMENU_GLOVES", "White", "bdoom_blackgloves", "bdgloves", "bdoom_replaceweapons"
 	TLTPOption "Footstep sounds", 				"$BDMENU_FOOTSTEPS", "White", "bdoom_fs_enabled", "OnOff", ""
 	TLTPOption "Ricochet & spark sounds", 		"$BDMENU_SPARKS", "White","bdoom_sparks", "OnOff", ""
 	TLTPOption "Flies over corpses", 			"$BDMENU_FLIES", "White", "bdoom_flies", "OnOff", "bdoom_replacemonsters"
