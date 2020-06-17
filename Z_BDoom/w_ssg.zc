@@ -6,7 +6,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		Obituary "$OB_MPSSHOTGUN"; 
 		weapon.selectionorder 40;
 		Weapon.AmmoType		"Shell";
-		Weapon.AmmoUse		1;
+		Weapon.AmmoUse		2;
 		Weapon.AmmoGive		0;
 		Weapon.AmmoType2	"Shell";
 		Weapon.AmmoUse2		1;
@@ -171,7 +171,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 				A_playsound("weapons/sshotc");
 		}
 		#### CCB 1;
-		#### BAA 1 A_ReFire("Fire");
+		#### BAA 1 A_WeaponReady(WRF_NOSWITCH);
 		goto ready;
 	Flash:
 		TNT1 A 2 {
@@ -266,7 +266,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 			if (bdoom_tracers)
 				A_FireBullets(11.2, 7.1, 20, 5, "EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0);
 			else
-				A_FireBullets(11.2, 7.1, 20, 5, "EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
+				A_FireBullets(11.2, 7.1, 20, 5, "EnSSGPuff",FBF_NORANDOMPUFFZ);
 		}
 		
 		#### C 1 A_Playsound("weapons/ssg/fire", 6);
@@ -278,11 +278,11 @@ Class BD_SuperShotgun : BDoomWeapon {
 		SH2N A 3 {
 			if (bdoom_weapons == 2)
 				return ResolveState("AltFire.Modern");
+			BD_SetSprite("SH2N","QH2N");
 			If(invoker.ShotFired) {
 				let psp = player.FindPSprite(PSP_WEAPON);
 				if (psp) psp.frame = 1;
 			}
-			BD_SetSprite("SH2N","QH2N");
 			return ResolveState(null);
 		}
 		#### B 1 {
@@ -333,7 +333,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		#### VWXYZ 2;
 		#### D 2 A_playsound("weapons/ssg/close");
 		#### C 2;
-		#### BA 2 A_ReFire("Fire");
+		#### BA 2 A_WeaponReady(WRF_NOSWITCH);
 		goto ready;
 	AltFlash:
 		TNT1 A 2 {
