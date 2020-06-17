@@ -5,11 +5,11 @@ Class BD_SuperShotgun : BDoomWeapon {
 		inventory.pickupmessage "$GOTSHOTGUN2"; 
 		Obituary "$OB_MPSSHOTGUN"; 
 		weapon.selectionorder 40;
-		Weapon.AmmoType		"Shell";
-		Weapon.AmmoUse		2;
-		Weapon.AmmoGive		0;
+		Weapon.AmmoType	"Shell";
+		Weapon.AmmoUse		1;
+		Weapon.AmmoGive	0;
 		Weapon.AmmoType2	"Shell";
-		Weapon.AmmoUse2		1;
+		Weapon.AmmoUse2	1;
 		Weapon.AmmoGive2	8;
 		weapon.slotnumber 	3;
 		weapon.slotpriority 1;
@@ -54,18 +54,20 @@ Class BD_SuperShotgun : BDoomWeapon {
 			if (!Owner.FindInventory("SSGClip"))
 				Owner.GiveInventory("SSGClip",2);
 			Ammo1 = ammo(Owner.FindInventory("SSGClip") );
-			ammouse1 = 2;
 			ammouse2 = 0;
 			bNOAUTOFIRE = true;
 			bAMMO_OPTIONAL = true;
 		}
 		else {
 			Ammo1 = ammo(Owner.FindInventory("Shell"));
-			ammouse1 = 2;
 			ammouse2 = 1;
 			bNOAUTOFIRE = false;
 			bAMMO_OPTIONAL = false;
 		}
+		if (bdoom_weapons == 1)
+			ammouse1 = 1;
+		else
+			ammouse1 = 2;
 	}
 	states {
 	Spawn:
@@ -254,7 +256,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		goto ready;
 	Fire.Enhanced:
 		SH2N A 3 {
-			If(invoker.ShotFired)
+			If(invoker.ShotFired || invoker.ammo1.amount < 2)
 				return ResolveState("AltFire");
 			BD_SetSprite("SH2N","QH2N");
 			return ResolveState(null);
@@ -266,7 +268,8 @@ Class BD_SuperShotgun : BDoomWeapon {
 			if (bdoom_tracers)
 				A_FireBullets(11.2, 7.1, 20, 5, "EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0);
 			else
-				A_FireBullets(11.2, 7.1, 20, 5, "EnSSGPuff",FBF_NORANDOMPUFFZ);
+				A_FireBullets(11.2, 7.1, 20, 5, "EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
+			A_TakeInventory("Shell",1);
 		}
 		
 		#### C 1 A_Playsound("weapons/ssg/fire", 6);
