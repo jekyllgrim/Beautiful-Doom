@@ -249,7 +249,8 @@ Class BD_PlasmaRifle : BDoomWeapon {
 				A_OverlayAlpha(PSP_GUN2,0.5);
 				A_PlaySound("Mweapons/plasma/steamfast");
 			}
-			PLGG A 2 { 
+			PLGG A 2 {
+				A_WeaponReady(WRF_NOFIRE);
 				if (invoker.heatcounter > 0)
 					invoker.heatcounter -= 1.0; 
 				else
@@ -282,6 +283,7 @@ Class BD_PlasmaRifle : BDoomWeapon {
 				A_PlaySound("Mweapons/plasma/steamslow");
 			}
 			PLGG A 5 { 
+				A_WeaponReady(WRF_NOFIRE);
 				if (invoker.heatcounter > 0)
 					invoker.heatcounter -= 1.0; 
 				else
