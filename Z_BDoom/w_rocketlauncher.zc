@@ -285,7 +285,7 @@ Class BD_RocketLauncher : BDoomWeapon {
 				A_OverlayOffset(PSP_MAG,0,32);
 				return ResolveState(null);
 			}			
-			#### ABCDEEEE 2;
+			#### ABCDEEEE 1;
 			#### # 1 {
 				A_PlaySound("Mweapons/rocket/clipout",5);
 				A_WeaponOffset(1.5,0,WOF_ADD);
@@ -318,7 +318,7 @@ Class BD_RocketLauncher : BDoomWeapon {
 				else
 					BD_SetSprite("ROR1","QOR1");
 			}
-			#### ABCDEFGH 2;
+			#### ABCDEFGH 1;
 			#### IJKLM 2;
 			TNT1 A 20;
 			TNT1 A 0 {
