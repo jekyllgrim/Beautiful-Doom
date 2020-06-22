@@ -899,6 +899,7 @@ Class ModernBFGBall : BD_BFGBall {
 		if (!(vel == (0,0,0)))
 			vel = vel.unit() * (5+wpower*2);
 		sspawn = FindState("Spawn");
+		//console.printf("capacity: %d",maxcapacity);
 	}
 	Override void Tick() {
 		super.Tick();
@@ -968,83 +969,113 @@ Class ModernBFGBall : BD_BFGBall {
 		}
 	}
 	States {
-		Spawn:
-			TNT1 A 0 NoDelay {
-				if (wcharge >= 12)
-					return ResolveState("SelfDestruct");
-				A_PlaySound("weapons/bfg/fly",CHAN_6,0.6,TRUE,attenuation:3);
-				A_PlaySound("Mweapons/bfg/orbcharge",CHAN_7);
-				return ResolveState(null);
+	Spawn:
+		TNT1 A 0 NoDelay {
+			if (wcharge >= 12)
+				return ResolveState("SelfDestruct");
+			A_PlaySound("weapons/bfg/fly",CHAN_6,0.6,TRUE,attenuation:3);
+			A_PlaySound("Mweapons/bfg/orbcharge",CHAN_7);
+			return ResolveState(null);
+		}
+	SpawnDo:
+		COIR ABCDEFGHIJKLMNOPQRSTUV 2 {
+			A_FaceMovementDirection();
+			if (vel.length() < 0.5) {
+				SetStateLabel("Death");
+				A_KillChildren();
 			}
-		SpawnDo:
-			COIR ABCDEFGHIJKLMNOPQRSTUV 2 {
-				A_FaceMovementDirection();
-				if (vel.length() < 0.5) {
-					SetStateLabel("Death");
-					A_KillChildren();
-				}
+		}
+		loop;
+	Death.Sky:
+		TNT1 A 1 A_RemoveChildren(1,RMVF_EVERYTHING);
+		stop;
+	Death:
+		COIX A 1; //makes sure PostBeginPlay has time to execute in case of a point-blank shot
+		TNT1 A 0 {
+			dead = true;
+			if (bdoom_debris) {
+				for (int i = 3*wpower; i > 0; i--)
+					A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(1,8)+300*scale.x,duration:56,sparsity:1.0,spawnclass:"MBFGRailParticle");
 			}
-			loop;
-		Death.Sky:
-			TNT1 A 1 A_RemoveChildren(1,RMVF_EVERYTHING);
-			stop;
-		Death:
-			TNT1 A 0 {
-				dead = true;
-				if (bdoom_debris) {
-					for (int i = 3*wpower; i > 0; i--)
-						A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(1,8)+300*scale.x,duration:56,sparsity:1.0,spawnclass:"MBFGRailParticle");
-				}
-				A_RemoveChildren(1,RMVF_EVERYTHING);
-				A_StopSound(CHAN_6);
-				A_StopSound(CHAN_7);
-				A_Quake(wpower,10*wpower,0,256*wpower,"");
-				if (wcharge >= 12)
-					return ResolveState("SelfDestruct");
-				A_PlaySound("weapons/bfg/explosion",6);
-				A_SprayDecal("BFGLightning",radius+32);
-				A_Explode(50+60*wpower,64+28*wpower,XF_NOSPLASH,alert:true,fulldamagedistance:64+20*wpower,damagetype:"BFGSplash");
-				return ResolveState(null);
-			}
-			COIX A 10 {
-				if (bfglist.size() > 0) {
-					for (int i = bfglist.size()-1; i >= 0; i--) {
-						A_Face(bfglist[i],0,0,flags:FAF_MIDDLE);
-						A_CustomRailGun(30 + 22*wpower,0,"","51fb45",RGF_NOPIERCING|RGF_FULLBRIGHT|RGF_CENTERZ|RGF_SILENT ,maxdiff:10,pufftype:"MBFGRailPuff",range:rdistance,duration:random(100,150),sparsity:0.15,driftspeed:0.3);
+			A_RemoveChildren(1,RMVF_EVERYTHING);
+			A_StopSound(CHAN_6);
+			A_StopSound(CHAN_7);
+			A_Quake(wpower,10*wpower,0,256*wpower,"");
+			if (wcharge >= 12)
+				return ResolveState("SelfDestruct");
+			A_PlaySound("weapons/bfg/explosion",6);
+			A_SprayDecal("BFGLightning",radius+32);
+			A_Explode(50+60*wpower,64+28*wpower,XF_NOSPLASH,alert:true,fulldamagedistance:64+20*wpower,damagetype:"BFGSplash");
+			return ResolveState(null);
+		}
+		COIX A 10 {
+			//console.printf("bfg list size: %d, capacity: %d",bfglist.size(),maxcapacity);
+			//this block is intended for point-blank shots when the orb immediately enters Death state and has no time to find targets:
+			if (bfglist.size() < maxcapacity) {
+				double closestDist = double.infinity;
+				for (int i = maxcapacity; i > 0; i--) {
+					BlockThingsIterator itr = BlockThingsIterator.Create(self,rdistance);
+					while (itr.next()) {
+						let next = itr.thing;
+						if (next == target)
+							continue; 
+						if (!next.bShootable || (!next.bIsMonster && !(next is "PlayerPawn")) || !target.IsHostile (next) || target.bKILLED)
+							continue;
+						double dist = Distance3D(next);
+						if (dist > rdistance)
+							continue;
+						if (dist < closestDist)
+							closestDist = dist;
+						tracer = next;
+						A_Face(tracer,0,0,flags:FAF_MIDDLE);
+						if (!CheckLOF (flags: CLOFF_NoAim | CLOFF_SKIPOBSTACLES, ptr_target: AAPTR_tracer))
+							continue;		
+						if (tracer) {
+							//console.printf("%d Found %s",i,tracer.Getclassname());
+							bfglist.push(tracer);
+							tracer = null;
+						}
 					}
 				}
 			}
-			TNT1 A 0 {
-				let ring = Spawn("ModernBFGBall_XRing",pos);
-				if (ring) {
-					ring.pitch = frandom(15,20)*randompick(-1,1);
-					ring.angle = random(0,360);
-					ring.master = self;
-					ring.scale = scale*1.1;
-				}
-				let ring2 = Spawn("ModernBFGBall_XRing",pos);
-				if (ring2) {
-					ring2.pitch = frandom(70,85)*randompick(-1,1);
-					ring2.angle = random(0,360);
-					ring2.master = self;
-					ring2.scale = scale*1.1;
+			if (bfglist.size() > 0) {
+				for (int i = bfglist.size()-1; i >= 0; i--) {
+					A_Face(bfglist[i],0,0,flags:FAF_MIDDLE);
+					A_CustomRailGun(30 + 22*wpower,0,"","51fb45",RGF_NOPIERCING|RGF_FULLBRIGHT|RGF_CENTERZ|RGF_SILENT ,maxdiff:10,pufftype:"MBFGRailPuff",range:rdistance,duration:random(100,150),sparsity:0.15,driftspeed:0.3);
 				}
 			}
-			COIX ABCDEFGHIJKLM 1 { 
-				scale *= 1.2;
-				alpha *= 0.75;
+		}
+		TNT1 A 0 {
+			let ring = Spawn("ModernBFGBall_XRing",pos);
+			if (ring) {
+				ring.pitch = frandom(15,20)*randompick(-1,1);
+				ring.angle = random(0,360);
+				ring.master = self;
+				ring.scale = scale*1.1;
 			}
-			stop;				
+			let ring2 = Spawn("ModernBFGBall_XRing",pos);
+			if (ring2) {
+				ring2.pitch = frandom(70,85)*randompick(-1,1);
+				ring2.angle = random(0,360);
+				ring2.master = self;
+				ring2.scale = scale*1.1;
+			}
+		}
+		COIX ABCDEFGHIJKLM 1 { 
+			scale *= 1.2;
+			alpha *= 0.75;
+		}
+		stop;				
 
-		SelfDestruct:
-			TNT1 A 0 {
-				A_Stop();
-				A_SetScale(1.0);
-				A_PlaySound("Mweapons/bfg/overcharge",6);
-				A_Explode(10*wpower,250,flags:XF_HURTSOURCE|XF_NOSPLASH,alert:true,fulldamagedistance:250,damagetype:"BFGSplash");
-			}
-			COIX ABCDEFGHIJKLM 2 ;//A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,15,"NullPuff",random(0,360),random(0,360),random(22,56),56,3.0,0,"MBFGRailParticle");
-			stop;
+	SelfDestruct:
+		TNT1 A 0 {
+			A_Stop();
+			A_SetScale(1.0);
+			A_PlaySound("Mweapons/bfg/overcharge",6);
+			A_Explode(10*wpower,250,flags:XF_HURTSOURCE|XF_NOSPLASH,alert:true,fulldamagedistance:250,damagetype:"BFGSplash");
+		}
+		COIX ABCDEFGHIJKLM 2 ;//A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,15,"NullPuff",random(0,360),random(0,360),random(22,56),56,3.0,0,"MBFGRailParticle");
+		stop;
 	}
 }
 
