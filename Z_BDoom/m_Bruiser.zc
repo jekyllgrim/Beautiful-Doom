@@ -1,6 +1,6 @@
 Class BD_BaronOfHell : BDoomMonster {
 	Default	{
-		species "Bruiser";
+		species "BaronOfHell";
 		Health 1000;
 		Radius 24;
 		Height 64;
