@@ -489,13 +489,10 @@ Class BD_BloodyPrintControl : Inventory {
 		+INVENTORY.UNTOSSABLE
 		inventory.maxamount 1;
 	}
-	static const name LiquidFloors[] = { 
-		"BLOOD1", "BLOOD2", "BLOOD3", "SLIME01", "SLIME02", "SLIME03", "SLIME04", "SLIME05", "SLIME06", "SLIME07", "SLIME08", "SLIME09", "SLIME10", "SLIME11", "SLIME12"
-	};
 	override void Tick() {}
 	override void DoEffect() {
 		super.DoEffect();		
-		if (!owner || !bdoom_blood || !owner.player || level.isFrozen())
+		if (!bdoom_blood || !owner || !owner.player || level.isFrozen())
 			return;
 		//debug
 		//Console.Printf("blood on boots: %d | vel: %d",bootsblood.Size(),owner.vel.length());
@@ -517,14 +514,11 @@ Class BD_BloodyPrintControl : Inventory {
 				if (bootsblood.Size() >= 48)
 					break;
 				let pool = BD_BloodBase(event.bloodlist[i]);
-				if (!pool || !pool.bNOINTERACTION || /*!(pool.pos.z ~== pool.floorz) ||*/ bootsblood.Find (pool) != bootsBlood.Size ())
+				if (!pool || !(pool.pos.z <= pool.floorz + 1) || bootsblood.Find (pool) != bootsBlood.Size ())
 					continue;
-				if (pool is "BD_Blood" || pool is "AniBloodPool") {
-					/*let diff = owner.Vec3To (pool);
-					double combinedRadius = owner.radius + pool.radius;
-					if ((diff.XY dot diff.XY) < (combinedRadius * combinedRadius))*/
+				if ((pool is "BD_Blood" || pool is "BD_BaseBloodPool") && !(pool is "BD_BloodyFootPrint")) {
 					let diff = owner.Distance2D(pool);
-					if (pool.floorz == owner.floorz && diff <= owner.radius)
+					if (pool.floorz ~== owner.floorz && diff <= owner.radius)
 						bootsblood.Push(pool);
 				}
 			}
