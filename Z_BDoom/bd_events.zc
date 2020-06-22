@@ -242,26 +242,26 @@ class BD_ActorOverrideHandler : EventHandler {
 		if (bdoom_replacemonsters) {
 			let monst = e.Replacee.GetClassName();
 			switch (monst) {
-				case 'Zombieman' 			: if (!CheckVanillaReplacement(monst, "POSSA1") && bdoom_Zombieman) 			e.Replacement = 'BD_Zombieman'; 			break;
-				case 'ShotgunGuy' 			: if (!CheckVanillaReplacement(monst, "SPOSA1") && bdoom_ShotgunGuy) 		e.Replacement = 'BD_ShotgunGuy'; 			break;
-				case 'ChaingunGuy' 		: if (!CheckVanillaReplacement(monst, "CPOSA1") && bdoom_ChaingunGuy) 		e.Replacement = 'BD_ChaingunGuy'; 		break;
-				case 'WolfensteinSS'		: if (!CheckVanillaReplacement(monst, "SSWVA1") && bdoom_WolfensteinSS) 		e.Replacement = 'BD_WolfensteinSS'; 		break;
-				case 'DoomImp' 			: if (!CheckVanillaReplacement(monst, "TROOA1") && bdoom_DoomImp) 			e.Replacement = 'BD_DoomImp'; 				break;
-				case 'Demon' 				: if (!CheckVanillaReplacement(monst, "SARGA1") && bdoom_Demon) 				e.Replacement = 'BD_Demon'; 				break;
-				case 'Spectre' 			: if (!CheckVanillaReplacement(monst, "SARGA1") && bdoom_Spectre) 			e.Replacement = 'BD_Spectre'; 				break;
-				case 'Cacodemon' 			: if (!CheckVanillaReplacement(monst, "HEADA1") && bdoom_Cacodemon) 			e.Replacement = 'BD_Cacodemon'; 			break;
-				case 'PainElemental'		: if (!CheckVanillaReplacement(monst, "PAINA1") && bdoom_PainElemental) 		e.Replacement = 'BD_PainElemental'; 		break;
-				case 'LostSoul'			: if (!CheckVanillaReplacement(monst, "SKULA1") && bdoom_LostSoul) 			e.Replacement = 'BD_LostSoul'; 			break;
-				case 'Revenant' 			: if (!CheckVanillaReplacement(monst, "SKELA1") && bdoom_Revenant) 			e.Replacement = 'BD_Revenant'; 			break;
-				case 'Arachnotron' 		: if (!CheckVanillaReplacement(monst, "BSPIA1") && bdoom_Arachnotron) 		e.Replacement = 'BD_Arachnotron'; 		break;
-				case 'Fatso' 				: if (!CheckVanillaReplacement(monst, "FATTA1") && bdoom_Fatso) 				e.Replacement = 'BD_Fatso'; 				break;
-				case 'HellKnight' 			: if (!CheckVanillaReplacement(monst, "BOS2A1") && bdoom_HellKnight) 		e.Replacement = 'BD_HellKnight'; 			break;
-				case 'BaronOfHell' 		: if (!CheckVanillaReplacement(monst, "BOSSA1") && bdoom_BaronOfHell) 		e.Replacement = 'BD_BaronOfHell'; 		break;
-				case 'ArchVile' 			: if (!CheckVanillaReplacement(monst, "VILEA1") && bdoom_ArchVile) 			e.Replacement = 'BD_ArchVile'; 			break;
-				case 'Cyberdemon' 			: if (!CheckVanillaReplacement(monst, "CYBRA1") && bdoom_Cyberdemon) 		e.Replacement = 'BD_Cyberdemon'; 			break;
-				case 'SpiderMastermind' 	: if (!CheckVanillaReplacement(monst, "SPIDA1") && bdoom_SpiderMastermind) 	e.Replacement = 'BD_SpiderMastermind';	break;
-				case 'BossBrain' 			: if (!CheckVanillaReplacement(monst, "BBRNA0") && bdoom_IconOfSin) 			e.Replacement = 'BD_BossBrain';			break;
-				case 'SpawnShot' 			: if (!CheckVanillaReplacement(monst, "BOSFA0") && bdoom_IconOfSin) 			e.Replacement = 'BD_SpawnShot';			break;
+				case 'Zombieman' 			: if (!CheckVanillaReplacement(monst/*, "POSSA1"*/) && bdoom_Zombieman) 			e.Replacement = 'BD_Zombieman'; 			break;
+				case 'ShotgunGuy' 			: if (!CheckVanillaReplacement(monst/*, "SPOSA1"*/) && bdoom_ShotgunGuy) 		e.Replacement = 'BD_ShotgunGuy'; 			break;
+				case 'ChaingunGuy' 		: if (!CheckVanillaReplacement(monst/*, "CPOSA1"*/) && bdoom_ChaingunGuy) 		e.Replacement = 'BD_ChaingunGuy'; 		break;
+				case 'WolfensteinSS'		: if (!CheckVanillaReplacement(monst/*, "SSWVA1"*/) && bdoom_WolfensteinSS) 		e.Replacement = 'BD_WolfensteinSS'; 		break;
+				case 'DoomImp' 			: if (!CheckVanillaReplacement(monst/*, "TROOA1"*/) && bdoom_DoomImp) 			e.Replacement = 'BD_DoomImp'; 				break;
+				case 'Demon' 				: if (!CheckVanillaReplacement(monst/*, "SARGA1"*/) && bdoom_Demon) 				e.Replacement = 'BD_Demon'; 				break;
+				case 'Spectre' 			: if (!CheckVanillaReplacement(monst/*, "SARGA1"*/) && bdoom_Spectre) 			e.Replacement = 'BD_Spectre'; 				break;
+				case 'Cacodemon' 			: if (!CheckVanillaReplacement(monst/*, "HEADA1"*/) && bdoom_Cacodemon) 			e.Replacement = 'BD_Cacodemon'; 			break;
+				case 'PainElemental'		: if (!CheckVanillaReplacement(monst/*, "PAINA1"*/) && bdoom_PainElemental) 		e.Replacement = 'BD_PainElemental'; 		break;
+				case 'LostSoul'			: if (!CheckVanillaReplacement(monst/*, "SKULA1"*/) && bdoom_LostSoul) 			e.Replacement = 'BD_LostSoul'; 			break;
+				case 'Revenant' 			: if (!CheckVanillaReplacement(monst/*, "SKELA1"*/) && bdoom_Revenant) 			e.Replacement = 'BD_Revenant'; 			break;
+				case 'Arachnotron' 		: if (!CheckVanillaReplacement(monst/*, "BSPIA1"*/) && bdoom_Arachnotron) 		e.Replacement = 'BD_Arachnotron'; 		break;
+				case 'Fatso' 				: if (!CheckVanillaReplacement(monst/*, "FATTA1"*/) && bdoom_Fatso) 				e.Replacement = 'BD_Fatso'; 				break;
+				case 'HellKnight' 			: if (!CheckVanillaReplacement(monst/*, "BOS2A1"*/) && bdoom_HellKnight) 		e.Replacement = 'BD_HellKnight'; 			break;
+				case 'BaronOfHell' 		: if (!CheckVanillaReplacement(monst/*, "BOSSA1"*/) && bdoom_BaronOfHell) 		e.Replacement = 'BD_BaronOfHell'; 		break;
+				case 'ArchVile' 			: if (!CheckVanillaReplacement(monst/*, "VILEA1"*/) && bdoom_ArchVile) 			e.Replacement = 'BD_ArchVile'; 			break;
+				case 'Cyberdemon' 			: if (!CheckVanillaReplacement(monst/*, "CYBRA1"*/) && bdoom_Cyberdemon) 		e.Replacement = 'BD_Cyberdemon'; 			break;
+				case 'SpiderMastermind' 	: if (!CheckVanillaReplacement(monst/*, "SPIDA1"*/) && bdoom_SpiderMastermind) 	e.Replacement = 'BD_SpiderMastermind';	break;
+				case 'BossBrain' 			: if (!CheckVanillaReplacement(monst/*, "BBRNA0"*/) && bdoom_IconOfSin) 			e.Replacement = 'BD_BossBrain';			break;
+				case 'SpawnShot' 			: if (!CheckVanillaReplacement(monst/*, "BOSFA0"*/) && bdoom_IconOfSin) 			e.Replacement = 'BD_SpawnShot';			break;
 			//decorative corpses:
 				case 'DeadZombieman' 		: if (!CheckVanillaReplacement(monst, "POSSL0") && bdoom_Zombieman) 			e.Replacement = 'BD_DeadZombieman'; 		break;
 				case 'DeadShotgunGuy' 	: if (!CheckVanillaReplacement(monst, "SPOSL0") && bdoom_ShotgunGuy) 		e.Replacement = 'BD_DeadShotgunGuy'; 		break;
