@@ -1,5 +1,29 @@
 texture optional M_SKULL1
-pic BDCURS01 tics 2
+pic BDMENS00 tics 2
+pic BDMENS01 tics 2
+pic BDMENS02 tics 2
+pic BDMENS03 tics 2
+pic BDMENS04 tics 2
+pic BDMENS05 tics 2
+pic BDMENS06 tics 2
+pic BDMENS07 tics 2
+pic BDMENS08 tics 2
+pic BDMENS09 tics 2
+pic BDMENS10 tics 2
+pic BDMENS11 tics 2
+pic BDMENS12 tics 2
+pic BDMENS13 tics 2
+pic BDMENS14 tics 2
+pic BDMENS15 tics 2
+pic BDMENS16 tics 2
+pic BDMENS17 tics 2
+pic BDMENS18 tics 2
+pic BDMENS19 tics 2
+pic BDMENS20 tics 2
+pic BDMENS21 tics 2
+pic BDMENS22 tics 2
+
+/*pic BDCURS01 tics 2
 pic BDCURS02 tics 2
 pic BDCURS03 tics 2
 pic BDCURS04 tics 2
@@ -11,7 +35,7 @@ pic BDCURS09 tics 2
 pic BDCURS10 tics 2
 pic BDCURS11 tics 2
 pic BDCURS12 tics 2
-pic BDCURS13 tics 2
+pic BDCURS13 tics 2*/
 
 
 
