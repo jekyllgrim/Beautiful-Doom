@@ -28,7 +28,7 @@ Class BD_Chainsaw : BDoomWeapon {
 		
 	override void DoEffect() {
 		if (owner) {
-			if(bdoom_weapons == 2) { 
+			if(bdoom_weapons == 2 && !owner.bKILLEd) { 
 				bNOALERT = true;
 				bNOAUTOFIRE = true;
 				if (jamstacks > 4 && owner.player.readyweapon == self) {
