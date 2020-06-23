@@ -529,7 +529,8 @@ Class BD_BloodyPrintControl : Inventory {
 			if (print) {
 				print.side = side;
 				print.angle = owner.angle;
-				print.translation = bootsblood[bootsBlood.Size()-1].BloodTranslation;
+				if (bootsblood[bootsBlood.Size()-1] != null)
+					print.translation = bootsblood[bootsBlood.Size()-1].BloodTranslation;
 				side = !side;
 			}
 		}
