@@ -552,7 +552,7 @@ Class BD_Chaingun : BDoomWeapon {
 					A_Eject("ChaingunCasing",20,frandom(3,4),4,frandom(0,2),FRandom(5.5,7),frandom(2,2.5));
 			}
 			#### CB 1 A_WeaponOffset(0,-2.5,WOF_ADD);
-			#### A 5 {				
+			#### A 3 {				
 				A_WeaponOffset(0,32,WOF_INTERPOLATE);
 				let plr = PlayerPawn(self);
 				plr.AttackZOffset = plr.default.AttackZOffset;
