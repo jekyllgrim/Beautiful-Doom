@@ -1,5 +1,5 @@
 Class BD_Chainsaw : BDoomWeapon {
-	name mblood; //enemy blood color
+	actor lastvictim;
 	int jamstacks; //chance to jam
 	bool hittarget; //did it hit target?
 	protected bool started; //is it on?
@@ -246,6 +246,7 @@ Class BD_Chainsaw : BDoomWeapon {
 				if (invoker.jamstacks > 0) {
 					let blod = A_Eject("ChainsawBloodSpray",12,2,5,frandom(4,5),frandom(-0.5,0.5),frandom(3,5));
 					if (blod) {
+						blod.target = null;
 						blod.translation = invoker.tbloodtranslation;						
 						blod.CopyBloodColor(invoker);
 					}
@@ -519,25 +520,25 @@ Class ModernsawPuff : BD_ChainsawPuff {
 	states {
 	Melee:
 		TNT1 A 1 {
-			let chainsaw = BD_Chainsaw (target.player.readyweapon);
-			if (chainsaw) {
-				chainsaw.jamstacks = Clamp(chainsaw.jamstacks + 1,0,1024);
-				chainsaw.hittarget = true;	
+			let csaw = BD_Chainsaw (target.player.readyweapon);
+			if (csaw) {
+				csaw.jamstacks = Clamp(csaw.jamstacks + 1,0,1024);
+				csaw.hittarget = true;	
 				if (tracer) {
 					//console.printf("Tracer red: %i, gren: %i, blue: %i",tracer.bloodcolor.R,tracer.bloodcolor.G,tracer.bloodcolor.B);
 					if (tracer.bloodcolor == 0) {
-						chainsaw.tbloodR = gameinfo.defaultbloodcolor.R / 255.0;
-						chainsaw.tbloodG = gameinfo.defaultbloodcolor.G / 255.0;
-						chainsaw.tbloodB = gameinfo.defaultbloodcolor.B / 255.0;
+						csaw.tbloodR = gameinfo.defaultbloodcolor.R / 255.0;
+						csaw.tbloodG = gameinfo.defaultbloodcolor.G / 255.0;
+						csaw.tbloodB = gameinfo.defaultbloodcolor.B / 255.0;
 					}
 					else {
-						chainsaw.tbloodR = tracer.bloodcolor.R / 255.0;
-						chainsaw.tbloodG = tracer.bloodcolor.G / 255.0;
-						chainsaw.tbloodB = tracer.bloodcolor.B / 255.0;
+						csaw.tbloodR = tracer.bloodcolor.R / 255.0;
+						csaw.tbloodG = tracer.bloodcolor.G / 255.0;
+						csaw.tbloodB = tracer.bloodcolor.B / 255.0;
 					}
-					//console.printf("MAPINFO red: %i, gren: %i, blue: %i",chainsaw.tbloodR,chainsaw.tbloodG,chainsaw.tbloodB);
-					chainsaw.CopyBloodColor(tracer);
-					chainsaw.tbloodtranslation = tracer.BloodTranslation;
+					//console.printf("MAPINFO red: %i, gren: %i, blue: %i",csaw.tbloodR,csaw.tbloodG,csaw.tbloodB);
+					csaw.CopyBloodColor(tracer);
+					csaw.tbloodtranslation = tracer.BloodTranslation;
 				}
 			}
 		}
@@ -552,22 +553,12 @@ Class ChainsawBloodSpray : BloodSpray {
 		alpha 0.7;
 		height 8;
 	}
-	override void PostBeginPlay() {
+	/*override void PostBeginPlay() {
 		Super.PostBeginPlay();
-		let chainsaw = BD_Chainsaw (target.player.readyweapon);
-		if (chainsaw) {
-			if (chainsaw.mBlood == "green") {
-				bcolor = "green";
-				A_SetTranslation("GreenBlood");
-			}
-			else if (chainsaw.mBlood == "blue") {
-				bcolor = "blue";
-				A_SetTranslation("BlueBlood");
-			}
-			else
-				bcolor = "red";
-		}
-	}
+		let csaw = BD_Chainsaw (target.player.readyweapon);
+		if (csaw)
+			CopyBloodColor(csaw);
+	}*/
 }
 
 Class ChainsawBloodSpill : BD_CeilingBloodDrop {
@@ -577,29 +568,23 @@ Class ChainsawBloodSpill : BD_CeilingBloodDrop {
 	override void PostBeginPlay() {
 		Super.PostBeginPlay();
 		A_SetScale(scale.x*randompick(-1,1)*frandom(1.0,1.3),scale.y*frandom(1.0,1.3));
-		let chainsaw = BD_Chainsaw (target.player.readyweapon);
-		if (chainsaw) {
-			if (chainsaw.mBlood == "green") {
-				A_SetTranslation("GreenBlood");
-			}
-			else if (chainsaw.mBlood == "blue") {
-				A_SetTranslation("BlueBlood");
-			}
-		}
+		/*let csaw = BD_Chainsaw (target.player.readyweapon);
+		if (csaw)
+			CopyBloodColor(csaw);*/
 	}
 	states {
-		spawn:
-			BLOD XXYYZZZZZZZZZZZZZZZZZZZZZZZZZ 1 {
-				vel.z = clamp(vel.z-0.25,-3.5,0.0);
-				if (bdoom_blood == 0 || waterlevel > 0) {
-					self.destroy();
-					return ResolveState(null);
-				}
-				if (pos.z <= floorz)
-					return ResolveState("Death");
+	spawn:
+		BLOD XXYYZZZZZZZZZZZZZZZZZZZZZZZZZ 1 {
+			vel.z = clamp(vel.z-0.25,-3.5,0.0);
+			if (bdoom_blood == 0 || waterlevel > 0) {
+				self.destroy();
 				return ResolveState(null);
 			}
-			stop;
+			if (pos.z <= floorz)
+				return ResolveState("Death");
+			return ResolveState(null);
+		}
+		stop;
 	}
 }
 
