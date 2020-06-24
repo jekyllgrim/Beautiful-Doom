@@ -1,4 +1,4 @@
-Class BDoomWeapon : Weapon abstract {
+Class BDoomWeapon : Weapon abstract {	
 	protected int offsetTics; // current camera sway timer
 	protected double maxOffsetTics; // starting point for the timer
 	protected double offsetAngle; // the target angle for the camera sway
@@ -7,16 +7,19 @@ Class BDoomWeapon : Weapon abstract {
 	protected double currentPitchOffset;
 	property maxOffsetTics : maxOffsetTics;
 	property offsetTics : offsetTics;
+	
 	protected int NonselTimer; //counts how long the weapon was deselected, used for automatic background reload
 	protected int AutoReloadTime; //the value that NonselTimer is compared to
-	property AutoReloadTime : AutoReloadTime;	
+	property AutoReloadTime : AutoReloadTime;		
+	protected Class<Ammo> magammo;
+	property magammo : magammo;
+	protected int magammogive;
+	property magammogive : magammogive;
 	
-	protected bool wasempty;
-	
+	protected bool wasempty;	
 	protected bool dontforcebob;
 	property dontforcebob : dontforcebob;
-	
-	
+		
 	protected state wreload;
 	protected state wready;
 	protected state wqkick;
@@ -27,6 +30,7 @@ Class BDoomWeapon : Weapon abstract {
 		BDoomWeapon.offsetTics -1;
 	}
 	
+		
 	action void BD_SetSprite(name sprite1, name sprite2) {
 		let psp = player.FindPSprite(OverlayID());
 		if (!psp)
@@ -82,10 +86,25 @@ Class BDoomWeapon : Weapon abstract {
 		PSP_CHAINBLOODB = 83
 	};
 
+	override void AttachToOwner(actor other) {
+		super.AttachToOwner(other);
+		int ama = (magammogive > 0) ? magammogive : 100;
+		if (!magammo || !owner)
+			return;
+		if (!owner.FindInventory(magammo))
+			owner.GiveInventory(magammo,ama);
+	}
+		
 	override void DoEffect() {
 		Super.DoEffect();
 		if (!owner || !owner.player)
 			return;
+		if (magammo) {
+			if (bdoom_weapons == 2)
+				Ammo1 = ammo(owner.FindInventory(magammo));
+			else
+				Ammo1 = ammo(owner.FindInventory(ammotype1));
+		}
 		if (!bdoom_replaceweapons)
 			self.SelectionOrder = self.default.SelectionOrder+50000;
 		else

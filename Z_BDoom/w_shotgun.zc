@@ -1,7 +1,12 @@
 Class BD_Shotgun : BDoomWeapon {
 	Default {
-		Weapon.AmmoType2	"Shell";
-		Weapon.AmmoGive2	8;
+		Weapon.AmmoType1 			"Shell";
+		Weapon.AmmoUse1			1;
+		Weapon.AmmoGive1			0;
+		BDoomWeapon.magammo		"ShotgunClip";
+		Weapon.AmmoType2			"Shell";
+		Weapon.AmmoUse2			0;
+		Weapon.AmmoGive2			8;
 		Inventory.PickupMessage "$GOTSHOTGUN";
 		Obituary "$OB_MPSHOTGUN";
 		Tag "$TAG_SHOTGUN";
@@ -17,18 +22,9 @@ Class BD_Shotgun : BDoomWeapon {
 		else {
 			if(bdoom_weapons == 2) {
 				pickupsound = "Mweapons/shotgun/pump";
-				AmmoGive1 = 0;
-				if (bDROPPED == true)
-					AmmoGive2 = 4;
-				else
-					AmmoGive2 = 8;
 			}
 			else {
 				pickupsound = "weapons/shotgun/pump";
-				if (bDROPPED == true)
-					AmmoGive1 = 4;
-				else
-					AmmoGive1 = 8;
 			}
 		}
 		Super.Tick();
@@ -38,22 +34,14 @@ Class BD_Shotgun : BDoomWeapon {
 		if (!owner)
 			return;
 		if(bdoom_weapons == 2) {
-			if (!Owner.FindInventory("ShotgunClip"))
-				Owner.GiveInventory("ShotgunClip",8);
-			Ammo1 = ammo(Owner.FindInventory("ShotgunClip") );
-			AmmoUse1 = 1;
-			Ammo2 = ammo(Owner.FindInventory("Shell"));
-			AmmoUse2 = 0;
 			bNOAUTOFIRE = true;
 			bAMMO_OPTIONAL = true;
+			bALT_AMMO_OPTIONAL = false;
 		}
-		else
-			{
-			Ammo1 = ammo(Owner.FindInventory("Shell"));
-			AmmoUse1 = 1;
-			Ammo2 = null;
+		else {
 			bNOAUTOFIRE = false;
 			bAMMO_OPTIONAL = false;
+			bALT_AMMO_OPTIONAL = true;
 		}
 	}
 	States {

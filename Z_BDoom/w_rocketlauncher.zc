@@ -7,12 +7,14 @@ Class BD_RocketLauncher : BDoomWeapon {
 		Inventory.PickupMessage "$GOTLAUNCHER";
 		Tag "$TAG_ROCKETLAUNCHER";
 		inventory.pickupsound "pickups/rocketlauncher";
-		weapon.ammotype1	"RocketAmmo";
-		weapon.ammogive1	0;
+		weapon.ammotype1		"RocketAmmo";
 		weapon.ammouse1		1;
-		weapon.ammotype2 	"RocketAmmo";
+		weapon.ammogive1		0;
+		BDoomWeapon.magammo	"RLClip";
+		BDoomWeapon.magammogive 3;
+		weapon.ammotype2 		"RocketAmmo";
 		weapon.ammouse2		1;
-		weapon.ammogive2	2;
+		weapon.ammogive2		2;
 		weapon.selectionorder 250;
 		weapon.slotnumber 5;
 		BDoomWeapon.AutoReloadTime 110;
@@ -23,16 +25,10 @@ Class BD_RocketLauncher : BDoomWeapon {
 		if (!owner)
 			return;
 		if(bdoom_weapons == 2)	{
-			if (!Owner.FindInventory("RLClip"))
-				Owner.GiveInventory("RLClip",4);
-			Ammo1 = ammo(Owner.FindInventory("RLClip"));
-			AmmoUse1 = 1;
 			AmmoUse2 = 0;
 			bAMMO_OPTIONAL = true;					
 		}
 		else {
-			Ammo1 = ammo(Owner.FindInventory("RocketAmmo"));
-			AmmoUse1 = 1;
 			AmmoUse2 = 1;
 			bAMMO_OPTIONAL = false;
 		}

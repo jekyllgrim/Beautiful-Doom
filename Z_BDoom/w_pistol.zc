@@ -13,6 +13,7 @@ Class BD_Pistol : BDoomWeapon {
 		weapon.ammotype1 		"Clip";
 		weapon.ammouse1 		1;
 		weapon.ammogive1	 	0;
+		BDoomWeapon.magammo	"PistolClip";
 		weapon.ammotype2 		"Clip";
 		weapon.ammouse2 		1;
 		weapon.ammogive2		0;
@@ -24,18 +25,12 @@ Class BD_Pistol : BDoomWeapon {
 		Super.DoEffect();
 		if (!owner)
 			return;
-		if(bdoom_weapons == 2) {
-			if (!Owner.FindInventory("PistolClip"))
-				Owner.GiveInventory("PistolClip",15);
-			Ammo1 = ammo(Owner.FindInventory("PistolClip"));
-			AmmoUse1 = 1;
+		if(bdoom_weapons == 2) {			
 			AmmoUse2 = 0;
 			bNOAUTOFIRE = true;
 			bAMMO_OPTIONAL = true;
 		}
 		else {
-			Ammo1 = ammo(Owner.FindInventory("Clip"));
-			AmmoUse1 = 1;
 			AmmoUse2 = 1;
 			bNOAUTOFIRE = false;
 			bAMMO_OPTIONAL = false;
