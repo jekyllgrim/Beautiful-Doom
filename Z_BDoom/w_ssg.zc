@@ -8,6 +8,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		Weapon.AmmoType	"Shell";
 		Weapon.AmmoUse		1;
 		Weapon.AmmoGive	0;
+		BDoomWeapon.magammo	"SSGClip";
 		Weapon.AmmoType2	"Shell";
 		Weapon.AmmoUse2	1;
 		Weapon.AmmoGive2	8;
@@ -36,15 +37,11 @@ Class BD_SuperShotgun : BDoomWeapon {
 		if (!owner)
 			return;
 		if(bdoom_weapons == 2) {
-			if (!Owner.FindInventory("SSGClip"))
-				Owner.GiveInventory("SSGClip",2);
-			Ammo1 = ammo(Owner.FindInventory("SSGClip") );
 			ammouse2 = 0;
 			bNOAUTOFIRE = true;
 			bAMMO_OPTIONAL = true;
 		}
 		else {
-			Ammo1 = ammo(Owner.FindInventory("Shell"));
 			ammouse2 = 1;
 			bNOAUTOFIRE = false;
 			bAMMO_OPTIONAL = false;
