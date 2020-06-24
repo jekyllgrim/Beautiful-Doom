@@ -1,5 +1,6 @@
 Class BD_SuperShotgun : BDoomWeapon {
 	private bool ShotFired;
+	private bool WasCancelled;
 	Default {
 		Tag "$TAG_SUPERSHOTGUN";
 		inventory.pickupmessage "$GOTSHOTGUN2"; 
@@ -17,8 +18,10 @@ Class BD_SuperShotgun : BDoomWeapon {
 		BDoomWeapon.AutoReloadTime 160;
 	}
 	action state BD_CancelReload() {		
-		if ((player.cmd.buttons & BT_ATTACK) && !(player.oldbuttons & BT_ATTACK))
+		if ((player.cmd.buttons & BT_ATTACK) && !(player.oldbuttons & BT_ATTACK)) {
+			invoker.WasCancelled = true;
 			return ResolveState("ReloadCancel");
+		}
 		return ResolveState(null);
 	}
 	override void Tick() {
@@ -483,7 +486,8 @@ Class BD_SuperShotgun : BDoomWeapon {
 			
 		#### I 8 {
 			if (Bdoom_debris) {
-				A_Eject("ShotgunCasing",18,0,12,frandom(0,1),FRandom(1,1.5),frandom(2,3));
+				if (!invoker.WasCancelled)
+					A_Eject("ShotgunCasing",18,0,12,frandom(0,1),FRandom(1,1.5),frandom(2,3));
 				A_Eject("ShotgunCasing",18,-2,12,frandom(0,1),FRandom(1,1.5),frandom(2,3)); 
 			}
 		}
