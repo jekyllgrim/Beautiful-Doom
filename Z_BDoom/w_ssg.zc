@@ -485,8 +485,6 @@ Class BD_SuperShotgun : BDoomWeapon {
 			if (Bdoom_debris) {
 				A_Eject("ShotgunCasing",18,0,12,frandom(0,1),FRandom(1,1.5),frandom(2,3));
 				A_Eject("ShotgunCasing",18,-2,12,frandom(0,1),FRandom(1,1.5),frandom(2,3)); 
-				A_Overlay(10,"InSmokeRight");
-				A_Overlay(11,"InSmokeLeft");
 			}
 		}
 		TNT1 A 0 BD_SetSprite("SSTI","QSTI");
@@ -507,7 +505,6 @@ Class BD_SuperShotgun : BDoomWeapon {
 		#### Y 8 {
 			BD_SetSprite("SSTI","QSTI");
 			if (Bdoom_debris) {
-				A_Overlay(10,"InSmokeRight");
 				A_Eject("ShotgunCasing",18,0,12,frandom(0,1),FRandom(1,1.5),frandom(2,3));
 			}
 		}
