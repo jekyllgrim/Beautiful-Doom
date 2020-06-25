@@ -11,26 +11,24 @@ Class BDoomWeapon : Weapon abstract {
 	protected int NonselTimer; //counts how long the weapon was deselected, used for automatic background reload
 	protected int AutoReloadTime; //the value that NonselTimer is compared to
 	property AutoReloadTime : AutoReloadTime;		
-	protected Class<Ammo> magammo;
+	protected Class<Ammo> magammo;		//magazine ammo used by Modern Guns
 	property magammo : magammo;
-	protected int magammogive;
+	protected int magammogive;			//amount of magazine ammo given at first pickup (full mag for most weapons except Rocket Launcher)
 	property magammogive : magammogive;
 	
-	protected bool wasempty;	
-	protected bool dontforcebob;
+	protected bool wasempty;			//used in reload animations to keep track of whether reload was dry (affects animations)
+	protected bool dontforcebob;		//if false, weapons will bob all the time
 	property dontforcebob : dontforcebob;
-		
-	protected state wreload;
-	protected state wready;
-	protected state wqkick;
+	//keep track of states:
+	protected state mreload;
+	protected state mready;
 	
 	Default {  
 		BDoomWeapon.AutoReloadTime 60;
 		BDoomWeapon.maxOffsetTics 1; //required default values for A_CameraSway. Otherwise it'll crash due to division by zero
 		BDoomWeapon.offsetTics -1;
-	}
-	
-		
+	}	
+	//Selects between regular weapon sprite and the one with black gloves:
 	action void BD_SetSprite(name sprite1, name sprite2) {
 		let psp = player.FindPSprite(OverlayID());
 		if (!psp)
@@ -40,7 +38,7 @@ Class BDoomWeapon : Weapon abstract {
 		else
 			psp.sprite = GetSpriteIndex(sprite2);
 	}
-	
+	//Removes PSprite. Can be called both from state and from DoEffect and allows removing multiple psprite IDs, not a from-to range.
 	action void BD_ClearPSprite(int layer1, int layer2 = 0, int layer3 = 0, int layer4 = 0, int layer5 = 0) {
 		array <int> layers = { layer1, layer2, layer3, layer4, layer5 };
 		PlayerInfo plr;
@@ -85,7 +83,7 @@ Class BDoomWeapon : Weapon abstract {
 		PSP_CHAINBLOODG = 82,
 		PSP_CHAINBLOODB = 83
 	};
-
+	//Make sure player's magazine isn't empty when a weapon is first picked up (for Modern Guns):
 	override void AttachToOwner(actor other) {
 		super.AttachToOwner(other);
 		int ama = (magammogive > 0) ? magammogive : 100;
@@ -94,87 +92,11 @@ Class BDoomWeapon : Weapon abstract {
 		if (!owner.FindInventory(magammo))
 			owner.GiveInventory(magammo,ama);
 	}
-		
-	override void DoEffect() {
-		Super.DoEffect();
-		if (!owner || !owner.player)
-			return;
-		if (magammo) {
-			if (bdoom_weapons == 2)
-				Ammo1 = ammo(owner.FindInventory(magammo));
-			else
-				Ammo1 = ammo(owner.FindInventory(ammotype1));
-		}
-		if (!bdoom_replaceweapons)
-			self.SelectionOrder = self.default.SelectionOrder+50000;
-		else
-			self.SelectionOrder = self.default.SelectionOrder;
-		//Console.Printf("x: %d, y: %d, z:%d", owner.pos.x,owner.pos.y,owner.pos.z);
-		if(bdoom_weapons == 2) {
-			BobRangeX = 0.2;
-			BobRangeY = 0.2;
-			BobStyle = 5;
-			BobSpeed = 2.0;
-			//force bobbing all the time:
-			if (owner.player.readyweapon && owner.player.readyweapon == self && !dontforcebob)
-				owner.player.WeaponState |= WF_WEAPONBOBBING;
-			//allow switching weapons during reload:
-			let psp = owner.player.FindPSprite(PSP_Weapon);			
-			if (psp && (InStateSequence(psp.curstate,FindState("Reload.Modern"))	|| InStateSequence(psp.curstate, FindState("Reload"))	))
-				owner.player.WeaponState |= WF_WEAPONSWITCHOK;
-		}
-		else {
-			BobRangeX = 1.0;
-			BobRangeY = 1.0;
-			BobStyle = 0;
-			BobSpeed = 1.0;
-		}
-		//CameraSway in action	
-		if (offsetTics >= 0) {
-			double phase = (offsetTics / maxOffsetTics) * 90.0;
-			double newAngleOffset = (cos(phase) * offsetAngle);
-			double newPitchOffset = (cos(phase) * offsetPitch);
-			double finalAngle = (owner.angle - currentAngleOffset) + newAngleOffset;
-			double finalPitch = (owner.pitch - currentPitchOffset) + newPitchOffset;
-			currentAngleOffset = newAngleOffset;
-			currentPitchOffset = newPitchOffset;
-			owner.A_SetAngle(finalAngle, SPF_INTERPOLATE);
-			owner.A_SetPitch(finalPitch, SPF_INTERPOLATE);
-			offsetTics--;
-		}
-		
-	//QUICK KICK
-		//if player presses +user1 (default Q and Mouse4)
-		if 	((owner.player.cmd.buttons & BT_USER1) && !(owner.player.oldbuttons & BT_USER1)) {
-			let psp = owner.player.FindPSprite(PSP_WEAPON);
-			let kicks = owner.player.FindPSprite(PSP_KICK);
-			if(!psp || bdoom_weapons != 2  || kicks) //if dead, or not Modern guns selected, or is already kicking
-				return;
-			//do this if used from Ready: will not only kick in overlay but will also move the weapon aside
-			else if	(InStateSequence(psp.curstate, FindState("Ready.Modern")) )
-				owner.player.setPSprite(PSP_Weapon,ResolveState("QKick"));
-			//do this if used during Reload: weapon sprite will stay the same, kick will be shown and executed independently in overlay
-			else if (InStateSequence(psp.curstate, FindState("Reload")))
-				owner.player.setPSprite(PSP_KICK,FindState("QuickKick"));
-		}
-	//BACKGROUND RELOAD
-		if (bdoom_weapons != 2 || !bdoom_autoreload || !ammo1 || !ammo2 || (ammo1 == ammo2))
-			return;
-		if (owner.player.readyweapon == self || ammo1.amount == ammo1.maxamount || ammo2.amount < 1) {
-			NonselTimer = 0;
-			return;
-		}
-		if (NonselTimer < AutoReloadTime)
-			NonselTimer++;
-		else {
-			while (ammo2.amount > 0 && ammo1.amount < ammo1.maxamount)	{
-				owner.TakeInventory(ammo2.GetClass(),1);
-				owner.GiveInventory(ammo1.GetClass(),1);
-			}
-			Console.Printf("%s reloaded",GetTag());
-		}			
-	}
+	
+	//override bool CheckAmmo(int fireMode, bool autoSwitch, bool requireAmmo = false, int ammocount = -1) {
+		//if (bdoom_weapons == 2 && 
 
+	//an analog of A_WeaponReady that makes sure Reload state is unaccessible if mag is full or you have no reserve ammo:
 	action void BD_WeaponReady (bool allowSecondary = false, bool allowReload = true, bool allowKick = true) {
 		int flags = 0;
 		if (allowReload && invoker.ammo1 && invoker.ammo2 && (invoker.ammo2 != invoker.ammo1) && (invoker.ammo2.amount > 0) && (invoker.ammo1.amount < invoker.ammo1.maxamount))
@@ -224,6 +146,96 @@ Class BDoomWeapon : Weapon abstract {
 			return c;
 		}
 		return null;
+	}
+	
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		mreload = FindState("Reload.Modern");
+		if (!mreload)
+			mreload = FindState("Reload");
+		if (!mreload)
+			mreload = FindState("ForcedCool");
+		mready = FindState("Ready.Modern");
+	}
+		
+	override void DoEffect() {
+		Super.DoEffect();
+		if (!owner || !owner.player)
+			return;
+		if (magammo) {
+			if (bdoom_weapons == 2)
+				Ammo1 = ammo(owner.FindInventory(magammo));
+			else
+				Ammo1 = ammo(owner.FindInventory(ammotype1));
+		}
+		if (!bdoom_replaceweapons)
+			self.SelectionOrder = self.default.SelectionOrder+50000;
+		else
+			self.SelectionOrder = self.default.SelectionOrder;
+		//Console.Printf("x: %d, y: %d, z:%d", owner.pos.x,owner.pos.y,owner.pos.z);
+		if(bdoom_weapons == 2) {
+			BobRangeX = 0.2;
+			BobRangeY = 0.2;
+			BobStyle = 5;
+			BobSpeed = 2.0;
+			//force bobbing all the time:
+			if (owner.player.readyweapon && owner.player.readyweapon == self && !dontforcebob)
+				owner.player.WeaponState |= WF_WEAPONBOBBING;
+			//allow switching weapons during reload:
+			let psp = owner.player.FindPSprite(PSP_Weapon);			
+			if (psp && (InStateSequence(psp.curstate,mreload)	))
+				owner.player.WeaponState |= WF_WEAPONSWITCHOK;
+		}
+		else {
+			BobRangeX = 1.0;
+			BobRangeY = 1.0;
+			BobStyle = 0;
+			BobSpeed = 1.0;
+		}
+		//CameraSway in action	
+		if (offsetTics >= 0) {
+			double phase = (offsetTics / maxOffsetTics) * 90.0;
+			double newAngleOffset = (cos(phase) * offsetAngle);
+			double newPitchOffset = (cos(phase) * offsetPitch);
+			double finalAngle = (owner.angle - currentAngleOffset) + newAngleOffset;
+			double finalPitch = (owner.pitch - currentPitchOffset) + newPitchOffset;
+			currentAngleOffset = newAngleOffset;
+			currentPitchOffset = newPitchOffset;
+			owner.A_SetAngle(finalAngle, SPF_INTERPOLATE);
+			owner.A_SetPitch(finalPitch, SPF_INTERPOLATE);
+			offsetTics--;
+		}
+		
+	//QUICK KICK
+		//if player presses +user1 (default Q and Mouse4)
+		if 	((owner.player.cmd.buttons & BT_USER1) && !(owner.player.oldbuttons & BT_USER1)) {
+			let psp = owner.player.FindPSprite(PSP_WEAPON);
+			let kicks = owner.player.FindPSprite(PSP_KICK);
+			if(!psp || bdoom_weapons != 2  || kicks) //if dead, or not Modern guns selected, or is already kicking
+				return;
+			//do this if used from Ready: will not only kick in overlay but will also move the weapon aside
+			else if	(InStateSequence(psp.curstate, mready) )
+				owner.player.setPSprite(PSP_Weapon,ResolveState("QKick"));
+			//do this if used during Reload: weapon sprite will stay the same, kick will be shown and executed independently in overlay
+			else if (InStateSequence(psp.curstate, mreload))
+				owner.player.setPSprite(PSP_KICK,FindState("QuickKick"));
+		}
+	//BACKGROUND RELOAD
+		if (bdoom_weapons != 2 || !bdoom_autoreload || !ammo1 || !ammo2 || (ammo1 == ammo2))
+			return;
+		if (owner.player.readyweapon == self || ammo1.amount == ammo1.maxamount || ammo2.amount < 1) {
+			NonselTimer = 0;
+			return;
+		}
+		if (NonselTimer < AutoReloadTime)
+			NonselTimer++;
+		else {
+			while (ammo2.amount > 0 && ammo1.amount < ammo1.maxamount)	{
+				owner.TakeInventory(ammo2.GetClass(),1);
+				owner.GiveInventory(ammo1.GetClass(),1);
+			}
+			Console.Printf("%s reloaded",GetTag());
+		}			
 	}
 
 	states	{
