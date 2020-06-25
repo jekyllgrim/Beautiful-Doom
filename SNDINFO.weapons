@@ -49,6 +49,7 @@ $random weapons/fist/swing { weapons/fist/swing1 weapons/fist/swing2 }
 weapons/fist/swing1	FISTSW1
 weapons/fist/swing2	FISTSW2
 weapons/doompunch	DSPUNCH //vanilla sound
+$alias weapons/fist/heartbeat world/heartbeat
 
 // Kick
 $random weapons/kick/hit { weapons/kick/hit1 weapons/kick/hit2 }
