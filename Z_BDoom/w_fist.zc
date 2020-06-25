@@ -1168,7 +1168,7 @@ Class KickPuffStrong : FistPuffStrong {
 
 Class BD_OverlayControl : CustomInventory {	
 	private double aalpha;
-	int dur;
+	private ModernBerserk_Regen mregen;
 	Default	{
 		+INVENTORY.UNDROPPABLE
 		+INVENTORY.UNTOSSABLE
@@ -1179,8 +1179,10 @@ Class BD_OverlayControl : CustomInventory {
 	override void Tick() {}
 	override void DoEffect() {
 		super.DoEffect();
-		if (level.time % 35 == 0 && dur > 0)
-			dur--;
+		if (!owner)
+			return;
+		if (!mregen)
+			mregen = ModernBerserk_Regen(owner.FindInventory("ModernBerserk_Regen"));
 	}
 	states {
 	Use:
@@ -1205,20 +1207,20 @@ Class BD_OverlayControl : CustomInventory {
 		loop;
 	BerserkOverlay:
 		TNT1 A 0 {
-			if (invoker.dur <= 5)
+			if (invoker.mregen && invoker.mregen.EffectTics <= 175)
 				A_PlaySound("weapons/fist/heartbeat",CHAN_VOICE);
 		}
 		BDOL BBBBBBBBBBBBBBB 1 {
-			int mul = (invoker.dur <= 5) ? 2 : 1;
-			invoker.aalpha = clamp(invoker.aalpha+0.0066*mul,0.0,0.5);
+			int mul = (invoker.mregen && invoker.mregen.EffectTics <= 175) ? 2 : 1;
+			invoker.aalpha = clamp(invoker.aalpha+0.0066*mul,0.0,0.8);
 			A_OverlayAlpha(OverlayID(),invoker.aalpha);
 		}
 		BDOL BBBBBBBBBBBBBBBBBBBB 1 {
-			int mul = (invoker.dur <= 5) ? 1.5 : 1;
-			invoker.aalpha = clamp(invoker.aalpha-0.005*mul,0.0,0.5);
+			int mul = (invoker.mregen && invoker.mregen.EffectTics <= 175) ? 2.8 : 1;
+			invoker.aalpha = clamp(invoker.aalpha-0.005*mul,0.0,0.8);
 			A_OverlayAlpha(OverlayID(),invoker.aalpha);
 		}
-		TNT1 A 0 A_JumpIf(invoker.dur > 0,"BerserkOverlay");
+		TNT1 A 0 A_JumpIf(invoker.mregen && invoker.mregen.EffectTics > 0,"BerserkOverlay");
 		stop;
 	}
 }
@@ -1244,7 +1246,6 @@ Class BD_Berserk : CustomInventory  {
 				if (!FindInventory("BD_OverlayControl"))
 					GiveInventory("BD_OverlayControl",1);
 				let cont = BD_OverlayControl(FindInventory("BD_OverlayControl"));
-				cont.dur = 39;
 			}
 			A_GiveInventory("PowerStrength");
 			HealThing(100, 0);
