@@ -1,4 +1,5 @@
 Class BDoomWeapon : Weapon abstract {	
+	protected bool picked; //has this gun been picked up before?
 	protected int offsetTics; // current camera sway timer
 	protected double maxOffsetTics; // starting point for the timer
 	protected double offsetAngle; // the target angle for the camera sway
@@ -86,11 +87,11 @@ Class BDoomWeapon : Weapon abstract {
 	//Make sure player's magazine isn't empty when a weapon is first picked up (for Modern Guns):
 	override void AttachToOwner(actor other) {
 		super.AttachToOwner(other);
-		int ama = (magammogive > 0) ? magammogive : 100;
-		if (!magammo || !owner)
+		if (picked || !owner)
 			return;
-		if (!owner.FindInventory(magammo))
-			owner.GiveInventory(magammo,ama);
+		int ama = (magammogive > 0) ? magammogive : 100;
+		owner.GiveInventory(magammo,ama);
+		picked = true;
 	}
 	
 	//override bool CheckAmmo(int fireMode, bool autoSwitch, bool requireAmmo = false, int ammocount = -1) {
