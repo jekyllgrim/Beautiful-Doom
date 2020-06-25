@@ -89,7 +89,7 @@ Class BDoomWeapon : Weapon abstract {
 		super.AttachToOwner(other);
 		if (picked || !owner)
 			return;
-		int ama = (magammogive > 0) ? magammogive : 100;
+		int ama = (magammogive > 0) ? magammogive : 100; //give either full mag, or however much is specified with magammo property
 		owner.GiveInventory(magammo,ama);
 		picked = true;
 	}
