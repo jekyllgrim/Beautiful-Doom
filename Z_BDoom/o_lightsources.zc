@@ -52,7 +52,7 @@ Class BD_LightSource : Actor abstract {
 	default {
 		BD_LightSource.fspawnheight 48;
 		BD_LightSource.fscale 0.3;
-		BD_LightSource.fcolor "Red";
+		BD_LightSource.fcolor 'Red';
 		BD_LightSource.falpha 0.4;
 		ProjectilePassHeight -16;
 		+SOLID
@@ -82,6 +82,7 @@ Class BD_LightSource : Actor abstract {
 
 Class BD_Torch : BD_LightSource abstract {
 	int pspawnheight;
+	protected string partcolor;
 	Default {
 		BD_LightSource.fspawnheight 60;
 		BD_LightSource.fscale 0.38;
@@ -94,6 +95,7 @@ Class BD_Torch : BD_LightSource abstract {
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		pspawnheight = fspawnheight;
+		partcolor = fcolor;
 	}
 	virtual void SetLightSprite() {
 		if 		(fcolor == 'green')		sprite = GetSpriteIndex("TTRG");
@@ -102,9 +104,20 @@ Class BD_Torch : BD_LightSource abstract {
 	}
 	void SpawnTorchParticle() {
 		if (bdoom_flames && frandom(0,10) > 8.5) {
-			let fpart = BD_FireParticle(Spawn("BD_FireParticle",(pos.x+frandom(-3,3),pos.y+frandom(-3,3),pos.z+pspawnheight+frandom(10,14))));
+			/*let fpart = BD_FireParticle(Spawn("BD_FireParticle",(pos.x+frandom(-3,3),pos.y+frandom(-3,3),pos.z+pspawnheight+frandom(10,14))));
 			fpart.vel = (frandom(-0.15,0.15),frandom(-0.15,0.15),frandom(0.2,0.5));
-			fpart.fcolor = fcolor;
+			fpart.fcolor = fcolor;*/
+			A_SpawnParticle(
+				partcolor,
+				SPF_FULLBRIGHT|SPF_RELATIVE,
+				lifetime:random(25,35),
+				size:3,
+				angle:random(0,360),
+				xoff:random(-3,3),yoff:random(-3,3),zoff:pspawnheight+frandom(10,14),
+				velx:frandom(0.2,0.3),velz:frandom(0.2,0.5),
+				accelx:frandom(-0.01,-0.02),accelz:-0.005,
+				sizestep:-0.09
+			);
 		}
 	}
 	states	{
@@ -130,19 +143,19 @@ Class BD_Torch : BD_LightSource abstract {
 
 Class TallTorch_Green : BD_Torch {
 	Default {
-		BD_LightSource.fcolor "green";
+		BD_LightSource.fcolor 'green';
 	}
 }
 
 Class TallTorch_Red : BD_Torch {
 	Default {
-		BD_LightSource.fcolor "red";
+		BD_LightSource.fcolor 'red';
 	}
 }
 
 Class TallTorch_Blue : BD_Torch {
 	Default {
-		BD_LightSource.fcolor "blue";
+		BD_LightSource.fcolor 'blue';
 	}
 }
 
@@ -157,7 +170,7 @@ Class ShortTorch_Green : BD_Torch {
 		BD_LightSource.fspawnheight 30;
 		BD_LightSource.fscale 0.18;
 		scale 0.37;
-		BD_LightSource.fcolor "green";
+		BD_LightSource.fcolor 'green';
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
@@ -175,13 +188,13 @@ Class ShortTorch_Green : BD_Torch {
 
 Class ShortTorch_Red : ShortTorch_Green {
 	Default {
-		BD_LightSource.fcolor "red";
+		BD_LightSource.fcolor 'red';
 	}
 }
 
 Class ShortTorch_Blue : ShortTorch_Green {
 	Default {
-		BD_LightSource.fcolor "blue";
+		BD_LightSource.fcolor 'blue';
 	}
 }
 
@@ -194,7 +207,7 @@ Class BD_Candlestick : BD_LightSource {
 		BD_LightSource.fspawnheight 12.4;
 		BD_LightSource.fscale 0.065;
 		BD_LightSource.falpha 0.6;
-		BD_LightSource.fcolor "Yellow";
+		BD_LightSource.fcolor 'Yellow';
 		Radius 20;
 		Height 14;
 		scale 0.22;
@@ -214,7 +227,7 @@ Class BD_Candelabra : BD_LightSource {
 		BD_LightSource.fspawnheight 55.5;
 		BD_LightSource.fscale 0.045;
 		BD_LightSource.falpha 0.6;
-		BD_LightSource.fcolor "cbra"; //candelabra uses special graphics with three flares; easier than actually spawning three and rotating them
+		BD_LightSource.fcolor 'cbra'; //candelabra uses special graphics with three flares; easier than actually spawning three and rotating them
 		Radius 16;
 		Height 60;
 		scale 0.19;
@@ -239,7 +252,7 @@ Class BD_BurningBarrel : BD_LightSource {
 		BD_LightSource.fspawnheight 32;
 		BD_LightSource.fscale 0.4;
 		BD_LightSource.falpha 0.25;
-		BD_LightSource.fcolor "yellow";
+		BD_LightSource.fcolor 'yellow';
 		scale 0.6;
 	}
 	states	{
@@ -271,7 +284,7 @@ Class BD_BaseLamp : BD_LightSource abstract {
 		+VULNERABLE
 		+NOBLOOD
 		+DONTTHRUST
-		BD_LightSource.fcolor "tech"; //lamps also use a separate type of flare with a lens effect
+		BD_LightSource.fcolor 'tech'; //lamps also use a separate type of flare with a lens effect
 		BD_LightSource.falpha 1.0;
 		BD_LightSource.fscale 0.5;
 		health 100;
@@ -372,7 +385,7 @@ Class BD_Column : BD_BaseLamp {
 		Deathheight 48;
 		BD_LightSource.fspawnheight 40;
 		BD_LightSource.fscale 0.25;
-		BD_LightSource.fcolor "tech2"; //A variation of "tech" halo with a slight yellow tint to match the sprite
+		BD_LightSource.fcolor 'tech2'; //A variation of "tech" halo with a slight yellow tint to match the sprite
 	}
 	states	{
 		Spawn:
