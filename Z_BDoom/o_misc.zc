@@ -92,9 +92,17 @@ Class BD_ExplosiveBarrel : ExplosiveBarrel {
 		Idle:
 			BEBR ABCDE random(3,5) {
 				if (bdoom_flames && frandom(0,10) > 7) {
-					let fpart = BD_FireParticle(Spawn("BD_FireParticle",(pos.x+frandom(-5,5),pos.y+frandom(-5,5),pos.z+frandom(27.5,29))));
-					fpart.vel = (0,0,frandom(0.1,0.2));
-					fpart.fcolor = 'green';
+					A_SpawnParticle(
+						"green",
+						SPF_FULLBRIGHT|SPF_RELATIVE,
+						lifetime:random(15,30),
+						size:3,
+						angle:random(0,360),
+						xoff:random(-5,5),yoff:random(-5,5),zoff:frandom(27.5,29),
+						velz:frandom(0.2,0.3),
+						accelz:-0.005,
+						sizestep:-0.09
+					);
 				}
 			}
 			loop;
