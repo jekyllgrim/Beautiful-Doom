@@ -92,7 +92,7 @@ Class BD_ChaingunGuy : BDoomMonster {
 	MissileModern:
 		RPAS BCDD 2 A_FaceTarget();
 	MissileModernDo:
-		RPAS E 2 {
+		RPAS E 1 {
 			if (bdoom_debris)
 				A_SpawnItemEx("ChaingunCasing",14,-15,32,		frandom(2,4),0,random(2,4),	random(-85,-95),SXF_SETTARGET);
 			A_PlaySound("Mweapons/rifle/fire");
