@@ -331,6 +331,7 @@ class BD_BFG9000 : BDoomWeapon {
 			}
 		Hold.Modern:
 			BBGN A 14 {
+				A_SetTics(11+invoker.wcharge);
 				A_TakeInventory("Cell",10);
 				if (invoker.wcharge > 8) {
 					A_Overlay(PSP_HEAT,"OverChargeLights");
@@ -372,7 +373,7 @@ class BD_BFG9000 : BDoomWeapon {
 				A_FireProjectile("ModernBFGBall",0,0);
 				if(bdoom_shakes)
 					A_Quake(0.5*invoker.wcharge,12 + invoker.wcharge,0,128,"");
-				invoker.wzoom = 1 - (invoker.wcharge * 0.05);
+				invoker.wzoom = 1 - (invoker.wcharge * 0.02);
 				A_ZoomFactor(invoker.wzoom,ZOOM_NOSCALETURNING|ZOOM_INSTANT);
 			}
 			BBGN BBCCDDEEFFGGHHIIJJ 1 {
@@ -384,7 +385,7 @@ class BD_BFG9000 : BDoomWeapon {
 				A_OverlayFlags(PSP_LIGHTS,PSPF_ALPHA|PSPF_FORCEALPHA,true);
 			}
 			BBGN A 1 {
-				invoker.wzoom = Clamp ( invoker.wzoom *= 1.005, 0.8, 1);
+				invoker.wzoom = Clamp ( invoker.wzoom *= 1.009, 0.8, 1);
 				A_ZoomFactor(invoker.wzoom,ZOOM_NOSCALETURNING);
 				if (invoker.wzoom >= 1) {
 					invoker.wcharge = 0;
