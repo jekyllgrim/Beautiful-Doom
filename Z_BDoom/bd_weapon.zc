@@ -543,21 +543,20 @@ class BD_MuzzleSmoke : BD_BaseSmoke {
 
 
 
-Class Casing_General : BD_BaseDebris {
+Class Casing_General : SmallDebris {
 	double brot;
 	Default {
-		-FLOORCLIP
-		-NOGRAVITY
-		+THRUACTORS
+		SmallDebris.dbrake 0.75;
 		+ROLLCENTER
-		+USEBOUNCESTATE
+		+BOUNCEONFLOORS
+		+BOUNCEONWALLS
 		renderstyle "normal";
-		bouncetype "doom";
 		seesound "none";
 		mass 1;
 		Radius 1;
 		Height 1;
-		bouncefactor 0.5;
+		bouncefactor 0.3;
+		wallbouncefactor 0.4;
 		Scale 0.15;
 	}
 	Override Void PostBeginPlay() {
@@ -568,79 +567,58 @@ Class Casing_General : BD_BaseDebris {
 		super.PostBeginPlay();
 		brot = frandom(18,24);
 		roll = frandom(100,105);
+		if (self is "PistolCasing")
+			sprite = GetSpriteIndex("CAS1");
+		else if (self is "ShotgunCasing")
+			sprite = GetSpriteIndex("CAS2");
+		else if (self is "ChaingunCasing")
+			sprite = GetSpriteIndex("CAS3");
 	}
-	states
-		{
-		Spawn:
-			CAS1 A 0 NoDelay {
-				if (self is "PistolCasing")
-					sprite = GetSpriteIndex("CAS1");
-				else if (self is "ShotgunCasing")
-					sprite = GetSpriteIndex("CAS2");
-				else if (self is "ChaingunCasing")
-					sprite = GetSpriteIndex("CAS3");
-				return ResolveState(null);
+	override void BD_HitFloor() {
+		if (target && target.bISMONSTER) {
+			destroy();
+			return;
+		}
+		super.BD_HitFloor();
+		if (waterlevel == 0) {
+			roll = frandom(-8,8);
+			bSPRITEFLIP = random(0,1);
+			A_PlaySound(bouncesound);
+		}
+	}
+	states {
+	Spawn:
+		#### AABBCCBBAABBCCBB 1 {
+			roll += brot;
+			brot *= 0.99;
+			if (waterlevel > 1) {
+				bBOUNCEONFLOORS = false;
+				bBOUNCEONWALLS = false;
+				bNOGRAVITY = true;
+				vel.z *= 0.1;
+				return ResolveState("WaterLand");
 			}
-		Fly:
-			#### AABBCCBBAABBCCBB 1 {
-				roll += brot;
-				if (waterlevel > 0)
-					return ResolveState("waterland");
-				return ResolveState(null);	
+			return ResolveState(null);
+		}
+		loop;
+	Death:
+		#### # -1;
+		stop;
+	loadsprites:
+		CAS1 ABC 0;	CAS2 ABC 0;	CAS3 ABC 0;
+		stop;
+	WaterLand:
+		#### # 1 {
+			if (abs(brot) > 1)
+				brot *= 0.93;
+			if (pos.z > floorz) {
+				roll+=brot;
+				vel.z = Clamp(vel.z - 0.1,-0.2,5);
+				vel.x *= 0.92;
+				vel.y *= 0.92;
 			}
-			goto death;
-		Bounce.Floor:
-			#### # 0 {			
-				if (Checkwater()) {
-					destroy();
-					return ResolveState(null);
-				}			
-				return ResolveState(null);
-			}
-			goto fly;
-		Death:
-			#### # 0 {
-				if (CheckWater() || (target && target.bISMONSTER)) {
-					destroy();
-					return ResolveState(null);
-				}
-				ClearBounce();
-				SetOrigin((pos.x,pos.y,floorz),0);
-				roll = random(-8,8);
-				scale.x*= randompick(-1,1);
-				bNOINTERACTION = true;
-				bMOVEWITHSECTOR = true;
-				bRELATIVETOFLOOR = true;
-				return ResolveState(null);
-			}
-			#### # -1;
-			stop;
-		loadsprites:
-			CAS1 ABC 0;	CAS2 ABC 0;	CAS3 ABC 0;
-			stop;
-		WaterLand:
-			#### # 1 {
-				if (abs(brot) > 1)
-					brot *= 0.93;
-				if (pos.z > floorz) {
-					roll+=brot;
-					vel.z = -0.5;
-					vel.x *= 0.92;
-					vel.y *= 0.92;
-				}
-				else {
-					vel.z = 0;
-					if (vel.length() ~== 0) {
-						SetOrigin((pos.x,pos.y,floorz),false);
-						return ResolveState("WaterLandEnd");
-					}
-				}
-				return ResolveState(null);
-			}
-			loop;
-		WaterLandEnd:
-			#### # -1;
-			stop;
+		}
+		loop;
 	}
 }
 
@@ -661,6 +639,8 @@ Class ShotgunCasing : Casing_General {
 
 Class ChaingunCasing : Casing_General { 
 	Default {
+		bouncefactor 0.35;
+		wallbouncefactor 0.4;
 		Scale 0.15;
 		bouncesound "chaingun/casing";
 	}
