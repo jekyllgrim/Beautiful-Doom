@@ -92,7 +92,6 @@ class BD_BaseGib : SmallDebris abstract {
 		SetZ(floorz+Voffset);
 		if (d_death)
 			SetState(d_death);
-		A_Scream();
 		gravity = default.gravity;
 		if (bflat) {
 			bFLATSPRITE = true;
