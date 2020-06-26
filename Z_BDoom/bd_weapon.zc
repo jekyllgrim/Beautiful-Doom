@@ -545,6 +545,8 @@ class BD_MuzzleSmoke : BD_BaseSmoke {
 
 Class Casing_General : SmallDebris {
 	double brot;
+	protected name spawnsprite;
+	property spawnsprite : spawnsprite;
 	Default {
 		SmallDebris.dbrake 0.75;
 		+ROLLCENTER
@@ -567,12 +569,7 @@ Class Casing_General : SmallDebris {
 		super.PostBeginPlay();
 		brot = frandom(18,24);
 		roll = frandom(100,105);
-		if (self is "PistolCasing")
-			sprite = GetSpriteIndex("CAS1");
-		else if (self is "ShotgunCasing")
-			sprite = GetSpriteIndex("CAS2");
-		else if (self is "ChaingunCasing")
-			sprite = GetSpriteIndex("CAS3");
+		sprite = GetSpriteIndex(spawnsprite);
 	}
 	override void BD_HitFloor() {
 		if (target && target.bISMONSTER) {
@@ -626,6 +623,7 @@ Class Casing_General : SmallDebris {
 Class PistolCasing : Casing_General {
 	Default {
 		Scale 0.11;
+		Casing_General.spawnsprite 'CAS1';
 		bouncesound "weapons/casing";
 	}
 }
@@ -633,12 +631,14 @@ Class PistolCasing : Casing_General {
 Class ShotgunCasing : Casing_General { 
 	Default {
 		Scale 0.2;
+		Casing_General.spawnsprite 'CAS2';
 		bouncesound "weapons/shotgunshells";
 	}
 }
 
 Class ChaingunCasing : Casing_General { 
 	Default {
+		Casing_General.spawnsprite 'CAS3';
 		bouncefactor 0.35;
 		wallbouncefactor 0.4;
 		Scale 0.15;
