@@ -291,7 +291,7 @@ Class SmallDebris : BD_BaseDebris abstract {
 		}
 		//finally, manually move the object:
 		if (moving)
-			SetOrigin(pos+vel,true);
+			SetOrigin(level.vec3offset(pos, vel),true);
 	}
 	virtual void BD_HitFloor() {			//hit floor if close enough
 		if (removeonfall) {
