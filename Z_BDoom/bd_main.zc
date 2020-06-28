@@ -1034,10 +1034,10 @@ Class BD_PlaneDecal : BD_BaseDebris {
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		switch (decaltype) {
-			case 'BulletChip'	: sprite = GetSpriteIndex("CHIP");	frame = random[bdsfx](0,4); alpha = 0.85; angle = random[bdsfx](0,360); break;
-			case 'BulletMChip'	: sprite = GetSpriteIndex("METL");	frame = random[bdsfx](0,4); alpha = 0.55; angle = random[bdsfx](0,360);break;
-			case 'BulletWChip'	: sprite = GetSpriteIndex("WOOD");	frame = random[bdsfx](0,4); alpha = 1.0; break;
-			case 'BulletSChip'	: sprite = GetSpriteIndex("BRIK");	frame = random[bdsfx](0,3); alpha = 0.75; angle = random[bdsfx](0,360);break;
+			case 'BulletChip'	: sprite = GetSpriteIndex("0000");	frame = random[bdsfx](0,4); alpha = 0.85; angle = random[bdsfx](0,360); break;
+			case 'BulletMChip'	: sprite = GetSpriteIndex("0001");	frame = random[bdsfx](0,4); alpha = 0.55; angle = random[bdsfx](0,360);break;
+			case 'BulletWChip'	: sprite = GetSpriteIndex("0002");	frame = random[bdsfx](0,4); alpha = 1.0; break;
+			case 'BulletSChip'	: sprite = GetSpriteIndex("0003");	frame = random[bdsfx](0,3); alpha = 0.75; angle = random[bdsfx](0,360);break;
 		}
 		if (ceiling) {
 			if (CurSector.CeilingPlane.Normal == (0,0,-1) && CheckLandingSize(2,checkceiling:true)) {
@@ -1063,10 +1063,10 @@ Class BD_PlaneDecal : BD_BaseDebris {
 	states {
 	//even though these are not real sprites, they still need to be defined for MODELDEF to attach the model properly
 	load:
-		CHIP ABCDE 0;
-		METL ABCDE 0;
-		WOOD ABCDE 0;
-		BRIK ABCD 0;
+		0000 ABCDE 0;
+		0001 ABCDE 0;
+		0002 ABCDE 0;
+		0003 ABCD 0;
 	}
 }
 
