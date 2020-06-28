@@ -70,6 +70,7 @@ OptionMenu "BDoom_Settings" {
 	TLTPOption "Ricochet & spark sounds", 		"$BDMENU_SPARKS", "White","bdoom_sparks", "OnOff", ""
 	TLTPOption "Flies over corpses", 			"$BDMENU_FLIES", "White", "bdoom_flies", "OnOff", "bdoom_replacemonsters"
 	TLTPOption "Explosion shakes", 				"$BDMENU_SHAKES", "White", "bdoom_shakes", "OnOff", ""
+	TLTPOption "Enhanced liquid textures",		"$bdoom_liquidtextures", "White", "bdoom_liquidtextures", "OnOff", ""
 	TLTPOption "Face on Standard HUD", 			"$BDMENU_HUDFACE", "White", "bdoom_hudface", "OnOff", "", 1	
 	StaticText " "
 

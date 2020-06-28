@@ -25,6 +25,7 @@ BDMENU_REPLACEWEAPONS = "Enable/disable Beautiful Doom weapons.\nWhen disabled c
 BDMENU_REPLACEMONSTERS = "Enable/disable Beautiful Doom monsters.\nWhen disabled the mod can be played with other monster packs.\nNote: Monster-specific Beautiful Doom effects, such as gibbing,\nwill not work if this option is disabled.";
 BDMENU_REPLACEITEMS = 	"Enable/disable Beautiful Doom items.\nWhen disabled can be played with anoter mod that has its own items.";
 BDMENU_REPLACEOBJECTS = "Enable/disable Beautiful Doom decorations.\nCan affect performance. Use it if you want vanilla decorations.\nNote: You don't need this for compatibility with other mods,\nsince Safe Actor Replacement (above) should take care of that.";
+bdoom_liquidtextures = "Enable/disable Beautiful Doom liquid texture enhancements.\nNo performance impact. May not play nicely with other mods that have their own textures.\nChanges require a level restart.";
 
 						
 						

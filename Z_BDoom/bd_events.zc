@@ -222,14 +222,91 @@ class BD_ActorOverrideHandler : EventHandler {
 	static const name BD_SP_DUDE7[] = { "textures/BD_DUDE7a.png", "textures/BD_DUDE7b.png", "textures/BD_DUDE7c.png" };
 	static const name BD_SP_DUDE8[] = { "textures/BD_DUDE8a.png", "textures/BD_DUDE8b.png", "textures/BD_DUDE8c.png" };
 	override void WorldLoaded(WorldEvent e) {
-		if (!bdoom_replaceobjects)
-			return;
-		level.ReplaceTextures("SP_DUDE1", BD_SP_DUDE1[random(0,1)],0);
-		level.ReplaceTextures("SP_DUDE2", BD_SP_DUDE2[random(0,1)],0);
-		level.ReplaceTextures("SP_DUDE4", BD_SP_DUDE4[random(0,2)],0);
-		level.ReplaceTextures("SP_DUDE5", BD_SP_DUDE5[random(0,3)],0);
-		level.ReplaceTextures("SP_DUDE7", BD_SP_DUDE7[random(0,2)],0);
-		level.ReplaceTextures("SP_DUDE8", BD_SP_DUDE8[random(0,2)],0);
+		if (bdoom_replaceobjects) {
+			level.ReplaceTextures("SP_DUDE1", BD_SP_DUDE1[random(0,1)],0);
+			level.ReplaceTextures("SP_DUDE2", BD_SP_DUDE2[random(0,1)],0);
+			level.ReplaceTextures("SP_DUDE4", BD_SP_DUDE4[random(0,2)],0);
+			level.ReplaceTextures("SP_DUDE5", BD_SP_DUDE5[random(0,3)],0);
+			level.ReplaceTextures("SP_DUDE7", BD_SP_DUDE7[random(0,2)],0);
+			level.ReplaceTextures("SP_DUDE8", BD_SP_DUDE8[random(0,2)],0);
+		}
+		if (bdoom_liquidtextures ){
+			//lava
+			level.ReplaceTextures("LFALL1","BDT_LFA1",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("LFALL2","BDT_LFA1",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("LFALL3","BDT_LFA1",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("LFALL4","BDT_LFA1",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("LAVA1","BDT_LFA2",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("LAVA2","BDT_LFA2",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("LAVA3","BDT_LFA2",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("LAVA4","BDT_LFA2",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("LAVA1","BDT_LFL",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			level.ReplaceTextures("LAVA2","BDT_LFL",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			level.ReplaceTextures("LAVA3","BDT_LFL",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			level.ReplaceTextures("LAVA4","BDT_LFL",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			//water
+			level.ReplaceTextures("WFALL1","BDT_WFA1",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("WFALL2","BDT_WFA1",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("WFALL3","BDT_WFA1",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("WFALL4","BDT_WFA1",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("FWATER1","BDT_WFA2",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("FWATER2","BDT_WFA2",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("FWATER3","BDT_WFA2",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("FWATER4","BDT_WFA2",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("FWATER1","BDT_WFL",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			level.ReplaceTextures("FWATER2","BDT_WFL",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			level.ReplaceTextures("FWATER3","BDT_WFL",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			level.ReplaceTextures("FWATER4","BDT_WFL",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			//blood
+			level.ReplaceTextures("BFALL1","BDT_BFA1",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("BFALL2","BDT_BFA1",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("BFALL3","BDT_BFA1",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("BFALL4","BDT_BFA1",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("BLOOD1","BDT_BFA2",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("BLOOD2","BDT_BFA2",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("BLOOD3","BDT_BFA2",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("BLOOD4","BDT_BFA2",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("BLOOD1","BDT_BFL",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			level.ReplaceTextures("BLOOD2","BDT_BFL",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			level.ReplaceTextures("BLOOD3","BDT_BFL",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			level.ReplaceTextures("BLOOD4","BDT_BFL",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			//acid
+			level.ReplaceTextures("SFALL1","BDT_AFA1",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("SFALL2","BDT_AFA1",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("SFALL3","BDT_AFA1",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("SFALL4","BDT_AFA1",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("NUKAGE1","BDT_AFA2",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("NUKAGE2","BDT_AFA2",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("NUKAGE3","BDT_AFA2",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("NUKAGE4","BDT_AFA2",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("NUKAGE1","BDT_AFL",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			level.ReplaceTextures("NUKAGE2","BDT_AFL",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			level.ReplaceTextures("NUKAGE3","BDT_AFL",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			level.ReplaceTextures("NUKAGE4","BDT_AFL",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			//slime 1
+			level.ReplaceTextures("SLIME01","BDT_SFA1",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("SLIME02","BDT_SFA1",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("SLIME03","BDT_SFA1",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("SLIME04","BDT_SFA1",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("SLIME01","BDT_SFL1",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			level.ReplaceTextures("SLIME02","BDT_SFL1",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			level.ReplaceTextures("SLIME03","BDT_SFL1",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			level.ReplaceTextures("SLIME04","BDT_SFL1",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			//slime 2
+			level.ReplaceTextures("SLIME05","BDT_SFA2",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("SLIME06","BDT_SFA2",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("SLIME07","BDT_SFA2",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("SLIME08","BDT_SFA2",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("SLIME05","BDT_SFL2",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			level.ReplaceTextures("SLIME06","BDT_SFL2",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			level.ReplaceTextures("SLIME07","BDT_SFL2",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			level.ReplaceTextures("SLIME08","BDT_SFL2",TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+			//Boss brain
+			level.ReplaceTextures("DBRAIN1","BDT_DBRN",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("DBRAIN2","BDT_DBRN",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("DBRAIN3","BDT_DBRN",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+			level.ReplaceTextures("DBRAIN4","BDT_DBRN",TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+		}
 	}
 	// This performs the actual conditional actor replacement:
 	override void CheckReplacement(ReplaceEvent e) {
@@ -246,9 +323,9 @@ class BD_ActorOverrideHandler : EventHandler {
 				case 'ShotgunGuy' 			: if (!CheckVanillaReplacement(monst/*, "SPOSA1"*/) && bdoom_ShotgunGuy) 		e.Replacement = 'BD_ShotgunGuy'; 			break;
 				case 'ChaingunGuy' 		: if (!CheckVanillaReplacement(monst/*, "CPOSA1"*/) && bdoom_ChaingunGuy) 		e.Replacement = 'BD_ChaingunGuy'; 		break;
 				case 'WolfensteinSS'		: if (!CheckVanillaReplacement(monst/*, "SSWVA1"*/) && bdoom_WolfensteinSS) 		e.Replacement = 'BD_WolfensteinSS'; 		break;
-				case 'DoomImp' 			: if (!CheckVanillaReplacement(monst/*, "TROOA1"*/) && bdoom_DoomImp) 			e.Replacement = 'BD_DoomImp'; 				break;
+				case 'DoomImp' 			: if (!CheckVanillaReplacement(monst/*, "TROOA1"*/) && bdoom_DoomImp) 			e.Replacement = 'BD_DoomImp'; 			break;
 				case 'Demon' 				: if (!CheckVanillaReplacement(monst/*, "SARGA1"*/) && bdoom_Demon) 				e.Replacement = 'BD_Demon'; 				break;
-				case 'Spectre' 			: if (!CheckVanillaReplacement(monst/*, "SARGA1"*/) && bdoom_Spectre) 			e.Replacement = 'BD_Spectre'; 				break;
+				case 'Spectre' 			: if (!CheckVanillaReplacement(monst/*, "SARGA1"*/) && bdoom_Spectre) 			e.Replacement = 'BD_Spectre'; 			break;
 				case 'Cacodemon' 			: if (!CheckVanillaReplacement(monst/*, "HEADA1"*/) && bdoom_Cacodemon) 			e.Replacement = 'BD_Cacodemon'; 			break;
 				case 'PainElemental'		: if (!CheckVanillaReplacement(monst/*, "PAINA1"*/) && bdoom_PainElemental) 		e.Replacement = 'BD_PainElemental'; 		break;
 				case 'LostSoul'			: if (!CheckVanillaReplacement(monst/*, "SKULA1"*/) && bdoom_LostSoul) 			e.Replacement = 'BD_LostSoul'; 			break;

@@ -8,68 +8,106 @@ material flat FWATER1 {
 	specularlevel 50
 }*/
 
-material texture LAVA1 {
-	shader "shaders/glsl/func_warp1.fp"
-	brightmap "brightmaps/NUKAGE1.png"
-}
-
-material texture DBRAIN1 {
-	shader "shaders/glsl/func_warp1.fp"
-	brightmap "brightmaps/NUKAGE1.png"
-}
-
-material texture SFALL1 {
+// lava fall texture
+material texture BDT_LFA1 {
 	shader "shaders/glsl/dualscroll.fp"
 	speed 0.5
 	brightmap "brightmaps/NUKEFALL.png"
 }
-
-material texture BFALL1 {
+// lava floor texture applied to wall
+material texture BDT_LFA2 {
 	shader "shaders/glsl/dualscroll.fp"
 	speed 0.5
+	brightmap "brightmaps/NUKEFALL.png"
+}
+// lava floor texture applied to floor
+material texture BDT_LFL {
+	shader "shaders/glsl/func_warp1.fp"
+	brightmap "brightmaps/NUKAGE1.png"
 }
 
-material texture WFALL1 {
+// acid fall texture
+material texture BDT_AFA1 {
 	shader "shaders/glsl/dualscroll.fp"
 	speed 0.5
+	brightmap "brightmaps/NUKEFALL.png"
 }
-
-
-material flat NUKAGE1 {
+// acid floor texture applied to wall
+material texture BDT_AFA2 {
+	shader "shaders/glsl/dualscroll.fp"
+	speed 0.5
+	brightmap "brightmaps/NUKEFALL.png"
+}
+// acid floor texture applied to floor
+material texture BDT_AFL {
 	shader "shaders/glsl/func_warp2.fp"
 	brightmap "brightmaps/NUKAGE1.png"
 }
 
+// blood fall texture
+material texture BDT_BFA1 {
+	shader "shaders/glsl/dualscroll.fp"
+	speed 0.5
+}
+// blood floor texture applied to wall
+material texture BDT_BFA2 {
+	shader "shaders/glsl/dualscroll.fp"
+	speed 0.5
+}
+// blood floor texture applied to floor
+material texture BDT_BFL {
+	shader "shaders/glsl/func_warp2.fp"
+}
+
+// water fall texture
+material texture BDT_WFA1 {
+	shader "shaders/glsl/dualscroll.fp"
+	speed 0.5
+}
+// water floor texture applied to wall
+material texture BDT_WFA2 {
+	shader "shaders/glsl/dualscroll.fp"
+	speed 0.5
+}
+// water floor texture applied to floor
+material texture BDT_WFL {
+	shader "shaders/glsl/func_warp2.fp"
+}
+
+// slime 1 floor texture applied to wall
+material texture BDT_SFA1 {
+	shader "shaders/glsl/dualscroll.fp"
+	speed 0.5
+}
+// slime 1 floor texture applied to floor
+material texture BDT_SFL1 {
+	shader "shaders/glsl/func_warp2.fp"
+}
+
+// slime 2 floor texture applied to wall
+material texture BDT_SFA2 {
+	shader "shaders/glsl/dualscroll.fp"
+	speed 0.5
+}
+// slime 2 floor texture applied to floor
+material texture BDT_SFL2 {
+	shader "shaders/glsl/func_warp1.fp"
+}
+
+//Icon of Sin brain
+material texture BDT_DBRN {
+	shader "shaders/glsl/dualscroll.fp"
+	speed 0.5
+}
+
 Glow {
-	Texture "LAVA1", 701000, 128
-	Texture "LAVA2", 701000, 128
-	Texture "LAVA3", 701000, 128
-	Texture "LAVA4", 701000, 128
-	
-	Texture "LAVA01", 701000, 128
-	Texture "LAVA02", 701000, 128
-	Texture "LAVA03", 701000, 128
-	Texture "LAVA04", 701000, 128
-	
 	Texture "DBRAIN1", 701000, 128
 	Texture "DBRAIN2", 701000, 128
 	Texture "DBRAIN3", 701000, 128
 	Texture "DBRAIN4", 701000, 128
 	
-	Texture "NUKAGE1", 007000, 128
-	Texture "NUKAGE2", 007000, 128
-	Texture "NUKAGE3", 007000, 128
-	Texture "NUKAGE4", 007000, 128
-	
-	Texture "NUKAGE01", 007000, 128
-	Texture "NUKAGE02", 007000, 128
-	Texture "NUKAGE03", 007000, 128
-	Texture "NUKAGE04", 007000, 128
-	
-	Texture "SFALL1", 003000, 128
-	Texture "SFALL2", 003000, 128
-	Texture "SFALL3", 003000, 128
-	Texture "SFALL4", 003000, 128
+	Texture "BDT_AFL", 007000, 128
+	Texture "BDT_LFL", 701000, 128
 	
 	//teleporters
 	Texture "GATE1", 800000, 48

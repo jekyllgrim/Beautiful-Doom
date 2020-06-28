@@ -2267,9 +2267,89 @@ Graphic "BDMENS22", 44, 44
 	Patch "BDMENS22", 0, 0
 }
 
-Texture "WFALL1", 64, 128
+Texture optional "BDT_WFA1", 64, 128
 {
 	Patch "WFALL1", 0, 0
+}
+
+Texture optional "BDT_WFA2", 64, 64
+{
+	Patch "FWATER1", 0, 0
+}
+
+Texture optional "BDT_WFL", 64, 64
+{
+	Patch "FWATER1", 0, 0
+}
+
+Texture optional "BDT_LFA1", 64, 128
+{
+	Patch "LFALL1", 0, 0
+}
+
+Texture optional "BDT_LFA2", 64, 64
+{
+	Patch "LAVA1", 0, 0
+}
+
+Texture optional "BDT_LFL", 64, 64
+{
+	Patch "LAVA1", 0, 0
+}
+
+Texture optional "BDT_BFA1", 64, 128
+{
+	Patch "BFALL1", 0, 0
+}
+
+Texture optional "BDT_BFA2", 64, 64
+{
+	Patch "BLOOD1", 0, 0
+}
+
+Texture optional "BDT_BFL", 64, 64
+{
+	Patch "BLOOD1", 0, 0
+}
+
+Texture optional "BDT_AFA1", 64, 128
+{
+	Patch "SFALL1", 0, 0
+}
+
+Texture optional "BDT_AFA2", 64, 64
+{
+	Patch "NUKAGE1", 0, 0
+}
+
+Texture optional "BDT_AFL", 64, 64
+{
+	Patch "NUKAGE1", 0, 0
+}
+
+Texture optional "BDT_SFA1", 64, 64
+{
+	Patch "SLIME01", 0, 0
+}
+
+Texture optional "BDT_SFL1", 64, 64
+{
+	Patch "SLIME01", 0, 0
+}
+
+Texture optional "BDT_SFA2", 64, 64
+{
+	Patch "SLIME06", 0, 0
+}
+
+Texture optional "BDT_SFL2", 64, 64
+{
+	Patch "SLIME06", 0, 0
+}
+
+Texture optional "BDT_DBRN", 64, 32
+{
+	Patch "DBRAIN1", 0, 0
 }
 
 // End of texture definitions
