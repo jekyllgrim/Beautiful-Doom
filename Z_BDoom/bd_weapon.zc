@@ -39,6 +39,7 @@ Class BDoomWeapon : Weapon abstract {
 		else
 			psp.sprite = GetSpriteIndex(sprite2);
 	}
+	
 	//Removes PSprite. Can be called both from state and from DoEffect and allows removing multiple psprite IDs, not a from-to range.
 	action void BD_ClearPSprite(int layer1, int layer2 = 0, int layer3 = 0, int layer4 = 0, int layer5 = 0) {
 		array <int> layers = { layer1, layer2, layer3, layer4, layer5 };
@@ -55,8 +56,8 @@ Class BDoomWeapon : Weapon abstract {
 			}
 		}
 		return;
-	}		
-
+	}
+	
 	// Camera sway function by josh771
 	action void A_CameraSway(double aoffset, double poffset, int tics) {
 		invoker.offsetTics = tics;
