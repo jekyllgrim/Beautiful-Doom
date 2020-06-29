@@ -193,20 +193,20 @@ Class BD_RocketLauncher : BDoomWeapon {
 				invoker.pitchshift = 0.25;
 				invoker.vangle = -5;
 				let mag = CountInv("RLClip");
-				if (mag > 3)		{
-					TakeInventory("RLCLip",1);
+				if (mag > 3) {
+					A_TakeInventory("RLCLip",1,TIF_NOTAKEINFINITE);
 					return ResolveState("Fire0.Modern");
 				}
 				else if (mag > 2) 	{
-					TakeInventory("RLCLip",1);
+					A_TakeInventory("RLCLip",1,TIF_NOTAKEINFINITE);
 					return ResolveState("Fire1.Modern");
 				}
 				else if (mag > 1) 	{
-					TakeInventory("RLCLip",1);
+					A_TakeInventory("RLCLip",1,TIF_NOTAKEINFINITE);
 					return ResolveState("Fire2.Modern");
 				}
 				else if (mag > 0) 	{
-					TakeInventory("RLCLip",1);
+					A_TakeInventory("RLCLip",1,TIF_NOTAKEINFINITE);
 					return ResolveState("Fire3.Modern");
 				}
 				return ResolveState("DryReload");

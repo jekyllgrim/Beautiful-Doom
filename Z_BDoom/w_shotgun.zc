@@ -310,7 +310,7 @@ Class BD_Shotgun : BDoomWeapon {
 		#### A 0 {
 			If(CountInv("ShotgunClip") == 8 || CountINv("Shell") == 0 )
 				return ResolveState("ReloadEnd");
-			TakeInventory("Shell",1);
+			A_TakeInventory("Shell",1,TIF_NOTAKEINFINITE);
 			GiveInventory("ShotgunClip",1); 
 			A_PlaySound("Mweapons/shotgun/shellin",0);
 			return ResolveState(null);

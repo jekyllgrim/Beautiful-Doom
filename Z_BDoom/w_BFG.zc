@@ -332,7 +332,7 @@ class BD_BFG9000 : BDoomWeapon {
 		Hold.Modern:
 			BBGN A 14 {
 				A_SetTics(11+invoker.wcharge);
-				A_TakeInventory("Cell",10);
+				A_TakeInventory("Cell",10,TIF_NOTAKEINFINITE);
 				if (invoker.wcharge > 8) {
 					A_Overlay(PSP_HEAT,"OverChargeLights");
 					A_PLaySound("Mweapons/bfg/charge2",CHAN_6);
