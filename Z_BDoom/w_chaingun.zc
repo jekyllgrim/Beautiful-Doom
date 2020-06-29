@@ -58,7 +58,7 @@ Class BD_Chaingun : BDoomWeapon {
 			bNOAUTOFIRE = false;
 			bAMMO_OPTIONAL = false;
 		}
-		if (bdoom_weapons == 1 && owner.player.readyweapon == self) {
+		if (bdoom_weapons == 1 && owner.player.readyweapon == self && !owner.player.mo.bKILLEd) {
 			let s = owner.player.FindPsprite(PSP_Weapon);
 			let chg = BD_Chaingun(owner.player.ReadyWeapon);
 			if (!s || !chg)
