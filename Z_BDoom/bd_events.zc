@@ -1,4 +1,16 @@
 class WeaponOverrideHandler : EventHandler {
+	override void PlayerDied(PlayerEvent e) {
+		if (!bdoom_replaceweapons)
+			return;
+		PlayerInfo player = players[e.PlayerNumber];
+		let psp = player.FindPSPrite(PSP_Weapon);
+		if (psp) {
+			for (int i = 1000; i > 1; i--)
+				player.SetPSprite(i,null);
+			for (int i = -1000; i < 1; i++)
+				player.SetPSprite(i,null);
+		}
+	}
 	ui bool ShowWeapHelp;
     override void consoleProcess(ConsoleEvent e) {
 		if (e.name != "BD_ShowWeapHelp")
