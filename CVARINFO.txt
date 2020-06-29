@@ -1,5 +1,6 @@
 server	bool	bdoom_replacemonsters 	= true;
 server	bool	bdoom_replaceweapons 	= true;
+server	bool	bdoom_weaponbobstyle	= true;
 server	bool	bdoom_replaceitems		= true;
 server	bool	bdoom_replaceobjects	= true;
 server	bool	bdoom_liquidtextures	= true;

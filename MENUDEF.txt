@@ -44,6 +44,7 @@ OptionMenu "BDoom_Settings" {
 	
 	StaticText "WEAPONS", yellow
 	TLTPOption "Player Weapons",				"$BDMENU_PLAYERWEAPONS", "White","bdoom_weapons", "bdoom_weapons", "bdoom_replaceweapons"
+	TLTPOption "Weapon bob style",				"$bdoom_weaponbobstyle", "White","bdoom_weaponbobstyle", "BobStyle", "bdoom_replaceweapons"
 	Option "Muzzle Flashes", 					"bdoom_muzzle", "bdoom_muzzle", "bdoom_replaceweapons"
 	OptionBoth "Bullet Tracers",				"$BDMENU_TRACERS", "White","bdoom_tracers", "OnOff", "bdoom_replaceweapons", "bdoom_replacemonsters"
 	OptionBGReload_TLTP "Background reload","$BDMENU_AUTORELOAD", "White", "bdoom_autoreload", "OnOff", "bdoom_weapons", "bdoom_replaceweapons"
@@ -113,6 +114,11 @@ OptionMenu "BDMonsterReplacements" {
 OptionValue "bdgloves" {
 	0, "Classic"
 	1, "Edgy"
+}
+
+OptionValue "BobStyle" {
+	0, "Classic"
+	1, "Modern"
 }
 
 OptionValue "SafeReplacement" {

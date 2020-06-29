@@ -174,7 +174,13 @@ Class BDoomWeapon : Weapon abstract {
 		else
 			self.SelectionOrder = self.default.SelectionOrder;
 		//Console.Printf("x: %d, y: %d, z:%d", owner.pos.x,owner.pos.y,owner.pos.z);
+		//allow switching weapons during reload:
 		if(bdoom_weapons == 2) {
+			let psp = owner.player.FindPSprite(PSP_Weapon);
+			if (psp && (InStateSequence(psp.curstate,mreload)))
+				owner.player.WeaponState |= WF_WEAPONSWITCHOK;
+		}
+		if (CVar.FindCVar('bdoom_weaponbobstyle').GetBool() == true) {
 			BobRangeX = 0.2;
 			BobRangeY = 0.2;
 			BobStyle = 5;
@@ -182,10 +188,6 @@ Class BDoomWeapon : Weapon abstract {
 			//force bobbing all the time:
 			if (owner.player.readyweapon && owner.player.readyweapon == self && !dontforcebob)
 				owner.player.WeaponState |= WF_WEAPONBOBBING;
-			//allow switching weapons during reload:
-			let psp = owner.player.FindPSprite(PSP_Weapon);			
-			if (psp && (InStateSequence(psp.curstate,mreload)	))
-				owner.player.WeaponState |= WF_WEAPONSWITCHOK;
 		}
 		else {
 			BobRangeX = 1.0;
