@@ -47,7 +47,7 @@ class BD_BFG9000 : BDoomWeapon {
 			}
 			//console.printf("Player Species: %s",owner.species);
 		}
-		if (owner.player.readyweapon != self && preporb)
+		if (preporb && (owner.player.readyweapon != self || bdoom_weapons != 2 || owner.player.mo.bKILLED))
 			preporb.destroy();
 	}
 	States {
@@ -452,8 +452,10 @@ Class ModernBFG_PrepOrb : SmallDebris {
 	}
 	override void Tick() {
 		super.Tick();
-		if (!master || !master.player)
+		if (!master || !master.player) {
+			destroy();
 			return;
+		}
 		Vector3 ofs = master.player.mo.pos+(0,0,master.player.viewz - master.pos.z);
 		Vector3 x, y, z;
 		[x, y, z] = Matrix4.getaxes(master.player.mo.pitch,master.player.mo.angle,master.player.mo.roll);
