@@ -1,0 +1,261 @@
+
+class KLAZ_dColor : object 
+{
+	//The below functions are adapted from the Godot engine source code.
+	
+	/*
+	Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.
+	Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).
+
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+
+	The above copyright notice and this permission notice shall be included in all
+	copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+	SOFTWARE.
+	*/
+	
+	enum dColorModes
+	{
+		RGB = 1,
+		HSV = 2 
+	}
+	
+	double a,x,y,z;
+	private int mode;
+	 
+	static KLAZ_dColor InitFromNormalColor(color col)
+	{
+		KLAZ_dColor dc = new("KLAZ_dColor");
+		dc.a = double(col.a)/255.0;
+		dc.x = double(col.r)/255.0;
+		dc.y = double(col.g)/255.0;
+		dc.z = double(col.b)/255.0;
+		dc.mode = RGB;
+		return dc;
+	}
+	
+	color GetNormalColor()
+	{
+		color col = color(	int(self.a*255),
+							int(self.x*255),
+							int(self.y*255),
+							int(self.z*255));
+		return col;
+	}
+	
+	void SetNormalColor(color col)
+	{
+		a = double(col.a)/255.0;
+		x = double(col.r)/255.0;
+		y = double(col.g)/255.0;
+		z = double(col.b)/255.0;
+		mode = RGB;
+	}
+	
+	//adapted from Godot engine source code
+	void RGBToHsv()
+	{
+		if(mode != RGB)
+		{
+			if(mode == HSV)
+			{
+				Console.Printf("ERROR: This color is already in HSV mode");
+				return;
+			}
+			else
+			{
+				Console.Printf("ERROR: This color is broken");
+				return;
+			}
+			
+		}
+		mode = HSV;
+		double r = x;
+		double g = y;
+		double b = z;
+		double hue,saturation, value;
+		
+		double max = Max(r, Max(g, b));
+		double min = Min(r, Min(g, b));
+		double delta = max - min;
+
+		if (delta == 0)
+		{
+			hue = 0;
+		}
+		else
+		{
+			if (r == max)
+				hue = (g - b) / delta; // Between yellow & magenta
+			else if (g == max)
+				hue = 2 + (b - r) / delta; // Between cyan & yellow
+			else
+				hue = 4 + (r - g) / delta; // Between magenta & cyan
+
+			hue /= 6.0;
+
+			if (hue < 0)
+				hue += 1.0;
+		}
+
+		saturation = max == 0 ? 0 : 1.0 - 1.0 * min / max;
+		value = max;
+		
+		x = hue;
+		y = saturation;
+		z = value;
+	}
+
+	//adapted from Godot engine source code
+	void HSVToRGB()
+	{
+		if(mode != HSV)
+		{
+			Console.Printf("ERROR: This color is already in RGB mode");
+			return;
+		}
+		mode = RGB;
+		double hue = self.x;
+		double saturation = self.y; 
+		double value = self.z; 
+	
+		if (saturation == 0)
+		{
+			x = value;
+			y = value;
+			z = value;
+			return;
+		}
+
+		int i;
+		double f, p, q, t;
+
+		hue *= 6.0;
+		hue %= 6.0;
+		i = int(hue);
+
+		f = hue - i;
+		p = value * (1 - saturation);
+		q = value * (1 - saturation * f);
+		t = value * (1 - saturation * (1 - f));
+
+		switch (i)
+		{
+			case 0: // Red is the dominant color
+				{
+					x = value; 
+					y = t; 
+					z = p;
+				}
+				return;
+			case 1: // Green is the dominant color
+				{
+					x = q; 
+					y = value; 
+					z = p;
+				}
+				return;
+			case 2:
+				{
+					x = p; 
+					y = value; 
+					z = t;
+				}
+				return;
+			case 3: // Blue is the dominant color
+				{
+					x = p; 
+					y = q; 
+					z = value;
+				}
+				return;
+			case 4:
+				{
+					x = t;
+					y = p;
+					z = value;
+				}
+				return;
+		}
+		//default
+		 x = value; 
+		 y = p;  
+		 z = q;
+	}
+	
+	private void SetVal(double val = 0, int which = 1, bool relative = false) 
+	{
+		if(mode != HSV)
+		{
+			Console.Printf("SetVal ERROR: Must be in HSV mode.");
+			return;
+		}
+		
+		if(!relative)
+		{
+			val = clamp(val,0.0, 1.0);
+			switch(which)
+			{
+				default: 
+				case 1:
+				x = clamp(abs(val),0.0,1.0);
+				break;
+				
+				case 2: 
+				y = clamp(abs(val),0.0,1.0);
+				break;
+				
+				case 3:
+				z = clamp(abs(val),0.0,1.0);
+				break;
+			}
+		}
+		
+		else
+		{
+			val = clamp(val,-1.0, 1.0);
+			switch(which)
+			{
+				case 1:
+				x = (x + val > 0.0) ? (x + val) % 1.0 : 1.0 - ((x + abs(val)) % 1.0);
+				break;
+				
+				case 2: 
+				y = (y + val > 0.0) ? (y + val) % 1.0 : 1.0 - ((y + abs(val)) % 1.0);
+				break;
+				
+				case 3:
+				z = (z + val > 0.0) ? (z + val) % 1.0 : 1.0 - ((z + abs(val)) % 1.0);
+				break;
+			}
+		}
+	}
+	
+	void SetHue(double val, bool relative = false)
+	{
+		SetVal(Val: val, which: 1, relative: relative);
+	}
+	
+	void SetSaturation(double val, bool relative = false)
+	{
+		SetVal(Val: val, which: 2, relative: relative);
+	}
+	
+	void SetValue(double val, bool relative = false)
+	{
+		SetVal(Val: val, which: 3, relative: relative);
+	}
+	
+} 

@@ -624,20 +624,20 @@ Class BD_BFGBall : BFGBall {
 			/*for (int i = random(56,80); i > 0; i--)
 				A_SpawnParticle("51fb45",SPF_FULLBRIGHT|SPF_RELVEL|SPF_RELACCEL|SPF_RELANG|SPF_RELPOS,48,4,random(0,359), 0,0,0, frandom(2,5),0,frandom(-3,3), -0.08,0,randompick(-0.08,0.08));*/
 			for (int i = random(8,12); i > 0; i--)
-				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(96,128),duration:56,sparsity:1.0,spawnclass:"MBFGRailParticle");
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(48,128),duration:48,sparsity:2.5,spawnclass:"MBFGRailParticle");
 		}
 		BFGX ABCD 4 {
 			dead = true;
 			if (bdoom_debris) {
-				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(96,128),duration:56,sparsity:1.0,spawnclass:"BFGBallRay");
-				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(96,128),duration:56,sparsity:1.0,spawnclass:"BFGBallRay");
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(48,128),duration:48,sparsity:2.5,spawnclass:"BFGBallRay");
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(48,128),duration:48,sparsity:2.5,spawnclass:"BFGBallRay");
 			}
 		}
 		BFGX E 4 A_BFGSpray("BD_BFGExtra");
 		BFGX FGHIJK 4 {
 			if (bdoom_debris) {		
-				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(96,128),duration:56,sparsity:1.0,spawnclass:"BFGBallRay");
-				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(96,128),duration:56,sparsity:1.0,spawnclass:"BFGBallRay");
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(48,128),duration:48,sparsity:2.5,spawnclass:"BFGBallRay");
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(48,128),duration:48,sparsity:2.5,spawnclass:"BFGBallRay");
 			}
 		}
 		stop;
@@ -870,6 +870,7 @@ Class ModernBFGBall : BD_BFGBall {
 	private int maxcapacity; 	//max # of targets
 		
 	private Array < Actor > bfglist;
+	private array < KLAZ_TrackingBeam > beams;
 	private state sspawn;
 	
 	Default {
@@ -918,9 +919,9 @@ Class ModernBFGBall : BD_BFGBall {
 			A_SetScale(Clamp(scale.x*1.02,0.1,8));
 			alpha*= 1.01;
 			if (bdoom_debris && frandom(0.1,2) > vel.length())
-				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(1,8)+300*scale.x,duration:56,sparsity:1.0,spawnclass:"MBFGRailParticle");
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(128,256)*scale.x,duration:56,sparsity:2.0,spawnclass:"MBFGRailParticle");
 			if (bdoom_debris && frandom(0.1,2) > vel.length())							
-				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(1,8)+300*scale.x,duration:56,sparsity:1.0,spawnclass:"MBFGRailParticle");
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(128,256)*scale.x,duration:56,sparsity:2.0,spawnclass:"MBFGRailParticle");
 		}
 		if (bfglist.size() > 0) {
 			for (int i = bfglist.size()-1; i >= 0; i--) {
@@ -933,6 +934,8 @@ Class ModernBFGBall : BD_BFGBall {
 			BlockThingsIterator itr = BlockThingsIterator.Create(self,rdistance);
 			while (itr.next()) {
 				let next = itr.thing;
+				//if (bfglist.find(next))
+				//	continue;
 				if (next == target)
 					continue; 
 				if (!next.bShootable || (!next.bIsMonster && !(next is "PlayerPawn")) || !target.IsHostile (next) || target.bKILLED)
@@ -945,8 +948,8 @@ Class ModernBFGBall : BD_BFGBall {
 				tracer = next;
 				//Console.Printf("%s",tracer.Getclassname());
 				A_Face(tracer,0,0,flags:FAF_MIDDLE);
-				if (!CheckLOF (flags: CLOFF_NoAim | CLOFF_SKIPOBSTACLES, ptr_target: AAPTR_tracer))
-					continue;		
+				if (!CheckLOF (flags: CLOFF_SKIPOBSTACLES, ptr_target: AAPTR_tracer))
+					continue;
 				if (tracer) {
 					bfglist.push(tracer);
 					tracer = null;
@@ -955,17 +958,24 @@ Class ModernBFGBall : BD_BFGBall {
 		}
 		if (bfglist.size() > 0) {
 			for (int i = bfglist.size()-1; i >= 0; i--) {
-				A_Face(bfglist[i],0,0,flags:FAF_MIDDLE);
-				A_CustomRailGun(0,0,"","51fb45",RGF_NOPIERCING|RGF_FULLBRIGHT|RGF_CENTERZ|RGF_SILENT ,maxdiff:1,pufftype:"NullPuff",range:rdistance,duration:1,sparsity:0.8,driftspeed:0.1);
-				if (!bfglist[i].FindInventory("MBFGTetherControl"))
+				KLAZ_TrackingBeam beam = KLAZ_TrackingBeam.MakeBeam("KLAZ_TrackingBeam",self,bfglist[i],"00EE00",radius: 1.0, targetOffset: (0,0,bfglist[i].height*0.5),lifetimer: 3, style: STYLE_ADDSHADED);
+				if(beam)
+					beam.alpha = 3.0;
+				//A_Face(bfglist[i],0,0,flags:FAF_MIDDLE);
+				//A_CustomRailGun(0,0,"","51fb45",RGF_NOPIERCING|RGF_FULLBRIGHT|RGF_CENTERZ|RGF_SILENT ,maxdiff:1,pufftype:"NullPuff",range:rdistance,duration:1,sparsity:0.8,driftspeed:0.1);
+				if (!bfglist[i].FindInventory("MBFGTetherControl")) {
 					bfglist[i].GiveInventory("MBFGTetherControl",1);
-				let tether = bfglist[i].FindInventory("MBFGTetherControl");
-				if (tether)
-					tether.tracer = self;
+					let tether = bfglist[i].FindInventory("MBFGTetherControl");
+					if (tether)
+						tether.master = self;
+				}				
 				master = bfglist[i];
-				if (!CheckLOF (flags: CLOFF_NoAim | CLOFF_SKIPOBSTACLES, ptr_target: AAPTR_Master)) {
-					bfglist[i].TakeInventory("MBFGTetherControl",1);
-					bfglist.delete(i);					
+				if (!CheckLOF (flags: CLOFF_SKIPOBSTACLES, ptr_target: AAPTR_Master)) {
+					//Console.printf("LOF check failed");
+					let tether = bfglist[i].FindInventory("MBFGTetherControl");
+					if (tether)
+						tether.destroy();
+					bfglist.delete(i);
 				}
 				master = null;
 			}
@@ -1031,7 +1041,7 @@ Class ModernBFGBall : BD_BFGBall {
 							closestDist = dist;
 						tracer = next;
 						A_Face(tracer,0,0,flags:FAF_MIDDLE);
-						if (!CheckLOF (flags: CLOFF_NoAim | CLOFF_SKIPOBSTACLES, ptr_target: AAPTR_tracer))
+						if (!CheckLOF (flags: CLOFF_SKIPOBSTACLES, ptr_target: AAPTR_tracer))
 							continue;		
 						if (tracer) {
 							//console.printf("%d Found %s",i,tracer.Getclassname());
@@ -1044,7 +1054,9 @@ Class ModernBFGBall : BD_BFGBall {
 			if (bfglist.size() > 0) {
 				for (int i = bfglist.size()-1; i >= 0; i--) {
 					A_Face(bfglist[i],0,0,flags:FAF_MIDDLE);
-					A_CustomRailGun(30 + 22*wpower,0,"","51fb45",RGF_NOPIERCING|RGF_FULLBRIGHT|RGF_CENTERZ|RGF_SILENT ,maxdiff:10,pufftype:"MBFGRailPuff",range:rdistance,duration:random(100,150),sparsity:0.15,driftspeed:0.3);
+					//A_CustomRailGun(30 + 22*wpower,0,"","51fb45",RGF_NOPIERCING|RGF_FULLBRIGHT|RGF_CENTERZ|RGF_SILENT ,maxdiff:10,pufftype:"MBFGRailPuff",range:rdistance,duration:random(100,150),sparsity:0.15,driftspeed:0.3);
+					A_CustomRailGun(30 + 22*wpower,0,"","51fb45",RGF_NOPIERCING|RGF_FULLBRIGHT|RGF_CENTERZ|RGF_SILENT ,maxdiff:8,pufftype:"MBFGRailPuff",range:rdistance,duration:random(100,150),sparsity:10,driftspeed:0.3);
+					KLAZ_TrackingBeam beam = KLAZ_TrackingBeam.MakeBeam("KLAZ_TrackingBeam",self,bfglist[i],"DDFFDD",radius: 3.0, targetOffset: (0,0,bfglist[i].height*0.5),lifetimer: 20, style: STYLE_ADDSHADED);
 				}
 			}
 		}
@@ -1082,15 +1094,12 @@ Class ModernBFGBall : BD_BFGBall {
 	}
 }
 
-Class ModernBFGBall_XRing : Actor {
+Class ModernBFGBall_XRing : BD_BaseFlare {
 	protected double wroll;
 	protected double scalemul;
 	Default {
 		+NOINTERACTION
 		+FLATSPRITE
-		+ROLLSPRITE
-		+BRIGHT
-		renderstyle 'Add';
 		alpha 0.8;
 	}
 	override void PostBeginPlay() {
@@ -1106,7 +1115,7 @@ Class ModernBFGBall_XRing : Actor {
 		if (master) {
 			SetOrigin(master.pos,true);
 		}
-		A_SetRoll(roll+wroll,SPF_INTERPOLATE);
+		roll += wroll;
 		wroll *= 2;
 		scale *= (1 + scalemul);
 		scalemul *= 0.95;
@@ -1120,52 +1129,66 @@ Class ModernBFGBall_XRing : Actor {
 }
 
 Class MBFGTetherControl : Inventory {
-	MBFGTether tether;
+	//MBFGTether tether;
 	Default {
 		inventory.maxamount 1;
 	}
 	override void Tick() {}
 	override void DoEffect() {
 		super.DoEffect();
-		if (!owner || owner.bKILLED || !tracer) {
-			DepleteOrDestroy();
+		if (!owner || owner.bKILLED || !master) {
+			Destroy();
 			return;
 		}
 	}
 	override void AttachToOwner(actor other) {
 		super.AttachToOwner(other);
 		if (owner) {
-			tether = MBFGTether(Spawn("MBFGTether",owner.pos+(0,0,owner.height*0.35)));
-			tether.master = owner;
+			int i = randompick(-1,1);
+			let teth1 = MBFGTether(Spawn("MBFGTether",owner.pos+(0,0,owner.height*0.5)));
+			teth1.tracer = owner;
+			teth1.master = self;
+			teth1.pitch = frandom(7,20)*i;
+			let teth2 = MBFGTether(Spawn("MBFGTether",owner.pos+(0,0,owner.height*0.5)));
+			teth2.tracer = owner;
+			teth2.master = self;
+			teth2.pitch = frandom(15,30)*-i;
 		}
-	}
-	override void DetachFromOwner() {
-		if (tether)
-			tether.destroy();
-		super.DetachFromOwner();
 	}
 }
 	
-Class MBFGTether : BD_BaseFlare {
+Class MBFGTether : ModernBFGBall_XRing {
 	Default {
 		BD_BaseDebris.sfxtype 'debris';
 		alpha 0.75;
 		scale 0.16;
 	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		if (tracer)
+			A_SetScale(tracer.radius * 0.008);
+	}
 	override void Tick() {
-		super.Tick();
-		if (master)
-			SetOrigin(master.pos+(0,0,master.height*0.35),true);
+		BD_BaseFlare.Tick();
+		if (isFrozen())
+			return;
+		if (tracer && !tracer.bKILLED && master)
+			SetOrigin(tracer.pos+(0,0,tracer.height*0.5),true);
 		else {
 			destroy();
 			return;
 		}
+		roll += 5;
 	}
 	states {
 	Spawn:
-		BFLI ABCDEFGHIJKLMNO 1;
+		COIG A random(10,25);
+		COIG BCDCB 3;
 		loop;
-	}
+	Death:
+		TNT1 A 0;
+		goto super::spawn;
+	}	
 }
 
 Class MBFGTrail : BD_BaseFlare {

@@ -1,0 +1,150 @@
+class KLAZ_TrackingBeam : actor
+{
+	color col;
+	int lifeTimer;
+	int style;
+	property lifeTimer : lifeTimer;
+	
+	vector3 hitPoint;
+	vector3 masterOffset;
+	Vector3 targetOffset;
+
+	private int beamFlags;
+	flagdef TRACKMASTER: beamFlags, 1; //reposition to Masters position
+	flagdef ANGLESFROMMASTER: beamflags,2; //copy master pitch/angle
+	
+	Default
+	{
+		KLAZ_TrackingBeam.Lifetimer 2;
+		+KLAZ_TrackingBeam.TRACKMASTER;
+		radius 0;
+		height 0;
+		+NOBLOCKMAP;
+		+NOINTERACTION;
+		RenderStyle "none";
+		StencilColor "AAFFFF";
+	}
+	
+	override void PostBeginPlay()
+	{
+		A_SetPitch(pitch-90);
+		SetShade(col);
+		Super.PostBeginPlay(); 
+	}
+	
+	void maintain()
+	{
+		lifetimer++;
+	}
+	
+	static KLAZ_TrackingBeam MakeBeam(class<KLAZ_TrackingBeam> beamclass, actor master, actor target,color col, double radius = 1.0, vector3 hitpoint = (0,0,0), vector3 masterOffset = (0,0,0), vector3 targetOffset = (0,0,0), int lifetimer = 2,  int style = STYLE_AddShaded)
+	{
+		if(!master)
+		{
+			console.printf("KLAZ_TrackingBeam.MakeBeam error: no Master!");
+			return null;
+		}
+		KLAZ_TrackingBeam beam = KLAZ_TrackingBeam(spawn(beamclass,master.pos));
+		beam.lifetimer = lifetimer;
+		beam.col = col;
+		beam.master = master;
+		beam.scale.x = radius;
+		beam.masterOffset = masterOffset;
+		if(target)
+		{
+			beam.target = target;
+			beam.targetOffset = targetOffset;
+		}
+		else
+		{
+			beam.hitPoint = hitPoint;
+		}
+		return beam;
+	}
+	
+	static double, double AnglesFromVec3 (vector3 vec) 
+	{
+		Vector3 vecUnit = vec.unit();
+		double ang = atan2(vecUnit.y, vecUnit.x);
+		double pit = asin(-vecUnit.z);
+		return ang, pit;
+	}
+	
+	override void Tick(void)
+	{
+		if(isfrozen())
+		{
+			return;
+		}
+		if(getage() == 1)
+		{
+			A_SetRenderStyle(1.0,STYLE_ADDSHADED);
+		}
+		vector3 from;
+		vector3 to;
+		
+		if(bTRACKMASTER && Master)
+		{
+			if(master is "playerpawn")
+			{
+				from = level.Vec3Offset((master.pos.xy,master.player.viewz),self.masterOffset);
+			}
+			else
+			{
+				from = level.Vec3Offset(master.pos,self.MasterOffset);
+			}
+			setOrigin(from,true);
+		}
+		if(target)
+		{
+			to = level.vec3offset(target.pos, self.targetOffset);
+		}
+		else
+		{
+			to = hitPoint;
+		}
+		if(bANGLESFROMMASTER) //if true, don't even use hitPoint
+		{
+			if(master && master is "playerpawn")
+			{
+				A_SetAngle(master.Angle + DeltaAngle(master.angle,self.angle), SPF_INTERPOLATE);
+				A_SetPitch(master.Pitch + DeltaAngle(master.pitch,self.pitch-90.0)+90.0, SPF_INTERPOLATE);
+				/* this is some insane magic shit*/
+				double oldAngle = master.Angle; // Doing this because it's way more precise to do this than to decrement
+				master.A_SetAngle (master.angle + 0.001, SPF_INTERPOLATE);
+				master.A_SetAngle (oldAngle, SPF_INTERPOLATE);
+				/* insanity ends*/
+			}
+			else if (master)
+			{
+				A_SetAngle(master.angle,SPF_INTERPOLATE);
+				A_SetPitch(master.Pitch-90.0,SPF_INTERPOLATE);
+			}
+		}
+		else
+		{
+			vector3 dif = level.vec3diff(self.pos,to);
+			double ang, pit;
+			[ang,pit] = AnglesFromVec3 (dif) ;
+			A_SetAngle(ang, SPF_INTERPOLATE);
+			A_SetPitch(pit-90, SPF_INTERPOLATE);
+			scale.y = dif.length();
+		}
+		Super.Tick();
+	}
+	
+	States
+	{
+		Spawn:
+			TNT1 A 0;
+			MODL A 1 bright 
+			{
+				lifetimer--;
+			}
+			MODL A 0 A_JumpIf(lifetimer <=0,"death");
+			loop;
+		death:
+			TNT1 A 1;
+			stop;	
+	}
+}
