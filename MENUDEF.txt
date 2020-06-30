@@ -55,7 +55,7 @@ OptionMenu "BDoom_Settings" {
 	TLTPOption "Enhanced blood",				"$BDMENU_BLOODTOGGLE", "White","bdoom_blood", "OnOff"
 	OptionEither_TLTP "Force vanilla boss deaths","$BDMENU_NOBOSSGIBS","White",	"bdoom_nobossgibs", "OnOff", "bdoom_gibs", "bdoom_replacemonsters"
 	TLTPOption "Halos & particle flames",		"$BDMENU_FLAMES", "White",	"bdoom_flames", "OnOff", ""
-	TLTPOption "Minor weapon effects",			"$BDMENU_DEBRIS", "White",	"bdoom_debris", "OnOff", "", 1	
+	TLTPOption "Extra weapon effects",			"$BDMENU_DEBRIS", "White",	"bdoom_debris", "OnOff", "", 1	
 	TLTPOption "Shootable Decorations", 		"$BDMENU_KILLABLEOBJECTS", "White",	"bdoom_killableobjects", "Toggle", "bdoom_replaceobjects"
 	StaticText " "
 	
@@ -68,9 +68,11 @@ OptionMenu "BDoom_Settings" {
 	StaticText "ADDITIONAL EFFECTS AND SOUNDS", yellow
 	TLTPOption "Player gloves color",			"$BDMENU_GLOVES", "White", "bdoom_blackgloves", "bdgloves", "bdoom_replaceweapons"
 	TLTPOption "Footstep sounds", 				"$BDMENU_FOOTSTEPS", "White", "bdoom_fs_enabled", "OnOff", ""
+	Slider "Footstep volume",					"bdoom_fs_volume_mul", 0, 1.0, 0.1
 	TLTPOption "Ricochet & spark sounds", 		"$BDMENU_SPARKS", "White","bdoom_sparks", "OnOff", ""
 	TLTPOption "Flies over corpses", 			"$BDMENU_FLIES", "White", "bdoom_flies", "OnOff", "bdoom_replacemonsters"
 	TLTPOption "Explosion shakes", 				"$BDMENU_SHAKES", "White", "bdoom_shakes", "OnOff", ""
+	//Command "Toggle Enhanced/Classic liquid textures", "netevent BD_ToggleLiquidTextures"
 	TLTPOption "Enhanced liquid textures",		"$bdoom_liquidtextures", "White", "bdoom_liquidtextures", "OnOff", ""
 	TLTPOption "Face on Standard HUD", 			"$BDMENU_HUDFACE", "White", "bdoom_hudface", "OnOff", "", 1	
 	StaticText " "
