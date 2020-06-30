@@ -376,7 +376,7 @@ Class BD_TorchTree : TorchTree {
 }
 
 Class BD_Cleaner : Actor {
-	FXAmountControl fxcontrol;
+	BD_FXAmountControl fxcontrol;
 	private int targetcounter;
 	Default {
 		monster;
@@ -397,7 +397,7 @@ Class BD_Cleaner : Actor {
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		fxcontrol = FXAmountControl(EventHandler.Find("FXAmountControl"));
+		fxcontrol = BD_FXAmountControl(EventHandler.Find("BD_FXAmountControl"));
 	}
 	actor FindClosestBlood () {
 		if (!fxcontrol)
@@ -477,7 +477,7 @@ Class BD_Cleaner : Actor {
 		if (target)
 			targetcounter++;
 		if (!fxcontrol)
-			fxcontrol = FXAmountControl(EventHandler.Find("FXAmountControl"));
+			fxcontrol = BD_FXAmountControl(EventHandler.Find("BD_FXAmountControl"));
 	}
 	states {
 		Spawn:

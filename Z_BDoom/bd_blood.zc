@@ -479,7 +479,7 @@ Class BFountainSpray : SmallDebris {
 //// FOOTPRINTS
 
 Class BD_BloodyPrintControl : Inventory {
-	FXAmountControl event;
+	BD_FXAmountControl event;
 	private int bloodtrack; //how much blood was "collected by our boots"
 	private bool side;
 	private bool drip;
@@ -498,7 +498,7 @@ Class BD_BloodyPrintControl : Inventory {
 			return;
 		//debug
 		//Console.Printf("blood on boots: %d | vel: %d",bootsblood.Size(),owner.vel.length());
-		event = FXAmountControl(EventHandler.find("FXAmountControl"));
+		event = BD_FXAmountControl(EventHandler.find("BD_FXAmountControl"));
 		if (!event)
 			return;
 		//blood isn't collected on boots and prints aren't spawned if we're not on the floor or are barely moving

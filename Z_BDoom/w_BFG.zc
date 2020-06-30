@@ -934,8 +934,6 @@ Class ModernBFGBall : BD_BFGBall {
 			BlockThingsIterator itr = BlockThingsIterator.Create(self,rdistance);
 			while (itr.next()) {
 				let next = itr.thing;
-				//if (bfglist.find(next))
-				//	continue;
 				if (next == target)
 					continue; 
 				if (!next.bShootable || (!next.bIsMonster && !(next is "PlayerPawn")) || !target.IsHostile (next) || target.bKILLED)
