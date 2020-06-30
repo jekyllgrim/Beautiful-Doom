@@ -1,7 +1,7 @@
 
 gameinfo
 {
-	AddEventHandlers = "BD_DEHACKED_Handler", "WeaponOverrideHandler", "BD_ActorOverrideHandler", "FXAmountControl", "FootstepsInit", "BD_Animated_Handler"
+	AddEventHandlers = "BD_DEHACKED_Handler", "BD_WeaponOverrideHandler", "BD_ActorOverrideHandler", "BD_FXAmountControl", "BD_FootstepsInit", "BD_Animated_Handler", "BD_LiquidTexturesHandler"
 	
 	PrecacheClasses = 	"BDoomActor",
 						"BD_BaseDebris",

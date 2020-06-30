@@ -1,4 +1,4 @@
-class WeaponOverrideHandler : EventHandler {
+class BD_WeaponOverrideHandler : EventHandler {
 	override void PlayerDied(PlayerEvent e) {
 		if (!bdoom_replaceweapons)
 			return;
@@ -226,20 +226,6 @@ class BD_ActorOverrideHandler : EventHandler {
 		}
 		return false;
 	}
-	void BD_ReplaceTextures(string from, string to, int surface = 0) {
-		int tex1 = int(TexMan.CheckForTexture(from, TexMan.Type_Any, TexMan.TryAny));
-		if (tex1 < 0)
-			return;
-		int tex2 = int (TexMan.CheckForTexture(to, TexMan.Type_Any, TexMan.TryAny));
-		if (tex2 < 0)
-			return;
-		if (surface >= 2)
-			level.ReplaceTextures(from, to, TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
-		else if (surface == 1)
-			level.ReplaceTextures(from, to, TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
-		else
-			level.ReplaceTextures(from, to, 0);
-	}
 	// This replaces gore texures (SP_DUDEs) with custom gore textures based on Beautiful gore decorations:
 	static const name BD_SP_DUDE1[] = { "textures/BD_DUDE1a.png", "textures/BD_DUDE1b.png" };
 	static const name BD_SP_DUDE2[] = { "textures/BD_DUDE2a.png", "textures/BD_DUDE2b.png" };
@@ -249,91 +235,15 @@ class BD_ActorOverrideHandler : EventHandler {
 	static const name BD_SP_DUDE8[] = { "textures/BD_DUDE8a.png", "textures/BD_DUDE8b.png", "textures/BD_DUDE8c.png" };
 	override void WorldLoaded(WorldEvent e) {
 		if (bdoom_replaceobjects) {
-			BD_ReplaceTextures("SP_DUDE1", BD_SP_DUDE1[random(0,1)],0);
-			BD_ReplaceTextures("SP_DUDE2", BD_SP_DUDE2[random(0,1)],0);
-			BD_ReplaceTextures("SP_DUDE4", BD_SP_DUDE4[random(0,2)],0);
-			BD_ReplaceTextures("SP_DUDE5", BD_SP_DUDE5[random(0,3)],0);
-			BD_ReplaceTextures("SP_DUDE7", BD_SP_DUDE7[random(0,2)],0);
-			BD_ReplaceTextures("SP_DUDE8", BD_SP_DUDE8[random(0,2)],0);
-		}
-		if (bdoom_liquidtextures ){
-			//lava
-			BD_ReplaceTextures("LFALL1","BDT_LFA1",surface: 2);
-			BD_ReplaceTextures("LFALL2","BDT_LFA1",surface: 2);
-			BD_ReplaceTextures("LFALL3","BDT_LFA1",surface: 2);
-			BD_ReplaceTextures("LFALL4","BDT_LFA1",surface: 2);
-			BD_ReplaceTextures("LAVA1","BDT_LFA2",surface: 2);
-			BD_ReplaceTextures("LAVA2","BDT_LFA2",surface: 2);
-			BD_ReplaceTextures("LAVA3","BDT_LFA2",surface: 2);
-			BD_ReplaceTextures("LAVA4","BDT_LFA2",surface: 2);
-			BD_ReplaceTextures("LAVA1","BDT_LFL",surface: 1);
-			BD_ReplaceTextures("LAVA2","BDT_LFL",surface: 1);
-			BD_ReplaceTextures("LAVA3","BDT_LFL",surface: 1);
-			BD_ReplaceTextures("LAVA4","BDT_LFL",surface: 1);
-			//water
-			BD_ReplaceTextures("WFALL1","BDT_WFA1",surface: 2);
-			BD_ReplaceTextures("WFALL2","BDT_WFA1",surface: 2);
-			BD_ReplaceTextures("WFALL3","BDT_WFA1",surface: 2);
-			BD_ReplaceTextures("WFALL4","BDT_WFA1",surface: 2);
-			BD_ReplaceTextures("FWATER1","BDT_WFA2",surface: 2);
-			BD_ReplaceTextures("FWATER2","BDT_WFA2",surface: 2);
-			BD_ReplaceTextures("FWATER3","BDT_WFA2",surface: 2);
-			BD_ReplaceTextures("FWATER4","BDT_WFA2",surface: 2);
-			BD_ReplaceTextures("FWATER1","BDT_WFL",surface: 1);
-			BD_ReplaceTextures("FWATER2","BDT_WFL",surface: 1);
-			BD_ReplaceTextures("FWATER3","BDT_WFL",surface: 1);
-			BD_ReplaceTextures("FWATER4","BDT_WFL",surface: 1);
-			//blood
-			BD_ReplaceTextures("BFALL1","BDT_BFA1",surface: 2);
-			BD_ReplaceTextures("BFALL2","BDT_BFA1",surface: 2);
-			BD_ReplaceTextures("BFALL3","BDT_BFA1",surface: 2);
-			BD_ReplaceTextures("BFALL4","BDT_BFA1",surface: 2);
-			BD_ReplaceTextures("BLOOD1","BDT_BFA2",surface: 2);
-			BD_ReplaceTextures("BLOOD2","BDT_BFA2",surface: 2);
-			BD_ReplaceTextures("BLOOD3","BDT_BFA2",surface: 2);
-			BD_ReplaceTextures("BLOOD4","BDT_BFA2",surface: 2);
-			BD_ReplaceTextures("BLOOD1","BDT_BFL",surface: 1);
-			BD_ReplaceTextures("BLOOD2","BDT_BFL",surface: 1);
-			BD_ReplaceTextures("BLOOD3","BDT_BFL",surface: 1);
-			BD_ReplaceTextures("BLOOD4","BDT_BFL",surface: 1);
-			//acid
-			BD_ReplaceTextures("SFALL1","BDT_AFA1",surface: 2);
-			BD_ReplaceTextures("SFALL2","BDT_AFA1",surface: 2);
-			BD_ReplaceTextures("SFALL3","BDT_AFA1",surface: 2);
-			BD_ReplaceTextures("SFALL4","BDT_AFA1",surface: 2);
-			BD_ReplaceTextures("NUKAGE1","BDT_AFA2",surface: 2);
-			BD_ReplaceTextures("NUKAGE2","BDT_AFA2",surface: 2);
-			BD_ReplaceTextures("NUKAGE3","BDT_AFA2",surface: 2);
-			BD_ReplaceTextures("NUKAGE4","BDT_AFA2",surface: 2);
-			BD_ReplaceTextures("NUKAGE1","BDT_AFL",surface: 1);
-			BD_ReplaceTextures("NUKAGE2","BDT_AFL",surface: 1);
-			BD_ReplaceTextures("NUKAGE3","BDT_AFL",surface: 1);
-			BD_ReplaceTextures("NUKAGE4","BDT_AFL",surface: 1);
-			//slime 1
-			BD_ReplaceTextures("SLIME01","BDT_SFA1",surface: 2);
-			BD_ReplaceTextures("SLIME02","BDT_SFA1",surface: 2);
-			BD_ReplaceTextures("SLIME03","BDT_SFA1",surface: 2);
-			BD_ReplaceTextures("SLIME04","BDT_SFA1",surface: 2);
-			BD_ReplaceTextures("SLIME01","BDT_SFL1",surface: 1);
-			BD_ReplaceTextures("SLIME02","BDT_SFL1",surface: 1);
-			BD_ReplaceTextures("SLIME03","BDT_SFL1",surface: 1);
-			BD_ReplaceTextures("SLIME04","BDT_SFL1",surface: 1);
-			//slime 2
-			BD_ReplaceTextures("SLIME05","BDT_SFA2",surface: 2);
-			BD_ReplaceTextures("SLIME06","BDT_SFA2",surface: 2);
-			BD_ReplaceTextures("SLIME07","BDT_SFA2",surface: 2);
-			BD_ReplaceTextures("SLIME08","BDT_SFA2",surface: 2);
-			BD_ReplaceTextures("SLIME05","BDT_SFL2",surface: 1);
-			BD_ReplaceTextures("SLIME06","BDT_SFL2",surface: 1);
-			BD_ReplaceTextures("SLIME07","BDT_SFL2",surface: 1);
-			BD_ReplaceTextures("SLIME08","BDT_SFL2",surface: 1);
-			//Boss brain
-			BD_ReplaceTextures("DBRAIN1","BDT_DBRN",surface: 2);
-			BD_ReplaceTextures("DBRAIN2","BDT_DBRN",surface: 2);
-			BD_ReplaceTextures("DBRAIN3","BDT_DBRN",surface: 2);
-			BD_ReplaceTextures("DBRAIN4","BDT_DBRN",surface: 2);
+			level.ReplaceTextures("SP_DUDE1", BD_SP_DUDE1[random(0,1)],0);
+			level.ReplaceTextures("SP_DUDE2", BD_SP_DUDE2[random(0,1)],0);
+			level.ReplaceTextures("SP_DUDE4", BD_SP_DUDE4[random(0,2)],0);
+			level.ReplaceTextures("SP_DUDE5", BD_SP_DUDE5[random(0,3)],0);
+			level.ReplaceTextures("SP_DUDE7", BD_SP_DUDE7[random(0,2)],0);
+			level.ReplaceTextures("SP_DUDE8", BD_SP_DUDE8[random(0,2)],0);
 		}
 	}
+	
 	// This performs the actual conditional actor replacement:
 	override void CheckReplacement(ReplaceEvent e) {
 		if (bdoom_blood) {	
@@ -478,8 +388,138 @@ class BD_ActorOverrideHandler : EventHandler {
 	}
 }
 
+Class BD_LiquidTexturesHandler : EventHandler {
+	override void WorldTick() {
+		if (level.time % 35 == 0)
+			return;
+		if (bd_liquidtex != bdoom_liquidtextures)
+			BD_ReplaceLiquidTextures();
+		bd_liquidtex = bdoom_liquidtextures;
+	}
+	void BD_ReplaceTextures(string from, string to, int surface = 0) {
+		int tex1 = int(TexMan.CheckForTexture(from, TexMan.Type_Any, TexMan.TryAny));
+		if (tex1 < 0)
+			return;
+		int tex2 = int (TexMan.CheckForTexture(to, TexMan.Type_Any, TexMan.TryAny));
+		if (tex2 < 0)
+			return;
+		if (surface >= 2)
+			level.ReplaceTextures(from, to, TexMan.NOT_FLOOR|TexMan.NOT_CEILING);
+		else if (surface == 1)
+			level.ReplaceTextures(from, to, TexMan.NOT_BOTTOM|TexMan.NOT_MIDDLE|TexMan.NOT_TOP);
+		else
+			level.ReplaceTextures(from, to, 0);
+	}
+	private bool bd_liquidtex;
+	void BD_ReplaceLiquidTextures() {
+		if (bdoom_liquidtextures) {
+			//lava
+			BD_ReplaceTextures("LFALL1","BDT_LFA1",surface: 2);
+			BD_ReplaceTextures("LFALL2","BDT_LFA1",surface: 2);
+			BD_ReplaceTextures("LFALL3","BDT_LFA1",surface: 2);
+			BD_ReplaceTextures("LFALL4","BDT_LFA1",surface: 2);
+			BD_ReplaceTextures("LAVA1","BDT_LFA2",surface: 2);
+			BD_ReplaceTextures("LAVA2","BDT_LFA2",surface: 2);
+			BD_ReplaceTextures("LAVA3","BDT_LFA2",surface: 2);
+			BD_ReplaceTextures("LAVA4","BDT_LFA2",surface: 2);
+			BD_ReplaceTextures("LAVA1","BDT_LFL",surface: 1);
+			BD_ReplaceTextures("LAVA2","BDT_LFL",surface: 1);
+			BD_ReplaceTextures("LAVA3","BDT_LFL",surface: 1);
+			BD_ReplaceTextures("LAVA4","BDT_LFL",surface: 1);
+			//water
+			BD_ReplaceTextures("WFALL1","BDT_WFA1",surface: 2);
+			BD_ReplaceTextures("WFALL2","BDT_WFA1",surface: 2);
+			BD_ReplaceTextures("WFALL3","BDT_WFA1",surface: 2);
+			BD_ReplaceTextures("WFALL4","BDT_WFA1",surface: 2);
+			BD_ReplaceTextures("FWATER1","BDT_WFA2",surface: 2);
+			BD_ReplaceTextures("FWATER2","BDT_WFA2",surface: 2);
+			BD_ReplaceTextures("FWATER3","BDT_WFA2",surface: 2);
+			BD_ReplaceTextures("FWATER4","BDT_WFA2",surface: 2);
+			BD_ReplaceTextures("FWATER1","BDT_WFL",surface: 1);
+			BD_ReplaceTextures("FWATER2","BDT_WFL",surface: 1);
+			BD_ReplaceTextures("FWATER3","BDT_WFL",surface: 1);
+			BD_ReplaceTextures("FWATER4","BDT_WFL",surface: 1);
+			//blood
+			BD_ReplaceTextures("BFALL1","BDT_BFA1",surface: 2);
+			BD_ReplaceTextures("BFALL2","BDT_BFA1",surface: 2);
+			BD_ReplaceTextures("BFALL3","BDT_BFA1",surface: 2);
+			BD_ReplaceTextures("BFALL4","BDT_BFA1",surface: 2);
+			BD_ReplaceTextures("BLOOD1","BDT_BFA2",surface: 2);
+			BD_ReplaceTextures("BLOOD2","BDT_BFA2",surface: 2);
+			BD_ReplaceTextures("BLOOD3","BDT_BFA2",surface: 2);
+			BD_ReplaceTextures("BLOOD4","BDT_BFA2",surface: 2);
+			BD_ReplaceTextures("BLOOD1","BDT_BFL",surface: 1);
+			BD_ReplaceTextures("BLOOD2","BDT_BFL",surface: 1);
+			BD_ReplaceTextures("BLOOD3","BDT_BFL",surface: 1);
+			BD_ReplaceTextures("BLOOD4","BDT_BFL",surface: 1);
+			//acid
+			BD_ReplaceTextures("SFALL1","BDT_AFA1",surface: 2);
+			BD_ReplaceTextures("SFALL2","BDT_AFA1",surface: 2);
+			BD_ReplaceTextures("SFALL3","BDT_AFA1",surface: 2);
+			BD_ReplaceTextures("SFALL4","BDT_AFA1",surface: 2);
+			BD_ReplaceTextures("NUKAGE1","BDT_AFA2",surface: 2);
+			BD_ReplaceTextures("NUKAGE2","BDT_AFA2",surface: 2);
+			BD_ReplaceTextures("NUKAGE3","BDT_AFA2",surface: 2);
+			BD_ReplaceTextures("NUKAGE4","BDT_AFA2",surface: 2);
+			BD_ReplaceTextures("NUKAGE1","BDT_AFL",surface: 1);
+			BD_ReplaceTextures("NUKAGE2","BDT_AFL",surface: 1);
+			BD_ReplaceTextures("NUKAGE3","BDT_AFL",surface: 1);
+			BD_ReplaceTextures("NUKAGE4","BDT_AFL",surface: 1);
+			//slime 1
+			BD_ReplaceTextures("SLIME01","BDT_SFA1",surface: 2);
+			BD_ReplaceTextures("SLIME02","BDT_SFA1",surface: 2);
+			BD_ReplaceTextures("SLIME03","BDT_SFA1",surface: 2);
+			BD_ReplaceTextures("SLIME04","BDT_SFA1",surface: 2);
+			BD_ReplaceTextures("SLIME01","BDT_SFL1",surface: 1);
+			BD_ReplaceTextures("SLIME02","BDT_SFL1",surface: 1);
+			BD_ReplaceTextures("SLIME03","BDT_SFL1",surface: 1);
+			BD_ReplaceTextures("SLIME04","BDT_SFL1",surface: 1);
+			//slime 2
+			BD_ReplaceTextures("SLIME05","BDT_SFA2",surface: 2);
+			BD_ReplaceTextures("SLIME06","BDT_SFA2",surface: 2);
+			BD_ReplaceTextures("SLIME07","BDT_SFA2",surface: 2);
+			BD_ReplaceTextures("SLIME08","BDT_SFA2",surface: 2);
+			BD_ReplaceTextures("SLIME05","BDT_SFL2",surface: 1);
+			BD_ReplaceTextures("SLIME06","BDT_SFL2",surface: 1);
+			BD_ReplaceTextures("SLIME07","BDT_SFL2",surface: 1);
+			BD_ReplaceTextures("SLIME08","BDT_SFL2",surface: 1);
+			//Boss brain
+			BD_ReplaceTextures("DBRAIN1","BDT_DBRN",surface: 2);
+			BD_ReplaceTextures("DBRAIN2","BDT_DBRN",surface: 2);
+			BD_ReplaceTextures("DBRAIN3","BDT_DBRN",surface: 2);
+			BD_ReplaceTextures("DBRAIN4","BDT_DBRN",surface: 2);
+		}
+		else {
+			//lava
+			BD_ReplaceTextures("BDT_LFA1", "LFALL1",surface: 2);
+			BD_ReplaceTextures("BDT_LFA2", "LAVA1",surface: 2);
+			BD_ReplaceTextures("BDT_LFL", "LAVA1",surface: 1);
+			//water
+			BD_ReplaceTextures("BDT_WFA1", "WFALL1",surface: 2);
+			BD_ReplaceTextures("BDT_WFA2", "FWATER1",surface: 2);
+			BD_ReplaceTextures("BDT_WFL", "FWATER1",surface: 1);
+			//blood
+			BD_ReplaceTextures("BDT_BFA1", "BFALL1",surface: 2);
+			BD_ReplaceTextures("BDT_BFA2", "BLOOD1",surface: 2);
+			BD_ReplaceTextures("BDT_BFL", "BLOOD1",surface: 1);
+			//acid
+			BD_ReplaceTextures("BDT_AFA1", "SFALL1",surface: 2);
+			BD_ReplaceTextures("BDT_AFA2", "NUKAGE1",surface: 2);
+			BD_ReplaceTextures("BDT_AFL", "NUKAGE1",surface: 1);
+			//slime 1
+			BD_ReplaceTextures("BDT_SFA1", "SLIME01",surface: 2);
+			BD_ReplaceTextures("BDT_SFL1", "SLIME01",surface: 1);
+			//slime 2
+			BD_ReplaceTextures("BDT_SFA2", "SLIME05",surface: 2);
+			BD_ReplaceTextures("BDT_SFL2", "SLIME05",surface: 1);
+			//Boss brain
+			BD_ReplaceTextures("BDT_DBRN", "DBRAIN1",surface: 2);
+		}
+	}
+}
+
 // controls the amount of special effect actors, such as gibs, debris, flames
-Class FXAmountControl : EventHandler {
+Class BD_FXAmountControl : EventHandler {
 	private bool DebrisCleaning;
 	Array <BD_BaseDebris> alldebris;
 	Array <BD_BaseDebris> bloodlist;
@@ -579,7 +619,7 @@ Class FXAmountControl : EventHandler {
 }
 
 //attaches footstep actors to players
-class FootstepsInit : EventHandler {
+class BD_FootstepsInit : EventHandler {
     override void PlayerEntered(PlayerEvent e) {
         let steps = BD_Footsteps(Actor.Spawn("BD_Footsteps"));
 		if (steps) {
