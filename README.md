@@ -49,6 +49,15 @@ Before asking if you can borrow an asset for your own project, make sure your wo
 - It's not a low-effort repack/rehash/edit of other people's works
 - The resource you want to use is already available in one of the stable RELEASE versions of Beautiful Doom (if it's only on GitHub, it's not free to use)
 
+### MODS THAT GO WELL WITH BEAUTIFUL Doom
+
+Here are a few recommendations on stuff that plays well with Beautiful Doom and matches the concept of overall enhancement:
+
+* [SpriteShadow](https://forum.zdoom.org/viewtopic.php?f=105&t=54992) by Nash Muhandes: adds Duke3D-style shadows to all monsters (used to be part of Beautiful Doom; since it's a universal mod, I decided there was no reason to include it in the package)
+* [Universal Weapon Sway](https://forum.zdoom.org/viewtopic.php?t=68255&p=1147667) by Boondorl: adds natural-looking sway to weapon sprites based on mouse movement
+* [Tilt++](https://forum.zdoom.org/viewtopic.php?f=43&t=55413) by Nash Muhandes: adds customizable camera tilting
+
+
 ### CREDITS
 
 If you feel anyone was forgotten, or that I'm using somebody's assets without permisssion — please contact me, and I'll make sure to resolve it as soon as possible:
