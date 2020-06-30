@@ -254,19 +254,19 @@ STEP_FLATS = "FWATER1:FWATER2:FWATER3:FWATER4:"
 			"SLIME03:SLIME04:SLIME05:SLIME06:"
 			"SLIME07:SLIME08:SFLR6_1:SFLR6_4:"
 			"SFLR7_1:SFLR7_4:LAVA1:LAVA2:"
-			"LAVA3:LAVA4:F_SKY1"
+			"LAVA3:LAVA4:F_SKY1:"
 			"BDT_WFL:BDT_BFL:BDT_LFL:BDT_AFL:BDT_SFL1:BDT_SFL2";
 
 // footstep sounds definitions created by The Zombie Killer, modified by Agent_Ash
 
 STEP_DEFAULT = "step/default";
 
+STEP_BDT_WFL = "step/slime"; //"step/water";
 STEP_BDT_BFL = "step/slime";
+STEP_BDT_LFL = "step/lava";
 STEP_BDT_AFL = "step/slime";
 STEP_BDT_SFL1 = "step/slime";
 STEP_BDT_SFL2 = "step/slime";
-STEP_BDT_WFL = "step/water";
-STEP_BDT_LFL = "step/lava";
 
 STEP_BLOOD1 = "step/slime";
 STEP_BLOOD2 = "step/slime";
@@ -288,10 +288,10 @@ STEP_SFLR6_4 = "step/slimy";
 STEP_SFLR7_1 = "step/slimy";
 STEP_SFLR7_4 = "step/slimy";
 
-STEP_FWATER1 = "step/water";
-STEP_FWATER2 = "step/water";
-STEP_FWATER3 = "step/water";
-STEP_FWATER4 = "step/water";
+STEP_FWATER1 = "step/slime"; //"step/water";
+STEP_FWATER2 = "step/slime"; //"step/water";
+STEP_FWATER3 = "step/slime"; //"step/water";
+STEP_FWATER4 = "step/slime"; //"step/water";
 
 STEP_LAVA1 = "step/lava";
 STEP_LAVA2 = "step/lava";
