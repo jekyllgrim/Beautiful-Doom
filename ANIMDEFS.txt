@@ -38,6 +38,37 @@ pic BDCURS12 tics 2
 pic BDCURS13 tics 2*/
 
 
+texture optional BDT_WFL
+pic BDT_WFL tics 10000
+pic BDT_WFL tics 10000
+
+texture optional BDT_BFL
+pic BDT_BFL tics 10000
+pic BDT_BFL tics 10000
+
+
+texture optional BDT_LFL
+pic BDT_LFL tics 10000
+pic BDT_LFL tics 10000
+
+
+texture optional BDT_AFL
+pic BDT_AFL tics 10000
+pic BDT_AFL tics 10000
+
+
+texture optional BDT_SFL1
+pic BDT_SFL1 tics 10000
+pic BDT_SFL1 tics 10000
+
+
+texture optional BDT_SFL2
+pic BDT_SFL2 tics 10000
+pic BDT_SFL2 tics 10000
+
+
+
+
 // Switches by Enjay
 
 //First the Doom Share Ware Switches
