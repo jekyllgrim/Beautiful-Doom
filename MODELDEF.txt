@@ -22,30 +22,18 @@ Model BulletTracer
 	
 	FrameIndex PUFF A 0 0
 }
-/*
-Model BD_MuzzleSpark
+
+model "KLAZ_TrackingBeam"
 {
-	Path "models"
-	Model 0 "tracer.md3"
-	Skin 0 "spark.png"
-	Scale 1.0 1.0 1.0
-	PITCHFROMMOMENTUM
-	
-	FrameIndex SPRK A 0 0
+	model 0 "models/CrossSectionPrimitive.obj"
+	skin 0 "models/shaftB.png"
+	scale 1.0 1.0 1.2 //the 1.2 z-scale is for pixel ratio adjustment
+	USEACTORPITCH
+	DONTCULLBACKFACES //the model has only two planes
+	FrameIndex MODL A 0 0
 }
 
 
-Model ModernPlasmaTracer
-{
-	Path "models"
-	Model 0 "tracer.md3"
-	Skin 0 "ptracer.png"
-	Scale 1.4 5.0 5.0
-	offset -190 0 1
-	PITCHFROMMOMENTUM
-	
-	FrameIndex PUFF A 0 0
-}*/
 
 
 Model RicochetBullet
