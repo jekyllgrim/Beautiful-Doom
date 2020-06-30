@@ -6,6 +6,8 @@ Gifty: Smooth monster animations which are widely used, both edited and unedited
 
 3saster: animated texture handler, DEHACKED parser, code contributions, various fixes and improvements
 
+kodi: BFG model-based beam code
+
 Nero: menu tool tips
 
 Mike12: original assault rifle sprites (edited versions are used in Modern Assault Rifle)
