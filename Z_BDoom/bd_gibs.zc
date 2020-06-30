@@ -6,11 +6,14 @@ class BD_BaseGib : SmallDebris abstract {
 	protected bool bflat;
 	bool instant;
 	protected int outboundscounter;
-	Default {
+	Default {		
 		BD_BaseDebris.sfxtype 'gibs';
+		SmallDebris.removeonliquid false;
 		SmallDebris.removeonfall false;
+		SmallDebris.liquidheight 1.2;
 		SmallDebris.dbrake 0.75;
 		SmallDebris.hitceiling true;
+		SmallDebris.liquidsound "world/watersplash";
 		RenderStyle 'normal';
 		+NOTARGETSWITCH		//so that gibs pushed by explosions don't switch their target field to player
 		-NOGRAVITY
@@ -81,40 +84,16 @@ class BD_BaseGib : SmallDebris abstract {
 		}
 	}
 	override void BD_HitFloor() {
-		if (floorpic == skyflatnum) { 
-			destroy();
-			return;
-		}
-		landed = true;
-		vel.z = 0;
 		if (waterlevel > 0)
 			return;
-		SetZ(floorz+Voffset);
-		if (d_death)
-			SetState(d_death);
+		Super.BD_HitFloor();
 		gravity = default.gravity;
 		if (bflat) {
 			bFLATSPRITE = true;
 			pitch = 0;
 		}
-		if (!instant)
-			A_Scream();
-		frame = restframe;
-		roll = 0;
-		if (!bNOBLOOD) {
-			let bld = BD_BaseDebris(Spawn("BD_BloodPool",(pos.x,pos.y,floorz)));
-			if (bld) {
-				if (target && target is "BDoomMonster")	{
-					bld.target = target;
-					bld.translation = target.BloodTranslation;
-					let mon = BDoomMonster(target);
-					if (mon) 
-						mon.meatlist.Push(bld);
-				}
-				else
-					bld.translation = BloodTranslation;
-			}
-		}
+		else
+			roll = 0;
 		A_SetMass(bmass);
 		bDROPPED = true;
 	}
@@ -139,13 +118,15 @@ class BD_BaseGib : SmallDebris abstract {
 		if (isFrozen())
 			return;		
 		//remove if out of level:
-		if (!level.IsPointInLevel(pos)) {
-			outboundscounter++;
-			if (outboundscounter > 35) {
-				destroy();
-				return;
+		if (level.time % 35 == 0) {
+			if (!onliquid && !level.IsPointInLevel(pos)) {
+				outboundscounter++;
+				if (outboundscounter > 5) {
+					destroy();
+					return;
+				}
 			}
-		}		
+		}
 		/*
 		//Spawn blood trails when sliding
 		if (!bdoom_blood || bNOBLOOD || waterlevel != 0)
@@ -153,61 +134,6 @@ class BD_BaseGib : SmallDebris abstract {
 		if ((abs(vel.x) > 2 || abs(vel.y) > 2) )
 			BD_GibBleed("BD_BloodPool",2,pos.z+0.5,30);
 			*/
-	}
-	states {
-	LoadSprites:
-		GIBD ABC 0;
-		GIB1 AXZ 0;
-		GIB2 AXZ 0;
-		GIB3 AXZ 0;
-		GIB4 AXZ 0;
-		GIB5 AXZ 0;
-		
-		GIX1 AZ 0;
-		GIX2 AZ 0;
-		GIX3 AZ 0;
-		GIX4 AXZ 0;
-		
-		//zombie
-		HED1 ABCD 0;
-		HND1 ABC 0;
-		LEG1 ABCDE 0;
-		TR11 ABCDEFG 0;
-		TR12 ABCDEFG 0;
-		//shotgunguy
-		HED2 ABC 0;
-		HND2 AB 0;
-		LEG2 ABCDE 0;
-		TR21 ABCDEFGH 0;
-		TR22 ABCDEFGH 0;
-		//chaingunguy
-		HED3 ABC 0;
-		HND3 ABC 0;
-		LEG3 ABC 0;
-		TR31 ABCDEFGHI 0;
-		TR32 ABCDEFGH 0;
-		//imp
-		HED4 ABC 0;
-		HND4 ABC 0;
-		LEG4 ABCD 0;
-		TR41 ABCDEFGH 0;
-		TR42 ABCDEFGH 0;
-		//ss
-		HED5 ABC 0;
-		HND5 AB 0;
-		LEG5 ABC 0;
-		SCAP A 0;
-		//demon
-		HED8 AB 0;
-		HND8 AB 0;
-		stop;
-		//caco
-		EYE1 AB 0;
-		//pain elemental
-		HND6 AB 0;
-		PAPP AB 0;
-		PARP AB 0;
-		stop;
 	}
 }
 
@@ -328,12 +254,46 @@ class BasicMeatPiece : BD_BaseGib {
 		#### # 1;
 		wait;
 	Death:
+		#### # 0 {
+			frame = restframe;
+			if (!onliquid) {
+				if (!instant)
+					A_Scream();
+				if (!bNOBLOOD) {
+					let bld = BD_BaseDebris(Spawn("BD_BloodPool",(pos.x,pos.y,floorz)));
+					if (bld) {
+						if (target && target is "BDoomMonster")	{
+							bld.target = target;
+							bld.translation = target.BloodTranslation;
+							let mon = BDoomMonster(target);
+							if (mon) 
+								mon.meatlist.Push(bld);
+						}
+						else
+							bld.translation = BloodTranslation;
+					}
+				}
+			}
+		}
 		#### # 1 {
 			if (vel ~== (0,0,0))
 				return ResolveState("Rest");
 			return ResolveState(null);
 		}
 		wait;
+	/*DeathLiquid:		
+		#### # 0 {
+			roll = 90+frandom(-5,5);
+		}
+		#### # 1 {
+			if (pos.z <= floorz - drownheight) {
+				return ResolveState("Rest");
+			}
+			SetZ(pos.z - 0.5);
+			//VOffset -= 0.1;
+			return ResolveState(Null);
+		}
+		wait;*/
 	Rest:
 		#### # 1 { 
 			if (waterlevel > 0 && frame != restframe)
@@ -425,11 +385,31 @@ Class BD_BasicLimb : BasicMeatPiece {
 		+BOUNCEONWALLS		
 		wallbouncefactor 0.4;
 		bouncefactor 0.2;
+		SmallDebris.liquidheight 3.5;
+	}
+	states {
+	/*DeathLiquid:
+		#### # 0 {
+			roll = Clamp(roll,80,100);
+		}
+		#### # 1 {
+			if (!drown)
+				return ResolveState("Rest");
+			else if (pos.z <= floorz - drownheight) {
+				VOffset += frandom(-0.1,0.1);
+				return ResolveState("Rest");
+			}
+			//SetZ(pos.z - 0.1);
+			VOffset -= 0.1;
+			return ResolveState(Null);
+		}
+		wait;*/
 	}
 }
 
 class BasicMetalPiece : BasicMeatPiece {
 	Default {
+		SmallDebris.removeonliquid true;
 		BasicMeatPiece.watergravity 0.08;
 		seesound "none";
 		bouncesound "gibs/metallic";
@@ -481,6 +461,7 @@ class BasicMetalPiece : BasicMeatPiece {
 
 class BasicMeatPiece_Heavy : BasicMeatPiece {
 	Default {
+		SmallDebris.liquidheight 2;
 		scale 0.8;
 	}
 	override void GibBeginPlay() {
@@ -681,6 +662,7 @@ class Gib_Head : BD_BasicLimb {
 class Gib_Torso1 : BasicMeatPiece {
 	int finalframe; //last frame used in the flying animation
 	Default {
+		SmallDebris.liquidheight 4;
 		BD_BaseDebris.sfxtype "none"; //I don't want torsos to get destroyed because they essentially function as bld corpse and show where the monster died
 		gravity 1.0;
 		scale 1.0;
@@ -919,6 +901,7 @@ class PainElementalHorn : BD_BasicLimb {
 
 Class BasicBossGib : BasicMeatPiece {
 	Default {
+		SmallDebris.liquidheight 3.5;
 		scale 1.0;
 		height 20;
 	}
@@ -929,42 +912,40 @@ Class BasicBossGib : BasicMeatPiece {
 		roll = random[bdsfx](0,359);
 	}
 	states {
-		spawn:
-			#### A 0 NoDelay GibBeginPlay();
-			#### A 1 {
-				if (bdoom_blood)
-					A_SpawnItemEx("BD_Blood",frandom[bdsfx](-2,2),frandom[bdsfx](-2,2),frandom[bdsfx](0,2),0,frandom[bdsfx](0,1),frandom[bdsfx](0,1),random[bdsfx](175,185),SXF_TRANSFERPOINTERS,144);
-				roll+=wrot;
-				if (waterlevel == 3)
-					return ResolveState("Rest");
-				return ResolveState(null);
-			}
-			wait;
-		Death:
-			#### # 5;
-			#### # 5 {
-				if (frame < restframe)
-					frame++;
-				else if (vel ~== (0,0,0))
-					return ResolveState("Rest");
-				return ResolveState(null);
-			}
-			wait;
-		loadsprites:
-			//cyberdemon
-			HED7 ABCDEFGHIJKLM 0;
-			HND7 ABCDEFGHIJ 0;
-			HND9 ABCDEFG 0;
-			LEG9 ABCDEFG 0;
-			LEG7 ABCDEFG 0;
-			TRC1 ABCDEFG 0;
-			TRC2 ABCDEFGHIJ 0;
-			TRC3 ABCDEFGHIJ 0;		
-			stop;
-		Raise:
-			stop;
-	}
-	States {
+	spawn:
+		#### A 0 NoDelay GibBeginPlay();
+		#### A 1 {
+			if (bdoom_blood)
+				A_SpawnItemEx("BD_Blood",frandom[bdsfx](-2,2),frandom[bdsfx](-2,2),frandom[bdsfx](0,2),0,frandom[bdsfx](0,1),frandom[bdsfx](0,1),random[bdsfx](175,185),SXF_TRANSFERPOINTERS,144);
+			roll+=wrot;
+			if (waterlevel == 3)
+				return ResolveState("Rest");
+			return ResolveState(null);
+		}
+		wait;
+	Death:
+		#### # 5;
+		#### # 5 {
+			if (frame < restframe)
+				frame++;
+			else if (vel ~== (0,0,0))
+				return ResolveState("Rest");
+			return ResolveState(null);
+		}
+		wait;
+	loadsprites:
+		//cyberdemon
+		HED7 ABCDEFGHIJKLM 0;
+		HND7 ABCDEFGHIJ 0;
+		HND9 ABCDEFG 0;
+		LEG9 ABCDEFG 0;
+		LEG7 ABCDEFG 0;
+		TRC1 ABCDEFG 0;
+		TRC2 ABCDEFGHIJ 0;
+		TRC3 ABCDEFGHIJ 0;		
+		stop;
+	Raise:
+		stop;
 	HitWall:
 		stop;
 	HitCeiling:

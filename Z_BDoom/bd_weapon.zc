@@ -9,6 +9,9 @@ Class BDoomWeapon : Weapon abstract {
 	property maxOffsetTics : maxOffsetTics;
 	property offsetTics : offsetTics;
 	
+	protected sound reloadsound;	//used as a sound cue in background reload
+	property reloadsound : reloadsound;
+	
 	protected int NonselTimer; //counts how long the weapon was deselected, used for automatic background reload
 	protected int AutoReloadTime; //the value that NonselTimer is compared to
 	property AutoReloadTime : AutoReloadTime;		
@@ -239,6 +242,7 @@ Class BDoomWeapon : Weapon abstract {
 				owner.GiveInventory(ammo1.GetClass(),1);
 			}
 			Console.Printf("%s reloaded",GetTag());
+			owner.A_PlaySound(reloadsound,CHAN_AUTO|CHAN_NOPAUSE,volume:0.5,attenuation:20);
 		}			
 	}
 
@@ -552,6 +556,7 @@ Class Casing_General : SmallDebris {
 	property spawnsprite : spawnsprite;
 	Default {
 		SmallDebris.dbrake 0.75;
+		SmallDebris.liquidsound "world/watersplashsmall";
 		+ROLLCENTER
 		+BOUNCEONFLOORS
 		+BOUNCEONWALLS
@@ -559,7 +564,7 @@ Class Casing_General : SmallDebris {
 		seesound "none";
 		mass 1;
 		Radius 1;
-		Height 1;
+		Height 4;
 		bouncefactor 0.3;
 		wallbouncefactor 0.4;
 		Scale 0.15;
@@ -570,7 +575,7 @@ Class Casing_General : SmallDebris {
 			return;
 		}
 		super.PostBeginPlay();
-		brot = frandom(18,24);
+		brot = frandom(-18,-24);
 		roll = frandom(100,105);
 		sprite = GetSpriteIndex(spawnsprite);
 	}
@@ -580,11 +585,7 @@ Class Casing_General : SmallDebris {
 			return;
 		}
 		super.BD_HitFloor();
-		if (waterlevel == 0) {
-			roll = frandom(-8,8);
-			bSPRITEFLIP = random(0,1);
-			A_PlaySound(bouncesound);
-		}
+		
 	}
 	states {
 	Spawn:
@@ -596,18 +597,24 @@ Class Casing_General : SmallDebris {
 				bBOUNCEONWALLS = false;
 				bNOGRAVITY = true;
 				vel.z *= 0.1;
-				return ResolveState("WaterLand");
+				return ResolveState("WaterSuspend");
 			}
 			return ResolveState(null);
 		}
 		loop;
 	Death:
-		#### # -1;
+		#### # -1 {
+			if (waterlevel == 0) {
+				roll = frandom(-8,8);
+				bSPRITEFLIP = random(0,1);
+				A_PlaySound(bouncesound);
+			}
+		}
 		stop;
 	loadsprites:
 		CAS1 ABC 0;	CAS2 ABC 0;	CAS3 ABC 0;
 		stop;
-	WaterLand:
+	WaterSuspend:
 		#### # 1 {
 			if (abs(brot) > 1)
 				brot *= 0.93;

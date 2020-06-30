@@ -163,7 +163,7 @@ Class BD_Blood : BD_BloodBase {
 		#### # -1 { 
 			if (waterlevel > 2)
 				return ResolveState(null);
-			if (BDoomActor.CheckWater(self))
+			if (BDoomActor.CheckAnimated(self))
 				return ResolveState("WaterLand");
 			return ResolveState(null);
 		}
@@ -193,6 +193,7 @@ Class BD_Blood : BD_BloodBase {
 			return ResolveState(null);
 		}
 		stop;
+	DeathLiquid:
 	WaterLand:
 		#### # 0 A_SetRenderStyle(alpha,STYLE_Translucent);
 		#### # 1 {
@@ -235,9 +236,10 @@ Class BD_BaseBloodPool : BD_BloodBase abstract {
 		super.Tick();
 		if (isFrozen())
 			return;
-		if (BDoomActor.CheckWater(self)) {
+		if (BDoomActor.CheckAnimated(self)) {
 			A_SetRenderstyle(alpha,STYLE_Translucent);
-			A_FadeOut(0.01);
+			A_FadeOut(0.05);
+			scale *= 1.01;
 		}
 	}
 }
@@ -502,7 +504,7 @@ Class BD_BloodyPrintControl : Inventory {
 		//blood isn't collected on boots and prints aren't spawned if we're not on the floor or are barely moving
 		if (!(owner.pos.z ~== owner.floorz))
 			return;
-		if (BDoomActor.CheckWater(owner)) {
+		if (BDoomActor.CheckAnimated(owner)) {
 			bootsblood.Clear();
 			return;
 		}
