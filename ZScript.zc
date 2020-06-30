@@ -49,3 +49,6 @@ version "4.2.4"
 
 #include "Z_Bdoom/Tooltips/ToolTips_Lists.txt"
 #include "Z_Bdoom/Tooltips/ToolTips_Options.txt"
+
+#include "Z_Bdoom/klazer/KLAZ_kColor.zsc"
+#include "Z_Bdoom/klazer/KLAZ_Beam.zsc"
