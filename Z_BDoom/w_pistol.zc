@@ -20,6 +20,7 @@ Class BD_Pistol : BDoomWeapon {
 		inventory.amount		1;
 		inventory.maxamount		2;
 		BDoomWeapon.AutoReloadTime 120;
+		BDoomWeapon.reloadsound "Mweapons/pistol/clipin";
 	}
 	override void DoEffect() {
 		Super.DoEffect();

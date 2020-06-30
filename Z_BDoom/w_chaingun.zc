@@ -15,6 +15,7 @@ Class BD_Chaingun : BDoomWeapon {
 		Weapon.AmmoGive2		20;
 		weapon.slotnumber		4;
 		BDoomWeapon.AutoReloadTime 140;
+		BDoomWeapon.reloadsound "Mweapons/rifle/clipin";
 	}
 	override string PickupMessage () {
 		if(bdoom_weapons == 2) 
