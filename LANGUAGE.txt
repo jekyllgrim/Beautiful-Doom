@@ -12,7 +12,7 @@ BDMENU_GIBSTOGGLE =		"Special effects and detailed gibs for monster deaths.\nMay
 BDMENU_BLOODTOGGLE = 	"Particle blood and dynamic blood pools. May impact performance.";
 BDMENU_NOBOSSGIBS = 	"Show classic boss death animations even when enhanced gibs are enabled.\nOtherwise bosses will use special death animations with lots of effects.";
 BDMENU_FLAMES =			"Dynamic particle flames and halos around light sources.\nMay impact performance.";
-BDMENU_DEBRIS = 		"Enable/disable spent bullet casings, particle smoke, projectile trails,\nsparks, debris spawned by shooting walls, etc.";
+BDMENU_DEBRIS = 		"Enable/disable spent bullet casings, particle smoke, projectile trails,\nsparks, debris spawned by shooting walls, etc.\nMay impact performance.";
 BDMENU_KILLABLEOBJECTS = "When enabled, some decorations will react to being shot, and it will be\npossible to kill decorative victims and destroy lamps by explosions";
 BDMENU_GLOVES = 		"Change the color of your gloves at any point";
 BDMENU_FOOTSTEPS = 		"Enable/disable the sounds of player footsteps\n(In multiplayer this option is defined by the host)";
@@ -25,7 +25,7 @@ BDMENU_REPLACEWEAPONS = "Enable/disable Beautiful Doom weapons.\nWhen disabled c
 BDMENU_REPLACEMONSTERS = "Enable/disable Beautiful Doom monsters.\nWhen disabled the mod can be played with other monster packs.\nNote: Monster-specific Beautiful Doom effects, such as gibbing,\nwill not work if this option is disabled.";
 BDMENU_REPLACEITEMS = 	"Enable/disable Beautiful Doom items.\nWhen disabled can be played with anoter mod that has its own items.";
 BDMENU_REPLACEOBJECTS = "Enable/disable Beautiful Doom decorations.\nCan affect performance. Use it if you want vanilla decorations.\nNote: You don't need this for compatibility with other mods,\nsince Safe Actor Replacement (above) should take care of that.";
-bdoom_liquidtextures = "Enable/disable Beautiful Doom liquid texture enhancements.\nNo performance impact. May not play nicely with other mods that have their own textures.\nChanges require a level restart.";
+bdoom_liquidtextures = "Enable/disable Beautiful Doom liquid texture enhancements.\nNo performance impact. May be incompatible with other mods that have their own textures.\nCan be changed at any moment.";
 bdoom_weaponbobstyle = "Switch between two styles of weapon bobbing during walking.\nCan be changed at any time. Requires Beautiful Doom weapons to be enabled.";
 
 						
@@ -254,11 +254,19 @@ STEP_FLATS = "FWATER1:FWATER2:FWATER3:FWATER4:"
 			"SLIME03:SLIME04:SLIME05:SLIME06:"
 			"SLIME07:SLIME08:SFLR6_1:SFLR6_4:"
 			"SFLR7_1:SFLR7_4:LAVA1:LAVA2:"
-			"LAVA3:LAVA4:F_SKY1";
+			"LAVA3:LAVA4:F_SKY1"
+			"BDT_WFL:BDT_BFL:BDT_LFL:BDT_AFL:BDT_SFL1:BDT_SFL2";
 
 // footstep sounds definitions created by The Zombie Killer, modified by Agent_Ash
 
 STEP_DEFAULT = "step/default";
+
+STEP_BDT_BFL = "step/slime";
+STEP_BDT_AFL = "step/slime";
+STEP_BDT_SFL1 = "step/slime";
+STEP_BDT_SFL2 = "step/slime";
+STEP_BDT_WFL = "step/water";
+STEP_BDT_LFL = "step/lava";
 
 STEP_BLOOD1 = "step/slime";
 STEP_BLOOD2 = "step/slime";
