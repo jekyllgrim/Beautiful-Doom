@@ -1,5 +1,5 @@
 
-class KLAZ_dColor : object 
+class BD_dColor : object 
 {
 	//The below functions are adapted from the Godot engine source code.
 	
@@ -35,9 +35,9 @@ class KLAZ_dColor : object
 	double a,x,y,z;
 	private int mode;
 	 
-	static KLAZ_dColor InitFromNormalColor(color col)
+	static BD_dColor InitFromNormalColor(color col)
 	{
-		KLAZ_dColor dc = new("KLAZ_dColor");
+		BD_dColor dc = new("BD_dColor");
 		dc.a = double(col.a)/255.0;
 		dc.x = double(col.r)/255.0;
 		dc.y = double(col.g)/255.0;

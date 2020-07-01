@@ -1,4 +1,4 @@
-class KLAZ_TrackingBeam : actor
+class BD_TrackingBeam : actor
 {
 	color col;
 	int lifeTimer;
@@ -15,8 +15,8 @@ class KLAZ_TrackingBeam : actor
 	
 	Default
 	{
-		KLAZ_TrackingBeam.Lifetimer 2;
-		+KLAZ_TrackingBeam.TRACKMASTER;
+		BD_TrackingBeam.Lifetimer 2;
+		+BD_TrackingBeam.TRACKMASTER;
 		radius 0;
 		height 0;
 		+NOBLOCKMAP;
@@ -37,14 +37,14 @@ class KLAZ_TrackingBeam : actor
 		lifetimer++;
 	}
 	
-	static KLAZ_TrackingBeam MakeBeam(class<KLAZ_TrackingBeam> beamclass, actor master, actor target,color col, double radius = 1.0, vector3 hitpoint = (0,0,0), vector3 masterOffset = (0,0,0), vector3 targetOffset = (0,0,0), int lifetimer = 2,  int style = STYLE_AddShaded)
+	static BD_TrackingBeam MakeBeam(class<BD_TrackingBeam> beamclass, actor master, actor target,color col, double radius = 1.0, vector3 hitpoint = (0,0,0), vector3 masterOffset = (0,0,0), vector3 targetOffset = (0,0,0), int lifetimer = 2,  int style = STYLE_AddShaded)
 	{
 		if(!master)
 		{
-			console.printf("KLAZ_TrackingBeam.MakeBeam error: no Master!");
+			console.printf("BD_TrackingBeam.MakeBeam error: no Master!");
 			return null;
 		}
-		KLAZ_TrackingBeam beam = KLAZ_TrackingBeam(spawn(beamclass,master.pos));
+		BD_TrackingBeam beam = BD_TrackingBeam(spawn(beamclass,master.pos));
 		beam.lifetimer = lifetimer;
 		beam.col = col;
 		beam.master = master;
