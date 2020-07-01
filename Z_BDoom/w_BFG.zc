@@ -870,7 +870,7 @@ Class ModernBFGBall : BD_BFGBall {
 	private int maxcapacity; 	//max # of targets
 		
 	private Array < Actor > bfglist;
-	private array < KLAZ_TrackingBeam > beams;
+	private array < BD_TrackingBeam > beams;
 	private state sspawn;
 	
 	Default {
@@ -956,7 +956,7 @@ Class ModernBFGBall : BD_BFGBall {
 		}
 		if (bfglist.size() > 0) {
 			for (int i = bfglist.size()-1; i >= 0; i--) {
-				KLAZ_TrackingBeam beam = KLAZ_TrackingBeam.MakeBeam("KLAZ_TrackingBeam",self,bfglist[i],"00EE00",radius: 1.0, targetOffset: (0,0,bfglist[i].height*0.5),lifetimer: 3, style: STYLE_ADDSHADED);
+				BD_TrackingBeam beam = BD_TrackingBeam.MakeBeam("BD_TrackingBeam",self,bfglist[i],"00EE00",radius: 1.0, targetOffset: (0,0,bfglist[i].height*0.5),lifetimer: 3, style: STYLE_ADDSHADED);
 				if(beam)
 					beam.alpha = 3.0;
 				//A_Face(bfglist[i],0,0,flags:FAF_MIDDLE);
@@ -1054,7 +1054,7 @@ Class ModernBFGBall : BD_BFGBall {
 					A_Face(bfglist[i],0,0,flags:FAF_MIDDLE);
 					//A_CustomRailGun(30 + 22*wpower,0,"","51fb45",RGF_NOPIERCING|RGF_FULLBRIGHT|RGF_CENTERZ|RGF_SILENT ,maxdiff:10,pufftype:"MBFGRailPuff",range:rdistance,duration:random(100,150),sparsity:0.15,driftspeed:0.3);
 					A_CustomRailGun(30 + 22*wpower,0,"","51fb45",RGF_NOPIERCING|RGF_FULLBRIGHT|RGF_CENTERZ|RGF_SILENT ,maxdiff:8,pufftype:"MBFGRailPuff",range:rdistance,duration:random(100,150),sparsity:10,driftspeed:0.3);
-					KLAZ_TrackingBeam beam = KLAZ_TrackingBeam.MakeBeam("KLAZ_TrackingBeam",self,bfglist[i],"DDFFDD",radius: 3.0, targetOffset: (0,0,bfglist[i].height*0.5),lifetimer: 20, style: STYLE_ADDSHADED);
+					BD_TrackingBeam beam = BD_TrackingBeam.MakeBeam("BD_TrackingBeam",self,bfglist[i],"DDFFDD",radius: 3.0, targetOffset: (0,0,bfglist[i].height*0.5),lifetimer: 20, style: STYLE_ADDSHADED);
 				}
 			}
 		}

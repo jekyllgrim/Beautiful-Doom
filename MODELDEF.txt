@@ -23,7 +23,7 @@ Model BulletTracer
 	FrameIndex PUFF A 0 0
 }
 
-model "KLAZ_TrackingBeam"
+model "BD_TrackingBeam"
 {
 	model 0 "models/CrossSectionPrimitive.obj"
 	skin 0 "models/shaftB.png"
