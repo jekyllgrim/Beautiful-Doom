@@ -50,14 +50,6 @@ Class BD_Fist : BDoomWeapon {
 			hurtchance = 0;
 		}
 	}
-	action void BD_ModernPunch(int damage, int berserkdamage = 0, Class<Actor> pufftype = null, Class<Actor> berserkpuff = null, int range = 0) {
-		A_CustomPunch (
-			(FindInventory("PowerStrength") && berserkdamage != 0) ? berserkdamage : damage,
-			norandom: true,
-			pufftype: (FindInventory("PowerStrength" /*"ModernBerserk_Regen"*/) && berserkpuff) ? berserkpuff : pufftype,
-			range : range
-		);
-	}
 
 	states {
 		Select:

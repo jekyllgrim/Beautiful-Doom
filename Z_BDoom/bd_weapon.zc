@@ -73,6 +73,15 @@ Class BDoomWeapon : Weapon abstract {
 		invoker.currentPitchOffset = 0.0;
 	}
 	
+	action void BD_ModernPunch(int damage, int berserkdamage = 0, Class<Actor> pufftype = null, Class<Actor> berserkpuff = null, int range = 0) {
+		A_CustomPunch (
+			(FindInventory("PowerStrength") && berserkdamage != 0) ? berserkdamage : damage,
+			norandom: true,
+			pufftype: (FindInventory("PowerStrength" /*"ModernBerserk_Regen"*/) && berserkpuff) ? berserkpuff : pufftype,
+			range : range
+		);
+	}
+	
 	enum BD_Layers {
 		PSP_MAG = -3,
 		PSP_GUN2 = 2,
@@ -265,7 +274,7 @@ Class BDoomWeapon : Weapon abstract {
 			}
 			KICK AB 1;
 			TNT1 A 0 { 
-				if(CountInv("Modernberserk_Regen") > 0)
+				if(CountInv("PowerStrength") > 0)
 					A_PlaySound("Mweapons/fist/heavyswing",0);
 				else
 					A_PlaySound("Mweapons/fist/swing",0);
@@ -281,12 +290,11 @@ Class BDoomWeapon : Weapon abstract {
 			KICK G 3 {
 				if (CountInv("Modernberserk_Regen") > 0) {
 					A_Recoil(-5);
-					A_CustomPunch(10.0*frandom(10.0,25.0), TRUE,CPF_NOTURN, "ModernKickPuff_Berserk",83);
 				}
 				else {
 					A_Recoil(-1.5);
-					A_CustomPunch(10.0*frandom(3.0,5.5), TRUE,CPF_NOTURN, "QuickKickPuff",83);
 				}
+				BD_ModernPunch(10*frandom(3,5.5), berserkdamage: 20*frandom(4.5,6), pufftype:"ModernKickPuff", berserkpuff:"ModernKickPuff_Berserk", range: 85);
 			}
 			TNT1 A 0 A_CameraSway(0.0,-3.0,8);
 			KICK HDC 2;
