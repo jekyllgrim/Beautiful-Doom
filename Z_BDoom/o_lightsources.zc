@@ -113,7 +113,7 @@ Class BD_Torch : BD_LightSource abstract {
 				lifetime:random(25,35),
 				size:3,
 				angle:random(0,360),
-				xoff:random(-3,3),yoff:random(-3,3),zoff:pspawnheight+frandom(10,14),
+				xoff:frandom(-3,3),yoff:frandom(-3,3),zoff:pspawnheight+frandom(10,14),
 				velx:frandom(0.2,0.3),velz:frandom(0.2,0.5),
 				accelx:frandom(-0.01,-0.02),accelz:-0.005,
 				sizestep:-0.09
