@@ -2,6 +2,252 @@
 //	MISC OBJECTS
 //////////////////
 
+//**********
+// TERRAIN
+//**********
+
+Class BD_BaseSplash : SmallDebris abstract {
+	Default {
+		+NOINTERACTION
+		renderstyle 'normal';
+	}
+	virtual color SetSplashColor() {
+		return 0xFFFFFF;
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		SetZ(floorz);
+	}
+}
+
+Class BD_LavaSplash : BD_BaseSplash {
+	Default {
+		+BRIGHT
+	}
+	override color SetSplashColor() {
+		static const color pcolor[] = { "d75313", "874307", "530707" };
+		return pcolor[random(0,2)];
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		let smoke = Spawn("BlackSmoke",pos+(0,0,frandom(8,16)));
+		if (smoke)
+			smoke.vel.z = frandom(0.6,1);
+		for (int i = random(10,15); i > 0; i--) {
+			color pcolor = SetSplashColor();
+			A_SpawnParticle(
+				pcolor,
+				SPF_FULLBRIGHT,
+				lifetime:40,
+				size:4,
+				angle:random(0,360),
+				xoff:frandom(-6,6),yoff:frandom(-6,6),zoff:frandom(6,14),
+				velx:frandom(-0.6,0.6),velz:frandom(1,1.5),
+				accelz:-0.15,
+				sizestep:-0.15
+			);
+		}
+		for (int i = random(3,5); i > 0; i--) {
+			A_SpawnParticle(
+				"d7bb43",
+				0,
+				lifetime:32,
+				size:3,
+				angle:random(0,360),
+				xoff:frandom(-4,4),yoff:frandom(-4,4),zoff:frandom(6,14),
+				velx:frandom(-0.1,0.1),velz:frandom(2.2,3),
+				accelz:-0.2,
+				sizestep:-0.15
+			);
+		}
+	}
+	states {
+	Spawn:
+		BTSL ABCDEFGHIJKL 2;
+		stop;
+	}
+}
+
+Class BD_SmallLavaSplash : BD_LavaSplash {
+	Default {
+		scale 0.45;
+	}
+	override void PostBeginPlay() {
+		BD_BaseSplash.PostBeginPlay();
+	}
+}
+
+Class BD_WaterSplash : BD_BaseSplash {
+	override color SetSplashColor() {
+		static const color pcolor[] = { "5353ff", "0000cb", "3737ff" };
+		return pcolor[random(0,2)];
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		//Spawn("BD_SplashRipple",pos);
+		let chunk = Spawn("BD_WaterSplashChunk",pos + (frandom(-2,2),frandom(-2,2),frandom(7,12)));
+		if (chunk) {
+			chunk.vel = (frandom(-0.8,0.8),frandom(-0.8,0.8),frandom(2,3));
+			chunk.translation = translation;
+			chunk.scale = scale;
+		}
+		for (int i = random(10,15); i > 0; i--) {
+			color pcolor = SetSplashColor();
+			A_SpawnParticle(
+				pcolor,
+				0,
+				lifetime:40,
+				size:5,
+				angle:random(0,360),
+				xoff:frandom(-6,6),yoff:frandom(-6,6),zoff:frandom(6,14),
+				velx:frandom(-0.6,0.6),velz:frandom(1,1.5),
+				accelz:-0.15,
+				sizestep:-0.15
+			);
+		}
+	}
+	states {
+	Spawn:
+		BTSW ABCDEFGHIJKLM 2;
+		stop;
+	}
+}
+
+Class BD_WaterSplashChunk : SmallDebris {
+	Default {
+		SmallDebris.removeonfall true;
+		gravity 0.3;
+		renderstyle 'translucent';
+	}
+	states {
+	Spawn:
+		SPSH ABCD 4;
+		wait;
+	}
+}
+
+Class BD_SmallWaterSplash : BD_WaterSplash {
+	Default {
+		scale 0.45;
+	}
+	override void PostBeginPlay() {
+		BD_BaseSplash.PostBeginPlay();
+	}
+}
+
+Class BD_BloodSplash : BD_WaterSplash {
+	Default {
+		translation "192:207=179:191";
+	}
+	override color SetSplashColor() {
+		static const color pcolor[] = { "d23b35", "790400", "540300" };
+		return pcolor[random(0,2)];
+	}
+}
+
+Class BD_SmallBloodSplash : BD_BloodSplash {
+	Default {
+		scale 0.45;
+	}
+	override void PostBeginPlay() {
+		BD_BaseSplash.PostBeginPlay();
+	}
+}
+
+Class BD_SludgeSplash : BD_BaseSplash {
+	override color SetSplashColor() {
+		static const color pcolor[] = { "926949", "503218", "372211" };
+		return pcolor[random(0,2)];
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		for (int i = random(6,12); i > 0; i--) {
+			color pcolor = SetSplashColor();
+			A_SpawnParticle(
+				pcolor,
+				SPF_FULLBRIGHT*bBRIGHT,
+				lifetime:40,
+				size:4,
+				angle:random(0,360),
+				xoff:frandom(-6,6),yoff:frandom(-6,6),zoff:frandom(6,14),
+				velx:frandom(-0.6,0.6),velz:frandom(1,1.5),
+				accelz:-0.15,
+				sizestep:-0.15
+			);
+		}
+	}
+	states {
+	Spawn:
+		BTSS ABCDEFGH 2;
+		stop;
+	}
+}
+
+Class BD_SmallSludgeSplash : BD_SludgeSplash {
+	Default {
+		scale 0.45;
+	}
+	override void PostBeginPlay() {
+		BD_BaseSplash.PostBeginPlay();
+	}
+}
+
+Class BD_AcidSplash : BD_SludgeSplash {
+	Default {
+		+BRIGHT
+		translation "0:255=%[0.00,0.00,0.00]:[1.01,2.00,0.00]";
+	}
+	override color SetSplashColor() {
+		static const color pcolor[] = { "37d805", "2ba505", "145500" };
+		return pcolor[random(0,2)];
+	}
+}
+
+Class BD_SmallAcidSplash : BD_AcidSplash {
+	Default {
+		scale 0.45;
+	}
+	override void PostBeginPlay() {
+		BD_BaseSplash.PostBeginPlay();
+	}
+}
+
+
+
+	/*override void Tick() {
+		super.Tick();
+		if (isFrozen())
+			return;
+		if (GetAge() % 12 == 0)
+			Spawn("BD_SplashRipple",pos);
+	}*/
+
+Class BD_SplashRipple : SmallDebris {
+	protected double scalemul;
+	Default {
+		renderstyle 'shaded';		
+		stencilcolor "00009b";
+		alpha 0.65;
+		scale 0.05;
+		+FLATSPRITE
+		+NOINTERACTION
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		scalemul = 1.1;
+	}
+	states {
+	Spawn:
+		BSWR C 1 {
+			SetZ(floorz);
+			scale *= scalemul;
+			scalemul = Clamp(scalemul*0.997,1,2);
+			A_FadeOut(0.03);
+		}
+		loop;
+	}
+}
+
 //******
 // TECH
 //******

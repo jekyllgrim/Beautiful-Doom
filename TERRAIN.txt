@@ -1,121 +1,85 @@
-// Thanks to Enjay for this
+// splash definitions by Agent_Ash
 
-
-splash Water
+splash BD_Water
 {
-	smallclass		WaterSplashBase
-	smallclip		4
+	smallclass		BD_SmallWaterSplash
 	smallsound		world/watersplashsmall
-
-	baseclass		WaterSplashBase
-	chunkclass		WaterSplash
-	chunkxvelshift	8
-	chunkyvelshift	8
-	chunkzvelshift	8
-	chunkbasezvel	2
+	baseclass		BD_WaterSplash
 	sound			world/watersplash
 	NoAlert
 }
 
-terrain Water
+terrain BD_Water
 {
-	splash		Water
-	footclip	0//6
+	splash		BD_Water
+	footclip	0
 	liquid
 }
 
-splash Blood
+splash BD_Blood
 {
-	smallclass		BloodSplash
-	smallclip		10
-	smallsound		world/sludgegloopsmall
+	smallclass		BD_SmallBloodSplash
+	smallsound		world/watersplashsmall
+	baseclass		BD_BloodSplash
+	sound			world/watersplash
+	NoAlert
+}
 
-	baseclass		BloodSplash
-	chunkclass		BloodSplash
-	chunkxvelshift	0
-	chunkyvelshift	0
-	chunkzvelshift	0
-	chunkbasezvel	0
+terrain BD_Blood
+{
+	splash		BD_Blood
+	footclip	0
+	liquid
+}
+
+splash BD_Acid
+{
+	smallclass		BD_SmallAcidSplash
+	smallsound		world/sludgegloopsmall
+	baseclass		BD_AcidSplash
 	sound			world/sludgegloop
 	NoAlert
 }
 
-terrain Blood
+terrain BD_Acid
 {
-	splash		Blood
-	footclip	0//6
+	splash		BD_Acid
+	footclip	0
 	liquid
 }
 
-splash Nuke
+splash BD_Lava
 {
-	smallclass		SludgeSplash
-	smallclip		6
+	smallclass		BD_SmallLavaSplash
 	smallsound		world/lavasizzlesmall
-
-	baseclass		SludgeSplash
-	chunkclass		LavaSmoke
-	chunkxvelshift	-1
-	chunkyvelshift	-1
-	chunkzvelshift	7
-	chunkbasezvel	1
+	baseclass		BD_LavaSplash
 	sound			world/lavasizzle
 	NoAlert
 }
 
-terrain Nuke
+splash BD_Sludge
 {
-	splash		Nuke
-	footclip	0//6
-	liquid
-}
-
-splash Lava
-{
-	smallclass		LavaSplash
-	smallclip		4
-	smallsound		world/lavasizzlesmall
-
-	baseclass		LavaSplash
-	chunkclass		LavaSmoke
-	chunkxvelshift	-1
-	chunkyvelshift	-1
-	chunkzvelshift	7
-	chunkbasezvel	1
-	sound			world/lavasizzle
+	smallclass		BD_SmallSludgeSplash
+	smallsound		world/sludgegloopsmall
+	baseclass		BD_SludgeSplash
+	sound			world/sludgegloop
 	NoAlert
 }
 
-terrain Lava
+terrain BD_Sludge
 {
-	splash		Nuke
-	footclip	0//6
+	splash		BD_Sludge
+	footclip	0
 	liquid
 }
 
-
-splash Lav2
+terrain BD_Lava
 {
-	smallclass		BloodSplash
-	smallclip		4
-	smallsound		world/lavasizzlesmall
-
-	baseclass		BloodSplash
-	chunkclass		LavaSmoke
-	chunkxvelshift	-1
-	chunkyvelshift	-1
-	chunkzvelshift	7
-	chunkbasezvel	1
-	sound			world/lavasizzle
-	NoAlert
-}
-
-terrain Lav2
-{
-	splash		Lav2
-	footclip	0//6
+	splash		BD_Lava
+	footclip	0
 	liquid
 }
+
 
 splash Lav3
 {
@@ -145,108 +109,40 @@ terrain HotRock
 	splash		Lav3
 }
 
-splash Slime
-{
-	smallclass		SlimeSplash
-	smallclip		6
-	smallsound		world/sludgegloopsmall
-
-	baseclass		SlimeSplash
-	chunkclass		SlimeChunk
-	chunkxvelshift	8
-	chunkyvelshift	8
-	chunkzvelshift	8
-	chunkbasezvel	1
-	sound			world/sludgegloop
-	NoAlert
-}
-
-terrain Slime
-{
-	splash		Slime
-	footclip	0//6
-	liquid
-}
-
-splash Grey
-{
-	smallclass		BloodSplashBase
-	smallclip		4
-	smallsound		world/watersplashsmall
-	
-	baseclass		BloodSplashBase
-	chunkclass		SludgeChunk
-	chunkxvelshift	8
-	chunkyvelshift	8
-	chunkzvelshift	8
-	chunkbasezvel	2
-	sound			world/watersplash
-	NoAlert
-}
-
-terrain Grey
-{
-	splash		Grey
-	footclip	0//6
-	liquid
-}
-
-
-splash Sludge
-{
-	smallclass		SludgeSplash
-	smallclip		8
-	smallsound		world/sludgegloopsmall
-
-	baseclass		SludgeSplash
-	chunkclass		SlimeChunk
-	chunkxvelshift	6
-	chunkyvelshift	6
-	chunkzvelshift	6
-	chunkbasezvel	1
-	sound			world/sludgegloop
-	NoAlert
-}
-
-terrain Sludge
-{
-	splash		Sludge
-	footclip	0//6
-	liquid
-}
+// TERRAIN definitions by Enjay, modified by Agent_Ash
 
 ifdoom
 //Splash floors first
-floor optional BDT_WFL Water
-floor optional BDT_BFL Blood
-floor optional BDT_LFL Lava
-floor optional BDT_AFL Nuke
-floor optional BDT_SFL1 Slime
-floor optional BDT_SFL2 Slime
-floor optional BLOOD1 Blood
-floor optional BLOOD2 Blood
-floor optional BLOOD3 Blood
-floor optional BLOOD4 Blood
-floor optional FWATER1 Water
-floor optional FWATER2 Water
-floor optional FWATER3 Water
-floor optional FWATER4 Water
-floor optional LAVA1 Lava
-floor optional LAVA2 Lava
-floor optional LAVA3 Lava
-floor optional LAVA4 Lava
-floor optional NUKAGE1 Nuke
-floor optional NUKAGE2 Nuke
-floor optional NUKAGE3 Nuke
-floor optional NUKAGE4 Nuke
-floor optional SLIME01 Slime
-floor optional SLIME02 Slime
-floor optional SLIME03 Slime
-floor optional SLIME04 Slime
-floor optional SLIME05 Sludge
-floor optional SLIME06 Sludge
-floor optional SLIME07 Sludge
-floor optional SLIME08 Sludge
+floor optional BDT_WFL  BD_Water
+floor optional BDT_BFL  BD_Blood
+floor optional BDT_LFL  BD_Lava
+floor optional BDT_AFL  BD_Acid
+floor optional BDT_SFL1  BD_Sludge
+floor optional BDT_SFL2  BD_Sludge
+floor optional BLOOD1  BD_Blood
+floor optional BLOOD2  BD_Blood
+floor optional BLOOD3  BD_Blood
+floor optional BLOOD4  BD_Blood
+floor optional FWATER1  BD_Water
+floor optional FWATER2  BD_Water
+floor optional FWATER3  BD_Water
+floor optional FWATER4  BD_Water
+floor optional LAVA1  BD_Lava
+floor optional LAVA2  BD_Lava
+floor optional LAVA3  BD_Lava
+floor optional LAVA4  BD_Lava
+floor optional NUKAGE1  BD_Acid
+floor optional NUKAGE2  BD_Acid
+floor optional NUKAGE3  BD_Acid
+floor optional NUKAGE4  BD_Acid
+floor optional SLIME01  BD_Sludge
+floor optional SLIME02  BD_Sludge
+floor optional SLIME03  BD_Sludge
+floor optional SLIME04  BD_Sludge
+floor optional SLIME05  BD_Sludge
+floor optional SLIME06  BD_Sludge
+floor optional SLIME07  BD_Sludge
+floor optional SLIME08  BD_Sludge
 floor optional SLIME09 HotRock
 floor optional SLIME10 HotRock
 floor optional SLIME11 HotRock
