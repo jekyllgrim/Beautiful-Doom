@@ -290,23 +290,66 @@ object BD_Plasmaball
 	frame PEXPM { light PLASMA_X4 }
 }
 
+pointlight YellowPLASMABALL
+{
+    color 1.0 0.67 0.15
+    attenuate 1
+    size 56
+	dontlightself 1
+}
+
+flickerlight YellowPLASMA_X1
+{
+    color 1.0 0.85 0.35
+    attenuate 1
+    size 64
+    secondarySize 72
+    chance 0.4
+}
+
+flickerlight YellowPLASMA_X2
+{
+    color 0.2 0.2 0.8
+    attenuate 1
+    size 80
+    secondarySize 88
+    chance 0.4
+}
+
+flickerlight YellowPLASMA_X3
+{
+    color 0.1 0.1 0.5
+    attenuate 1
+    size 64
+    secondarySize 72
+    chance 0.4
+}
+
+flickerlight YellowPLASMA_X4
+{
+    color 0.0 0.0 0.2
+    attenuate 1
+    size 8
+    secondarySize 16
+    chance 0.4
+}
 
 object ModernArachnotronPlasma
 {
-	frame COIL { light PLASMABALL }
-	frame PEXPA { light PLASMA_X1 }
-	frame PEXPB { light PLASMA_X1 }
-	frame PEXPC { light PLASMA_X1 }
-	frame PEXPD { light PLASMA_X2 }
-	frame PEXPE { light PLASMA_X2 }
-	frame PEXPF { light PLASMA_X2 }
-	frame PEXPG { light PLASMA_X2 }
-	frame PEXPH { light PLASMA_X3 }
-	frame PEXPI { light PLASMA_X3 }
-	frame PEXPJ { light PLASMA_X3 }
-	frame PEXPK { light PLASMA_X4 }
-	frame PEXPL { light PLASMA_X4 }
-	frame PEXPM { light PLASMA_X4 }
+	frame COIL { light YellowPLASMABALL }
+	frame PEXPA { light YellowPLASMA_X1 }
+	frame PEXPB { light YellowPLASMA_X1 }
+	frame PEXPC { light YellowPLASMA_X1 }
+	frame PEXPD { light YellowPLASMA_X2 }
+	frame PEXPE { light YellowPLASMA_X2 }
+	frame PEXPF { light YellowPLASMA_X2 }
+	frame PEXPG { light YellowPLASMA_X2 }
+	frame PEXPH { light YellowPLASMA_X3 }
+	frame PEXPI { light YellowPLASMA_X3 }
+	frame PEXPJ { light YellowPLASMA_X3 }
+	frame PEXPK { light YellowPLASMA_X4 }
+	frame PEXPL { light YellowPLASMA_X4 }
+	frame PEXPM { light YellowPLASMA_X4 }
 }
 
 

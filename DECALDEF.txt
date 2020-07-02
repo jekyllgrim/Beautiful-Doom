@@ -528,7 +528,7 @@ fader PlasmaBaseFade
 	DecayTime 4
 }
 
-decal PlasmaLightning1
+decal BluePlasmaLightning1
 {
 	pic PLLITE1
 	shade "00 00 80"
@@ -540,7 +540,7 @@ decal PlasmaLightning1
 	y-scale 0.5
 }
 
-decal PlasmaLightning2
+decal BluePlasmaLightning2
 {
 	pic PLLITE2
 	shade "00 00 80"
@@ -552,10 +552,10 @@ decal PlasmaLightning2
 	y-scale 0.5
 }
 
-decalgroup PlasmaLightning
+decalgroup BluePlasmaLightning
 {
-	PlasmaLightning1 1
-	PlasmaLightning2 2
+	BluePlasmaLightning1 1
+	BluePlasmaLightning2 2
 }
 
 decal BluePlasmaBase1
@@ -1439,6 +1439,447 @@ decalgroup ArachnotronPlasmaSplat
 	ArachnotronPlasmaSplat15 1
 	ArachnotronPlasmaSplat16 1
 	ArachnotronPlasmaSplat17 1
+}
+
+decal YellowPlasmaBase1
+{
+	pic PSPLAT1A
+	shade "ff a9 2f"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaSplat1
+{
+	pic PSPLAT1B
+	shade "FF FF FF"
+	lowerdecal YellowPlasmaBase1
+	fullbright
+	animator HighlightsFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaBase2
+{
+	pic PSPLAT2A
+	shade "ff a9 2f"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaSplat2
+{
+	pic PSPLAT2B
+	lowerdecal YellowPlasmaBase2
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaBase3
+{
+	pic PSPLAT3A
+	shade "ff a9 2f"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaSplat3
+{
+	pic PSPLAT3B
+	lowerdecal YellowPlasmaBase3
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaBase4
+{
+	pic PSPLAT4A
+	shade "ff a9 2f"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaSplat4
+{
+	pic PSPLAT4B
+	lowerdecal YellowPlasmaBase4
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaBase5
+{
+	pic PSPLAT5A
+	shade "ff a9 2f"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaSplat5
+{
+	pic PSPLAT5B
+	lowerdecal YellowPlasmaBase5
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaBase6
+{
+	pic PSPLAT6A
+	shade "ff a9 2f"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaSplat6
+{
+	pic PSPLAT6B
+	lowerdecal YellowPlasmaBase6
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaBase7
+{
+	pic PSPLAT1A
+	shade "ff a9 2f"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaSplat7
+{
+	pic PSPLAT1B
+	lowerdecal YellowPlasmaBase7
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaBase8
+{
+	pic PSPLAT2A
+	shade "ff a9 2f"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaSplat8
+{
+	pic PSPLAT2B
+	lowerdecal YellowPlasmaBase8
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaBase9
+{
+	pic PSPLAT3A
+	shade "ff a9 2f"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaSplat9
+{
+	pic PSPLAT3B
+	lowerdecal YellowPlasmaBase9
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaBase10
+{
+	pic PSPLAT4A
+	shade "ff a9 2f"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaSplat10
+{
+	pic PSPLAT4B
+	lowerdecal YellowPlasmaBase10
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaBase11
+{
+	pic PSPLAT5A
+	shade "ff a9 2f"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaSplat11
+{
+	pic PSPLAT5B
+	lowerdecal YellowPlasmaBase11
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaBase12
+{
+	pic PSPLAT6A
+	shade "ff a9 2f"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaSplat12
+{
+	pic PSPLAT6B
+	lowerdecal YellowPlasmaBase12
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaBase13
+{
+	pic PSPLAT1A
+	shade "ff a9 2f"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipx
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaSplat13
+{
+	pic PSPLAT1B
+	lowerdecal YellowPlasmaBase13
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaBase14
+{
+	pic PSPLAT2A
+	shade "ff a9 2f"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaSplat14
+{
+	pic PSPLAT2B
+	lowerdecal YellowPlasmaBase14
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaBase14
+{
+	pic PSPLAT3A
+	shade "ff a9 2f"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaSplat14
+{
+	pic PSPLAT3B
+	lowerdecal YellowPlasmaBase14
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaBase15
+{
+	pic PSPLAT4A
+	shade "ff a9 2f"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaSplat15
+{
+	pic PSPLAT4B
+	lowerdecal YellowPlasmaBase15
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaBase16
+{
+	pic PSPLAT5A
+	shade "ff a9 2f"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaSplat16
+{
+	pic PSPLAT5B
+	lowerdecal YellowPlasmaBase16
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaBase17
+{
+	pic PSPLAT6A
+	shade "ff a9 2f"
+	lowerdecal Scorch
+	fullbright
+	animator PlasmaBaseFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decal YellowPlasmaSplat17
+{
+	pic PSPLAT6B
+	lowerdecal YellowPlasmaBase17
+	shade "FF FF FF"
+	fullbright
+	animator HighlightsFade
+	flipy
+	x-scale 0.5
+	y-scale 0.5
+}
+
+decalgroup YellowPlasmaSplat
+{
+	YellowPlasmaSplat1 1
+	YellowPlasmaSplat2 1
+	YellowPlasmaSplat3 1
+	YellowPlasmaSplat4 1
+	YellowPlasmaSplat5 1
+	YellowPlasmaSplat6 1
+	YellowPlasmaSplat7 1
+	YellowPlasmaSplat8 1
+	YellowPlasmaSplat9 1
+	YellowPlasmaSplat10 1
+	YellowPlasmaSplat11 1
+	YellowPlasmaSplat12 1
+	YellowPlasmaSplat13 1
+	YellowPlasmaSplat14 1
+	YellowPlasmaSplat15 1
+	YellowPlasmaSplat16 1
+	YellowPlasmaSplat17 1
 }
 
 
