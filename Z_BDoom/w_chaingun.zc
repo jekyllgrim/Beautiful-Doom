@@ -91,21 +91,21 @@ Class BD_Chaingun : BDoomWeapon {
 			}
 			else { 
 				chg.crosshair = 0; //if ADS isn't used, set crosshair to default
-				if (bdoom_weapons == 2) { //and set bob to either default Modern value...
+				/*if (bdoom_weapons == 2) { //and set bob to either default Modern value...
 					BobRangeX = 0.2;
 					BobRangeY = 0.2;
 					BobStyle = 5;
 					BobSpeed = 2.0;
-				}
+				}*/
 			}
 		}
 		else { //... or the default non-Modern value
 			tfired = 0;						//set spread value to 0
 			RifleSights = false;				//unset ADS
-			BobRangeX = 1.0;
+			/*BobRangeX = 1.0;
 			BobRangeY = 1.0;
 			BobStyle = 0;
-			BobSpeed = 1.0;
+			BobSpeed = 1.0;*/
 		}
 	}
 	states {
