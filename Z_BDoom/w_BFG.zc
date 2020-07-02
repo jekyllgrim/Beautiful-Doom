@@ -764,12 +764,12 @@ Class BFGPlasmaPiece : BD_BaseFlare {
 		scale *= frandom(0.8,1.2);
 	}
 	states {
-		Spawn:
-			PLBS A 1 bright {
-				A_FadeOut(0.03);
-				vel *= 0.95;
-			}
-			loop;
+	Spawn:
+		PLBS A 1 bright {
+			A_FadeOut(0.03);
+			vel *= 0.95;
+		}
+		loop;
 	}
 }
 

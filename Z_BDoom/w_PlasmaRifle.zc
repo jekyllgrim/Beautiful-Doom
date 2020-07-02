@@ -400,31 +400,31 @@ Class BD_Plasmaball : Plasmaball {
 		}
 	}
 	States	{
-		Spawn:
-			TNT1 A 0 NoDelay {
-				A_SetScale(scale.x*randompick(-1,1),scale.y*randompick(-1,1));
-				if(bdoom_weapons == 0)
-					A_PlaySound("weapons/plasmaf",5,1.0);
-				else if(bdoom_weapons == 1)
-					A_PlaySound("weapons/plasma/fire",5,1.0);
-				else if (bdoom_weapons == 2) //this is only used by Arachnotron, since the player uses a different plasmaball when using Modern guns
-					A_PlaySound("Mweapons/plasma/fire",5,1.0);
-			}
-			COIL ABCDEFGHIJKLMNO 1 bright;
-			goto spawn+1;
-		Death:
-			TNT1 A 0 {
-				A_RemoveChildren(1,RMVF_EVERYTHING);
-				if (bdoom_debris) {
-					A_SpawnItem("WeaponSmoke");
-					for (int i = 12; i > 0; i --) {
-							A_spawnItemEx("BluePlasmaPiece",0,0,1,frandom(-3,3),frandom(-3,3),frandom(3,6),flags:SXF_TRANSFERTRANSLATION,failchance:48);
-					}
+	Spawn:
+		TNT1 A 0 NoDelay {
+			A_SetScale(scale.x*randompick(-1,1),scale.y*randompick(-1,1));
+			if(bdoom_weapons == 0)
+				A_PlaySound("weapons/plasmaf",5,1.0);
+			else if(bdoom_weapons == 1)
+				A_PlaySound("weapons/plasma/fire",5,1.0);
+			else if (bdoom_weapons == 2) //this is only used by Arachnotron, since the player uses a different plasmaball when using Modern guns
+				A_PlaySound("Mweapons/plasma/fire",5,1.0);
+		}
+		COIL ABCDEFGHIJKLMNO 1 bright;
+		goto spawn+1;
+	Death:
+		TNT1 A 0 {
+			A_RemoveChildren(1,RMVF_EVERYTHING);
+			if (bdoom_debris) {
+				A_SpawnItem("WeaponSmoke");
+				for (int i = 12; i > 0; i --) {
+						A_spawnItemEx("BluePlasmaPiece",0,0,1,frandom(-3,3),frandom(-3,3),frandom(3,6),flags:SXF_TRANSFERTRANSLATION,failchance:48);
 				}
 			}
-			TNT1 A 0 A_SetScale(0.2*randompick(-1,1),0.2*randompick(-1,1));
-			PEXP ABCDEFGHIJKLM 2 bright A_FadeOut(0.05);
-			stop;
+		}
+		TNT1 A 0 A_SetScale(0.2*randompick(-1,1),0.2*randompick(-1,1));
+		PEXP ABCDEFGHIJKLM 2 bright A_FadeOut(0.05);
+		stop;
 	}
 }
 
