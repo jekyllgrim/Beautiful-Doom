@@ -29,13 +29,7 @@ AddOptionMenu "OptionsMenu"
 	Submenu "Beautiful Doom Settings", "BDoom_Settings"
 }
 
-OptionMenu "BDoom_Settings" {
-	Class "TLTPOptionsMenu"
-	Title "Beautiful Doom Settings"
-	StaticText "$TLTPTOOLTIPMNU_VERSION", "yellow"
-	Submenu "$OPTMNU_TLTPTOOLTIP", "TooltipOptionsMenu"
-	StaticText " "
-	
+OptionMenu "BDoom_Settings" {	
 	StaticText "BEAUTIFUL KEYBINDS", yellow
 	ControlGC_TLTP "Quick Kick",				"$BDMENU_QKICK", "White",	"+user1","bdoom_weapons",2,1
 	ControlGC_TLTP "Show Weapon Help",		"$BDMENU_WEAPONHELP", "White",	"event BD_ShowWeapHelp","bdoom_weapons",0,0
@@ -48,6 +42,7 @@ OptionMenu "BDoom_Settings" {
 	Option "Muzzle Flashes", 					"bdoom_muzzle", "bdoom_muzzle", "bdoom_replaceweapons"
 	OptionBoth "Bullet Tracers",				"$BDMENU_TRACERS", "White","bdoom_tracers", "OnOff", "bdoom_replaceweapons", "bdoom_replacemonsters"
 	OptionBGReload_TLTP "Background reload","$BDMENU_AUTORELOAD", "White", "bdoom_autoreload", "OnOff", "bdoom_weapons", "bdoom_replaceweapons"
+	TLTPOption "Player gloves color",			"$BDMENU_GLOVES", "White", "bdoom_blackgloves", "bdgloves", "bdoom_replaceweapons"
 	StaticText " "
 	
 	StaticText "SPECIAL EFFECTS", yellow
@@ -57,6 +52,7 @@ OptionMenu "BDoom_Settings" {
 	TLTPOption "Halos & particle flames",		"$BDMENU_FLAMES", "White",	"bdoom_flames", "OnOff", ""
 	TLTPOption "Extra weapon effects",			"$BDMENU_DEBRIS", "White",	"bdoom_debris", "OnOff", "", 1	
 	TLTPOption "Shootable Decorations", 		"$BDMENU_KILLABLEOBJECTS", "White",	"bdoom_killableobjects", "Toggle", "bdoom_replaceobjects"
+	TLTPOption "Enhanced liquid textures",		"$bdoom_liquidtextures", "White", "bdoom_liquidtextures", "OnOff", ""
 	StaticText " "
 	
 	ScaleSliderGC "Max gibs",					"bdoom_gibnum", 100, 3000, 100, "", "bdoom_gibs", "bdoom_replacemonsters"
@@ -66,27 +62,30 @@ OptionMenu "BDoom_Settings" {
 	StaticText " "
 	
 	StaticText "ADDITIONAL EFFECTS AND SOUNDS", yellow
-	TLTPOption "Player gloves color",			"$BDMENU_GLOVES", "White", "bdoom_blackgloves", "bdgloves", "bdoom_replaceweapons"
 	TLTPOption "Footstep sounds", 				"$BDMENU_FOOTSTEPS", "White", "bdoom_fs_enabled", "OnOff", ""
 	Slider "Footstep volume",					"bdoom_fs_volume_mul", 0, 1.0, 0.1
 	TLTPOption "Ricochet & spark sounds", 		"$BDMENU_SPARKS", "White","bdoom_sparks", "OnOff", ""
 	TLTPOption "Flies over corpses", 			"$BDMENU_FLIES", "White", "bdoom_flies", "OnOff", "bdoom_replacemonsters"
 	TLTPOption "Explosion shakes", 				"$BDMENU_SHAKES", "White", "bdoom_shakes", "OnOff", ""
 	//Command "Toggle Enhanced/Classic liquid textures", "netevent BD_ToggleLiquidTextures"
-	TLTPOption "Enhanced liquid textures",		"$bdoom_liquidtextures", "White", "bdoom_liquidtextures", "OnOff", ""
 	TLTPOption "Face on Standard HUD", 			"$BDMENU_HUDFACE", "White", "bdoom_hudface", "OnOff", "", 1	
 	StaticText " "
 
-	StaticText "COMPATIBILITY WITH OTHER MODS", yellow
+	StaticText "COMPATIBILITY", yellow
 	OptionBoth "Safe actor replacement", 	"$BDMENU_SAFEREPLACEMENT", "white", "bdoom_safereplacement", "SafeReplacement", "bdoom_replaceobjects", "bdoom_replacemonsters"
-	StaticText "Options below can disable parts of the mod:", green
-	StaticText "(Reqires level restart; you won't be able to load a save)", green
 	TLTPOption "Beautiful Doom weapons",		"$BDMENU_REPLACEWEAPONS", "White", "bdoom_replaceweapons", "Toggle", ""
 	TLTPOption "Beautiful Doom monsters",		"$BDMENU_REPLACEMONSTERS","White", "bdoom_replacemonsters", "Toggle", ""
 	TLTPOption "Beautiful Doom items",			"$BDMENU_REPLACEITEMS", "White", "bdoom_replaceitems", "Toggle", "", 1	
 	TLTPOption "Beautiful Doom decorations",	"$BDMENU_REPLACEOBJECTS","White", "bdoom_replaceobjects", "Toggle", "", 1	
 	StaticText ""
 	SubmenuGC "Per-monster replacement settings", "BDMonsterReplacements", "bdoom_replacemonsters"
+	StaticText " "
+	
+	Class "TLTPOptionsMenu"
+	Title "Beautiful Doom Settings"
+	StaticText "$TLTPTOOLTIPMNU_VERSION", "yellow"
+	Submenu "$OPTMNU_TLTPTOOLTIP", "TooltipOptionsMenu"
+	StaticText " "
 }
 
 OptionMenu "BDMonsterReplacements" {
