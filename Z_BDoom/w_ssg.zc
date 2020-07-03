@@ -100,7 +100,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		loop;
 	Fire:
 	//fire = 10 tics, reload = 41 tics, refire 11 tics
-		SH2N C 3 {
+		TNT1 C 3 {
 			If(bdoom_weapons==2)
 				return ResolveState("Fire.Modern");
 			else If(bdoom_weapons==1)
@@ -216,7 +216,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		stop;			
 	
 	Deselect.Enhanced:
-		SH2N A 0 {			
+		TNT1 A 0 {			
 			BD_SetSprite("SH2N","QH2N");
 			let s = player.FindPSprite (PSP_Weapon);				
 			if (invoker.ShotFired)
@@ -227,7 +227,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		#### # 1 A_Lower(12);
 		wait;
 	Ready.Enhanced:
-		SH2N A 1 {
+		TNT1 A 1 {
 			BD_SetSprite("SH2N","QH2N");
 			if (invoker.shotfired)
 				A_WeaponReady(WRF_ALLOWRELOAD);
@@ -241,7 +241,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		}
 		goto ready;
 	Fire.Enhanced:
-		SH2N A 3 {
+		TNT1 A 3 {
 			If(invoker.ShotFired || invoker.ammo1.amount < 2)
 				return ResolveState("AltFire");
 			BD_SetSprite("SH2N","QH2N");
@@ -259,12 +259,12 @@ Class BD_SuperShotgun : BDoomWeapon {
 		}
 		
 		#### C 1 A_Playsound("weapons/ssg/fire", 6);
-		SH2N CCCCC 1 A_WeaponOffset(0,-2,WOF_ADD);
+		#### CCCCC 1 A_WeaponOffset(0,-2,WOF_ADD);
 		TNT1 A 0 A_WeaponOffset(0,32,WOF_INTERPOLATE);
 		TNT1 A 0 A_CheckReload();
 		goto Reload;
 	AltFire:
-		SH2N A 3 {
+		TNT1 A 3 {
 			if (bdoom_weapons == 2)
 				return ResolveState("AltFire.Modern");
 			BD_SetSprite("SH2N","QH2N");
