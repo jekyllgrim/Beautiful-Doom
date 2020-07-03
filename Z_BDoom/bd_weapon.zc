@@ -545,18 +545,12 @@ class BD_MuzzleSmoke : BD_BaseSmoke {
 			}
 			stop;
 	}
-}
-
-
-
-	
+}	
 
 
 //***************
 // EMPTY CASINGS
 //***************
-
-
 
 Class Casing_General : SmallDebris {
 	double brot;
@@ -592,8 +586,8 @@ Class Casing_General : SmallDebris {
 			destroy();
 			return;
 		}
-		super.BD_HitFloor();
-		
+		//Console.Printf("splash %d",GetFloorTerrain().Splash);
+		super.BD_HitFloor();		
 	}
 	states {
 	Spawn:
