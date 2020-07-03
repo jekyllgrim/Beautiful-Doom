@@ -165,7 +165,7 @@ Class BD_SludgeSplash : BD_BaseSplash {
 			color pcolor = SetSplashColor();
 			A_SpawnParticle(
 				pcolor,
-				SPF_FULLBRIGHT*bBRIGHT,
+				bBRIGHT ? SPF_FULLBRIGHT : 0,
 				lifetime:40,
 				size:4,
 				angle:random(0,360),
