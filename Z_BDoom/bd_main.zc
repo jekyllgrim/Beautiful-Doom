@@ -172,7 +172,7 @@ Class BD_BaseDebris : BDoomActor abstract {
 	}
 }
 
-//base inexpensive class for non-interactive particles and small debris
+//base inexpensive class for most FX actors
 Class SmallDebris : BD_BaseDebris abstract {
 	protected bool onceiling;		//true if object is stuck on ceiling (must be combined with landed)
 	protected bool onliquid;
@@ -257,7 +257,7 @@ Class SmallDebris : BD_BaseDebris abstract {
 					A_FaceMovementDirection(flags:FMDF_NOPITCH);
 					FLineTraceData hit;
 					LineTrace(angle,16,0,flags:TRF_THRUACTORS|TRF_NOSKY,data:hit);
-					if (hit.HitLine) {
+					if (hit.HitLine && hit.hittype == TRACE_HITWALL) {
 						wall = hit.HitLine;
 						wallnormal = (-hit.HitLine.delta.y,hit.HitLine.delta.x).unit();
 						wallpos = hit.HitLocation;
@@ -289,19 +289,21 @@ Class SmallDebris : BD_BaseDebris abstract {
 					SetOrigin((pos.x,pos.y,ceilingz-Voffset),true);
 				else {
 					SetZ(floorz+Voffset);
-					if (!(vel.x ~== 0) || !(vel.y ~== 0)) {
-						vel.xy *= dbrake;
-						A_FaceMovementDirection(flags:FMDF_NOPITCH);
-						FLineTraceData hit;
-						LineTrace(angle,12,0,flags:TRF_THRUACTORS|TRF_NOSKY,data:hit);
-						if (hit.HitLine) {
-							wallnormal = (-hit.HitLine.delta.y,hit.HitLine.delta.x).unit();
-							wallpos = hit.HitLocation;
-							if (!hit.LineSide)
-								wallnormal *= -1;
-							vel = vel - (wallnormal,0) * 2 * (vel dot (wallnormal,0));
-							vel *= bouncefactor * 0.5;
-							A_FaceMovementDirection();
+					if (dbrake > 0) {
+						if (!(vel.x ~== 0) || !(vel.y ~== 0)) {
+							vel.xy *= dbrake;
+							A_FaceMovementDirection(flags:FMDF_NOPITCH);
+							FLineTraceData hit;
+							LineTrace(angle,12,0,flags:TRF_THRUACTORS|TRF_NOSKY,data:hit);
+							if (hit.HitLine && hit.hittype == TRACE_HITWALL) {
+								wallnormal = (-hit.HitLine.delta.y,hit.HitLine.delta.x).unit();
+								wallpos = hit.HitLocation;
+								if (!hit.LineSide)
+									wallnormal *= -1;
+								vel = vel - (wallnormal,0) * 2 * (vel dot (wallnormal,0));
+								vel *= bouncefactor * 0.5;
+								A_FaceMovementDirection(flags:FMDF_NOPITCH);
+							}
 						}
 					}
 				}
@@ -1120,7 +1122,6 @@ Class BD_PlaneDecal : BD_BaseDebris {
 */
 Class WallPart : SmallDebris {
 	Default {
-		+EXPLODEONWATER
 		SmallDebris.dbrake 0.8;
 		Renderstyle 'Translucent';
 		alpha 1.0;
