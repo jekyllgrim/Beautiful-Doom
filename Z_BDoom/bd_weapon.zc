@@ -77,6 +77,7 @@ Class BDoomWeapon : Weapon abstract {
 		A_CustomPunch (
 			(FindInventory("PowerStrength") && berserkdamage != 0) ? berserkdamage : damage,
 			norandom: true,
+			flags: 0, //don't use ammo
 			pufftype: (FindInventory("PowerStrength" /*"ModernBerserk_Regen"*/) && berserkpuff) ? berserkpuff : pufftype,
 			range : range
 		);
