@@ -1,3 +1,220 @@
+Class BD_WeaponHelpHandler : EventHandler {
+	ui bool ShowWeapHelp;
+    override void consoleProcess(ConsoleEvent e) {
+		if (e.name != "BD_ShowWeapHelp")
+			return;
+		if (bdoom_weapons != 0) {
+			ShowWeapHelp = !ShowWeapHelp;
+		}
+		else {
+			ShowWeapHelp = false;
+		}
+    }
+    override void renderOverlay(RenderEvent e) {
+        if (ShowWeapHelp) {
+			if (bdoom_weapons < 1)
+				return;
+			PlayerInfo player	= players[consoleplayer];
+			PlayerPawn mo		= player.mo;
+			if (!player || !mo)
+				return;
+            let weap = player.readyWeapon.GetClassName();
+			if (!weap)
+				return;
+			if (bdoom_weapons < 1)
+				return;
+			string title;
+			string	desc;
+			string note;
+			int mainofs = 50;
+			int statofs1 = 1000;
+			int statofs2 = 1270;
+			int yofs = 180;
+			if (bdoom_weapons == 1) {
+				string attack1;	string atkrate1;	string damage1;	string type1;	string prspeed1; string blastarea1;
+				string attack2;	string atkrate2;	string damage2;	string type2;	string prspeed2; string blastarea2;
+				switch (weap) {
+					case 'BD_Fist' : 
+					title 		= "Fist";
+					desc		= "Fist with a knuckleduster. Faster than Vanilla.\nDoesn't alert enemies that weren't hit.\nYou can also use your boot to kick enemies.";
+					attack1 	= "Punch";		atkrate1 	= "2.5 hits/sec";		damage1 	= "2-20";			type1 		= "Melee";
+					attack2 	= "Kick";		atkrate2 	= "1.6 hits/sec";		damage2 	= "15-36";			type2 		= type1;
+					note		= "Kicking pushes monsters away.\nIt also slightly slows you down\nunless you do it while jumping.";
+					break;
+					
+					case 'BD_Chainsaw' : 
+					title 		= "Chainsaw";
+					desc		= "Your classic chainsaw. Doesn’t pull you\ntowards the target, allowing for easier\nmovement.";
+					attack1 	= "Saw attack";		atkrate1 	= "8.75 hits/sec";	damage1 	= "2-20";			type1 		= "Melee";
+					break;
+					
+					case 'BD_Pistol' : 
+					if (mo.CountInv('BD_Pistol') <= 1) {
+						title 		= "Pistol";
+						desc		= "Basic pistol, slightly faster than its\nVanilla counterpart.\nCan be equipped and unequipped fairly quickly.";
+						attack1 	= "Fire pistol";		atkrate1 	= "2.9 shots/sec";	damage1 	= "5-15";			type1 		= "Hitscan";
+						note		= "Can be dual-wielded if you get a second pistol\nfrom a Zombieman.";
+					}
+					else {
+						title 		= "Dual Pistols";
+						desc		= "Basic pistols, slightly faster than their\nVanilla counterpart.\nCan be equipped and unequipped fairly quickly.";
+						attack1 	= "Fire one pistol";		atkrate1 	= "2.9 shots/sec";	damage1 	= "5-15";			type1 		= "Hitscan";
+						attack2 	= "Dual fire";				atkrate2 	= "5.8 shots/sec";	damage2 	= "5-15";			type2 		= type1;
+						note		= "You need a moment to aim the guns before you\ncan start using the secondary attack.\nDual-wielding has reduced accuracy.";
+					}
+					break;
+					
+					case 'BD_Shotgun' : 
+					title 		= "Pump Shotgun";
+					desc		= "Classic Shotgun with an added melee attack.";
+					attack1 	= "Fire shotgun";		atkrate1 	= "0.94 shots/sec";	damage1 	= "35-105 (7 x 5-15)";			type1 		= "Hitscan";
+					attack2 	= "Buttstock melee";	atkrate2 	= "1.3 hits/sec";		damage2 	= "18-36 (42-252 with Berserk)";	type2 		= "Melee";
+					note		= "Melee animation can be quickly cancelled into\na shot, allowing for an efficient combo.";
+					break;
+					
+					case 'BD_SuperShotgun' : 
+					title 		= "Super Shotgun";
+					desc		= "Classic double-barreled Shotgun that can\nfire 1 or 2 shells simultaneously.";
+					attack1 	= "Fire Both Barrels";		atkrate1 	= "0.61 shots/sec";				damage1 	= "100-300 (20 x 5-15)";	type1 		= "Hitscan";
+					attack2 	= "Fire One Barrel";			atkrate2 	= "3.5 shots/sec (w/o reload)";	damage2 	= "50-150 (10 x 5-15)";	type2 		= type1;
+					note		= "Press the ‘Reload’ button to reload 1 shell\nafter firing once.";
+					break;
+					
+					case 'BD_Chaingun' : 
+					title 		= "Chaingun";
+					desc		= "Classic Chaingun with rapid-fire mode\nas a secondary attack.";
+					attack1 	= "Fire Chaingun (normal speed)";		atkrate1 	= "8.75 shots/sec";	damage1 	= "5-15";	type1 		= "Hitscan";
+					attack2 	= "Rapid-fire";			atkrate2 	= "17.5 shots/sec";	damage2 	= damage1;	type2 		= type1;
+					note		= "The gun needs to cool down after rapid fire.\nThe cooldown is forced after 60 shots but\nit’ll be shorter if you cease firing before that.";
+					break;
+					
+					case 'BD_RocketLauncher' : 
+					title 		= "Rocket Launcher";
+					desc		= "Classic Rocket Launcher that can fire homing\nrockets as a secondary attack.";
+					attack1 	= "Fire Rocket";		atkrate1 	= "2.33 shots/sec";	damage1 	= "20-160 + 128 (impact + blast)";	type1 	= "Projectile, explosive, linear";
+					prspeed1	= "20";		blastarea1 = "128";
+					attack2 	= "Fire Homing Rocket";		atkrate2 	= "0.94 shots/sec";	damage2 	= damage1;	type2 	= "Projectile, explosive, homing";
+					prspeed2	= "17";		blastarea2 = blastarea1;
+					break;
+					
+					case 'BD_PlasmaRifle' : 
+					title 		= "Plasma Rifle";
+					desc		= "Classic Plasma Rifle with a railgun mode.";
+					attack1 	= "Fire Plasma Orbs";		atkrate1 	= "11.67 shots/sec";	damage1 	= "5-40";		type1 	= "Projectile, linear"; prspeed1	= "25";
+					attack2 	= "Fire Railgun";			atkrate2 	= "0.81 shots/sec";	damage2 	= "250-625";	type2 	= "Railgun, non-piercing";
+					note		= "Secondary Attack has a 0.4-second\ncharge-up; make sure to track your target\ncarefully.";
+					break;
+					
+					case 'BD_BFG9000' : 
+					title 		= "BFG 9000";
+					desc		= "Classic BFG 9000 with a new attack mode.";
+					attack1 	= "Fire BFG orb";				atkrate1 	= "0.87 shots/sec";	damage1 	= "100-800 + 40x???";		type1 	= "Projectile, linear, tracing"; prspeed1	= "25";
+					attack2 	= "Channel Plasma Beam";		atkrate2 	= "Continuous";	damage2 	= "approx. 700/sec";	type2 	= "Railgun, piercing";
+					note		= "After firing 100 cells in the secondary attack\nmode, the gun will be forced to cool down.\nThe cooldown will be shorter if you stop\nfiring before that happens.";
+					break;
+				}
+				int fillheight = 420;
+				if (prspeed1)		fillheight += 20;
+				if (blastarea1)	fillheight += 20;
+				if (prspeed2)		fillheight += 20;
+				if (blastarea2)	fillheight += 20;
+				if (!note && !attack2)	fillheight -= 150;
+				StatusBarScreen.Fill("404040",30,80,1850,fillheight, 0.85);
+				if (attack1) {
+					StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5));
+					StatusBarScreen.DrawString("UNRLC",attack1,			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+					yofs += 30;
+					StatusBarScreen.DrawString("UNRLC","Atk. Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
+					StatusBarScreen.DrawString("UNRLC",atkrate1,		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+					yofs += 30;
+					StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
+					StatusBarScreen.DrawString("UNRLC",damage1,			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+					yofs += 30;
+					StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
+					StatusBarScreen.DrawString("UNRLC",type1,			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+				}	
+				if (prspeed1) {
+					yofs += 30;
+					StatusBarScreen.DrawString("UNRLC","Proj. speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
+					StatusBarScreen.DrawString("UNRLC",prspeed1,		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+				}
+				if (blastarea1) {
+					yofs += 30;
+					StatusBarScreen.DrawString("UNRLC","Blast area",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
+					StatusBarScreen.DrawString("UNRLC",blastarea1,		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+				}
+				if (attack2) {
+					yofs += 50;
+					StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5));
+					StatusBarScreen.DrawString("UNRLC",attack2,			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+					yofs += 30;
+					StatusBarScreen.DrawString("UNRLC","Atk. Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
+					StatusBarScreen.DrawString("UNRLC",atkrate2,		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+					yofs += 30;
+					StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
+					StatusBarScreen.DrawString("UNRLC",damage2,			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+					yofs += 30;
+					StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
+					StatusBarScreen.DrawString("UNRLC",type2,			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+				}
+				if (prspeed2) {
+					yofs += 30;
+					StatusBarScreen.DrawString("UNRLC","Proj. speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
+					StatusBarScreen.DrawString("UNRLC",prspeed2,		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+				}
+				if (blastarea2) {
+					yofs += 30;
+					StatusBarScreen.DrawString("UNRLC","Blast area",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
+					StatusBarScreen.DrawString("UNRLC",blastarea2,		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+				}
+			}
+			else if (bdoom_weapons == 2) {
+				switch (weap) {
+					case 'BD_Fist' : 
+					title = "CQC";
+					desc = "Raise Combo Counter (CC) with Primary.\nCC changes your Secondary. Finishers reset CC.\nKick can be added after finishers.";
+					StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
+					StatusBarScreen.DrawString("UNRLC","Light Left Punch (+1 CC)",
+																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					yofs += 30;
+					StatusBarScreen.DrawString("UNRLC","Atk. Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					StatusBarScreen.DrawString("UNRLC","up to 4.3 hits/sec",		
+																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					yofs += 30;
+					StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					StatusBarScreen.DrawString("UNRLC","6-24",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					
+					yofs += 50;
+					StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
+					StatusBarScreen.DrawString("UNRLC","CC0: Slow Punch\nCC1: Fast Punch\nCC2: Heavy Punch\nCC3+: Uppercut (finisher)",
+																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);	
+					yofs += 30*4;				
+					StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					StatusBarScreen.DrawString("UNRLC","15-52",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					
+					yofs += 50;
+					StatusBarScreen.DrawString("UNRLC","Kick",			(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
+					StatusBarScreen.DrawString("UNRLC","Heavy Kick (finisher)",
+																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);	
+					yofs += 30;				
+					StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					StatusBarScreen.DrawString("UNRLC","30-55",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					
+					note = "CC defines fist & kick damage and kick range.\nWith high CC you'll stun enemies more often.\n5 Light Punches in a row will reset CC.\nYou gain CC *only* when punches connect.";
+					break;
+				}
+			}
+			StatusBarScreen.DrawString("MM2FONTO",title,			(mainofs,100),translation:Font.CR_ORANGE,scale:(1.5,1.5));
+			StatusBarScreen.DrawString("UNRLC",desc, 				(mainofs,180),translation:Font.CR_GREY,scale:(1.5,1.5),linespacing:10);
+			StatusBarScreen.DrawString("UNRLC","STATS", 				(statofs1+200,120),translation:Font.CR_GREY,scale:(1.5,1.5),linespacing:10);
+			if (note) {
+				StatusBarScreen.DrawString("UNRLC","NOTES:",		(mainofs,330),translation:Font.CR_GREEN,scale:(1.5,1.5));
+				StatusBarScreen.DrawString("UNRLC",note,				(mainofs,370),translation:Font.CR_GREY,scale:(1.5,1.5),linespacing:10);
+			}
+        }
+    }
+}
+
 class BD_WeaponOverrideHandler : EventHandler {
 	override void PlayerDied(PlayerEvent e) {
 		if (!bdoom_replaceweapons)
@@ -11,68 +228,7 @@ class BD_WeaponOverrideHandler : EventHandler {
 				player.SetPSprite(i,null);
 		}
 	}
-	ui bool ShowWeapHelp;
-    override void consoleProcess(ConsoleEvent e) {
-		if (e.name != "BD_ShowWeapHelp")
-			return;
-		if (bdoom_weapons != 0)
-			ShowWeapHelp = !ShowWeapHelp;
-		else
-			ShowWeapHelp = false;
-    }
-    override void renderOverlay(RenderEvent e) {
-        if (ShowWeapHelp) {
-			string textureName = "";
-			PlayerInfo player	= players[consoleplayer];
-			PlayerPawn mo		= player.mo;
-			if (!player || !mo)
-				return;
-            let weap = player.readyWeapon.GetClassName();
-			if (bdoom_weapons == 1) {
-				switch (weap) {
-					case 'BD_Fist' 			: TextureName = "graphics/popups/e_fist.png"; 		break;
-					case 'BD_Chainsaw' 		: TextureName = "graphics/popups/e_chainsaw.png"; 	break;
-					case 'BD_Pistol' 			: 
-						if (mo.CountInv('BD_Pistol') > 1)
-							TextureName = "graphics/popups/e_2pist.png"; 	
-						else 
-							TextureName = "graphics/popups/e_pistol.png"; 	
-						break;
-					case 'BD_Shotgun'			: TextureName = "graphics/popups/e_shot.png"; 		break;
-					case 'BD_SuperShotgun' 	: TextureName = "graphics/popups/e_SSG.png"; 		break;
-					case 'BD_Chaingun' 		: TextureName = "graphics/popups/e_Cgun.png"; 		break;
-					case 'BD_RocketLauncher'	: TextureName = "graphics/popups/e_Rock.png";		break;
-					case 'BD_PlasmaRifle' 	: TextureName = "graphics/popups/e_Plasma.png";	break;
-					case 'BD_BFG9000' 			: TextureName = "graphics/popups/e_BFG.png"; 		break;
-				}
-			}
-			else if (bdoom_weapons == 2) {
-				switch (weap) {
-					case 'BD_Fist' 			: TextureName = "graphics/popups/m_fist.png"; 		break;
-					case 'BD_Chainsaw' 		: TextureName = "graphics/popups/m_chainsaw.png"; 	break;
-					case 'BD_Pistol' 			: TextureName = "graphics/popups/m_pistol.png"; 	break;
-					case 'BD_Shotgun'			: TextureName = "graphics/popups/m_shot.png"; 		break;
-					case 'BD_SuperShotgun' 	: TextureName = "graphics/popups/m_SSG.png"; 		break;
-					case 'BD_Chaingun' 		: TextureName = "graphics/popups/m_AR.png"; 		break;
-					case 'BD_RocketLauncher'	: TextureName = "graphics/popups/m_Rock.png";		break;
-					case 'BD_PlasmaRifle' 	: TextureName = "graphics/popups/m_Plasma.png";	break;
-					case 'BD_BFG9000' 			: TextureName = "graphics/popups/m_BFG.png"; 		break;
-				}
-			}
-			//this is by Lewisk3
-			TextureID texture = TexMan.CheckForTexture(textureName, TexMan.Type_Any);
-			vector2 texsize;
-			vector2 pos = (300,100);
-			[texsize.x, texsize.y] = TexMan.GetSize(texture);			
-			Screen.DrawTexture(texture, false, pos.x, pos.y,
-				DTA_VirtualWidthF, 1920,
-				DTA_VirtualHeightF, 1080,
-				DTA_KeepRatio, true,
-				DTA_DestWidth, int(texsize.x),
-				DTA_DestHeight, int(texsize.y)
-			);
-        }
-    }
+
 	// These items have no new visuals and only new pickup sounds, so, I insert them via an event handler, without replacing the actual actors
 	override void WorldThingSpawned(WorldEvent e) {
 		if (e.thing && e.thing.player && !e.thing.FindInventory("BD_OverlayControl"))
@@ -87,8 +243,8 @@ class BD_WeaponOverrideHandler : EventHandler {
 		switch (inv.GetClassName()) {
 			case 'Clip' 		: inv.pickupsound = "ammo/clip";			break;
 			case 'ClipBox' 	: inv.pickupsound = "ammo/clipbox";		break;
-			case 'Shell' 		: inv.pickupsound = "ammo/shells";			break;
-			case 'ShellBox' 	: inv.pickupsound = "ammo/shells";			break;
+			case 'Shell' 		: inv.pickupsound = "ammo/shells";		break;
+			case 'ShellBox' 	: inv.pickupsound = "ammo/shells";		break;
 			case 'RocketAmmo' 	: inv.pickupsound = "ammo/rockets";		break;
 			case 'RocketBox' 	: inv.pickupsound = "ammo/rockets";		break;
 			case 'Cell' 		: inv.pickupsound = "ammo/cells";			break;
@@ -203,11 +359,12 @@ Helps to keep the mod compatible with other actor-replacing mods.
 Separate CVARs for each monsters are also supported. */
 
 class BD_ActorOverrideHandler : EventHandler {
-	/*	This function is designed for old wads that replace decorations by directly replacing sprites, not using actors or classes.
-		The function is used to check sprite names in the archives loaded in the game: if it finds that the same sprite lump appears
+	/*	This function is designed to avoid replacing actors that are defined in DEHACKED or their sprites are replaced directly.
+		With max compatibility it'll check sprite names in the archives loaded in the game: if it finds that the same sprite lump appears
 		more than once, we conclude that one of the archives replaces said sprite directly, and probably for a good reason.
 		If that's the case, we'll let the original actor spawn instead of the Beautiful Doom version. This is important for mapsets
 		such as Deus Vult 2, which use a lot of custom decorations with vanilla sprite names.
+		Then it'll check for DEHACKED definition (DEHACKED checker by 3saster).
 		All of this only happens if bdoom_safereplacement CVAR is true (default); otherwise replacement is forced.
 	*/
 	bool CheckVanillaReplacement (name classname = "", string lumpname = "") {
@@ -226,7 +383,7 @@ class BD_ActorOverrideHandler : EventHandler {
 		}
 		return false;
 	}
-	// This replaces gore texures (SP_DUDEs) with custom gore textures based on Beautiful gore decorations:
+	// This replaces gore texures (SP_DUDEs) with custom gore textures based on Beautiful gore decorations (if decorations are replaced too)
 	static const name BD_SP_DUDE1[] = { "textures/BD_DUDE1a.png", "textures/BD_DUDE1b.png" };
 	static const name BD_SP_DUDE2[] = { "textures/BD_DUDE2a.png", "textures/BD_DUDE2b.png" };
 	static const name BD_SP_DUDE4[] = { "textures/BD_DUDE4a.png", "textures/BD_DUDE4b.png", "textures/BD_DUDE4c.png" };
