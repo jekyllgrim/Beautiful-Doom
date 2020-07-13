@@ -68,14 +68,18 @@ Class BDoomActor : Actor abstract {
 		Vector3 norm;
 		a.pitch = 0;
 		a.roll = 0;
-		if (!sec) {
-			if (ceiling)
-				norm = a.CurSector.ceilingplane.normal;
-			else
-				norm = a.CurSector.floorplane.normal;
-		}
-		else
+		if (sec)
 			norm = sec.normal;
+		else {
+			FLineTraceData hit;
+			a.LineTrace(0,a.height+16,ceiling ? 90 : -90,flags:TRF_THRUACTORS|TRF_NOSKY,data:hit);
+			if (hit.Hit3DFloor) {
+				F3DFloor ff = hit.Hit3DFloor;
+				norm = ceiling ? ff.bottom.normal : -ff.top.normal;
+			}
+			else 
+				norm = ceiling ? a.CurSector.ceilingplane.normal : a.CurSector.floorplane.normal;
+		}
 		if (abs(norm.z) ~== 1) {
 			if (ceiling) {
 				a.pitch += 180;
