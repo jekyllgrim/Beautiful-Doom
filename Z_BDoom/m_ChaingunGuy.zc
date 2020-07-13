@@ -162,9 +162,15 @@ Class BD_ChaingunGuy : BDoomMonster {
 				A_SpawnItemEx("Blood",	frandom(-4,4),frandom(0,6),frandom(28,36),frandom(2,4),0,frandom(4,6),	random(-80,-90)*scale.x,SXF_SETTARGET,80);
 			}
 		}
-		CPOY O 3 A_PlaySound("gibs/meatland");
+		CPOY O 3 {
+			A_PlaySound("gibs/meatland",CHAN_AUTO);
+			A_PlaySound("body/fall",CHAN_AUTO);
+		}
 		CPOY P 3;
-		CPOY Q 3 A_PlaySound("gibs/meatland");
+		CPOY Q 3 {
+			A_PlaySound("gibs/meatland",CHAN_AUTO);
+			//A_PlaySound("body/fall",CHAN_AUTO);
+		}
 		CPOY RS 3;
 		goto deathbleed;
 	XDeath:
