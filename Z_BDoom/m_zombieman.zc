@@ -106,10 +106,7 @@ Class BD_ZombieMan : BDoomMonster {
 			}
 		}
 		POSO EFGH 3;
-		POSO I 3 {
-			A_PlaySound("body/fall");
-			A_NoBlocking();
-		}
+		POSO I 3 A_PlaySound("body/fall");
 		POSO JK 4;
 		POSO L 1;
 		goto deathbleed;
