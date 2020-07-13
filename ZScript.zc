@@ -52,3 +52,5 @@ version "4.2.4"
 
 #include "Z_Bdoom/klazer/KLAZ_kColor.zsc"
 #include "Z_Bdoom/klazer/KLAZ_Beam.zsc"
+
+#include "Z_Bdoom/StatusScreen_base.zsc"

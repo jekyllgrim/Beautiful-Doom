@@ -1,0 +1,346 @@
+const statscr_base_width = 1920.0;
+const statscr_base_height = 1080.0;
+
+class StatusColor Abstract 
+{
+	static clearscope float hue2rgb(float p, float q, float t)
+	{
+		if(t < 0) t += 1;
+		if(t > 1) t -= 1;
+		if(t < 1./6.) return p + (q - p) * 6 * t;
+		if(t < 1./2.) return q;
+		if(t < 2./3.) return p + (q - p) * (2./3. - t) * 6;
+		return p;
+	}
+	static clearscope Color hslToRgb(float h,float s,float l, float alpha=1.0)
+	{
+		float r, g, b;
+		if(s == 0)
+		{
+			r = g = b = l;
+		} 
+		else
+		{
+			float q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+			float p = 2 * l - q;
+			r = hue2rgb(p, q, h + 1./3.);
+			g = hue2rgb(p, q, h);
+			b = hue2rgb(p, q, h - 1./3.);
+		}
+		return Color(int(255*alpha), int(r * 255), int(g * 255), int(b * 255));
+	}
+}
+
+class StatusBarScreen Abstract ui
+{
+	enum AlignFlags
+	{
+		SS_SCREEN_CENTER		= 0x1,
+		SS_SCREEN_TOP_CENTER	= 0x2,
+		SS_SCREEN_BOTTOM_CENTER	= 0x4,
+		SS_SCREEN_TOP_LEFT		= 0x8,
+		SS_SCREEN_BOTTOM_LEFT	= 0x10,
+		SS_SCREEN_TOP_RIGHT		= 0x20,
+		SS_SCREEN_BOTTOM_RIGHT	= 0x40,
+		SS_COORDS_TEXGRID		= 0x80
+	};
+
+	static float GetBaseHeight()
+	{
+		return statscr_base_height;
+	}
+	
+	static float GetBaseWidth()
+	{
+		return statscr_base_width;
+	}
+	
+	// Determines the true bottom of viewspace, 
+	// gets its ratio to the desired resolution.
+	static float GetStatusBarHeightRatio()
+	{	
+		int widthOfs, heightOfs, width, height;
+		[widthOfs, heightOfs, width, height] = Screen.GetViewWindow();
+
+		int bottom = heightOfs + height;
+		return float(bottom) / Screen.getHeight();
+	}
+
+	// Coord processing
+	static vector2 _ProcessCoords(vector2 pos, uint flags)
+	{
+		float centery = (GetBaseHeight()*GetStatusBarHeightRatio())/2.;
+		vector2 center			= (GetBaseWidth()/2., centery);
+		vector2 top_center		= (GetBaseWidth()/2., 0);
+		vector2 bottom_center	= (GetBaseWidth()/2., GetBaseHeight());
+		vector2 top_right		= (GetBaseWidth(), 0);
+		vector2 bottom_right	= (GetBaseWidth(), GetBaseHeight());
+		vector2 bottom_left		= (0, GetBaseHeight());
+		
+		if(flags & SS_SCREEN_CENTER       ) return center		+pos;
+		if(flags & SS_SCREEN_TOP_CENTER   ) return top_center	+pos;
+		if(flags & SS_SCREEN_BOTTOM_CENTER) return bottom_center+pos;
+		if(flags & SS_SCREEN_BOTTOM_LEFT  ) return bottom_left  +pos;
+		if(flags & SS_SCREEN_TOP_RIGHT    ) return top_right	+pos;
+		if(flags & SS_SCREEN_BOTTOM_RIGHT ) return bottom_right +pos;
+		return pos;
+	}
+
+	static vector2 _ProcessTextureCoords(vector2 pos, vector2 texoffs, uint flags, TextureID texture, vector2 scale=(1,1))
+	{
+		vector2 texsize;
+		[texsize.x, texsize.y] = TexMan.GetSize(texture);
+		
+		// Ugh, why can't i just multiply 2 vec2's together?
+		texsize.x *= scale.x;
+		texsize.y *= scale.y;
+		
+		if(flags & SS_COORDS_TEXGRID)
+		{
+			pos.x = pos.x*texsize.x;
+			pos.y = pos.y*texsize.y;
+		}
+		pos.x -= (texsize.x*texoffs.x)/2.;
+		pos.y -= (texsize.y*texoffs.y*GetStatusBarHeightRatio())/2.;
+		
+		return _ProcessCoords(pos, flags);
+	}
+	
+	static void DrawTexture(TextureID texture, Vector2 pos, int flags = 0, double Alpha = 1., Vector2 scale = (1, 1), Color tint=Color(0,0,0,0), vector2 texoffs = (1,1), bool absolute=false)
+	{
+		vector2 texsize;
+		[texsize.x, texsize.y] = TexMan.GetSize(texture);
+
+		if(!absolute)
+		{
+			vector2 npos = _ProcessTextureCoords(pos, texoffs, flags, texture, scale);
+			Screen.DrawTexture(texture, false, npos.x, npos.y,
+				DTA_VirtualWidthF, GetBaseWidth(),
+				DTA_VirtualHeightF, GetBaseHeight(),
+				DTA_KeepRatio, true,
+				DTA_Alpha, alpha,
+				DTA_DestWidth, int(texsize.x*abs(scale.x)),
+				DTA_DestHeight, int(texsize.y*abs(scale.y)),
+				DTA_FlipX, !!(scale.x < 0),
+				DTA_ColorOverlay, tint
+			);
+		}
+		else
+		{
+			vector2 resolution = (Screen.GetWidth(), Screen.GetHeight());
+			vector2 scaleratio = (resolution.x/GetBaseWidth(), resolution.y/GetBaseHeight());
+			vector2 nscale = (scale.x*scaleratio.x, scale.y*scaleratio.y);
+			pos.y *= GetStatusBarHeightRatio();
+			vector2 npos = _ProcessTextureCoords(pos, texoffs, flags, texture, nscale);
+			
+			Screen.DrawTexture(texture, false, npos.x, npos.y,
+				DTA_KeepRatio, true,
+				DTA_Alpha, alpha,
+				DTA_DestWidth, int(texsize.x*abs(scale.x)*scaleratio.x),
+				DTA_DestHeight, int(texsize.y*abs(scale.y)*scaleratio.y),
+				DTA_FlipX, !!(scale.x < 0),
+				DTA_ColorOverlay, tint
+			);
+		}
+	}
+
+	static void DrawImage(String graphic, Vector2 pos, int flags = 0, double Alpha = 1., Vector2 scale = (1, 1), Color tint=Color(0,0,0,0), vector2 texoffs = (1,1), bool absolute=false)
+	{
+		TextureID texture = TexMan.CheckForTexture(graphic, TexMan.Type_Any);
+		DrawTexture(texture, pos, flags, alpha, scale, tint, texoffs, absolute);
+	}
+	
+	static void DrawMugshot( int accuracy, vector2 pos, int drawflags = 0, int mugshotflags = 0, 
+							 float alpha = 1.0, vector2 scale=(5.0,5.0), string default_face="STF",
+							 Color tint=Color(0,0,0,0), bool absolute=false)
+	{
+		TextureID mugtex = statusbar.GetMugshot(accuracy, mugshotflags, default_face);
+		DrawTexture(mugtex, pos, drawflags, alpha, scale, tint, (1,1), absolute);
+	}
+	
+	static vector2 GetImageSize(String graphic)
+	{
+		vector2 texsize;
+		TextureID texture = TexMan.CheckForTexture(graphic, TexMan.Type_Any);
+		
+		[texsize.x, texsize.y] = TexMan.GetSize(texture);
+		return texsize;
+	}
+	
+	static void DrawString( Font fnt, String str, Vector2 pos, int flags = 0, int translation = Font.CR_UNTRANSLATED, 
+							double Alpha = 1., Vector2 scale = (1, 1), Color tint = Color(0,0,0,0), int linespacing = 20 )
+	{
+		Array<String> lines;
+		str.Split(lines, "\n");
+		
+		vector2 npos = _ProcessCoords(pos, flags);
+		npos.x *= (1./scale.x*0.5);
+		npos.y *= (1./scale.y*0.5);
+		
+		for(int i = 0; i < lines.Size(); i++)
+		{
+			 float lineoffs = (linespacing*i);
+			 Screen.DrawText(fnt, translation, npos.x, npos.y+lineoffs, 
+				lines[i],
+				DTA_VirtualWidthF,  int(GetBaseWidth()*(1./scale.x*0.5)),
+				DTA_VirtualHeightF, int(GetBaseHeight()*(1./scale.y*0.5)),
+				DTA_KeepRatio, true,
+				DTA_Alpha, alpha,
+				DTA_ColorOverlay, tint
+			);
+		}		
+	}
+	
+	static void Fill(Color col, double x, double y, double w, double h, double alpha = 1.0, int flags = 0, bool absolute = false)
+	{
+		vector2 pos = (x, y);
+		float sc_xres = Screen.getWidth()/GetBaseWidth();
+		float sc_yres = Screen.getHeight()/GetBaseHeight();		
+		vector2 npos = absolute ? pos : _ProcessCoords(pos, flags);
+		if(!absolute)
+		{
+			npos.x *= sc_xres;
+			npos.y *= sc_yres;
+		}
+		w *= sc_xres;
+		h *= sc_yres;
+		
+		Screen.Dim(col, alpha, npos.x, npos.y, w, h);
+	}
+	
+	static void DrawBar(String ongfx, String offgfx, double curval, double maxval, Vector2 position, int border, int vertical,
+						double Alpha = 1., Vector2 scale = (1, 1), Color tint=Color(0,0,0,0) )
+	{
+		let ontex = TexMan.CheckForTexture(ongfx, TexMan.TYPE_MiscPatch);
+		if (!ontex.IsValid()) return;
+		let offtex = TexMan.CheckForTexture(offgfx, TexMan.TYPE_MiscPatch);
+		
+		double value = (maxval != 0) ? clamp(curval / maxval, 0, 1) : 0;
+		if(border != 0) value = 1. - value; //invert since the new drawing method requires drawing the bg on the fg.
+		
+		// {cx, cb, cr, cy}
+		double Clip[4];
+		Clip[0] = Clip[1] = Clip[2] = Clip[3] = 0;
+		
+		vector2 on_texsize;
+		vector2 off_texsize;
+		[on_texsize.x, on_texsize.y] = TexMan.GetSize(ontex);
+		[off_texsize.x, off_texsize.y] = TexMan.GetSize(offtex);
+		on_texsize.x *= scale.x;
+		on_texsize.y *= scale.y;
+		off_texsize.x *= scale.x;
+		off_texsize.y *= scale.y;
+		
+		bool horizontal = !(vertical & BaseStatusBar.SHADER_VERT);
+		bool reverse = !!(vertical & BaseStatusBar.SHADER_REVERSE);
+		double sizeOfImage = (horizontal ? on_texsize.X - border*2 : on_texsize.Y - border*2);
+		Clip[(!horizontal) | ((!reverse)<<1)] = sizeOfImage - sizeOfImage *value;
+		
+		// preserve the active clipping rectangle
+		int cx, cy, cw, ch;
+		[cx, cy, cw, ch] = screen.GetClipRect();
+
+		if(border != 0)
+		{
+			for(int i = 0; i < 4; i++) Clip[i] += border;
+
+			//Draw the whole foreground
+			DrawTexture(ontex, position, 0, alpha, scale, tint, (0,0) );
+			SetClipRect(position.X + Clip[0], position.Y + Clip[1], on_texsize.X - Clip[0] - Clip[2], on_texsize.Y - Clip[1] - Clip[3]);
+		}
+		
+		if (offtex.IsValid() && off_texsize == on_texsize) DrawTexture(offtex, position, 0, alpha, scale, tint, (0,0) );
+		else Fill(color(255,0,0,0), position.X + Clip[0], position.Y + Clip[1], on_texsize.X - Clip[0] - Clip[2], on_texsize.Y - Clip[1] - Clip[3]);
+		
+		if (border == 0) 
+		{
+			SetClipRect(position.X + Clip[0], position.Y + Clip[1], on_texsize.X - Clip[0] - Clip[2], on_texsize.Y - Clip[1] - Clip[3]);
+			DrawTexture(ontex, position, 0, alpha, scale, tint, (0,0) );
+		}
+		// restore the previous clipping rectangle
+		screen.SetClipRect(cx, cy, cw, ch);
+	}
+	
+	static void SetClipRect(int x, int y, int w, int h)
+	{
+		float sc_xres = Screen.getWidth()/GetBaseWidth();
+		float sc_yres = Screen.getHeight()/GetBaseHeight();		
+		x *= sc_xres;
+		y *= sc_yres;
+		w *= sc_xres;
+		h *= sc_yres;
+		Screen.SetClipRect(x,y,w,h);
+	}
+	
+	// Shape2D Stuff
+	static void DrawShape(TextureID texture, Shape2D surface, bool animate = false, double Alpha = 1., Color tint=Color(0,0,0,0))
+	{
+		Screen.DrawShape(texture, animate, surface,
+			DTA_VirtualWidthF, GetBaseWidth(),
+			DTA_VirtualHeightF, GetBaseHeight(),
+			DTA_KeepRatio, true,
+			DTA_Alpha, alpha,
+			DTA_ColorOverlay, tint
+		);
+	}
+
+	static void DrawRotatedImage(String graphic, vector2 pos, double rotation = 0, Vector2 scale = (1, 1), double Alpha = 1., int flags = 0, vector2 texoffs = (0,0), Color tint=Color(0,0,0,0), bool animated = false, bool absolute=false)
+	{
+		TextureID texture = TexMan.CheckForTexture(graphic, TexMan.Type_Any);		
+		vector2 texsize;
+		[texsize.x, texsize.y] = TexMan.GetSize(texture);
+		vector2 resolution = (Screen.GetWidth(), Screen.GetHeight());
+		vector2 scaleratio = (resolution.x/GetBaseWidth(), resolution.y/GetBaseHeight());
+		vector2 nscale = (scale.x*scaleratio.x, scale.y*scaleratio.x);
+		
+		pos.y *= GetStatusBarHeightRatio();
+		vector2 npos = _ProcessTextureCoords(pos, texoffs, flags, texture, nscale);
+		npos.x *= scaleratio.x;
+		npos.y *= scaleratio.y;
+		
+		Shape2D surface = MakeSquare();
+		MoveSquare(surface, (nscale.x*texsize.x,nscale.y*texsize.y), npos, rotation);
+		
+		DrawShape(texture, surface, animated, alpha, tint);
+	}
+	
+	// -- Credits: Marisa Kirisame - //
+	static clearscope Shape2D MakeSquare()
+	{
+		// the shape that will be drawn
+		Shape2D square = new("Shape2D");
+		// texture coordinates of each corner
+		square.PushCoord((0,0));
+		square.PushCoord((1,0));
+		square.PushCoord((0,1));
+		square.PushCoord((1,1));
+		// two triangles make up the square
+		// the points have to be in counter-clockwise order
+		square.PushTriangle(0,3,1);
+		square.PushTriangle(0,2,3);
+		return square;
+	}
+
+	// set the positions of an existing square shape's vertices
+	static clearscope void MoveSquare( Shape2D shape, Vector2 size, Vector2 pos, double angle )
+	{
+		// clear any vertices already set
+		shape.Clear(Shape2D.C_Verts);
+		// corners of a square centered on 0,0
+		Vector2 points[4];
+		points[0] = (-0.5*size.x,-0.5*size.y);
+		points[1] = ( 0.5*size.x,-0.5*size.y);
+		points[2] = (-0.5*size.x, 0.5*size.y);
+		points[3] = ( 0.5*size.x, 0.5*size.y);
+		for ( int i=0; i<4; i++ )
+		{
+			Vector2 oldpos = points[i];
+			points[i].x = oldpos.x*cos(angle)-oldpos.y*sin(angle) + pos.x;
+			points[i].y = oldpos.x*sin(angle)+oldpos.y*cos(angle) + pos.y;
+			shape.PushVertex(points[i]);
+		}
+	}
+	// ---- //
+	
+	static void ClearClipRect() { Screen.ClearClipRect(); }
+}	

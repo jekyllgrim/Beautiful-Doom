@@ -8,6 +8,8 @@ Gifty: Smooth monster animations which are widely used, both edited and unedited
 
 kodi: BFG model-based beam code
 
+Lewisk3: Statusbar library
+
 Nero: menu tool tips
 
 Mike12: original assault rifle sprites (edited versions are used in Modern Assault Rifle)
