@@ -560,7 +560,6 @@ class BD_MuzzleSmoke : BD_BaseSmoke {
 //***************
 
 Class Casing_General : SmallDebris {
-	double brot;
 	protected name spawnsprite;
 	property spawnsprite : spawnsprite;
 	Default {
@@ -584,7 +583,7 @@ Class Casing_General : SmallDebris {
 			return;
 		}
 		super.PostBeginPlay();
-		brot = frandom(-18,-24);
+		wrot = frandom(-18,-24);
 		roll = frandom(100,105);
 		sprite = GetSpriteIndex(spawnsprite);
 	}
@@ -599,8 +598,8 @@ Class Casing_General : SmallDebris {
 	states {
 	Spawn:
 		#### AABBCCBBAABBCCBB 1 {
-			roll += brot;
-			brot *= 0.99;
+			roll += wrot;
+			wrot *= 0.99;
 			if (waterlevel > 1) {
 				bBOUNCEONFLOORS = false;
 				bBOUNCEONWALLS = false;
@@ -625,10 +624,10 @@ Class Casing_General : SmallDebris {
 		stop;
 	WaterSuspend:
 		#### # 1 {
-			if (abs(brot) > 1)
-				brot *= 0.93;
+			if (abs(wrot) > 1)
+				wrot *= 0.93;
 			if (pos.z > floorz) {
-				roll+=brot;
+				roll+=wrot;
 				vel.z = Clamp(vel.z - 0.1,-0.2,5);
 				vel.x *= 0.92;
 				vel.y *= 0.92;
