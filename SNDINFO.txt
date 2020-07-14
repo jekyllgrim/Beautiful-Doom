@@ -7,6 +7,9 @@ menu/cursor		SHELPKUP		// Move cursor up/down
 menu/backup		DSCLUNK		// Backup to previous menu
 menu/activate	STGNPUMP		// Activate a new menu
 
+menu/showhelp	submshow
+menu/hidehelp	submhide
+
 $random weapons/ricochet { weapons/ricochet1 weapons/ricochet2 weapons/ricochet3 weapons/ricochet4 weapons/ricochet5 weapons/ricochet6 weapons/ricochet7 }
 $limit weapons/ricochet 0
 weapons/ricochet1	RICO1
