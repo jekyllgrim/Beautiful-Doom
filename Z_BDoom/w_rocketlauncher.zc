@@ -365,7 +365,7 @@ Class RLClip : ammo {
 	}
 }
 
-Class BD_Rocket : Actor {
+Class BD_Rocket : BDoomActor {
 	Default {
 		Radius 11;
 		Height 8;
@@ -491,22 +491,23 @@ Class ModernRocket : BD_Rocket {
 	}
 	//lovely snippet for smoke trail by Arctangent
 	override void Tick () {
-		Vector3 oldPos = pos;
-		
+		Vector3 oldPos = pos;		
 		Super.Tick();
-		if (bdoom_debris && !isFrozen() && GetAge() > 3) {
-			Vector3 path = level.vec3Diff( pos, oldPos );
-			double distance = path.length() / 4; //this determines how far apart the particles are
-			Vector3 direction = path / distance;
-			int steps = int( distance );
-			
-			for( int i = 0; i < steps; i++ )  {
-				actor mo = Spawn("BD_ModernRocketTrail", oldPos );
-				if (mo) {
-					mo.vel = (frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5));
-				}
-				oldPos = level.vec3Offset( oldPos, direction );
+		if (!bdoom_debris || isFrozen() || GetAge() <= 3)
+			return;
+		Vector3 path = level.vec3Diff( pos, oldPos );
+		double distance = path.length() / 4; //this determines how far apart the particles are
+		Vector3 direction = path / distance;
+		int steps = int( distance );
+		
+		for( int i = 0; i < steps; i++ )  {
+			actor mo = Spawn("BD_ModernRocketTrail", oldPos );
+			if (mo) {
+				mo.vel = (frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5));
 			}
+			if (GetClassname() == "ModernRocket")
+				actor fir = Spawn("BD_ModernRocketFireTrail", oldPos );				
+			oldPos = level.vec3Offset( oldPos, direction );
 		}
 	}
 	states	{
@@ -572,6 +573,19 @@ Class ModernRocket : BD_Rocket {
 	}
 }
 
+Class BD_ModernRocketFireTrail : BD_BaseFlare {
+	Default {
+		scale 0.04;
+	}
+	states {
+	Spawn:
+		BOM1 NOPQRSTUVWX 1 {
+			scale *= 0.85;
+		}
+		stop;
+	}
+}
+
 Class BD_ModernRocketTrail : WallSmoke {
 	Default {
 		scale 0.03;
@@ -602,12 +616,11 @@ Class ModernGrenade : ModernRocket {
 		speed 25;
 		radius 8;
 		height 8;
-		bouncetype 'doom';
+		bouncetype 'hexen';
 		bouncefactor 0.5;
-		-BOUNCEAUTOOFF
-		+EXPLODEONWATER;
-		+ALLOWBOUNCEONACTORS;
-		+FORCEXYBILLBOARD;
+		+ALLOWBOUNCEONACTORS
+		+FORCEXYBILLBOARD
+		+CANBOUNCEWATER
 		-FLOORCLIP
 		seesound "Mweapons/grenade/fire";
 		bouncesound "Mweapons/grenade/bounce";	
@@ -627,17 +640,21 @@ Class ModernGrenade : ModernRocket {
 			return;
 		if (InstateSequence(curstate,sspawn) && GetAge() > 250)
 			SetStateLabel("Death");
+		if (pos.z <= floorz && CheckLiquidFlat()) {
+			//console.printf("hitting liquid, slowing down");
+			vel *= 0.9;
+		}
 	}
 	states {
 	Spawn:
 		MROG AABBCCDD 1 {
-			A_FaceMovementDirection();
+			/*A_FaceMovementDirection();
 			FLineTraceData skycheck;
 			LineTrace(angle,radius+vel.length(),pitch,data: skycheck);
 			if (skycheck.HitType == Trace_HitSky || skycheck.HitTexture == skyflatnum)
 				bNOINTERACTION = true;
 			if (bNOINTERACTION)
-				vel.z -= gravity;
+				vel.z -= gravity;*/
 			if (vel.length() < 3) {
 				bMISSILE = false;	//stop bouncing and die without stopping dead
 				return ResolveState("Death");
