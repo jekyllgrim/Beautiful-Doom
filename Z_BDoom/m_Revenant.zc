@@ -149,7 +149,7 @@ Class BD_RevenantTracer : RevenantTracer {
 	states {
 		Spawn:
 			TNT1 A 0 NoDelay {
-				A_PlaySound("revenant/tracerfly",4,1.0,true,5);
+				A_StartSound("revenant/tracerfly",slot:CHAN_BODY,flags:CHANF_DEFAULT|CHANF_LOOPING,attenuation:5);
 				//if (bdoom_debris)
 					//A_spawnItemEx("BD_RevenantTracerFlare",flags:SXF_SETMASTER|SXF_ORIGINATOR);
 			}

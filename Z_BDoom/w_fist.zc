@@ -175,7 +175,7 @@ Class BD_Fist : BDoomWeapon {
 				return ResolveState (null);
 			}
 			TNT1 A 0 {
-				A_playsound("Mweapons/fist/swing");
+				A_StartSound("Mweapons/fist/swing");
 				BD_SetSprite("FIS1","1IS1");
 			}
 			#### BCD 1;
@@ -198,7 +198,7 @@ Class BD_Fist : BDoomWeapon {
 			}
 			TNT1 A 0 {
 				BD_SetSprite("FIST","1IST");
-				A_playsound("Mweapons/fist/swing");
+				A_StartSound("Mweapons/fist/swing");
 			}
 			#### BCD 1;
 			#### E 1 A_CustomPunch(2*random(1,10), TRUE,0, "FistPuff");
@@ -208,7 +208,7 @@ Class BD_Fist : BDoomWeapon {
 		FireStrong.Enhanced:
 			FIST A 1 BD_SetSprite("FIST","1IST");
 			TNT1 A 0 {
-				A_playsound("Mweapons/fist/heavyswing");
+				A_StartSound("Mweapons/fist/heavyswing");
 				BD_SetSprite("FIS1","1IS1");
 			}
 			#### BCD 1;
@@ -222,7 +222,7 @@ Class BD_Fist : BDoomWeapon {
 		HoldStrong.Enhanced:
 			TNT1 A 1;
 			#### A 0 {
-				A_playsound("Mweapons/fist/heavyswing");
+				A_StartSound("Mweapons/fist/heavyswing");
 				BD_SetSprite("FIST","1IST");
 			}
 			#### BCD 1;
@@ -242,7 +242,7 @@ Class BD_Fist : BDoomWeapon {
 			TNT1 A 0 {
 				if (player.OnGround)
 					speed = default.speed*0.2;
-				A_playsound("weapons/kick/swing");
+				A_StartSound("weapons/kick/swing");
 			}
 			KICK CD 1;
 			TNT1 A 0 A_Recoil(-2);
@@ -261,7 +261,7 @@ Class BD_Fist : BDoomWeapon {
 			KICK AB 1;
 			TNT1 A 0 { 
 				speed = default.speed *0.5;
-				A_playsound("weapons/kick/swing");
+				A_StartSound("weapons/kick/swing");
 			}
 			KICK CD 1;
 			TNT1 A 0 A_Recoil(-5);
@@ -279,7 +279,7 @@ Class BD_Fist : BDoomWeapon {
 		Select.Modern:
 			TNT1 A 0 {
 				A_WeaponOffset(0,42);
-				A_PLaysound("mweapons/fist/wear");
+				A_StartSound("mweapons/fist/wear");
 				BD_SetSprite("NUKW","1UKW");
 			}
 			#### ABCD 1 {
@@ -401,7 +401,7 @@ Class BD_Fist : BDoomWeapon {
 					return ResolveState("LightFinisher");
 				A_Overlay(PSP_GUN2,"Ready.Right");
 				A_OverlayOffset(PSP_GUN2,0,0,WOF_INTERPOLATE);
-				A_PlaySound("Mweapons/fist/swing",5);
+				A_StartSound("Mweapons/fist/swing",slot:CHAN_5);
 				if (FindInventory("PowerStrength") /*FindInventory("ModernBerserk_Regen")*/)
 					A_CameraSway(-2,0,5);
 				else
@@ -446,7 +446,7 @@ Class BD_Fist : BDoomWeapon {
 			TNT1 A 0 {
 				A_Overlay(PSP_GUN2,"Ready.Right");
 				A_OverlayOffset(PSP_GUN2,0,0,WOF_INTERPOLATE);
-				A_PlaySound("Mweapons/fist/heavyswing",5);
+				A_StartSound("Mweapons/fist/heavyswing",slot:CHAN_5);
 				if (FindInventory("PowerStrength") /*FindInventory("ModernBerserk_Regen")*/)
 					A_CameraSway(-2.5,0,5);
 				else
@@ -520,11 +520,11 @@ Class BD_Fist : BDoomWeapon {
 				A_WeaponOffset(0,32);
 				if (FindInventory("PowerStrength") /*FindInventory("ModernBerserk_Regen")*/) {
 					A_CameraSway(2.1,0,5);
-					A_PlaySound("Mweapons/fist/heavyswing",5);
+					A_StartSound("Mweapons/fist/heavyswing",slot:CHAN_5);
 				}
 				else {
 					A_CameraSway(1.7,0,4);
-					A_PlaySound("Mweapons/fist/swing",5);
+					A_StartSound("Mweapons/fist/swing",slot:CHAN_5);
 				}
 			}
 			#### CDE 1 {
@@ -580,7 +580,7 @@ Class BD_Fist : BDoomWeapon {
 			goto ready;
 		HeavyPunch2:
 			#### A 0 {
-				A_PlaySound("Mweapons/fist/heavyswing",5);
+				A_StartSound("Mweapons/fist/heavyswing",slot:CHAN_5);
 				if (FindInventory("PowerStrength") /*FindInventory("ModernBerserk_Regen")*/) {
 					A_CameraSway(2.7,0,5);
 				}
@@ -638,7 +638,7 @@ Class BD_Fist : BDoomWeapon {
 			goto ready;
 		Uppercut:
 			TNT1 A 0 {
-				A_PlaySound("Mweapons/fist/heavyswing",5);
+				A_StartSound("Mweapons/fist/heavyswing",slot:CHAN_5);
 				if (FindInventory("PowerStrength") /*FindInventory("ModernBerserk_Regen")*/)
 					A_CameraSway(0,-4.2,4);
 				else
@@ -724,9 +724,9 @@ Class BD_Fist : BDoomWeapon {
 			TNT1 A 0 { 
 				speed = default.speed*0.1;
 				if(invoker.tcombo > 1)
-					A_PlaySound("Mweapons/fist/heavyswing",5);
+					A_StartSound("Mweapons/fist/heavyswing",slot:CHAN_5);
 				else
-					A_PlaySound("Mweapons/fist/swing",5);
+					A_StartSound("Mweapons/fist/swing",slot:CHAN_5);
 				if (FindInventory("PowerStrength") /*FindInventory("ModernBerserk_Regen")*/)
 					A_CameraSway(0,4.2,4);
 				else
@@ -1200,7 +1200,7 @@ Class BD_OverlayControl : CustomInventory {
 	BerserkOverlay:
 		TNT1 A 0 {
 			if (invoker.mregen && invoker.mregen.EffectTics <= 175)
-				A_PlaySound("weapons/fist/heartbeat",CHAN_VOICE);
+				A_StartSound("weapons/fist/heartbeat",slot:CHAN_VOICE);
 		}
 		BDOL BBBBBBBBBBBBBBB 1 {
 			int mul = (invoker.mregen && invoker.mregen.EffectTics <= 175) ? 2 : 1;

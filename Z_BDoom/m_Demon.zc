@@ -80,7 +80,7 @@ Class BD_Demon : BDoomMonster {
 			SARD HIJ 3;
 			SARD JJJJJ random(7,11) {
 				if (random(0,100) < 40) {
-					A_PlaySound("gibs/bloodspurt");
+					A_StartSound("gibs/bloodspurt");
 					A_SpawnItemEx("NeckSpurt",frandom(-0.3,0.3),frandom(-7.5,-7.8)*scale.x,14,0,0,0,0,SXF_SETTARGET,32);
 				}
 			}
@@ -117,8 +117,8 @@ Class BD_Demon : BDoomMonster {
 			}
 			SARY DEFG 3 A_SpawnItemEx("BD_Blood",1,0,frandom(22,42),frandom(2,4),0,frandom(4,6),random(-10,-15),SXF_SETTARGET);
 			SARY H 3 {
-				A_PlaySound("gibs/meatland",CHAN_7);
-				A_PlaySound("body/fall",CHAN_6);
+				A_StartSound("gibs/meatland",slot:CHAN_7);
+				A_StartSound("body/fall",slot:CHAN_6);
 			}
 			SARY IJKLMNOPQ 3;
 			goto deathbleed;

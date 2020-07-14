@@ -252,7 +252,7 @@ Class BDoomWeapon : Weapon abstract {
 				owner.GiveInventory(ammo1.GetClass(),1);
 			}
 			Console.Printf("%s reloaded",GetTag());
-			owner.A_PlaySound(reloadsound,CHAN_AUTO|CHAN_NOPAUSE,volume:0.5,attenuation:20);
+			owner.A_StartSound(reloadsound,slot:CHAN_AUTO,flags:CHAN_NOPAUSE,volume:0.5,attenuation:20);
 		}			
 	}
 
@@ -276,9 +276,9 @@ Class BDoomWeapon : Weapon abstract {
 			KICK AB 1;
 			TNT1 A 0 { 
 				if(CountInv("PowerStrength") > 0)
-					A_PlaySound("Mweapons/fist/heavyswing",0);
+					A_StartSound("Mweapons/fist/heavyswing",slot:CHAN_AUTO);
 				else
-					A_PlaySound("Mweapons/fist/swing",0);
+					A_StartSound("Mweapons/fist/swing",slot:CHAN_AUTO);
 				A_CameraSway(0.0,3.0,5);
 			}
 			KICK CD 1;
@@ -399,7 +399,7 @@ Class RealBullet : FastProjectile {
 		if (!curCamera) // If the player's PlayerPawn is null too, just stop trying
 			return;
 		if (CheckIfCloser (curCamera, 192))
-			A_PlaySound("weapons/tracerwhizz",1,1.0,0,8);
+			A_StartSound("weapons/tracerwhizz",slot:CHAN_WEAPON,flags:CHANF_DEFAULT,1.0,attenuation:8);
 	}
 	double CalculateDamage() {
 		int ddamage;
@@ -615,7 +615,7 @@ Class Casing_General : SmallDebris {
 			if (waterlevel == 0) {
 				roll = frandom(-8,8);
 				bSPRITEFLIP = random(0,1);
-				A_PlaySound(bouncesound);
+				A_StartSound(bouncesound);
 			}
 		}
 		stop;

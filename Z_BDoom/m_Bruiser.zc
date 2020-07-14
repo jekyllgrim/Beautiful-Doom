@@ -88,7 +88,7 @@ Class BD_BaronOfHell : BDoomMonster {
 		BS1X h 3 A_NoBlocking;
 		BS1X ijklMN 2  A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET,80);
 		BS1X OP 2;
-		TNT1 A 0 A_Playsound("gibs/meatland");
+		TNT1 A 0 A_StartSound("gibs/meatland");
 		BS1X Q 1;
 		goto deathbleed;
 	Crush:
@@ -176,7 +176,7 @@ Class BD_HellKnight : BD_BaronOfHell {
 		BS2X h 3 A_NoBlocking;
 		BS2X ijklMN 2  A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET,80);
 		BS2X OP 2;
-		TNT1 A 0 A_Playsound("gibs/meatland");
+		TNT1 A 0 A_StartSound("gibs/meatland");
 		BS2X Q 1;
 		goto deathbleed;
 	}	

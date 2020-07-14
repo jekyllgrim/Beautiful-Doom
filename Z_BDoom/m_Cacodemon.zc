@@ -197,7 +197,7 @@ Class BD_CacodemonBall : CacodemonBall {
 		scale.y*= randompick(-1,1);
 		roll = random(0,360);
 		broll = random(6,8)*randompick(1,-1);
-		A_PlaySound("electric/hum",6,1.0,true,4);
+		A_StartSound("electric/hum",slot:CHAN_6,flags:CHANF_DEFAULT|CHANF_LOOPING,attenuation:4);
 		if (bdoom_debris) {
 			let f = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
 			f.fcolor = 'blue';
@@ -309,7 +309,7 @@ Class CacoBallLightning : BD_BaseFlare {
 				alpha = Clamp(alpha-0.025,0,0.5);
 			else {
 				alpha = Clamp(alpha+0.1,0,0.5);
-				A_PlaySound("spark",volume:0.8,attenuation:2);
+				A_StartSound("spark",flags:CHANF_DEFAULT,volume:0.8,attenuation:2);
 				for (int i = random(1,3); i > 0; i --) {
 					let piece = CacoBallPiece(Spawn("CacoBallPiece",(pos.x+frandom(-3,3),pos.y+frandom(-3,3),ceilz-0.5)));
 					if (piece) 
@@ -323,7 +323,7 @@ Class CacoBallLightning : BD_BaseFlare {
 				alpha = Clamp(alpha-0.025,0,0.5);
 			else {
 				alpha = Clamp(alpha+0.1,0,0.5);
-				A_PlaySound("spark",volume:0.8,attenuation:2);
+				A_StartSound("spark",flags:CHANF_DEFAULT,volume:0.8,attenuation:2);
 				for (int i = random(1,3); i > 0; i --) {
 					let piece = CacoBallPiece(Spawn("CacoBallPiece",(pos.x+frandom(-3,3),pos.y+frandom(-3,3),flrz+0.5)));
 					if (piece) 

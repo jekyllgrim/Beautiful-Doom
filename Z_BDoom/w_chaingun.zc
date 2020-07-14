@@ -130,7 +130,7 @@ Class BD_Chaingun : BDoomWeapon {
 				if (bdoom_weapons == 2)
 					return ResolveState("Select.Modern");
 				If(bdoom_weapons == 1) 
-					A_PlaySound("weapons/chaingun/draw");
+					A_StartSound("weapons/chaingun/draw");
 				return ResolveState(null);
 			}
 			MGGS ABCDEF 1 A_WeaponReady(WRF_NOFIRE);
@@ -167,9 +167,9 @@ Class BD_Chaingun : BDoomWeapon {
 				A_WeaponOffset(0.0,35.0,WOF_INTERPOLATE);
 				a_gunflash();
 				if (bdoom_weapons == 0)
-					A_PlaySound("weapons/chngun");
+					A_StartSound("weapons/chngun");
 				else 
-					A_PlaySound("weapons/chaingun/fire");
+					A_StartSound("weapons/chaingun/fire");
 				If(Bdoom_tracers)
 					A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0) ;
 				else
@@ -186,9 +186,9 @@ Class BD_Chaingun : BDoomWeapon {
 			MGGG A 1 {
 				a_gunflash();
 				if (bdoom_weapons == 0)
-					A_PlaySound("weapons/chngun");
+					A_StartSound("weapons/chngun");
 				else 
-					A_PlaySound("weapons/chaingun/fire");
+					A_StartSound("weapons/chaingun/fire");
 				If(Bdoom_tracers)
 					A_FireBullets (5.6, 0, 1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0) ;
 				else
@@ -254,19 +254,19 @@ Class BD_Chaingun : BDoomWeapon {
 			TNT1 A 0 {
 				if (bdoom_weapons == 2)
 					return ResolveState("AltFire.Modern");
-				A_playsound("weapons/chaingun/start");
+				A_StartSound("weapons/chaingun/start");
 				return ResolveState(null);
 			}
 			MGGG ABCDABCD 2;
 			MGGG ABCDABCD 1;
-			TNT1 A 0 A_playsound("weapons/chaingun/spin",5,1.0,true);
+			TNT1 A 0 A_StartSound("weapons/chaingun/spin",slot:CHAN_5,flags:CHANF_DEFAULT|CHANF_LOOPING);
 			MGGG ACACACACAC 1;
 			
 			MGGG A 1 { 
 				A_WeaponOffset(0.0,35.0,WOF_INTERPOLATE);
 				invoker.HeatStacks++; 
 				a_gunflash();
-				A_PlaySound("weapons/chaingun/fire");
+				A_StartSound("weapons/chaingun/fire");
 				If(Bdoom_tracers)
 					A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0) ;
 				else
@@ -280,7 +280,7 @@ Class BD_Chaingun : BDoomWeapon {
 			MGGG A 1 { 
 				invoker.HeatStacks++; 
 				a_gunflash();
-				A_PlaySound("weapons/chaingun/fire");
+				A_StartSound("weapons/chaingun/fire");
 				If(Bdoom_tracers)
 					A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0) ;
 				else
@@ -297,7 +297,7 @@ Class BD_Chaingun : BDoomWeapon {
 				A_WeaponOffset(0.0,35.0,WOF_INTERPOLATE);
 				invoker.HeatStacks++; 
 				a_gunflash();
-				A_PlaySound("weapons/chaingun/fire");
+				A_StartSound("weapons/chaingun/fire");
 				If(Bdoom_tracers)
 					A_FireBullets(8,3, -1, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0) ;
 				else
@@ -313,7 +313,7 @@ Class BD_Chaingun : BDoomWeapon {
 			}
 		AltFireEnd:
 			TNT1 A 0 {
-				A_playsound("weapons/chaingun/stop",5);
+				A_StartSound("weapons/chaingun/stop",slot:CHAN_5);
 				invoker.HeatDecay = invoker.heatStacks * 0.05;
 			}
 			MGGG ABCDA 1 {
@@ -384,7 +384,7 @@ Class BD_Chaingun : BDoomWeapon {
 		//MODERN
 		Select.Modern:
 			TNT1 A 0 {
-				A_PlaySound("MWeapons/rifle/select");
+				A_StartSound("MWeapons/rifle/select");
 				A_Weaponoffset(30.0,67.0);
 				BD_SetSprite("RIFN","QIFN");
 			}
@@ -445,7 +445,7 @@ Class BD_Chaingun : BDoomWeapon {
 				if (invoker.riflesights)
 					return ResolveState("FireSights");
 				A_gunflash("FlashModern");
-				A_PlaySound("Mweapons/rifle/fire");
+				A_StartSound("Mweapons/rifle/fire");
 				A_WeaponOffset(frandom(-0.3,0.3),2,WOF_ADD);
 				A_FireBullets(1.5 + (invoker.tfired * 0.15),1.0 + (invoker.tfired * 0.15),-1,0,"NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_RifleBullet",0,0);
 				A_SetPitch(pitch - frandom(0.37,0.42),SPF_INTERPOLATE);
@@ -484,7 +484,7 @@ Class BD_Chaingun : BDoomWeapon {
 			RIFS A 1 {
 				A_FireBullets(0.4,0.15,-1,0,"NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_RifleBullet",0,0);
 				A_gunflash("FlashModern");
-				A_PlaySound("Mweapons/rifle/fire");
+				A_StartSound("Mweapons/rifle/fire");
 				A_SetPitch(pitch - 0.3,SPF_INTERPOLATE);
 				A_ZoomFactor(1.29,ZOOM_INSTANT|ZOOM_NOSCALETURNING);
 			}
@@ -506,7 +506,7 @@ Class BD_Chaingun : BDoomWeapon {
 			#### A 1 {
 				A_FireBullets(0.4,0.15,-1,0,"NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_RifleBullet",0,0);
 				A_gunflash("FlashModern");
-				A_PlaySound("Mweapons/rifle/fire");
+				A_StartSound("Mweapons/rifle/fire");
 				A_SetPitch(pitch - 0.3,SPF_INTERPOLATE);
 				A_ZoomFactor(1.29,ZOOM_INSTANT|ZOOM_NOSCALETURNING);
 			}
@@ -528,7 +528,7 @@ Class BD_Chaingun : BDoomWeapon {
 			#### A 1 {
 				A_FireBullets(0.4,0.15,-1,0,"NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_RifleBullet",0,0);
 				A_gunflash("FlashModern");
-				A_PlaySound("Mweapons/rifle/fire");
+				A_StartSound("Mweapons/rifle/fire");
 				A_SetPitch(pitch - 0.3,SPF_INTERPOLATE);
 				A_ZoomFactor(1.29,ZOOM_INSTANT|ZOOM_NOSCALETURNING);
 			}
@@ -553,7 +553,7 @@ Class BD_Chaingun : BDoomWeapon {
 			RIFN A 8 {
 				BD_SetSprite("RIFN","QIFN");
 				A_ClearRefire();
-				A_PlaySound("Mweapons/dry",7);
+				A_StartSound("Mweapons/dry",slot:CHAN_7);
 				if (invoker.RifleSights) {
 					let psp = player.FindPSprite(PSP_Weapon);
 					if (psp) 
@@ -585,11 +585,11 @@ Class BD_Chaingun : BDoomWeapon {
 		ReloadDo:
 			TNT1 A 0 BD_SetSprite("RIFR","QIFR");
 			#### ABCDE 2;
-			#### F 8 A_PlaySound("Mweapons/rifle/clipout");
+			#### F 8 A_StartSound("Mweapons/rifle/clipout");
 			#### GH 2;
 			#### I 5;
 			#### JKL 2;
-			#### M 1 A_PlaySound("Mweapons/rifle/clipin");
+			#### M 1 A_StartSound("Mweapons/rifle/clipin");
 			#### MMM 1 A_WeaponOffset(1,0,WOF_ADD);
 			#### M 1 A_WeaponOffset(-1,0,WOF_ADD);
 			#### A 0 {
@@ -605,7 +605,7 @@ Class BD_Chaingun : BDoomWeapon {
 			}			
 			#### ABC 1;
 			#### DEF 2;
-			#### A 0 A_PlaySound("Mweapons/rifle/bolt");
+			#### A 0 A_StartSound("Mweapons/rifle/bolt");
 			#### GHIJ 1;
 			#### IHG 3;
 			#### A 0 BD_Reload();
@@ -624,7 +624,7 @@ Class BD_Chaingun : BDoomWeapon {
 				if (invoker.RifleSights)
 					return ResolveState("UnsetSights");
 				invoker.RifleSights = true; 
-				A_PlaySound("Mweapons/rifle/aim",7);
+				A_StartSound("Mweapons/rifle/aim",slot:CHAN_7);
 				speed = default.speed * 0.8;
 				A_ZoomFactor(1.3);
 				BD_SetSprite("RIFA","QIFA");
@@ -636,7 +636,7 @@ Class BD_Chaingun : BDoomWeapon {
 			TNT1 A 0 { 
 				A_ClearOverlays(-5,-5);
 				invoker.RifleSights = false;
-				A_PlaySound("Mweapons/rifle/unaim",7);
+				A_StartSound("Mweapons/rifle/unaim",slot:CHAN_7);
 				speed = default.speed;
 				A_ZoomFactor(1.0);
 				BD_SetSprite("RIFA","QIFA");

@@ -529,7 +529,7 @@ Class BD_HeartColumn : HeartColumn {
 			TNT1 A 0 NoDelay A_jump(256,1,12);
 		Idle:
 			BHAC ABCD 3;
-			BHAC E 3 A_PlaySound("world/heartbeat",5,0.5,attenuation:6);
+			BHAC E 3 A_StartSound("world/heartbeat",slot:CHAN_5,flags:CHANF_DEFAULT,0.5,attenuation:6);
 			BHAC FGHIJKL 3;
 			loop;
 	}
@@ -790,7 +790,7 @@ Class BD_Cleaner : Actor {
 			RGWM ABCDEFGHII 2;
 		MopLoop:
 			TNT1 A 0 {				
-				A_PlaySound("cleaner/mop",volume:0.6,attenuation:2);
+				A_StartSound("cleaner/mop",flags:CHANF_DEFAULT,volume:0.6,attenuation:2);
 				if (target) {
 					target.destroy();
 				}
@@ -833,7 +833,7 @@ Class BD_Cleaner : Actor {
 				}
 			}
 			#### FGHI 3;
-			#### A 0 A_PlaySound("cleaner/bucketdrop",volume:0.5,attenuation:2);
+			#### A 0 A_StartSound("cleaner/bucketdrop",flags:CHANF_DEFAULT,volume:0.5,attenuation:2);
 			#### JKLM 4;
 			RGWB N 4;
 			TNT1 A 0 {

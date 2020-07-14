@@ -296,7 +296,7 @@ Class BD_BaseLamp : BD_LightSource abstract {
 	}
 	/*override void PostBeginPlay() {
 		super.PostBeginPlay();
-		A_PlaySound("lamp/hum",looping:true,attenuation:4);
+		A_StartSound("lamp/hum",flags:CHANF_DEFAULT|CHANF_LOOPING,attenuation:4);
 	}*/
 	override void Tick() {
 		super.Tick();
@@ -335,7 +335,7 @@ Class BD_BaseLamp : BD_LightSource abstract {
 			#### Y random(5,30) {
 				if (flare) {
 					flare.A_SetRenderStyle(falpha,Style_Add); //the flare isn't removed/respawned, only its alpha is set to none when the lamp is off
-					A_PlaySound("spark",volume:0.5,attenuation:3);
+					A_StartSound("spark",flags:CHANF_DEFAULT,volume:0.5,attenuation:3);
 					if (bdoom_debris) {
 						for (int i = 7; i > 0; i--)
 							A_SpawnItemEx("ElectroSpark",frandom(-1.5,1.5),frandom(-1.5,1.5),fspawnheight+frandom(-1.5,1.5),frandom(-1,1),frandom(-1,1),frandom(1,3),failchance:48);

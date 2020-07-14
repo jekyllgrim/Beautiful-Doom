@@ -269,9 +269,9 @@ Class SmallDebris : BD_BaseDebris abstract {
 							wallnormal *= -1;						
 						if (bBOUNCEONWALLS || pos.z <= floorz+Voffset){		
 							if (wallbouncesound)
-								A_PlaySound(wallbouncesound);
+								A_StartSound(wallbouncesound);
 							else if (bouncesound)
-								A_PlaySound(bouncesound);								
+								A_StartSound(bouncesound);								
 							wrot *= -1;
 							vel = vel - (wallnormal,0) * 2 * (vel dot (wallnormal,0));
 							if (wallbouncefactor)
@@ -325,7 +325,7 @@ Class SmallDebris : BD_BaseDebris abstract {
 						SetZ(floorz+Voffset);
 						vel.z *= -bouncefactor;
 						if (bouncesound)
-							A_PlaySound(bouncesound);
+							A_StartSound(bouncesound);
 					}
 					if (!self)
 						return;
@@ -351,7 +351,7 @@ Class SmallDebris : BD_BaseDebris abstract {
 		vel.z = 0;
 		if (onliquid) {
 			A_Stop();
-			A_PlaySound(liquidsound,0,1.0,0,3);
+			A_StartSound(liquidsound,slot:CHAN_AUTO,flags:CHANF_DEFAULT,1.0,attenuation:3);
 			if (removeonliquid) {
 				destroy();
 				return;
@@ -894,7 +894,7 @@ Class EnBulletPuff : BDoomPuff {
 			// regular liquids — splash sound, no visuals
 			for (int i = 0; i < BD_PCheck_LiquidWalls.Size(); i++) {
 				if (hittex.IndexOf(BD_PCheck_LiquidWalls[i]) >= 0 ) {
-					A_PlaySound("world/watersplashsmall",0,1.0,0,3);
+					A_StartSound("world/watersplashsmall",slot:CHAN_AUTO,flags:CHANF_DEFAULT,1.0,attenuation:3);
 					//console.Printf("Liquid Texture: %s",hittex);
 					self.destroy();
 					return ResolveState(null);
@@ -903,7 +903,7 @@ Class EnBulletPuff : BDoomPuff {
 			// hot liquids — sizzle sound, no visuals
 			for (int i = 0; i < BD_PCheck_HotWalls.Size(); i++) {
 				if (hittex.IndexOf(BD_PCheck_HotWalls[i]) >= 0 ) {
-					A_PlaySound("world/lavasizzlesmall",0,1.0,0,3);
+					A_StartSound("world/lavasizzlesmall",slot:CHAN_AUTO,flags:CHANF_DEFAULT,1.0,attenuation:3);
 					//console.Printf("Hot Texture: %s",hittex);
 					self.destroy();
 					return ResolveState(null);
@@ -918,7 +918,7 @@ Class EnBulletPuff : BDoomPuff {
 					smoke = 1;
 					rchance = 0;
 					sparkchance = 0;
-					A_Playsound("bullet/wood",0,1.0,0,3);	
+					A_StartSound("bullet/wood",slot:CHAN_AUTO,flags:CHANF_DEFAULT,1.0,attenuation:3);	
 					//console.Printf("Wood Texture: %s",hittex);
 					return ResolveState("PuffSpawn");
 				}
@@ -931,7 +931,7 @@ Class EnBulletPuff : BDoomPuff {
 					rchance = 20;
 					debris = true;
 					smoke = 2;
-					A_Playsound("bullet/stone",0,1.0,0,3);	
+					A_StartSound("bullet/stone",slot:CHAN_AUTO,flags:CHANF_DEFAULT,1.0,attenuation:3);	
 					//console.Printf("Marble Texture: %s",hittex);
 					return ResolveState("PuffSpawn");
 				}
@@ -944,7 +944,7 @@ Class EnBulletPuff : BDoomPuff {
 					sparkchance = 50;
 					debris = false;
 					smoke = 0;
-					A_Playsound("bullet/metal",0,1.0,0,3);	
+					A_StartSound("bullet/metal",slot:CHAN_AUTO,flags:CHANF_DEFAULT,1.0,attenuation:3);	
 					//console.Printf("Metal Texture: %s",hittex);
 					return ResolveState("PuffSpawn");
 				}
@@ -957,7 +957,7 @@ Class EnBulletPuff : BDoomPuff {
 					rchance = 15;
 					debris = true;
 					smoke = 2;
-					A_Playsound("bullet/stone",0,1.0,0,3);	
+					A_StartSound("bullet/stone",slot:CHAN_AUTO,flags:CHANF_DEFAULT,1.0,attenuation:3);	
 					//console.Printf("Brick Texture: %s",hittex);
 					return ResolveState("PuffSpawn");
 				}
@@ -969,7 +969,7 @@ Class EnBulletPuff : BDoomPuff {
 					DebrisType = 'bloody';
 					debris = true;
 					smoke = 0;
-					A_Playsound("bullet/body",0,1.0,0,3);	
+					A_StartSound("bullet/body",slot:CHAN_AUTO,flags:CHANF_DEFAULT,1.0,attenuation:3);	
 					//console.Printf("Gore Texture: %s",hittex);
 					return ResolveState("PuffSpawn");
 				}
@@ -981,7 +981,7 @@ Class EnBulletPuff : BDoomPuff {
 					DebrisType = 'skin';
 					debris = false;
 					smoke = 0;
-					A_Playsound("bullet/body",0,1.0,0,3);	
+					A_StartSound("bullet/body",slot:CHAN_AUTO,flags:CHANF_DEFAULT,1.0,attenuation:3);	
 					//console.Printf("Skin Texture: %s",hittex);
 					return ResolveState("PuffSpawn");
 				}
@@ -993,7 +993,7 @@ Class EnBulletPuff : BDoomPuff {
 				rchance = 25;
 				debris = true;
 				smoke = 2;
-				A_Playsound("bullet/stone",0,1.0,0,3);	
+				A_StartSound("bullet/stone",slot:CHAN_AUTO,flags:CHANF_DEFAULT,1.0,attenuation:3);	
 				//console.Printf("Generic Texture: %s",hittex);	
 				return ResolveState("PuffSpawn");		
 			}

@@ -89,7 +89,7 @@ Class BD_DoomImp : BDoomMonster {
 		TROP BC 3 BD_Bleed();
 		TROP CCDDCE random(3,7) {
 			if (!burning && random(0,100) > 40) {
-				A_PlaySound("gibs/bloodspurt");
+				A_StartSound("gibs/bloodspurt");
 				A_SpawnItemEx("FrontalSpurt",2,frandom(-0.3,0.3),frandom(14,15),0,0,0,random(-30,-40)*scale.x,SXF_SETTARGET,80);
 			}
 		}
@@ -99,12 +99,12 @@ Class BD_DoomImp : BDoomMonster {
 			}
 		TROP FFF random(3,7) {
 			if (!burning && random(0,100) > 40) {
-				A_PlaySound("gibs/bloodspurt");
+				A_StartSound("gibs/bloodspurt");
 				A_SpawnItemEx("FrontalSpurt",2,frandom(0,0.5),frandom(11,12),0,0,0,random(-30,-40)*scale.x,SXF_SETTARGET,80);
 			}
 		}
 		TROP GHI 3;
-		TROP J 3 A_PlaySound("body/fall");
+		TROP J 3 A_StartSound("body/fall");
 		TROP K 3;
 		goto deathbleed;
 	DeathHeadshot:
@@ -126,8 +126,8 @@ Class BD_DoomImp : BDoomMonster {
 		TROY HIJKL 3 A_SpawnItemEx("BD_Blood",1,0,frandom(18,42),frandom(2,4),0,frandom(4,6),random(-10,-15)*scale.x,SXF_SETTARGET);
 		TROY MN 2;
 		TROY O 2 {
-			A_PlaySound("gibs/meatland",CHAN_7);
-			A_PlaySound("body/fall",CHAN_6);
+			A_StartSound("gibs/meatland",slot:CHAN_7);
+			A_StartSound("body/fall",slot:CHAN_6);
 		}
 		TROY PQRS 3;
 		goto deathbleed;

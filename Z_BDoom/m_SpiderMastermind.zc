@@ -64,7 +64,7 @@ Class BD_SpiderMastermind : BdoomMonster {
 	Missile:
 		TNT1 A 0 {
 			A_FaceTarget();
-			A_Playsound("weapons/chaingun/start",5,attenuation:1);
+			A_StartSound("weapons/chaingun/start",slot:CHAN_5,flags:CHANF_DEFAULT,attenuation:1);
 		}
 		SSMB ABCDEF 1;
 		SSMB ABCDEF 1;
@@ -112,13 +112,13 @@ Class BD_SpiderMastermind : BdoomMonster {
 		loop;
 	Missile.Modern:
 		SSMA B 1 {
-			A_PlaySound("spiderdemon/fire");
+			A_StartSound("spiderdemon/fire");
 			A_SpawnItemEx("ChaingunCasing",12,-15,40, frandom(2,4),0,random(2,4), random(-85,-95),SXF_SETTARGET);
 			A_CustomBulletAttack(5.0, 1, 1, 0, "NUllPuff", 0, CBAF_NORANDOM,AAPTR_TARGET,"BD_SpiderBullet",43,10);
 		}
 		SSMA A 1;
 		SSMA B 1 {
-			A_PlaySound("spiderdemon/fire");		
+			A_StartSound("spiderdemon/fire");		
 			A_SpawnItemEx("ChaingunCasing",12,-15,40, frandom(2,4),0,random(2,4), random(-85,-95),SXF_SETTARGET);
 			A_CustomBulletAttack(5.0, 1, 1, 0, "NUllPuff", 0, CBAF_NORANDOM,AAPTR_TARGET,"BD_SpiderBullet",43,10);	
 		}
@@ -153,7 +153,7 @@ Class BD_SpiderMastermind : BdoomMonster {
 		SDMA r -1 a_bossdeath;
 		stop;
 	Death.Particles:
-		TNT1 A 0 A_PlaySound("spiderdemon/shutdown");
+		TNT1 A 0 A_StartSound("spiderdemon/shutdown");
 		SPMA ABCA 5 DyingSpark();
 		TNT1 A 0 A_NoBlocking;
 		SMMA A 5;
@@ -161,7 +161,7 @@ Class BD_SpiderMastermind : BdoomMonster {
 		SMMA A 10;
 		SPIX ABCDEF 5 DyingSpark();	
 		TNT1 A 0 {
-			A_PlaySound("spiderdemon/explosion",attenuation:ATTN_NONE);
+			A_StartSound("spiderdemon/explosion",attenuation:ATTN_NONE);
 			A_SpawnItemEx("SpiderExplosion",0,0,72);
 			
 			A_FaceTarget();

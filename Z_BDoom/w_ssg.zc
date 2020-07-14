@@ -69,7 +69,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 			if (bdoom_weapons==2)
 				return ResolveState("Select.Modern");
 			else if (bdoom_weapons == 1)
-				A_PlaySound("weapons/ssg/draw");
+				A_StartSound("weapons/ssg/draw");
 			A_WeaponOffset(0,86);
 			BD_SetSprite("SH2R","QH2R");	
 			return ResolveState(null);
@@ -110,7 +110,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		}
 		#### C 2 {	
 			A_WeaponOffset(frandom(-0.5,0.5),frandom(10,11),WOF_ADD);
-			A_PlaySound("weapons/sshotf",5);	
+			A_StartSound("weapons/sshotf",slot:CHAN_5);	
 			A_Gunflash();
 			if (bdoom_tracers)
 				A_FireBullets(11.2, 7.1, 20, 5, "EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0);
@@ -133,9 +133,9 @@ Class BD_SuperShotgun : BDoomWeapon {
 		#### EFGH 2;
 		#### I 1 {
 			if (bdoom_weapons == 1)
-				A_playsound("weapons/ssg/open");
+				A_StartSound("weapons/ssg/open");
 			else
-				A_playsound("weapons/sshoto");
+				A_StartSound("weapons/sshoto");
 		}
 		#### J 1 {
 			if (bdoom_debris) {
@@ -147,16 +147,16 @@ Class BD_SuperShotgun : BDoomWeapon {
 		#### LMNT 1;
 		#### U 2 {
 			if (bdoom_weapons == 1)
-				A_playsound("weapons/ssg/in");
+				A_StartSound("weapons/ssg/in");
 			else
-				A_playsound("weapons/sshotl");
+				A_StartSound("weapons/sshotl");
 		}
 		#### VWXYZ 2;
 		#### D 4 {
 			if (bdoom_weapons == 1)
-				A_playsound("weapons/ssg/close");
+				A_StartSound("weapons/ssg/close");
 			else
-				A_playsound("weapons/sshotc");
+				A_StartSound("weapons/sshotc");
 		}
 		#### CCB 1;
 		#### BAA 1 A_WeaponReady(WRF_NOSWITCH);
@@ -250,7 +250,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		#### B 1 {
 			A_Gunflash("Flash");
 			A_WeaponOffset(frandom(-0.5,0.5),frandom(10,11),WOF_ADD);
-			A_PlaySound("weapons/ssg/fire",5);
+			A_StartSound("weapons/ssg/fire",slot:CHAN_5);
 			if (bdoom_tracers)
 				A_FireBullets(11.2, 7.1, 20, 5, "EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0);
 			else
@@ -258,7 +258,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 			A_TakeInventory("Shell",1,TIF_NOTAKEINFINITE);
 		}
 		
-		#### C 1 A_Playsound("weapons/ssg/fire", 6);
+		#### C 1 A_StartSound("weapons/ssg/fire", 6);
 		#### CCCCC 1 A_WeaponOffset(0,-2,WOF_ADD);
 		TNT1 A 0 A_WeaponOffset(0,32,WOF_INTERPOLATE);
 		TNT1 A 0 A_CheckReload();
@@ -276,7 +276,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		}
 		#### B 1 {
 			A_Gunflash("AltFlash");
-			A_PlaySound("weapons/ssg/fire",5);
+			A_StartSound("weapons/ssg/fire",slot:CHAN_5);
 			A_WeaponOffset(0,6,WOF_ADD);
 			If(invoker.ShotFired) {
 				let psp = player.FindPSprite(PSP_WEAPON);
@@ -310,7 +310,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		}
 		#### ABCDEF 1;
 		#### GH 2;
-		#### I 1 A_playsound("weapons/ssg/open");
+		#### I 1 A_StartSound("weapons/ssg/open");
 		#### O 1 {
 			if (bdoom_debris) {
 				A_Eject("ShotgunCasing",16,-5,6.5,frandom(0,1),FRandom(-2.5,-3),frandom(4,5));
@@ -318,9 +318,9 @@ Class BD_SuperShotgun : BDoomWeapon {
 		}
 		#### P 2;
 		#### QRST 1;
-		#### U 1 A_playsound("weapons/ssg/in");
+		#### U 1 A_StartSound("weapons/ssg/in");
 		#### VWXYZ 2;
-		#### D 2 A_playsound("weapons/ssg/close");
+		#### D 2 A_StartSound("weapons/ssg/close");
 		#### C 2;
 		#### BA 2 A_WeaponReady(WRF_NOSWITCH);
 		goto ready;
@@ -397,7 +397,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 	Select.Modern:		
 		SST2 A 0 {
 			A_WeaponOffset(-20.0,60.0);
-			A_PlaySound("weapons/ssg/draw");
+			A_StartSound("weapons/ssg/draw");
 			BD_SetSprite("SST2","QST2");
 		}
 		#### #### 1 {
@@ -417,7 +417,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		goto ready;
 	DryReload:
 		SST2 A 8 {
-			A_PlaySound("Mweapons/dry");
+			A_StartSound("Mweapons/dry");
 			BD_SetSprite("SST2","QST2");
 		}
 		goto Reload;
@@ -431,7 +431,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 			A_SetPitch(pitch-frandom(2.8,3.5),SPF_INTERPOLATE);
 			A_setAngle(angle+frandom(-1,1),SPF_INTERPOLATE);
 			A_Gunflash("Flash");
-			A_PlaySound("Mweapons/ssg/firedual",5);
+			A_StartSound("Mweapons/ssg/firedual",slot:CHAN_5);
 			A_ZoomFactor(0.98,ZOOM_NOSCALETURNING);
 			BD_SetSprite("SST2","QST2");
 			return ResolveState(null);
@@ -446,9 +446,9 @@ Class BD_SuperShotgun : BDoomWeapon {
 			If(CountInv("SSGClip") == 0)
 				return ResolveState("DryReload");
 			else If(CountInv("SSGClip") == 2) 
-				A_PlaySound("Mweapons/ssg/fire1",5);
+				A_StartSound("Mweapons/ssg/fire1",slot:CHAN_5);
 			else If(CountInv("SSGClip") == 1) 
-				A_PlaySound("Mweapons/ssg/fire1",6);
+				A_StartSound("Mweapons/ssg/fire1",slot:CHAN_6);
 			A_Gunflash("AltFlash");
 			A_FireBullets (15.0, 7, 12, 0, "NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_SSGPellet",4,0);
 			A_TakeInventory("SSGCLip",1,TIF_NOTAKEINFINITE);
@@ -476,7 +476,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 			return ResolveState(null);
 		}
 		#### ABCDE 1;
-		#### A 0 A_playsound("Mweapons/ssg/open");
+		#### A 0 A_StartSound("Mweapons/ssg/open");
 		#### FGH 2;
 		
 		#### A 0 {
@@ -497,13 +497,13 @@ Class BD_SuperShotgun : BDoomWeapon {
 		#### F 1 {
 			A_TakeInventory("Shell",1,TIF_NOTAKEINFINITE);
 			A_GiveInventory("SSGClip",1);
-			A_playsound("Mweapons/ssg/in");
+			A_StartSound("Mweapons/ssg/in");
 		}
 		#### FFGGHHIIKKLLMMM 1 BD_CancelReload();
 		#### # 0 {
 			A_TakeInventory("Shell",1,TIF_NOTAKEINFINITE);
 			A_GiveInventory("SSGClip",1);
-			A_playsound("Mweapons/ssg/in");
+			A_StartSound("Mweapons/ssg/in");
 		}
 		goto ReloadEnd;
 	Reload1:
@@ -521,7 +521,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		#### M 3 {
 			A_TakeInventory("Shell",1,TIF_NOTAKEINFINITE);
 			A_GiveInventory("SSGClip",1);
-			A_playsound("Mweapons/ssg/in");
+			A_StartSound("Mweapons/ssg/in");
 		}
 		goto ReloadEnd;
 	ReloadEnd:
@@ -530,7 +530,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		#### X 4;
 		TNT1 A 0 BD_SetSprite("SSTR","QSTR");
 		#### HG 1;
-		#### A 0 A_playsound("Mweapons/ssg/close");		
+		#### A 0 A_StartSound("Mweapons/ssg/close");		
 		#### FE 2;
 		#### DCBA 1;
 		SST2 A 2 {
@@ -541,7 +541,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 	ReloadCancel:
 		TNT1 A 0 {
 			BD_SetSprite("SSTR","QSTR");
-			A_playsound("Mweapons/ssg/close");		
+			A_StartSound("Mweapons/ssg/close");		
 		}
 		#### HGFE 1;
 		goto Fire.Modern;

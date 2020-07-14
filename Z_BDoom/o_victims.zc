@@ -141,7 +141,7 @@ Class BD_BaseVictim : BDoomActor abstract {
 		Pain:
 			#### # 0 {
 				BD_StartSwing();
-				A_PlaySound(painsound,CHAN_BODY|CHAN_NOSTOP,attenuation:4);
+				A_StartSound(painsound,CHAN_BODY,flags:CHANF_NOSTOP,attenuation:4);
 			}
 			#### # 0 {
 				return ResolveState("Idle");
@@ -184,7 +184,7 @@ Class BD_HangingTorso : BD_BaseVictim {
 		if (isFrozen())
 			return;
 		if (abs(roll) < 1 && rollangVel > 0.01)
-			A_Playsound("victims/ropecreak",CHAN_VOICE|CHAN_NOSTOP,attenuation:4);
+			A_StartSound("victims/ropecreak",slot:CHAN_VOICE,flags:CHANF_NOSTOP,attenuation:4);
 	}
 }
 
@@ -310,14 +310,14 @@ Class BD_BloodyTwitch : BD_BaseVictim {
 		Pain:
 			#### # 1 {
 				bNOPAIN = true;
-				A_PlaySound("victims/chain",CHAN_BODY|CHAN_NOSTOP,attenuation:4);
+				A_StartSound("victims/chain",slot:CHAN_BODY,flags:CHANF_NOSTOP,attenuation:4);
 				BD_StartSwing(2.5);
 				if (vdead)
 					return ResolveState("Dead");
 				else if (health <= 1)
 					return ResolveState("Die");
 				else {
-					A_PlaySound("victims/pain",CHAN_VOICE|CHAN_NOSTOP);
+					A_StartSound("victims/pain",slot:CHAN_VOICE,flags:CHANF_NOSTOP);
 					if (frame > 5 && frame < 9)
 						return ResolveState("LowTwitch");
 					else
@@ -349,7 +349,7 @@ Class BD_BloodyTwitch : BD_BaseVictim {
 			goto HeadNeutral;
 		TopTwitch:
 			#### A 0 {
-				A_PlaySound("victims/chain",attenuation:4);
+				A_StartSound("victims/chain",attenuation:4);
 				BD_StartSwing();
 			}
 			#### CECECE random(9,12);
@@ -357,7 +357,7 @@ Class BD_BloodyTwitch : BD_BaseVictim {
 			goto HeadRaised;
 		LowTwitch:
 			#### A 0 {
-				A_PlaySound("victims/chain",attenuation:4);
+				A_StartSound("victims/chain",attenuation:4);
 				BD_StartSwing();
 			}
 			#### IJIJIJ random(9,12);
@@ -365,17 +365,17 @@ Class BD_BloodyTwitch : BD_BaseVictim {
 			goto HeadLowered;
 		Cough:
 			#### G 4;
-			#### A 0 A_PlaySound("victims/cough",attenuation:5);
+			#### A 0 A_StartSound("victims/cough",attenuation:5);
 			#### KLMN 4;
 			#### G 10;
 			#### A 0 A_Jump(96,"HeadLowered");
-			#### A 0 A_PlaySound("victims/cough",attenuation:5);
+			#### A 0 A_StartSound("victims/cough",attenuation:5);
 			#### KLMN 4;
 			#### G 14;
 			goto HeadLowered;
 		Die:
 			#### F 5 {
-				A_PlaySound("victims/death",CHAN_ITEM);
+				A_StartSound("victims/death",slot:CHAN_ITEM);
 				vdead = true;
 			}
 			#### GOPQ 7;
@@ -468,7 +468,7 @@ Class BD_LiveStick : BD_BaseVictim {
 		Pain:
 			TNT1 A 0 {
 				bNOPAIN = true;
-				A_PlaySound("victims/pain",CHAN_BODY|CHAN_NOSTOP);
+				A_StartSound("victims/pain",slot:CHAN_BODY,flags:CHANF_NOSTOP);
 			}
 			BLIV ABC 2;
 			BLIV BA 5;
@@ -478,7 +478,7 @@ Class BD_LiveStick : BD_BaseVictim {
 			goto spawn;
 		Die:
 			TNT1 A 0 {
-				A_PlaySound("victims/death",CHAN_VOICE);
+				A_StartSound("victims/death",slot:CHAN_VOICE);
 				vdead = true;
 				bNOPAIN = true;
 			}
