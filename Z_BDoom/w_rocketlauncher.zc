@@ -577,6 +577,10 @@ Class BD_ModernRocketFireTrail : BD_BaseFlare {
 	Default {
 		scale 0.04;
 	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		roll = random(0,359);
+	}
 	states {
 	Spawn:
 		BOM1 NOPQRSTUVWX 1 {
