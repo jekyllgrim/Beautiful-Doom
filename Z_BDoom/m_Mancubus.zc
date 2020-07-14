@@ -18,7 +18,7 @@ Class BD_Fatso : BDoomMonster {
 		Tag "$FN_MANCU";
 		bloodcolor "DarkRed";
 		BDoomMonster.smokeheight 24;
-		}
+	}
 	states {
 		Spawn:
 			MANC I 15 A_Look;
@@ -63,17 +63,17 @@ Class BD_Fatso : BDoomMonster {
 					A_SpawnItemEx("BasicMeatPiece",frandom(-3,3),frandom(-3,3),frandom(44,47), frandom(-4,4),frandom(-4,4),frandom(2,4),0,SXF_SETTARGET,96);
 					A_SpawnItemEx("BasicMeatPiece",frandom(-3,3),frandom(-3,3),frandom(44,47), frandom(-4,4),frandom(-4,4),frandom(2,4),0,SXF_SETTARGET,96);
 					A_SpawnItemEx("BasicMeatPiece",frandom(-3,3),frandom(-3,3),frandom(44,47), frandom(-4,4),frandom(-4,4),frandom(2,4),0,SXF_SETTARGET,96);
-					}
 				}
+			}
 			MANM b 3 {
 				if (bdoom_blood && !burning)
 					A_SpawnItemEx("Blood",frandom(-3,3),frandom(-3,3),frandom(42,47), frandom(-4,4),frandom(-4,4),frandom(2,4));
 				a_Scream();
-				}
+			}
 			MANM cde 3 {
 				if (bdoom_blood && !burning)
 					A_SpawnItemEx("Blood",frandom(-3,3),frandom(-3,3),frandom(42,47), frandom(-4,4),frandom(-4,4),frandom(2,4));
-				}
+			}
 			MANM f 3 a_noblocking;
 			MANM ghijklmnopq 3;
 			goto deathbleed;
@@ -85,13 +85,13 @@ Class BD_Fatso : BDoomMonster {
 				if (bdoom_blood && !burning)
 					A_SpawnItemEx("Blood",frandom(-3,3),frandom(-3,3),frandom(36,42), frandom(-4,4),frandom(-4,4),frandom(3,6));
 				a_noblocking();
-				}
+			}
 			MANN Fghi 4 {
 				if (bdoom_blood && !burning)
 					A_SpawnItemEx("Blood",frandom(-3,3),frandom(-3,3),frandom(36,42), frandom(-4,4),frandom(-4,4),frandom(3,6));
 				if (bdoom_gibs && !burning)
 					A_SpawnItemEx("BasicMeatPiece",frandom(-3,3),frandom(-3,3),frandom(20,40), frandom(-4,4),frandom(-4,4),frandom(2,4),0,SXF_SETTARGET,24);
-				}
+			}
 			MANN jkL 4;
 			goto deathbleed;
 		Death2: //like vanilla but not exposing brain
@@ -101,13 +101,13 @@ Class BD_Fatso : BDoomMonster {
 			MANO E 4 {
 				BD_Bleed();
 				a_noblocking();
-				}
+			}
 			MANO FghiJ 4 BD_Bleed();
 			goto deathbleed;
 		XDeath:
 			stop;
-		}
 	}
+}
 
 
 
@@ -116,28 +116,39 @@ Class BD_FatShot : FatShot {
 		+BLOODLESSIMPACT
 		Damagetype "Fire";
 		decal "BigScorch";
-		renderstyle "Add";
-		}
+		renderstyle 'add';
+		alpha 1.0;
+	}
 	override void PostBeginPlay () {
 		super.PostBeginPlay();
 		if (bdoom_debris) {
-			let f = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
-			f.master = self;
-			f.alpha = 0.6;
-			f.scale = (0.25,0.25);		
-			f.fcolor = "yellow";
+			let flare = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
+			if (flare) {
+				flare.master = self;
+				flare.fcolor = 'yellow';
+				flare.fscale = 0.29;
+				flare.falpha = 0.4;
 			}
 		}
+	}
+	override void Tick () {
+		Vector3 oldPos = self.pos;    
+		Super.Tick();
+		if (!bdoom_debris || isFrozen())
+			return;
+		Vector3 path = level.vec3Diff( self.pos, oldPos );
+		double distance = path.length() / 3; //this determines how far apart the particles are
+		Vector3 direction = path / distance;
+		int steps = int( distance );
+		
+		for( int i = 0; i < steps; i++ )  {
+			Spawn("BD_FatShotTrail", oldPos );
+			oldPos = level.vec3Offset( oldPos, direction );
+		}
+	}
 	States {
 		Spawn:
-			MANF AABB 1 NoDelay {
-				if (bdoom_debris) {
-					A_SpawnItemEx("BD_FatShotFlare");
-					A_SpawnItemEx("BD_RocketTrail",0,frandom(-7,7),frandom(-7,7),0,0,0,0);
-					A_SpawnItemEx("BD_RocketTrail",0,frandom(-7,7),frandom(-7,7),0,0,0,0);
-					A_SpawnItemEx("BD_RocketTrail",0,frandom(-7,7),frandom(-7,7),0,0,0,0);
-					}
-				}
+			MANF AABB 1 NoDelay;
 			loop;
 		Death:
 			TNT1 A 0 {
@@ -147,28 +158,46 @@ Class BD_FatShot : FatShot {
 				if (bdoom_debris) {
 					for (int i = 20; i > 0; i--)
 						A_SpawnItemEx("BD_ImpFireParticle",0,0,0,	frandom(-3,3),frandom(-3,3),frandom(-3,3),0,0,92);
-					}
 				}
+			}
 			BOM0 ABCDEF 3 bright A_FadeOut(0.1);
 			stop;
-		}
 	}
+}
 
 Class BD_FatShotFlare : BD_BaseFlare {
 	Default {
-		alpha 0.8;
+		alpha 0.9;
 		scale 0.2;
-		}
-	states {
-		Spawn:
-			LENR A 0 NoDelay {
-				if (master)
-					SetOrigin(master.pos,0);
-				}
-			LENR A 1 {
-				A_FadeOut(0.08);
-				scale*=0.95;
-				}
-			wait;
-		}
 	}
+	states {
+	Spawn:
+		LENR A 0 NoDelay {
+			if (master)
+				SetOrigin(master.pos,0);
+		}
+		LENR A 1 {
+			A_FadeOut(0.08);
+			scale*=0.95;
+		}
+		wait;
+	}
+}
+
+Class BD_FatShotTrail : BD_BaseFlare {
+	Default {
+		scale 0.45;
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		roll = random(0,359);
+	}
+	states {
+	Spawn:
+		BOM3 JKLMNOPQRSTU 1 {
+			scale *= 0.9;
+			A_FadeOut(0.05);
+		}
+		stop;
+	}
+}
