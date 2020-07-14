@@ -28,8 +28,12 @@ Class BD_SpiderMastermind : BdoomMonster {
 				A_SpawnItemEx("Blood",frandom(-10,10),frandom(-10,10),frandom(64,80),frandom(-6,6),frandom(-6,6),frandom(3,7),SXF_SETTARGET,failchance:64);
 		}
 		if (bdoom_debris) {
-			for (int i = 4; i > 0; i--)
+			for (int i = random(10,20); i > 0; i--)
 				A_SpawnItemEx("RicochetSpark",0,frandom(-16,16),frandom(48,70),frandom(-4,4),frandom(-4,4),frandom(4,8),failchance:64);
+			if (random(0,2) == 2) {
+				A_StartSound("spiderdemon/debris",volume:0.5);
+				A_SpawnItemEx("BasicMetalPiece",random(-16,16),random(-16,16),frandom(48,70),	frandom(5,8),frandom(-2,2),random(5,10),	frandom(0,359),SXF_SETTARGET);
+			}
 		}
 	}
 	states	{
