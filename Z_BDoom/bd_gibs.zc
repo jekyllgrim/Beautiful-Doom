@@ -437,6 +437,13 @@ class BasicMetalPiece : BasicMeatPiece {
 		roll = random[bdsfx](0,359);
 		A_SetScale(frandom[bdsfx](0.3,0.8)*randompick(-1,1));
 	}
+	/*override void Tick() {
+		super.Tick();
+		if (isFrozen() || !bdoom_debris || waterlevel > 0)
+			return;
+		if (d_spawn && InStateSequence(curstate,d_spawn));
+			Spawn("BD_MetalPieceTrail",pos+(frandom(-3,3),frandom(-3,3),frandom(-3,3)));
+	}*/
 	states {
 	spawn:
 		GMET # 1 {			
@@ -447,6 +454,13 @@ class BasicMetalPiece : BasicMeatPiece {
 				else
 					return ResolveState("Rest");
 			}
+			else {
+				let a = Spawn("BlackSmoke",pos+(frandom(-3,3),frandom(-3,3),frandom(-3,3)));
+				if (a)
+					a.A_SetScale(0.1);
+				if (GetAge() < 30)				
+					Spawn("BD_MetalPieceTrail",pos+(frandom(-3,3),frandom(-3,3),frandom(-3,3)));				
+			}
 			return ResolveState(null);
 		}
 		wait;
@@ -455,6 +469,23 @@ class BasicMetalPiece : BasicMeatPiece {
 	HitWall:
 		stop;
 	HitCeiling:
+		stop;
+	}
+}
+
+Class BD_MetalPieceTrail : BD_BaseFlare {
+	Default {
+		scale 0.16;
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		roll = random(0,359);
+	}
+	states {
+	Spawn:
+		BOM3 HIJKLMNOPQRSTU 1 {
+			scale *= 0.92;
+		}
 		stop;
 	}
 }

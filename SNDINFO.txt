@@ -167,6 +167,10 @@ cyberdemon/explosion	CYBEXP //cyberdemon explosion death sound
 $rolloff spiderdemon/fire1 600 3000
 $rolloff spiderdemon/fire2 600 3000
 $rolloff spiderdemon/fire3 600 3000
+$random spiderdemon/debris { spidde1 spidde2 spidde3 }
+spidde1	spidde1
+spidde2	spidde2
+spidde3	spidde3
 
 revenant/tracerfly	TRACFLY
 
