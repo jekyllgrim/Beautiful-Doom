@@ -829,8 +829,8 @@ Class BD_WeaponHelpHandler : EventHandler {
 				return;
 			PlayerInfo player	= players[consoleplayer];
 			PlayerPawn mo		= player.mo;
-			if (!player || !mo)
-				return;
+			if (!player || !player.readyweapon || !mo)
+				return;			
             let weap = player.readyWeapon.GetClassName();
 			if (!weap)
 				return;
@@ -889,33 +889,33 @@ Class BD_WeaponHelpHandler : EventHandler {
 					case 'BD_SuperShotgun' : 
 					title 		= "Super Shotgun";
 					desc		= "Classic double-barreled Shotgun that can\nfire 1 or 2 shells simultaneously.";
-					attack1 	= "Fire Both Barrels";		atkrate1 	= "0.61 shots/sec";				damage1 	= "100-300 (20 x 5-15)";	type1 		= "Hitscan";
-					attack2 	= "Fire One Barrel";			atkrate2 	= "3.5 shots/sec (w/o reload)";	damage2 	= "50-150 (10 x 5-15)";	type2 		= type1;
+					attack1 	= "Fire both barrels";		atkrate1 	= "0.61 shots/sec";				damage1 	= "100-300 (20 x 5-15)";	type1 		= "Hitscan";
+					attack2 	= "Fire one barrel";			atkrate2 	= "3.5 shots/sec (w/o reload)";	damage2 	= "50-150 (10 x 5-15)";	type2 		= type1;
 					note		= "Press the ‘Reload’ button to reload 1 shell\nafter firing once.";
 					break;
 					
 					case 'BD_Chaingun' : 
 					title 		= "Chaingun";
 					desc		= "Classic Chaingun with rapid-fire mode\nas a secondary attack.";
-					attack1 	= "Fire Chaingun (normal speed)";		atkrate1 	= "8.75 shots/sec";	damage1 	= "5-15";	type1 		= "Hitscan";
-					attack2 	= "Rapid-fire";			atkrate2 	= "17.5 shots/sec";	damage2 	= damage1;	type2 		= type1;
+					attack1 	= "Fire (normal speed)";		atkrate1 	= "8.75 shots/sec";	damage1 	= "5-15";	type1 		= "Hitscan";
+					attack2 	= "Rapid fire";			atkrate2 	= "17.5 shots/sec";	damage2 	= damage1;	type2 		= type1;
 					note		= "The gun needs to cool down after rapid fire.\nThe cooldown is forced after 60 shots but\nit’ll be shorter if you cease firing before that.";
 					break;
 					
 					case 'BD_RocketLauncher' : 
 					title 		= "Rocket Launcher";
 					desc		= "Classic Rocket Launcher that can fire homing\nrockets as a secondary attack.";
-					attack1 	= "Fire Rocket";		atkrate1 	= "2.33 shots/sec";	damage1 	= "20-160 + 128 (impact + blast)";	type1 	= "Projectile, explosive, linear";
+					attack1 	= "Fire rocket";		atkrate1 	= "2.33 shots/sec";	damage1 	= "20-160 + 128 (impact + blast)";	type1 	= "Projectile, explosive, linear";
 					prspeed1	= "20";		blastarea1 = "128";
-					attack2 	= "Fire Homing Rocket";		atkrate2 	= "0.94 shots/sec";	damage2 	= damage1;	type2 	= "Projectile, explosive, homing";
+					attack2 	= "Fire homing rocket";		atkrate2 	= "0.94 shots/sec";	damage2 	= damage1;	type2 	= "Projectile, explosive, homing";
 					prspeed2	= "17";		blastarea2 = blastarea1;
 					break;
 					
 					case 'BD_PlasmaRifle' : 
 					title 		= "Plasma Rifle";
 					desc		= "Classic Plasma Rifle with a railgun mode.";
-					attack1 	= "Fire Plasma Orbs";		atkrate1 	= "11.67 shots/sec";	damage1 	= "5-40";		type1 	= "Projectile, linear"; prspeed1	= "25";
-					attack2 	= "Fire Railgun";			atkrate2 	= "0.81 shots/sec";	damage2 	= "250-625";	type2 	= "Railgun, non-piercing";
+					attack1 	= "Fire plasma orbs";		atkrate1 	= "11.67 shots/sec";	damage1 	= "5-40";		type1 	= "Projectile, linear"; prspeed1	= "25";
+					attack2 	= "Fire railgun";			atkrate2 	= "0.81 shots/sec";	damage2 	= "250-625";	type2 	= "Railgun, non-piercing";
 					note		= "Secondary Attack has a 0.4-second\ncharge-up; make sure to track your target\ncarefully.";
 					break;
 					
@@ -923,7 +923,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 					title 		= "BFG 9000";
 					desc		= "Classic BFG 9000 with a new attack mode.";
 					attack1 	= "Fire BFG orb";				atkrate1 	= "0.87 shots/sec";	damage1 	= "100-800 + 40x???";		type1 	= "Projectile, linear, tracing"; prspeed1	= "25";
-					attack2 	= "Channel Plasma Beam";		atkrate2 	= "Continuous";	damage2 	= "approx. 700/sec";	type2 	= "Railgun, piercing";
+					attack2 	= "Channel plasma beam";		atkrate2 	= "Continuous";	damage2 	= "approx. 700/sec";	type2 	= "Railgun, piercing";
 					note		= "After firing 100 cells in the secondary attack\nmode, the gun will be forced to cool down.\nThe cooldown will be shorter if you stop\nfiring before that happens.";
 					break;
 				}
@@ -972,7 +972,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 				}
 				if (prspeed2) {
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Proj. speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
+					StatusBarScreen.DrawString("UNRLC","Proj. Speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
 					StatusBarScreen.DrawString("UNRLC",prspeed2,		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
 				}
 				if (blastarea2) {
@@ -1001,7 +1001,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 					
 					yofs += 50;
 					StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","CC0: Slow Punch\nCC1: Fast Punch\nCC2: Heavy Punch\nCC3+: Uppercut (finisher)",
+					StatusBarScreen.DrawString("UNRLC","CC0: Slow punch\nCC1: Fast punch\nCC2: Heavy punch\nCC3+: Uppercut (finisher)",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);	
 					yofs += 30*4;				
 					StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
@@ -1009,7 +1009,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 					
 					yofs += 50;
 					StatusBarScreen.DrawString("UNRLC","Kick",			(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Heavy Kick (finisher+)",
+					StatusBarScreen.DrawString("UNRLC","Heavy kick (finisher+)",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);	
 					yofs += 30;				
 					StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
@@ -1024,7 +1024,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 					title = "Chainsaw";
 					desc = "Powerful chainsaw with a high chance to\nstunlock the target. Gets jammed easily.";
 					StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Saw Attack (chance to jam)",
+					StatusBarScreen.DrawString("UNRLC","Saw attack (chance to jam)",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
 					StatusBarScreen.DrawString("UNRLC","Atk. Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
@@ -1040,7 +1040,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 					
 					yofs += 50;
 					StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Dry run (pushes out blood)",
+					StatusBarScreen.DrawString("UNRLC","Rev (pushes out blood)",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 																			
 					yofs += 50;
@@ -1064,7 +1064,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 
 					yofs += 50;
 					StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Fire Pistol (semi-auto)",
+					StatusBarScreen.DrawString("UNRLC","Fire pistol (semi-auto)",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
 					StatusBarScreen.DrawString("UNRLC","Fire Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
@@ -1076,7 +1076,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 					
 					yofs += 30;
 					StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Bullet, Medium DMG falloff",			
+					StatusBarScreen.DrawString("UNRLC","Bullet, medium DMG falloff",			
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 30;
@@ -1102,7 +1102,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 
 					yofs += 50;
 					StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Fire Shotgun (semi-auto)",
+					StatusBarScreen.DrawString("UNRLC","Fire shotgun (semi-auto)",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
 					StatusBarScreen.DrawString("UNRLC","Fire Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
@@ -1114,7 +1114,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 					
 					yofs += 30;
 					StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Pellet, High DMG falloff",			
+					StatusBarScreen.DrawString("UNRLC","Pellet, high DMG falloff",			
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 30;
@@ -1143,11 +1143,11 @@ Class BD_WeaponHelpHandler : EventHandler {
 
 					yofs += 50;
 					StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Fire 2 barrels (if loaded)",
+					StatusBarScreen.DrawString("UNRLC","Fire both barrels",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
 					StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Fire 1 barrel", (statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					StatusBarScreen.DrawString("UNRLC","Fire one barrel", (statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 																			
 					yofs += 60;
@@ -1157,7 +1157,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 					
 					yofs += 30;
 					StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Pellet, Piercing,\nV.High DMG falloff",			
+					StatusBarScreen.DrawString("UNRLC","Pellet, piercing,\nvery high DMG falloff",			
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 30*2;
@@ -1185,17 +1185,17 @@ Class BD_WeaponHelpHandler : EventHandler {
 
 					yofs += 50;
 					StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","(Regular) Automatic Fire\n(ADS) 3-Round Burst",
+					StatusBarScreen.DrawString("UNRLC","(Hip) Automatic fire\n(ADS) 3-round burst",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 																			
 					yofs += 30*2;
 					StatusBarScreen.DrawString("UNRLC","Fire Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","(Regular) 8.75 shots/sec\n(ADS) 7 shots/sec",		
+					StatusBarScreen.DrawString("UNRLC","(Hip) 8.75 shots/sec\n(ADS) 7 shots/sec",		
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 																			
 					yofs += 40*2;
 					StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Toggle Regular/ADS", (statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					StatusBarScreen.DrawString("UNRLC","Toggle hip/ADS", (statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 																			
 					yofs += 60;
@@ -1204,7 +1204,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 					
 					yofs += 30;
 					StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Bullet, Low DMG falloff",			
+					StatusBarScreen.DrawString("UNRLC","Bullet, low DMG falloff",			
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 30;
@@ -1232,11 +1232,11 @@ Class BD_WeaponHelpHandler : EventHandler {
 
 					yofs += 50;
 					StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Fire Rocket",
+					StatusBarScreen.DrawString("UNRLC","Fire rocket",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
 					StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Projectile, Explosive, Linear",		
+					StatusBarScreen.DrawString("UNRLC","Projectile, explosive, linear",		
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
 					StatusBarScreen.DrawString("UNRLC","Proj. Speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
@@ -1245,10 +1245,10 @@ Class BD_WeaponHelpHandler : EventHandler {
 																			
 					yofs += 40;
 					StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Fire Grenade", (statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					StatusBarScreen.DrawString("UNRLC","Fire grenade", (statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
 					StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Projectile, Explosive, Bouncing",		
+					StatusBarScreen.DrawString("UNRLC","Projectile, explosive, bouncing",		
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
 					StatusBarScreen.DrawString("UNRLC","Proj. Speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
@@ -1277,7 +1277,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 					desc = "Plasma Rifle that deals damage over a small\narea. Projectiles have noticeable spread.";					
 
 					StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Fire Plasma Orbs",
+					StatusBarScreen.DrawString("UNRLC","Fire plasma orbs",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
 					StatusBarScreen.DrawString("UNRLC","Fire Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
@@ -1290,7 +1290,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 					StatusBarScreen.DrawString("UNRLC","40",				(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
 					StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Projectile, Linear, AOE",	
+					StatusBarScreen.DrawString("UNRLC","Projectile, explosive, linear",	
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 40;
 					StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
@@ -1344,7 +1344,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 			}
 			StatusBarScreen.DrawString("MM2FONTO",title,			(mainofs,100),translation:Font.CR_ORANGE,scale:(1.5,1.5));
 			StatusBarScreen.DrawString("UNRLC",desc, 				(mainofs,180),translation:Font.CR_GREY,scale:(1.5,1.5),linespacing:10);
-			StatusBarScreen.DrawString("UNRLC","STATS", 				(statofs1+200,120),translation:Font.CR_GREY,scale:(1.5,1.5),linespacing:10);
+			StatusBarScreen.DrawString("MM2FONTO","STATS", 			(statofs1+300,100),translation:Font.CR_GREY,scale:(1.5,1.5),linespacing:10);
 			if (note) {
 				StatusBarScreen.DrawString("UNRLC","NOTES:",		(mainofs,330),translation:Font.CR_GREEN,scale:(1.5,1.5));
 				StatusBarScreen.DrawString("UNRLC",note,				(mainofs,370),translation:Font.CR_GREY,scale:(1.5,1.5),linespacing:10);
