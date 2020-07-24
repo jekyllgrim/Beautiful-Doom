@@ -310,6 +310,8 @@ Class BD_Fist : BDoomWeapon {
 				A_WeaponOffset(0,32,WOF_INTERPOLATE);				
 			}
 			#### AAAA 2 {
+				if (bdoom_weapons != 2)
+					return ResolveState("Ready");
 				BD_SetSprite("NUKL","1UKL");
 				if (FindInventory("Modernberserk_Regen"))
 					A_SetTics(4);
@@ -330,6 +332,7 @@ Class BD_Fist : BDoomWeapon {
 					A_WeaponOffset(0.3*randompick(-1,1),0.3*randompick(-1,1),WOF_ADD);
 					A_OverlayOffset(PSP_GUN2,0.3*randompick(-1,1),0.3*randompick(-1,1),WOF_ADD);
 				}
+				return ResolveState(null);
 			}
 			#### A 0 {
 				invoker.fcombo = 0;	
@@ -958,7 +961,10 @@ Class ModernKickPuff_Berserk : ModernKickPuff {
 						bdfist.tcombo++;
 				}
 				A_AlertMonsters(256,AMF_EMITFROMTARGET);
-				A_RadiusThrust(512,80,RTF_NOIMPACTDAMAGE,64);
+				if (tracer && !tracer.bNOGRAVITY) {
+					A_RadiusThrust(512,80,RTF_NOIMPACTDAMAGE,64);
+					
+				}				
 				if (tracer) {
 					if (tracer.bISMONSTER == false || tracer.bNOBLOOD == true)
 						return ResolveState("Crash");
@@ -1073,6 +1079,7 @@ Class FistPuff : BdoomPuff {
 		+PUFFGETSOWNER
 		+PUFFONACTORS
 		+NOEXTREMEDEATH
+		+HITTRACER
 		attacksound "Mweapons/fist/punch";
 		seesound "Mweapons/fist/punch";
 		mass 1;
@@ -1125,7 +1132,9 @@ Class KickPuff : FistPuff {
 	Melee:
 		TNT1 A 1 { 
 			A_AlertMonsters(256,AMF_EMITFROMTARGET);
-			A_RadiusThrust(2500,80,RTF_THRUSTZ|RTF_NOIMPACTDAMAGE,64);
+			if (tracer && !tracer.bNOGRAVITY) {
+				A_RadiusThrust(2500,80,RTF_THRUSTZ|RTF_NOIMPACTDAMAGE,64);				
+			}
 		}			
 		stop;
 	}
@@ -1150,7 +1159,10 @@ Class KickPuffStrong : FistPuffStrong {
 	Melee:
 		TNT1 A 1 {
 			A_AlertMonsters(512,AMF_EMITFROMTARGET);
-			A_RadiusThrust(5000,120,RTF_THRUSTZ,80);
+if (tracer && !tracer.bNOGRAVITY) {
+  A_RadiusThrust(5000,120,RTF_THRUSTZ|RTF_NOIMPACTDAMAGE,80);
+  tracer.bBLASTED = true;				
+}		
 		}
 		stop;
 	}
