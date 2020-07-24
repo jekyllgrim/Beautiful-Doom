@@ -19,7 +19,6 @@ class BD_BaseGib : SmallDebris abstract {
 		-NOGRAVITY
 		-MISSILE
 		+ROLLCENTER
-		+CORPSE
 		+BUDDHA //can't use +NODAMAGE here because it severely reduces the pushing effect of explosions
 		+NOPAIN
 		Deathsound "gibs/meatland";
@@ -414,8 +413,6 @@ class BasicMetalPiece : BasicMeatPiece {
 		seesound "none";
 		bouncesound "gibs/metallic";
 		deathsound "gibs/metallic";
-		-CORPSE
-		+MISSILE
 		+BOUNCEONFLOORS
 		+BOUNCEONWALLS
 		wallbouncefactor 0.5;
