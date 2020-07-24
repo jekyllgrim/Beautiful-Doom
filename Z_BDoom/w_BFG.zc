@@ -936,21 +936,17 @@ Class ModernBFGBall : BD_BFGBall {
 				let next = itr.thing;
 				if (next == target)
 					continue; 
-				if (!next.bShootable || (!next.bIsMonster && !(next is "PlayerPawn")) || !target.IsHostile (next) || target.bKILLED)
+				if (!next.bShootable || !(next.bIsMonster || (next is "PlayerPawn")) || !target.IsHostile (next) || target.bKILLED)
 					continue;
 				double dist = Distance3D(next);
 				if (dist > rdistance)
 					continue;
 				if (dist < closestDist)
 					closestDist = dist;
-				tracer = next;
-				//Console.Printf("%s",tracer.Getclassname());
-				A_Face(tracer,0,0,flags:FAF_MIDDLE);
-				if (!CheckLOF (flags: CLOFF_SKIPOBSTACLES, ptr_target: AAPTR_tracer))
+				if (!CheckSight(next,SF_IGNOREWATERBOUNDARY))
 					continue;
-				if (tracer) {
-					bfglist.push(tracer);
-					tracer = null;
+				if (next) {
+					bfglist.push(next);
 				}
 			}
 		}
@@ -1030,21 +1026,17 @@ Class ModernBFGBall : BD_BFGBall {
 						let next = itr.thing;
 						if (next == target)
 							continue; 
-						if (!next.bShootable || (!next.bIsMonster && !(next is "PlayerPawn")) || !target.IsHostile (next) || target.bKILLED)
+						if (!next.bShootable || !(next.bIsMonster || (next is "PlayerPawn")) || !target.IsHostile (next) || target.bKILLED)
 							continue;
 						double dist = Distance3D(next);
 						if (dist > rdistance)
 							continue;
 						if (dist < closestDist)
 							closestDist = dist;
-						tracer = next;
-						A_Face(tracer,0,0,flags:FAF_MIDDLE);
-						if (!CheckLOF (flags: CLOFF_SKIPOBSTACLES, ptr_target: AAPTR_tracer))
-							continue;		
-						if (tracer) {
-							//console.printf("%d Found %s",i,tracer.Getclassname());
-							bfglist.push(tracer);
-							tracer = null;
+						if (!CheckSight(next,SF_IGNOREWATERBOUNDARY))
+							continue;
+						if (next) {
+							bfglist.push(next);
 						}
 					}
 				}
