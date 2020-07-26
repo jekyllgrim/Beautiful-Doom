@@ -1159,10 +1159,9 @@ Class KickPuffStrong : FistPuffStrong {
 	Melee:
 		TNT1 A 1 {
 			A_AlertMonsters(512,AMF_EMITFROMTARGET);
-if (tracer && !tracer.bNOGRAVITY) {
-  A_RadiusThrust(5000,120,RTF_THRUSTZ|RTF_NOIMPACTDAMAGE,80);
-  tracer.bBLASTED = true;				
-}		
+			if (tracer && !tracer.bNOGRAVITY) {
+				A_RadiusThrust(5000,120,RTF_THRUSTZ,80);				
+			}			
 		}
 		stop;
 	}
