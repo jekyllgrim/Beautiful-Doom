@@ -453,8 +453,10 @@ class BasicMetalPiece : BasicMeatPiece {
 			}
 			else {
 				let a = Spawn("BlackSmoke",pos+(frandom(-3,3),frandom(-3,3),frandom(-3,3)));
-				if (a)
+				if (a) {
 					a.A_SetScale(0.1);
+					a.vel = (frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5));
+				}
 				if (GetAge() < 30)				
 					Spawn("BD_MetalPieceTrail",pos+(frandom(-3,3),frandom(-3,3),frandom(-3,3)));				
 			}
