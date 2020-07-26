@@ -870,7 +870,6 @@ Class ModernBFGBall : BD_BFGBall {
 	private int maxcapacity; 	//max # of targets
 		
 	private Array < Actor > bfglist;
-	private array < BD_TrackingBeam > beams;
 	private state sspawn;
 	
 	Default {
@@ -909,7 +908,6 @@ Class ModernBFGBall : BD_BFGBall {
 		super.Tick();
 		if (isFrozen())
 			return;
-		//Console.printf("%f",scale.x);
 		roll+=broll;
 		broll*=1.03;
 		vel*= 0.98;
@@ -923,55 +921,51 @@ Class ModernBFGBall : BD_BFGBall {
 			if (bdoom_debris && frandom(0.1,2) > vel.length())							
 				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(128,256)*scale.x,duration:56,sparsity:2.0,spawnclass:"MBFGRailParticle");
 		}
+		//Console.printf("No of BFG targets: %d",bfglist.size());
 		if (bfglist.size() > 0) {
-			for (int i = bfglist.size()-1; i >= 0; i--) {
-				if (bfglist[i] && (Distance3D(bfglist[i]) > rdistance))
-					bfglist.delete(i);
+			for (int i = 0; i < bfglist.size(); i++) {
+				if (bfglist[i]) {
+					if (Distance3D(bfglist[i]) > rdistance)
+						bfglist.delete(i);					
+					else {
+						BD_TrackingBeam beam = BD_TrackingBeam.MakeBeam("BD_TrackingBeam",self,bfglist[i],"00EE00",radius: 1.0, targetOffset: (0,0,bfglist[i].height*0.5),lifetimer: 3, style: STYLE_ADDSHADED);
+						if(beam)
+							beam.alpha = 3.0;
+						if (!bfglist[i].FindInventory("MBFGTetherControl"))
+							bfglist[i].GiveInventory("MBFGTetherControl",1);
+						if (!CheckSight(bfglist[i],SF_IGNOREWATERBOUNDARY)) {
+							//Console.printf("LOF check failed");
+							bfglist[i].TakeInventory("MBFGTetherControl",1);
+							bfglist.delete(i);
+						}
+					}
+				}
 			}
 		}
+		MBFG_FindTargets(rdistance);
+	}
+	void MBFG_FindTargets(double dist = 256) {
+		if (!target)
+			return;
 		double closestDist = double.infinity;
-		if (bfglist.size() < maxcapacity) {
-			BlockThingsIterator itr = BlockThingsIterator.Create(self,rdistance);
-			while (itr.next()) {
-				let next = itr.thing;
-				if (next == target)
-					continue; 
-				if (!next.bShootable || !(next.bIsMonster || (next is "PlayerPawn")) || !target.IsHostile (next) || target.bKILLED)
-					continue;
-				double dist = Distance3D(next);
-				if (dist > rdistance)
-					continue;
-				if (dist < closestDist)
-					closestDist = dist;
-				if (!CheckSight(next,SF_IGNOREWATERBOUNDARY))
-					continue;
-				if (next) {
-					bfglist.push(next);
-				}
-			}
-		}
-		if (bfglist.size() > 0) {
-			for (int i = bfglist.size()-1; i >= 0; i--) {
-				BD_TrackingBeam beam = BD_TrackingBeam.MakeBeam("BD_TrackingBeam",self,bfglist[i],"00EE00",radius: 1.0, targetOffset: (0,0,bfglist[i].height*0.5),lifetimer: 3, style: STYLE_ADDSHADED);
-				if(beam)
-					beam.alpha = 3.0;
-				//A_Face(bfglist[i],0,0,flags:FAF_MIDDLE);
-				//A_CustomRailGun(0,0,"","51fb45",RGF_NOPIERCING|RGF_FULLBRIGHT|RGF_CENTERZ|RGF_SILENT ,maxdiff:1,pufftype:"NullPuff",range:rdistance,duration:1,sparsity:0.8,driftspeed:0.1);
-				if (!bfglist[i].FindInventory("MBFGTetherControl")) {
-					bfglist[i].GiveInventory("MBFGTetherControl",1);
-					let tether = bfglist[i].FindInventory("MBFGTetherControl");
-					if (tether)
-						tether.master = self;
-				}				
-				master = bfglist[i];
-				if (!CheckLOF (flags: CLOFF_SKIPOBSTACLES, ptr_target: AAPTR_Master)) {
-					//Console.printf("LOF check failed");
-					let tether = bfglist[i].FindInventory("MBFGTetherControl");
-					if (tether)
-						tether.destroy();
-					bfglist.delete(i);
-				}
-				master = null;
+		BlockThingsIterator itr = BlockThingsIterator.Create(self,dist);
+		while (itr.next()) {
+			let next = itr.thing;
+			if (next == target)
+				continue; 
+			if (!next.bShootable || !(next.bIsMonster || (next is "PlayerPawn")) || !target.IsHostile (next) || target.bKILLED)
+				continue;
+			double cdist = Distance3D(next);
+			if (cdist > dist)
+				continue;
+			if (cdist < closestDist)
+				closestDist = cdist;
+			if (!CheckSight(next,SF_IGNOREWATERBOUNDARY))
+				continue;
+			if (next) {
+				bfglist.push(next);
+				if (bfglist.size() > maxcapacity)
+					bfglist.delete(bfglist.Find(bfglist[0]));
 			}
 		}
 	}
@@ -1019,33 +1013,14 @@ Class ModernBFGBall : BD_BFGBall {
 			//console.printf("bfg list size: %d, capacity: %d",bfglist.size(),maxcapacity);
 			//this block is intended for point-blank shots when the orb immediately enters Death state and has no time to find targets:
 			if (bfglist.size() < maxcapacity) {
-				double closestDist = double.infinity;
-				for (int i = maxcapacity; i > 0; i--) {
-					BlockThingsIterator itr = BlockThingsIterator.Create(self,rdistance);
-					while (itr.next()) {
-						let next = itr.thing;
-						if (next == target)
-							continue; 
-						if (!next.bShootable || !(next.bIsMonster || (next is "PlayerPawn")) || !target.IsHostile (next) || target.bKILLED)
-							continue;
-						double dist = Distance3D(next);
-						if (dist > rdistance)
-							continue;
-						if (dist < closestDist)
-							closestDist = dist;
-						if (!CheckSight(next,SF_IGNOREWATERBOUNDARY))
-							continue;
-						if (next) {
-							bfglist.push(next);
-						}
-					}
-				}
+				MBFG_FindTargets(rdistance);
 			}
 			if (bfglist.size() > 0) {
-				for (int i = bfglist.size()-1; i >= 0; i--) {
-					A_Face(bfglist[i],0,0,flags:FAF_MIDDLE);
-					//A_CustomRailGun(30 + 22*wpower,0,"","51fb45",RGF_NOPIERCING|RGF_FULLBRIGHT|RGF_CENTERZ|RGF_SILENT ,maxdiff:10,pufftype:"MBFGRailPuff",range:rdistance,duration:random(100,150),sparsity:0.15,driftspeed:0.3);
-					A_CustomRailGun(30 + 22*wpower,0,"","51fb45",RGF_NOPIERCING|RGF_FULLBRIGHT|RGF_CENTERZ|RGF_SILENT ,maxdiff:8,pufftype:"MBFGRailPuff",range:rdistance,duration:random(100,150),sparsity:10,driftspeed:0.3);
+				for (int i = 0; i < bfglist.size(); i++) {
+					//A_Face(bfglist[i],0,0,flags:FAF_MIDDLE);
+					//A_CustomRailGun(30 + 22*wpower,0,"","51fb45",RGF_NOPIERCING|RGF_FULLBRIGHT|RGF_CENTERZ|RGF_SILENT ,maxdiff:8,pufftype:"MBFGRailPuff",range:rdistance,duration:random(100,150),sparsity:10,driftspeed:0.3);
+					bfglist[i].DamageMobj(self,target,30+22*wpower,"BFGSplash");
+					bfglist[i].TakeInventory("MBFGTetherControl",1);
 					BD_TrackingBeam beam = BD_TrackingBeam.MakeBeam("BD_TrackingBeam",self,bfglist[i],"DDFFDD",radius: 3.0, targetOffset: (0,0,bfglist[i].height*0.5),lifetimer: 20, style: STYLE_ADDSHADED);
 				}
 			}
@@ -1126,7 +1101,7 @@ Class MBFGTetherControl : Inventory {
 	override void Tick() {}
 	override void DoEffect() {
 		super.DoEffect();
-		if (!owner || owner.bKILLED || !master) {
+		if (!owner || owner.bKILLED) {
 			Destroy();
 			return;
 		}
