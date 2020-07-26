@@ -2369,11 +2369,4 @@ Texture Optional "BDT_DBRN", 64, 32
 	Patch "DBRAIN1", 0, 0
 }
 
-Sprite "BSWRB0", 212, 212
-{
-	YScale 1.2
-	Offset 106, 106
-	Patch "BSWRB", 0, 0
-}
-
 // End of texture definitions
