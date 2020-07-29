@@ -5,6 +5,8 @@ Beautiful Doom © Jekyll Grim Payne, 2008–2020
 Beautiful Doom mod thread at ZDoom Forums:
 https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752ec93aed
 
+Requires **GZDoom**. At the moment of writing you need a development version, at least [GZDoom g4.5pre-70](https://devbuilds.drdteam.org/gzdoom/) since the latest stable release suffers from memory leaks.
+
 ## HOW TO PLAY THE LATEST RELEASE
 
 Releases aren't always super-stable or bug-free, but they should be playable. Some releases are development versions which don't have all the planned features implemented yet.
