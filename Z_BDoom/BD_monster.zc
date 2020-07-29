@@ -121,7 +121,10 @@ Class BDoomMonster : Actor abstract {
 		let meat = BasicMeatPiece(Spawn(spawnclass, (pos.x + frandom(-hpos,hpos), pos.y + frandom(-hpos,hpos), pos.z + vpos)));
 		if (meat) {
 			meat.gibtype = GetClassName();
-			meat.vel = (Clamp(vel.x*frandom(hvel*0.3,hvel),-7,7),Clamp(vel.y*frandom(hvel*0.3,hvel),-7,7),Clamp(vvel,0,8));
+			vector3 meatvel = 	(vel ~== (0,0,0)) ? 
+								(frandom(-3,3),frandom(-3,3),frandom(2,4)) : 
+								(Clamp(vel.x*frandom(hvel*0.3,hvel),-7,7),Clamp(vel.y*frandom(hvel*0.3,hvel),-7,7),Clamp(vvel,1,8));			
+			meat.vel = meatvel;
 			meat.target = self;
 			meat.translation = translation;
 			meatlist.push(meat);
