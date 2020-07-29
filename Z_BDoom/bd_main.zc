@@ -850,10 +850,10 @@ Class EnBulletPuff : BDoomPuff {
 	states {
 	XDeath:
 		TNT1 A 1 {
-			let mon = BDoomMonster(tracer);
+			/*let mon = BDoomMonster(tracer);
 			if (mon) {				
 				mon.hitheight = pos.z - mon.pos.z;
-			}
+			}*/
 		}
 		stop;
 	Spawn:

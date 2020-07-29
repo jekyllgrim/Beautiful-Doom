@@ -50,6 +50,12 @@ Class BDoomMonster : Actor abstract {
 			meatlist.push(bld);
 		}
 	}
+	
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle) {
+		if (inflictor)
+			hitheight = inflictor.pos.z - pos.z;
+		return super.DamageMobj(inflictor, source, damage, mod, flags, angle);
+	}
 
 	void BD_BulletAttack(double horz_spread, double vert_spread, int numbullets, int damageperbullet, string OldSound, string NewSound, string Casing, double CasingX = 0, double CasingY = 0, double CasingZ = 0, double TracerHeight = 32, double Tracerofs_xy = 0, class<Actor> puff = "EnBulletPuff") {		
 		if (bdoom_debris)
