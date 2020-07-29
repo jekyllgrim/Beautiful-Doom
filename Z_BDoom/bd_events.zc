@@ -4,7 +4,7 @@ class BD_WeaponOverrideHandler : EventHandler {
 			return;
 		PlayerInfo player = players[e.PlayerNumber];
 		let psp = player.FindPSPrite(PSP_Weapon);
-		if (psp) {
+		if (psp && player) {
 			for (int i = 1000; i > 1; i--)
 				player.SetPSprite(i,null);
 			for (int i = -1000; i < 1; i++)
@@ -153,7 +153,7 @@ class BD_ActorOverrideHandler : EventHandler {
 	bool CheckVanillaReplacement (name classname = "", string lumpname = "") {
 		if (bdoom_safereplacement <= 0)
 			return false;
-		if (bdoom_safereplacement >= 1 && classname) {
+		if (bdoom_safereplacement == 1 && classname) {
 			let event = BD_DEHACKED_Handler(StaticEventHandler.Find("BD_DEHACKED_Handler"));
 			if (event && event.IsDehacked(classname))
 				return true;
