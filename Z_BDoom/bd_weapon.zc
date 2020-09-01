@@ -84,19 +84,19 @@ Class BDoomWeapon : Weapon abstract {
 	}
 	
 	enum BD_Layers {
-		PSP_MAG = -3,
-		PSP_GUN2 = 2,
-		PSP_GUN3 = 3,
-		PSP_HEAT = 5,
-		PSP_KICK = -20,
-		PSP_MFLASH = -50,
-		PSP_EFLASH = 50,
-		PSP_LIGHTS = 10,
-		PSP_HLIGHTS = 15,
-		PSP_CHAINBLOOD = 80,
-		PSP_CHAINBLOODR = 81,
-		PSP_CHAINBLOODG = 82,
-		PSP_CHAINBLOODB = 83
+		PSP_MAG 			= -3,
+		PSP_GUN2 			=  2,
+		PSP_GUN3 			=  3,
+		PSP_HEAT 			=  5,
+		PSP_KICK 			= -10,
+		PSP_MFLASH 		= -5,
+		PSP_EFLASH 		=  12,
+		PSP_LIGHTS 		=  10,
+		PSP_HLIGHTS 		=  11,
+		PSP_CHAINBLOOD 	=  30,
+		PSP_CHAINBLOODR 	=  31,
+		PSP_CHAINBLOODG 	=  32,
+		PSP_CHAINBLOODB 	=  33
 	};
 	//Make sure player's magazine isn't empty when a weapon is first picked up (for Modern Guns):
 	override void AttachToOwner(actor other) {
@@ -251,7 +251,8 @@ Class BDoomWeapon : Weapon abstract {
 				owner.TakeInventory(ammo2.GetClass(),1);
 				owner.GiveInventory(ammo1.GetClass(),1);
 			}
-			Console.Printf("%s reloaded",GetTag());
+			if (owner.player == players[consoleplayer])
+				Console.Printf("%s reloaded",GetTag());
 			owner.A_StartSound(reloadsound,slot:CHAN_AUTO,flags:CHAN_NOPAUSE,volume:0.5,attenuation:20);
 		}			
 	}
@@ -267,7 +268,7 @@ Class BDoomWeapon : Weapon abstract {
 			TNT1 A 0 {
 				A_OverlayOffset(PSP_KICK,28,32);
 				A_OverlayFlags(PSP_KICK,PSPF_ADDBOB|PSPF_ADDWEAPON,false);
-				A_OverlayFlags(PSP_KICK,PSPF_FLIP|PSPF_MIRROR ,true);
+				A_OverlayFlags(PSP_KICK,PSPF_FLIP|PSPF_MIRROR|PSPF_PLAYERTRANSLATED,true);
 				if (CountInv("Modernberserk_Regen") > 0)
 					speed = default.speed * 0.5;
 				else
