@@ -25,7 +25,7 @@ Class BDoomActor : Actor abstract {
 		return ret;
 	}
 	
-	int BD_Sign (int i) {
+	int BD_Sign (double i) {
 		if (i >= 0)
 			return 1;
 		else

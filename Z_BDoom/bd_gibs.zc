@@ -105,7 +105,7 @@ class BD_BaseGib : SmallDebris abstract {
 		if (!bdrop)
 			return;
 		bdrop.translation = BloodTranslation;
-		bdrop.scale *= 0.6;
+		bdrop.gravity = gravity*0.4;
 		if (target && target is "BDoomMonster") {
 			bdrop.target = target;
 			let mon = BDoomMonster(target);
@@ -133,14 +133,6 @@ class BD_BaseGib : SmallDebris abstract {
 		if ((abs(vel.x) > 2 || abs(vel.y) > 2) )
 			BD_GibBleed("BD_BloodPool",2,pos.z+0.5,30);
 			*/
-	}
-}
-
-//smaller version of BD_Blood that spawns behind flying gibs
-Class BD_GibBlood : BD_Blood {
-	Default {
-		Scale 0.15;
-		deathsound "gibs/blooddrop";
 	}
 }
 
@@ -201,10 +193,10 @@ class BasicMeatPiece : BD_BaseGib {
 		#### # 1 {
 			roll += wrot;
 			if (waterlevel == 0)
-				BD_GibBleed("BD_Blood",frandom[bdsfx](-2,2),frandom[bdsfx](-2,2),25);
+				BD_GibBleed("BD_Blood",frandom[bdsfx](-6,6),frandom[bdsfx](-6,6),25);
 			else {				
 				if (!bNOBLOOD && bdoom_blood) //spawn less blood if underwater
-					BD_GibBleed("BD_Blood",frandom[bdsfx](-2,2),frandom[bdsfx](-2,2),10);
+					BD_GibBleed("BD_Blood",frandom[bdsfx](-6,6),frandom[bdsfx](-6,6),10);
 				if (abs(wrot) > 0.5) //slow down rotation
 					wrot *= 0.98;
 				else //when not rotating anymore, stop moving
@@ -1251,7 +1243,7 @@ Class SpiderHandRight : BasicBossGib {
 	states {
 		spawn:
 			SPP4 A 1 {
-				A_SpawnItemEx("BD_GibBlood",frandom[bdsfx](-2,2),frandom[bdsfx](-2,2),frandom[bdsfx](0,2),0,frandom[bdsfx](0,1),frandom[bdsfx](0,1),random[bdsfx](175,185),SXF_TRANSFERPOINTERS,144);
+				BD_GibBleed("BD_Blood",frandom[bdsfx](-4,4),frandom[bdsfx](-4,4),45);
 				roll+=wrot;
 				if (waterlevel == 3)
 					return ResolveState("Rest");

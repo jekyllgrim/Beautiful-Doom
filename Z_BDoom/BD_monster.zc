@@ -1,4 +1,4 @@
-Class BDoomMonster : Actor abstract {
+Class BDoomMonster : BDoomActor abstract {
 	double hitheight;
 	TranslatedBurningBody burncorpse;
 	BurningBodyFlame burnflame;
@@ -40,23 +40,24 @@ Class BDoomMonster : Actor abstract {
 		vxdeath = FindState("XDeath.Vanilla");
 	}
 		
-	void BD_Bleed() {
+	void BD_Bleed(double xvel = 2, double yvel = 3) {
 		if (burning || !bdoom_blood)
 			return;
 		let bld = BD_Blood(Spawn("BD_Blood", (pos.x + frandom(-5.0,5.0), pos.y + frandom(-5.0,5.0), pos.z + frandom(16,default.height))));
 		if (bld) {
-			bld.vel = (frandom(-2,2),frandom(-2,2),frandom(1,3));
+			bld.vel = (frandom(-xvel,xvel),frandom(-xvel,xvel),frandom(yvel*0.34,yvel));
 			bld.target = self;
 			meatlist.push(bld);
 		}
 	}
-	
+	//universal point-damage handling:
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle) {
 		if (inflictor)
 			hitheight = inflictor.pos.z - pos.z;
 		return super.DamageMobj(inflictor, source, damage, mod, flags, angle);
 	}
-
+	
+	//A_BulletAttack variant that spawns casings, uses tracers when CVAR allows it and chooses between a vanilla and a new sound
 	void BD_BulletAttack(double horz_spread, double vert_spread, int numbullets, int damageperbullet, string OldSound, string NewSound, string Casing, double CasingX = 0, double CasingY = 0, double CasingZ = 0, double TracerHeight = 32, double Tracerofs_xy = 0, class<Actor> puff = "EnBulletPuff") {		
 		if (bdoom_debris)
 			A_SpawnItemEx(Casing,CasingX,CasingY,CasingZ,		frandom(2,4),0,frandom(2,4),	random(-85,-95),SXF_SETTARGET);
@@ -121,10 +122,17 @@ Class BDoomMonster : Actor abstract {
 		let meat = BasicMeatPiece(Spawn(spawnclass, (pos.x + frandom(-hpos,hpos), pos.y + frandom(-hpos,hpos), pos.z + vpos)));
 		if (meat) {
 			meat.gibtype = GetClassName();
-			vector3 meatvel = 	(vel ~== (0,0,0)) ? 
-								(frandom(-3,3),frandom(-3,3),frandom(2,4)) : 
-								(Clamp(vel.x*frandom(hvel*0.3,hvel),-7,7),Clamp(vel.y*frandom(hvel*0.3,hvel),-7,7),Clamp(vvel,1,8));			
-			meat.vel = meatvel;
+			vector3 meatvel;
+			if (vel ~== (0,0,0))
+				//if the monster is static, give gibs some random velocity
+				meat.vel = (frandom(-3,3),frandom(-3,3),frandom(3,6));
+			else { //otherwise, calculate the direction in which gibs need  to fly and use that direction to get angle
+				vector3 meatdir = LevelLocals.SphericalCoords(pos, pos+vel,(angle,0));
+				//then send them towards that angle, with randomization
+				meat.VelFromAngle(frandom(5,10)*hvel,angle-meatdir.x+frandom(-30,30));
+				meat.vel.z = Clamp(vvel,3,8);
+				//console.printf("gib angle %d",meatdir.x);
+			}
 			meat.target = self;
 			meat.translation = translation;
 			meatlist.push(meat);
@@ -137,27 +145,45 @@ Class BDoomMonster : Actor abstract {
 		if (bdoom_gibs == 0)
 			return;
 		A_StartSound("gibs/gibbed",volume:0.65);
-		for (int i = random(1,3); i > 0; i--)
-			A_SpawnItemEx("BFountainSpray",frandom(-4,4),frandom(-4,4),height - frandom(0,8),flags:SXF_SETTARGET|SXF_USEBLOODCOLOR|SXF_NOCHECKPOSITION);
+		for (int i = random(16,22); i > 0; i--) {
+			let bld = BD_Blood(Spawn("BD_GibBlood", (pos.x + frandom(-5.0,5.0), pos.y + frandom(-5.0,5.0), pos.z + frandom(16,default.height))));
+			if (bld) {
+				bld.vel = (frandom(-3,3),frandom(-3,3),frandom(2,6));
+				bld.target = self;
+				bld.gravity = frandom[bdsfx](0.2,0.35);
+				meatlist.push(bld);
+			}
+		}
+		//generic-looking meat unaffected by vel
+		for (int i = random(1,3); i > 0; i--) {
+			let meat = BasicMeatPiece(Spawn("BasicMeatPiece", (pos.x + frandom(-4,4), pos.y + frandom(-4,4), pos.z + frandom(4,28))));
+			if (meat) {
+				meat.vel = (frandom(-2.5,2.5),frandom(-2.5,3.5),frandom(7,10));	
+				meat.target = self;
+				meat.translation = translation;
+				meat.gravity *= 0.5;
+				meatlist.push(meat);
+			}
+		}
 		
 		//generic-looking meat
-		for (int i = 6; i > 0; i--)
-			BD_GibSpawn("BasicMeatPiece",hpos: 4,vpos: frandom(8,28), hvel: 1.6, vvel: frandom(5,10), spawnchance: 70);
+		for (int i = random(5,7); i > 0; i--)
+			BD_GibSpawn("BasicMeatPiece",hpos: 4,vpos: frandom(8,28), hvel: 1.6, vvel: frandom(6,12), spawnchance: 70);
 		
 		//more uniquely-looking internal organs
-		BD_GibSpawn("Gib_Intestine",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(3,5), spawnchance: 70);
-		BD_GibSpawn("Gib_Intestine",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(3,5), spawnchance: 70);
-		BD_GibSpawn("Gib_Lung",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(3,5), spawnchance: 50);
-		BD_GibSpawn("Gib_Lung",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(3,5), spawnchance: 50);
-		BD_GibSpawn("Gib_liver",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(3,5), spawnchance: 50);
-		BD_GibSpawn("Gib_kidneys",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(3,5), spawnchance: 50);
+		BD_GibSpawn("Gib_Intestine",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(4,10), spawnchance: 70);
+		BD_GibSpawn("Gib_Intestine",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(4,10), spawnchance: 70);
+		BD_GibSpawn("Gib_Lung",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(4,10), spawnchance: 50);
+		BD_GibSpawn("Gib_Lung",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(4,10), spawnchance: 50);
+		BD_GibSpawn("Gib_liver",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(4,10), spawnchance: 50);
+		BD_GibSpawn("Gib_kidneys",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(4,10), spawnchance: 50);
 		
 		//these will automatically select the appropriate sprites based on the classname of the monster that spawned them
-		BD_GibSpawn("Gib_head",hpos: 4,vpos: frandom(42,48), hvel: 1.2, vvel: frandom(5,10));
-		BD_GibSpawn("Gib_Hand",hpos: 4,vpos: frandom(35,40), hvel: 1.2, vvel: frandom(5,10), spawnchance: 90);
-		BD_GibSpawn("Gib_Hand",hpos: 4,vpos: frandom(35,40), hvel: 1.2, vvel: frandom(5,10), spawnchance: 90);
-		BD_GibSpawn("Gib_Leg",hpos: 4,vpos: frandom(10,12), hvel: 1.2, vvel: frandom(5,10), spawnchance: 90);
-		BD_GibSpawn("Gib_Leg",hpos: 4,vpos: frandom(10,12), hvel: 1.2, vvel: frandom(5,10), spawnchance: 90);
+		BD_GibSpawn("Gib_head",hpos: 4,vpos: frandom(42,48), hvel: 1.2, vvel: frandom(6,12));
+		BD_GibSpawn("Gib_Hand",hpos: 4,vpos: frandom(35,40), hvel: 1.2, vvel: frandom(6,12), spawnchance: 90);
+		BD_GibSpawn("Gib_Hand",hpos: 4,vpos: frandom(35,40), hvel: 1.2, vvel: frandom(6,12), spawnchance: 90);
+		BD_GibSpawn("Gib_Leg",hpos: 4,vpos: frandom(10,12), hvel: 1.2, vvel: frandom(6,12), spawnchance: 90);
+		BD_GibSpawn("Gib_Leg",hpos: 4,vpos: frandom(10,12), hvel: 1.2, vvel: frandom(6,12), spawnchance: 90);
 
 		let torso1 = BasicMeatPiece(	BD_GibSpawn("Gib_Torso1",hpos: 8,vpos: frandom(18,28), hvel: 1, vvel: vel.z*frandom(0.7,0.95))	);
 		if (torso1) torso1.scale.x = randompick(-1,1);
