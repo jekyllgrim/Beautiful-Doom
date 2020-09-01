@@ -157,7 +157,7 @@ Class BD_SpiderMastermind : BdoomMonster {
 		SDMA r -1 a_bossdeath;
 		stop;
 	Death.Particles:
-		TNT1 A 0 A_StartSound("spiderdemon/shutdown");
+		TNT1 A 0 A_StartSound("spiderdemon/shutdown",CHAN_VOICE);
 		SPMA ABCA 5 DyingSpark();
 		TNT1 A 0 A_NoBlocking;
 		SMMA A 5;
