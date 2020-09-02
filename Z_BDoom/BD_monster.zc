@@ -126,10 +126,9 @@ Class BDoomMonster : BDoomActor abstract {
 			if (vel ~== (0,0,0))
 				//if the monster is static, give gibs some random velocity
 				meat.vel = (frandom(-3,3),frandom(-3,3),frandom(3,6));
-			else { //otherwise, calculate the direction in which gibs need  to fly and use that direction to get angle
-				vector3 meatdir = LevelLocals.SphericalCoords(pos, pos+vel,(angle,0));
-				//then send them towards that angle, with randomization
-				meat.VelFromAngle(frandom(5,10)*hvel,angle-meatdir.x+frandom(-30,30));
+			else { //otherwise, calculate angle from monster velocity and throw in that direction, with randomization
+				double meatangle = atan2(vel.y,vel.x);
+				meat.VelFromAngle(frandom(4,8)*hvel,meatangle+frandom(-35,35));
 				meat.vel.z = Clamp(vvel,3,8);
 				//console.printf("gib angle %d",meatdir.x);
 			}
