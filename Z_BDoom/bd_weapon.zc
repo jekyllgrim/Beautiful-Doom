@@ -89,6 +89,7 @@ Class BDoomWeapon : Weapon abstract {
 		PSP_GUN3 			=  3,
 		PSP_HEAT 			=  5,
 		PSP_KICK 			= -10,
+		PSP_REDDOT 		= -4,
 		PSP_MFLASH 		= -5,
 		PSP_EFLASH 		=  12,
 		PSP_LIGHTS 		=  10,
