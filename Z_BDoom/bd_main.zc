@@ -678,8 +678,14 @@ Class SmokingPiece : SmallDebris {
 	states	{
 	Spawn:
 		TNT1 A 1 NoDelay {
-			A_SpawnItem("SmokingPieceSmoke");
-			A_FadeOut(0.025);
+			if (alpha > 0) {
+				let a = Spawn("WeaponSmoke",pos);
+				if (a) {
+					a.alpha = alpha*0.5;
+					a.vel = (frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5));
+				}				
+			}
+			A_FadeOut(0.015);
 		}
 		loop;
 	}
@@ -687,8 +693,8 @@ Class SmokingPiece : SmallDebris {
 
 Class SmokingPieceSmoke : BD_BaseSmoke {
 	Default {
-		scale 0.05;
-		alpha 0.3;
+		scale 0.12;
+		alpha 0.4;
 	}
 	states {
 	Spawn:
@@ -1204,9 +1210,30 @@ Class BD_GlassPiece : WallPart {
 
 
 Class RocketDebris : WallPart {
+	private int burnage;
+	private int smokeage;
 	Default {
-		gravity 0.75;
-		scale 0.24;
+		gravity 0.5;
+		scale 0.6;
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		burnage = random[bdsfx](20,40);
+		smokeage = random[bdsfx](70,95);
+	}
+	override void Tick() {
+		if (isFrozen())
+			return;
+		if (GetAge() < smokeage)	 {
+			let a = Spawn("BlackSmoke",pos+(frandom(-3,3),frandom(-3,3),frandom(-3,3)));
+			if (a) {
+				a.A_SetScale(0.1);
+				a.vel = (frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5));
+			}
+		}
+		if (GetAge() < burnage)				
+			Spawn("BD_MetalPieceTrail",pos+(frandom(-3,3),frandom(-3,3),frandom(-3,3)));		
+		super.Tick();
 	}
 }
 
