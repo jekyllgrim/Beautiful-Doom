@@ -153,7 +153,7 @@ class BD_ActorOverrideHandler : EventHandler {
 	bool CheckVanillaReplacement (name classname = "", string lumpname = "") {
 		if (bdoom_safereplacement <= 0)
 			return false;
-		if (bdoom_safereplacement == 1 && classname) {
+		if (bdoom_safereplacement >= 1 && classname) {
 			let event = BD_DEHACKED_Handler(StaticEventHandler.Find("BD_DEHACKED_Handler"));
 			if (event && event.IsDehacked(classname))
 				return true;
@@ -727,6 +727,8 @@ Class BD_DEHACKED_Handler : StaticEventHandler
 	
 	override void OnRegister()
 	{
+		setConstants();
+		
 		int currLump = Wads.FindLump("DEHACKED",0,1);
 		while( currLump != -1 )
 		{
@@ -801,6 +803,23 @@ Class BD_DEHACKED_Handler : StaticEventHandler
 					num = CodePConv[num];
 					if( dehackedActors.Find(StateMap[num]) == dehackedActors.Size() )
 						dehackedActors.Push(StateMap[num]);
+				}
+			}
+			if( tokens.Size() >= 3 && tokens[0] ~== "Text" && tokens[1] ~== "4" && tokens[1] ~== "4" ) // "Text 4 4" to change a sprite name
+			{
+				if( i+1<lines.Size() )
+				{
+					string modActors = spriteMapping.At( lines[i+1].Left(4).MakeUpper() );
+					if( modActors.Length () > 0)
+					{
+						Array<String> actors;
+						modActors.Split(actors, ",");
+						for(int i=0; i<actors.Size(); i++)
+						{
+							if( dehackedActors.Find(actors[i]) == dehackedActors.Size() )
+								dehackedActors.Push(actors[i]);
+						}
+					}
 				}
 			}
 		}
