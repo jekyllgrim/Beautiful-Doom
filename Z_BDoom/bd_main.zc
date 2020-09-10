@@ -1218,8 +1218,8 @@ Class RocketDebris : WallPart {
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		burnage = random[bdsfx](20,40);
-		smokeage = random[bdsfx](70,95);
+		burnage = random[bdsfx](16,35);
+		smokeage = random[bdsfx](60,75);
 	}
 	override void Tick() {
 		if (isFrozen())
@@ -1229,11 +1229,30 @@ Class RocketDebris : WallPart {
 			if (a) {
 				a.A_SetScale(0.1);
 				a.vel = (frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5));
+				a.alpha *= 0.6;
 			}
 		}
 		if (GetAge() < burnage)				
-			Spawn("BD_MetalPieceTrail",pos+(frandom(-3,3),frandom(-3,3),frandom(-3,3)));		
+			Spawn("BD_RocketDebrisTrail",pos+(frandom(-3,3),frandom(-3,3),frandom(-3,3)));		
 		super.Tick();
+	}
+}
+
+Class BD_RocketDebrisTrail : BD_BaseFlare {
+	Default {
+		scale 0.12;		
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		roll = random(0,359);
+	}
+	states {
+	Spawn:
+		BOM3 HIJKLMNOPQRSTU 1 {
+			scale *= 0.92;
+			A_FadeOut(0.04);
+		}
+		stop;
 	}
 }
 

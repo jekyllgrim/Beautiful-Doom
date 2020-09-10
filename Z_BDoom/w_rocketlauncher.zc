@@ -550,11 +550,11 @@ Class ModernRocket : BD_Rocket {
 				for (int i = random(8,20); i > 0; i--)
 					A_SpawnItemEx("RicochetSpark",0,0,1,	frandom(-6,6),frandom(-6,6),frandom(3,10));
 				if (pos.z <= floorz+10) {
-					for (int i = random(8,20); i > 0; i--)
+					for (int i = random(4,10); i > 0; i--)
 						A_SpawnItemEx("RocketDebris",0,0,1,	frandom(-4,4),frandom(-4,4),frandom(9,12));
 				}
 				else {
-					for (int i = random(6,15); i > 0; i--)
+					for (int i = random(4,10); i > 0; i--)
 						A_SpawnItemEx("RocketDebris",0,0,0,	frandom(-6.5,6.5),frandom(-6.5,6.5),frandom(-2,14));
 				}
 			}
