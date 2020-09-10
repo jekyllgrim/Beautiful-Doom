@@ -580,7 +580,7 @@ Class ModernPlasmaBall : BD_Plasmaball {
 				A_SetScale(0.14*randompick(-1,1),0.14*randompick(-1,1));
 				if (bdoom_debris) {
 					for (int i = 0; i <= 8; i++)
-						A_SpawnItemEx("ModernPlasmaPiece",0,0,0,frandom(-3,3),frandom(-3,3),frandom(3,8),0,0,32);
+						A_SpawnItemEx("ModernPlasmaPiece",0,0,1,frandom(-3,3),frandom(-3,3),frandom(3,8),0,0,32);
 				}
 			}
 			PEXP CDEFGH 1 bright {
