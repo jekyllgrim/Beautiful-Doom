@@ -951,372 +951,372 @@ Class BD_WeaponHelpHandler : EventHandler {
 				if (prspeed2)		fillheight += 20;
 				if (blastarea2)	fillheight += 20;
 				if (!note && !attack2)	fillheight -= 150;
-				StatusBarScreen.Fill("404040",30,80,1850,fillheight, 0.85);
+				BD_StatusBarScreen.Fill("404040",30,80,1850,fillheight, 0.85);
 				if (attack1) {
-					StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5));
-					StatusBarScreen.DrawString("UNRLC",attack1,			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC",attack1,			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Atk. Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
-					StatusBarScreen.DrawString("UNRLC",atkrate1,		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC","Atk. Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC",atkrate1,		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
-					StatusBarScreen.DrawString("UNRLC",damage1,			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC",damage1,			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
-					StatusBarScreen.DrawString("UNRLC",type1,			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC",type1,			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
 				}	
 				if (prspeed1) {
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Proj. speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
-					StatusBarScreen.DrawString("UNRLC",prspeed1,		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC","Proj. speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC",prspeed1,		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
 				}
 				if (blastarea1) {
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Blast area",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
-					StatusBarScreen.DrawString("UNRLC",blastarea1,		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC","Blast area",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC",blastarea1,		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
 				}
 				if (attack2) {
 					yofs += 50;
-					StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5));
-					StatusBarScreen.DrawString("UNRLC",attack2,			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC",attack2,			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Atk. Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
-					StatusBarScreen.DrawString("UNRLC",atkrate2,		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC","Atk. Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC",atkrate2,		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
-					StatusBarScreen.DrawString("UNRLC",damage2,			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC",damage2,			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
-					StatusBarScreen.DrawString("UNRLC",type2,			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC",type2,			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
 				}
 				if (prspeed2) {
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Proj. Speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
-					StatusBarScreen.DrawString("UNRLC",prspeed2,		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC","Proj. Speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC",prspeed2,		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
 				}
 				if (blastarea2) {
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Blast area",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
-					StatusBarScreen.DrawString("UNRLC",blastarea2,		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC","Blast area",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5));
+					BD_StatusBarScreen.DrawString("UNRLC",blastarea2,		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
 				}
 			}
 			else if (bdoom_weapons == 2) {
 				switch (weap) {
 					case 'BD_Fist' : 
 					fillheight += 30;
-					StatusBarScreen.Fill("404040",30,80,1850,fillheight, 0.85);
+					BD_StatusBarScreen.Fill("404040",30,80,1850,fillheight, 0.85);
 					title = "CQC";
 					desc = "Raise Combo Counter (CC) with Primary.\nCC changes your Secondary. Finishers reset CC.\nKick can be added after finishers.";
-					StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Light Left Punch (+1 CC)",
+					BD_StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Light Left Punch (+1 CC)",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Atk. Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","up to 4.3 hits/sec",		
+					BD_StatusBarScreen.DrawString("UNRLC","Atk. Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","up to 4.3 hits/sec",		
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","6-24",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","6-24",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 50;
-					StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","CC0: Slow punch\nCC1: Fast punch\nCC2: Heavy punch\nCC3+: Uppercut (finisher)",
+					BD_StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","CC0: Slow punch\nCC1: Fast punch\nCC2: Heavy punch\nCC3+: Uppercut (finisher)",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);	
 					yofs += 30*4;				
-					StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","15-52",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","15-52",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 50;
-					StatusBarScreen.DrawString("UNRLC","Kick",			(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Heavy kick (finisher+)",
+					BD_StatusBarScreen.DrawString("UNRLC","Kick",			(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Heavy kick (finisher+)",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);	
 					yofs += 30;				
-					StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","30-55",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","30-55",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
-					note = "CC defines fist & kick damage and kick range.\nWith high CC you'll stun enemies more often.\n5 Light Punches in a row will reset CC.\nYou gain CC *only* when punches connect.";
+					note = "CC defines fist & kick damage and kick range.\n5 Light Punches in a row will reset CC.\n\nAs long as you keep punching an enemy,\nyour chance to stunlock them will increase.";
 					break;
 					
 					case 'BD_Chainsaw' : 
 					fillheight += 90;
-					StatusBarScreen.Fill("404040",30,80,1850,fillheight, 0.85);
+					BD_StatusBarScreen.Fill("404040",30,80,1850,fillheight, 0.85);
 					title = "Chainsaw";
 					desc = "Powerful chainsaw with a high chance to\nstunlock the target. Gets jammed easily.";
-					StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Saw attack (chance to jam)",
+					BD_StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Saw attack (chance to jam)",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Atk. Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","17.5 hits/sec",		
+					BD_StatusBarScreen.DrawString("UNRLC","Atk. Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","17.5 hits/sec",		
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","6-24",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","6-24",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Melee, high stunlock",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Melee, high stunlock",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 50;
-					StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Rev (pushes out blood)",
+					BD_StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Rev (pushes out blood)",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 																			
 					yofs += 50;
-					StatusBarScreen.DrawString("UNRLC","Any",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","(when off) Pull starter",
+					BD_StatusBarScreen.DrawString("UNRLC","Any",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","(when off) Pull starter",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);	
 					
 					note = "Attacking enemies covers the blade with blood.\nThe more there is, the higher is the chance\nfor the chainsaw to jam.\nThe more bloodied the saw, the harder it'll be\nto restart.\nSecondary attack pushes blood out, cleaning\nthe blade.";
 					break;
 					
 					case 'BD_Pistol' : 
-					StatusBarScreen.Fill("404040",30,80,1850,fillheight, 0.85);
+					BD_StatusBarScreen.Fill("404040",30,80,1850,fillheight, 0.85);
 					title = "Pistol";
 					desc = "Modern Pistol with high fire rate and\nstopping power.";					
-					StatusBarScreen.DrawString("UNRLC","Magazine",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","15",				(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Magazine",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","15",				(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Reload Time",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","1.29 sec",		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Reload Time",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","1.29 sec",		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 
 					yofs += 50;
-					StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Fire pistol (semi-auto)",
+					BD_StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Fire pistol (semi-auto)",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Fire Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","up to 8.75 shots/sec",		
+					BD_StatusBarScreen.DrawString("UNRLC","Fire Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","up to 8.75 shots/sec",		
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Base Damage",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","15",				(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Base Damage",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","15",				(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Bullet, medium DMG falloff",			
+					BD_StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Bullet, medium DMG falloff",			
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Best Range",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","< 512",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Best Range",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","< 512",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Bullet Speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","170",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);					
+					BD_StatusBarScreen.DrawString("UNRLC","Bullet Speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","170",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);					
 					break;
 					
 					case 'BD_Shotgun' : 
-					StatusBarScreen.Fill("404040",30,80,1850,fillheight, 0.85);
+					BD_StatusBarScreen.Fill("404040",30,80,1850,fillheight, 0.85);
 					title = "Shotgun";
 					desc = "Modern Shotgun with high stopping power.";					
-					StatusBarScreen.DrawString("UNRLC","Magazine",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","8",				(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Magazine",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","8",				(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Reload Time",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","1.05 sec (+0.35s per shell)",		
+					BD_StatusBarScreen.DrawString("UNRLC","Reload Time",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","1.05 sec (+0.35s per shell)",		
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 
 					yofs += 50;
-					StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Fire shotgun (semi-auto)",
+					BD_StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Fire shotgun (semi-auto)",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Fire Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","up to 1.3 shots/sec",		
+					BD_StatusBarScreen.DrawString("UNRLC","Fire Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","up to 1.3 shots/sec",		
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Base Damage",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","12 x 7",		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Base Damage",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","12 x 7",		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Pellet, high DMG falloff",			
+					BD_StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Pellet, high DMG falloff",			
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Best Range",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","< 400",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Best Range",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","< 400",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Pellet Speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","140",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);	
+					BD_StatusBarScreen.DrawString("UNRLC","Pellet Speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","140",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);	
 
 					note = "Reloading with am empty magazine takes longer,\nbecause you'll have to pump the shotgun\nafter loading the first shell.";
 					break;
 					
 					case 'BD_SuperShotgun' : 
 					fillheight += 100;
-					StatusBarScreen.Fill("404040",30,80,1850,fillheight, 0.85);
+					BD_StatusBarScreen.Fill("404040",30,80,1850,fillheight, 0.85);
 					title = "Sawed-Off Shotgun";
 					desc = "Quick-draw double-barrelled sawed-off shotgun.\nHigh power, low accuracy and range.";					
-					StatusBarScreen.DrawString("UNRLC","Magazine",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","2",				(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Magazine",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","2",				(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Reload Time",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","1.48s (1 shell) / 1.86s (full)",		
+					BD_StatusBarScreen.DrawString("UNRLC","Reload Time",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","1.48s (1 shell) / 1.86s (full)",		
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 
 					yofs += 50;
-					StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Fire both barrels",
+					BD_StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Fire both barrels",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Fire one barrel", (statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Fire one barrel", (statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 																			
 					yofs += 60;
-					StatusBarScreen.DrawString("UNRLC","Base Damage",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","12 x 12 (per shell)",		
+					BD_StatusBarScreen.DrawString("UNRLC","Base Damage",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","12 x 12 (per shell)",		
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Pellet, piercing,\nvery high DMG falloff",			
+					BD_StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Pellet, piercing,\nvery high DMG falloff",			
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 30*2;
-					StatusBarScreen.DrawString("UNRLC","Best Range",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","< 300",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Best Range",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","< 300",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Pellet Speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","140",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);	
+					BD_StatusBarScreen.DrawString("UNRLC","Pellet Speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","140",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);	
 
-					note = "Pellets can pierce enemies. The efficiency of\npiercing depends on the target’s health.\n\nYou can fire after loading only one shell.\n\nSometimes it's better to switch to a different\nweapon than spend time reloading.";
+					note = "Pellets can pierce enemies. The efficiency of\npiercing depends on the target's health.\n\nYou can fire after loading only one shell.\n\nSometimes it's better to switch to a different\nweapon than spend time reloading.";
 					break;
 					
 					case 'BD_Chaingun' : 
 					fillheight += 100;
-					StatusBarScreen.Fill("404040",30,80,1850,fillheight, 0.85);
+					BD_StatusBarScreen.Fill("404040",30,80,1850,fillheight, 0.85);
 					title = "Assault Rifle";
 					desc = "An assault rifle with good range and damage\nand a reflex sight for longer ranges.";					
-					StatusBarScreen.DrawString("UNRLC","Magazine",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","40",				(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);					
+					BD_StatusBarScreen.DrawString("UNRLC","Magazine",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","40",				(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);					
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Reload Time",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","1.54 sec (+1s if dry)",		
+					BD_StatusBarScreen.DrawString("UNRLC","Reload Time",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","1.54 sec (+1s if dry)",		
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 
 					yofs += 50;
-					StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","(Hip) Automatic fire\n(ADS) 3-round burst",
+					BD_StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","(Hip) Automatic fire\n(ADS) 3-round burst",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 																			
 					yofs += 30*2;
-					StatusBarScreen.DrawString("UNRLC","Fire Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","(Hip) 8.75 shots/sec\n(ADS) 7 shots/sec",		
+					BD_StatusBarScreen.DrawString("UNRLC","Fire Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","(Hip) 8.75 shots/sec\n(ADS) 7 shots/sec",		
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 																			
 					yofs += 40*2;
-					StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Toggle hip/ADS", (statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Toggle hip/ADS", (statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 																			
 					yofs += 60;
-					StatusBarScreen.DrawString("UNRLC","Base Damage",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","15",				(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Base Damage",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","15",				(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Bullet, low DMG falloff",			
+					BD_StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Bullet, low DMG falloff",			
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Best Range",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","< 640",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Best Range",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","< 640",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Bullet Speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","230",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);	
+					BD_StatusBarScreen.DrawString("UNRLC","Bullet Speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","230",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);	
 
 					note = "Aiming down sights (ADS) provides zoom and\nreduces spread but it also slows your\nmovement by 20% and switches the weapon\ninto a 3-round burst mode.";
 					break;
 					
 					case 'BD_RocketLauncher' : 
 					fillheight += 100;
-					StatusBarScreen.Fill("404040",30,80,1850,fillheight, 0.85);
+					BD_StatusBarScreen.Fill("404040",30,80,1850,fillheight, 0.85);
 					title = "Rocket & Grenade Launcher";
 					desc = "Drum-loaded multi-purpose platform\nthat can fire rockets and grenades.";					
-					StatusBarScreen.DrawString("UNRLC","Magazine",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","8",				(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);					
+					BD_StatusBarScreen.DrawString("UNRLC","Magazine",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","8",				(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);					
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Reload Time",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","1.89 sec",		
+					BD_StatusBarScreen.DrawString("UNRLC","Reload Time",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","1.89 sec",		
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 
 					yofs += 50;
-					StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Fire rocket",
+					BD_StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Fire rocket",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Projectile, explosive, linear",		
+					BD_StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Projectile, explosive, linear",		
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Proj. Speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","25 (initial) / 51.8 (max) ",		
+					BD_StatusBarScreen.DrawString("UNRLC","Proj. Speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","25 (initial) / 51.8 (max) ",		
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 																			
 					yofs += 40;
-					StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Fire grenade", (statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Fire grenade", (statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Projectile, explosive, bouncing",		
+					BD_StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Projectile, explosive, bouncing",		
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Proj. Speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","25 (initial)",		
+					BD_StatusBarScreen.DrawString("UNRLC","Proj. Speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","25 (initial)",		
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 																			
 					yofs += 60;
-					StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","20-160 + 128 (impact + blast)",				
+					BD_StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","20-160 + 128 (impact + blast)",				
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Blast Area",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","128",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);					
+					BD_StatusBarScreen.DrawString("UNRLC","Blast Area",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","128",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);					
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Fire Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","up to 1.75 shots/sec",			
+					BD_StatusBarScreen.DrawString("UNRLC","Fire Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","up to 1.75 shots/sec",			
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					note = "Rockets gain speed during flight.\n\nGrenades will beep and flash before exploding.\n\nRockets and grenades deal the same damage.";
 					break;
 					
 					case 'BD_PlasmaRifle' : 
 					fillheight += 60;
-					StatusBarScreen.Fill("404040",30,80,1850,fillheight, 0.85);
+					BD_StatusBarScreen.Fill("404040",30,80,1850,fillheight, 0.85);
 					title = "Plasma Rifle";
 					desc = "Plasma Rifle that deals damage over a small\narea. Projectiles have noticeable spread.";					
 
-					StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Fire plasma orbs",
+					BD_StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Fire plasma orbs",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Fire Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","8.75 shots/sec",(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Fire Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","8.75 shots/sec",(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","30",				(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Damage",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","30",				(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Blast Area",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","40",				(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Blast Area",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","40",				(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Projectile, explosive, linear",	
+					BD_StatusBarScreen.DrawString("UNRLC","Type",			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Projectile, explosive, linear",	
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 40;
-					StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","Manual Cooldown", (statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Secondary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Manual Cooldown", (statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Duration",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","0.06-0.57 sec",(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Duration",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","0.06-0.57 sec",(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					
 					note = "Duration of manual cooldown depends on how\nmuch heat was accumulated.\nAfter approx. 60 continuous shots the gun will\nbe forced to cool down.\nForced cooldown has a fixed duration of 1.66 sec.";
@@ -1325,35 +1325,35 @@ Class BD_WeaponHelpHandler : EventHandler {
 					case 'BD_BFG9000' : 
 					statofs2 = 1320;
 					fillheight += 210;					
-					StatusBarScreen.Fill("404040",30,80,1850,fillheight, 0.85);
+					BD_StatusBarScreen.Fill("404040",30,80,1850,fillheight, 0.85);
 					title = "BFG 9000";
 					desc = "Powered-up BFG that allows the shooter to\ncontrol the power of the shot. Hold the attack\nbutton to change the power of the attack.";					
 
-					StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","(Hold) Charge\n(Release) Fire BFG",
+					BD_StatusBarScreen.DrawString("UNRLC","Primary",		(statofs1,yofs),translation:Font.CR_ORANGE,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","(Hold) Charge\n(Release) Fire BFG",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30*2;
-					StatusBarScreen.DrawString("UNRLC","Fire Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","0.5-1.1 shots/sec",(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Fire Rate",		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","0.5-1.1 shots/sec",(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Orb Blast Damage",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","60-480",		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Orb Blast DMG",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","60-480",		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Orb Blast Area",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","92-288",		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Orb Blast Area",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","92-288",		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Beam Damage",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","52–206 (per beam)",		
+					BD_StatusBarScreen.DrawString("UNRLC","Beam Damage",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","52–206 (per beam)",		
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","Beam Range",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","256-1280",		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","Beam Range",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","256-1280",		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30;
-					StatusBarScreen.DrawString("UNRLC","# of Targets",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","6-14",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","# of Targets",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","6-14",			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30*2;
-					StatusBarScreen.DrawString("UNRLC","Proj. speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					StatusBarScreen.DrawString("UNRLC","7-21 (initial), slows down to 0",
+					BD_StatusBarScreen.DrawString("UNRLC","Proj. speed",	(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC","7-21 (initial), slows down to 0",
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					
@@ -1361,20 +1361,20 @@ Class BD_WeaponHelpHandler : EventHandler {
 					break;
 				}
 			}
-			StatusBarScreen.DrawString("MM2FONTO",title,			(mainofs,100),translation:Font.CR_ORANGE,scale:(1.5,1.5));
-			StatusBarScreen.DrawString("UNRLC",desc, 				(mainofs,180),translation:Font.CR_GREY,scale:(1.5,1.5),linespacing:10);
-			StatusBarScreen.DrawString("MM2FONTO","STATS", 			(statofs1+300,100),translation:Font.CR_GREY,scale:(1.5,1.5),linespacing:10);
+			BD_StatusBarScreen.DrawString("MM2FONTO",title,			(mainofs,100),translation:Font.CR_ORANGE,scale:(1.5,1.5));
+			BD_StatusBarScreen.DrawString("UNRLC",desc, 				(mainofs,180),translation:Font.CR_GREY,scale:(1.5,1.5),linespacing:10);
+			BD_StatusBarScreen.DrawString("MM2FONTO","STATS", 			(statofs1+300,100),translation:Font.CR_GREY,scale:(1.5,1.5),linespacing:10);
 			if (note) {
-				StatusBarScreen.DrawString("UNRLC","NOTES:",		(mainofs,330),translation:Font.CR_GREEN,scale:(1.5,1.5));
-				StatusBarScreen.DrawString("UNRLC",note,				(mainofs,370),translation:Font.CR_GREY,scale:(1.5,1.5),linespacing:10);
+				BD_StatusBarScreen.DrawString("UNRLC","NOTES:",		(mainofs,330),translation:Font.CR_GREEN,scale:(1.5,1.5));
+				BD_StatusBarScreen.DrawString("UNRLC",note,				(mainofs,370),translation:Font.CR_GREY,scale:(1.5,1.5),linespacing:10);
 			}
-			StatusBarScreen.Fill("04ac33",30,80,800,4,0.85);				//top left
-			StatusBarScreen.Fill("04ac33",1080,80,800,4,0.85);				//top right
-			StatusBarScreen.Fill("04ac33",30,fillheight+76,1850,4,0.85);	//bottom
-			StatusBarScreen.Fill("04ac33",30,82,4,fillheight-6,0.85);		//left
-			StatusBarScreen.Fill("04ac33",1876,82,4,fillheight-6,0.85);	//right
-			StatusBarScreen.Fill("04ac33",980,100,4,fillheight-32,0.4);	//middle
-			StatusBarScreen.DrawString("UNRLC","WEAPON INFO",		(837, 70),translation:Font.CR_GREEN,scale:(1.5,1.5));
+			BD_StatusBarScreen.Fill("04ac33",30,80,800,4,0.85);				//top left
+			BD_StatusBarScreen.Fill("04ac33",1080,80,800,4,0.85);				//top right
+			BD_StatusBarScreen.Fill("04ac33",30,fillheight+76,1850,4,0.85);	//bottom
+			BD_StatusBarScreen.Fill("04ac33",30,82,4,fillheight-6,0.85);		//left
+			BD_StatusBarScreen.Fill("04ac33",1876,82,4,fillheight-6,0.85);	//right
+			BD_StatusBarScreen.Fill("04ac33",980,100,4,fillheight-32,0.4);	//middle
+			BD_StatusBarScreen.DrawString("UNRLC","WEAPON INFO",		(837, 70),translation:Font.CR_GREEN,scale:(1.5,1.5));
         }
     }
 }
