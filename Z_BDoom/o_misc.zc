@@ -290,10 +290,7 @@ Class BD_TeleportFog : TeleportFog {
 
 // Explosive Barrel
 
-Class EBarrelPiece : SmallDebris {
-	Default {
-		BD_BaseDebris.sfxtype "debris";
-	}
+Class EBarrelPiece : WallPart {
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		wrot = random(16,24)*randompick(-1,1);
@@ -301,19 +298,23 @@ Class EBarrelPiece : SmallDebris {
 	}
 	states {
 		Spawn:
-			BPRT AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 {
-				Spawn("BD_EbarrelTrail",pos+(frandom(-3,3),frandom(-3,3),frandom(-3,3)));	
+			BPRT A 1 {				
+				let a = Spawn("BD_EbarrelTrail",pos+(frandom(-3,3),frandom(-3,3),frandom(-3,3)));				
+				if (a) {
+					a.alpha = alpha*0.8;
+					a.vel = (frandom(-0.2,0.2),frandom(-0.2,0.2),frandom(-0.2,0.2));
+				}
 				scale *= 0.93;
 				roll+=wrot;
+				A_FadeOut(0.01);
 			}
-			stop;
+			wait;
 	}
 }
 
 Class BD_EbarrelTrail : BD_BaseFlare {
 	Default {
 		scale 0.05;
-		alpha 0.9;
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
@@ -389,8 +390,6 @@ Class BD_ExplosiveBarrel : ExplosiveBarrel {
 				scale.x *= randompick(-1,1);
 				A_SprayDecal("BarrelScorch",128);			
 				if (bdoom_debris) {
-					for (int i = random(8,20); i > 0; i--)
-						A_SpawnItemEx("RocketDebris",0,0,1,	frandom(-3,3),frandom(-3,3),frandom(9,12));
 					for (int i = random(3,6); i > 0; i--)
 						A_SpawnItemEx("SmokingPiece",	frandom(-6,6),frandom(-6,6),frandom(4,24),	frandom(-5,5),frandom(-5,5),frandom(7,12));
 					for (int i = random(4,7); i > 0; i--)
