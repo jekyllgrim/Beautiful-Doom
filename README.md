@@ -31,14 +31,13 @@ It's possible to play the version that is currently in the repository but hasn't
 
 4. Run the archive as you would run any mod; from command line or a bat file in the GZDoom directory:
 
-		```
+	```
 	gzdoom.exe -file Beautiful-Doom-master.zip 
 	```
-	
-	
 	Or, if you renamed it: 
-	
-		gzdoom.exe -file Beautiful-Doom-master.pk3
+	```
+	gzdoom.exe -file Beautiful-Doom-master.pk3
+	```
 	
 5. If you're getting errors, try running it with the latest [development build of GZDoom](https://devbuilds.drdteam.org/gzdoom/). Github builds may contain features that haven't made it into a stable GZDoom release yet.
 
