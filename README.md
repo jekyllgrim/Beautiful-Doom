@@ -23,18 +23,25 @@ gzdoom.exe -file Beautiful-Doom.zip
 
 It's possible to play the version that is currently in the repository but hasn't been made into a separate release yet:
 
-1. Click the green "Clone or download" button in the top right part of the page.
-2. Click "Download ZIP". You do NOT need to unpack the downloaded archive!
-3. (Optional) Rename the downloaded .zip to .pk3 to remember that you don't need to unpack it.
+1. Click the green "**Code**" button in the top right part of the page. (Previously it was called "Clone or download")
+
+2. Click "**Download ZIP**". You do NOT need to unpack the downloaded archive!
+
+3. (Optional) Rename the downloaded **.zip** to **.pk3** to remember that you don't need to unpack it.
+
 4. Run the archive as you would run any mod; from command line or a bat file in the GZDoom directory:
 
-		gzdoom.exe -file Beautiful-Doom-master.zip 
-		
+		```
+	gzdoom.exe -file Beautiful-Doom-master.zip 
+	```
+	
+	
 	Or, if you renamed it: 
 	
 		gzdoom.exe -file Beautiful-Doom-master.pk3
 	
 5. If you're getting errors, try running it with the latest [development build of GZDoom](https://devbuilds.drdteam.org/gzdoom/). Github builds may contain features that haven't made it into a stable GZDoom release yet.
+
 6. Enjoy!
 
 ## USE OF RESOURCES AND PERMISSIONS
