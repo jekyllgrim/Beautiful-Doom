@@ -144,6 +144,7 @@ Class BDoomMonster : BDoomActor abstract {
 		if (bdoom_gibs == 0)
 			return;
 		A_StartSound("gibs/gibbed",volume:0.65);
+		//a fountain of blood spraying in all directions and creating multiple drops on landing
 		for (int i = random(16,22); i > 0; i--) {
 			let bld = BD_Blood(Spawn("BD_GibBlood", (pos.x + frandom(-5.0,5.0), pos.y + frandom(-5.0,5.0), pos.z + frandom(16,default.height))));
 			if (bld) {
@@ -165,7 +166,7 @@ Class BDoomMonster : BDoomActor abstract {
 			}
 		}
 		
-		//generic-looking meat
+		//generic-looking meat affected by vel
 		for (int i = random(5,7); i > 0; i--)
 			BD_GibSpawn("BasicMeatPiece",hpos: 4,vpos: frandom(8,28), hvel: 1.6, vvel: frandom(6,12), spawnchance: 70);
 		
@@ -268,6 +269,8 @@ Class BDoomMonster : BDoomActor abstract {
 				if (burncorpse) {
 					burncorpse.master = self;
 					burncorpse.A_SetTranslation("Firedeath");
+					burncorpse.fadestart = 0;
+					burncorpse.fadespeed = 0.05;
 				}
 				if (bdoom_flames) {
 					burnflame = BurningBodyFlame(Spawn("BurningBodyFlame",pos));
@@ -283,6 +286,8 @@ Class BDoomMonster : BDoomActor abstract {
 				if (burncorpse) {
 					burncorpse.master = self;
 					burncorpse.A_SetTranslation("GreenFiredeath");
+					burncorpse.fadestart = 0;
+					burncorpse.fadespeed = 0.05;
 				}
 				if (bdoom_flames) {
 					burnflame = BurningBodyFlame(Spawn("BurningBodyFlame",pos));
