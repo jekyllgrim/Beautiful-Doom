@@ -329,13 +329,25 @@ Class BD_EbarrelTrail : BD_BaseFlare {
 	}
 }
 
-Class BD_ExplosiveBarrel : ExplosiveBarrel {
-	Default {
-		scale 0.8;
-		deathsound "world/ebarrel";
-	}
+Class BD_ExplosiveBarrel : BDoomActor {
 	BD_BaseFlare flare;
-
+	private int otherBarrelsNearby;
+	Default {
+		Health 20;
+		Radius 10;
+		Height 42;
+		+SOLID
+		+SHOOTABLE
+		+NOBLOOD
+		+ACTIVATEMCROSS
+		+DONTGIB
+		+NOICEDEATH
+		+OLDRADIUSDMG
+		deathsound "world/ebarrel";
+		Obituary "$OB_BARREL";
+		scale 0.8;
+	}
+	private array < Class<BD_ExplosiveBarrel> > barrels;
 	override void Tick() {
 		super.Tick();
 		if (isFrozen())
@@ -347,6 +359,27 @@ Class BD_ExplosiveBarrel : ExplosiveBarrel {
 			flare.fcolor = 'green';
 			flare.A_SetRenderstyle(0.3,Style_Add);
 		}
+		if (GetAge() % 35 == 0) {
+			int dist = 14;
+			BlockThingsIterator itr = BlockThingsIterator.Create(self,dist);
+			while (itr.next()) {
+				let obj = itr.thing;
+				if (obj == self)
+					continue;
+				if (!(obj is "BD_ExplosiveBarrel"))
+					continue;
+				if (barrels.Find(obj) != barrels.Size())
+					continue;
+				if (Distance3D(obj) > dist)
+					continue;
+				barrels.Push(obj);
+			}
+			if (flare) {
+				double fac = Clamp(barrels.Size()*0.8,1,20);
+				flare.alpha = 0.5 / fac;
+			}
+			//console.printf("other barrels nearby: %d",barrels.Size());
+		}
 		if (bdoom_flames && flare)
 			flare.SetOrigin((pos.x,pos.y,pos.z+26),true);
 		if (!bdoom_flames && flare)
@@ -357,19 +390,22 @@ Class BD_ExplosiveBarrel : ExplosiveBarrel {
 			TNT1 A 0 NoDelay A_Jump(256,1,2,3,4,5);
 		Idle:
 			BEBR ABCDE random(3,5) {
-				if (bdoom_flames && frandom(0,10) > 7) {
-					A_SpawnParticle(
-						"green",
-						SPF_FULLBRIGHT|SPF_RELATIVE,
-						lifetime:random(15,30),
-						size:3,
-						angle:random(0,360),
-						xoff:random(-5,5),yoff:random(-5,5),zoff:frandom(27.5,29),
-						velz:frandom(0.2,0.3),
-						accelz:-0.005,
-						sizestep:-0.09
-					);
-				}
+				if (bdoom_flames) {
+						double chance = 4 / Clamp(barrels.Size()*0.8,1,20);
+						if (frandom(0,10) < chance) {
+							A_SpawnParticle(
+								"green",
+								SPF_FULLBRIGHT|SPF_RELATIVE,
+								lifetime:random(15,30),
+								size:3,
+								angle:random(0,360),
+								xoff:random(-5,5),yoff:random(-5,5),zoff:frandom(27.5,29),
+								velz:frandom(0.2,0.3),
+								accelz:-0.005,
+								sizestep:-0.09
+							);
+						}
+					}
 			}
 			loop;
 		Death:
@@ -388,8 +424,9 @@ Class BD_ExplosiveBarrel : ExplosiveBarrel {
 				A_SetRenderstyle(0.8,Style_ADD);
 				scale *= frandom(0.7,1);
 				scale.x *= randompick(-1,1);
-				A_SprayDecal("BarrelScorch",128);			
-				if (bdoom_debris) {
+				A_SprayDecal("BarrelScorch",128);	
+				canSeePlayer = CheckPlayerSights();
+				if (bdoom_debris && canSeePlayer) {
 					for (int i = random(3,6); i > 0; i--)
 						A_SpawnItemEx("SmokingPiece",	frandom(-6,6),frandom(-6,6),frandom(4,24),	frandom(-5,5),frandom(-5,5),frandom(7,12));
 					for (int i = random(4,7); i > 0; i--)
@@ -397,14 +434,14 @@ Class BD_ExplosiveBarrel : ExplosiveBarrel {
 				}
 			}
 			BEXP DDEEFFGGH 1 {
-				if (bdoom_debris) {
+				if (bdoom_debris && canSeePlayer) {
 					for (int i = random(0,4); i > 0; i--)
 						A_SpawnItemEx("BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(1,52),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.2,1));
 				}
 			}
 			BEXP H 1 A_Explode();
 			BEXP IJKLMNOPQ 3 {
-				if (bdoom_debris)
+				if (bdoom_debris && canSeePlayer)
 					A_SpawnItemEx("BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(1,52),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.2,1),failchance:32);
 			}
 			TNT1 A 1050 A_BarrelDestroy;
