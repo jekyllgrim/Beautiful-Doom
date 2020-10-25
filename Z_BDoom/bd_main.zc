@@ -16,22 +16,23 @@ Class BDoomActor : Actor abstract {
 	}
 	
 	bool CheckLandingSize (double cradius = 0, bool checkceiling = false) {
-		bool ret = false;
 		if (checkceiling) {
 			double ceilingHeight = GetZAt (flags: GZF_CEILING);
 			for (int i = 0; i < 360; i += 45) {
 				double curHeight = GetZAt (cradius, 0, i, GZF_ABSOLUTEANG | GZF_CEILING);
-				ret = ret || (curHeight > ceilingHeight);
+				if (curHeight > ceilingz)
+					return true;
 			}
 		}
 		else {
 			double floorHeight = GetZAt ();
 			for (int i = 0; i < 360; i += 45) {
 				double curHeight = GetZAt (cradius, 0, i, GZF_ABSOLUTEANG);
-				ret = ret || (curHeight < floorHeight);
+				if (curHeight < floorz)
+					return true;
 			}
 		}
-		return ret;
+		return false;
 	}
 	
 	int BD_Sign (double i) {
