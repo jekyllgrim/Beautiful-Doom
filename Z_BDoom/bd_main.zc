@@ -6,6 +6,15 @@ Class BDoomActor : Actor abstract {
 	protected double pi;
 	protected name bcolor;
 	
+	protected bool canSeePlayer;
+	bool CheckPlayerSights() {
+		for ( int i=0; i<MAXPLAYERS; i++ ) 	{
+			if ( playeringame[i] && CheckSight(players[i].mo) )
+				return true;
+		}
+		return false;
+	}
+	
 	bool CheckLandingSize (double cradius = 0, bool checkceiling = false) {
 		bool ret = false;
 		if (checkceiling) {
@@ -128,15 +137,15 @@ Class BD_BaseDebris : BDoomActor abstract {
 	Default {
 		BD_BaseDebris.sfxtype 'debris';
 		+ROLLSPRITE
-		+NOTAUTOAIMED
-		+MISSILE			//enters Death when it hits the floor
+		+FORCEXYBILLBOARD
+		+INTERPOLATEANGLES
 		+NOBLOCKMAP
+		/*+NOTAUTOAIMED
+		+MISSILE
 		+DROPOFF
 		+NOTELEPORT
-		+FORCEXYBILLBOARD
 		+THRUACTORS
-		+INTERPOLATEANGLES
-		-ALLOWPARTICLES
+		-ALLOWPARTICLES*/
 		renderstyle 'Translucent';
 		alpha 1.0;
 		radius 1;
@@ -214,12 +223,19 @@ Class SmallDebris : BD_BaseDebris abstract {
 		SmallDebris.dbrake 0;
 		SmallDebris.hitceiling false;
 		+MOVEWITHSECTOR
+		-NOBLOCKMAP
 	}
 	
 	override void BeginPlay() {
 		super.BeginPlay();		
 		ChangeStatnum(110);
 	}
+    void BD_SetOrigin (Vector3 newPos) {
+        LinkContext ctx;
+        UnlinkFromWorld (ctx);
+        SetXYZ (newPos);
+        LinkToWorld (ctx);
+    }
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		if (vel.length() != 0 || gravity != 0) //mark as movable if given any non-zero velocity
@@ -249,6 +265,7 @@ Class SmallDebris : BD_BaseDebris abstract {
 		}
 		if (!bNOINTERACTION) {
 			UpdateWaterLevel();
+			FindFloorCeiling();
 			if (d_spawn && InStateSequence(curstate,d_spawn)) {
 				//check if hit ceiling: (if hitceiling is true)
 				if (hitceiling && pos.z >= ceilingz - 10 && vel.z > 0) {
@@ -335,8 +352,10 @@ Class SmallDebris : BD_BaseDebris abstract {
 			}
 		}
 		//finally, manually move the object:
-		if (moving)
-			SetOrigin(level.vec3offset(pos, vel),true);
+		if (moving) {
+			//SetOrigin(level.vec3offset(pos, vel),true);
+			BD_SetOrigin(level.vec3offset(pos, vel));
+		}
 	}
 	virtual void BD_HitFloor() {			//hit floor if close enough
 		if (removeonfall) {
