@@ -368,6 +368,8 @@ Class SmallDebris : BD_BaseDebris abstract {
 		}
 		landed = true;
 		vel.z = 0;
+		if (Voffset < 0)
+			Voffset = 0;
 		if (onliquid) {
 			A_Stop();
 			A_StartSound(liquidsound,slot:CHAN_AUTO,flags:CHANF_DEFAULT,1.0,attenuation:3);
