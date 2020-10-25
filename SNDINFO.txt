@@ -62,6 +62,9 @@ bodyfall1	"sounds/bodyfalls/bodyfall1.ogg"
 bodyfall2	"sounds/bodyfalls/bodyfall2.ogg"
 bodyfall3	"sounds/bodyfalls/bodyfall3.ogg"
 
+body/burn/start	"sounds/gore/body_burn_start.wav"
+body/burn/loop	"sounds/gore/body_burn_loop.wav"
+
 $playersound	player male *land DSPLAND
 $playersound	player female *land DSPLAND
 $playersound	player other *land DSPLAND
