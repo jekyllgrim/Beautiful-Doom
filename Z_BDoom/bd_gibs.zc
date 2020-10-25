@@ -85,7 +85,6 @@ class BD_BaseGib : SmallDebris abstract {
 	override void BD_HitFloor() {
 		if (waterlevel > 0)
 			return;
-		Super.BD_HitFloor();
 		gravity = default.gravity;
 		if (bflat) {
 			bFLATSPRITE = true;
@@ -95,6 +94,8 @@ class BD_BaseGib : SmallDebris abstract {
 			roll = 0;
 		A_SetMass(bmass);
 		bDROPPED = true;
+		Voffset = 0;
+		Super.BD_HitFloor();
 	}
 	void BD_GibBleed(Class<Actor> spawnclass, double hpos = 0, double vpos = 0, int spawnchance = 100) {	
 		if (bNOBLOOD || !bdoom_blood)
@@ -113,7 +114,7 @@ class BD_BaseGib : SmallDebris abstract {
 		}
 	}
 	override void Tick() {
-		Super.Tick();	//SmallDebris's Tick, not Actor's — handles movement itself
+		Super.Tick();	//SmallDebris's Tick, not Actor's
 		if (isFrozen())
 			return;		
 		//remove if out of level:
