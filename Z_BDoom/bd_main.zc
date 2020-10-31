@@ -409,7 +409,7 @@ Class SmallDebris : BD_BaseDebris abstract {
 }
 
 //base class for flares and flame effects
-Class BD_BaseFlare : SmallDebris abstract {
+Class BD_BaseFlare : SmallDebris {
 	protected state mdeath;
 	protected state mxdeath;
 	name fcolor;		//flare of the color; can be set as a property or externally
