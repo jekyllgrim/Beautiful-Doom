@@ -190,6 +190,7 @@ class BD_ActorOverrideHandler : EventHandler {
 			switch (e.Replacee.GetClassName()) {
 				case 'Blood' : 				e.Replacement = 'BD_Blood'; 	break;
 				case 'BloodSplatter' : 		e.Replacement = 'BD_Blood'; 	break;
+				case 'AxeBlood' : 				e.Replacement = 'BD_BloodSpurt'; 	break;
 			}
 		}
 		if (bdoom_replacemonsters) {
