@@ -443,6 +443,8 @@ Class BD_Rocket : BDoomActor {
 }
 
 Class BD_HomingRocket : BD_Rocket {
+	protected int delay;
+	protected BD_ProjFlare sflare;
 	Default {
 		+SEEKERMISSILE;
 		+SCREENSEEKER;
@@ -466,11 +468,6 @@ Class BD_HomingRocket : BD_Rocket {
 					A_StartSound("weapons/rocklf",slot:CHAN_5,flags:CHANF_DEFAULT,1.0);
 				if(bdoom_weapons == 1)
 					A_StartSound("weapons/rlan/fire",slot:CHAN_5,flags:CHANF_DEFAULT,1.0);
-				let flare = BD_ProjFlare(Spawn("SeekerFlare",pos));
-				if (flare) {
-					flare.master = self;
-					flare.xoffset = 18;
-				}
 			}
 			HROK AAAA 1 bright { 
 				if(bdoom_debris)
@@ -478,16 +475,25 @@ Class BD_HomingRocket : BD_Rocket {
 			}
 			TNT1 A 0 A_StartSound("weapons/rlan/fly",slot:CHAN_BODY,flags:CHANF_DEFAULT|CHANF_LOOPING,1.0,attenuation:3);
 			HROK A 1 bright { 
-				A_SeekerMissile(0,3, SMF_LOOK | SMF_PRECISE | SMF_CURSPEED,200);
 				if(bdoom_debris)
 					A_SpawnItemEx("BD_RocketTrail",-15,frandom(-1,1),frandom(-1,1),0,0,0,0);
+				//we let the rocket wait 30 tics before starting to home, so that it can be more easily shot around corners/ledges
+				if (delay < 10)
+					delay++;
+				else {
+					if (!sflare) {
+						sflare = BD_ProjFlare(Spawn("SeekerFlare",pos));
+						sflare.master = self;
+						sflare.xoffset = 18;
+					}
+					A_SeekerMissile(0,3, SMF_LOOK | SMF_PRECISE | SMF_CURSPEED,200);
+				}
 			}
 			wait;
 	}
 }
 
 Class ModernRocket : BD_Rocket {
-	Class<Actor> trailactor;
 	Default {
 		+FORCERADIUSDMG
 		scale 0.4;
