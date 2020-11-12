@@ -4,8 +4,8 @@ class BD_BaseGib : SmallDebris abstract {
 	protected double bmass; //the mass the gib gains after it lands
 	protected int restframe; //last frame used in death animation
 	protected bool bflat;
-	bool instant;
-	protected int outboundscounter;
+	bool instant; //if true, goes to rest position immediately without animation (used by some gory decorations that spawn gibs under themselves, as well as a placable gibbed corpse)
+	protected int outboundscounter; //is used if the gib ends up in the void: if so, it'll be removed but only after a delay
 	Default {		
 		BD_BaseDebris.sfxtype 'gibs';
 		SmallDebris.removeonliquid false;
@@ -15,12 +15,15 @@ class BD_BaseGib : SmallDebris abstract {
 		SmallDebris.hitceiling true;
 		SmallDebris.liquidsound "world/watersplash";
 		RenderStyle 'normal';
+		//remains of an older iteration when the gibs were regular shootable actors:
+		/*
 		+NOTARGETSWITCH		//so that gibs pushed by explosions don't switch their target field to player
-		-NOGRAVITY
-		-MISSILE
-		+ROLLCENTER
 		+BUDDHA //can't use +NODAMAGE here because it severely reduces the pushing effect of explosions
 		+NOPAIN
+		-MISSILE
+		-NOGRAVITY
+		*/
+		+ROLLCENTER
 		Deathsound "gibs/meatland";
 		gravity 0.6;
 		mass 1;

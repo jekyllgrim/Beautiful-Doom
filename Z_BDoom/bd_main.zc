@@ -7,6 +7,7 @@ Class BDoomActor : Actor abstract {
 	protected name bcolor;
 	
 	protected bool canSeePlayer;
+	//a simple check that returns true if the actor is in any player's LOS:
 	bool CheckPlayerSights() {
 		for ( int i=0; i<MAXPLAYERS; i++ ) 	{
 			if ( playeringame[i] && CheckSight(players[i].mo) )
@@ -14,7 +15,7 @@ Class BDoomActor : Actor abstract {
 		}
 		return false;
 	}
-	
+	//returns true if 8 points around the actor in a specified radius are at the same height as at its pos; used by blood pools:
 	bool CheckLandingSize (double cradius = 0, bool checkceiling = false) {
 		if (checkceiling) {
 			double ceilingHeight = GetZAt (flags: GZF_CEILING);
@@ -43,9 +44,10 @@ Class BDoomActor : Actor abstract {
 	}
 	
 	static const string BD_LiquidFlats[] = { 
-		"BLOOD", "LAVA", "NUKAGE", "SLIME01", "SLIME02", "SLIME03", "SLIME04", "SLIME05", "SLIME06", "SLIME07", "SLIME08", "BDT_"
+		"BLOOD", "LAVA", "NUKAGE", "WATER", "SLIME01", "SLIME02", "SLIME03", "SLIME04", "SLIME05", "SLIME06", "SLIME07", "SLIME08", "BDT_"
 	};
 	
+	//returns true if the floor texture below the actor is either defined as liquid in TERRAIN, or its name matches something in BD_LiquidFlats array
 	bool CheckLiquidFlat() {
 		if (!self)
 			return false;
@@ -59,6 +61,7 @@ Class BDoomActor : Actor abstract {
 		return false;
 	}
 	
+	//uses handler by 3saster that iterates through ANIMDEFS and ANIMATED lumps to check if the floor (or ceiling) texture is defined as animated:
 	static bool CheckAnimated(actor checker = null, bool ceiling = false) {
 		if (!checker)
 			return false;
@@ -154,7 +157,10 @@ Class BD_BaseDebris : BDoomActor abstract {
 		mass 1;
 		damage 0;
 	}
-	// thanks Gutawer for explaning the math and helping this function come to life
+	/*
+	Makes the object fly to its target within 20 tics using projectile motion formula; used by gibs for a resurrection animation
+	(thanks Gutawer for explaning the math and helping this function come to life)
+	*/
 	virtual void FlyBack() {
 		if (!target)
 			return;
@@ -231,6 +237,7 @@ Class SmallDebris : BD_BaseDebris abstract {
 		super.BeginPlay();		
 		ChangeStatnum(110);
 	}
+	//a cheaper version of SetOrigin that also doesn't update floorz/ceilingz (because they're updated manually in Tick) - thanks phantombeta
     void BD_SetOrigin (Vector3 newPos) {
         LinkContext ctx;
         UnlinkFromWorld (ctx);
@@ -239,7 +246,7 @@ Class SmallDebris : BD_BaseDebris abstract {
     }
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		if (vel.length() != 0 || gravity != 0) //mark as movable if given any non-zero velocity
+		if (vel.length() != 0 || gravity != 0) //mark as movable if given any non-zero velocity or gravity
 			moving = true;
 		d_spawn = FindState("Spawn");
 		d_death = FindState("Death");
@@ -265,8 +272,8 @@ Class SmallDebris : BD_BaseDebris abstract {
 			}
 		}
 		if (!bNOINTERACTION) {
-			UpdateWaterLevel();
-			FindFloorCeiling();
+			UpdateWaterLevel(); //manually update waterlevel
+			FindFloorCeiling(); //manually update floorz/ceilingz
 			if (d_spawn && InStateSequence(curstate,d_spawn)) {
 				//check if hit ceiling: (if hitceiling is true)
 				if (hitceiling && pos.z >= ceilingz - 10 && vel.z > 0) {
@@ -284,7 +291,8 @@ Class SmallDebris : BD_BaseDebris abstract {
 						wallnormal = (-hit.HitLine.delta.y,hit.HitLine.delta.x).unit();
 						wallpos = hit.HitLocation;
 						if (!hit.LineSide)
-							wallnormal *= -1;						
+							wallnormal *= -1;
+						//if the actor can bounce off walls and isn't too close to the floor, it'll bounce:
 						if (bBOUNCEONWALLS || pos.z <= floorz+Voffset){		
 							if (wallbouncesound)
 								A_StartSound(wallbouncesound);
@@ -298,6 +306,7 @@ Class SmallDebris : BD_BaseDebris abstract {
 								vel *= bouncefactor;
 							A_FaceMovementDirection();
 						}
+						//otherwise call hitwall
 						else
 							BD_HitWall();
 					}
@@ -307,10 +316,13 @@ Class SmallDebris : BD_BaseDebris abstract {
 			}
 			//stick to surface if already landed:
 			if (landed) {
+				//stick to ceiling if on ceiling
 				if (onceiling)
-					SetOrigin((pos.x,pos.y,ceilingz-Voffset),true);
+					SetZ(ceilingz-Voffset);
+				//otherwise stick to floor (and, if necessary, slide on it)
 				else {
 					SetZ(floorz+Voffset);
+					//do the slide if friction allows it (as defined by dbrake property)
 					if (dbrake > 0) {
 						if (!(vel.x ~== 0) || !(vel.y ~== 0)) {
 							vel.xy *= dbrake;
@@ -354,7 +366,7 @@ Class SmallDebris : BD_BaseDebris abstract {
 		}
 		//finally, manually move the object:
 		if (moving) {
-			//SetOrigin(level.vec3offset(pos, vel),true);
+			//this cheaper version won't automatically update floorz/ceilingz, which is good for objects like smoke that don't interact with geometry
 			BD_SetOrigin(level.vec3offset(pos, vel));
 		}
 	}
@@ -371,6 +383,7 @@ Class SmallDebris : BD_BaseDebris abstract {
 		vel.z = 0;
 		if (Voffset < 0)
 			Voffset = 0;
+		//landed on liquid:
 		if (onliquid) {
 			A_Stop();
 			A_StartSound(liquidsound,slot:CHAN_AUTO,flags:CHANF_DEFAULT,1.0,attenuation:3);
@@ -378,16 +391,23 @@ Class SmallDebris : BD_BaseDebris abstract {
 				destroy();
 				return;
 			}
+			/*
+			if it's a flat (non-3d-floor) liquid, we'll visually sink the object into it a bit
+			either by 50% of its height or by the value of its liquidheight property
+			*/
 			Voffset = (liquidheight == 0) ? (-(height * 0.5)) : -liquidheight;
+			//enter "DeathLiquid" state if present, otherwise enter "Death"
 			if (d_liquid)
 				SetState(d_liquid);
 			else if (d_death)
 				SetState(d_death);
 		}
+		//otherwise enter "Death" state if present
 		else if (d_death)
 			SetState(d_death);
 		SetZ(floorz+Voffset);
 	}
+	//stick to ceiling and enter "HitCeiling" state if present:
 	virtual void BD_Hitceiling() {
 		if (ceilingpic == skyflatnum) {
 			destroy();
@@ -397,6 +417,7 @@ Class SmallDebris : BD_BaseDebris abstract {
 		if (d_ceiling)
 			SetState(d_ceiling);
 	}
+	//enter "HitWall" state if present:
 	virtual void BD_HitWall() {
 		if (d_wall)
 			SetState(d_wall);	
@@ -408,7 +429,11 @@ Class SmallDebris : BD_BaseDebris abstract {
 	}
 }
 
-//base class for flares and flame effects
+/*
+modifiable class for flares and flames
+used both as a universal flare (setting fcolor will change its appearance) and as a base class for fire FX
+must NOT be abstract
+*/
 Class BD_BaseFlare : SmallDebris {
 	protected state mdeath;
 	protected state mxdeath;
@@ -454,7 +479,11 @@ Class BD_BaseFlare : SmallDebris {
 	}
 }
 
-// base glow to be spawned alongside projectiles
+/*
+base glow to be spawned alongside projectiles
+the projectile should be assigned as its master
+it'll follow the projectile and will disappear once the projectile enters "Death" or "XDeath" state (or disappears)
+*/
 Class BD_ProjFlare : BD_BaseFlare {
 	double xoffset;
 	Default {
@@ -541,14 +570,14 @@ Class ParticleFire_Yellow : ParticleFire_General {
 
 Class ParticleFire_Green : ParticleFire_Red {
 	Default {
-	translation "0:3=112:127","5:8=112:127","9:12=112:127","13:15=112:127","16:47=112:127","48:79=112:127","96:111=112:127","112:127=112:127","128:151=112:127","152:159=112:127","160:167=112:127","169:191=112:127","193:207=112:127","208:223=112:127","224:231=112:127","232:235=112:127","236:239=112:127","240:247=112:127","248:249=112:127","250:254=112:127","255:255=112:127";
+		translation "0:3=112:127","5:8=112:127","9:12=112:127","13:15=112:127","16:47=112:127","48:79=112:127","96:111=112:127","112:127=112:127","128:151=112:127","152:159=112:127","160:167=112:127","169:191=112:127","193:207=112:127","208:223=112:127","224:231=112:127","232:235=112:127","236:239=112:127","240:247=112:127","248:249=112:127","250:254=112:127","255:255=112:127";
 	}
 }
 
 
 
-///////////////;
-//// SMOKE ////;
+///////////////
+//// SMOKE ////
 ///////////////
 
 Class BD_BaseSmoke : SmallDebris abstract {
