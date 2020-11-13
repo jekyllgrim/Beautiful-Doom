@@ -1,7 +1,4 @@
 Class BD_DeadBody : Actor abstract {
-	Default {
-		+NOBLOCKMAP
-	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		scale.x *= randompick(-1,1);
