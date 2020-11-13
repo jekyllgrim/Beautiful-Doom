@@ -281,14 +281,12 @@ Class BDoomMonster : BDoomActor abstract {
 			stop;
 		Death.GreenFire:
 			TNT1 A 0 {
-				if (GetRenderStyle() == 0) {
-					burncorpse = TranslatedBurningBody(Spawn("TranslatedBurningBody",pos));
-					if (burncorpse) {
-						burncorpse.master = self;
-						burncorpse.A_SetTranslation("GreenFiredeath");
-						burncorpse.fadestart = 0;
-						burncorpse.fadespeed = 0.05;
-					}
+				burncorpse = TranslatedBurningBody(Spawn("TranslatedBurningBody",pos));
+				if (burncorpse) {
+					burncorpse.master = self;
+					burncorpse.A_SetTranslation("GreenFiredeath");
+					burncorpse.fadestart = 0;
+					burncorpse.fadespeed = 0.05;
 				}
 				if (bdoom_flames) {
 					burnflame = BurningBodyFlame(Spawn("BurningBodyFlame",pos));
@@ -302,7 +300,7 @@ Class BDoomMonster : BDoomActor abstract {
 			stop;
 		Death.PlasmaDamage:
 			TNT1 A 0 {
-				if (GetRenderStyle() == 0) {
+				if (GetRenderStyle() == 1) {
 					burncorpse = TranslatedBurningBody(Spawn("TranslatedBurningBody",pos));
 					if (burncorpse) {
 						burncorpse.master = self;
@@ -317,7 +315,7 @@ Class BDoomMonster : BDoomActor abstract {
 			TNT1 A 0 {
 				burning = true;
 				burntimer = 0;
-				if (GetRenderStyle() == 0)
+				if (GetRenderStyle() == 1)
 					A_SetTranslation("Scorched");
 				return ResolveState("Death");
 			}
