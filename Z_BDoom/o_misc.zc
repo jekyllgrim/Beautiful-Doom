@@ -329,22 +329,12 @@ Class BD_EbarrelTrail : BD_BaseFlare {
 	}
 }
 
-Class BD_ExplosiveBarrel : BDoomActor {
+Class BD_ExplosiveBarrel : ExplosiveBarrel {
 	BD_BaseFlare flare;
 	private int otherBarrelsNearby;
+	mixin BD_PlayerSightCheck;
 	Default {
-		Health 20;
-		Radius 10;
-		Height 42;
-		+SOLID
-		+SHOOTABLE
-		+NOBLOOD
-		+ACTIVATEMCROSS
-		+DONTGIB
-		+NOICEDEATH
-		+OLDRADIUSDMG
 		deathsound "world/ebarrel";
-		Obituary "$OB_BARREL";
 		scale 0.8;
 	}
 	private array < Class<BD_ExplosiveBarrel> > barrels;
@@ -419,7 +409,7 @@ Class BD_ExplosiveBarrel : BDoomActor {
 			BEXP AABBC 1;
 			BEXP C 1 A_Scream;
 			TNT1 A 0 {
-				let bar = Spawn("ExplodedBarrel",pos);
+				let bar = Spawn("BD_ExplodedBarrel",pos);
 				bar.master = self;
 				A_SetRenderstyle(0.8,Style_ADD);
 				scale *= frandom(0.7,1);
@@ -448,34 +438,34 @@ Class BD_ExplosiveBarrel : BDoomActor {
 			TNT1 A 5 {
 				A_SetRenderstyle(1.0,Style_Normal);
 				A_SetScale(0.8);
-				A_Respawn();
 				A_RemoveChildren(true,RMVF_EVERYTHING);
+				A_Respawn();
 			}
 			wait;
 	}
 }
 
-Class ExplodedBarrel : Actor {
+Class BD_ExplodedBarrel : SmallDebris {
 	Default {
 		+NOINTERACTION
-		+MOVEWITHSECTOR
-		+RELATIVETOFLOOR
 		scale 0.8;
 	}
 	static const string SSprite[] =
 		{
 			"BXP2","BXP3","BXP4"
 	};
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		sprite = GetSpriteIndex(SSprite[random(0,2)]);
+	}
 	states {
 		Loadsprites:
 			BXP2 ABCDE 0;
 			BXP3 ABCDE 0;
 			BXP4 ABCDE 0;
 		Spawn:
-			TNT1 A 0 NoDelay { sprite = GetSpriteIndex(SSprite[random(0,2)]); }
-		Idle:
 			#### A random(35,200);
-			#### ABCDEDCB random(6,9);
+			#### ABCDEDCB random(3,7);
 			loop;
 	}
 }
@@ -538,17 +528,23 @@ Class FloatingEye : Actor {
 // Floating glowing rock with a skull
 
 Class BD_FloatingSkull : FloatingSkull {
+	mixin BD_PlayerSightCheck;
 	Default {
 		+FLOATBOB
 		floatbobstrength 0.3;
 	}
 	states {
 		Spawn:
+			TNT1 A 0 NoDelay {
+				canSeePlayer = CheckPlayerSights();
+			}
 			FSKX ABCDEF random(4,5) {
-				if (bdoom_flames && random(0,10) > 3) {
-					let fpart = BD_FireParticle(Spawn("BD_FireParticle",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),pos.z+frandom(54,57))));
-					fpart.vel = (frandom(-0.15,0.15),frandom(-0.15,0.15),frandom(0.2,0.5));
-					fpart.fcolor = 'red';
+				if (canSeePlayer) {
+					if (bdoom_flames && random(0,10) > 3) {
+						let fpart = BD_FireParticle(Spawn("BD_FireParticle",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),pos.z+frandom(54,57))));
+						fpart.vel = (frandom(-0.15,0.15),frandom(-0.15,0.15),frandom(0.2,0.5));
+						fpart.fcolor = 'red';
+					}
 				}
 			}
 			loop;
@@ -595,6 +591,7 @@ Class BD_HeartColumn : HeartColumn {
 // Big brown tree
 
 Class BD_BigTree : BigTree {
+	mixin BD_PlayerSightCheck;
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		scale.x*=randompick(-1,1);
@@ -603,8 +600,10 @@ Class BD_BigTree : BigTree {
 		Spawn:
 			BTR2 A 0 noDelay { frame = random(0,3); }
 			BTR2 # 20 {
-				if (bdoom_debris && frame != 0 && random(0,10) > 9)
-					A_SpawnItemEx("BigTreeLeaf",frandom(-20,20),frandom(-20,20),height+frandom(-4,4),frandom(-2,2),frandom(-2,2),0);
+				if (CheckPlayerSights()) {
+					if (bdoom_debris && frame != 0 && random(0,10) > 9)
+						A_SpawnItemEx("BigTreeLeaf",frandom(-20,20),frandom(-20,20),height+frandom(-4,4),frandom(-2,2),frandom(-2,2),0);
+				}
 			}
 			wait;
 		load:
