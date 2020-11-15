@@ -205,7 +205,7 @@ Class BDoomMonster : BDoomActor abstract {
 			}
 			#### # 1 {
 				if (vel ~== (0,0,0)) {
-					if (bdoom_blood) {
+					if (bdoom_blood && !BDoomActor.CheckAnimated(self)) {
 						let pool = BD_BaseDebris(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
 						if (pool) {
 							pool.target = self;
