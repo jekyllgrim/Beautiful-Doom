@@ -505,7 +505,7 @@ Class CorpseFlySpawner : Actor {
 			return;
 		}
 		else if (active)
-			A_StartSound("misc/flyloop",slot:CHAN_BODY,flags:CHANF_DEFAULT,1.0,attenuation:14);
+			A_StartSound("misc/flyloop",slot:CHAN_BODY,flags:CHANF_LOOPING,volume:0.75,attenuation:14);
 		if (!master || (master && master.health > 0)) {
 			A_StopSound(CHAN_BODY);
 			destroy();
@@ -513,7 +513,7 @@ Class CorpseFlySpawner : Actor {
 		}
 	}
 	void SpawnFly() {
-		let fly = CorpseFly(Spawn("CorpseFly",(pos.x+frandom(64,128)*randompick(-1,1),pos.y+frandom(64,128)*randompick(-1,1),pos.z+height + frandom(18,22))));
+		let fly = BD_CorpseFly(Spawn("BD_CorpseFly",(pos.x+frandom(64,128)*randompick(-1,1),pos.y+frandom(64,128)*randompick(-1,1),pos.z+height + frandom(18,22))));
 		if (fly) fly.master = self;
 	}
 	states	{
@@ -552,7 +552,7 @@ Class CorpseFlySpawner : Actor {
 	}
 }	
 
-Class CorpseFly : Actor {
+Class BD_CorpseFly : Actor {
 	Default {
 		+FLOATBOB
 		+FORCEXYBILLBOARD
@@ -576,6 +576,7 @@ Class CorpseFly : Actor {
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		scale.x *= randompick(-1,1);
+		floatbobstrength = frandom(0.4,0.65);
 	}
 	states {
 		Spawn:
