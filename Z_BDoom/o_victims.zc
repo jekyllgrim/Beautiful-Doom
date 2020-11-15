@@ -24,6 +24,8 @@ Class DecorBloodDrop : BD_CeilingBloodDrop {
 }
 
 Class BD_BaseVictim : BDoomActor abstract {
+	mixin BD_PlayerSightCheck;
+
 	protected bool vdead;
 	protected double swingspeed;
 	property swingspeed : swingspeed;
@@ -48,6 +50,7 @@ Class BD_BaseVictim : BDoomActor abstract {
 		BD_BaseVictim.spriterange 0;
 		BD_Basevictim.spritename 'BDB1';
 		BD_BaseVictim.SpawnBloodPool true;
+		bloodtype "BD_BloodLight","BD_BloodLight","BD_BloodLight";
 		+SOLID
 		+SHOOTABLE
 		+VULNERABLE
@@ -107,7 +110,10 @@ Class BD_BaseVictim : BDoomActor abstract {
 			bVULNERABLE = bdoom_killableobjects;
 		if (isFrozen())
 			return;
-		if (bdoom_debris && abs(roll) < 5){
+		//re-check visibility to player every 2 seconds
+		if (level.time % 70 == 0)
+			canSeePlayer = CheckPlayerSights();
+		if (canSeePlayer && bdoom_debris && abs(roll) < 5){
 			if (level.time % random(15,40) == 0)
 				A_SpawnitemEx("DecorBloodDrop",frandom(-bleedradius,bleedradius),frandom(-bleedradius,bleedradius),frandom(22,height-16),failchance:255-bleedfrequency);
 		}
