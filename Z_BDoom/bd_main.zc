@@ -6,15 +6,6 @@ Class BDoomActor : Actor abstract {
 	protected double pi;
 	protected name bcolor;
 	
-	protected bool canSeePlayer;
-	//a simple check that returns true if the actor is in any player's LOS:
-	bool CheckPlayerSights() {
-		for ( int i=0; i<MAXPLAYERS; i++ ) 	{
-			if ( playeringame[i] && CheckSight(players[i].mo) )
-				return true;
-		}
-		return false;
-	}
 	//returns true if 8 points around the actor in a specified radius are at the same height as at its pos; used by blood pools:
 	bool CheckLandingSize (double cradius = 0, bool checkceiling = false) {
 		if (checkceiling) {
@@ -129,6 +120,18 @@ Class BDoomActor : Actor abstract {
 		SPRK ABC 0;
 		SMO2 ABCDEF 0;
 		stop;
+	}
+}
+
+mixin class BD_PlayerSightCheck {
+	protected bool canSeePlayer;
+	//a simple check that returns true if the actor is in any player's LOS:
+	bool CheckPlayerSights() {
+		for ( int i=0; i<MAXPLAYERS; i++ ) 	{
+			if ( playeringame[i] && CheckSight(players[i].mo) )
+				return true;
+		}
+		return false;
 	}
 }
 
@@ -395,7 +398,7 @@ Class SmallDebris : BD_BaseDebris abstract {
 			if it's a flat (non-3d-floor) liquid, we'll visually sink the object into it a bit
 			either by 50% of its height or by the value of its liquidheight property
 			*/
-			Voffset = (liquidheight == 0) ? (-(height * 0.5)) : -liquidheight;
+			floorclip = (liquidheight == 0) ? (height * 0.5) : liquidheight;
 			//enter "DeathLiquid" state if present, otherwise enter "Death"
 			if (d_liquid)
 				SetState(d_liquid);
