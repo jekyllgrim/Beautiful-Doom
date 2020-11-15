@@ -266,7 +266,7 @@ Class BD_GibBlood : BD_Blood {
 			vector3 bloodpos = (bx,by,GetZAt(bx,by,flags:GZF_ABSOLUTEPOS));
 			if (!level.IsPointInLevel(bloodpos))
 				continue;
-			let bld = Spawn("BD_BloodDropSplash",b loodpos);
+			let bld = Spawn("BD_BloodDropSplash",bloodpos);
 			if (bld) {
 				if (target)
 					bld.target = target;
