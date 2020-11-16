@@ -597,19 +597,31 @@ Class Casing_General : SmallDebris {
 		//Console.Printf("splash %d",GetFloorTerrain().Splash);
 		super.BD_HitFloor();		
 	}
+	override void Tick() {
+		super.Tick();
+		if (isFrozen())
+			return;
+		if (waterlevel > 1) {
+			bBOUNCEONFLOORS = false;
+			bNOGRAVITY = true;
+			if (abs(wrot) > 1)
+				wrot *= 0.93;
+			if (pos.z > floorz) {
+				roll+=wrot;
+				vel.z = Clamp(vel.z - 0.1,-0.2,5);
+				vel.xy *= 0.92;
+			}
+		}
+		else
+			bBOUNCEONFLOORS = true;
+			bNOGRAVITY = false;
+			gravity = default.gravity;
+	}		
 	states {
 	Spawn:
 		#### AABBCCBBAABBCCBB 1 {
 			roll += wrot;
 			wrot *= 0.99;
-			if (waterlevel > 1) {
-				bBOUNCEONFLOORS = false;
-				bBOUNCEONWALLS = false;
-				bNOGRAVITY = true;
-				vel.z *= 0.1;
-				return ResolveState("WaterSuspend");
-			}
-			return ResolveState(null);
 		}
 		loop;
 	Death:
@@ -624,18 +636,6 @@ Class Casing_General : SmallDebris {
 	loadsprites:
 		CAS1 ABC 0;	CAS2 ABC 0;	CAS3 ABC 0;
 		stop;
-	WaterSuspend:
-		#### # 1 {
-			if (abs(wrot) > 1)
-				wrot *= 0.93;
-			if (pos.z > floorz) {
-				roll+=wrot;
-				vel.z = Clamp(vel.z - 0.1,-0.2,5);
-				vel.x *= 0.92;
-				vel.y *= 0.92;
-			}
-		}
-		loop;
 	}
 }
 
