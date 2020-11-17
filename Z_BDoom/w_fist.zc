@@ -811,13 +811,13 @@ Class ModernFistPuff : BdoomPuff {
 	}
 	states {
 	Crash:
-		TNT1 A 0 {
+		TNT1 A 1 {
 			if (target)
 				A_SetPitch(target.pitch+frandom(-1,1),SPF_INTERPOLATE,AAPTR_TARGET);
 		}
 		stop;
 	melee:
-		TNT1 A 0 {
+		TNT1 A 1 {
 			if(target) {
 				let bdfist = BD_Fist (target.player.readyweapon);
 				if (bdfist) {
@@ -851,7 +851,7 @@ Class ModernFistPuff_Berserk : ModernFistPuff {
 	}
 	states {
 	Crash:
-		TNT1 A 0 {
+		TNT1 A 1 {
 			if (bdoom_debris) {
 				for (int i = 3; i > 0; i--)
 					A_SpawnItemEx("Wallsmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
@@ -873,7 +873,7 @@ Class ModernFistPuffHeavy : ModernFistPuff {
 	}
 states	{
 	Crash:
-		TNT1 A 0 {
+		TNT1 A 1 {
 			if (bdoom_debris) {
 				for (int i = 4; i > 0; i--)
 					A_SpawnItemEx("Wallsmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
@@ -885,7 +885,7 @@ states	{
 		}
 		stop;
 	melee:
-		TNT1 A 0 {
+		TNT1 A 1 {
 			if(target) {
 				let bdfist = BD_Fist (target.player.readyweapon);
 				if (bdfist)
@@ -898,7 +898,7 @@ states	{
 		}
 		stop;
 	HitTracer:
-		TNT1 A 0 {
+		TNT1 A 1 {
 			if (tracer && tracer.bISMONSTER) {
 				if (!tracer.bNOGRAVITY) //knock enemy back if they're non-flying (for flying enemies it would make fighting them only more inconvenient)
 					tracer.vel.z += clamp(1 * 130 / tracer.mass, 0, 1.5);
@@ -924,7 +924,7 @@ Class ModernFistPuffHeavy_Berserk : ModernFistPuffHeavy {
 Class ModernKickPuff : ModernFistPuffHeavy {
 	states	{
 		Crash:
-			TNT1 A 0 {
+			TNT1 A 1 {
 				if (bdoom_debris) {
 					for (int i = 6; i > 0; i--)
 						A_SpawnItemEx("Wallsmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
@@ -936,7 +936,7 @@ Class ModernKickPuff : ModernFistPuffHeavy {
 			}
 			stop;	
 		HitTracer:
-			TNT1 A 0 {
+			TNT1 A 1 {
 				if (tracer) {
 					if (!tracer.bNOGRAVITY)
 						tracer.vel.z += clamp(1.5 * 130 / tracer.mass, 0.5, 3);
@@ -977,7 +977,7 @@ Class ModernKickPuff_Berserk : ModernKickPuff {
 				}
 				return ResolveState(null);
 			}
-			TNT1 A 0 {
+			TNT1 A 1 {
 				if (tracer) {
 					if (!tracer.bNOGRAVITY)
 						tracer.vel.z += clamp(1.5 * 180 / tracer.mass, 1, 5);
@@ -996,7 +996,7 @@ Class ModernFistPuffUppercut : ModernFistPuffHeavy {
 	}
 	states { 
 		Crash:
-			TNT1 A 0 {
+			TNT1 A 1 {
 				if (bdoom_debris) {
 					for (int i = 4; i > 0; i--)
 						A_SpawnItemEx("Wallsmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
@@ -1010,7 +1010,7 @@ Class ModernFistPuffUppercut : ModernFistPuffHeavy {
 			}
 			stop;
 		Melee:
-			TNT1 A 0 {
+			TNT1 A 1 {
 				if(target) {
 					let bdfist = BD_Fist (target.player.readyweapon);
 					if (bdfist)
@@ -1041,7 +1041,7 @@ Class ModernFistPuffUppercut_Berserk : ModernFistPuffUppercut {
 	}
 	states	{
 		Crash:
-			TNT1 A 0 {
+			TNT1 A 1 {
 				if (bdoom_debris) {
 					for (int i = 6; i > 0; i--)
 						A_SpawnItemEx("Wallsmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
@@ -1055,7 +1055,7 @@ Class ModernFistPuffUppercut_Berserk : ModernFistPuffUppercut {
 			}
 			stop;
 		Melee:
-			TNT1 A 0 {
+			TNT1 A 1 {
 				if(target) {
 					let bdfist = BD_Fist (target.player.readyweapon);
 					if (bdfist)
@@ -1107,7 +1107,7 @@ Class FistPuffStrong : FistPuff{
 	}
 	states	{
 	Crash:
-		TNT1 A 0 {
+		TNT1 A 1 {
 			if (bdoom_debris) {
 				for (int i = 4; i > 0; i--)
 					A_SpawnItemEx("Wallsmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
@@ -1126,7 +1126,7 @@ Class KickPuff : FistPuff {
 	}
 	states	{
 	Crash:
-		TNT1 A 0 {
+		TNT1 A 1 {
 			if (bdoom_debris) {
 				for (int i = 5; i > 0; i--)
 					A_SpawnItemEx("Wallsmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
@@ -1152,7 +1152,7 @@ Class KickPuffStrong : FistPuffStrong {
 	}
 	states {
 	Crash:
-		TNT1 A 0 {
+		TNT1 A 1 {
 			if (bdoom_debris) {
 				for (int i = 6; i > 0; i--)
 					A_SpawnItemEx("Wallsmoke",frandom(-3,3),frandom(-3,3),frandom(-1,1),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
