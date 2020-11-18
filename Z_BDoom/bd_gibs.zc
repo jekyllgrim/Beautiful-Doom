@@ -76,14 +76,14 @@ class BD_BaseGib : SmallDebris abstract {
 	}		
 	override void BD_HitWall() {
 		super.BD_HitWall();
-		if (bNOBLOOD || waterlevel)
+		//console.printf("%s hits wall at %d:%d:%d",GetClassName(),pos.x,pos.y,pos.z);
+		if (bNOBLOOD || waterlevel > 0)
 			return;
 		TraceBleedAngle(1,angle,0);
 		//if "WallSlide" state exists, stick to wall:
-		if (d_wall) {
+		/*if (d_wall) {
 			SetOrigin(wallpos + wallnormal * radius,true);
-			A_Stop();
-		}
+		}*/
 	}
 	override void BD_HitFloor() {
 		if (waterlevel > 0)
@@ -163,7 +163,7 @@ class BasicMeatPiece : BD_BaseGib {
 		super.Tick();
 		if (isFrozen())
 			return;
-		if (waterlevel > 1) {
+		if (waterlevel > 2) {
 			vel.xy *= 0.95;
 			if (watergravity ~== 0) {
 				bNOGRAVITY = true;
@@ -199,8 +199,7 @@ class BasicMeatPiece : BD_BaseGib {
 			if (waterlevel == 0)
 				BD_GibBleed("BD_Blood",frandom[bdsfx](-6,6),frandom[bdsfx](-6,6),25);
 			else {				
-				if (!bNOBLOOD && bdoom_blood) //spawn less blood if underwater
-					BD_GibBleed("BD_Blood",frandom[bdsfx](-6,6),frandom[bdsfx](-6,6),10);
+				BD_GibBleed("BD_Blood",frandom[bdsfx](-6,6),frandom[bdsfx](-6,6),10);
 				if (abs(wrot) > 0.5) //slow down rotation
 					wrot *= 0.98;
 				else //when not rotating anymore, stop moving
@@ -689,9 +688,10 @@ class Gib_Torso1 : BasicMeatPiece {
 	int finalframe; //last frame used in the flying animation
 	Default {
 		SmallDebris.liquidheight 4;
-		BD_BaseDebris.sfxtype "none"; //I don't want torsos to get destroyed because they essentially function as bld corpse and show where the monster died
+		BD_BaseDebris.sfxtype "none"; //I don't want torsos to get destroyed because they essentially function as the corpse and show where the monster died
 		gravity 1.0;
 		scale 1.0;
+		radius 16;
 	}
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
@@ -726,6 +726,7 @@ class Gib_Torso1 : BasicMeatPiece {
 	states {
 		Spawn:
 			#### A 1 NoDelay GibBeginPlay();
+			#### # -1;
 			#### # 3 {
 				if (bdoom_blood)
 					A_SpawnItemEx("BD_Blood",frandom[bdsfx](-2,2),frandom[bdsfx](-2,2),frandom[bdsfx](8,22),0,frandom[bdsfx](0,1),frandom[bdsfx](0,1),random[bdsfx](175,185),SXF_TRANSFERPOINTERS,144);
