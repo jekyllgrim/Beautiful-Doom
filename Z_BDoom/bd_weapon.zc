@@ -608,7 +608,7 @@ Class Casing_General : SmallDebris {
 				wrot *= 0.93;
 			if (pos.z > floorz) {
 				roll+=wrot;
-				vel.z = Clamp(vel.z - 0.1,-0.2,5);
+				vel.z = Clamp(vel.z - 0.1,-0.1,5);
 				vel.xy *= 0.92;
 			}
 		}
