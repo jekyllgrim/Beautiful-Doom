@@ -288,15 +288,15 @@ Class SmallDebris : BD_BaseDebris abstract {
 				else if (pos.z > floorz+Voffset) {
 					A_FaceMovementDirection(flags:FMDF_NOPITCH);
 					FLineTraceData hit;
-					LineTrace(angle,16,0,flags:TRF_THRUACTORS|TRF_NOSKY,data:hit);
-					if (/*hit.HitLine && */hit.hittype == TRACE_HITWALL) {
+					LineTrace(angle,radius+16,1,flags:TRF_THRUACTORS|TRF_NOSKY,data:hit);
+					if (hit.HitLine && hit.hittype == TRACE_HITWALL) {
 						wall = hit.HitLine;
 						wallnormal = (-hit.HitLine.delta.y,hit.HitLine.delta.x).unit();
 						wallpos = hit.HitLocation;
 						if (!hit.LineSide)
 							wallnormal *= -1;
 						//if the actor can bounce off walls and isn't too close to the floor, it'll bounce:
-						if (bBOUNCEONWALLS || pos.z <= floorz+Voffset){		
+						if (bBOUNCEONWALLS){		
 							if (wallbouncesound)
 								A_StartSound(wallbouncesound);
 							else if (bouncesound)
@@ -309,9 +309,13 @@ Class SmallDebris : BD_BaseDebris abstract {
 								vel *= bouncefactor;
 							A_FaceMovementDirection();
 						}
-						//otherwise call hitwall
-						else
+						//otherwise stop and call hitwall
+						else if (vel.x != 0 || vel.y != 0) {
+							SetOrigin(wallpos + wallnormal * radius,true);
+							A_Stop();
+							//console.printf("%s sticking to wall at %d:%d:%d",GetClassName(),pos.x,pos.y,pos.z);
 							BD_HitWall();
+						}
 					}
 					if (!self)
 						return;
@@ -336,7 +340,7 @@ Class SmallDebris : BD_BaseDebris abstract {
 								A_FaceMovementDirection(flags:FMDF_NOPITCH);
 								FLineTraceData hit;
 								LineTrace(angle,12,0,flags:TRF_THRUACTORS|TRF_NOSKY,offsetz:1,data:hit);
-								if (hit.hittype == TRACE_HITWALL /*&& (!hit.HitLine || hit.HitLine.flags & hit.Hitline.ML_BLOCKING || hit.LinePart == Side.Bottom)*/) {
+								if (hit.HitLine && hit.hittype == TRACE_HITWALL /*&& (!hit.HitLine || hit.HitLine.flags & hit.Hitline.ML_BLOCKING || hit.LinePart == Side.Bottom)*/) {
 									//console.printf("%s hit wall at %d:%d:%f | pitch: %f",GetClassName(),hit.HitLocation.x,hit.HitLocation.y,hit.HitLocation.z,pitch);
 									wallnormal = (-hit.HitLine.delta.y,hit.HitLine.delta.x).unit();
 									wallpos = hit.HitLocation;
