@@ -76,7 +76,7 @@ Class BD_PainElemental : BDoomMonster {
 			A_SetRenderstyle(0.8,Style_ADD);
 			if (bdoom_gibs) {
 				A_StartSound("gibs/gibbed");
-				for (int i = 16; i > 0; i--)
+				for (int i = 8; i > 0; i--)
 					A_SpawnItemEx("BFountainSpray",frandom(-5.0,5.0),frandom(-5.0,5.0),random(8,28),vel.x*frandom(0.05,0.15),vel.y*frandom(0.05,0.15),frandom(4.5,6.5),0,SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION,36);
 				A_SpawnItemEx("PainElementalHorn",	frandom(-4,4),frandom(-16,-18),frandom(32,36),	frandom(3,5),0,frandom(4,7),frandom(85,95),		SXF_SETTARGET,32);
 				A_SpawnItemEx("PainElementalHorn",	frandom(-4,4),frandom(16,18),frandom(32,36),	frandom(3,5),0,frandom(4,7),frandom(-85,-95),	SXF_SETTARGET,32);
@@ -89,7 +89,7 @@ Class BD_PainElemental : BDoomMonster {
 					A_SpawnItemEx("BasicMeatPiece_Heavy",	frandom(-10,10),frandom(-10,10),frandom(6,40),	frandom(-5,5),frandom(-5,5),frandom(3,6),0, 	SXF_SETTARGET,160);
 				}
 				for (int i = 0; i < 7; i++)
-					A_SpawnItemEx("PEFlameDebris",	frandom(-6,6),frandom(-6,6),frandom(10,38),		frandom(-7,7),frandom(-7,7),frandom(2,6),0, 	SXF_SETTARGET,32);				
+					A_SpawnItemEx("LS_FlameShard",	frandom(-6,6),frandom(-6,6),frandom(10,38),		frandom(-7,7),frandom(-7,7),frandom(2,6),0, 	SXF_SETTARGET,32);				
 				A_SpawnItemEx("PEExplosion",frandom(-4,4),frandom(-4,4),frandom(14,30),	frandom(-1,1),frandom(-1,1),frandom(-1,1));
 			}
 		}
@@ -108,37 +108,6 @@ Class BD_PainElemental : BDoomMonster {
 		stop;
 	XDeath:
 		stop;
-	}
-}
-
-Class PEFlameDebris : BD_BaseDebris {
-	double fades;
-	Default {
-		+ROLLSPRITE
-		-NOGRAVITY
-		BD_BaseDebris.sfxtype "gibs";
-		renderstyle "Add";
-		alpha 0.8;
-		gravity 0.6;
-		scale 0.25;
-	}
-	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		fades = frandom(0.002,0.02);
-	}
-	states {
-	Spawn:
-		FIRP AABBCCBB 1 bright NoDelay {
-			A_SpawnItemEx("BD_ImpFireParticle",0,frandom(-3,3),frandom(-3,3),0,0,frandom(0.2,0.3));
-			roll+=10;
-		}
-		loop;
-	Death:
-		FIRP AABBCCBB 1 bright {
-			A_SpawnItemEx("BD_LSFireParticle",0,frandom(-3,3),frandom(-3,3),0,0,frandom(0.5,0.9));
-			A_FadeOut(fades);
-		}
-		loop;
 	}
 }
 

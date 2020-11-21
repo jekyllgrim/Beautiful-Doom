@@ -869,7 +869,7 @@ object PEExplosion
 	frame BOM1 { light LOSTSOUL_X3 }
 }
 
-flickerlight PEPART
+/*flickerlight PEPART
 {
     color 0.6 0.6 0.0
     attenuate 1
@@ -881,7 +881,7 @@ flickerlight PEPART
 object PEFlameDebris
 {
 	frame FIRP { light PEPART }
-}
+}*/
 
 // Mancubus Fireball
 object BD_FatShot
