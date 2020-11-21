@@ -103,8 +103,10 @@ class BD_BaseGib : SmallDebris abstract {
 		}*/
 	}
 	override void BD_HitFloor() {
-		if (waterlevel > 0)
+		if (waterlevel > 0) {
+			landed = true;
 			return;
+		}
 		gravity = default.gravity;
 		if (bflat) {
 			bFLATSPRITE = true;
@@ -161,7 +163,7 @@ class BasicMeatPiece : BD_BaseGib {
 	double watergravity;
 	property watergravity : watergravity;
 	Default {
-		BasicMeatPiece.watergravity 0;
+		BasicMeatPiece.watergravity 0.1;
 		scale 0.45;
 		radius 2;
 	}
@@ -181,16 +183,20 @@ class BasicMeatPiece : BD_BaseGib {
 		if (isFrozen())
 			return;
 		if (waterlevel > 2) {
+			bNOGRAVITY = true;
 			vel.xy *= 0.95;
-			if (watergravity ~== 0) {
-				bNOGRAVITY = true;
-				vel.z *= 0.9;
+			if (watergravity > 0) {
+				if (vel.z > watergravity)
+					vel.z = Clamp(vel.z * 0.99,-watergravity,1.2);
+				else
+					vel.z = Clamp(vel.z - 0.05,-watergravity,watergravity);
 			}
-			else if (vel.z > watergravity)
-				vel.z = Clamp(vel.z - 0.1,-watergravity,5);
+			else
+				vel.z = Clamp(vel.z * 0.95,0,0.8);
 		}
 		else {
 			bNOGRAVITY = false;
+			gravity = default.gravity;
 			if (waterlevel > 0)
 				wrot *= 0.1;
 		}
@@ -705,6 +711,7 @@ class Gib_Torso1 : BasicMeatPiece {
 	int finalframe; //last frame used in the flying animation
 	Default {
 		SmallDebris.liquidheight 4;
+		BasicMeatPiece.watergravity 0.3;
 		BD_BaseDebris.sfxtype "none"; //I don't want torsos to get destroyed because they essentially function as the corpse and show where the monster died
 		gravity 1.0;
 		scale 1.0;
