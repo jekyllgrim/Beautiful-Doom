@@ -120,7 +120,7 @@ Class BDoomMonster : BDoomActor abstract {
 			return null;
 		let meat = BasicMeatPiece(Spawn(spawnclass, (pos.x + frandom(-hpos,hpos), pos.y + frandom(-hpos,hpos), pos.z + vpos)));
 		if (meat) {
-			meat.gibtype = GetClassName();
+			//meat.gibtype = GetClassName();
 			vector3 meatvel;
 			if (vel ~== (0,0,0))
 				//if the monster is static, give gibs some random velocity
@@ -354,30 +354,40 @@ Class TranslatedBurningBody : Actor {
 	double fadespeed; //how quickly it fades
 	int fadestart;	//when it starts to fade
 	int fadetime;	//timer
+	int fadedir;
+	protected int fadetarget;
 	property fadespeed : fadespeed;
 	property fadestart : fadestart;
+	property fadedir : fadedir;
 	Default {
 		TranslatedBurningBody.fadespeed 0.008;
 		TranslatedBurningBody.fadestart 100;
+		TranslatedBurningBody.fadedir 1;
 		+NOINTERACTION
 		+MOVEWITHSECTOR
-		+RELATIVETOFLOOR
 		renderstyle "Translucent";
 		alpha 1.0;
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		fadedir = (fadedir <= -1) ? -1 : 1;
+		alpha = (fadedir == -1) ? 0 : 1;
+		fadetarget = alpha - fadedir;
+		fadespeed *= fadedir;
 	}
 	override void Tick() {
 		//super.Tick();
 		if (isFrozen())
 			return;
-		if (waterlevel > 1) {
+		if (!master) {
 			destroy();
 			return;
 		}
 		if (fadetime < fadestart)
 			fadetime++;
-		else
-			A_FadeOut(fadespeed);
-		if (!master) {
+		else if (alpha != fadetarget)
+			alpha -= fadespeed;
+		else {
 			destroy();
 			return;
 		}

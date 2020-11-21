@@ -42,8 +42,25 @@ class BD_BaseGib : SmallDebris abstract {
 			Voffset = 0.5;
 	}
 	virtual void GibBeginPlay() {
-		if (gibtype == 'none' && target)
-			gibtype = target.GetClassName();
+		if (gibtype == 'none' && target) {
+			if (target is 'BD_Zombieman')
+				gibtype = 'BD_Zombieman';
+			else if (target is 'BD_ShotgunGuy')
+				gibtype = 'BD_ShotgunGuy';
+			else if (target is 'BD_ChaingunGuy')
+				gibtype = 'BD_ChaingunGuy';
+			else if (target is 'BD_DoomImp') 
+				gibtype = 'BD_DoomImp';
+			else if (target is 'BD_WolfensteinSS') 
+				gibtype = 'BD_WolfensteinSS';
+			//need to check for BD_Spectre before BD_Demon because BD_Spectre inherits from BD_Demon:
+			else if (target is 'BD_Spectre') {
+				//A_SetRenderstyle(0.5,STYLE_OptFuzzy);
+				gibtype = 'BD_Spectre';
+			}
+			else if (target is 'BD_Demon')
+				gibtype = 'BD_Demon';
+		}
 	}
 	override void BD_HitCeiling() {
 		super.BD_HitCeiling();
@@ -573,8 +590,8 @@ class Gib_Hand : BD_BasicLimb {
 		else if (gibtype == 'BD_Demon' || gibtype == 'BD_Spectre') {
 			sprite = GetSpriteIndex("HND8");
 			restframe = 1;
-			if (gibtype == 'BD_Spectre')
-				A_SetRenderstyle(0.5,STYLE_OptFuzzy);
+			//if (gibtype == 'BD_Spectre')
+				//A_SetRenderstyle(0.5,STYLE_OptFuzzy);
 		}
 		else {
 			destroy();
@@ -668,8 +685,8 @@ class Gib_Head : BD_BasicLimb {
 			restframe = 1;
 			wrot = frandom[bdsfx](3,4)*randompick(1,-1);
 			bmass = 100;
-			if (gibtype == 'BD_Spectre')
-				A_SetRenderstyle(0.5,STYLE_OptFuzzy);
+			//if (gibtype == 'BD_Spectre')
+				//A_SetRenderstyle(0.5,STYLE_OptFuzzy);
 		}
 		else {
 			destroy();
