@@ -354,7 +354,7 @@ Class QuickKickPuff : ModernKickPuff {
 
 
 
-Class RealBullet : FastProjectile {
+Class BD_RealBullet : FastProjectile {
 	protected vector3 SpawnPos; //where the bullet was shot from
 	double bulletdamage; 		//the actual damage value
 	double falloffstrength; 	//how quickly the damage is reduced during travel
@@ -367,11 +367,11 @@ Class RealBullet : FastProjectile {
 	property falloffdistance : falloffdistance;
 	property mindamage : mindamage;
 	Default {
-		RealBullet.bulletDamage 10;
-		RealBullet.bulletspeed 200;
-		RealBullet.FalloffDistance 1024;
-		RealBullet.falloffstrength 0.3;
-		RealBullet.mindamage 1;
+		BD_RealBullet.bulletDamage 10;
+		BD_RealBullet.bulletspeed 200;
+		BD_RealBullet.FalloffDistance 1024;
+		BD_RealBullet.falloffstrength 0.3;
+		BD_RealBullet.mindamage 1;
 		+BLOODSPLATTER
 		+HITTRACER
 		radius 1;
@@ -390,9 +390,24 @@ Class RealBullet : FastProjectile {
 	}
 	//whizz sound snippet by phantombeta
 	override void Tick () {
-		Super.Tick ();
 		if (isFrozen())
 			return;
+		Vector3 oldPos = pos;		
+		Super.Tick();
+		if (bdoom_debris && waterlevel > 2 && level.Vec3Diff(oldPos, SpawnPos).length() > 100) {
+			Vector3 path = level.vec3Diff( pos, oldPos );
+			double distance = path.length() / 4; //this determines how far apart the particles are
+			Vector3 direction = path / distance;
+			int steps = int( distance );			
+			for( int i = 0; i < steps; i++ )  {
+				if (level.Vec3Diff(oldPos, SpawnPos).length() > 16) {
+					actor mo = Spawn("BD_WaterBubble", oldPos );
+					if (mo)
+						mo.vel = (frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5));
+				}
+				oldPos = level.vec3Offset( oldPos, direction );
+			}
+		}
 		if (!playeringame [consolePlayer])
 			return;		
 		let curCamera = players [consolePlayer].camera;
@@ -421,7 +436,34 @@ Class RealBullet : FastProjectile {
 			TNT1 A 2 NoDelay {
 				vel = vel.unit() * bulletspeed;
 			}
-			PUFF A 1 bright;
+			PUFF A 1 {
+				if (waterlevel > 2) {
+					sprite = GetSpriteIndex("WATR");
+					bBRIGHT = false;
+					for (int i = 20; i > 0; i--) {
+						A_SpawnItemEx(
+							"BD_WaterBubble",
+							//xofs:i*16,
+							xvel:frandom[wtr](-1,1),yvel:frandom[wtr](-1,1),zvel:frandom[wtr](-1,1)
+						);
+					/*	A_SpawnParticle(
+							"DDDDDD",
+							flags:SPF_RELPOS|SPF_RELANG,
+							lifetime:100,
+							size:2,
+							xoff: i*16,
+							velx:frandom[wtr](-1,1),vely:frandom[wtr](-1,1),velz:frandom[wtr](-1,1),
+							startalphaf:0.5,
+							fadestepf:-1,
+							sizestep:1.01
+						);*/
+					}
+				}
+				else {
+					sprite = GetSpriteIndex("PUFF");
+					bBRIGHT = true;
+				}
+			}
 			wait;
 		XDeath:
 			TNT1 A 1 {
@@ -436,9 +478,9 @@ Class RealBullet : FastProjectile {
 	}
 }
 
-Class BulletTracer : RealBullet {
+Class BulletTracer : BD_RealBullet {
 	Default {
-		RealBullet.bulletspeed 256;
+		BD_RealBullet.bulletspeed 256;
 		-ACTIVATEIMPACT;
 		-ACTIVATEPCROSS;
 		+BLOODLESSIMPACT;
@@ -453,45 +495,45 @@ Class BulletTracer : RealBullet {
 	}
 }
 
-Class BD_PistolBullet : RealBullet {
+Class BD_PistolBullet : BD_RealBullet {
 	Default {
-		RealBullet.bulletDamage 15;
-		RealBullet.bulletspeed 170;
-		RealBullet.FalloffDistance 512;
-		RealBullet.falloffstrength 0.9;
+		BD_RealBullet.bulletDamage 15;
+		BD_RealBullet.bulletspeed 170;
+		BD_RealBullet.FalloffDistance 512;
+		BD_RealBullet.falloffstrength 0.9;
 	}
 }
 
-Class BD_RifleBullet : RealBullet {
+Class BD_RifleBullet : BD_RealBullet {
 	Default {
-		RealBullet.bulletDamage 15;
-		RealBullet.bulletspeed 230;
-		RealBullet.FalloffDistance 640;
-		RealBullet.falloffstrength 0.93;
+		BD_RealBullet.bulletDamage 15;
+		BD_RealBullet.bulletspeed 230;
+		BD_RealBullet.FalloffDistance 640;
+		BD_RealBullet.falloffstrength 0.93;
 	}
 }
 
-Class BD_ShotgunPellet : RealBullet {
+Class BD_ShotgunPellet : BD_RealBullet {
 	Default {
-		RealBullet.bulletDamage 12;
-		RealBullet.bulletspeed 140;
-		RealBullet.FalloffDistance 400;
-		RealBullet.falloffstrength 0.85;
+		BD_RealBullet.bulletDamage 12;
+		BD_RealBullet.bulletspeed 140;
+		BD_RealBullet.FalloffDistance 400;
+		BD_RealBullet.falloffstrength 0.85;
 	}
 }
 
 // Modern SSG is the only piercing weapon in the mod but it deals damage only once upon contact, not continuously
 // Piercing strength depends on enemy health: the "thicker" the enemy is, the harder it is for the bullet to go through them
-Class BD_SSGPellet : RealBullet {
+Class BD_SSGPellet : BD_RealBullet {
 	private int ripdepth; 		//how much health it can pierce through
 	private actor hitvictim;	//the actor that was hit
 	property ripdepth : ripdepth;
 	Default {
 		BD_SSGPellet.ripdepth 300;
-		RealBullet.bulletDamage 12;		
-		RealBullet.Bulletspeed 140;
-		RealBullet.FalloffDistance 300;
-		RealBullet.falloffstrength 0.8;
+		BD_RealBullet.bulletDamage 12;		
+		BD_RealBullet.Bulletspeed 140;
+		BD_RealBullet.FalloffDistance 300;
+		BD_RealBullet.falloffstrength 0.8;
 	}
 	override int SpecialMissileHit(actor victim) {
 		//deal damage only ONCE even if the pellet rips through
