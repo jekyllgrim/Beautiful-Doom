@@ -274,7 +274,11 @@ Class SmallDebris : BD_BaseDebris abstract {
 					return;
 			}
 		}
-		if (!bNOINTERACTION) {
+		/*
+		Perform collision for the objects that don't have NOINTERACTION and are older than 1 tic.
+		The latter helps to avoid collision at the moment of spawning.
+		*/
+		if (!bNOINTERACTION && GetAge() > 1) {
 			UpdateWaterLevel(); //manually update waterlevel
 			FindFloorCeiling(); //manually update floorz/ceilingz
 			if (d_spawn && InStateSequence(curstate,d_spawn)) {
@@ -442,6 +446,45 @@ Class SmallDebris : BD_BaseDebris abstract {
 	}
 }
 
+Class BD_WaterBubble : SmallDebris {
+	double fade;
+	Default {
+		+NOINTERACTION
+		translation "0:255=%[0.28,0.27,0.55]:[0.82,1.08,1.47]";
+		renderstyle 'Translucent';
+		alpha 0.5;
+		scale 0.4;
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		scale *= frandom[wrt](0.5,1);
+		fade = 0.01 * frandom[wrt](2,4);
+		roll = random[wrt](0,359);
+	}
+	override void Tick() {
+		super.Tick();
+		UpdateWaterLevel();
+		if (waterlevel < 3) {
+			destroy();
+			return;
+		}
+		if (isFrozen())
+			return;
+		A_FadeOut(fade);
+		vel *= 0.99;
+	}
+	States {
+	Spawn:
+		PUFF A 8;
+		PUFF BC 5;
+		PUFF D 1 {
+			scale *= 1.02;
+		}
+		wait;
+	}
+}
+		
+		
 /*
 modifiable class for flares and flames
 used both as a universal flare (setting fcolor will change its appearance) and as a base class for fire FX
@@ -1072,6 +1115,30 @@ Class EnBulletPuff : BDoomPuff {
 		goto PuffSpawn;
 	PuffSpawn:
 		TNT1 A 0 {
+			if (decaltype) {
+				//spawn an actor with 3D model to emulate floor/ceiling decals
+				if (puffdata.HitType == TRACE_HitFloor) {
+					let pld = BD_PlaneDecal(Spawn("BD_PlaneDecal",(pos.x,pos.y,floorz)));
+					if (pld) {
+						pld.decaltype = decaltype;
+					}
+				}
+				else if (puffdata.HitType == TRACE_HitCeiling) {
+					let pld = BD_PlaneDecal(Spawn("BD_PlaneDecal",(pos.x,pos.y,ceilingz)));
+					if (pld) {
+						pld.decaltype = decaltype;
+						pld.ceiling = true;
+					}
+				}
+				//or spray the decal we need
+				else
+					A_SprayDecal(decaltype,8);
+			}
+			if (waterlevel > 1) {
+				for (int i = random[bdsfx](12,18); i > 0; i--)
+					A_SpawnItemEx("BD_WaterBubble",xvel:frandom[bdsfx](-0.5,0.5),yvel:frandom[bdsfx](-0.5,0.5),zvel:frandom[bdsfx](-0.5,0.5));
+				return ResolveState("Null");
+			}
 			if (bdoom_debris) {
 				double ofz = 0;
 				if (puffdata.HitType == TRACE_HitFloor)
@@ -1112,25 +1179,6 @@ Class EnBulletPuff : BDoomPuff {
 						}
 					}
 				}
-			}
-			if (decaltype) {
-				//spawn an actor with 3D model to emulate floor/ceiling decals
-				if (puffdata.HitType == TRACE_HitFloor) {
-					let pld = BD_PlaneDecal(Spawn("BD_PlaneDecal",(pos.x,pos.y,floorz)));
-					if (pld) {
-						pld.decaltype = decaltype;
-					}
-				}
-				else if (puffdata.HitType == TRACE_HitCeiling) {
-					let pld = BD_PlaneDecal(Spawn("BD_PlaneDecal",(pos.x,pos.y,ceilingz)));
-					if (pld) {
-						pld.decaltype = decaltype;
-						pld.ceiling = true;
-					}
-				}
-				//or spray the decal we need
-				else
-					A_SprayDecal(decaltype,8);
 			}
 			return ResolveState(null);
 		}
