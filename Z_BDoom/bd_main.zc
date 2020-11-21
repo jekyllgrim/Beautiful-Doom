@@ -37,6 +37,44 @@ Class BDoomActor : Actor abstract {
 	static const string BD_LiquidFlats[] = { 
 		"BLOOD", "LAVA", "NUKAGE", "WATER", "SLIME01", "SLIME02", "SLIME03", "SLIME04", "SLIME05", "SLIME06", "SLIME07", "SLIME08", "BDT_"
 	};
+	//water check by Boondorl
+	double GetWaterTop()
+	{
+		if (CurSector.MoreFlags & Sector.SECMF_UNDERWATER)
+			return CurSector.ceilingPlane.ZAtPoint(pos.xy);
+		else
+		{
+			let hsec = CurSector.GetHeightSec();
+			if (hsec)
+			{
+				double top = hsec.floorPlane.ZAtPoint(pos.xy);
+				if ((hsec.MoreFlags & Sector.SECMF_UNDERWATERMASK)
+					&& (pos.z < top
+					|| (!(hsec.MoreFlags & Sector.SECMF_FAKEFLOORONLY) && pos.z > hsec.ceilingPlane.ZAtPoint(pos.xy))))
+				{
+					return top;
+				}
+			}
+			else
+			{
+				for (uint i = 0; i < CurSector.Get3DFloorCount(); ++i)
+				{
+					let ffloor = CurSector.Get3DFloor(i);
+					if (!(ffloor.flags & F3DFloor.FF_EXISTS)
+						|| (ffloor.flags & F3DFloor.FF_SOLID)
+						|| !(ffloor.flags & F3DFloor.FF_SWIMMABLE))
+					{
+						continue;
+					}
+						
+					double top = ffloor.top.ZAtPoint(pos.xy);
+					if (top > pos.z && ffloor.bottom.ZAtPoint(pos.xy) <= pos.z)
+						return top;
+				}
+			}
+		}			
+		return 0;
+	}
 	
 	//returns true if the floor texture below the actor is either defined as liquid in TERRAIN, or its name matches something in BD_LiquidFlats array
 	bool CheckLiquidFlat() {
