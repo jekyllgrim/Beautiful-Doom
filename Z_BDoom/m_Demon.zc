@@ -138,4 +138,33 @@ Class BD_Spectre : BD_Demon  {
 		HitObituary "$OB_SPECTREHIT";
 		Tag "$FN_SPECTRE";
 	}
+	states {	
+		Death:
+			TNT1 A 0 {
+				if (!burncorpse) {
+					burncorpse = TranslatedBurningBody(Spawn("TranslatedBurningBody",pos));
+					if (burncorpse) {
+						burncorpse.master = self;
+						burncorpse.fadestart = 50;
+						burncorpse.fadedir = -1;
+					}
+				}
+			}
+			goto super::Death;
+	DeathEnd:
+		#### # 10 {
+			if (!burncorpse)
+				return ResolveState("DeathEndFinal");
+			else if (burncorpse.alpha >= 1) {
+				A_SetRenderstyle(1,STYLE_Normal);
+				burncorpse.destroy();
+				return ResolveState("DeathEndFinal");
+			}
+			return ResolveState(null);
+		}
+		loop;
+	DeathEndFinal:
+		#### # -1;
+		stop;
+	}
 }
