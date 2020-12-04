@@ -26,10 +26,6 @@ Class BD_WolfensteinSS : BDoomMonster  {
 		SSWR A 10 A_Look();
 		loop;
 	See:
-		TNT1 A 0 {
-			A_SetScale(default.scale.x,default.scale.y);
-			bFRIGHTENED = false;
-		}
 		SSW1 ABCDDCBA 3 A_Chase();
 		loop;
 	Missile:
@@ -97,7 +93,7 @@ Class BD_WolfensteinSS : BDoomMonster  {
 			A_XScream();
 			A_NoBlocking();
 			BD_Gibs();
-			scale.x*=randompick(-1,1);
+			scale.x *= randompick[bdsfx](-1,1);
 		}
 		TR51 ABCDEFG 4;
 		goto deathbleed;

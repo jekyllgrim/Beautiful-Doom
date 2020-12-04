@@ -8,6 +8,7 @@ Class BDoomMonster : BDoomActor abstract {
 	property monsterclip : monsterclip;
 
 	bool burning; //is showing burning or smoking animation
+	bool greenFire; //set to true if burned by green fire
 	protected int burntimer;
 	protected int firetype; //0 = only smoke; 1 = regular yellow; 2 = baron green
 	protected state sspawn;
@@ -20,6 +21,11 @@ Class BDoomMonster : BDoomActor abstract {
 	protected state vxdeath;	
 
 	Array <BD_BaseDebris> meatlist; //keeps track of all gibs and blood spawned by the monster, so that they can be FlyBack()'d when it's resurrected
+	
+	int prevRenderstyle;
+	double prevAlpha;
+	uint prevTranslation;
+	vector2 prevScale;
 
 	Default {
 		Monster;
@@ -37,6 +43,27 @@ Class BDoomMonster : BDoomActor abstract {
 		ddeath = FindState("Death");
 		xxdeath = FindState("XDeath");
 		vxdeath = FindState("XDeath.Vanilla");
+	}
+	
+	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath) {
+		SaveAppearance();
+		super.Die(source, inflictor, dmgflags, MeansOfDeath);
+	}
+	
+	void SaveAppearance() {		
+		prevAlpha = alpha;
+		prevTranslation = translation;
+		prevRenderstyle = GetRenderStyle();
+		prevScale = scale;
+	}
+	
+	void RestoreAppearance() {
+		translation = prevTranslation;
+		A_SetRenderstyle(prevAlpha,prevRenderstyle);
+		bSPRITEFLIP = default.bSPRITEFLIP;
+		bFRIGHTENED = default.bFRIGHTENED;
+		bFORCEXYBILLBOARD = default.bFORCEXYBILLBOARD;		
+		scale = prevScale;
 	}
 		
 	void BD_Bleed(double xvel = 2, double yvel = 3) {
@@ -84,11 +111,7 @@ Class BDoomMonster : BDoomActor abstract {
 		
 	override void Tick() {
 		super.Tick();
-		if (isFrozen() || !bdoom_flames)
-			return;
-		if (health > 0 && InStateSequence(curstate,ssee))
-			scale.x = 1;
-		if (!burning)
+		if (isFrozen() || !bdoom_flames || !burning)
 			return;
 		if (!InStateSequence(curstate,ssee)) {
 			if (burntimer > 350) {
@@ -107,7 +130,7 @@ Class BDoomMonster : BDoomActor abstract {
 		else {
 			burning = false;
 			burntimer = 0;
-			if (burncorpse)	burncorpse.destroy();
+			//if (burncorpse)	burncorpse.destroy();
 			if (burnflame)	burnflame.destroy();
 			return;
 		}
@@ -242,11 +265,11 @@ Class BDoomMonster : BDoomActor abstract {
 							a.destroy();
 					}
 					meatlist.Clear();
-					bFORCEXYBILLBOARD = default.bFORCEXYBILLBOARD;
-					translation = default.translation;
-					A_SetScale(default.scale.x,default.scale.y);
 					burning = false;
 					burntimer = 0;
+					if (burncorpse)
+						burncorpse.destroy();
+					RestoreAppearance();
 					return ResolveState("See");
 				}
 				return ResolveState(null);
@@ -262,64 +285,67 @@ Class BDoomMonster : BDoomActor abstract {
 				return ddeath;
 			}
 			stop;
+		//when killed by damagetype 'Fire':
 		Death.Fire:
 			TNT1 A 0 {
+				//the body becomes scorched
+				A_SetTranslation("Scorched");
+				A_SetRenderstyle(alpha,STYLE_Normal);
+				//a bright overlay sprite is briefly spawned
 				burncorpse = TranslatedBurningBody(Spawn("TranslatedBurningBody",pos));
+				//the overlay shares color with the flame and acts as a brief "flash"
 				if (burncorpse) {
 					burncorpse.master = self;
-					burncorpse.A_SetTranslation("Firedeath");
-					burncorpse.fadestart = 0;
-					burncorpse.fadespeed = 0.05;
+					burncorpse.bBRIGHT = true;
+					if (greenFire)
+						burncorpse.A_SetTranslation("GreenFiredeath");
+					else
+						burncorpse.A_SetTranslation("Firedeath");
+					//it fades out rather quickly, and we end up with a scorched body
+					burncorpse.fadespeed = 0.04;
 				}
+				//at the same time animated flame is spawned, matching the color of the fire
 				if (bdoom_flames) {
 					burnflame = BurningBodyFlame(Spawn("BurningBodyFlame",pos));
-					if (burnflame) 
+					if (burnflame) {
 						burnflame.master = self;
+						if (greenFire)
+							burnflame.SetStateLabel("SpawnGreen");
+					}
 				}
 				return ResolveState("DoFireDeath");
 			}
 			stop;
 		Death.GreenFire:
 			TNT1 A 0 {
-				burncorpse = TranslatedBurningBody(Spawn("TranslatedBurningBody",pos));
-				if (burncorpse) {
-					burncorpse.master = self;
-					burncorpse.A_SetTranslation("GreenFiredeath");
-					burncorpse.fadestart = 0;
-					burncorpse.fadespeed = 0.05;
-				}
-				if (bdoom_flames) {
-					burnflame = BurningBodyFlame(Spawn("BurningBodyFlame",pos));
-					if (burnflame) {
-						burnflame.master = self;
-						burnflame.SetStateLabel("SpawnGreen");
-					}
-				}
-				return ResolveState("DoFireDeath");
+				greenFire = true;
+				return ResolveState("Death.Fire");
 			}
 			stop;
 		Death.PlasmaDamage:
-			TNT1 A 0 {
-				if (GetRenderStyle() == 1) {
-					burncorpse = TranslatedBurningBody(Spawn("TranslatedBurningBody",pos));
-					if (burncorpse) {
-						burncorpse.master = self;
-						burncorpse.fadestart = 0;
-						burncorpse.fadespeed = 0.03;
-					}
+			#### # 0 {
+				burncorpse = TranslatedBurningBody(Spawn("TranslatedBurningBody"));
+				if (burncorpse) {
+					burncorpse.A_SetTranslation("Scorched");
+					burncorpse.transfer = true;
+					burncorpse.fadespeed = 0.03;
+					burncorpse.fadedir = -1;		
+					burncorpse.master = self;
 				}
 				return ResolveState("DoFireDeath");
 			}
 			stop;
+		//activates burning itself and goes to regular death
 		DoFireDeath:
 			TNT1 A 0 {
 				burning = true;
 				burntimer = 0;
-				if (GetRenderStyle() == 1)
-					A_SetTranslation("Scorched");
+				//if (GetRenderStyle() == 1)
+					//A_SetTranslation("Scorched");
 				return ResolveState("Death");
 			}
 			stop;
+		//applies a version of scorched translation that doesn't darken blood. 3 versions are defined for red, blue and green blood
 		Death.BFGSplash:
 			TNT1 A 0 {
 				if (bloodcolor.B > 4*(bloodcolor.R  + bloodcolor.G))
@@ -344,6 +370,22 @@ Class BDoomMonster : BDoomActor abstract {
 	}
 }
 
+Class Test1 : Actor {
+	Default {
+		+NOINTERACTION
+	}
+	states {
+	Spawn:
+		POSS A -1 NoDelay {
+			let bc = TranslatedBurningBody(Spawn("TranslatedBurningBody"));
+			bc.A_SetTranslation("Scorched");
+			bc.fadedir = -1;
+			bc.master = self;
+		}
+		stop;
+	}
+}
+
 /*This is spawned by a burning monster and receives a "fire" translation from it,
 while the monster receives "scorched" translation. As this fades out, it creates
 an effect of smooth transition from burning to scorched.
@@ -354,26 +396,28 @@ Class TranslatedBurningBody : Actor {
 	double fadespeed; //how quickly it fades
 	int fadestart;	//when it starts to fade
 	int fadetime;	//timer
-	int fadedir;
+	int fadedir; //whether to fade in or fade out
 	protected int fadetarget;
 	property fadespeed : fadespeed;
 	property fadestart : fadestart;
 	property fadedir : fadedir;
+	bool transfer; //if true, when the corpse disappears, it'll transfer its translation to the master
 	Default {
-		TranslatedBurningBody.fadespeed 0.008;
-		TranslatedBurningBody.fadestart 100;
+		TranslatedBurningBody.fadespeed 0.01;
+		TranslatedBurningBody.fadestart 0;
 		TranslatedBurningBody.fadedir 1;
 		+NOINTERACTION
-		+MOVEWITHSECTOR
-		renderstyle "Translucent";
+		renderstyle 'Translucent';
 		alpha 1.0;
+		radius 1;
+		height 1;
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		fadedir = (fadedir <= -1) ? -1 : 1;
 		alpha = (fadedir == -1) ? 0 : 1;
 		fadetarget = alpha - fadedir;
-		fadespeed *= fadedir;
+		fadespeed *= -fadedir;
 	}
 	override void Tick() {
 		//super.Tick();
@@ -383,11 +427,16 @@ Class TranslatedBurningBody : Actor {
 			destroy();
 			return;
 		}
+		//console.printf("alpha: %f | fade target: %f | fade speed: %f",alpha,fadetarget,fadespeed);
 		if (fadetime < fadestart)
 			fadetime++;
-		else if (alpha != fadetarget)
-			alpha -= fadespeed;
+		else if (alpha >= 0 && alpha <= 1) //alpha != fadetarget
+			alpha += fadespeed;
 		else {
+			if (transfer && master) {
+				master.translation = translation;
+				master.A_SetRenderstyle(alpha,GetRenderStyle());
+			}
 			destroy();
 			return;
 		}
@@ -403,14 +452,11 @@ Class TranslatedBurningBody : Actor {
 	}
 }
 
-Class BurningBodyFlame : Actor {
+Class BurningBodyFlame : BD_BaseFlare {
 	int burntimer;
 	Default {
-		+NOINTERACTION
 		+MOVEWITHSECTOR
-		+RELATIVETOFLOOR
 		+BRIGHT
-		renderstyle "Add";
 		alpha 0.8;
 		xscale 1.0;
 		yscale 0.65;
@@ -585,7 +631,7 @@ Class BD_CorpseFly : Actor {
 			
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		scale.x *= randompick(-1,1);
+		scale.x *= randompick[bdsfx](-1,1);
 		floatbobstrength = frandom(0.4,0.65);
 	}
 	states {

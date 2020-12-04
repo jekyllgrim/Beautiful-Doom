@@ -43,7 +43,7 @@ Class BD_Demon : BDoomMonster {
 			Goto See;
 		Death:
 			TNT1 A 0 {
-				scale.x*=randompick(-1,1);
+				scale.x *= randompick[bdsfx](-1,1);
 				if (!burning && random(1,4) == 1)
 					return resolvestate("Death1");
 				if (!burning && health < -20 && random(1,3) == 1)
@@ -87,7 +87,7 @@ Class BD_Demon : BDoomMonster {
 			goto deathbleed;
 		XDeath:
 			TNT1 A 0 {
-				scale.x*=randompick(-1,1);
+				scale.x *= randompick[bdsfx](-1,1);
 			}
 			SSRX A 3 BD_Bleed();
 			SSRX B 3;
@@ -108,7 +108,7 @@ Class BD_Demon : BDoomMonster {
 			goto deathbleed;
 		Death.Saw:
 			TNT1 A 0 {
-				scale.x*=randompick(-1,1);
+				scale.x *= randompick[bdsfx](-1,1);
 			}
 			SARY ABC 3;
 			TNT1 A 0 {
@@ -139,19 +139,21 @@ Class BD_Spectre : BD_Demon  {
 		Tag "$FN_SPECTRE";
 	}
 	states {	
-		Death:
-			TNT1 A 0 {
-				if (!burncorpse) {
-					burncorpse = TranslatedBurningBody(Spawn("TranslatedBurningBody",pos));
-					if (burncorpse) {
-						burncorpse.master = self;
-						burncorpse.fadestart = 50;
-						burncorpse.fadedir = -1;
-					}
+	Death:
+		TNT1 A 0 {
+			if (!burncorpse) {
+				burncorpse = TranslatedBurningBody(Spawn("TranslatedBurningBody",pos));
+				if (burncorpse) {
+					burncorpse.master = self;
+					burncorpse.fadestart = 50;
+					burncorpse.fadedir = -1;
+					burncorpse.A_SetTranslation("DarkenedDemon");
+					burncorpse.transfer = true;
 				}
 			}
-			goto super::Death;
-	DeathEnd:
+		}
+		goto super::Death;
+	/*DeathEnd:
 		#### # 10 {
 			if (!burncorpse)
 				return ResolveState("DeathEndFinal");
@@ -165,6 +167,6 @@ Class BD_Spectre : BD_Demon  {
 		loop;
 	DeathEndFinal:
 		#### # -1;
-		stop;
+		stop;*/
 	}
 }

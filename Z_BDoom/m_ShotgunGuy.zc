@@ -25,10 +25,6 @@ Class BD_ShotgunGuy : BDoomMonster {
 		SARR AB 10 A_Look();
 		loop;
 	See:
-		TNT1 A 0 {
-			A_SetScale(default.scale.x,default.scale.y);
-			bFRIGHTENED = false;
-		}
 	    SPO1 ABCDDCBA 3 A_Chase();
 		loop; 	
 	Crush:
@@ -154,7 +150,7 @@ Class BD_ShotgunGuy : BDoomMonster {
 		goto deathbleed;
 	DeathHeadshot: //fall left/right
 		TNT1 A 0 { 
-			scale.x*=randompick(-1,1);
+			scale.x *= randompick[bdsfx](-1,1);
 			A_Scream();
 		}
 		SPOO ABC 2 {

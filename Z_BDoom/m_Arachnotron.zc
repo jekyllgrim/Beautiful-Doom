@@ -51,7 +51,7 @@ Class BD_Arachnotron : BDoomMonster {
 		ARPA b 3 a_pain();
 		goto see+1;
 	Death:
-		TNT1 A 0 { scale.x = randompick(-1,1); }
+		TNT1 A 0 { scale.x = randompick[bdsfx](-1,1); }
 		ARAM a 3;
 		ARAM b 3 a_scream();
 		ARAM c 3 a_noblocking();

@@ -17,15 +17,22 @@ Class BD_ZombieMan : BDoomMonster {
 		dropitem "BD_Pistol",40,1;
 		dropitem "Clip",256;
 	}
+/*	override void PostBeginplay() {
+		super.PostBeginplay();		
+		let bc = TranslatedBurningBody(Spawn("TranslatedBurningBody",pos));
+		if (bc) {
+			bc.master = self;
+			bc.transfer = true;
+			bc.fadespeed = 0.03;
+			bc.A_SetTranslation("Scorched");
+			bc.fadedir = -1;		
+		}
+	}*/
 	states {
 	Spawn:
 		PSSS AB 10 A_Look();
 		loop;
 	See:
-		TNT1 A 0 {
-			A_SetScale(default.scale.x,default.scale.y);
-			bFRIGHTENED = false;
-		}
 		POS1 ABCDDCBA 4 A_Chase();
 		loop; 	
 	Missile:
@@ -113,7 +120,7 @@ Class BD_ZombieMan : BDoomMonster {
 		
 	DeathHeadshot: //fall left/right
 		TNT1 A 0 { 
-			scale.x*=randompick(-1,1);
+			scale.x *= randompick[bdsfx](-1,1);
 			A_Scream();
 		}
 		POSN ABC 2 {
@@ -145,7 +152,7 @@ Class BD_ZombieMan : BDoomMonster {
 		goto deathbleed;
 	Death.Saw:
 		TNT1 A 0 {
-			scale.x*=randompick(-1,1);
+			scale.x *= randompick[bdsfx](-1,1);
 		}
 		POSY AB 6;		
 		TNT1 A 0 A_NoBlocking();

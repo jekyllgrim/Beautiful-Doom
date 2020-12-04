@@ -55,7 +55,7 @@ Class BD_Cacodemon : BDoomMonster  {
 		stop;
 	Death:
 		TNT1 A 0 {
-			scale.x*=randompick(-1,1);
+			bSPRITEFLIP = random[bdsfx](0,1);
 			bFORCEXYBILLBOARD = false;
 			if (burning)
 				return ResolveState("Death.Vanilla");

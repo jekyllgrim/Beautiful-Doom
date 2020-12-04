@@ -38,7 +38,6 @@ Class BD_Revenant : BDoomMonster {
 			REVI AB 10 A_Look();
 			loop;
 		See:
-			TNT1 A 0 A_SetScale(default.scale.x,default.scale.y);
 			RSKE abcddefghh 2 A_Chase();
 			loop;
 		Melee:
@@ -73,7 +72,7 @@ Class BD_Revenant : BDoomMonster {
 			RMIS H 10 A_facetarget();
 			goto See;
 		Crush:
-			TNT1 A 0 { scale.x *= randompick(-1,1); }
+			TNT1 A 0 { scale.x *= randompick[bdsfx](-1,1); }
 			CRS2 A -1;
 			stop;
 		Pain:
@@ -82,7 +81,7 @@ Class BD_Revenant : BDoomMonster {
 			goto See;
 		Death:
 			TNT1 A 0 { 
-				scale.x *= randompick(-1,1);
+				scale.x *= randompick[bdsfx](-1,1);
 				if (random(1,2) == 2)
 					return ResolveState("Death1");
 				return ResolveState(null);
@@ -105,7 +104,7 @@ Class BD_Revenant : BDoomMonster {
 			TNT1 A 0 { 
 				if (random(1,2) == 2)
 					return ResolveState("Death");
-				scale.x *= randompick(-1,1);
+				scale.x *= randompick[bdsfx](-1,1);
 				return ResolveState(null);
 			}
 			REVX a 3;
