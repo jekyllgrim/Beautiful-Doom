@@ -1,16 +1,3 @@
-Model TestBlood
-{
-	UseActorRoll
-	UseActorPitch
-	//zoffset 1.0
-	Scale 60 60 60
-	//Path ""
-	Model 0 "Models/BloodPool.md3"
-	
-	Skin 0 "graphics/FloorSplats/bsplatA.png"
-	FrameIndex MODL A 0 0
-}
-
 
 Model BulletTracer
 {
