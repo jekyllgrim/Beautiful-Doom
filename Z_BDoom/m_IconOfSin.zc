@@ -11,7 +11,7 @@ Class BD_BossBrain : BossBrain {
 			spurt.vel.y = frandom(-25,-28);		
 		}
 		if (random(1,10) >= 8) {
-			let spurt  = BasicMeatPiece(Spawn("BasicMeatPiece_Heavy",(pos.x,pos.y-240,pos.z+108)));
+			let spurt  = BD_BasicMeatPiece(Spawn("BD_BasicMeatPiece_Heavy",(pos.x,pos.y-240,pos.z+108)));
 			if (spurt) {
 				spurt.scale = (1,1);
 				spurt.target = self;
@@ -45,7 +45,7 @@ Class BD_BossBrain : BossBrain {
 
 	void BD_BrainScream() {
 		for (int i = 20; i > 0; i--) {
-			let boom = Actor.Spawn("CyberExplosion", (pos.x+random(-320,320),pos.y-320,pos.z+random(-144,208)));
+			let boom = Actor.Spawn("BD_CyberExplosion", (pos.x+random(-320,320),pos.y-320,pos.z+random(-144,208)));
 			if (boom) boom.target = self;
 		}
 	}
@@ -74,7 +74,7 @@ Class BD_SpawnShot : SpawnShot {
 	override void Tick() {
 		super.Tick();
 		if (!isFrozen())
-			A_SpawnItemEx("ParticleFire_Red",frandom(-12,-16),frandom(-4,4),frandom(-4,4),failchance:64);
+			A_SpawnItemEx("BD_ParticleFire_Red",frandom(-12,-16),frandom(-4,4),frandom(-4,4),failchance:64);
 	}
 	States 	{
 		Spawn: 

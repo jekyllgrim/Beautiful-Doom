@@ -42,17 +42,17 @@ Class BD_BaronOfHell : BDoomMonster {
 		TNT1 A 0 A_FaceTarget;
 		ZBOS AABB 2 {
 			if (bdoom_flames)
-				A_SpawnItemEx("ParticleFire_Green",4,29,random(60,62),random(0,1),random(0,1),random(1,2),0);
+				A_SpawnItemEx("BD_ParticleFire_Green",4,29,random(60,62),random(0,1),random(0,1),random(1,2),0);
 		}
 		TNT1 A 0 A_FaceTarget;
 		ZBOS CCDD 2 {
 			if (bdoom_flames)
-				A_SpawnItemEx("ParticleFire_Green",4,31,random(46,48),random(0,1),random(0,1),random(1,2),0);
+				A_SpawnItemEx("BD_ParticleFire_Green",4,31,random(46,48),random(0,1),random(0,1),random(1,2),0);
 		}
 		TNT1 A 0 A_CustomComboAttack("BD_BaronBall", 32, 10 * random(1, 8), "baron/melee");
 		ZBOS EEFF 2 {
 			if (bdoom_flames)
-				A_SpawnItemEx("ParticleFire_Green",10,random(-4,-6),random(24,26),random(0,1),random(0,1),random(1,2),0);
+				A_SpawnItemEx("BD_ParticleFire_Green",10,random(-4,-6),random(24,26),random(0,1),random(0,1),random(1,2),0);
 		}
 		Goto See;
 	Pain:
@@ -173,17 +173,17 @@ Class BD_HellKnight : BD_BaronOfHell {
 		TNT1 A 0 A_FaceTarget;
 		SBOS AABB 2 {
 			if (bdoom_flames)
-				A_SpawnItemEx("ParticleFire_Green",4,29,random(60,62),random(0,1),random(0,1),random(1,2),0);
+				A_SpawnItemEx("BD_ParticleFire_Green",4,29,random(60,62),random(0,1),random(0,1),random(1,2),0);
 		}
 		TNT1 A 0 A_FaceTarget;
 		SBOS CCDD 2 {
 			if (bdoom_flames)
-				A_SpawnItemEx("ParticleFire_Green",4,31,random(46,48),random(0,1),random(0,1),random(1,2),0);
+				A_SpawnItemEx("BD_ParticleFire_Green",4,31,random(46,48),random(0,1),random(0,1),random(1,2),0);
 		}
 		TNT1 A 0 A_CustomComboAttack("BD_BaronBall", 32, 10 * random(1, 8), "baron/melee");
 		SBOS EEFF 2 {
 			if (bdoom_flames)
-				A_SpawnItemEx("ParticleFire_Green",10,random(-4,-6),random(24,26),random(0,1),random(0,1),random(1,2),0);
+				A_SpawnItemEx("BD_ParticleFire_Green",10,random(-4,-6),random(24,26),random(0,1),random(0,1),random(1,2),0);
 		}
 		Goto See;
 	Pain:

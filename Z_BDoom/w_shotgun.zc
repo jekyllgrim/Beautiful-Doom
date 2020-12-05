@@ -3,7 +3,7 @@ Class BD_Shotgun : BDoomWeapon {
 		Weapon.AmmoType1 			"Shell";
 		Weapon.AmmoUse1			1;
 		Weapon.AmmoGive1			0;
-		BDoomWeapon.magammo		"ShotgunClip";
+		BDoomWeapon.magammo		"BD_ShotgunClip";
 		Weapon.AmmoType2			"Shell";
 		Weapon.AmmoUse2			0;
 		Weapon.AmmoGive2			8;
@@ -107,9 +107,9 @@ Class BD_Shotgun : BDoomWeapon {
 				A_StartSound("weapons/shotgf");
 			A_gunflash();
 			If(bdoom_tracers)
-				A_FireBullets (5.6, 0, 7, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BulletTracer",0,0);
+				A_FireBullets (5.6, 0, 7, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_BulletTracer",0,0);
 			else 
-				A_FireBullets (5.6, 0, 7, 5, "EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
+				A_FireBullets (5.6, 0, 7, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
 		}
 		#### A 2 A_WeaponOffset(0,-2,WOF_ADD);
 		TNT1 A 0 BD_SetSprite("SHOG","QHOG");
@@ -123,7 +123,7 @@ Class BD_Shotgun : BDoomWeapon {
 		#### N 4;
 		#### O 3 { 
 			If(bdoom_debris)
-				A_Eject("ShotgunCasing",20,frandom(-7,-8),6.5,frandom(0,1),FRandom(3,5),frandom(3,4));
+				A_Eject("BD_ShotgunCasing",20,frandom(-7,-8),6.5,frandom(0,1),FRandom(3,5),frandom(3,4));
 		}
 		#### NMLKJIHGFE 1;
 		#### DCB 1 {
@@ -188,7 +188,7 @@ Class BD_Shotgun : BDoomWeapon {
 			return ResolveState(null);
 		}
 		#### ABC 1;
-		#### D 3 A_CustomPunch(6*random(2,6),TRUE,CPF_NOTURN,"ShotgunMeleePuff",72);
+		#### D 3 A_CustomPunch(6*random(2,6),TRUE,CPF_NOTURN,"BD_ShotgunMeleePuff",72);
 		#### EF 2;
 		#### GHI 2;
 		#### JJ 1 A_WeaponReady(WRF_NOSECONDARY);
@@ -205,7 +205,7 @@ Class BD_Shotgun : BDoomWeapon {
 	AltHoldStrong:
 		TNT1 A 0 A_StartSound("weapons/fist/swing");
 		SHOM ABC 1;
-		SHOM D 1 A_CustomPunch(42*random(1,6),TRUE,CPF_NOTURN,"ShotgunMeleePuff",72);
+		SHOM D 1 A_CustomPunch(42*random(1,6),TRUE,CPF_NOTURN,"BD_ShotgunMeleePuff",72);
 		SHOM DDDD 1 A_WeaponOffset(frandom(-1,1),frandom(32,33.5),WOF_INTERPOLATE);
 		SHOM EF 2;
 		SHOM GHI 2 A_WeaponReady(WRF_NOSECONDARY);
@@ -248,7 +248,7 @@ Class BD_Shotgun : BDoomWeapon {
 	Fire.Modern:
 		#### # 0 A_JumpIfNoAmmo("DryReload");
 		SHON A 2 { 
-			A_FireBullets (4.1, 3.0, 7, 0, "NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_ShotgunPellet",0,0);
+			A_FireBullets (4.1, 3.0, 7, 0, "BD_NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_ShotgunPellet",0,0);
 			A_AlertMonsters();
 			A_gunflash("ModernFlash");
 			A_StartSound("Mweapons/shotgun/fire");
@@ -262,7 +262,7 @@ Class BD_Shotgun : BDoomWeapon {
 		#### DEFGH 1 A_WeaponOffset(frandom(-0.85,0.85),frandom(0.5,1.2),WOF_ADD);
 		#### A 0 { 
 			If(bdoom_debris)
-				A_Eject("ShotgunCasing",20,frandom(3,4),11.0,frandom(0,1),FRandom(3,5),frandom(2,3));
+				A_Eject("BD_ShotgunCasing",20,frandom(3,4),11.0,frandom(0,1),FRandom(3,5),frandom(2,3));
 		}
 		#### HGFE 2;
 		#### DCB 2  A_WeaponOffset(0,32,WOF_INTERPOLATE);
@@ -309,10 +309,10 @@ Class BD_Shotgun : BDoomWeapon {
 		#### ABDFHIJKLLL 1;
 	ReloadDo:
 		#### A 0 {
-			If(CountInv("ShotgunClip") == 8 || CountINv("Shell") == 0 )
+			If(CountInv("BD_ShotgunClip") == 8 || CountINv("Shell") == 0 )
 				return ResolveState("ReloadEnd");
 			A_TakeInventory("Shell",1,TIF_NOTAKEINFINITE);
-			GiveInventory("ShotgunClip",1); 
+			GiveInventory("BD_ShotgunClip",1); 
 			A_StartSound("Mweapons/shotgun/shellin",slot:CHAN_AUTO);
 			return ResolveState(null);
 		}
@@ -321,7 +321,7 @@ Class BD_Shotgun : BDoomWeapon {
 			A_Weaponoffset(-0.6,-0.15,WOF_ADD);
 			A_WeaponReady(WRF_NOSECONDARY);
 		}
-		#### A 0 A_JumpIfInventory("ShotgunClip",2,"ReloadDo");
+		#### A 0 A_JumpIfInventory("BD_ShotgunClip",2,"ReloadDo");
 		#### A 0 A_StartSound("Mweapons/shotgun/pump",slot:CHAN_AUTO);
 		#### KLMNOP 1;
 		#### ONMLK 2 A_WeaponReady(WRF_NOSECONDARY);
@@ -333,7 +333,7 @@ Class BD_Shotgun : BDoomWeapon {
 	}
 }
 
-Class ShotgunClip : ammo {
+Class BD_ShotgunClip : ammo {
 	Default {
 		inventory.icon "HSHLZ0";
 		inventory.amount 1;
@@ -345,7 +345,7 @@ Class ShotgunClip : ammo {
 }
 
 
-Class ShotgunMeleePuff : ModernFistPuffHeavy {
+Class BD_ShotgunMeleePuff : BD_ModernFistPuffHeavy {
 	Default {
 		attacksound "weapons/shotgun/melee";
 	}
@@ -354,9 +354,9 @@ Class ShotgunMeleePuff : ModernFistPuffHeavy {
 		TNT1 A 0 {
 			if (bdoom_debris) {
 				for (int i = 4; i > 0; i--)
-					A_SpawnItemEx("Wallsmoke",frandom(-3.0,3.0),frandom(-3.0,3.0),frandom(-1.0,1.0),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
+					A_SpawnItemEx("BD_WallSmoke",frandom(-3.0,3.0),frandom(-3.0,3.0),frandom(-1.0,1.0),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
 				for (int i = 7; i > 0; i--)
-					A_SpawnItemEx("Wallpart",0,0,0,	frandom(1,3),0,frandom(3,5),	random(0,360),0,64);
+					A_SpawnItemEx("BD_WallPart",0,0,0,	frandom(1,3),0,frandom(3,5),	random(0,360),0,64);
 			}
 		}
 		stop;

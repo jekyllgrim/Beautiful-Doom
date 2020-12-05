@@ -29,10 +29,10 @@ Class BD_SpiderMastermind : BdoomMonster {
 		}
 		if (bdoom_debris) {
 			for (int i = random(10,20); i > 0; i--)
-				A_SpawnItemEx("RicochetSpark",0,frandom(-16,16),frandom(48,70),frandom(-4,4),frandom(-4,4),frandom(4,8),failchance:64);
+				A_SpawnItemEx("BD_RicochetSpark",0,frandom(-16,16),frandom(48,70),frandom(-4,4),frandom(-4,4),frandom(4,8),failchance:64);
 			if (random(0,2) == 2) {
 				A_StartSound("spiderdemon/debris",volume:0.5);
-				A_SpawnItemEx("BasicMetalPiece",random(-16,16),random(-16,16),frandom(48,70),	frandom(5,8),frandom(-2,2),random(5,10),	frandom(0,359),SXF_SETTARGET);
+				A_SpawnItemEx("BD_BasicMetalPiece",random(-16,16),random(-16,16),frandom(48,70),	frandom(5,8),frandom(-2,2),random(5,10),	frandom(0,359),SXF_SETTARGET);
 			}
 		}
 	}
@@ -76,9 +76,9 @@ Class BD_SpiderMastermind : BdoomMonster {
 			return ResolveState(null);
 		}
 	Missile.Vanilla:
-		SSMA B 1 BD_BulletAttack(22.5, 0, 3, random(1,5)*3,"spider/attack","spiderdemon/fire","ChaingunCasing",12,-15,43,43,10);
+		SSMA B 1 BD_BulletAttack(22.5, 0, 3, random(1,5)*3,"spider/attack","spiderdemon/fire","BD_ChaingunCasing",12,-15,43,43,10);
 		SSMA CAD 1;
-		SSMA B 1 BD_BulletAttack(22.5, 0, 3, random(1,5)*3,"spider/attack","spiderdemon/fire","ChaingunCasing",12,-15,43,43,10);
+		SSMA B 1 BD_BulletAttack(22.5, 0, 3, random(1,5)*3,"spider/attack","spiderdemon/fire","BD_ChaingunCasing",12,-15,43,43,10);
 		SSMA CAD 1;
 		SSMA D 1 A_SpidRefire;
 		TNT1 A 0 {
@@ -92,9 +92,9 @@ Class BD_SpiderMastermind : BdoomMonster {
 		}
 		loop;
 	Missile.Enhanced: //firing twice as fast but per-shot damage is approximately halved 
-		SSMA B 1 BD_BulletAttack(22.5, 0, 3, random(1,5)*1.5,"spider/attack","spiderdemon/fire","ChaingunCasing",12,-15,43,43,10);
+		SSMA B 1 BD_BulletAttack(22.5, 0, 3, random(1,5)*1.5,"spider/attack","spiderdemon/fire","BD_ChaingunCasing",12,-15,43,43,10);
 		SSMA A 1;
-		SSMA B 1 BD_BulletAttack(22.5, 0, 3, random(1,5)*1.5,"spider/attack","spiderdemon/fire","ChaingunCasing",12,-15,43,43,10);
+		SSMA B 1 BD_BulletAttack(22.5, 0, 3, random(1,5)*1.5,"spider/attack","spiderdemon/fire","BD_ChaingunCasing",12,-15,43,43,10);
 		SSMA A 1;
 		SSMA D 1 A_SpidRefire;
 		TNT1 A 0 {
@@ -110,14 +110,14 @@ Class BD_SpiderMastermind : BdoomMonster {
 	Missile.Modern:
 		SSMA B 1 {
 			A_StartSound("spiderdemon/fire");
-			A_SpawnItemEx("ChaingunCasing",12,-15,40, frandom(2,4),0,random(2,4), random(-85,-95),SXF_SETTARGET);
-			A_CustomBulletAttack(5.0, 1, 1, 0, "NUllPuff", 0, CBAF_NORANDOM,AAPTR_TARGET,"BD_SpiderBullet",43,10);
+			A_SpawnItemEx("BD_ChaingunCasing",12,-15,40, frandom(2,4),0,random(2,4), random(-85,-95),SXF_SETTARGET);
+			A_CustomBulletAttack(5.0, 1, 1, 0, "BD_NullPuff", 0, CBAF_NORANDOM,AAPTR_TARGET,"BD_SpiderBullet",43,10);
 		}
 		SSMA A 1;
 		SSMA B 1 {
 			A_StartSound("spiderdemon/fire");		
-			A_SpawnItemEx("ChaingunCasing",12,-15,40, frandom(2,4),0,random(2,4), random(-85,-95),SXF_SETTARGET);
-			A_CustomBulletAttack(5.0, 1, 1, 0, "NUllPuff", 0, CBAF_NORANDOM,AAPTR_TARGET,"BD_SpiderBullet",43,10);	
+			A_SpawnItemEx("BD_ChaingunCasing",12,-15,40, frandom(2,4),0,random(2,4), random(-85,-95),SXF_SETTARGET);
+			A_CustomBulletAttack(5.0, 1, 1, 0, "BD_NullPuff", 0, CBAF_NORANDOM,AAPTR_TARGET,"BD_SpiderBullet",43,10);	
 		}
 		SSMA A 1;
 		SSMA D 1 A_SpidRefire;
@@ -159,31 +159,31 @@ Class BD_SpiderMastermind : BdoomMonster {
 		SPIX ABCDEF 5 DyingSpark();	
 		TNT1 A 0 {
 			A_StartSound("spiderdemon/explosion",attenuation:ATTN_NONE);
-			A_SpawnItemEx("SpiderExplosion",0,0,72);
+			A_SpawnItemEx("BD_SpiderExplosion",0,0,72);
 			
 			A_FaceTarget();
-			A_SpawnItemEx("SpiderBrainLeft",0,-16,64, frandom(-1.5,1.5),frandom(-3.5,-5.5),frandom(4,6),flags:SXF_SETTARGET);
-			A_SpawnItemEx("SpiderBrainRight",0,16,64, frandom(-1.5,1.5),frandom(3.5,5.5),frandom(4,6),flags:SXF_SETTARGET);
-			A_SpawnItemEx("SpiderBrainMid",-16,0,64, frandom(-3.5,-5.5),frandom(-1.5,1.5),frandom(4,6),flags:SXF_SETTARGET);
-			A_SpawnItemEx("SpiderFace",16,0,64, frandom(3.5,5.5),frandom(-1.5,1.5),frandom(4,6),flags:SXF_SETTARGET);
+			A_SpawnItemEx("BD_SpiderBrainLeft",0,-16,64, frandom(-1.5,1.5),frandom(-3.5,-5.5),frandom(4,6),flags:SXF_SETTARGET);
+			A_SpawnItemEx("BD_SpiderBrainRight",0,16,64, frandom(-1.5,1.5),frandom(3.5,5.5),frandom(4,6),flags:SXF_SETTARGET);
+			A_SpawnItemEx("BD_SpiderBrainMid",-16,0,64, frandom(-3.5,-5.5),frandom(-1.5,1.5),frandom(4,6),flags:SXF_SETTARGET);
+			A_SpawnItemEx("BD_SpiderFace",16,0,64, frandom(3.5,5.5),frandom(-1.5,1.5),frandom(4,6),flags:SXF_SETTARGET);
 			
-			A_SpawnItemEx("SpiderLegLeft",16,-48,60, frandom(2,3),frandom(-4.5,-5.5),frandom(7,9),flags:SXF_SETTARGET);
-			A_SpawnItemEx("SpiderLegLeft",-16,-48,60, frandom(-2,-3),frandom(-4.5,-5.5),frandom(7,9),flags:SXF_SETTARGET);
-			A_SpawnItemEx("SpiderLegRight",16,48,60, frandom(2,3),frandom(4.5,5.5),frandom(7,9),flags:SXF_SETTARGET);
-			A_SpawnItemEx("SpiderLegRight",-16,48,60, frandom(-2,-3),frandom(4.5,5.5),frandom(7,9),flags:SXF_SETTARGET);
+			A_SpawnItemEx("BD_SpiderLegLeft",16,-48,60, frandom(2,3),frandom(-4.5,-5.5),frandom(7,9),flags:SXF_SETTARGET);
+			A_SpawnItemEx("BD_SpiderLegLeft",-16,-48,60, frandom(-2,-3),frandom(-4.5,-5.5),frandom(7,9),flags:SXF_SETTARGET);
+			A_SpawnItemEx("BD_SpiderLegRight",16,48,60, frandom(2,3),frandom(4.5,5.5),frandom(7,9),flags:SXF_SETTARGET);
+			A_SpawnItemEx("BD_SpiderLegRight",-16,48,60, frandom(-2,-3),frandom(4.5,5.5),frandom(7,9),flags:SXF_SETTARGET);
 			
-			A_SpawnItemEx("SpiderHandLeft",0,-16,64, frandom(-1.5,1.5),frandom(-3,-4.5),frandom(6,7),flags:SXF_SETTARGET);
-			A_SpawnItemEx("SpiderHandRight",0,16,64, frandom(-1.5,1.5),frandom(3,4.5),frandom(5,7),flags:SXF_SETTARGET);
+			A_SpawnItemEx("BD_SpiderHandLeft",0,-16,64, frandom(-1.5,1.5),frandom(-3,-4.5),frandom(6,7),flags:SXF_SETTARGET);
+			A_SpawnItemEx("BD_SpiderHandRight",0,16,64, frandom(-1.5,1.5),frandom(3,4.5),frandom(5,7),flags:SXF_SETTARGET);
 			
 			for (int i = 10; i > 0; i--)
-				A_SpawnItemEx("BFountainSpray",frandom(-5.0,5.0),frandom(-5.0,5.0),random(24,72),frandom(-1.5,1.5),frandom(-1.5,1.5),frandom(4.5,6.5),0,SXF_SETTARGET,36);
+				A_SpawnItemEx("BD_BFountainSpray",frandom(-5.0,5.0),frandom(-5.0,5.0),random(24,72),frandom(-1.5,1.5),frandom(-1.5,1.5),frandom(4.5,6.5),0,SXF_SETTARGET,36);
 			for (int i = 6; i > 0; i--)
-				A_SpawnItemEx("BasicMeatPiece_Heavy",random(-4,4),random(-4,4),random(24,72),	frandom(-5,5),frandom(-5,5),random(5,8),	0,	SXF_SETTARGET, 64);
+				A_SpawnItemEx("BD_BasicMeatPiece_Heavy",random(-4,4),random(-4,4),random(24,72),	frandom(-5,5),frandom(-5,5),random(5,8),	0,	SXF_SETTARGET, 64);
 			for (int i = 15; i > 0; i--)
-				A_SpawnItemEx("BasicMetalPiece",random(-4,4),random(-4,4),random(24,72),		frandom(-10,10),frandom(-10,10),random(5,10),	0,SXF_SETTARGET, 64);
+				A_SpawnItemEx("BD_BasicMetalPiece",random(-4,4),random(-4,4),random(24,72),		frandom(-10,10),frandom(-10,10),random(5,10),	0,SXF_SETTARGET, 64);
 			for (int i = 8; i > 0; i--)
-				A_SpawnItemEx("SpiderMetalPiece",random(-4,4),random(-4,4),random(24,72),		frandom(-10,10),frandom(-10,10),random(5,10),	0,SXF_SETTARGET, 64);
-			A_SpawnItemEx("SpiderGunGib",16,0,50, frandom(3.5,5.5),frandom(-1.5,1.5),frandom(4,6),flags:SXF_SETTARGET);
+				A_SpawnItemEx("BD_SpiderMetalPiece",random(-4,4),random(-4,4),random(24,72),		frandom(-10,10),frandom(-10,10),random(5,10),	0,SXF_SETTARGET, 64);
+			A_SpawnItemEx("BD_SpiderGunGib",16,0,50, frandom(3.5,5.5),frandom(-1.5,1.5),frandom(4,6),flags:SXF_SETTARGET);
 		}
 		TNT1 A 30;
 		TNT1 A 1 A_BossDeath;
@@ -191,7 +191,7 @@ Class BD_SpiderMastermind : BdoomMonster {
 	}
 }
 
-Class SpiderExplosion : Actor {
+Class BD_SpiderExplosion : Actor {
 	Default {
 		+NOINTERACTION
 		+NOGRAVITY

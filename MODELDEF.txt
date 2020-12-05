@@ -1,5 +1,5 @@
 
-Model BulletTracer
+Model BD_BulletTracer
 {
 	Path "models"
 	Model 0 "tracer.md3"
@@ -26,7 +26,7 @@ model "BD_TrackingBeam"
 
 
 
-Model RicochetBullet
+Model BD_RicochetBullet
 {
 	Path "models"
 	Model 0 "tracer.md3"
@@ -220,7 +220,7 @@ Model BD_BloodyFootPrint
 ////////// BLOOD POOL
 
 //the actual model by Nash, textures/animation by me
-Model AniBloodPool
+Model BD_AniBloodPool
 {
 	UseActorRoll
 	UseActorPitch
@@ -331,7 +331,7 @@ Model BD_GibBlood
 	FrameIndex MODL S 0 0
 }
 
-Model BloodSpray
+Model BD_BloodSpray
 {
 	UseActorRoll
 	UseActorPitch

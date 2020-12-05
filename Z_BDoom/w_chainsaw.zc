@@ -499,14 +499,14 @@ Class BD_ChainsawPuff : BDoomPuff {
 			TNT1 A 0 {
 				If (bdoom_debris) {
 					for (int i = 5; i > 0; i--)
-						A_SpawnItemEx("Wallpart",0,0,0,	frandom(-3,3),frandom(-3,3),frandom(5,10),	0,0,64);
-					A_SpawnItemEx("WallSmoke",0,0,0,0,0,frandom(0.2,0.5));
+						A_SpawnItemEx("BD_WallPart",0,0,0,	frandom(-3,3),frandom(-3,3),frandom(5,10),	0,0,64);
+					A_SpawnItemEx("BD_WallSmoke",0,0,0,0,0,frandom(0.2,0.5));
 				}
 				if (random(1,100) <= 70) {
 					if (bdoom_sparks)
 						A_StartSound("weapons/chainsaw/hitwall");
 					for (int i = 15; i > 0; i--)
-						A_SpawnItemEx("RicochetSpark",0,0,0,	frandom(-2,2),frandom(-2,2),frandom(5,10),failchance:160);
+						A_SpawnItemEx("BD_RicochetSpark",0,0,0,	frandom(-2,2),frandom(-2,2),frandom(5,10),failchance:160);
 				}
 			}
 			CPUF GHIJ 1 bright;
@@ -549,7 +549,7 @@ Class ModernsawPuff : BD_ChainsawPuff {
 	}
 }
 
-Class ChainsawBloodSpray : BloodSpray {
+Class ChainsawBloodSpray : BD_BloodSpray {
 	Default {
 		scale 0.1;
 		gravity 0.5;

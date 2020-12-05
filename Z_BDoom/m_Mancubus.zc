@@ -59,9 +59,9 @@ Class BD_Fatso : BDoomMonster {
 		Death.Vanilla: //vanilla
 			MANM a 3 {
 				if (bdoom_gibs && !burning) {
-					A_SpawnItemEx("BasicMeatPiece",frandom(-3,3),frandom(-3,3),frandom(44,47), frandom(-4,4),frandom(-4,4),frandom(2,4),0,SXF_SETTARGET,96);
-					A_SpawnItemEx("BasicMeatPiece",frandom(-3,3),frandom(-3,3),frandom(44,47), frandom(-4,4),frandom(-4,4),frandom(2,4),0,SXF_SETTARGET,96);
-					A_SpawnItemEx("BasicMeatPiece",frandom(-3,3),frandom(-3,3),frandom(44,47), frandom(-4,4),frandom(-4,4),frandom(2,4),0,SXF_SETTARGET,96);
+					A_SpawnItemEx("BD_BasicMeatPiece",frandom(-3,3),frandom(-3,3),frandom(44,47), frandom(-4,4),frandom(-4,4),frandom(2,4),0,SXF_SETTARGET,96);
+					A_SpawnItemEx("BD_BasicMeatPiece",frandom(-3,3),frandom(-3,3),frandom(44,47), frandom(-4,4),frandom(-4,4),frandom(2,4),0,SXF_SETTARGET,96);
+					A_SpawnItemEx("BD_BasicMeatPiece",frandom(-3,3),frandom(-3,3),frandom(44,47), frandom(-4,4),frandom(-4,4),frandom(2,4),0,SXF_SETTARGET,96);
 				}
 			}
 			MANM b 3 {
@@ -89,7 +89,7 @@ Class BD_Fatso : BDoomMonster {
 				if (bdoom_blood && !burning)
 					A_SpawnItemEx("Blood",frandom(-3,3),frandom(-3,3),frandom(36,42), frandom(-4,4),frandom(-4,4),frandom(3,6));
 				if (bdoom_gibs && !burning)
-					A_SpawnItemEx("BasicMeatPiece",frandom(-3,3),frandom(-3,3),frandom(20,40), frandom(-4,4),frandom(-4,4),frandom(2,4),0,SXF_SETTARGET,24);
+					A_SpawnItemEx("BD_BasicMeatPiece",frandom(-3,3),frandom(-3,3),frandom(20,40), frandom(-4,4),frandom(-4,4),frandom(2,4),0,SXF_SETTARGET,24);
 			}
 			MANN jkL 4;
 			goto deathbleed;

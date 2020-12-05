@@ -1,6 +1,6 @@
 Class BDoomMonster : BDoomActor abstract {
 	double hitheight;
-	TranslatedBurningBody burncorpse;
+	BD_TranslatedBurningBody burncorpse;
 	BurningBodyFlame burnflame;
 	protected double smokeheight;
 	property smokeheight : smokeheight;
@@ -83,7 +83,7 @@ Class BDoomMonster : BDoomActor abstract {
 	}
 	
 	//A_BulletAttack variant that spawns casings, uses tracers when CVAR allows it and chooses between a vanilla and a new sound
-	void BD_BulletAttack(double horz_spread, double vert_spread, int numbullets, int damageperbullet, string OldSound, string NewSound, string Casing, double CasingX = 0, double CasingY = 0, double CasingZ = 0, double TracerHeight = 32, double Tracerofs_xy = 0, class<Actor> puff = "EnBulletPuff") {		
+	void BD_BulletAttack(double horz_spread, double vert_spread, int numbullets, int damageperbullet, string OldSound, string NewSound, string Casing, double CasingX = 0, double CasingY = 0, double CasingZ = 0, double TracerHeight = 32, double Tracerofs_xy = 0, class<Actor> puff = "BD_EnBulletPuff") {		
 		if (bdoom_debris)
 			A_SpawnItemEx(Casing,CasingX,CasingY,CasingZ,		frandom(2,4),0,frandom(2,4),	random(-85,-95),SXF_SETTARGET);
 		If(bdoom_weapons)
@@ -91,7 +91,7 @@ Class BDoomMonster : BDoomActor abstract {
 		else			
 			A_StartSound(oldsound);
 		if (bdoom_tracers)
-			A_CustomBulletAttack(horz_spread, vert_spread, numbullets, damageperbullet, puff, 0, CBAF_NORANDOM,AAPTR_TARGET,"BulletTracer",TracerHeight,Tracerofs_xy);
+			A_CustomBulletAttack(horz_spread, vert_spread, numbullets, damageperbullet, puff, 0, CBAF_NORANDOM,AAPTR_TARGET,"BD_BulletTracer",TracerHeight,Tracerofs_xy);
 		else
 			A_CustomBulletAttack(horz_spread, vert_spread, numbullets, damageperbullet, puff, 0, CBAF_NORANDOM);
 	}
@@ -122,7 +122,7 @@ Class BDoomMonster : BDoomActor abstract {
 			for (int i = random(0,2); i > 0; i--) {
 				double rad = radius*0.5;
 				int fchance = burntimer*0.7;
-				A_SpawnItemEx("BlackSmoke",frandom(-rad,rad),frandom(-rad,rad),/*smokeheight + */frandom(8,20),0,0,frandom(0.4,0.9),failchance:fchance);
+				A_SpawnItemEx("BD_BlackSmoke",frandom(-rad,rad),frandom(-rad,rad),/*smokeheight + */frandom(8,20),0,0,frandom(0.4,0.9),failchance:fchance);
 			}
 			//console.printf("burntimer: %d, smoke chance: %f",burntimer,chance);
 		}
@@ -135,12 +135,12 @@ Class BDoomMonster : BDoomActor abstract {
 		}
 	}
 		
-	BasicMeatPiece BD_GibSpawn(Class<Actor> spawnclass, double hpos = 0, double vpos = 0, double hvel = 0, double vvel = 0, int spawnchance = 100) {
+	BD_BasicMeatPiece BD_GibSpawn(Class<Actor> spawnclass, double hpos = 0, double vpos = 0, double hvel = 0, double vvel = 0, int spawnchance = 100) {
 		if (random(0,100) > spawnchance)
 			return null;
-		if (!(spawnclass is "BasicMeatPiece"))
+		if (!(spawnclass is "BD_BasicMeatPiece"))
 			return null;
-		let meat = BasicMeatPiece(Spawn(spawnclass, (pos.x + frandom(-hpos,hpos), pos.y + frandom(-hpos,hpos), pos.z + vpos)));
+		let meat = BD_BasicMeatPiece(Spawn(spawnclass, (pos.x + frandom(-hpos,hpos), pos.y + frandom(-hpos,hpos), pos.z + vpos)));
 		if (meat) {
 			//meat.gibtype = GetClassName();
 			vector3 meatvel;
@@ -177,7 +177,7 @@ Class BDoomMonster : BDoomActor abstract {
 		}
 		//generic-looking meat unaffected by vel
 		for (int i = random(1,3); i > 0; i--) {
-			let meat = BasicMeatPiece(Spawn("BasicMeatPiece", (pos.x + frandom(-4,4), pos.y + frandom(-4,4), pos.z + frandom(4,28))));
+			let meat = BD_BasicMeatPiece(Spawn("BD_BasicMeatPiece", (pos.x + frandom(-4,4), pos.y + frandom(-4,4), pos.z + frandom(4,28))));
 			if (meat) {
 				meat.vel = (frandom(-2.5,2.5),frandom(-2.5,3.5),frandom(7,10));	
 				meat.target = self;
@@ -189,27 +189,27 @@ Class BDoomMonster : BDoomActor abstract {
 		
 		//generic-looking meat affected by vel
 		for (int i = random(5,7); i > 0; i--)
-			BD_GibSpawn("BasicMeatPiece",hpos: 4,vpos: frandom(8,28), hvel: 1.6, vvel: frandom(6,12), spawnchance: 70);
+			BD_GibSpawn("BD_BasicMeatPiece",hpos: 4,vpos: frandom(8,28), hvel: 1.6, vvel: frandom(6,12), spawnchance: 70);
 		
 		//more uniquely-looking internal organs
-		BD_GibSpawn("Gib_Intestine",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(4,10), spawnchance: 70);
-		BD_GibSpawn("Gib_Intestine",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(4,10), spawnchance: 70);
-		BD_GibSpawn("Gib_Lung",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(4,10), spawnchance: 50);
-		BD_GibSpawn("Gib_Lung",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(4,10), spawnchance: 50);
-		BD_GibSpawn("Gib_liver",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(4,10), spawnchance: 50);
-		BD_GibSpawn("Gib_kidneys",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(4,10), spawnchance: 50);
+		BD_GibSpawn("BD_Gib_Intestine",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(4,10), spawnchance: 70);
+		BD_GibSpawn("BD_Gib_Intestine",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(4,10), spawnchance: 70);
+		BD_GibSpawn("BD_Gib_Lung",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(4,10), spawnchance: 50);
+		BD_GibSpawn("BD_Gib_Lung",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(4,10), spawnchance: 50);
+		BD_GibSpawn("BD_Gib_liver",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(4,10), spawnchance: 50);
+		BD_GibSpawn("BD_Gib_kidneys",hpos: 4,vpos: frandom(8,28), hvel: 0.8, vvel: frandom(4,10), spawnchance: 50);
 		
 		//these will automatically select the appropriate sprites based on the classname of the monster that spawned them
-		BD_GibSpawn("Gib_head",hpos: 4,vpos: frandom(42,48), hvel: 1.2, vvel: frandom(6,12));
-		BD_GibSpawn("Gib_Hand",hpos: 4,vpos: frandom(35,40), hvel: 1.2, vvel: frandom(6,12), spawnchance: 90);
-		BD_GibSpawn("Gib_Hand",hpos: 4,vpos: frandom(35,40), hvel: 1.2, vvel: frandom(6,12), spawnchance: 90);
-		BD_GibSpawn("Gib_Leg",hpos: 4,vpos: frandom(10,12), hvel: 1.2, vvel: frandom(6,12), spawnchance: 90);
-		BD_GibSpawn("Gib_Leg",hpos: 4,vpos: frandom(10,12), hvel: 1.2, vvel: frandom(6,12), spawnchance: 90);
+		BD_GibSpawn("BD_Gib_head",hpos: 4,vpos: frandom(42,48), hvel: 1.2, vvel: frandom(6,12));
+		BD_GibSpawn("BD_Gib_Hand",hpos: 4,vpos: frandom(35,40), hvel: 1.2, vvel: frandom(6,12), spawnchance: 90);
+		BD_GibSpawn("BD_Gib_Hand",hpos: 4,vpos: frandom(35,40), hvel: 1.2, vvel: frandom(6,12), spawnchance: 90);
+		BD_GibSpawn("BD_Gib_Leg",hpos: 4,vpos: frandom(10,12), hvel: 1.2, vvel: frandom(6,12), spawnchance: 90);
+		BD_GibSpawn("BD_Gib_Leg",hpos: 4,vpos: frandom(10,12), hvel: 1.2, vvel: frandom(6,12), spawnchance: 90);
 
-		let torso1 = BasicMeatPiece(	BD_GibSpawn("Gib_Torso1",hpos: 8,vpos: frandom(18,28), hvel: 1, vvel: vel.z*frandom(0.7,0.95))	);
+		let torso1 = BD_BasicMeatPiece(	BD_GibSpawn("BD_Gib_Torso1",hpos: 8,vpos: frandom(18,28), hvel: 1, vvel: vel.z*frandom(0.7,0.95))	);
 		if (torso1) torso1.scale.x = randompick(-1,1);
 		
-		let torso2 = BasicMeatPiece(	BD_GibSpawn("Gib_Torso2",hpos: 8,vpos: frandom(18,28), hvel: 1, vvel: vel.z*frandom(0.7,0.95))	);
+		let torso2 = BD_BasicMeatPiece(	BD_GibSpawn("BD_Gib_Torso2",hpos: 8,vpos: frandom(18,28), hvel: 1, vvel: vel.z*frandom(0.7,0.95))	);
 		if (torso2 && torso1 && torso1.scale.x == -1) torso2.scale.x = -1;		
 	}
 		
@@ -228,7 +228,7 @@ Class BDoomMonster : BDoomActor abstract {
 			#### # 50 {
 				if (vel == (0,0,0) && pos.z == floorz) {
 					if (bdoom_blood && !BDoomActor.CheckAnimated(self)) {
-						let pool = BD_BaseDebris(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
+						let pool = BD_BaseDebris(Spawn("BD_AniBloodPool",(pos.x,pos.y,floorz)));
 						if (pool) {
 							pool.target = self;
 							meatlist.Push(pool);
@@ -291,7 +291,7 @@ Class BDoomMonster : BDoomActor abstract {
 				A_SetTranslation("Scorched");
 				A_SetRenderstyle(alpha,STYLE_Normal);
 				//a bright overlay sprite is briefly spawned
-				burncorpse = TranslatedBurningBody(Spawn("TranslatedBurningBody",pos));
+				burncorpse = BD_TranslatedBurningBody(Spawn("BD_TranslatedBurningBody",pos));
 				//the overlay shares color with the flame and acts as a brief "flash"
 				if (burncorpse) {
 					burncorpse.master = self;
@@ -323,7 +323,7 @@ Class BDoomMonster : BDoomActor abstract {
 			stop;
 		Death.PlasmaDamage:
 			#### # 0 {
-				burncorpse = TranslatedBurningBody(Spawn("TranslatedBurningBody"));
+				burncorpse = BD_TranslatedBurningBody(Spawn("BD_TranslatedBurningBody"));
 				if (burncorpse) {
 					burncorpse.A_SetTranslation("Scorched");
 					burncorpse.transfer = true;
@@ -369,29 +369,13 @@ Class BDoomMonster : BDoomActor abstract {
 	}
 }
 
-Class Test1 : Actor {
-	Default {
-		+NOINTERACTION
-	}
-	states {
-	Spawn:
-		POSS A -1 NoDelay {
-			let bc = TranslatedBurningBody(Spawn("TranslatedBurningBody"));
-			bc.A_SetTranslation("Scorched");
-			bc.fadedir = -1;
-			bc.master = self;
-		}
-		stop;
-	}
-}
-
 /*This is spawned by a burning monster and receives a "fire" translation from it,
 while the monster receives "scorched" translation. As this fades out, it creates
 an effect of smooth transition from burning to scorched.
 In case of plasma death, this receives normal translation, while the monster becomes
 scorched.
 */
-Class TranslatedBurningBody : Actor {
+Class BD_TranslatedBurningBody : Actor {
 	double fadespeed; //how quickly it fades
 	int fadestart;	//when it starts to fade
 	int fadetime;	//timer
@@ -402,9 +386,9 @@ Class TranslatedBurningBody : Actor {
 	property fadedir : fadedir;
 	bool transfer; //if true, when the corpse disappears, it'll transfer its translation to the master
 	Default {
-		TranslatedBurningBody.fadespeed 0.01;
-		TranslatedBurningBody.fadestart 0;
-		TranslatedBurningBody.fadedir 1;
+		BD_TranslatedBurningBody.fadespeed 0.01;
+		BD_TranslatedBurningBody.fadestart 0;
+		BD_TranslatedBurningBody.fadedir 1;
 		+NOINTERACTION
 		renderstyle 'Translucent';
 		alpha 1.0;

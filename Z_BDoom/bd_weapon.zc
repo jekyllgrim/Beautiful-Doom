@@ -297,7 +297,7 @@ Class BDoomWeapon : Weapon abstract {
 				else {
 					A_Recoil(-1.5);
 				}
-				BD_ModernPunch(10*frandom(3,5.5), berserkdamage: 20*frandom(4.5,6), pufftype:"ModernKickPuff", berserkpuff:"ModernKickPuff_Berserk", range: 85);
+				BD_ModernPunch(10*frandom(3,5.5), berserkdamage: 20*frandom(4.5,6), pufftype:"BD_ModernKickPuff", berserkpuff:"BD_ModernKickPuff_Berserk", range: 85);
 			}
 			TNT1 A 0 A_CameraSway(0.0,-3.0,8);
 			KICK HDC 2;
@@ -343,11 +343,6 @@ Class BDoomWeapon : Weapon abstract {
 	}
 }
 
-Class QuickKickPuff : ModernKickPuff {
-	Default {
-		-FORCEPAIN
-	}
-}
 
 
 //////////////
@@ -473,12 +468,12 @@ Class BD_RealBullet : FastProjectile {
 			}
 			stop;
 		Death:
-			TNT1 A 1 A_SpawnItemEx("EnBulletPuff",flags:SXF_TRANSFERPOINTERS);
+			TNT1 A 1 A_SpawnItemEx("BD_EnBulletPuff",flags:SXF_TRANSFERPOINTERS);
 			stop;
 	}
 }
 
-Class BulletTracer : BD_RealBullet {
+Class BD_BulletTracer : BD_RealBullet {
 	Default {
 		BD_RealBullet.bulletspeed 256;
 		-ACTIVATEIMPACT;
@@ -603,12 +598,12 @@ class BD_MuzzleSmoke : BD_BaseSmoke {
 // EMPTY CASINGS
 //***************
 
-Class Casing_General : SmallDebris {
+Class BD_BaseEmptyCasing : BD_SmallDebris {
 	protected name spawnsprite;
 	property spawnsprite : spawnsprite;
 	Default {
-		SmallDebris.dbrake 0.75;
-		SmallDebris.liquidsound "world/watersplashsmall";
+		BD_SmallDebris.dbrake 0.75;
+		BD_SmallDebris.liquidsound "world/watersplashsmall";
 		+ROLLCENTER
 		+BOUNCEONFLOORS
 		+BOUNCEONWALLS
@@ -682,25 +677,25 @@ Class Casing_General : SmallDebris {
 }
 
 
-Class PistolCasing : Casing_General {
+Class BD_PistolCasing : BD_BaseEmptyCasing {
 	Default {
 		Scale 0.11;
-		Casing_General.spawnsprite 'CAS1';
+		BD_BaseEmptyCasing.spawnsprite 'CAS1';
 		bouncesound "weapons/casing";
 	}
 }
 
-Class ShotgunCasing : Casing_General { 
+Class BD_ShotgunCasing : BD_BaseEmptyCasing { 
 	Default {
 		Scale 0.2;
-		Casing_General.spawnsprite 'CAS2';
+		BD_BaseEmptyCasing.spawnsprite 'CAS2';
 		bouncesound "weapons/shotgunshells";
 	}
 }
 
-Class ChaingunCasing : Casing_General { 
+Class BD_ChaingunCasing : BD_BaseEmptyCasing { 
 	Default {
-		Casing_General.spawnsprite 'CAS3';
+		BD_BaseEmptyCasing.spawnsprite 'CAS3';
 		bouncefactor 0.35;
 		wallbouncefactor 0.4;
 		Scale 0.15;

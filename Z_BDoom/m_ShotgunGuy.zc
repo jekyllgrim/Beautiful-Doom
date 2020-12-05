@@ -44,7 +44,7 @@ Class BD_ShotgunGuy : BDoomMonster {
 			if (bdoom_weapons == 1)
 				A_StartSound("weapons/shotgun/pump",slot:CHAN_5);
 			If(bdoom_debris)
-				A_SpawnItemEx("ShotgunCasing",0,0,28,		frandom(2,4),0,random(2,4),	random(-30,-40),SXF_SETTARGET);
+				A_SpawnItemEx("BD_ShotgunCasing",0,0,28,		frandom(2,4),0,random(2,4),	random(-30,-40),SXF_SETTARGET);
 		}
 		SPSR A 3;
 		goto See;
@@ -56,7 +56,7 @@ Class BD_ShotgunGuy : BDoomMonster {
 			if (monsterclip == 0)
 				return ResolveState("Reload");
 			A_StartSound("Mweapons/shotgun/fire");
-			A_CustomBulletAttack(20.0, 1.5, 6, 0, "NUllPuff", 0, CBAF_NORANDOM,AAPTR_TARGET,"BD_ZombiePellet",30,8);
+			A_CustomBulletAttack(20.0, 1.5, 6, 0, "BD_NullPuff", 0, CBAF_NORANDOM,AAPTR_TARGET,"BD_ZombiePellet",30,8);
 			monsterclip--;
 			return ResolveState(null);
 		}
@@ -66,7 +66,7 @@ Class BD_ShotgunGuy : BDoomMonster {
 		SPSR B 3 {
 			A_StartSound("Mweapons/shotgun/pump",slot:CHAN_5);
 			If(bdoom_debris)
-				A_SpawnItemEx("ShotgunCasing",0,0,28,		frandom(2,4),0,random(2,4),	random(-30,-40),SXF_SETTARGET);
+				A_SpawnItemEx("BD_ShotgunCasing",0,0,28,		frandom(2,4),0,random(2,4),	random(-30,-40),SXF_SETTARGET);
 		}
 		SPSR AC 4;
 		SPO1 E 15 {
@@ -172,7 +172,7 @@ Class BD_ShotgunGuy : BDoomMonster {
 	DeathHeadshot1:
 		SPOD A 3 {
 			if (bdoom_gibs)
-				A_SpawnItemEx("Gib_Head",frandom(-1,1),frandom(-1,1),52,frandom(2,5),0,frandom(1,5),random(150,210),SXF_SETTARGET);
+				A_SpawnItemEx("BD_Gib_Head",frandom(-1,1),frandom(-1,1),52,frandom(2,5),0,frandom(1,5),random(150,210),SXF_SETTARGET);
 		}
 		SPOD B 3 BD_Bleed();
 		SPOD C 3 A_NoBlocking();
@@ -183,7 +183,7 @@ Class BD_ShotgunGuy : BDoomMonster {
 		SPOD LLMMLM random(7,11) {
 			if (bdoom_blood && random(0,100) < 40) {
 				A_StartSound("gibs/bloodspurt");
-				A_SpawnItemEx("NeckSpurt",frandom(-0.3,0.3),frandom(-0.3,0.3),33,0,0,0,random(0,359),SXF_SETTARGET);
+				A_SpawnItemEx("BD_NeckSpurt",frandom(-0.3,0.3),frandom(-0.3,0.3),33,0,0,0,random(0,359),SXF_SETTARGET);
 			}
 		}
 		SPOD FG 2;

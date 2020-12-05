@@ -99,7 +99,7 @@ Class BD_Cacodemon : BDoomMonster  {
 		}
 		HEAP CCDDEEFF 2 {
 			if (bdoom_gibs)
-				A_SpawnItemEx("CacodemonMeatPiece",0,frandom(-6,6),frandom(8,20),	frandom(3,5),0,frandom(2,3),	random(-15,15),	SXF_SETTARGET,48);
+				A_SpawnItemEx("BD_CacodemonMeatPiece",0,frandom(-6,6),frandom(8,20),	frandom(3,5),0,frandom(2,3),	random(-15,15),	SXF_SETTARGET,48);
 			}
 		TNT1 A 0 {
 			A_NoBlocking();
@@ -128,12 +128,12 @@ Class BD_Cacodemon : BDoomMonster  {
 		TNT1 A 0 A_Jump(128,"Death");
 		HEAX ABC 3 {
 			if (bdoom_gibs)
-				A_SpawnItemEx("CacodemonMeatPiece",frandom(-6,6),frandom(-6,6),frandom(8,20),	frandom(-6,6),frandom(-6,6),frandom(4,6), 0,	SXF_SETTARGET,48);
+				A_SpawnItemEx("BD_CacodemonMeatPiece",frandom(-6,6),frandom(-6,6),frandom(8,20),	frandom(-6,6),frandom(-6,6),frandom(4,6), 0,	SXF_SETTARGET,48);
 		}
 		TNT1 A 0 A_XScream();
 		HEAX DEF 3 {
 			if (bdoom_gibs)
-				A_SpawnItemEx("CacodemonMeatPiece",frandom(-6,6),frandom(-6,6),frandom(8,20),	frandom(-6,6),frandom(-6,6),frandom(4,6), 0,	SXF_SETTARGET,48);
+				A_SpawnItemEx("BD_CacodemonMeatPiece",frandom(-6,6),frandom(-6,6),frandom(8,20),	frandom(-6,6),frandom(-6,6),frandom(4,6), 0,	SXF_SETTARGET,48);
 		}
 		TNT1 A 0 {
 			A_NoBlocking();
@@ -141,7 +141,7 @@ Class BD_Cacodemon : BDoomMonster  {
 		}
 		HEAX GH 2 {
 			if (bdoom_gibs)
-				A_SpawnItemEx("CacodemonMeatPiece",frandom(-6,6),frandom(-6,6),frandom(8,20),	frandom(-6,6),frandom(-6,6),frandom(4,6), 0,	SXF_SETTARGET,48);
+				A_SpawnItemEx("BD_CacodemonMeatPiece",frandom(-6,6),frandom(-6,6),frandom(8,20),	frandom(-6,6),frandom(-6,6),frandom(4,6), 0,	SXF_SETTARGET,48);
 		}
 		HEAX IJKLMNOPQRS 2;
 		goto deathbleed;
@@ -347,7 +347,7 @@ Class CacoBallLightning : BD_BaseFlare {
 	}
 }
 
-Class CacoBallPiece : RicochetSpark {
+Class CacoBallPiece : BD_RicochetSpark {
 	Default {
 		alpha 1.0;
 		scale 0.065;

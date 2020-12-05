@@ -12,12 +12,12 @@ flickerlight BPUFF
     chance 0.2
 }
 
-object EnBulletPuff
+object BD_EnBulletPuff
 {
     frame BPUF { light BPUFF }
 }
 
-object RicochetBullet
+object BD_RicochetBullet
 {
     frame TNT1 { light BPUFF }
 }
@@ -629,7 +629,7 @@ flickerlight PFireYellow
     chance 0.5
 }
 
-object ParticleFire_Yellow
+object BD_ParticleFire_Yellow
 {
     frame FIPY { light PFireYellow }
 }
@@ -643,7 +643,7 @@ flickerlight PFireGreen
     chance 0.5
 }
 
-object ParticleFire_Green
+object BD_ParticleFire_Green
 {
     frame FIPR { light PFireGreen }
 }
@@ -864,24 +864,10 @@ object BD_PainElemental
 	frame SPAI { light LOSTSOUL_X3 }
 }
 
-object PEExplosion
+object BD_PainExplosion
 {
 	frame BOM1 { light LOSTSOUL_X3 }
 }
-
-/*flickerlight PEPART
-{
-    color 0.6 0.6 0.0
-    attenuate 1
-    size 12
-    secondarysize 10
-    chance 0.5
-}
-
-object PEFlameDebris
-{
-	frame FIRP { light PEPART }
-}*/
 
 // Mancubus Fireball
 object BD_FatShot
@@ -1132,12 +1118,12 @@ object BD_Archvile
 
 
 // Cyberdemon & Spider Mastermind
-object CyberExplosion
+object BD_CyberExplosion
 {
     frame BOM3 { light ROCKET_X2 }
 }
 
-object SpiderExplosion
+object BD_SpiderExplosion
 {
     frame BOM1 { light ROCKET_X2 }
 }

@@ -6,7 +6,7 @@
 // TERRAIN
 //**********
 
-Class BD_BaseSplash : SmallDebris abstract {
+Class BD_BaseSplash : BD_SmallDebris abstract {
 	Default {
 		+NOINTERACTION
 		renderstyle 'normal';
@@ -30,7 +30,7 @@ Class BD_LavaSplash : BD_BaseSplash {
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		let smoke = Spawn("BlackSmoke",pos+(0,0,frandom(8,16)));
+		let smoke = Spawn("BD_BlackSmoke",pos+(0,0,frandom(8,16)));
 		if (smoke)
 			smoke.vel.z = frandom(0.6,1);
 		for (int i = random(10,15); i > 0; i--) {
@@ -113,9 +113,9 @@ Class BD_WaterSplash : BD_BaseSplash {
 	}
 }
 
-Class BD_WaterSplashChunk : SmallDebris {
+Class BD_WaterSplashChunk : BD_SmallDebris {
 	Default {
-		SmallDebris.removeonfall true;
+		BD_SmallDebris.removeonfall true;
 		gravity 0.3;
 		renderstyle 'translucent';
 	}
@@ -222,7 +222,7 @@ Class BD_SmallAcidSplash : BD_AcidSplash {
 			Spawn("BD_SplashRipple",pos);
 	}*/
 
-Class BD_SplashRipple : SmallDebris {
+Class BD_SplashRipple : BD_SmallDebris {
 	protected double scalemul;
 	Default {
 		renderstyle 'shaded';		
@@ -290,7 +290,7 @@ Class BD_TeleportFog : TeleportFog {
 
 // Explosive Barrel
 
-Class EBarrelPiece : WallPart {
+Class EBarrelPiece : BD_WallPart {
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		wrot = random(16,24)*randompick(-1,1);
@@ -418,7 +418,7 @@ Class BD_ExplosiveBarrel : ExplosiveBarrel {
 				canSeePlayer = CheckPlayerSights();
 				if (bdoom_debris && canSeePlayer) {
 					for (int i = random(3,6); i > 0; i--)
-						A_SpawnItemEx("SmokingPiece",	frandom(-6,6),frandom(-6,6),frandom(4,24),	frandom(-5,5),frandom(-5,5),frandom(7,12));
+						A_SpawnItemEx("BD_SmokingPiece",	frandom(-6,6),frandom(-6,6),frandom(4,24),	frandom(-5,5),frandom(-5,5),frandom(7,12));
 					for (int i = random(4,7); i > 0; i--)
 						A_SpawnItemEx("EBarrelPiece",	frandom(-6,6),frandom(-6,6),frandom(4,24),	frandom(-10,10),frandom(-10,10),frandom(4,15));
 				}
@@ -426,13 +426,13 @@ Class BD_ExplosiveBarrel : ExplosiveBarrel {
 			BEXP DDEEFFGGH 1 {
 				if (bdoom_debris && canSeePlayer) {
 					for (int i = random(0,4); i > 0; i--)
-						A_SpawnItemEx("BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(1,52),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.2,1));
+						A_SpawnItemEx("BD_BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(1,52),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.2,1));
 				}
 			}
 			BEXP H 1 A_Explode();
 			BEXP IJKLMNOPQ 3 {
 				if (bdoom_debris && canSeePlayer)
-					A_SpawnItemEx("BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(1,52),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.2,1),failchance:32);
+					A_SpawnItemEx("BD_BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(1,52),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.2,1),failchance:32);
 			}
 			TNT1 A 1050 A_BarrelDestroy;
 			TNT1 A 5 {
@@ -445,7 +445,7 @@ Class BD_ExplosiveBarrel : ExplosiveBarrel {
 	}
 }
 
-Class BD_ExplodedBarrel : SmallDebris {
+Class BD_ExplodedBarrel : BD_SmallDebris {
 	Default {
 		+NOINTERACTION
 		scale 0.8;
@@ -557,7 +557,7 @@ Class BD_HeartColumn : HeartColumn {
 	BD_LightFlare flare;
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		let a = AniBloodPool(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
+		let a = BD_AniBloodPool(Spawn("BD_AniBloodPool",(pos.x,pos.y,floorz)));
 		if (a)  a.instant = true;
 	}
 	override void Tick() {
@@ -612,11 +612,11 @@ Class BD_BigTree : BigTree {
 	}
 }
 
-Class BigTreeLeaf : SmallDebris {
+Class BigTreeLeaf : BD_SmallDebris {
 	Default {
 		scale 0.5;
-		SmallDebris.Removeonfall false;
-		SmallDebris.dbrake 0.95;
+		BD_SmallDebris.Removeonfall false;
+		BD_SmallDebris.dbrake 0.95;
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();

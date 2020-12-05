@@ -1,5 +1,5 @@
 
-class BD_BaseGib : SmallDebris abstract {
+class BD_BaseGib : BD_SmallDebris abstract {
 	name gibtype; //can be set explicitly by the spawner; otherwise becomes equal to the class name of the spawner (which is normally the gib's target)
 	protected double bmass; //the mass the gib gains after it lands
 	protected int restframe; //last frame used in death animation
@@ -8,12 +8,12 @@ class BD_BaseGib : SmallDebris abstract {
 	protected int outboundscounter; //is used if the gib ends up in the void: if so, it'll be removed but only after a delay
 	Default {		
 		BD_BaseDebris.sfxtype 'gibs';
-		SmallDebris.removeonliquid false;
-		SmallDebris.removeonfall false;
-		SmallDebris.liquidheight 1.2;
-		SmallDebris.dbrake 0.75;
-		SmallDebris.hitceiling true;
-		SmallDebris.liquidsound "world/watersplash";
+		BD_SmallDebris.removeonliquid false;
+		BD_SmallDebris.removeonfall false;
+		BD_SmallDebris.liquidheight 1.2;
+		BD_SmallDebris.dbrake 0.75;
+		BD_SmallDebris.hitceiling true;
+		BD_SmallDebris.liquidsound "world/watersplash";
 		RenderStyle 'normal';
 		//remains of an older iteration when the gibs were regular shootable actors:
 		/*
@@ -136,7 +136,7 @@ class BD_BaseGib : SmallDebris abstract {
 		}
 	}
 	override void Tick() {
-		Super.Tick();	//SmallDebris's Tick, not Actor's
+		Super.Tick();	//BD_SmallDebris's Tick, not Actor's
 		if (isFrozen())
 			return;		
 		//remove if out of level:
@@ -159,11 +159,11 @@ class BD_BaseGib : SmallDebris abstract {
 	}
 }
 
-class BasicMeatPiece : BD_BaseGib {
+class BD_BasicMeatPiece : BD_BaseGib {
 	double watergravity;
 	property watergravity : watergravity;
 	Default {
-		BasicMeatPiece.watergravity 0.1;
+		BD_BasicMeatPiece.watergravity 0.1;
 		scale 0.45;
 		radius 2;
 	}
@@ -174,7 +174,7 @@ class BasicMeatPiece : BD_BaseGib {
 	override void PostBeginPlay() {
 		super.PostBeginPlay();	
 		A_FaceMovementDirection();
-		if (self.GetClassName() == "BasicMeatPiece")
+		if (self.GetClassName() == "BD_BasicMeatPiece")
 			bSLIDESONWALLS = false;
 		GibBeginPlay();
 	}
@@ -236,7 +236,7 @@ class BasicMeatPiece : BD_BaseGib {
 			gravity = frandom[bdsfx](0.0018,0.0022);
 			A_SetTics(random[bdsfx](50,90));
 			roll = randompick(0,180);
-			let smudge = GibSmudge(Spawn("GibSmudge",pos));
+			let smudge = BD_GibSmudge(Spawn("BD_GibSmudge",pos));
 			if (smudge) {
 				smudge.master = self;
 				smudge.translation = BloodTranslation;
@@ -255,7 +255,7 @@ class BasicMeatPiece : BD_BaseGib {
 		#### # 1 {
 			A_SetTics(random[bdsfx](50,100));		
 			gravity = frandom[bdsfx](0.0022,0.0025);
-			let smudge = GibSmudge(Spawn("GibSmudge",pos));
+			let smudge = BD_GibSmudge(Spawn("BD_GibSmudge",pos));
 			if (smudge) {
 				smudge.master = self;
 				smudge.ceiling = true;
@@ -336,12 +336,12 @@ class BasicMeatPiece : BD_BaseGib {
 	}
 }
 	
-Class GibSmudge : SmallDebris {
-	BasicMeatPiece meat;
+Class BD_GibSmudge : BD_SmallDebris {
+	BD_BasicMeatPiece meat;
 	bool ceiling;
 	Default {
 		BD_BaseDebris.sfxtype 'gibs';
-		SmallDebris.removeonfall false;
+		BD_SmallDebris.removeonfall false;
 		gravity 0;
 		+FORCEYBILLBOARD
 		xscale 0.32;
@@ -352,7 +352,7 @@ Class GibSmudge : SmallDebris {
 		super.PostBeginPlay();
 		bSPRITEFLIP = randompick(0,1);
 		if (master)
-			meat = BasicMeatPiece(master);
+			meat = BD_BasicMeatPiece(master);
 	}
 	override void Tick() {
 		super.Tick();
@@ -396,13 +396,13 @@ Class GibSmudge : SmallDebris {
 	}
 }
 
-Class BD_BasicLimb : BasicMeatPiece {
+Class BD_BasicLimb : BD_BasicMeatPiece {
 	Default {
 		+BOUNCEONFLOORS
 		+BOUNCEONWALLS		
 		wallbouncefactor 0.4;
 		bouncefactor 0.2;
-		SmallDebris.liquidheight 3.5;
+		BD_SmallDebris.liquidheight 3.5;
 	}
 	states {
 	/*DeathLiquid:
@@ -424,10 +424,10 @@ Class BD_BasicLimb : BasicMeatPiece {
 	}
 }
 
-class BasicMetalPiece : BasicMeatPiece {
+class BD_BasicMetalPiece : BD_BasicMeatPiece {
 	Default {
-		SmallDebris.removeonliquid true;
-		BasicMeatPiece.watergravity 0.08;
+		BD_SmallDebris.removeonliquid true;
+		BD_BasicMeatPiece.watergravity 0.08;
 		seesound "none";
 		bouncesound "gibs/metallic";
 		deathsound "gibs/metallic";
@@ -452,13 +452,6 @@ class BasicMetalPiece : BasicMeatPiece {
 		roll = random[bdsfx](0,359);
 		A_SetScale(frandom[bdsfx](0.3,0.8)*randompick(-1,1));
 	}
-	/*override void Tick() {
-		super.Tick();
-		if (isFrozen() || !bdoom_debris || waterlevel > 0)
-			return;
-		if (d_spawn && InStateSequence(curstate,d_spawn));
-			Spawn("BD_MetalPieceTrail",pos+(frandom(-3,3),frandom(-3,3),frandom(-3,3)));
-	}*/
 	states {
 	spawn:
 		GMET # 1 {			
@@ -470,7 +463,7 @@ class BasicMetalPiece : BasicMeatPiece {
 					return ResolveState("Rest");
 			}
 			else {
-				let a = Spawn("BlackSmoke",pos+(frandom(-3,3),frandom(-3,3),frandom(-3,3)));
+				let a = Spawn("BD_BlackSmoke",pos+(frandom(-3,3),frandom(-3,3),frandom(-3,3)));
 				if (a) {
 					a.A_SetScale(0.1);
 					a.vel = (frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5));
@@ -507,9 +500,9 @@ Class BD_MetalPieceTrail : BD_BaseFlare {
 	}
 }
 
-class BasicMeatPiece_Heavy : BasicMeatPiece {
+class BD_BasicMeatPiece_Heavy : BD_BasicMeatPiece {
 	Default {
-		SmallDebris.liquidheight 2;
+		BD_SmallDebris.liquidheight 2;
 		scale 0.8;
 	}
 	override void GibBeginPlay() {
@@ -518,7 +511,7 @@ class BasicMeatPiece_Heavy : BasicMeatPiece {
 	}
 }
 
-class Gib_Intestine : BasicMeatPiece {
+class BD_Gib_Intestine : BD_BasicMeatPiece {
 	Default {
 		scale 0.32;
 		gravity 0.5;
@@ -532,7 +525,7 @@ class Gib_Intestine : BasicMeatPiece {
 	}
 }
 
-class Gib_Lung : BasicMeatPiece {
+class BD_Gib_Lung : BD_BasicMeatPiece {
 	Default {
 		+SLIDESONWALLS
 		scale 0.23;
@@ -543,7 +536,7 @@ class Gib_Lung : BasicMeatPiece {
 	}
 }
 
-class Gib_Liver : BasicMeatPiece {
+class BD_Gib_Liver : BD_BasicMeatPiece {
 	Default {
 		+SLIDESONWALLS
 		scale 0.23;
@@ -554,7 +547,7 @@ class Gib_Liver : BasicMeatPiece {
 	}
 }
 
-class Gib_Kidneys : BasicMeatPiece { //I don't know what that sprite is but it looks non-generic enough to be unique
+class BD_Gib_Kidneys : BD_BasicMeatPiece { //I don't know what that sprite is but it looks non-generic enough to be unique
 	Default {
 		+SLIDESONWALLS
 		scale 0.4;
@@ -565,7 +558,7 @@ class Gib_Kidneys : BasicMeatPiece { //I don't know what that sprite is but it l
 	}
 }
 
-class Gib_Hand : BD_BasicLimb {
+class BD_Gib_Hand : BD_BasicLimb {
 	Default {
 		scale 0.8;
 	}
@@ -612,7 +605,7 @@ class Gib_Hand : BD_BasicLimb {
 	}
 }
 
-class Gib_Leg : BD_BasicLimb {
+class BD_Gib_Leg : BD_BasicLimb {
 	Default {
 		scale 0.8;
 	}
@@ -658,7 +651,7 @@ class Gib_Leg : BD_BasicLimb {
 	}
 }
 
-class Gib_Head : BD_BasicLimb {
+class BD_Gib_Head : BD_BasicLimb {
 	Default {
 		scale 0.8;
 	}
@@ -707,11 +700,11 @@ class Gib_Head : BD_BasicLimb {
 	}
 }
 
-class Gib_Torso1 : BasicMeatPiece {
+class BD_Gib_Torso1 : BD_BasicMeatPiece {
 	int finalframe; //last frame used in the flying animation
 	Default {
-		SmallDebris.liquidheight 4;
-		BasicMeatPiece.watergravity 0.3;
+		BD_SmallDebris.liquidheight 4;
+		BD_BasicMeatPiece.watergravity 0.3;
 		BD_BaseDebris.sfxtype "none"; //I don't want torsos to get destroyed because they essentially function as the corpse and show where the monster died
 		gravity 1.0;
 		scale 1.0;
@@ -774,7 +767,7 @@ class Gib_Torso1 : BasicMeatPiece {
 				if (frame == restframe && vel ~== (0, 0, 0)) { //in contrast to other gibs, torso is always noninteractive, so that it always stays close to the position of the original dead body (so that players can see where the monster died and can predict where the Arch-Vile is going to go to resurrect them)
 					if (bdoom_blood && target && (target is "BDoomMonster")) {
 						let body = BDoomMonster(target);
-						let pool = BD_BaseDebris(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
+						let pool = BD_BaseDebris(Spawn("BD_AniBloodPool",(pos.x,pos.y,floorz)));
 						if (body && pool) {
 							body.meatlist.push(pool);
 							pool.target = body;
@@ -815,7 +808,7 @@ class Gib_Torso1 : BasicMeatPiece {
 	}
 }
 
-Class Gib_Torso2 : Gib_Torso1 {
+Class BD_Gib_Torso2 : BD_Gib_Torso1 {
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		if (gibtype == 'BD_Zombieman') {
@@ -848,7 +841,7 @@ Class Gib_Torso2 : Gib_Torso1 {
 //// CACODEMON
 
 
-class CacodemonMeatPiece : BasicMeatPiece {
+class BD_CacodemonMeatPiece : BD_BasicMeatPiece {
 	Default {
 		bloodcolor "00 00 CC";
 		translation "CacoGibs";
@@ -859,7 +852,7 @@ class CacodemonMeatPiece : BasicMeatPiece {
 	}
 }
 
-Class BD_CacoEye : BasicMeatPiece {
+Class BD_CacoEye : BD_BasicMeatPiece {
 	Default {
 		bloodcolor "00 00 CC";
 	}
@@ -874,7 +867,7 @@ Class BD_CacoEye : BasicMeatPiece {
 
 //// LOST SOUL pieces
 
-class LS_Horn : BD_BasicLimb {
+class BD_LS_Horn : BD_BasicLimb {
 	Default {
 		scale 1.0;
 		+NOBLOOD
@@ -901,7 +894,7 @@ class LS_Horn : BD_BasicLimb {
 	}
 }
 
-Class LS_shard : LS_Horn {
+Class BD_LS_Shard : BD_LS_Horn {
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("LGI3");
@@ -909,7 +902,7 @@ Class LS_shard : LS_Horn {
 	}
 }
 
-Class LS_Skull : LS_Horn {
+Class LS_Skull : BD_LS_Horn {
 	Default {
 		height 4;
 		radius 2;
@@ -923,7 +916,7 @@ Class LS_Skull : LS_Horn {
 
 // PAIN ELEMENTAL
 
-class PainElementalHand : BasicMeatPiece {
+class BD_PainElementalHand : BD_BasicMeatPiece {
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("HND6");
@@ -931,7 +924,7 @@ class PainElementalHand : BasicMeatPiece {
 	}
 }
 
-class PainElementalJaw : BD_BasicLimb {
+class BD_PainElementalJaw : BD_BasicLimb {
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("PAPP");
@@ -939,7 +932,7 @@ class PainElementalJaw : BD_BasicLimb {
 	}
 }
 
-class PainElementalHorn : BD_BasicLimb {
+class BD_PainElementalHorn : BD_BasicLimb {
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("PARP");
@@ -950,9 +943,9 @@ class PainElementalHorn : BD_BasicLimb {
 
 // CYBERDEMON
 
-Class BasicBossGib : BasicMeatPiece {
+Class BD_BaseBossGib : BD_BasicMeatPiece {
 	Default {
-		SmallDebris.liquidheight 3.5;
+		BD_SmallDebris.liquidheight 3.5;
 		scale 1.0;
 		height 20;
 	}
@@ -1004,7 +997,7 @@ Class BasicBossGib : BasicMeatPiece {
 	}
 }
 
-class CyberHead : BasicBossGib {
+class BD_CyberHead : BD_BaseBossGib {
 	Default {
 		scale 0.8;
 		gravity 0.5;
@@ -1021,9 +1014,9 @@ class CyberHead : BasicBossGib {
 	}
 }
 
-Class CyberHandLeft : CyberHead {
+Class BD_CyberHandLeft : BD_CyberHead {
 	Default {
-		BasicMeatPiece.watergravity 1;
+		BD_BasicMeatPiece.watergravity 1;
 	}
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
@@ -1039,9 +1032,9 @@ Class CyberHandLeft : CyberHead {
 	}
 }
 
-Class CyberHandRight : CyberHandLeft {
+Class BD_CyberHandRight : BD_CyberHandLeft {
 	Default {
-		BasicMeatPiece.watergravity 0.1;
+		BD_BasicMeatPiece.watergravity 0.1;
 	}
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
@@ -1057,9 +1050,9 @@ Class CyberHandRight : CyberHandLeft {
 	}
 }
 
-Class CyberLegLeft : CyberHandRight {
+Class BD_CyberLegLeft : BD_CyberHandRight {
 	Default {
-		BasicMeatPiece.watergravity 1;
+		BD_BasicMeatPiece.watergravity 1;
 	}
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
@@ -1068,9 +1061,9 @@ Class CyberLegLeft : CyberHandRight {
 	}
 }
 
-Class CyberLegRight : CyberHandLeft {
+Class BD_CyberLegRight : BD_CyberHandLeft {
 	Default {
-		BasicMeatPiece.watergravity 0.1;
+		BD_BasicMeatPiece.watergravity 0.1;
 	}
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
@@ -1086,9 +1079,9 @@ Class CyberLegRight : CyberHandLeft {
 	}
 }
 
-Class CyberTorso1 : CyberHandRight {
+Class BD_CyberTorso1 : BD_CyberHandRight {
 	Default {
-		BasicMeatPiece.watergravity 1;
+		BD_BasicMeatPiece.watergravity 1;
 	}
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
@@ -1097,7 +1090,7 @@ Class CyberTorso1 : CyberHandRight {
 	}
 }
 
-Class CyberTorso2 : Gib_Torso1 {
+Class BD_CyberTorso2 : BD_Gib_Torso1 {
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("TRC2");
@@ -1115,7 +1108,7 @@ Class CyberTorso2 : Gib_Torso1 {
 	}
 }
 
-Class CyberTorso3 : CyberTorso2 {
+Class BD_CyberTorso3 : BD_CyberTorso2 {
 	override void GibBeginPlay() {
 		Super.GibBeginPlay();
 		sprite = GetSpriteIndex("TRC3");
@@ -1126,7 +1119,7 @@ Class CyberTorso3 : CyberTorso2 {
 
 
 
-Class SpiderBrainRight : BasicBossGib {
+Class BD_SpiderBrainRight : BD_BaseBossGib {
 	Default {
 		scale 0.8;
 	}
@@ -1154,7 +1147,7 @@ Class SpiderBrainRight : BasicBossGib {
 	}
 }
 
-Class SpiderBrainLeft : SpiderBrainRight {
+Class BD_SpiderBrainLeft : BD_SpiderBrainRight {
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		wrot = -7;
@@ -1163,7 +1156,7 @@ Class SpiderBrainLeft : SpiderBrainRight {
 	}
 }
 
-Class SpiderBrainMid : SpiderBrainRight {
+Class BD_SpiderBrainMid : BD_SpiderBrainRight {
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		wrot = randompick(-6,6);
@@ -1172,7 +1165,7 @@ Class SpiderBrainMid : SpiderBrainRight {
 	}
 }
 
-Class SpiderFace : SpiderBrainRight {
+Class BD_SpiderFace : BD_SpiderBrainRight {
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		wrot = randompick(-5,5);
@@ -1189,7 +1182,7 @@ Class SpiderFace : SpiderBrainRight {
 	}
 }
 
-class SpiderMetalPiece : BasicMetalPiece {
+class BD_SpiderMetalPiece : BD_BasicMetalPiece {
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		bmass = 100;
@@ -1202,7 +1195,7 @@ class SpiderMetalPiece : BasicMetalPiece {
 	}
 }
 
-class SpiderGunGib : SpiderMetalPiece {
+class BD_SpiderGunGib : BD_SpiderMetalPiece {
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		sprite = GetSpriteIndex("TRP2");
@@ -1216,10 +1209,10 @@ class SpiderGunGib : SpiderMetalPiece {
 	}
 }
 
-class SpiderLegRight : BasicBossGib {
+class BD_SpiderLegRight : BD_BaseBossGib {
 	int endroll;
 	Default {		
-		BasicMeatPiece.watergravity 1;
+		BD_BasicMeatPiece.watergravity 1;
 		+NOBLOOD
 		seesound "none";
 		deathsound "gibs/metallic";
@@ -1250,7 +1243,7 @@ class SpiderLegRight : BasicBossGib {
 	}
 }
 
-class SpiderLegLeft : SpiderLegRight {
+class BD_SpiderLegLeft : BD_SpiderLegRight {
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
 		scale.x *= -1;
@@ -1259,7 +1252,7 @@ class SpiderLegLeft : SpiderLegRight {
 	}
 }
 
-Class SpiderHandRight : BasicBossGib {
+Class BD_SpiderHandRight : BD_BaseBossGib {
 	Default {
 		xscale -1;
 	}
@@ -1285,7 +1278,7 @@ Class SpiderHandRight : BasicBossGib {
 	}
 }
 
-Class SpiderHandLeft : SpiderHandRight {
+Class BD_SpiderHandLeft : BD_SpiderHandRight {
 	Default {
 		xscale 1;
 	}

@@ -10,7 +10,7 @@ Class BD_RocketLauncher : BDoomWeapon {
 		weapon.ammotype1		"RocketAmmo";
 		weapon.ammouse1		1;
 		weapon.ammogive1		0;
-		BDoomWeapon.magammo	"RLClip";
+		BDoomWeapon.magammo	"BD_RLClip";
 		BDoomWeapon.magammogive 3;
 		weapon.ammotype2 		"RocketAmmo";
 		weapon.ammouse2		1;
@@ -102,15 +102,15 @@ Class BD_RocketLauncher : BDoomWeapon {
 				A_StartSound("weapons/RORN/draw");
 				let ws = player.FindPSprite (PSP_Weapon);
 				if (ws) {
-					if (countinv("RLCLip") >= 3) {
+					if (countinv("BD_RLClip") >= 3) {
 						ws.sprite = GEtSpriteIndex("RORN");
 						ws.frame = 0;
 					}
-					else if (countinv("RLCLip") >= 2) {
+					else if (countinv("BD_RLClip") >= 2) {
 						ws.sprite = GEtSpriteIndex("RORE");
 						ws.frame = 0;
 					}
-					else if (countinv("RLCLip") >= 1) {
+					else if (countinv("BD_RLClip") >= 1) {
 						ws.sprite = GEtSpriteIndex("RORE");
 						ws.frame = 2;
 					}
@@ -130,15 +130,15 @@ Class BD_RocketLauncher : BDoomWeapon {
 			RORV C 0 {
 				let ws = player.FindPSprite (PSP_Weapon);
 				if (ws) {
-					if (countinv("RLCLip") >= 3) {
+					if (countinv("BD_RLClip") >= 3) {
 						ws.sprite = GEtSpriteIndex("RORN");
 						ws.frame = 0;
 					}
-					else if (countinv("RLCLip") >= 2) {
+					else if (countinv("BD_RLClip") >= 2) {
 						ws.sprite = GEtSpriteIndex("RORE");
 						ws.frame = 0;
 					}
-					else if (countinv("RLCLip") >= 1) {
+					else if (countinv("BD_RLClip") >= 1) {
 						ws.sprite = GEtSpriteIndex("RORE");
 						ws.frame = 2;
 					}
@@ -155,7 +155,7 @@ Class BD_RocketLauncher : BDoomWeapon {
 				BD_WeaponReady(1);
 				let ws = player.FindPSprite (PSP_Weapon);
 				if (ws) {
-					let mag = CountInv("RLClip");					
+					let mag = CountInv("BD_RLClip");					
 					if (mag >= 3) {
 						ws.sprite = GEtSpriteIndex("RORN");
 						ws.frame = 0;
@@ -180,7 +180,7 @@ Class BD_RocketLauncher : BDoomWeapon {
 				invoker.proj = "ModernRocket";
 				invoker.pitchshift = 1.2;
 				invoker.vangle = 0;
-				let mag = CountInv("RLClip");
+				let mag = CountInv("BD_RLClip");
 				if (mag > 3)		return ResolveState("Fire0.Modern");
 				else if (mag > 2) 	return ResolveState("Fire1.Modern");
 				else if (mag > 1) 	return ResolveState("Fire2.Modern");
@@ -193,21 +193,21 @@ Class BD_RocketLauncher : BDoomWeapon {
 				invoker.proj = "ModernGrenade";
 				invoker.pitchshift = 0.25;
 				invoker.vangle = -5;
-				let mag = CountInv("RLClip");
+				let mag = CountInv("BD_RLClip");
 				if (mag > 3) {
-					A_TakeInventory("RLCLip",1,TIF_NOTAKEINFINITE);
+					A_TakeInventory("BD_RLClip",1,TIF_NOTAKEINFINITE);
 					return ResolveState("Fire0.Modern");
 				}
 				else if (mag > 2) 	{
-					A_TakeInventory("RLCLip",1,TIF_NOTAKEINFINITE);
+					A_TakeInventory("BD_RLClip",1,TIF_NOTAKEINFINITE);
 					return ResolveState("Fire1.Modern");
 				}
 				else if (mag > 1) 	{
-					A_TakeInventory("RLCLip",1,TIF_NOTAKEINFINITE);
+					A_TakeInventory("BD_RLClip",1,TIF_NOTAKEINFINITE);
 					return ResolveState("Fire2.Modern");
 				}
 				else if (mag > 0) 	{
-					A_TakeInventory("RLCLip",1,TIF_NOTAKEINFINITE);
+					A_TakeInventory("BD_RLClip",1,TIF_NOTAKEINFINITE);
 					return ResolveState("Fire3.Modern");
 				}
 				return ResolveState("DryReload");
@@ -271,7 +271,7 @@ Class BD_RocketLauncher : BDoomWeapon {
 			goto Reload;
 		Reload:
 			RORR A 0 {
-				if (CountInv("RLCLip") >= 8 || CountInv("RocketAmmo") < 1)
+				if (CountInv("BD_RLClip") >= 8 || CountInv("RocketAmmo") < 1)
 					return ResolveState("Ready");
 				if (invoker.wasempty) {
 					let psp = player.FindPSprite (PSP_Weapon);
@@ -307,7 +307,7 @@ Class BD_RocketLauncher : BDoomWeapon {
 			goto ready;	
 		ReloadMag:
 			TNT1 A 0 {
-				int mag = CountInv("RLClip");
+				int mag = CountInv("BD_RLClip");
 				if (mag < 2)
 					BD_SetSprite("ROR3","QOR3");
 				else if (mag < 3)
@@ -333,7 +333,7 @@ Class BD_RocketLauncher : BDoomWeapon {
 			TNT1 A 0 {
 				A_StartSound("Mweapons/rocket/drum",slot:CHAN_VOICE,flags:CHANF_DEFAULT,volume:0.35);
 				invoker.wasempty = false;
-				int mag = CountInv("RLClip");
+				int mag = CountInv("BD_RLClip");
 				if (mag > 2)
 					return ResolveState("ReloadEnd0");
 				else if (mag > 1)
@@ -355,7 +355,7 @@ Class BD_RocketLauncher : BDoomWeapon {
 }
 
 
-Class RLClip : ammo {
+Class BD_RLClip : ammo {
 	Default {
 		inventory.icon "HROKZ0";
 		inventory.amount 1;
@@ -426,9 +426,9 @@ Class BD_Rocket : BDoomActor {
 				A_StartSound("weapons/rlan/explosion",slot:CHAN_5);
 			if(bdoom_debris) {
 				for (int i = random(3,7); i > 0; i--) 
-					A_SpawnItemEx("SmokingPiece",0,0,1, random(3,7),0,random(5,12),random(0,360));
+					A_SpawnItemEx("BD_SmokingPiece",0,0,1, random(3,7),0,random(5,12),random(0,360));
 				for (int i = random(5,15); i > 0; i--) {
-					let a = Spawn("WallPart",pos+(0,0,1));
+					let a = Spawn("BD_WallPart",pos+(0,0,1));
 					if (a) {
 						a.vel = (frandom(-4,4),frandom(-4,4),frandom(2,8));
 						a.A_SetScale(0.35);
@@ -482,7 +482,7 @@ Class BD_HomingRocket : BD_Rocket {
 					delay++;
 				else {
 					if (!sflare) {
-						sflare = BD_ProjFlare(Spawn("SeekerFlare",pos));
+						sflare = BD_ProjFlare(Spawn("BD_SeekerFlare",pos));
 						sflare.master = self;
 						sflare.xoffset = 18;
 					}
@@ -554,14 +554,14 @@ Class ModernRocket : BD_Rocket {
 				A_Quake(2,8,0,256,"");
 			if(bdoom_debris) {
 				for (int i = random(8,20); i > 0; i--)
-					A_SpawnItemEx("RicochetSpark",0,0,1,	frandom(-6,6),frandom(-6,6),frandom(3,10));
+					A_SpawnItemEx("BD_RicochetSpark",0,0,1,	frandom(-6,6),frandom(-6,6),frandom(3,10));
 				if (pos.z <= floorz+10) {
 					for (int i = random(4,10); i > 0; i--)
-						A_SpawnItemEx("RocketDebris",0,0,1,	frandom(-4,4),frandom(-4,4),frandom(9,12));
+						A_SpawnItemEx("BD_RocketDebris",0,0,1,	frandom(-4,4),frandom(-4,4),frandom(9,12));
 				}
 				else {
 					for (int i = random(4,10); i > 0; i--)
-						A_SpawnItemEx("RocketDebris",0,0,0,	frandom(-6.5,6.5),frandom(-6.5,6.5),frandom(-2,14));
+						A_SpawnItemEx("BD_RocketDebris",0,0,0,	frandom(-6.5,6.5),frandom(-6.5,6.5),frandom(-2,14));
 				}
 			}
 			A_Explode();
@@ -569,14 +569,14 @@ Class ModernRocket : BD_Rocket {
 		BOM4 ABCDEFGHIJKLMNOPQ 1 bright {
 			if (bdoom_debris) {
 				for (int i = random(1,4); i > 0; i --)
-					A_SpawnItemEx("BigBlackSmoke",random(-12,12),random(-12,12),random(0,12),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.1,0.5));
+					A_SpawnItemEx("BD_BigBlackSmoke",random(-12,12),random(-12,12),random(0,12),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.1,0.5));
 			}
 		}
 		BOM5 ABCDEFGH 1 bright {
 			A_Fadeout(0.04);
 			if (bdoom_debris) {
 				for (int i = random(0,2); i > 0; i --)
-					A_SpawnItemEx("BigBlackSmoke",random(-12,12),random(-12,12),random(0,12),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.1,0.5));
+					A_SpawnItemEx("BD_BigBlackSmoke",random(-12,12),random(-12,12),random(0,12),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.1,0.5));
 			}
 		}
 		BOM5 IJKLMN 1 bright A_Fadeout(0.04);
@@ -601,7 +601,7 @@ Class BD_ModernRocketFireTrail : BD_BaseFlare {
 	}
 }
 
-Class BD_ModernRocketTrail : WallSmoke {
+Class BD_ModernRocketTrail : BD_WallSmoke {
 	Default {
 		scale 0.03;
 		alpha 0.3;
@@ -727,7 +727,7 @@ Class ModernGrenadeFlare : BD_BaseFlare {
 }
 
 //flashes at the end of the homing version of the rocket
-Class SeekerFlare : BD_ProjFlare { 
+Class BD_SeekerFlare : BD_ProjFlare { 
 	Default {
 		alpha 0.6;
 	} 

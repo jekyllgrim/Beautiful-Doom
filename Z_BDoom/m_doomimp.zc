@@ -101,7 +101,7 @@ Class BD_DoomImp : BDoomMonster {
 		TROP CCDDCE random(3,7) {
 			if (!burning && random(0,100) > 40) {
 				A_StartSound("gibs/bloodspurt");
-				A_SpawnItemEx("FrontalSpurt",2,frandom(-0.3,0.3),frandom(14,15),0,0,0,random(-30,-40)*scale.x,SXF_SETTARGET,80);
+				A_SpawnItemEx("BD_FrontalSpurt",2,frandom(-0.3,0.3),frandom(14,15),0,0,0,random(-30,-40)*scale.x,SXF_SETTARGET,80);
 			}
 		}
 		TNT1 A 0 {
@@ -111,7 +111,7 @@ Class BD_DoomImp : BDoomMonster {
 		TROP FFF random(3,7) {
 			if (!burning && random(0,100) > 40) {
 				A_StartSound("gibs/bloodspurt");
-				A_SpawnItemEx("FrontalSpurt",2,frandom(0,0.5),frandom(11,12),0,0,0,random(-30,-40)*scale.x,SXF_SETTARGET,80);
+				A_SpawnItemEx("BD_FrontalSpurt",2,frandom(0,0.5),frandom(11,12),0,0,0,random(-30,-40)*scale.x,SXF_SETTARGET,80);
 			}
 		}
 		TROP GHI 3;
@@ -120,8 +120,8 @@ Class BD_DoomImp : BDoomMonster {
 		goto deathbleed;
 	DeathHeadshot:
 		TROD A 3 {
-			A_SpawnItemEx("Gib_Head",frandom(-2,2),frandom(-2,2),frandom(50,54),	frandom(2,5),0,frandom(1,5),random(150,210),SXF_SETTARGET);
-			A_SpawnItemEx("Gib_Hand",0,-20*scale.x,25,								vel.x*0.35,frandom(-2,-3)*scale.x,frandom(2,3),	0,SXF_SETTARGET);
+			A_SpawnItemEx("BD_Gib_Head",frandom(-2,2),frandom(-2,2),frandom(50,54),	frandom(2,5),0,frandom(1,5),random(150,210),SXF_SETTARGET);
+			A_SpawnItemEx("BD_Gib_Hand",0,-20*scale.x,25,								vel.x*0.35,frandom(-2,-3)*scale.x,frandom(2,3),	0,SXF_SETTARGET);
 		}
 		TROD BCDF 3 BD_Bleed();
 		TROD F 3 A_NoBlocking();
@@ -154,7 +154,7 @@ Class BD_DoomImp : BDoomMonster {
 	}
 }
 
-Class ParticleFire_DoomImp : ParticleFire_General {
+Class ParticleFire_DoomImp : BD_BaseParticleFire {
 	Default {
 		renderstyle "Add";
 		scale 0.3;

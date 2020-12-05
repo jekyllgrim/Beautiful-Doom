@@ -234,7 +234,7 @@ Class BD_BaseDebris : BDoomActor abstract {
 }
 
 //base inexpensive class for most FX actors
-Class SmallDebris : BD_BaseDebris abstract {
+Class BD_SmallDebris : BD_BaseDebris abstract {
 	protected bool onceiling;		//true if object is stuck on ceiling (must be combined with landed)
 	protected bool onliquid;
 	protected double Voffset;		//small randomized plane offset to reduce z-fighting for blood pools and such
@@ -265,11 +265,11 @@ Class SmallDebris : BD_BaseDebris abstract {
 	
 	Default {
 		gravity 0.8;
-		SmallDebris.liquidsound "";
-		SmallDebris.removeonfall false;
-		SmallDebris.removeonliquid true;
-		SmallDebris.dbrake 0;
-		SmallDebris.hitceiling false;
+		BD_SmallDebris.liquidsound "";
+		BD_SmallDebris.removeonfall false;
+		BD_SmallDebris.removeonliquid true;
+		BD_SmallDebris.dbrake 0;
+		BD_SmallDebris.hitceiling false;
 		+MOVEWITHSECTOR
 		-NOBLOCKMAP
 	}
@@ -486,7 +486,7 @@ Class SmallDebris : BD_BaseDebris abstract {
 	}
 }
 
-Class BD_WaterBubble : SmallDebris {
+Class BD_WaterBubble : BD_SmallDebris {
 	double fade;
 	Default {
 		+NOINTERACTION
@@ -530,7 +530,7 @@ modifiable class for flares and flames
 used both as a universal flare (setting fcolor will change its appearance) and as a base class for fire FX
 must NOT be abstract
 */
-Class BD_BaseFlare : SmallDebris {
+Class BD_BaseFlare : BD_SmallDebris {
 	protected state mdeath;
 	protected state mxdeath;
 	name fcolor;		//flare of the color; can be set as a property or externally
@@ -605,7 +605,7 @@ Class BD_ProjFlare : BD_BaseFlare {
 }
 
 
-Class ParticleFire_General : BD_BaseFlare abstract {
+Class BD_BaseParticleFire : BD_BaseFlare abstract {
 	Default {
 		scale 0.5;
 		alpha 0.5;
@@ -644,7 +644,7 @@ Class BD_FireParticle : BD_BaseFlare {
 	}
 }
 
-Class ParticleFire_Red : ParticleFire_General {
+Class BD_ParticleFire_Red : BD_BaseParticleFire {
 	states {
 	Spawn:
 		FIPR ABCDEFGHIJKLMNOPQRST 1 A_FadeOut(0.03);
@@ -652,7 +652,7 @@ Class ParticleFire_Red : ParticleFire_General {
 	}
 }
 
-Class ParticleFire_Yellow : ParticleFire_General {
+Class BD_ParticleFire_Yellow : BD_BaseParticleFire {
 	Default {
 		alpha 0.6;
 		scale 0.35;
@@ -664,7 +664,7 @@ Class ParticleFire_Yellow : ParticleFire_General {
 	}
 }
 
-Class ParticleFire_Green : ParticleFire_Red {
+Class BD_ParticleFire_Green : BD_ParticleFire_Red {
 	Default {
 		translation "0:3=112:127","5:8=112:127","9:12=112:127","13:15=112:127","16:47=112:127","48:79=112:127","96:111=112:127","112:127=112:127","128:151=112:127","152:159=112:127","160:167=112:127","169:191=112:127","193:207=112:127","208:223=112:127","224:231=112:127","232:235=112:127","236:239=112:127","240:247=112:127","248:249=112:127","250:254=112:127","255:255=112:127";
 	}
@@ -676,7 +676,7 @@ Class ParticleFire_Green : ParticleFire_Red {
 //// SMOKE ////
 ///////////////
 
-Class BD_BaseSmoke : SmallDebris abstract {
+Class BD_BaseSmoke : BD_SmallDebris abstract {
 	Default {
 		+NOINTERACTION
 		BD_BaseDebris.sfxtype 'debris';
@@ -705,7 +705,7 @@ Class BD_BaseSmoke : SmallDebris abstract {
 }
 
 //white smoke to spawn over heated weapons
-class WeaponSmoke : BD_BaseSmoke {
+class BD_WeaponSmoke : BD_BaseSmoke {
 	Default {
 		alpha 0.25;
 		scale 0.15;
@@ -724,7 +724,7 @@ class WeaponSmoke : BD_BaseSmoke {
 }
 
 //medium-sized dark smoke that raises over burnt/plasmaburnt bodies
-class BlackSmoke : BD_BaseSmoke {
+class BD_BlackSmoke : BD_BaseSmoke {
 	Default {
 		renderstyle 'Translucent';
 		alpha 0.3;
@@ -754,7 +754,7 @@ class BlackSmoke : BD_BaseSmoke {
 }
 
 //even bigger smoke for bigger explosions
-class BigBlackSmoke : BlackSmoke {
+class BD_BigBlackSmoke : BD_BlackSmoke {
 	Default {
 		alpha 0.6;
 		scale 0.45;
@@ -781,7 +781,7 @@ class BigBlackSmoke : BlackSmoke {
 }
 
 //dark small piece of smoke with a hint of flame — for "dirty" fires like burning barrel
-Class BurnSmokePiece : BD_BaseSmoke {
+Class BD_BurnSmokePiece : BD_BaseSmoke {
 	Default {
 		renderstyle 'Translucent';
 		alpha 0.3;
@@ -809,24 +809,18 @@ Class BD_RocketTrail : BD_BaseSmoke {
 	}
 }
 
-Class SmokeBallTrail : BD_RocketTrail {
-	Default {
-		alpha 0.15;
-	}
-}
-
 //a particle that spawns thin smoke behind itself
-Class SmokingPiece : SmallDebris {
+Class BD_SmokingPiece : BD_SmallDebris {
 	Default {
 		gravity 0.7;
 		alpha 1.0;
-		SmallDebris.removeonfall true;
+		BD_SmallDebris.removeonfall true;
 	}
 	states	{
 	Spawn:
 		TNT1 A 1 NoDelay {
 			if (alpha > 0) {
-				let a = Spawn("WeaponSmoke",pos);
+				let a = Spawn("BD_WeaponSmoke",pos);
 				if (a) {
 					a.alpha = alpha*0.5;
 					a.vel = (frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5));
@@ -838,24 +832,12 @@ Class SmokingPiece : SmallDebris {
 	}
 }
 
-Class SmokingPieceSmoke : BD_BaseSmoke {
-	Default {
-		scale 0.12;
-		alpha 0.4;
-	}
-	states {
-	Spawn:
-		SMOK ABCDEFGHIJKLMNOPQ 1 NoDelay A_FadeOut(0.03);
-		stop;
-	}
-}
-
 ///////////////
 //// PUFFS ////
 ///////////////
 
 //smoke coming out of wood walls
-Class WallSmoke : BD_BaseSmoke {
+Class BD_WallSmoke : BD_BaseSmoke {
 	Default {
 		+ROLLCENTER
 		scale 0.018;
@@ -893,7 +875,7 @@ Class WallSmoke : BD_BaseSmoke {
 }
 
 //circular puff of smoke for hard walls (stone, brick)
-Class RingSmoke : WallSmoke {
+Class BD_RingSmoke : BD_WallSmoke {
 	Default {
 		alpha 0.4;
 	}
@@ -960,7 +942,7 @@ Class BdoomPuff : BDoomActor abstract {
 }
 
 //used by stuff like decorative rails spawned by BFGball
-Class NullPuff : Actor {
+Class BD_NullPuff : Actor {
 	Default {
 		decal "none";
 		+NODECAL
@@ -978,7 +960,7 @@ Class NullPuff : Actor {
 }
 
 // Spawned by hitscans and real bullets (when in Modern Guns mode). Simulates different effects based on texture name
-Class EnBulletPuff : BDoomPuff {
+Class BD_EnBulletPuff : BDoomPuff {
 	protected string hittex; 				//name of texture that was hit. Needs to be string to use IndexOf for partial matches
 	name DebrisType;						//debris type (different shape/colors for wood, bricks, etc.)
 	protected int rchance; 				//ricochet chance
@@ -1186,11 +1168,11 @@ Class EnBulletPuff : BDoomPuff {
 				else if (puffdata.HitType == TRACE_HitCeiling)
 					ofz = -1;
 				if (random[bdsfx](0,100) < rchance) {
-					A_SpawnItemEx("RicochetBullet",xvel:50,zvel:frandom[bdsfx](-10,10),angle:random[bdsfx](0,359));
+					A_SpawnItemEx("BD_RicochetBullet",xvel:50,zvel:frandom[bdsfx](-10,10),angle:random[bdsfx](0,359));
 				}
 				if (smoke == 1) {
 					for (int i = random[bdsfx](6,9); i > 0; i--) {
-						actor wpart = Spawn("WallSmoke",Puffdata.Hitlocation + (0,0,ofz));
+						actor wpart = Spawn("BD_WallSmoke",Puffdata.Hitlocation + (0,0,ofz));
 						if (wpart) {
 							wpart.vel = (hitnormal + (frandom[bdsfx](-0.05,0.05),frandom[bdsfx](-0.05,0.05),frandom[bdsfx](-0.05,0.05))) * frandom[bdsfx](0.1,0.5);
 							wpart.target = self;
@@ -1199,11 +1181,11 @@ Class EnBulletPuff : BDoomPuff {
 				}
 				else if (smoke == 2) {						
 					for (int i = random[bdsfx](10,15); i > 0; i--)
-						A_SpawnItemEx("RingSmoke", 0,0,0, frandom[bdsfx](-0.7,0.7),frandom[bdsfx](-0.7,0.7),frandom[bdsfx](-0.7,0.7));
+						A_SpawnItemEx("BD_RingSmoke", 0,0,0, frandom[bdsfx](-0.7,0.7),frandom[bdsfx](-0.7,0.7),frandom[bdsfx](-0.7,0.7));
 				}
 				if (debris) {
 					for (int i = random[bdsfx](4,7); i > 0; i--) {
-						actor wpart = Spawn("Wallpart",Puffdata.Hitlocation + (0,0,ofz));
+						actor wpart = Spawn("BD_WallPart",Puffdata.Hitlocation + (0,0,ofz));
 						if (wpart) {
 							wpart.vel = (hitnormal + (frandom[bdsfx](-0.4,0.4),frandom[bdsfx](-0.4,0.4),frandom[bdsfx](-0.4,0.4))) * frandom[bdsfx](2.5,4);
 							wpart.target = self;
@@ -1212,7 +1194,7 @@ Class EnBulletPuff : BDoomPuff {
 				}
 				if (random[bdsfx](0,100) < sparkchance) {						
 					for (int i = random[bdsfx](5,8); i > 0; i--) {
-						actor wpart = Spawn("RicochetSpark",Puffdata.Hitlocation + (0,0,ofz));
+						actor wpart = Spawn("BD_RicochetSpark",Puffdata.Hitlocation + (0,0,ofz));
 						if (wpart) {
 							wpart.vel = (hitnormal + (frandom[bdsfx](-0.7,0.7),frandom[bdsfx](-0.7,0.7),frandom[bdsfx](-0.7,0.7))) * frandom[bdsfx](1,3);
 							wpart.target = self;
@@ -1282,9 +1264,9 @@ Class BD_PlaneDecal : BD_BaseDebris {
 	Its shape and translation change depending on the "material" of the texture
 	that was shot.
 */
-Class WallPart : SmallDebris {
+Class BD_WallPart : BD_SmallDebris {
 	Default {
-		SmallDebris.dbrake 0.8;
+		BD_SmallDebris.dbrake 0.8;
 		Renderstyle 'Translucent';
 		alpha 1.0;
 		scale 0.13;
@@ -1296,9 +1278,9 @@ Class WallPart : SmallDebris {
 		wrot = frandom[bdsfx](8,14)*randompick(-1,1);
 		scale*=frandom[bdsfx](0.8,1.2);
 		bSPRITEFLIP = randompick(0,1);
-		if (!target || !(target is "EnBulletPuff"))
+		if (!target || !(target is "BD_EnBulletPuff"))
 			return;
-		let puff = EnBulletPuff(target);
+		let puff = BD_EnBulletPuff(target);
 		if (puff.DebrisType == 'wood') {
 			A_SetTranslation("DebrisWood");
 			A_setScale(frandom[bdsfx](0.14,0.18),frandom[bdsfx](0.06,0.09));
@@ -1322,9 +1304,9 @@ Class WallPart : SmallDebris {
 	states {
 	Spawn:
 		TNT1 A 0 NoDelay {
-			if (!FindState("Bloody") || !target || !(target is "EnBulletPuff"))
+			if (!FindState("Bloody") || !target || !(target is "BD_EnBulletPuff"))
 				return ResolveState(null);
-			let puff = EnBulletPuff(target);
+			let puff = BD_EnBulletPuff(target);
 			if (puff.DebrisType == 'bloody')
 				return ResolveState("Bloody");
 			return ResolveState(null);
@@ -1349,7 +1331,7 @@ Class WallPart : SmallDebris {
 	}
 }
 
-Class BD_GlassPiece : WallPart {
+Class BD_GlassPiece : BD_WallPart {
 	Default {
 		renderstyle 'Add';
 		alpha 0.4;
@@ -1361,7 +1343,7 @@ Class BD_GlassPiece : WallPart {
 }
 
 
-Class RocketDebris : WallPart {
+Class BD_RocketDebris : BD_WallPart {
 	private int burnage;
 	private int smokeage;
 	Default {
@@ -1377,7 +1359,7 @@ Class RocketDebris : WallPart {
 		if (isFrozen())
 			return;
 		if (GetAge() < smokeage)	 {
-			let a = Spawn("BlackSmoke",pos+(frandom(-3,3),frandom(-3,3),frandom(-3,3)));
+			let a = Spawn("BD_BlackSmoke",pos+(frandom(-3,3),frandom(-3,3),frandom(-3,3)));
 			if (a) {
 				a.A_SetScale(0.1);
 				a.vel = (frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5));
@@ -1409,9 +1391,9 @@ Class BD_RocketDebrisTrail : BD_BaseFlare {
 }
 
 //small spark spawned by chainsaw, knuckle, bullets on metal
-Class RicochetSpark : SmallDebris {
+Class BD_RicochetSpark : BD_SmallDebris {
 	Default {
-		SmallDebris.dbrake 0.9;
+		BD_SmallDebris.dbrake 0.9;
 		renderstyle 'Add';
 		alpha 1.0;
 		radius 3;
@@ -1437,7 +1419,7 @@ Class RicochetSpark : SmallDebris {
 }
 
 //fake bullet that ricochets from bulletpuffs
-Class RicochetBullet : SmallDebris {
+Class BD_RicochetBullet : BD_SmallDebris {
 	Default {
 		renderstyle 'Add';
 		alpha 0.8;

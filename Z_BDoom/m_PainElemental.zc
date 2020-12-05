@@ -77,29 +77,29 @@ Class BD_PainElemental : BDoomMonster {
 			if (bdoom_gibs) {
 				A_StartSound("gibs/gibbed");
 				for (int i = 8; i > 0; i--)
-					A_SpawnItemEx("BFountainSpray",frandom(-5.0,5.0),frandom(-5.0,5.0),random(8,28),vel.x*frandom(0.05,0.15),vel.y*frandom(0.05,0.15),frandom(4.5,6.5),0,SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION,36);
-				A_SpawnItemEx("PainElementalHorn",	frandom(-4,4),frandom(-16,-18),frandom(32,36),	frandom(3,5),0,frandom(4,7),frandom(85,95),		SXF_SETTARGET,32);
-				A_SpawnItemEx("PainElementalHorn",	frandom(-4,4),frandom(16,18),frandom(32,36),	frandom(3,5),0,frandom(4,7),frandom(-85,-95),	SXF_SETTARGET,32);
-				A_SpawnItemEx("PainElementalJaw",	frandom(-4,4),frandom(-4,4),frandom(6,12),		frandom(-5,5),frandom(-5,5),frandom(3,5),0, 	SXF_SETTARGET,64);
-				A_SpawnItemEx("PainElementalJaw",	frandom(-4,4),frandom(-4,4),frandom(6,12),		frandom(-5,5),frandom(-5,5),frandom(3,5),0, 	SXF_SETTARGET,64);
-				A_SpawnItemEx("PainElementalHand",	frandom(-4,4),frandom(-20,-22),frandom(20,22),	frandom(3,4),0,frandom(4,7),frandom(85,95),		SXF_SETTARGET,32);
-				A_SpawnItemEx("PainElementalHand",	frandom(-4,4),frandom(20,22),frandom(20,22),	frandom(3,4),0,frandom(4,7),frandom(-85,-95),	SXF_SETTARGET,32);
+					A_SpawnItemEx("BD_BFountainSpray",frandom(-5.0,5.0),frandom(-5.0,5.0),random(8,28),vel.x*frandom(0.05,0.15),vel.y*frandom(0.05,0.15),frandom(4.5,6.5),0,SXF_ABSOLUTEVELOCITY | SXF_SETTARGET | SXF_TRANSFERTRANSLATION,36);
+				A_SpawnItemEx("BD_PainElementalHorn",	frandom(-4,4),frandom(-16,-18),frandom(32,36),	frandom(3,5),0,frandom(4,7),frandom(85,95),		SXF_SETTARGET,32);
+				A_SpawnItemEx("BD_PainElementalHorn",	frandom(-4,4),frandom(16,18),frandom(32,36),	frandom(3,5),0,frandom(4,7),frandom(-85,-95),	SXF_SETTARGET,32);
+				A_SpawnItemEx("BD_PainElementalJaw",	frandom(-4,4),frandom(-4,4),frandom(6,12),		frandom(-5,5),frandom(-5,5),frandom(3,5),0, 	SXF_SETTARGET,64);
+				A_SpawnItemEx("BD_PainElementalJaw",	frandom(-4,4),frandom(-4,4),frandom(6,12),		frandom(-5,5),frandom(-5,5),frandom(3,5),0, 	SXF_SETTARGET,64);
+				A_SpawnItemEx("BD_PainElementalHand",	frandom(-4,4),frandom(-20,-22),frandom(20,22),	frandom(3,4),0,frandom(4,7),frandom(85,95),		SXF_SETTARGET,32);
+				A_SpawnItemEx("BD_PainElementalHand",	frandom(-4,4),frandom(20,22),frandom(20,22),	frandom(3,4),0,frandom(4,7),frandom(-85,-95),	SXF_SETTARGET,32);
 				for (int i = 0; i < 14; i++) {
-					A_SpawnItemEx("BasicMeatPiece",	frandom(-10,10),frandom(-10,10),frandom(6,40),	frandom(-5,5),frandom(-5,5),frandom(3,6),0, 	SXF_SETTARGET,32);
-					A_SpawnItemEx("BasicMeatPiece_Heavy",	frandom(-10,10),frandom(-10,10),frandom(6,40),	frandom(-5,5),frandom(-5,5),frandom(3,6),0, 	SXF_SETTARGET,160);
+					A_SpawnItemEx("BD_BasicMeatPiece",	frandom(-10,10),frandom(-10,10),frandom(6,40),	frandom(-5,5),frandom(-5,5),frandom(3,6),0, 	SXF_SETTARGET,32);
+					A_SpawnItemEx("BD_BasicMeatPiece_Heavy",	frandom(-10,10),frandom(-10,10),frandom(6,40),	frandom(-5,5),frandom(-5,5),frandom(3,6),0, 	SXF_SETTARGET,160);
 				}
 				for (int i = 0; i < 7; i++)
 					A_SpawnItemEx("LS_FlameShard",	frandom(-6,6),frandom(-6,6),frandom(10,38),		frandom(-7,7),frandom(-7,7),frandom(2,6),0, 	SXF_SETTARGET,32);				
-				A_SpawnItemEx("PEExplosion",frandom(-4,4),frandom(-4,4),frandom(14,30),	frandom(-1,1),frandom(-1,1),frandom(-1,1));
+				A_SpawnItemEx("BD_PainExplosion",frandom(-4,4),frandom(-4,4),frandom(14,30),	frandom(-1,1),frandom(-1,1),frandom(-1,1));
 			}
 		}
 		spai g 4 {
 			if (bdoom_gibs)
-				A_SpawnItemEx("PEExplosion",frandom(-4,4),frandom(-4,4),frandom(14,30),	frandom(-1,1),frandom(-1,1),frandom(-1,1));
+				A_SpawnItemEx("BD_PainExplosion",frandom(-4,4),frandom(-4,4),frandom(14,30),	frandom(-1,1),frandom(-1,1),frandom(-1,1));
 		}
 		SPAI H 3 bright {
 			if (bdoom_gibs)
-				A_SpawnItemEx("PEExplosion",frandom(-4,4),frandom(-4,4),frandom(14,30),	frandom(-1,1),frandom(-1,1),frandom(-1,1));
+				A_SpawnItemEx("BD_PainExplosion",frandom(-4,4),frandom(-4,4),frandom(14,30),	frandom(-1,1),frandom(-1,1),frandom(-1,1));
 		}
 		spai i 3 bright a_paindie;
 		spai jk 3 bright;
@@ -111,7 +111,7 @@ Class BD_PainElemental : BDoomMonster {
 	}
 }
 
-Class PEExplosion : BD_BaseFlare{
+Class BD_PainExplosion : BD_BaseFlare{
 	Default {
 		+ROLLSPRITE
 		alpha 0.75;

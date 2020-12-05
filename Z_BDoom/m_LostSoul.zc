@@ -16,9 +16,9 @@ Class BD_LostSoul : LostSoul {
 			return;
 		if (bdoom_flames && health > 0) {
 			if (InstateSequence(curstate,FindState("Missile")))
-				A_SpawnItemEx ("ParticleFire_Red",-10,frandom(-4,4),frandom(10,28), 0,frandom(-1,1),frandom(1,1.25));
+				A_SpawnItemEx ("BD_ParticleFire_Red",-10,frandom(-4,4),frandom(10,28), 0,frandom(-1,1),frandom(1,1.25));
 			else
-				A_SpawnItemEx ("ParticleFire_Red",frandom(-4,-8),frandom(-4,4),frandom(10,28), frandom(-0.8,-1),frandom(-1,1),frandom(1,1.25));
+				A_SpawnItemEx ("BD_ParticleFire_Red",frandom(-4,-8),frandom(-4,4),frandom(10,28), frandom(-0.8,-1),frandom(-1,1),frandom(1,1.25));
 		}
 		super.Tick();
 	}
@@ -54,11 +54,11 @@ Class BD_LostSoul : LostSoul {
 		TNT1 A 0 {
 			A_SetRenderstyle(0.65,Style_ADD);
 			if (bdoom_gibs) {
-				A_SpawnItemEx("Ls_horn",	frandom(-4,4),frandom(-4,4),frandom(5,24),	frandom(-4,4),frandom(-4,4),frandom(2,5),	0,	0, 180);
-				A_SpawnItemEx("Ls_horn",	frandom(-4,4),frandom(-4,4),frandom(5,24),	frandom(-4,4),frandom(-4,4),frandom(2,5),	0,	0, 180);
+				A_SpawnItemEx("BD_LS_Horn",	frandom(-4,4),frandom(-4,4),frandom(5,24),	frandom(-4,4),frandom(-4,4),frandom(2,5),	0,	0, 180);
+				A_SpawnItemEx("BD_LS_Horn",	frandom(-4,4),frandom(-4,4),frandom(5,24),	frandom(-4,4),frandom(-4,4),frandom(2,5),	0,	0, 180);
 				A_SpawnItemEx("LS_skull",	frandom(-4,4),frandom(-4,4),frandom(5,24),	frandom(-4,4),frandom(-4,4),frandom(2,5),	0,	0, 128);
 				for (int i = 5; i > 0; i--)
-					A_SpawnItemEx("Ls_shard",	frandom(-4,4),frandom(-4,4),frandom(5,24),	frandom(-4,4),frandom(-4,4),frandom(2,5),	0,	0, 128);
+					A_SpawnItemEx("BD_LS_Shard",	frandom(-4,4),frandom(-4,4),frandom(5,24),	frandom(-4,4),frandom(-4,4),frandom(2,5),	0,	0, 128);
 				for (int i = 4; i > 0; i--)
 					A_SpawnItemEx("LS_FlameShard",	frandom(-4,4),frandom(-4,4),frandom(5,24),	frandom(-4,4),frandom(-4,4),frandom(2,5),	0,	0, 128);
 			}
@@ -101,10 +101,10 @@ Class BD_LostSoul : LostSoul {
 	}
 }
 
-Class LS_FlameShard : SmallDebris {
+Class LS_FlameShard : BD_SmallDebris {
 	protected double fade;
 	Default {
-		SmallDebris.dbrake 0.3;
+		BD_SmallDebris.dbrake 0.3;
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
