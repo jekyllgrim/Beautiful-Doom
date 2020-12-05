@@ -330,21 +330,11 @@ Class BD_BloodDropSplash : SmallDebris {
 	}
 }
 
-
-Class TestBlood : BD_Blood {
-	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		VelFromAngle(10,angle);
-	}
-}
-
-
 Class BD_BaseBloodPool : BD_BloodBase abstract {
 	protected bool RandomAngle;
 	property RandomAngle : RandomAngle;
 	Default {
 		BD_BaseBloodPool.RandomAngle true;
-		gravity 0;
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
@@ -356,6 +346,7 @@ Class BD_BaseBloodPool : BD_BloodBase abstract {
 			angle = random[bdsfx](0,360);
 		if (CurSector.FloorPlane.Normal != (0,0,1))	
 			AlignToPlane(self);
+		SetOrigin((pos.x+frandom[bdsfx](-3,3),pos.y+frandom[bdsfx](-3,3),floorz+Voffset),false);
 		landed = true;
 	}
 	override void Tick() {
@@ -440,7 +431,7 @@ Class BD_CeilingBloodDrop : BD_BloodBase {
 		stop;
 	}
 }
-
+	
 
 Class AniBloodPool : BD_BaseBloodPool {
 	bool instant; //if true, the blood pool will instantly reqch max size — for decorative purposes such as Heart Column, where animation is unneeded, but checking for overhang may still important
@@ -448,7 +439,7 @@ Class AniBloodPool : BD_BaseBloodPool {
 	Default {
 		renderstyle 'Normal';
 		scale 0.05;
-		radius 16;
+		radius 1;
 	}
 	override void PostBeginPlay() {
 		Super.PostBeginPlay();
@@ -457,16 +448,15 @@ Class AniBloodPool : BD_BaseBloodPool {
 			return;
 		}
 		pscale = 1.017;
-		if (instant)
-			A_SetScale(0.208);
+		instant = true;
 		if (CurSector.FloorPlane.Normal == (0,0,1)) {
-			if (CheckLandingSize(18))
+			if (CheckLandingSize(20))
 				scale*=0.5;
-			if (CheckLandingSize(15))
+			if (CheckLandingSize(16.5))
 				scale*=0.5;
-			if (CheckLandingSize(9))
+			if (CheckLandingSize(11))
 				scale*=0.5;
-			if (CheckLandingSize(8)) {
+			if (CheckLandingSize(9)) {
 				destroy();
 				return;
 			}
@@ -476,8 +466,16 @@ Class AniBloodPool : BD_BaseBloodPool {
 	}
 	override void Tick() {
 		super.Tick();
-		if (isfrozen() || instant)
+		console.printf("floorz: %f | pos.z: %f",floorz,pos.z);
+		if (isfrozen())
 			return;
+		if (instant) {
+			while (pscale > 1) {
+				scale *= pscale;
+				pscale = Clamp(pscale*0.9999,1,2);
+			}
+			return;
+		}
 		if (pscale > 1) {
 			scale *= pscale;
 			pscale = Clamp(pscale*0.9999,1,2);	
