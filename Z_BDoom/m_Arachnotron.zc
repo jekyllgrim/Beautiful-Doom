@@ -62,7 +62,7 @@ Class BD_Arachnotron : BDoomMonster {
 		goto deathbleed;
 	XDeath:
 		stop;
-}
+	}
 }
 
 Class BD_ArachnotronPlasma : BD_Plasmaball {
