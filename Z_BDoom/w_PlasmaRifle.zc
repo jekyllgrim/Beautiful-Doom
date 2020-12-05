@@ -606,6 +606,7 @@ Class ModernPlasmaPiece : SmallDebris {
 		alpha 1.0;
 		scale 0.023;
 		gravity 0.5;
+		SmallDebris.dbrake 0.7;
 	}
 	states {
 		Spawn:
