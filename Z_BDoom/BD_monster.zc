@@ -226,8 +226,8 @@ Class BDoomMonster : BDoomActor abstract {
 					return ResolveState("DeathEnd");
 				return ResolveState(null);
 			}
-			#### # 1 {
-				if (vel ~== (0,0,0)) {
+			#### # 50 {
+				if (vel == (0,0,0) && pos.z == floorz) {
 					if (bdoom_blood && !BDoomActor.CheckAnimated(self)) {
 						let pool = BD_BaseDebris(Spawn("AniBloodPool",(pos.x,pos.y,floorz)));
 						if (pool) {
