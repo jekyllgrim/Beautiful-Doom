@@ -153,20 +153,5 @@ Class BD_Spectre : BD_Demon  {
 			}
 		}
 		goto super::Death;
-	/*DeathEnd:
-		#### # 10 {
-			if (!burncorpse)
-				return ResolveState("DeathEndFinal");
-			else if (burncorpse.alpha >= 1) {
-				A_SetRenderstyle(1,STYLE_Normal);
-				burncorpse.destroy();
-				return ResolveState("DeathEndFinal");
-			}
-			return ResolveState(null);
-		}
-		loop;
-	DeathEndFinal:
-		#### # -1;
-		stop;*/
 	}
 }

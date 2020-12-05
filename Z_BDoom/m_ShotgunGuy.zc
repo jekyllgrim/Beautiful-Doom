@@ -154,31 +154,34 @@ Class BD_ShotgunGuy : BDoomMonster {
 			A_Scream();
 		}
 		SPOO ABC 2 {
-			if (!burning)
-				A_SpawnItemEx("Blood",random(-2,2),0,random(32,34),	random(4,6),0,random(3,5),random(-70,-90)*scale.x,SXF_SETTARGET);
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",random(-2,2),0,random(32,34),	random(4,6),0,random(3,5),random(-70,-90)*scale.x,SXF_SETTARGET);
 		}
 		TNT1 A 0 A_NoBlocking();
 		SPOO DEF 3 {
-			if (!burning)
-				A_SpawnItemEx("Blood",random(-2,2),0,random(24,26),	random(4,6),0,random(3,5),random(-70,-90)*scale.x,SXF_SETTARGET);
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",random(-2,2),0,random(24,26),	random(4,6),0,random(3,5),random(-70,-90)*scale.x,SXF_SETTARGET);
 		}
 		SPOO GHI 3 {
-			if (!burning)
-				A_SpawnItemEx("Blood",random(-2,2),0,random(10,16),	random(4,6),0,random(3,5),random(-70,-90)*scale.x,SXF_SETTARGET);
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",random(-2,2),0,random(10,16),	random(4,6),0,random(3,5),random(-70,-90)*scale.x,SXF_SETTARGET);
 		}
 		SPOO KLM 3;
 		SPOO N 1;
 		goto deathbleed;
 	DeathHeadshot1:
-		SPOD A 3 A_SpawnItemEx("Gib_Head",frandom(-1,1),frandom(-1,1),52,frandom(2,5),0,frandom(1,5),random(150,210),SXF_SETTARGET);
+		SPOD A 3 {
+			if (bdoom_gibs)
+				A_SpawnItemEx("Gib_Head",frandom(-1,1),frandom(-1,1),52,frandom(2,5),0,frandom(1,5),random(150,210),SXF_SETTARGET);
+		}
 		SPOD B 3 BD_Bleed();
 		SPOD C 3 A_NoBlocking();
 		SPOD DE 3 {
 			if (bdoom_blood && !burning)
-				A_SpawnItemEx("Blood",0,0,	random(48,52),	random(0,2),random(0,2),random(4,6),0,SXF_SETTARGET,96);
+				A_SpawnItemEx("BD_Blood",0,0,	random(48,52),	random(0,2),random(0,2),random(4,6),0,SXF_SETTARGET,96);
 		}
 		SPOD LLMMLM random(7,11) {
-			if (random(0,100) < 40 && bdoom_blood) {
+			if (bdoom_blood && random(0,100) < 40) {
 				A_StartSound("gibs/bloodspurt");
 				A_SpawnItemEx("NeckSpurt",frandom(-0.3,0.3),frandom(-0.3,0.3),33,0,0,0,random(0,359),SXF_SETTARGET);
 			}
@@ -194,7 +197,10 @@ Class BD_ShotgunGuy : BDoomMonster {
 			A_NoBlocking();
 		}
 		TNT1 A 0 A_FaceTarget();
-		SPOY EFGH 3 A_SpawnItemEx("BD_Blood",1,0,frandom(18,42),frandom(2,4),0,frandom(4,6),random(-10,-15),SXF_SETTARGET);
+		SPOY EFGH 3 {
+			if (bdoom_blood)
+				A_SpawnItemEx("BD_Blood",1,0,frandom(18,42),frandom(2,4),0,frandom(4,6),random(-10,-15),SXF_SETTARGET);
+		}
 		SPOY IJKLM 4;
 		SPOY OP 3;
 		SPOY Q 2 {
@@ -210,7 +216,7 @@ Class BD_ShotgunGuy : BDoomMonster {
 		goto deathbleed;
 		
 	XDeath:
-		TNT1 A 0 A_JumpIf(bdoom_gibs==1,"XDeath.Particles");
+		TNT1 A 0 A_JumpIf(bdoom_gibs == true,"XDeath.Particles");
 	XDeath.Vanilla:
 		SGIB ab 2;
 		SGIB cd 2 A_XScream();

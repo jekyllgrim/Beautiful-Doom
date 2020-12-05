@@ -19,8 +19,11 @@ Class BD_Arachnotron : BDoomMonster {
 	}
 	states	{
 	Death.Fire:
+		TNT1 A 0 A_Jump(256,"Death.PlasmaDamage");
+		wait;
 	Death.GreenFire:
-		goto Death.PlasmaDamage;
+		TNT1 A 0 A_Jump(256,"Death.PlasmaDamage");
+		wait;
 	Spawn:
 		ARAI AB 10 A_Look();
 		loop;

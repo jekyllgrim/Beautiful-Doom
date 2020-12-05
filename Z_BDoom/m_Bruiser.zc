@@ -22,8 +22,11 @@ Class BD_BaronOfHell : BDoomMonster {
 	}
 	states	{
 	Death.Fire:
+		TNT1 A 0 A_Jump(256,"Death.PlasmaDamage");
+		wait;
 	Death.GreenFire:
-		goto Death.PlasmaDamage;
+		TNT1 A 0 A_Jump(256,"Death.PlasmaDamage");
+		wait;
 	Spawn:
 		BARI ABB 10 A_Look;
 		loop;
@@ -37,11 +40,20 @@ Class BD_BaronOfHell : BDoomMonster {
 		Goto See;
 	Missile:
 		TNT1 A 0 A_FaceTarget;
-		ZBOS AABB 2 A_SpawnItemEx("ParticleFire_Green",4,29,random(60,62),random(0,1),random(0,1),random(1,2),0);
+		ZBOS AABB 2 {
+			if (bdoom_flames)
+				A_SpawnItemEx("ParticleFire_Green",4,29,random(60,62),random(0,1),random(0,1),random(1,2),0);
+		}
 		TNT1 A 0 A_FaceTarget;
-		ZBOS CCDD 2 A_SpawnItemEx("ParticleFire_Green",4,31,random(46,48),random(0,1),random(0,1),random(1,2),0);
+		ZBOS CCDD 2 {
+			if (bdoom_flames)
+				A_SpawnItemEx("ParticleFire_Green",4,31,random(46,48),random(0,1),random(0,1),random(1,2),0);
+		}
 		TNT1 A 0 A_CustomComboAttack("BD_BaronBall", 32, 10 * random(1, 8), "baron/melee");
-		ZBOS EEFF 2 A_SpawnItemEx("ParticleFire_Green",10,random(-4,-6),random(24,26),random(0,1),random(0,1),random(1,2),0);
+		ZBOS EEFF 2 {
+			if (bdoom_flames)
+				A_SpawnItemEx("ParticleFire_Green",10,random(-4,-6),random(24,26),random(0,1),random(0,1),random(1,2),0);
+		}
 		Goto See;
 	Pain:
 		BS1P a 2;
@@ -54,39 +66,73 @@ Class BD_BaronOfHell : BDoomMonster {
 		}
 	Death.Vanilla:
 		BS1M A 3;
-		BS1M b 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(8,32),frandom(2.0,4.0),frandom(2.0,4.0),frandom(1.0,4.0),random(0,360),SXF_SETTARGET);
+		BS1M b 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(8,32),frandom(2,4),frandom(2,4),frandom(1,4),random(0,360),SXF_SETTARGET);
+		}
 		BS1M c 3 A_scream;
-		BS1M defg 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(8,32),frandom(2.0,4.0),frandom(2.0,4.0),frandom(1.0,4.0),random(0,360),SXF_SETTARGET,80);
+		BS1M defg 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(8,32),frandom(2,4),frandom(2,4),frandom(1,4),random(0,360),SXF_SETTARGET,80);
+		}
 		BS1M h 3 A_NoBlocking;
-		BS1M ijklm 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(8,32),frandom(2.0,4.0),frandom(2.0,4.0),frandom(1.0,4.0),random(0,360),SXF_SETTARGET,100);
+		BS1M ijklm 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(8,32),frandom(2,4),frandom(2,4),frandom(1,4),random(0,360),SXF_SETTARGET,100);
+		}
 		goto deathbleed;
 	Death1: //in halves
 		BS1N A 3;
-		BS1N b 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,80);
+		BS1N b 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,80);
+		}
 		BS1N c 3 {
 			A_scream();
-			A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,80);
+			if (bdoom_blood && !burning)				
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,80);
 		}
-		BS1N defg 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
+		BS1N defg 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
+		}
 		BS1N h 3 A_NoBlocking;
-		BS1N ijkl 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
+		BS1N ijkl 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
+		}
 		goto deathbleed;
 	Death2: //fall back
 		BS1O A 3;
-		BS1O b 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(18,40),frandom(3,5),frandom(-2,2),frandom(2,4),0,SXF_SETTARGET);
+		BS1O b 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(18,40),frandom(3,5),frandom(-2,2),frandom(2,4),0,SXF_SETTARGET);
+		}
 		BS1O c 3 A_scream;
-		BS1O defg 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(18,40),frandom(3,5),frandom(-2,2),frandom(2,4),0,SXF_SETTARGET,64);
+		BS1O defg 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(18,40),frandom(3,5),frandom(-2,2),frandom(2,4),0,SXF_SETTARGET,64);
+		}
 		BS1O h 3 A_NoBlocking;
 		BS1O iJk 3;
 		goto deathbleed;
 	XDeath:
 		//TNT1 A 0 A_Jump(128,"Death");
 		BS1X A 3;
-		BS1X b 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET);
+		BS1X b 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET);
+		}
 		BS1X c 3 A_scream;
-		BS1X defg 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET,80);
+		BS1X defg 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET,80);
+		}
 		BS1X h 3 A_NoBlocking;
-		BS1X ijklMN 2  A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET,80);
+		BS1X ijklMN 2  {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET,80);
+		}
 		BS1X OP 2;
 		TNT1 A 0 A_StartSound("gibs/meatland");
 		BS1X Q 1;
@@ -125,11 +171,20 @@ Class BD_HellKnight : BD_BaronOfHell {
 		Goto See;
 	Missile:
 		TNT1 A 0 A_FaceTarget;
-		SBOS AABB 2 A_SpawnItemEx("ParticleFire_Green",4,29,random(60,62),random(0,1),random(0,1),random(1,2),0);
+		SBOS AABB 2 {
+			if (bdoom_flames)
+				A_SpawnItemEx("ParticleFire_Green",4,29,random(60,62),random(0,1),random(0,1),random(1,2),0);
+		}
 		TNT1 A 0 A_FaceTarget;
-		SBOS CCDD 2 A_SpawnItemEx("ParticleFire_Green",4,31,random(46,48),random(0,1),random(0,1),random(1,2),0);
+		SBOS CCDD 2 {
+			if (bdoom_flames)
+				A_SpawnItemEx("ParticleFire_Green",4,31,random(46,48),random(0,1),random(0,1),random(1,2),0);
+		}
 		TNT1 A 0 A_CustomComboAttack("BD_BaronBall", 32, 10 * random(1, 8), "baron/melee");
-		SBOS EEFF 2 A_SpawnItemEx("ParticleFire_Green",10,random(-4,-6),random(24,26),random(0,1),random(0,1),random(1,2),0);
+		SBOS EEFF 2 {
+			if (bdoom_flames)
+				A_SpawnItemEx("ParticleFire_Green",10,random(-4,-6),random(24,26),random(0,1),random(0,1),random(1,2),0);
+		}
 		Goto See;
 	Pain:
 		BS2P a 2;
@@ -142,39 +197,73 @@ Class BD_HellKnight : BD_BaronOfHell {
 		}
 	Death.Vanilla:
 		BS2M A 3;
-		BS2M b 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(8,32),frandom(2.0,4.0),frandom(2.0,4.0),frandom(1.0,4.0),random(0,360),SXF_SETTARGET);
+		BS2M b 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(8,32),frandom(2,4),frandom(2,4),frandom(1,4),random(0,360),SXF_SETTARGET);
+		}
 		BS2M c 3 A_scream;
-		BS2M defg 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(8,32),frandom(2.0,4.0),frandom(2.0,4.0),frandom(1.0,4.0),random(0,360),SXF_SETTARGET,80);
+		BS2M defg 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(8,32),frandom(2,4),frandom(2,4),frandom(1,4),random(0,360),SXF_SETTARGET,80);
+		}
 		BS2M h 3 A_NoBlocking;
-		BS2M ijkl 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(8,32),frandom(2.0,4.0),frandom(2.0,4.0),frandom(1.0,4.0),random(0,360),SXF_SETTARGET,100);
+		BS2M ijkl 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(8,32),frandom(2,4),frandom(2,4),frandom(1,4),random(0,360),SXF_SETTARGET,100);
+		}
 		BS2M m 1;
 		goto deathbleed;
 	Death1: //in halves
 		BS2N A 3;
-		BS2N b 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,80);
+		BS2N b 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,80);
+		}
 		BS2N c 3 {
 			A_scream();
-			A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,80);
+			if (bdoom_blood)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,80);
 		}
-		BS2N defg 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
+		BS2N defg 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
+		}
 		BS2N h 3 A_NoBlocking;
-		BS2N ijkl 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
+		BS2N ijkl 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
+		}
 		goto deathbleed;
 	Death2: //fall back
 		BS2O A 3;
-		BS2O b 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(18,40),frandom(3,5),frandom(-2,2),frandom(2,4),0,SXF_SETTARGET);
+		BS2O b 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(18,40),frandom(3,5),frandom(-2,2),frandom(2,4),0,SXF_SETTARGET);
+		}
 		BS2O c 3 A_scream;
-		BS2O defg 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(18,40),frandom(3,5),frandom(-2,2),frandom(2,4),0,SXF_SETTARGET,64);
+		BS2O defg 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(18,40),frandom(3,5),frandom(-2,2),frandom(2,4),0,SXF_SETTARGET,64);
+		}
 		BS2O h 3 A_NoBlocking;
 		BS2O iJk 3;
 		goto deathbleed;
 	XDeath:
 		BS2X A 3;
-		BS2X b 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET);
+		BS2X b 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET);
+		}
 		BS2X c 3 A_scream;
-		BS2X defg 3 A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET,80);
+		BS2X defg 3 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET,80);
+		}
 		BS2X h 3 A_NoBlocking;
-		BS2X ijklMN 2  A_SpawnItemEx("BD_Blood",frandom(-4.0,4.0),frandom(-4.0,4.0),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET,80);
+		BS2X ijklMN 2 {
+			if (bdoom_blood && !burning)
+				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET,80);
+		}
 		BS2X OP 2;
 		TNT1 A 0 A_StartSound("gibs/meatland");
 		BS2X Q 1;

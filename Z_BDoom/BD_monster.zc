@@ -10,7 +10,6 @@ Class BDoomMonster : BDoomActor abstract {
 	bool burning; //is showing burning or smoking animation
 	bool greenFire; //set to true if burned by green fire
 	protected int burntimer;
-	protected int firetype; //0 = only smoke; 1 = regular yellow; 2 = baron green
 	protected state sspawn;
 	protected state ssee;
 	protected state mmissile;

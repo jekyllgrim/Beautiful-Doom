@@ -117,14 +117,6 @@ Class BD_Revenant : BDoomMonster {
 }
 
 
-Class BD_RevenantTracerSmoke : BD_RocketTrail {
-	Default {
-		alpha 0.45;
-		scale 0.12;
-	}
-}
-
-
 Class BD_RevenantTracer : RevenantTracer {
 	private bool istracing;
 	void BD_Tracer() {
@@ -208,22 +200,5 @@ Class BD_TracerTrail : BD_BaseFlare {
 		super.Tick();
 		A_FadeOut(0.08);
 		scale*=0.98;
-	}
-}
-
-Class BD_RevenantTracerFlare : BD_ProjFlare {
-	Default {
-		BD_BaseFlare.fcolor "red";
-		alpha 0.9;
-		scale 0.13;
-	}
-	override void Tick() {
-		super.Tick();
-		if (bdoom_debris && master)
-			SetOrigin(master.pos,1);
-		else {
-			self.Destroy();
-			return;
-		}
 	}
 }

@@ -87,7 +87,7 @@ Class BD_WolfensteinSS : BDoomMonster  {
 		SSWM IJK 3;
 		goto deathbleed;
 	XDeath:
-		TNT1 A 0 A_JumpIf(bdoom_gibs==1,"XDeath.Particles");
+		TNT1 A 0 A_JumpIf(bdoom_gibs,"XDeath.Particles");
 	XDeath.Particles:
 		TNT1 A 0 {
 			A_XScream();

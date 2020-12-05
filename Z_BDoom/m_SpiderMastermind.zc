@@ -51,20 +51,13 @@ Class BD_SpiderMastermind : BdoomMonster {
 		SMMA A 10 A_Look();
 		loop;
 	see:
-		SMMA a 3 a_metal;
-		SMMA a 3 a_chase;
-		SMMA b 3 a_chase;
-		SMMA c 3 a_chase;
-		SMMA d 3 a_metal;
-		SMMA e 3 a_chase;
-		SMMA e 3 a_chase;
-		SMMA f 3 a_chase;
-		SMMA g 3 a_metal;
-		SMMA h 3 a_chase;
-		SMMA i 3 a_chase;
-		SMMA j 3 a_chase;
+		SMMA A 3 a_metal;
+		SMMA ABC 3 a_chase;
+		SMMA D 3 a_metal;
+		SMMA EEF 3 a_chase;
+		SMMA G 3 a_metal;
+		SMMA HIJ 3 a_chase;
 		loop;
-
 	Missile:
 		TNT1 A 0 {
 			A_FaceTarget();

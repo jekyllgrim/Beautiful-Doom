@@ -448,7 +448,6 @@ Class AniBloodPool : BD_BaseBloodPool {
 			return;
 		}
 		pscale = 1.017;
-		instant = true;
 		if (CurSector.FloorPlane.Normal == (0,0,1)) {
 			if (CheckLandingSize(20))
 				scale*=0.5;
@@ -466,7 +465,7 @@ Class AniBloodPool : BD_BaseBloodPool {
 	}
 	override void Tick() {
 		super.Tick();
-		console.printf("floorz: %f | pos.z: %f",floorz,pos.z);
+		//console.printf("floorz: %f | pos.z: %f",floorz,pos.z);
 		if (isfrozen())
 			return;
 		if (instant) {

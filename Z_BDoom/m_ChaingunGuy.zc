@@ -159,7 +159,8 @@ Class BD_ChaingunGuy : BDoomMonster {
 		CPOY IJKLMN 3 {
 			if(bdoom_blood) {
 				A_FaceTarget();
-				A_SpawnItemEx("Blood",	frandom(-4,4),frandom(0,6),frandom(28,36),frandom(2,4),0,frandom(4,6),	random(-80,-90),SXF_SETTARGET,80);
+				if (bdoom_blood)
+					A_SpawnItemEx("BD_Blood",	frandom(-4,4),frandom(0,6),frandom(28,36),frandom(2,4),0,frandom(4,6),	random(-80,-90),SXF_SETTARGET,80);
 			}
 		}
 		CPOY O 3 {

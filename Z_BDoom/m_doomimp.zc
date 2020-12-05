@@ -35,13 +35,25 @@ Class BD_DoomImp : BDoomMonster {
 		Goto See;	
 	Missile:
 		TNT1 A 0 a_facetarget();
-		TRO2 IIJJ 2 A_SpawnItemEx("ParticleFire_DoomImp",3,27,31,	0,0,frandom(0.8,1.0),0);
+		TRO2 IIJJ 2 {
+			if (bdoom_flames)
+				A_SpawnItemEx("ParticleFire_DoomImp",3,27,31,	0,0,frandom(0.8,1.0),0);
+		}
 		TNT1 A 0 a_facetarget();
-		TRO2 KKLL 2 A_SpawnItemEx("ParticleFire_DoomImp",12,16,33,	0,0,frandom(0.8,1.0),0);
+		TRO2 KKLL 2 {
+			if (bdoom_flames)
+				A_SpawnItemEx("ParticleFire_DoomImp",12,16,33,	0,0,frandom(0.8,1.0),0);
+		}
 		TRO2 M 3 A_CustomComboAttack("BD_DoomImpBall", 32, 3 * random(1, 8), "imp/melee");
-		TRO2 J 1 	A_SpawnItemEx("ParticleFire_DoomImp",24,0,36,	0,0,frandom(0.8,1.0),0);
+		TRO2 J 1 {
+			if (bdoom_flames)
+				A_SpawnItemEx("ParticleFire_DoomImp",24,0,36,	0,0,frandom(0.8,1.0),0);
+		}
 		TRO2 K 1;
-		TRO2 L 1 	A_SpawnItemEx("ParticleFire_DoomImp",24,0,35,	0,0,frandom(0.8,1.0),0);
+		TRO2 L 1 {
+			if (bdoom_flames)
+				A_SpawnItemEx("ParticleFire_DoomImp",24,0,35,	0,0,frandom(0.8,1.0),0);
+		}
 		Goto See;
 	Pain:
 		TRAI a 2;
