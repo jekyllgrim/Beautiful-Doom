@@ -438,12 +438,15 @@ Class BD_Chaingun : BDoomWeapon {
 			}
 			goto ready;	
 		Fire.Modern:
-			RIFN A 1 {				
+			TNT1 A 0 {
 				BD_SetSprite("RIFN","QIFN");
 				if (CountInv("RifleClip") < 1)
 					return ResolveState("DryReload");
 				if (invoker.riflesights)
 					return ResolveState("FireSights");
+				return ResolveState(null);
+			}
+			#### A 1 {				
 				A_gunflash("FlashModern");
 				A_StartSound("Mweapons/rifle/fire");
 				A_WeaponOffset(frandom(-0.3,0.3),2,WOF_ADD);
@@ -451,7 +454,6 @@ Class BD_Chaingun : BDoomWeapon {
 				A_SetPitch(pitch - frandom(0.37,0.42),SPF_INTERPOLATE);
 				A_ZoomFactor(0.996,ZOOM_INSTANT|ZOOM_NOSCALETURNING);
 				invoker.tfired = clamp(invoker.tfired+1,0,9);
-				return ResolveState(null);
 			}
 			#### B 1 {
 				A_WeaponOffset(frandom(-0.3,0.3),4,WOF_ADD);
@@ -470,18 +472,16 @@ Class BD_Chaingun : BDoomWeapon {
 						s.frame = 3;
 				}
 			}
-			#### # 2 {
+			#### # 1 {
 				A_WeaponOffset(0,32.0,WOF_INTERPOLATE);
 				invoker.tfired = 0;
 			}
 			#### # 2 A_WeaponReady();
 			goto ready;
 		FireSights:
-			TNT1 A 0 {				
+			RIFS A 1 {
 				let plr = PlayerPawn(self);
 				plr.AttackZOffset = 13.5;
-			}
-			RIFS A 1 {
 				A_FireBullets(0.4,0.15,-1,0,"BD_NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_RifleBullet",0,0);
 				A_gunflash("FlashModern");
 				A_StartSound("Mweapons/rifle/fire");
@@ -504,6 +504,8 @@ Class BD_Chaingun : BDoomWeapon {
 				return ResolveState(null);
 			}
 			#### A 1 {
+				let plr = PlayerPawn(self);
+				plr.AttackZOffset = 13.5;
 				A_FireBullets(0.4,0.15,-1,0,"BD_NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_RifleBullet",0,0);
 				A_gunflash("FlashModern");
 				A_StartSound("Mweapons/rifle/fire");
@@ -526,6 +528,8 @@ Class BD_Chaingun : BDoomWeapon {
 				return ResolveState(null);
 			}
 			#### A 1 {
+				let plr = PlayerPawn(self);
+				plr.AttackZOffset = 13.5;
 				A_FireBullets(0.4,0.15,-1,0,"BD_NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_RifleBullet",0,0);
 				A_gunflash("FlashModern");
 				A_StartSound("Mweapons/rifle/fire");
