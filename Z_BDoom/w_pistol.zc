@@ -94,12 +94,8 @@ Class BD_Pistol : BDoomWeapon {
 			else if (bdoom_weapons==1)
 				return ResolveState("Fire.Enhanced");
 			BD_SetSprite("PI0F","QI0F");
-			A_StartSound("weapons/pistol");
 			A_gunflash("Flash");
-			If(Bdoom_tracers)
-				A_FireBullets (5.6, 0, 1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_BulletTracer",0,0);
-			else
-				A_FireBullets (5.6, 0, 1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
+			BD_FireBullets(5.6, 0, 1, 5, "weapons/pistol");
 			return ResolveState(null);
 		}
 		TNT1 A 0 BD_SetSprite("PI0G","QI0G");
@@ -214,12 +210,8 @@ Class BD_Pistol : BDoomWeapon {
 			BD_SetSprite("PIBF","QIBF");
 			if (CountInv("BD_Pistol") > 1)
 				A_Overlay(PSP_GUN2,"Sidegun.Dual",0);
-			A_StartSound("weapons/pistol/fire");
 			A_gunflash("Flash");
-			If(GetCVAR("Bdoom_tracers")==1)
-				A_FireBullets (5.6, 0, 1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_BulletTracer",0,0);
-			else
-				A_FireBullets (5.6, 0, 1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
+			BD_FireBullets(5.6, 0, 1, 5, "weapons/pistol/fire");
 		}
 		TNT1 A 0 BD_SetSprite("PIBN","QIBN");
 		#### ABCD 1;
@@ -268,12 +260,12 @@ Class BD_Pistol : BDoomWeapon {
 		PIDF A 2 {
 			A_StartSound("weapons/pistol/fire");
 			A_gunflash("AltFlash");
-			BD_SetSprite("PIDF","QIDF");
-			If(GetCVAR("Bdoom_tracers")==1) {
+			BD_SetSprite("PIDF","QIDF");			
+			if(bdoom_tracers) {
+				double ofs = 7.9;
 				if (invoker.firedright)
-					A_FireBullets (5, 1.5, -1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_BulletTracer",2,-7.9); 
-				else
-					A_FireBullets (5, 1.5, -1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_BulletTracer",2,7.9); 
+					ofs *= -1;
+				A_FireBullets (5, 1.5, -1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,missile:"BD_BulletTracer",spawnheight:2,spawnofs_xy:ofs); 
 			}
 			else
 				A_FireBullets (5, 1.5, -1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);

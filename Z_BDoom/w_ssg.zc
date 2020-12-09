@@ -112,10 +112,8 @@ Class BD_SuperShotgun : BDoomWeapon {
 			A_WeaponOffset(frandom(-0.5,0.5),frandom(10,11),WOF_ADD);
 			A_StartSound("weapons/sshotf",slot:CHAN_5);	
 			A_Gunflash();
-			if (bdoom_tracers)
-				A_FireBullets(11.2, 7.1, 20, 5, "BD_EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_BulletTracer",0,0);
-			else
-				A_FireBullets(11.2, 7.1, 20, 5, "BD_EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
+			name trac = bdoom_tracers ? "BD_BulletTracer" : "";
+			A_FireBullets(11.2, 7.1, 20, 5, "BD_EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,missile:trac,spawnheight:0);
 			}
 		#### CCCCC 1 A_WeaponOffset(0,-2,WOF_ADD);
 		TNT1 A 0 A_WeaponOffset(0,32,WOF_INTERPOLATE);
@@ -251,10 +249,8 @@ Class BD_SuperShotgun : BDoomWeapon {
 			A_Gunflash("Flash");
 			A_WeaponOffset(frandom(-0.5,0.5),frandom(10,11),WOF_ADD);
 			A_StartSound("weapons/ssg/fire",slot:CHAN_5);
-			if (bdoom_tracers)
-				A_FireBullets(11.2, 7.1, 20, 5, "BD_EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_BulletTracer",0,0);
-			else
-				A_FireBullets(11.2, 7.1, 20, 5, "BD_EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
+			name trac = bdoom_tracers ? "BD_BulletTracer" : "";
+			A_FireBullets(11.2, 7.1, 20, 5, "BD_EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,missile:trac,spawnheight:0);
 			A_TakeInventory("Shell",1,TIF_NOTAKEINFINITE);
 		}
 		
@@ -285,10 +281,8 @@ Class BD_SuperShotgun : BDoomWeapon {
 			}
 			else
 				invoker.ShotFired = true;
-			if (bdoom_tracers)
-				A_FireBullets(10,6.5,10,5, "BD_EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_BulletTracer",0,1);
-			else
-				A_FireBullets(10,6.5,10,5,"BD_EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
+			name trac = bdoom_tracers ? "BD_BulletTracer" : "";
+			A_FireBullets(10,6.5,10,5, "BD_EnSSGPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,missile:trac,spawnheight:0);
 		}
 		#### ###### 1 A_WeaponOffset(0,-1,WOF_ADD);
 		TNT1 A 0 {

@@ -101,15 +101,8 @@ Class BD_Shotgun : BDoomWeapon {
 		SHOF A 1 {
 			BD_SetSprite("SHOF","QHOF");	
 			A_WeaponOffset(frandom(-0.5,0.5),frandom(8,9),WOF_ADD);
-			if(bdoom_weapons == 1)
-				A_StartSound("weapons/shotgun/fire");
-			else
-				A_StartSound("weapons/shotgf");
 			A_gunflash();
-			If(bdoom_tracers)
-				A_FireBullets (5.6, 0, 7, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_BulletTracer",0,0);
-			else 
-				A_FireBullets (5.6, 0, 7, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
+			BD_FireBullets (5.6, 0, 7, 5,"weapons/shotgf","weapons/shotgun/fire");
 		}
 		#### A 2 A_WeaponOffset(0,-2,WOF_ADD);
 		TNT1 A 0 BD_SetSprite("SHOG","QHOG");

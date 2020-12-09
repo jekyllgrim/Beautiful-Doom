@@ -83,6 +83,13 @@ Class BDoomWeapon : Weapon abstract {
 		);
 	}
 	
+	action void BD_FireBullets(double spread_horz = 0, double spread_vert = 0, int numbullets = 1, int damage = 1, sound vanillasnd = "", sound enhancedsnd = "") {
+		sound snd =  (enhancedsnd && bdoom_weapons == 1) ? enhancedsnd : vanillasnd;
+		A_StartSound(snd);
+		name trac = bdoom_tracers ? "BD_BulletTracer" : "";
+		A_FireBullets (spread_horz, spread_vert, numbullets, damage, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,missile:trac,spawnheight:0);
+	}
+	
 	enum BD_Layers {
 		PSP_MAG 			= -3,
 		PSP_GUN2 			=  2,
@@ -99,6 +106,12 @@ Class BDoomWeapon : Weapon abstract {
 		PSP_CHAINBLOODG 	=  32,
 		PSP_CHAINBLOODB 	=  33
 	};
+	
+	enum BD_SoundChannels {
+		CHAN_CHGSPIN	= 9,
+		CHAN_CHGCOOL	= 10
+	}
+	
 	//Make sure player's magazine isn't empty when a weapon is first picked up (for Modern Guns):
 	override void AttachToOwner(actor other) {
 		super.AttachToOwner(other);
@@ -149,15 +162,19 @@ Class BDoomWeapon : Weapon abstract {
 		}
 	}
 
-	//Casing spawn function with cool math by Marisa Kirisame (see mk_matrix)
+	//Casing spawn function with math by Marisa Kirisame (see mk_matrix)
 	action actor A_Eject(class<Actor> itemtype, double xofs = 0, double yofs = 0, double zofs = 0, double xvel = 0, double yvel = 0, double zvel = 0) {
-		Vector3 ofs = player.mo.pos+(0,0,player.viewheight-GetFloorTerrain().footclip);
+		if (!player || !player.mo)
+			return null;
+		PlayerInfo plr = player;
+		PlayerPawn pmo = player.mo;
+		Vector3 ofs = pmo.pos+(0,0,plr.viewheight-GetFloorTerrain().footclip);
 		Vector3 x, y, z;
-		[x, y, z] = Matrix4.getaxes(player.mo.pitch,player.mo.angle,player.mo.roll);
+		[x, y, z] = Matrix4.getaxes(pmo.pitch,pmo.angle,pmo.roll);
 		let c = Spawn(itemtype,ofs+x*xofs+y*yofs-z*zofs);
 		if (c) {
 			c.vel = x*xvel+y*yvel+z*zvel;
-			c.target = self; //get pointer to spawner — if spawned by monster it'll disappear after bouncing
+			c.target = self;
 			c.angle = angle;
 			return c;
 		}
