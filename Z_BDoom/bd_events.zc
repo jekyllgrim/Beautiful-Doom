@@ -796,14 +796,16 @@ Class BD_DEHACKED_Handler : StaticEventHandler
 				}
 				else if ( tokens[0] ~== "Frame" )
 				{
-					if( dehackedActors.Find(StateMap[num]) == dehackedActors.Size() )
-						dehackedActors.Push(StateMap[num]);
+					string state = num < 1076 ? StateMap[num] : 'Deh_Actor_250';
+					if( dehackedActors.Find(state) == dehackedActors.Size() )
+						dehackedActors.Push(state);
 				}
 				else if ( tokens[0] ~== "Pointer" )
 				{
 					num = CodePConv[num];
-					if( dehackedActors.Find(StateMap[num]) == dehackedActors.Size() )
-						dehackedActors.Push(StateMap[num]);
+					string state = num < 1076 ? StateMap[num] : 'Deh_Actor_250';
+					if( dehackedActors.Find(state) == dehackedActors.Size() )
+						dehackedActors.Push(state);
 				}
 			}
 			if( tokens.Size() >= 3 && tokens[0] ~== "Text" && tokens[1] ~== "4" && tokens[1] ~== "4" ) // "Text 4 4" to change a sprite name
