@@ -111,6 +111,8 @@ weapons/chaingun/spin	CHGNSPIN
 weapons/chaingun/stop	CHGNSTOP
 weapons/chaingun/start	CHGNSTRT
 weapons/chaingun/pickup	CHGNPKUP
+weapons/chaingun/cool	CHGNCOOL
+weapons/chaingun/lock	CHGNLOCK
 
 // Rocket Launcher
 weapons/rlan/draw	RLANDRAW

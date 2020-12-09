@@ -2,7 +2,16 @@ Class BD_Chaingun : BDoomWeapon {
 	double HeatStacks;
 	double HeatDecay;
 	protected bool RifleSights;
-	int tfired;
+	protected int tfired;
+	
+	protected int spintics;
+	protected double spinspeed;
+	protected int spinframe;
+	
+	protected bool isLocked;
+	
+	state s_spin;
+	
 	Default	{
 		Tag "$TAG_CHAINGUN";
 		weapon.selectionorder 70;
@@ -17,11 +26,28 @@ Class BD_Chaingun : BDoomWeapon {
 		BDoomWeapon.AutoReloadTime 140;
 		BDoomWeapon.reloadsound "Mweapons/rifle/clipin";
 	}
+	action void SpawnChaingunCasing() {
+		if(bdoom_debris)
+			A_Eject("BD_ChaingunCasing",10,frandom[bdsfx](5,7),20,frandom[bdsfx](0,2),frandom[bdsfx](3.5,4.5),frandom[bdsfx](3.2,4));
+	}
+	action void SpawnRifleCasing() {
+		if(!bdoom_debris)
+			return;
+		if (invoker.RifleSights)
+			A_Eject("BD_ChaingunCasing",13,frandom[bdsfx](3,4),4,frandom[bdsfx](0,2),frandom[bdsfx](8,9),frandom[bdsfx](2,2.5));
+		else
+			A_Eject("BD_ChaingunCasing",20,frandom[bdsfx](1,2),12.5,frandom[bdsfx](0,2),frandom[bdsfx](4.5,5),frandom[bdsfx](2,2.5));
+	}
+	
 	override string PickupMessage () {
 		if(bdoom_weapons == 2) 
 			return "You got the Assault Rifle!"; 
 		else
 			return "$GOTCHAINGUN"; 
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		s_spin = FindState("AltHold");
 	}
 	override string GetObituary (Actor victim, Actor inflictor, Name mod, bool playerattack) {
 		if(bdoom_weapons == 2) 
@@ -58,21 +84,59 @@ Class BD_Chaingun : BDoomWeapon {
 			SetTag("$TAG_CHAINGUN");
 			bNOAUTOFIRE = false;
 			bAMMO_OPTIONAL = false;
+			//console.printf("spin speed: %d | frame: %d | tics: %d",spinspeed,spinframe,spintics);
 		}
-		if (bdoom_weapons == 1 && owner.player.readyweapon == self && !owner.player.mo.bKILLEd) {
-			let s = owner.player.FindPsprite(PSP_Weapon);
-			let chg = BD_Chaingun(owner.player.ReadyWeapon);
-			if (!s || !chg)
+		if (bdoom_weapons == 1 && owner.player.readyweapon == self && owner.health > 0) {
+			let psp = owner.player.FindPSprite(PSP_Weapon);
+			if (!psp)
 				return;
-			let fl = owner.player.FindPsprite(5);
-			if (HeatStacks > 0 )
-				owner.player.SetPSprite(5,FindState("FlashHeated"));
+			if (heatStacks > 0 && (isLocked || (!(owner.player.cmd.buttons & BT_ATTACK)))) {
+				double rd = isLocked ? 0.5 : 1;
+				HeatStacks = Clamp(heatStacks-rd,0,60); 
+			}
+			//handle altfire spinning:
+			if (InStateSequence(psp.curstate,s_spin)) {			
+				owner.A_StartSound("weapons/chaingun/spin",CHAN_CHGSPIN,flags:CHANF_LOOPING);
+				//spinspeed increases while holding altfire
+				if (owner.player.cmd.buttons & BT_ALTATTACK && owner.player.oldbuttons & BT_ALTATTACK) {
+					spinspeed = Clamp(spinspeed+0.5,0,40);
+				}
+				//decreases otherwise
+				else {
+					spinspeed = Clamp(spinspeed-0.5,0,40);
+				}
+				//spin sound pitch continuously changes based on spinspeed
+				owner.A_SoundPitch(CHAN_CHGSPIN,Clamp(spinspeed * 0.022,0.2,1));
+				//defines the duration of the current frame based on spinspeed, always between 1-4
+				spintics = Clamp(4 - floor(spinspeed * 0.1),1,4);
+			}
+			//if not in altfire spinspeed is quickly but not immediately decreased and the sound is still played
+			else if (spinspeed > 0) {
+				spinspeed = Clamp(spinspeed-1,0,40);
+				owner.A_SoundPitch(CHAN_CHGSPIN,Clamp(spinspeed * 0.022,0.2,1));
+			}
 			else
-				owner.player.SetPSprite(5,null);
+				owner.A_StopSound(CHAN_CHGSPIN);			
+			if (heatStacks > 0) {
+				owner.A_SoundVolume(CHAN_CHGCOOL,HeatStacks*0.0165);
+				let fl = owner.player.FindPsprite(PSP_HEAT);
+				if (!fl) {
+					owner.player.SetPSprite(PSP_HEAT,FindState("FlashHeated"));
+				}
+				else
+					fl.frame = spinframe;
+			}
+			else {
+				owner.player.SetPSprite(PSP_HEAT,null);
+				owner.A_StopSound(CHAN_CHGCOOL);
+				isLocked = false;
+			}
 		}
 		else {
-			HeatStacks = 0;						//reset heatstacks if not reset yet
-			//owner.player.SetPSprite(5,null);
+			HeatStacks = 0;
+			owner.A_StopSound(CHAN_CHGSPIN);
+			owner.A_StopSound(CHAN_CHGCOOL);
+			isLocked = false;
 		}
 		
 		//crosshair and bob handling for ADS
@@ -126,7 +190,7 @@ Class BD_Chaingun : BDoomWeapon {
 			RIFN Z 1;
 		Select:
 			TNT1 A 0 { 
-				A_StopSound(5);			
+				A_StopSound(CHAN_5);			
 				if (bdoom_weapons == 2)
 					return ResolveState("Select.Modern");
 				If(bdoom_weapons == 1) 
@@ -138,7 +202,7 @@ Class BD_Chaingun : BDoomWeapon {
 		Deselect:
 			TNT1 A 0 { 
 				BD_ClearPSprite(PSP_REDDOT);
-				A_StopSound(5); 
+				A_StopSound(CHAN_5); 
 				if (bdoom_weapons == 2)
 					return ResolveState("Deselect.Modern");
 				speed = default.speed;
@@ -164,46 +228,39 @@ Class BD_Chaingun : BDoomWeapon {
 		Fire:
 			TNT1 A 0 A_JumpIf(bdoom_weapons==2,"Fire.Modern");
 			MGGG A 1 {
-				A_WeaponOffset(0.0,35.0,WOF_INTERPOLATE);
+				//A_WeaponOffset(0.0,35.0,WOF_INTERPOLATE);
 				a_gunflash();
-				if (bdoom_weapons == 0)
-					A_StartSound("weapons/chngun");
-				else 
-					A_StartSound("weapons/chaingun/fire");
-				If(Bdoom_tracers)
-					A_FireBullets (5.6, 0, 1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_BulletTracer",0,0) ;
-				else
-					A_FireBullets (5.6, 0, 1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
+				BD_FireBullets(5.6, 0, 1, 5,"weapons/chngun","weapons/chaingun/fire") ;
 			}
 			MGGG B 1;
-			TNT1 A 0 { 
-				if( bdoom_debris)
-					A_Eject("BD_ChaingunCasing",20,frandom(4,5),18,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
-			}
+			TNT1 A 0 SpawnChaingunCasing();
 			MGGG CD 1;
 			TNT1 A 0 A_CheckReload();
 			
 			MGGG A 1 {
 				a_gunflash();
-				if (bdoom_weapons == 0)
-					A_StartSound("weapons/chngun");
-				else 
-					A_StartSound("weapons/chaingun/fire");
-				If(Bdoom_tracers)
-					A_FireBullets (5.6, 0, 1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_BulletTracer",0,0) ;
-				else
-					A_FireBullets (5.6, 0, 1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
+				BD_FireBullets(5.6, 0, 1, 5,"weapons/chngun","weapons/chaingun/fire") ;
 			}
 			MGGG B 1;
-			TNT1 A 0 { 
-				if( bdoom_debris)
-					A_Eject("BD_ChaingunCasing",20,frandom(4,5),18,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
-			}
+			TNT1 A 0 SpawnChaingunCasing();
 			MGGG CD 1;
-			TNT1 A 0 A_refire();
+			TNT1 A 0 {
+				//jump directly to spinning if AltAttack is pressed as well
+				if (bdoom_weapons == 1 && (player.cmd.buttons & BT_ATTACK) && (player.cmd.buttons & BT_ALTATTACK)) {
+					A_ClearRefire();
+					invoker.spintics = 4;
+					invoker.spinspeed = 10;
+					invoker.spinframe = 0;
+					return ResolveState("AltHold");
+				}
+				//otherwise do regular refire
+				else
+					A_ReFire("Fire");
+				return ResolveState(null);
+			}
 			MGGG ABCD 1 {
 				A_WeaponReady(WRF_NOSECONDARY);
-				A_WeaponOffset(0.0,-0.75,WOF_ADD);
+				//A_WeaponOffset(0.0,-0.75,WOF_ADD);
 			}
 			MGGG ABCDAABBCCDD 1 A_WeaponReady(WRF_NOSECONDARY);
 			goto ready;
@@ -245,106 +302,64 @@ Class BD_Chaingun : BDoomWeapon {
 			#### # 1 bright A_OverlayAlpha(PSP_MFLASH,0.8);
 			stop;
 		FlashHeated:
-			MGGH B 1 bright {
-				A_OverlayFlags(5,PSPF_Alpha|PSPF_FORCEALPHA,true);
-				A_OverlayAlpha(5,invoker.HeatStacks*0.0165);
+			MGGH # 1 bright {
+				A_OverlayRenderstyle(OverlayID(),Style_ADD);
+				A_OverlayFlags(OverlayID(),PSPF_Alpha|PSPF_ForceAlpha,true);
+				A_OverlayAlpha(OverlayID(),Clamp(invoker.HeatStacks*0.0165,0,1));
+				/*let psp = Player.FindPSprite(OverlayID());
+				if (psp)
+					psp.frame = invoker.spinframe;*/
 			}
-			stop;
+			loop;
 		AltFire:
 			TNT1 A 0 {
 				if (bdoom_weapons == 2)
 					return ResolveState("AltFire.Modern");
-				A_StartSound("weapons/chaingun/start");
-				return ResolveState(null);
-			}
-			MGGG ABCDABCD 2;
-			MGGG ABCDABCD 1;
-			TNT1 A 0 A_StartSound("weapons/chaingun/spin",slot:CHAN_5,flags:CHANF_DEFAULT|CHANF_LOOPING);
-			MGGG ACACACACAC 1;
-			
-			MGGG A 1 { 
-				A_WeaponOffset(0.0,35.0,WOF_INTERPOLATE);
-				invoker.HeatStacks++; 
-				a_gunflash();
-				A_StartSound("weapons/chaingun/fire");
-				If(Bdoom_tracers)
-					A_FireBullets(8,3, -1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_BulletTracer",0,0) ;
-				else
-					A_FireBullets(8,3, -1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
-				}
-			MGGG C 1 { 
-				if(bdoom_debris)
-					A_Eject("BD_ChaingunCasing",20,frandom(4,5),18,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
-			}
-			TNT1 A 0 A_CheckReload();		
-			MGGG A 1 { 
-				invoker.HeatStacks++; 
-				a_gunflash();
-				A_StartSound("weapons/chaingun/fire");
-				If(Bdoom_tracers)
-					A_FireBullets(8,3, -1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_BulletTracer",0,0) ;
-				else
-					A_FireBullets(8,3, -1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
-			}
-			MGGG C 1 { 
-				if( bdoom_debris)
-					A_Eject("BD_ChaingunCasing",20,frandom(4,5),18,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
+				invoker.spintics = 4;
+				invoker.spinspeed = 0;
+				invoker.spinframe = 0;
+				return ResolveState("AltHold");
 			}
 		AltHold:
-			TNT1 A 0 A_JumpIf(bdoom_weapons==2,"AltFire.Modern");
-			TNT1 A 0 A_CheckReload();
-			MGGG A 1 { 
-				A_WeaponOffset(0.0,35.0,WOF_INTERPOLATE);
-				invoker.HeatStacks++; 
-				a_gunflash();
-				A_StartSound("weapons/chaingun/fire");
-				If(Bdoom_tracers)
-					A_FireBullets(8,3, -1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_BulletTracer",0,0) ;
-				else
-					A_FireBullets(8,3, -1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
-			}	
-			MGGG C 1 { 
-					if (bdoom_debris)
-						A_Eject("BD_ChaingunCasing",20,frandom(4,5),18,frandom(0,2),FRandom(3.5,4.5),frandom(4,5));
-				}
-			TNT1 A 0 {
-				if (invoker.HeatStacks < 60)
-					A_ReFire("AltHold"); 
-			}
-		AltFireEnd:
-			TNT1 A 0 {
-				A_StartSound("weapons/chaingun/stop",slot:CHAN_5);
-				invoker.HeatDecay = invoker.heatStacks * 0.05;
-			}
-			MGGG ABCDA 1 {
-				A_WeaponOffset(0.0,-0.6,WOF_ADD);
-				If(bdoom_debris && invoker.HeatStacks >= 10)
-					A_SpawnItemEx("BD_WeaponSmoke",cos(pitch)*25,random(-3,3),sin(-pitch)*25+random(33,37),		0,0,frandom(0.2,0.4),0);
-				invoker.heatStacks -= invoker.Heatdecay;
-			}
-			MGGG BCDABC 2 {
-				If(bdoom_debris && invoker.HeatStacks >= 10)
-					A_SpawnItemEx("BD_WeaponSmoke",cos(pitch)*25,random(-3,3),sin(-pitch)*25+random(33,37),		0,0,frandom(0.2,0.4),0);
-				invoker.heatStacks -= invoker.Heatdecay;
-			}
-			MGGG DABCD 3 {
-				If(bdoom_debris && invoker.HeatStacks >= 10)
-					A_SpawnItemEx("BD_WeaponSmoke",cos(pitch)*25,random(-3,3),sin(-pitch)*25+random(33,37),		0,0,frandom(0.2,0.4),0);
-				invoker.heatStacks -= invoker.Heatdecay;
-			}
-			TNT1 A 0 {
-				A_ClearRefire();
-				if (invoker.HeatStacks == 0)
+			MGGG #### 4 {
+				if (bdoom_weapons != 1) {
+					invoker.isLocked = false;
+					invoker.spinspeed = 0;
 					return ResolveState("Ready");
-				return ResolveState(null);
+				}
+				A_SetTics(invoker.spintics);
+				int i = invoker.spinframe;
+				i = invoker.spinspeed > 35 ? i+2 : i+1;
+				i = Clamp(i,0,4);
+				invoker.spinframe = i > 3 ? i-4 : i;
+				let psp = Player.FindPSprite(OverlayID());
+				if (psp)
+					psp.frame = invoker.spinframe;
+				if (invoker.isLocked && random[bdsfx](0,60) < invoker.heatStacks) {
+					A_Eject("BD_WeaponSmoke",frandom[bdsfx](8,12),frandom[bdsfx](-2.5,2.5),frandom[bdsfx](2,4),zvel:frandom[bdsfx](0.3,0.8));
+				}
+				if (!invoker.isLocked && player.cmd.buttons & BT_ATTACK && invoker.spinframe == 0) {
+					invoker.HeatStacks = Clamp(invoker.heatStacks+1.2,0,60);
+					if (invoker.heatStacks >= 60) {
+						invoker.isLocked = true;
+						A_StartSound("weapons/chaingun/cool",CHAN_CHGCOOL,flags:CHANF_LOOP);
+						A_StartSound("weapons/chaingun/lock");
+					}
+					A_GunFlash("AltFlash");
+					A_StartSound("weapons/chaingun/fire",flags:CHANF_OVERLAP);
+					name trac = bdoom_tracers ? "BD_BulletTracer" : "";
+					A_FireBullets (8,3, -1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,missile:trac,spawnheight:0) ;
+					SpawnChaingunCasing();
+				}
+				if (!((player.cmd.buttons & BT_ALTATTACK) && (player.oldbuttons & BT_ALTATTACK))) {
+					if (invoker.spinspeed <= 0)
+						return ResolveState("Ready");	
+					else if (invoker.spinspeed < 14)
+						A_WeaponReady(WRF_NOSECONDARY|WRF_NOBOB);
+				}
+				return ResolveState(null);	
 			}
-			MGGG ABCD 4 {
-				If(bdoom_debris && invoker.HeatStacks >= 10)
-					A_SpawnItemEx("BD_WeaponSmoke",cos(pitch)*25,random(-3,3),sin(-pitch)*25+random(33,37),		0,0,frandom(0.2,0.4),0);
-				invoker.heatStacks -= invoker.Heatdecay;
-				A_WeaponReady(WRF_NOFIRE);
-			}
-			goto ready;
+			wait;
 		AltFlash:
 			TNT1 A 1 {
 				A_Light2();
@@ -461,10 +476,7 @@ Class BD_Chaingun : BDoomWeapon {
 			}		
 			#### CD 1 A_WeaponOffset(0,-3,WOF_ADD);
 			#### A 0 {
-				if (bdoom_debris)
-					A_Eject("BD_ChaingunCasing",20,frandom(1,2),12.5,frandom(0,2),FRandom(4.5,5),frandom(2,2.5));
-			}
-			#### A 0 {
+				SpawnRifleCasing();
 				A_ReFire("Fire.Modern");
 				if (CountInv("RifleClip") < 1) {
 					let s = Player.FindPsprite(PSP_Weapon);
@@ -491,8 +503,7 @@ Class BD_Chaingun : BDoomWeapon {
 			#### B 1 {
 				A_WeaponOffset(frandom(-1.5,1.5),5,WOF_ADD);
 				A_ZoomFactor(1.3,ZOOM_NOSCALETURNING);
-				If(bdoom_debris)
-					A_Eject("BD_ChaingunCasing",20,frandom(3,4),4,frandom(0,2),FRandom(5.5,7),frandom(2,2.5));
+				SpawnRifleCasing();
 			}
 			#### CB 1 A_WeaponOffset(0,-2.5,WOF_ADD);
 			#### # 0 {
@@ -515,8 +526,7 @@ Class BD_Chaingun : BDoomWeapon {
 			#### B 1 {
 				A_WeaponOffset(frandom(-1.5,1.5),5,WOF_ADD);
 				A_ZoomFactor(1.3,ZOOM_NOSCALETURNING);
-				If(bdoom_debris)
-					A_Eject("BD_ChaingunCasing",20,frandom(3,4),4,frandom(0,2),FRandom(5.5,7),frandom(2,2.5));
+				SpawnRifleCasing();
 			}
 			#### CB 1 A_WeaponOffset(0,-2.5,WOF_ADD);
 			#### # 0 {
@@ -539,8 +549,7 @@ Class BD_Chaingun : BDoomWeapon {
 			#### B 1 {
 				A_WeaponOffset(frandom(-1.5,1.5),5,WOF_ADD);
 				A_ZoomFactor(1.3,ZOOM_NOSCALETURNING);
-				If(bdoom_debris)
-					A_Eject("BD_ChaingunCasing",20,frandom(3,4),4,frandom(0,2),FRandom(5.5,7),frandom(2,2.5));
+				SpawnRifleCasing();
 			}
 			#### CB 1 A_WeaponOffset(0,-2.5,WOF_ADD);
 			#### A 3 {				
@@ -568,7 +577,7 @@ Class BD_Chaingun : BDoomWeapon {
 			}
 			goto reload;
 		Reload:
-			TNT1 A 0 { 
+			RIFA A 0 { 
 				A_ClearRefire();
 				BD_ClearPsprite(PSP_REDDOT);
 				if (CountINv("Clip") == 0)
