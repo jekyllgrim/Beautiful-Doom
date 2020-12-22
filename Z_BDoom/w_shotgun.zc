@@ -128,9 +128,9 @@ Class BD_Shotgun : BDoomWeapon {
 	Flash:
 		TNT1 A 2 {
 			A_Light2();
-			if(GetCVAR("bdoom_muzzle")==0)
+			if(!invoker.c_muzzle.GetBool())
 				A_Overlay(PSP_EFLASH,"FlashVanilla");
-			else {
+			else {	
 				for (int i = random (4,6); i > 0; i --)
 					A_Eject("BD_MuzzleSmoke",12,0,4,32);
 				A_Overlay(PSP_EFLASH,"FlashEnhanced");
@@ -263,7 +263,7 @@ Class BD_Shotgun : BDoomWeapon {
 	ModernFlash:
 		TNT1 A 2 {
 			A_Light2();
-			if(GetCVAR("bdoom_muzzle")==0)
+			if(!invoker.c_muzzle.GetBool())
 				A_Overlay(PSP_EFLASH,"ModernFlashVanilla");
 			else {
 				for (int i = random (4,6); i > 0; i --)

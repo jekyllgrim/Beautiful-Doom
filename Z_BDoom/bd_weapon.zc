@@ -20,12 +20,16 @@ Class BDoomWeapon : Weapon abstract {
 	protected int magammogive;			//amount of magazine ammo given at first pickup (full mag for most weapons except Rocket Launcher)
 	property magammogive : magammogive;
 	
+	protected transient CVar c_muzzle;	
+	protected transient CVar c_blackgloves;
 	protected bool wasempty;			//used in reload animations to keep track of whether reload was dry (affects animations)
 	protected bool dontforcebob;		//if false, weapons will bob all the time
 	property dontforcebob : dontforcebob;
 	//keep track of states:
 	protected state mreload;
 	protected state mready;
+	
+	protected double preKickSpeed;
 	
 	Default {  
 		BDoomWeapon.AutoReloadTime 60;
@@ -37,7 +41,7 @@ Class BDoomWeapon : Weapon abstract {
 		let psp = player.FindPSprite(OverlayID());
 		if (!psp)
 			return;
-		if (!GetCVar("bdoom_blackgloves"))
+		if (invoker.c_blackgloves.GetBool() == false)
 			psp.sprite = GetSpriteIndex(sprite1);
 		else
 			psp.sprite = GetSpriteIndex(sprite2);
@@ -115,7 +119,14 @@ Class BDoomWeapon : Weapon abstract {
 	//Make sure player's magazine isn't empty when a weapon is first picked up (for Modern Guns):
 	override void AttachToOwner(actor other) {
 		super.AttachToOwner(other);
-		if (picked || !owner)
+		if (!owner)
+			return;
+		if (owner.player) {
+			let plr = owner.player;
+			c_muzzle = CVar.GetCVar("bdoom_muzzle",plr);
+			c_blackgloves = CVar.GetCVar("bdoom_blackgloves",plr);
+		}
+		if (picked)
 			return;
 		int ama = (magammogive > 0) ? magammogive : 100; //give either full mag, or however much is specified with magammo property
 		owner.GiveInventory(magammo,ama);
@@ -195,6 +206,8 @@ Class BDoomWeapon : Weapon abstract {
 		Super.DoEffect();
 		if (!owner || !owner.player)
 			return;
+		/*int bgl = CVar.GetCvar("bdoom_blackgloves",owner.player).GetInt();
+		Console.Printf("%s | blackgloves var: %b | blackgloves CVAR: %b",GetClassName(),c_blackgloves.GetInt(),bgl);*/
 		if (magammo) {
 			if (bdoom_weapons == 2)
 				Ammo1 = ammo(owner.FindInventory(magammo));
@@ -284,13 +297,17 @@ Class BDoomWeapon : Weapon abstract {
 			wait;
 		QuickKick:
 			TNT1 A 0 {
-				A_OverlayOffset(PSP_KICK,28,32);
-				A_OverlayFlags(PSP_KICK,PSPF_ADDBOB|PSPF_ADDWEAPON,false);
-				A_OverlayFlags(PSP_KICK,PSPF_FLIP|PSPF_MIRROR|PSPF_PLAYERTRANSLATED,true);
-				if (CountInv("Modernberserk_Regen") > 0)
-					speed = default.speed * 0.5;
-				else
-					speed = default.speed * 0.25;
+				invoker.preKickSpeed = speed;
+				A_OverlayOffset(OverlayID(),28,32);
+				A_OverlayFlags(OverlayID(),PSPF_ADDBOB|PSPF_ADDWEAPON,false);
+				A_OverlayFlags(OverlayID(),PSPF_FLIP|PSPF_MIRROR,true);
+				A_OverlayFlags(OverlayID(),PSPF_PLAYERTRANSLATED,true);
+				if (player.onGround) {
+					if (CountInv("Modernberserk_Regen") > 0)
+						speed = invoker.preKickSpeed * 0.5;
+					else
+						speed = invoker.preKickSpeed * 0.25;
+				}
 			}
 			KICK AB 1;
 			TNT1 A 0 { 
@@ -319,7 +336,7 @@ Class BDoomWeapon : Weapon abstract {
 			TNT1 A 0 A_CameraSway(0.0,-3.0,8);
 			KICK HDC 2;
 			TNT1 A 0 {
-				speed = default.speed;
+				speed = invoker.preKickSpeed;
 			}
 			KICK BA 3;
 			TNT1 A 7 ;

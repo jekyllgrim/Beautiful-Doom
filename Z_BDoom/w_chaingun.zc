@@ -249,7 +249,7 @@ Class BD_Chaingun : BDoomWeapon {
 				if (bdoom_weapons == 1 && (player.cmd.buttons & BT_ATTACK) && (player.cmd.buttons & BT_ALTATTACK)) {
 					A_ClearRefire();
 					invoker.spintics = 4;
-					invoker.spinspeed = 10;
+					invoker.spinspeed = 14;
 					invoker.spinframe = 0;
 					return ResolveState("AltHold");
 				}
@@ -267,7 +267,7 @@ Class BD_Chaingun : BDoomWeapon {
 		Flash:
 			TNT1 A 1 {
 				A_Light2();
-				if(GetCVAR("bdoom_muzzle")==0)
+				if(!invoker.c_muzzle.GetBool())
 					A_Overlay(PSP_EFLASH,"FlashVanilla");
 				else {
 					for (int i = random (2,3); i > 0; i --)
@@ -338,7 +338,7 @@ Class BD_Chaingun : BDoomWeapon {
 				if (invoker.isLocked && random[bdsfx](0,60) < invoker.heatStacks) {
 					A_Eject("BD_WeaponSmoke",frandom[bdsfx](8,12),frandom[bdsfx](-2.5,2.5),frandom[bdsfx](2,4),zvel:frandom[bdsfx](0.3,0.8));
 				}
-				if (!invoker.isLocked && player.cmd.buttons & BT_ATTACK && invoker.spinframe == 0) {
+				if (invoker.ammo1.amount > 0 && !invoker.isLocked && player.cmd.buttons & BT_ATTACK && invoker.spinframe == 0) {
 					invoker.HeatStacks = Clamp(invoker.heatStacks+1.2,0,60);
 					if (invoker.heatStacks >= 60) {
 						invoker.isLocked = true;
@@ -351,10 +351,10 @@ Class BD_Chaingun : BDoomWeapon {
 					A_FireBullets (8,3, -1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,missile:trac,spawnheight:0) ;
 					SpawnChaingunCasing();
 				}
-				if (!((player.cmd.buttons & BT_ALTATTACK) && (player.oldbuttons & BT_ALTATTACK))) {
+				if (! ((player.cmd.buttons & BT_ALTATTACK) && (player.oldbuttons & BT_ALTATTACK)) ) {
 					if (invoker.spinspeed <= 0)
 						return ResolveState("Ready");	
-					else if (invoker.spinspeed < 14)
+					else if (invoker.spinspeed <= 16)
 						A_WeaponReady(WRF_NOSECONDARY|WRF_NOBOB);
 				}
 				return ResolveState(null);	
@@ -363,7 +363,7 @@ Class BD_Chaingun : BDoomWeapon {
 		AltFlash:
 			TNT1 A 1 {
 				A_Light2();
-				if(GetCVAR("bdoom_muzzle")==0)
+				if(!invoker.c_muzzle.GetBool())
 					A_Overlay(PSP_EFLASH,"AltFlashVanilla");
 				else {
 					for (int i = random (2,3); i > 0; i --)
@@ -667,7 +667,7 @@ Class BD_Chaingun : BDoomWeapon {
 				else
 					A_Overlay(PSP_EFLASH,"FlashModernHighlights");
 				
-				if (GetCVAR("bdoom_muzzle") == 1) {
+				if (invoker.c_muzzle.GetBool()) {
 					for (int i = random (2,3); i > 0; i --) {
 						if (invoker.riflesights)
 							A_Eject("BD_MuzzleSmoke",12,0,1.5,32);
@@ -692,7 +692,7 @@ Class BD_Chaingun : BDoomWeapon {
 			RIFM ABCD 0;
 		FlashModernHighlights:
 			RIFL AB 1 bright {
-				if (GetCVAR("bdoom_muzzle") == 1) {
+				if (invoker.c_muzzle.GetBool()) {
 					let fl = player.FindPSprite(OverlayID());
 					if (fl) fl.sprite = GetSpriteIndex("RIFM");
 				}
@@ -700,7 +700,7 @@ Class BD_Chaingun : BDoomWeapon {
 			stop;
 		FlashModernSights:
 			RIFL CD 1 bright {
-				if (GetCVAR("bdoom_muzzle") == 1) {
+				if (invoker.c_muzzle.GetBool()) {
 					let fl = player.FindPSprite(OverlayID());
 					if (fl) fl.sprite = GetSpriteIndex("RIFM");
 				}

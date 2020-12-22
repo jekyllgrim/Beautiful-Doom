@@ -112,7 +112,7 @@ Class BD_Pistol : BDoomWeapon {
 	Flash:
 		TNT1 A 3 {
 			A_Light1();
-			if(GetCVAR("bdoom_muzzle")==0)
+			if(!invoker.c_muzzle.GetBool())
 				A_Overlay(PSP_EFLASH,"FlashVanilla");
 			else {
 				for (int i = random (2,3); i > 0; i --)
@@ -190,15 +190,11 @@ Class BD_Pistol : BDoomWeapon {
 		#### ABCDE 1 A_WeaponReady(WRF_NOFIRE);
 		goto ready;
 	Deselect.Enhanced:
-		PIBN A 0 {
-			BD_SetSprite("PIBN","QIBN");
-			let s = player.findPSprite(PSP_Weapon);
-			if (s && (CountInv("BD_Pistol") > 1)) {
-				if (GetCvar("bdoom_blackgloves") == true)
-					s.sprite = GetSpriteIndex("QI2G");
-				else
-					s.sprite = GetSpriteIndex("PI2G");
-			}
+		TNT1 A 0 {
+			if (CountInv("BD_Pistol") > 1)
+				BD_SetSprite("PI2G","QI2G");
+			else
+				BD_SetSprite("PIBN","QIBN");
 		}
 		#### # 1 A_Lower(12);
 		wait;
@@ -291,7 +287,7 @@ Class BD_Pistol : BDoomWeapon {
 	AltFlash:
 		TNT1 A 2 {
 			A_Light1();
-			if(GetCVAR("bdoom_muzzle")==0)
+			if(!invoker.c_muzzle.GetBool())
 				A_Overlay(PSP_EFLASH,"AltFlashVanilla");
 			else {
 				for (int i = random (2,3); i > 0; i --) {
@@ -352,33 +348,20 @@ Class BD_Pistol : BDoomWeapon {
 		goto reload;
 	Select.Modern:
 		PIMN A 0 {
-			BD_SetSprite("PIMN","QIMN");
 			A_StartSound("weapons/pistol/draw");			
-			if (countinv("BD_PistolClip") <= 0) {
-				let po = player.FindPSprite (PSP_Weapon);
-				if (po) {
-					if (GetCvar("bdoom_blackgloves") == true)
-						po.sprite = GetSpriteIndex("QIMT");
-					else
-						po.sprite = GetSpriteIndex("PIMT");
-				}
-			}
+			if (countinv("BD_PistolClip") <= 0)
+				BD_SetSprite("QIMT","PIMT");
+			else			
+				BD_SetSprite("PIMN","QIMN");
 		}
 		#### A 1 A_Raise(12);
 		wait;
 	Deselect.Modern:
-		PIMN A 0 {
-			BD_SetSprite("PIMN","QIMN");
-			A_StartSound("weapons/pistol/draw");			
-			if (countinv("BD_PistolClip") <= 0) {
-				let po = player.FindPSprite (PSP_Weapon);
-				if (po) {
-					if (GetCvar("bdoom_blackgloves") == true)
-						po.sprite = GetSpriteIndex("QIMT");
-					else
-						po.sprite = GetSpriteIndex("PIMT");
-				}
-			}
+		PIMN A 0 {	
+			if (countinv("BD_PistolClip") <= 0)
+				BD_SetSprite("QIMT","PIMT");
+			else			
+				BD_SetSprite("PIMN","QIMN");
 		}
 		#### # 1 A_Lower(12);
 		wait;
@@ -412,20 +395,15 @@ Class BD_Pistol : BDoomWeapon {
 		PIMT A 2 BD_SetSprite("PIMT","QIMT");
 		goto Ready.Modern;
 	Reload:
-		PIMR A 0 {
-			BD_SetSprite("PIMR","QIMR");
+		TNT1 A 0 {
 			if (CountInv("Clip") == 0)
 				return ResolveState("Ready");
 			If(CountInv("BD_PistolClip") == 0) {
 				invoker.wasempty = true;	//this defines whether to show dry reload sprites or regular ones
-				let s = player.FindPSprite(PSP_Weapon);
-				if (s) {
-					if (GetCvar("bdoom_blackgloves") == true)
-						s.sprite = GetSpriteIndex("QIME");
-					else
-						s.sprite = GetSpriteIndex("PIME");
-				}
+				BD_SetSprite("PIME","QIME");
 			}
+			else
+				BD_SetSprite("PIMR","QIMR");
 			return ResolveState(null);
 		}
 		#### ABCD 1;

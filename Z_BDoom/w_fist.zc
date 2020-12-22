@@ -242,6 +242,7 @@ Class BD_Fist : BDoomWeapon {
 			TNT1 A 0 A_jumpifinventory("PowerStrength",1,"AltHoldStrong");
 			KICK AB 1;
 			TNT1 A 0 {
+				invoker.preKickSpeed = speed;
 				if (player.OnGround)
 					speed = default.speed*0.2;
 				A_StartSound("weapons/kick/swing");
@@ -253,7 +254,7 @@ Class BD_Fist : BDoomWeapon {
 			KICK HD 2;
 			KICK CBA 3;
 			TNT1 A 2 { 
-				speed = default.speed; 
+				speed = invoker.preKickSpeed; 
 				A_OverlayFlags(OverlayID(),PSPF_PLAYERTRANSLATED,false);
 			}
 			TNT1 A 0 A_ReFire("AltHold");
