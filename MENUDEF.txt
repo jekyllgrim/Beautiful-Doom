@@ -72,6 +72,7 @@ OptionMenu "BDoom_Settings" {
 	StaticText " "
 
 	StaticText "COMPATIBILITY", yellow
+	StaticText "Compatibility changes require a map restart (you won't be able to load a save)", green
 	OptionBoth "Safe actor replacement", 	"$BDMENU_SAFEREPLACEMENT", "white", "bdoom_safereplacement", "SafeReplacement", "bdoom_replaceobjects", "bdoom_replacemonsters"
 	TLTPOption "Beautiful Doom weapons",		"$BDMENU_REPLACEWEAPONS", "White", "bdoom_replaceweapons", "Toggle", ""
 	TLTPOption "Beautiful Doom monsters",		"$BDMENU_REPLACEMONSTERS","White", "bdoom_replacemonsters", "Toggle", ""
@@ -90,7 +91,7 @@ OptionMenu "BDoom_Settings" {
 
 OptionMenu "BDMonsterReplacements" {
 	Title "Beautiful Doom monster replacement settings"
-	StaticText "Changes require a map restart; you won't be able to load a save", blue
+	StaticText "Changes require a map restart (you won't be able to load a save)", green
 	StaticText " "
 	Option "Zombieman",				"bdoom_Zombieman", "Toggle", ""
 	Option "Shotgun Guy",			"bdoom_ShotgunGuy", "Toggle", ""
