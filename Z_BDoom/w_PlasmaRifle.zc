@@ -5,6 +5,7 @@
 Class BD_PlasmaRifle : BDoomWeapon {
 	double HeatCounter;
 	Default {
+		+WEAPON.ALT_AMMO_OPTIONAL
 		Weapon.SelectionOrder 10;
 		Inventory.PickupMessage "$GOTPLASMA";
 		Tag "$TAG_PLASMARIFLE";
@@ -26,10 +27,6 @@ Class BD_PlasmaRifle : BDoomWeapon {
 		let psp = owner.player.FindPSprite(PSP_WEAPON);
 		if (psp && bdoom_weapons == 2 && heatcounter > 0)
 			heatcounter -= 0.05;
-		if (bdoom_weapons == 2) 
-			bALT_AMMO_OPTIONAL = true;
-		else
-			bALT_AMMO_OPTIONAL = false;
 	}
 	states
 		{
@@ -67,7 +64,7 @@ Class BD_PlasmaRifle : BDoomWeapon {
 				if (bdoom_weapons == 2)
 					return ResolveState("Ready.Modern");
 				BD_ClearPSprite(PSP_GUN2,PSP_GUN3,PSP_LIGHTS,PSP_HLIGHTS);
-				if (bdoom_weapons == 0)
+				if (bdoom_weapons == 0 || invoker.ammo2.amount < 20)
 					A_WeaponReady(WRF_NOSECONDARY);
 				else
 					A_WeaponReady();
