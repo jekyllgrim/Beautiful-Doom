@@ -28,8 +28,7 @@ Class BD_PlasmaRifle : BDoomWeapon {
 		if (psp && bdoom_weapons == 2 && heatcounter > 0)
 			heatcounter -= 0.05;
 	}
-	states
-		{
+	states {
 		Spawn:
 			PLAS A 1 NoDelay A_JumpIf(bdoom_weapons == 2, "Spawn.Modern");
 			loop;
@@ -189,29 +188,33 @@ Class BD_PlasmaRifle : BDoomWeapon {
 		Ready.Modern:
 			PLGG A 1 {
 				let p1 = Player.FindPSprite(PSP_GUN3);
-				let p2 = Player.FindPSprite(PSP_LIGHTS);
-				let p3 = Player.FindPSprite(PSP_HLIGHTS);
 				if (!p1) {
 					A_Overlay(PSP_GUN3,"HeatBase",0);
 					A_OverlayOffset(PSP_GUN3,0.0,0.0,WOF_INTERPOLATE);
 				}
-				if (!p2) {
-					A_Overlay(PSP_LIGHTS,"HeatBlue",0);
-					A_OverlayOffset(PSP_LIGHTS,0.0,0.0,WOF_INTERPOLATE);
-					A_OverlayFlags(PSP_LIGHTS,PSPF_RENDERSTYLE|PSPF_FORCEALPHA,true);
-					A_OverlayRenderstyle(PSP_LIGHTS,STYLE_Add);
+				let p2 = Player.FindPSprite(PSP_LIGHTS);
+				let p3 = Player.FindPSprite(PSP_HLIGHTS);
+				if (invoker.ammo1.amount > 0) {
+					if (!p2) {
+						A_Overlay(PSP_LIGHTS,"HeatBlue",0);
+						A_OverlayOffset(PSP_LIGHTS,0.0,0.0,WOF_INTERPOLATE);
+						A_OverlayFlags(PSP_LIGHTS,PSPF_RENDERSTYLE|PSPF_FORCEALPHA,true);
+						A_OverlayRenderstyle(PSP_LIGHTS,STYLE_Add);
+					}
+					if (!p3) {
+						A_Overlay(PSP_HLIGHTS,"HeatRed",0);
+						A_OverlayOffset(PSP_HLIGHTS,0.0,0.0,WOF_INTERPOLATE);
+						A_OverlayFlags(PSP_HLIGHTS,PSPF_RENDERSTYLE|PSPF_FORCEALPHA,true);
+						A_OverlayRenderstyle(PSP_HLIGHTS,STYLE_Add);
+						A_OverlayAlpha(PSP_HLIGHTS,invoker.heatcounter * 0.1);
+					}
 				}
-				if (!p3) {
-					A_Overlay(PSP_HLIGHTS,"HeatRed",0);
-					A_OverlayOffset(PSP_HLIGHTS,0.0,0.0,WOF_INTERPOLATE);
-					A_OverlayFlags(PSP_HLIGHTS,PSPF_RENDERSTYLE|PSPF_FORCEALPHA,true);
-					A_OverlayRenderstyle(PSP_HLIGHTS,STYLE_Add);
-					A_OverlayAlpha(PSP_HLIGHTS,invoker.heatcounter * 0.1);
-				}
+				else if (p2 || p3)
+					BD_ClearPSprite(PSP_LIGHTS,PSP_HLIGHTS);
 				if (invoker.heatcounter > 0)
-					A_WeaponReady(WRF_ALLOWUSER1|WRF_ALLOWRELOAD);
+					A_WeaponReady(WRF_ALLOWRELOAD);
 				else
-					A_WeaponReady(WRF_ALLOWUSER1|WRF_NOSECONDARY);
+					A_WeaponReady(WRF_NOSECONDARY);
 			}
 			goto ready;
 		HeatBase: //the background of the heat screen
