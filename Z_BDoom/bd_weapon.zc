@@ -300,8 +300,7 @@ Class BDoomWeapon : Weapon abstract {
 				invoker.preKickSpeed = speed;
 				A_OverlayOffset(OverlayID(),28,32);
 				A_OverlayFlags(OverlayID(),PSPF_ADDBOB|PSPF_ADDWEAPON,false);
-				A_OverlayFlags(OverlayID(),PSPF_FLIP|PSPF_MIRROR,true);
-				A_OverlayFlags(OverlayID(),PSPF_PLAYERTRANSLATED,true);
+				A_OverlayFlags(OverlayID(),PSPF_FLIP|PSPF_MIRROR|PSPF_PLAYERTRANSLATED,true);
 				if (player.onGround) {
 					if (CountInv("Modernberserk_Regen") > 0)
 						speed = invoker.preKickSpeed * 0.5;
