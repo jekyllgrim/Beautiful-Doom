@@ -719,6 +719,7 @@ Class BD_Fist : BDoomWeapon {
 				BD_ClearPSprite(PSP_GUN2,PSP_GUN3);
 				A_Overlay(PSP_GUN2,"Ready.Left");
 				A_Overlay(PSP_GUN3,"Ready.Right");
+				A_OverlayFlags(OverlayID(),PSPF_PLAYERTRANSLATED,true);
 			}
 			TNT1 A 0 A_Jumpif((invoker.tcombo > 0 || FindInventory("Modernberserk_Regen")), 3);
 			TNT1 AA 1 {
