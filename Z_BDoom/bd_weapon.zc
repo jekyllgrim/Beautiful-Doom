@@ -221,6 +221,7 @@ Class BDoomWeapon : Weapon abstract {
 		//Console.Printf("x: %d, y: %d, z:%d", owner.pos.x,owner.pos.y,owner.pos.z);
 		//allow switching weapons during reload:
 		if(bdoom_weapons == 2) {
+			owner.player.cheats |= CF_INTERPVIEW; //force mouse smoothing to avoid screwy camera when A_CameraSway is used
 			let psp = owner.player.FindPSprite(PSP_Weapon);
 			if (psp && (InStateSequence(psp.curstate,mreload)))
 				owner.player.WeaponState |= WF_WEAPONSWITCHOK;
@@ -656,7 +657,7 @@ Class BD_BaseEmptyCasing : BD_SmallDebris {
 		}
 		super.PostBeginPlay();
 		wrot = frandom(-18,-24);
-		roll = frandom(100,105);
+		roll = frandom(190,195);
 		sprite = GetSpriteIndex(spawnsprite);
 	}
 	override void BD_HitFloor() {
