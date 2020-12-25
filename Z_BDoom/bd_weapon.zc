@@ -90,7 +90,7 @@ Class BDoomWeapon : Weapon abstract {
 	action void BD_FireBullets(double spread_horz = 0, double spread_vert = 0, int numbullets = 1, int damage = 1, sound vanillasnd = "", sound enhancedsnd = "") {
 		sound snd =  (enhancedsnd && bdoom_weapons == 1) ? enhancedsnd : vanillasnd;
 		A_StartSound(snd);
-		name trac = bdoom_tracers ? "BD_BulletTracer" : "";
+		Class<Actor> trac = bdoom_tracers ? "BD_BulletTracer" : "";
 		A_FireBullets (spread_horz, spread_vert, numbullets, damage, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,missile:trac,spawnheight:0);
 	}
 	

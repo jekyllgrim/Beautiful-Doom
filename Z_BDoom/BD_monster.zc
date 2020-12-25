@@ -85,15 +85,13 @@ Class BDoomMonster : BDoomActor abstract {
 	//A_BulletAttack variant that spawns casings, uses tracers when CVAR allows it and chooses between a vanilla and a new sound
 	void BD_BulletAttack(double horz_spread, double vert_spread, int numbullets, int damageperbullet, string OldSound, string NewSound, string Casing, double CasingX = 0, double CasingY = 0, double CasingZ = 0, double TracerHeight = 32, double Tracerofs_xy = 0, class<Actor> puff = "BD_EnBulletPuff") {		
 		if (bdoom_debris)
-			A_SpawnItemEx(Casing,CasingX,CasingY,CasingZ,		frandom(2,4),0,frandom(2,4),	random(-85,-95),SXF_SETTARGET);
+			A_SpawnItemEx(Casing,CasingX,CasingY,CasingZ,		frandom[bdsfx](2,4),0,frandom[bdsfx](2,4),	frandom[bdsfx](-85,-95),SXF_SETTARGET);
 		If(bdoom_weapons)
 			A_StartSound(newsound);
 		else			
 			A_StartSound(oldsound);
-		if (bdoom_tracers)
-			A_CustomBulletAttack(horz_spread, vert_spread, numbullets, damageperbullet, puff, 0, CBAF_NORANDOM,AAPTR_TARGET,"BD_BulletTracer",TracerHeight,Tracerofs_xy);
-		else
-			A_CustomBulletAttack(horz_spread, vert_spread, numbullets, damageperbullet, puff, 0, CBAF_NORANDOM);
+		Class<Actor> trac = bdoom_tracers ? "BD_BulletTracer" : "";
+		A_CustomBulletAttack(horz_spread, vert_spread, numbullets, damageperbullet, puff, 0, CBAF_NORANDOM,AAPTR_TARGET,trac,TracerHeight,Tracerofs_xy);
 	}
 
 	state BD_Refire(int ChanceToEnd = 0, statelabel endstate = "See") { 
@@ -502,24 +500,21 @@ Class BurningBodyFlame : BD_BaseFlare {
 
 
 Class BD_ZombieBullet : BD_PistolBullet {
-	override void PostBeginPlay()
-		{
+	override void PostBeginPlay()	{
 		super.PostBeginPlay();
 		BulletDamage = 3 * frandom(1,5);
 	}
 }
 
 Class BD_ZombiePellet : BD_ShotgunPellet {
-	override void PostBeginPlay()
-		{
+	override void PostBeginPlay()	{
 		super.PostBeginPlay();
 		BulletDamage = 2 * frandom(3,4);
 	}
 }
 
 Class BD_SpiderBullet : BD_PistolBullet {
-	override void PostBeginPlay()
-		{
+	override void PostBeginPlay()	{
 		super.PostBeginPlay();
 		BulletDamage = 2 * frandom(2,4);
 	}
@@ -557,33 +552,33 @@ Class CorpseFlySpawner : Actor {
 	}
 	states	{
 		Spawn:
-			TNT1 A 1 NoDelay A_SetTics(35 * random(120,240)); //wait 2-4 minutes
+			TNT1 A 1 NoDelay A_SetTics(35 * random[bdsfx](120,240)); //wait 2-4 minutes
 			TNT1 A 1 {
 				active = true;
 				SpawnFly();
-				A_SetTics(35 * random(20,40));
+				A_SetTics(35 * random[bdsfx](20,40));
 			}
 			TNT1 A 1 {
 				SpawnFly();
-				A_SetTics(35 * random(40,70));
+				A_SetTics(35 * random[bdsfx](40,70));
 			}
 			TNT1 A 1 {
-				if (random(0,1) == 1)
+				if (random[bdsfx](0,1) == 1)
 					SpawnFly();
-				A_SetTics(35 * random(100,150));
+				A_SetTics(35 * random[bdsfx](100,150));
 			}
 			TNT1 A 1 {
-				if (random(0,1) == 1)
+				if (random[bdsfx](0,1) == 1)
 					SpawnFly();
-				A_SetTics(35 * random(180,240));
+				A_SetTics(35 * random[bdsfx](180,240));
 			}
 			TNT1 A 1 {
-				if (random(0,1) == 1)
+				if (random[bdsfx](0,1) == 1)
 					SpawnFly();
-				A_SetTics(35 * random(280,320));
+				A_SetTics(35 * random[bdsfx](280,320));
 			}
 			TNT1 A -1 {
-				if (random(0,1) == 1)
+				if (random[bdsfx](0,1) == 1)
 					SpawnFly();
 			}
 			stop;

@@ -291,14 +291,15 @@ Class ArchFlameSeekerTrail : BD_BaseParticleFire {
 			if (flare)
 				flare.A_FadeOut(0.04);
 			for (int i = random(2,3); i > 0; i--)
-				A_SpawnParticle(Color(0xff,0x65+random(0,100),0x00),
-								SPF_FULLBRIGHT|SPF_RELVEL|SPF_RELACCEL,
-								lifetime:100,size:frandom(4,6),
-								angle:frandom(0,359),
-								xoff:frandom(-3,3),yoff:frandom(-3,3),zoff:frandom(4,12),
-								velx:frandom(1,3),velz:frandom(0,2),	accelx:-0.1,accelz:-0.08,
-								startalphaf:0.9,sizestep:-0.2
-							);
+				A_SpawnParticle(
+					Color(0xff,0x65+random(0,100),0x00),
+					SPF_FULLBRIGHT|SPF_RELVEL|SPF_RELACCEL,
+					lifetime:100,size:frandom(4,6),
+					angle:frandom(0,359),
+					xoff:frandom(-3,3),yoff:frandom(-3,3),zoff:frandom(4,12),
+					velx:frandom(1,3),velz:frandom(0,2),	accelx:-0.1,accelz:-0.08,
+					startalphaf:0.9,sizestep:-0.2
+				);
 		}
 		stop;
 	}

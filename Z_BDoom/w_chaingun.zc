@@ -351,7 +351,7 @@ Class BD_Chaingun : BDoomWeapon {
 					}
 					A_GunFlash("AltFlash");
 					A_StartSound("weapons/chaingun/fire",flags:CHANF_OVERLAP);
-					name trac = bdoom_tracers ? "BD_BulletTracer" : "";
+					Class<Actor> trac = bdoom_tracers ? "BD_BulletTracer" : "";
 					A_FireBullets (8,3, -1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,missile:trac,spawnheight:0) ;
 					SpawnChaingunCasing();
 				}
