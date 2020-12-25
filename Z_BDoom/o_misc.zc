@@ -14,10 +14,6 @@ Class BD_BaseSplash : BD_SmallDebris abstract {
 	virtual color SetSplashColor() {
 		return 0xFFFFFF;
 	}
-	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		SetZ(floorz);
-	}
 }
 
 Class BD_LavaSplash : BD_BaseSplash {
@@ -85,9 +81,9 @@ Class BD_WaterSplash : BD_BaseSplash {
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		//Spawn("BD_SplashRipple",pos);
-		let chunk = Spawn("BD_WaterSplashChunk",pos + (frandom(-2,2),frandom(-2,2),frandom(7,12)));
+		let chunk = Spawn("BD_WaterSplashChunk",pos + (frandom[bdsfx](-2,2),frandom[bdsfx](-2,2),frandom[bdsfx](7,12)));
 		if (chunk) {
-			chunk.vel = (frandom(-0.8,0.8),frandom(-0.8,0.8),frandom(2,3));
+			chunk.vel = (frandom[bdsfx](-0.8,0.8),frandom[bdsfx](-0.8,0.8),frandom[bdsfx](2,3));
 			chunk.translation = translation;
 			chunk.scale = scale;
 		}
@@ -99,8 +95,8 @@ Class BD_WaterSplash : BD_BaseSplash {
 				lifetime:40,
 				size:5,
 				angle:random(0,360),
-				xoff:frandom(-6,6),yoff:frandom(-6,6),zoff:frandom(6,14),
-				velx:frandom(-0.6,0.6),velz:frandom(1,1.5),
+				xoff:frandom[bdsfx](-6,6),yoff:frandom[bdsfx](-6,6),zoff:frandom[bdsfx](6,14),
+				velx:frandom[bdsfx](-0.6,0.6),velz:frandom[bdsfx](1,1.5),
 				accelz:-0.15,
 				sizestep:-0.15
 			);
