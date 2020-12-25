@@ -138,20 +138,17 @@ Class BD_Spectre : BD_Demon  {
 		HitObituary "$OB_SPECTREHIT";
 		Tag "$FN_SPECTRE";
 	}
-	states {	
-	Death:
-		TNT1 A 0 {
-			if (!burncorpse) {
-				burncorpse = BD_TranslatedBurningBody(Spawn("BD_TranslatedBurningBody",pos));
-				if (burncorpse) {
-					burncorpse.master = self;
-					burncorpse.fadestart = 50;
-					burncorpse.fadedir = -1;
-					burncorpse.A_SetTranslation("DarkenedDemon");
-					burncorpse.transfer = true;
-				}
+	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath) {
+		if (!burncorpse) {
+			burncorpse = BD_TranslatedBurningBody(Spawn("BD_TranslatedBurningBody",pos));
+			if (burncorpse) {
+				burncorpse.master = self;
+				burncorpse.fadestart = 50;
+				burncorpse.fadedir = -1;
+				burncorpse.A_SetTranslation("DarkenedDemon");
+				burncorpse.transfer = true;
 			}
 		}
-		goto super::Death;
+		super.Die(source, inflictor, dmgflags, MeansOfDeath);
 	}
 }
