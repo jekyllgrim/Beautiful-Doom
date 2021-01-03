@@ -25,65 +25,65 @@ LISTMENU "MainMenu" {
 
 AddOptionMenu "OptionsMenu"
 {
-	StaticText "Customize Beautiful Doom settings", "Red"
-	Submenu "Beautiful Doom Settings", "BDoom_Settings"
+	StaticText "$BDMENU_DESC", "Red"
+	Submenu "$BDMENU_TITLE", "BDoom_Settings"
 }
 
 OptionMenu "BDoom_Settings" {	
-	StaticText "BEAUTIFUL KEYBINDS", yellow
-	ControlGC_TLTP "Quick Kick",				"$BDMENU_QKICK", "White",	"+user1","bdoom_weapons",2,1
-	ControlGC_TLTP "Show Weapon Help",		"$BDMENU_WEAPONHELP", "White",	"event BD_ShowWeapHelp","bdoom_weapons",0,0
-	TLTPControl "Clear all debris",			"$BDMENU_CLEARDEBRIS", "White", "netevent BD_ClearDebris"
+	StaticText "$BDMENU_TITLE_KEYS", yellow
+	ControlGC_TLTP "$BDMENU_QKICK_NAME",		"$BDMENU_QKICK", "White",	"+user1","bdoom_weapons",2,1
+	ControlGC_TLTP "$BDMENU_WEAPONHELP_NAME",	"$BDMENU_WEAPONHELP", "White",	"event BD_ShowWeapHelp","bdoom_weapons",0,0
+	TLTPControl "$BDMENU_CLEARDEBRIS_NAME",		"$BDMENU_CLEARDEBRIS", "White", "netevent BD_ClearDebris"
 	StaticText " "
 	
-	StaticText "WEAPONS", yellow
-	TLTPOption "Player Weapons",				"$BDMENU_PLAYERWEAPONS", "White","bdoom_weapons", "bdoom_weapons", "bdoom_replaceweapons"
-	TLTPOption "Weapon bob style",				"$bdoom_weaponbobstyle", "White","bdoom_weaponbobstyle", "BobStyle", "bdoom_replaceweapons"
-	Option "Muzzle Flashes", 					"bdoom_muzzle", "bdoom_muzzle", "bdoom_replaceweapons"
-	OptionBoth "Bullet Tracers",				"$BDMENU_TRACERS", "White","bdoom_tracers", "OnOff", "bdoom_replaceweapons", "bdoom_replacemonsters"
-	OptionBGReload_TLTP "Background reload","$BDMENU_AUTORELOAD", "White", "bdoom_autoreload", "OnOff", "bdoom_weapons", "bdoom_replaceweapons"
-	TLTPOption "Player gloves color",			"$BDMENU_GLOVES", "White", "bdoom_blackgloves", "bdgloves", "bdoom_replaceweapons"
+	StaticText "$BDMENU_TITLE_WEAPONS", yellow
+	TLTPOption "$BDMENU_PLAYERWEAPONS_NAME",	"$BDMENU_PLAYERWEAPONS", "White","bdoom_weapons", "bdoom_weapons", "bdoom_replaceweapons"
+	TLTPOption "$BDMENU_BOBSTYLE_NAME",			"$BDMENU_weaponbobstyle", "White","bdoom_weaponbobstyle", "BobStyle", "bdoom_replaceweapons"
+	Option "$BDMENU_FLASHES_NAME", 				"bdoom_muzzle", "bdoom_muzzle", "bdoom_replaceweapons"
+	OptionBoth "$BDMENU_TRACERS_NAME",			"$BDMENU_TRACERS", "White","bdoom_tracers", "OnOff", "bdoom_replaceweapons", "bdoom_replacemonsters"
+	OptionBGReload_TLTP "$BDMENU_AUTORELOAD_NAME","$BDMENU_AUTORELOAD", "White", "bdoom_autoreload", "OnOff", "bdoom_weapons", "bdoom_replaceweapons"
+	TLTPOption "$BDMENU_GLOVES_NAME",			"$BDMENU_GLOVES", "White", "bdoom_blackgloves", "bdgloves", "bdoom_replaceweapons"
 	StaticText " "
 	
-	StaticText "SPECIAL EFFECTS", yellow
-	TLTPOption "Enhanced gibs & deaths",		"$BDMENU_GIBSTOGGLE", "White","bdoom_gibs", "OnOff", "bdoom_replacemonsters"
-	TLTPOption "Enhanced blood",				"$BDMENU_BLOODTOGGLE", "White","bdoom_blood", "OnOff"
-	OptionEither_TLTP "Force vanilla boss deaths","$BDMENU_NOBOSSGIBS","White",	"bdoom_nobossgibs", "OnOff", "bdoom_gibs", "bdoom_replacemonsters"
-	TLTPOption "Halos & particle flames",		"$BDMENU_FLAMES", "White",	"bdoom_flames", "OnOff", ""
-	TLTPOption "Extra weapon effects",			"$BDMENU_DEBRIS", "White",	"bdoom_debris", "OnOff", "", 1	
-	TLTPOption "Shootable Decorations", 		"$BDMENU_KILLABLEOBJECTS", "White",	"bdoom_killableobjects", "Toggle", "bdoom_replaceobjects"
-	TLTPOption "Enhanced liquid textures",		"$bdoom_liquidtextures", "White", "bdoom_liquidtextures", "OnOff", ""
+	StaticText "$BDMENU_TITLE_SFX", yellow
+	TLTPOption "$BDMENU_GIBS_NAME",		"$BDMENU_GIBSTOGGLE", "White","bdoom_gibs", "OnOff", "bdoom_replacemonsters"
+	TLTPOption "$BDMENU_BLOOD_NAME",				"$BDMENU_BLOODTOGGLE", "White","bdoom_blood", "OnOff"
+	OptionEither_TLTP "$BDMENU_NOBOSSGIBS_NAME","$BDMENU_NOBOSSGIBS","White",	"bdoom_nobossgibs", "OnOff", "bdoom_gibs", "bdoom_replacemonsters"
+	TLTPOption "$BDMENU_FLAMES_NAME",		"$BDMENU_FLAMES", "White",	"bdoom_flames", "OnOff", ""
+	TLTPOption "$BDMENU_DEBRIS_NAME",			"$BDMENU_DEBRIS", "White",	"bdoom_debris", "OnOff", "", 1	
+	TLTPOption "$BDMENU_KILLABLEOBJECTS_NAME",	"$BDMENU_KILLABLEOBJECTS", "White",	"bdoom_killableobjects", "Toggle", "bdoom_replaceobjects"
+	TLTPOption "$BDMENU_liquidtextures_NAME",	"$BDMENU_liquidtextures", "White", "bdoom_liquidtextures", "OnOff", ""
 	StaticText " "
 	
-	ScaleSliderGC "Max gibs",					"bdoom_gibnum", 100, 3000, 100, "", "bdoom_gibs", "bdoom_replacemonsters"
-	ScaleSliderGC "Max blood particles",		"bdoom_bloodnum", 100, 3000, 100, "", "bdoom_blood"
-	ScaleSliderGC "Max flames/light FX",		"bdoom_flamesnum", 100, 5000, 100, "", "bdoom_flames"
-	ScaleSliderGC "Max debris/trails/smoke FX",	"bdoom_debrisnum", 100, 5000, 100, "", "bdoom_debris"
+	ScaleSliderGC "$BDMENU_MAXGIBS",					"bdoom_gibnum", 100, 3000, 100, "", "bdoom_gibs", "bdoom_replacemonsters"
+	ScaleSliderGC "$BDMENU_MAXBLOOD",		"bdoom_bloodnum", 100, 3000, 100, "", "bdoom_blood"
+	ScaleSliderGC "$BDMENU_MAXFLAMES",		"bdoom_flamesnum", 100, 5000, 100, "", "bdoom_flames"
+	ScaleSliderGC "$BDMENU_MAXDEBRIS",	"bdoom_debrisnum", 100, 5000, 100, "", "bdoom_debris"
 	StaticText " "
 	
-	StaticText "ADDITIONAL EFFECTS AND SOUNDS", yellow
-	TLTPOption "Footstep sounds", 				"$BDMENU_FOOTSTEPS", "White", "bdoom_fs_enabled", "OnOff", ""
-	Slider "Footstep volume",					"bdoom_fs_volume_mul", 0, 1.0, 0.1
-	TLTPOption "Ricochet & spark sounds", 		"$BDMENU_SPARKS", "White","bdoom_sparks", "OnOff", ""
-	TLTPOption "Flies over corpses", 			"$BDMENU_FLIES", "White", "bdoom_flies", "OnOff", "bdoom_replacemonsters"
-	TLTPOption "Explosion shakes", 				"$BDMENU_SHAKES", "White", "bdoom_shakes", "OnOff", ""
+	StaticText "$BDMENU_TITLE_EXTRAFX", yellow
+	TLTPOption "$BDMENU_FOOTSTEPS_NAME", 		"$BDMENU_FOOTSTEPS", "White", "bdoom_fs_enabled", "OnOff", ""
+	Slider "$BDMENU_FOOTSTEPS_VOL",				"bdoom_fs_volume_mul", 0, 1.0, 0.1
+	TLTPOption "$BDMENU_SPARKS_NAME", 			"$BDMENU_SPARKS", "White","bdoom_sparks", "OnOff", ""
+	TLTPOption "$BDMENU_FLIES_NAME", 			"$BDMENU_FLIES", "White", "bdoom_flies", "OnOff", "bdoom_replacemonsters"
+	TLTPOption "$BDMENU_SHAKES_NAME", 			"$BDMENU_SHAKES", "White", "bdoom_shakes", "OnOff", ""
 	//Command "Toggle Enhanced/Classic liquid textures", "netevent BD_ToggleLiquidTextures"
-	TLTPOption "Face on Standard HUD", 			"$BDMENU_HUDFACE", "White", "bdoom_hudface", "OnOff", "", 1	
+	TLTPOption "$BDMENU_HUDFACE_NAME", 			"$BDMENU_HUDFACE", "White", "bdoom_hudface", "OnOff", "", 1	
 	StaticText " "
 
-	StaticText "COMPATIBILITY", yellow
-	StaticText "Compatibility changes require a map restart (you won't be able to load a save)", green
-	OptionBoth "Safe actor replacement", 	"$BDMENU_SAFEREPLACEMENT", "white", "bdoom_safereplacement", "SafeReplacement", "bdoom_replaceobjects", "bdoom_replacemonsters"
-	TLTPOption "Beautiful Doom weapons",		"$BDMENU_REPLACEWEAPONS", "White", "bdoom_replaceweapons", "Toggle", ""
-	TLTPOption "Beautiful Doom monsters",		"$BDMENU_REPLACEMONSTERS","White", "bdoom_replacemonsters", "Toggle", ""
-	TLTPOption "Beautiful Doom items",			"$BDMENU_REPLACEITEMS", "White", "bdoom_replaceitems", "Toggle", "", 1	
-	TLTPOption "Beautiful Doom decorations",	"$BDMENU_REPLACEOBJECTS","White", "bdoom_replaceobjects", "Toggle", "", 1	
+	StaticText "$BDMENU_TITLE_COMPATIBILITY", yellow
+	StaticText "$BDMENU_COMPATIBILITY_NOTE", green
+	OptionBoth "$BDMENU_SAFEREPLACEMENT_NAME", 	"$BDMENU_SAFEREPLACEMENT", "white", "bdoom_safereplacement", "SafeReplacement", "bdoom_replaceobjects", "bdoom_replacemonsters"
+	TLTPOption "$BDMENU_REPLACEWEAPONS_NAME",		"$BDMENU_REPLACEWEAPONS", "White", "bdoom_replaceweapons", "Toggle", ""
+	TLTPOption "$BDMENU_REPLACEMONSTERS_NAME",		"$BDMENU_REPLACEMONSTERS","White", "bdoom_replacemonsters", "Toggle", ""
+	TLTPOption "$BDMENU_REPLACEITEMS_NAME",			"$BDMENU_REPLACEITEMS", "White", "bdoom_replaceitems", "Toggle", "", 1	
+	TLTPOption "$BDMENU_REPLACEOBJECTS_NAME",	"$BDMENU_REPLACEOBJECTS","White", "bdoom_replaceobjects", "Toggle", "", 1	
 	StaticText ""
-	SubmenuGC "Per-monster replacement settings", "BDMonsterReplacements", "bdoom_replacemonsters"
+	SubmenuGC "$BDMENU_PERMONSTERREPLACEMENT", "BDMonsterReplacements", "bdoom_replacemonsters"
 	StaticText " "
 	
 	Class "TLTPOptionsMenu"
-	Title "Beautiful Doom Settings"
+	Title "$BDMENU_TITLE"
 	StaticText "$TLTPTOOLTIPMNU_VERSION", "yellow"
 	Submenu "$OPTMNU_TLTPTOOLTIP", "TooltipOptionsMenu"
 	StaticText " "
@@ -93,56 +93,56 @@ OptionMenu "BDMonsterReplacements" {
 	Title "Beautiful Doom monster replacement settings"
 	StaticText "Changes require a map restart (you won't be able to load a save)", green
 	StaticText " "
-	Option "Zombieman",				"bdoom_Zombieman", "Toggle", ""
-	Option "Shotgun Guy",			"bdoom_ShotgunGuy", "Toggle", ""
-	Option "Chaingun Guy",			"bdoom_ChaingunGuy", "Toggle", ""
-	Option "Wolfenstein Soldier",	"bdoom_WolfensteinSS", "Toggle", ""
-	Option "Imp",					"bdoom_DoomImp", "Toggle", ""
-	Option "Pinky Demon",			"bdoom_Demon", "Toggle", ""
-	Option "Spectre Demon",			"bdoom_Spectre", "Toggle", ""
-	Option "Cacodemon",				"bdoom_Cacodemon", "Toggle", ""
-	Option "Pain Elemental",		"bdoom_PainElemental", "Toggle", ""
-	Option "Lost Soul",				"bdoom_LostSoul", "Toggle", ""
-	Option "Revenant",				"bdoom_Revenant", "Toggle", ""
-	Option "Arachnotron",			"bdoom_Arachnotron", "Toggle", ""
-	Option "Mancubus",				"bdoom_Fatso", "Toggle", ""
-	Option "Hell Knight",			"bdoom_HellKnight", "Toggle", ""
-	Option "Baron of Hell",			"bdoom_BaronOfHell", "Toggle", ""
-	Option "Arch-Vile",				"bdoom_ArchVile", "Toggle", ""
-	Option "Cyberdemon",			"bdoom_Cyberdemon", "Toggle", ""
-	Option "Spider Mastermind",		"bdoom_SpiderMastermind", "Toggle", "", 1	
+	Option "$BDM_Zombieman",			"bdoom_Zombieman", "Toggle", ""
+	Option "$BDM_ShotgunGuy",			"bdoom_ShotgunGuy", "Toggle", ""
+	Option "$BDM_ChaingunGuy",			"bdoom_ChaingunGuy", "Toggle", ""
+	Option "$BDM_WolfSS",				"bdoom_WolfensteinSS", "Toggle", ""
+	Option "$BDM_DoomImp",				"bdoom_DoomImp", "Toggle", ""
+	Option "$BDM_Pinky",				"bdoom_Demon", "Toggle", ""
+	Option "$BDM_Spectre",				"bdoom_Spectre", "Toggle", ""
+	Option "$BDM_Cacodemon",			"bdoom_Cacodemon", "Toggle", ""
+	Option "$BDM_PainElemental",		"bdoom_PainElemental", "Toggle", ""
+	Option "$BDM_LostSoul",				"bdoom_LostSoul", "Toggle", ""
+	Option "$BDM_Revenant",				"bdoom_Revenant", "Toggle", ""
+	Option "$BDM_Arachnotron",			"bdoom_Arachnotron", "Toggle", ""
+	Option "$BDM_Mancubus",				"bdoom_Fatso", "Toggle", ""
+	Option "$BDM_HellKnight",			"bdoom_HellKnight", "Toggle", ""
+	Option "$BDM_BaronOfHell",			"bdoom_BaronOfHell", "Toggle", ""
+	Option "$BDM_ArchVile",				"bdoom_ArchVile", "Toggle", ""
+	Option "$BDM_Cyberdemon",			"bdoom_Cyberdemon", "Toggle", ""
+	Option "$BDM_SpiderMastermind",		"bdoom_SpiderMastermind", "Toggle", ""
 }
 
 OptionValue "bdgloves" {
-	0, "Classic"
-	1, "Edgy"
+	0, "$BDO_CLASSIC"
+	1, "$BDO_EDGY"
 }
 
 OptionValue "BobStyle" {
-	0, "Classic"
-	1, "Modern"
+	0, "$BDO_CLASSIC"
+	1, "$BDO_MODERN"
 }
 
 OptionValue "SafeReplacement" {
-	0, "Disabled"
-	1, "DEHACKED only"
-	2, "DEHACKED and sprites"
+	0, "$BDO_DISABLED"
+	1, "$BDO_DEHACKEDONLY"
+	2, "$BDO_DEHACKEDSPRITES"
 }
 
 OptionValue "Toggle" {
-	0, "Disable"
-	1, "Enable"
+	0, "$BDO_DISABLED"
+	1, "$BDO_ENABLED"
 }
 
 OptionValue "bdoom_weapons" {
-	0, "Vanilla"
-	1, "Enhanced"
-	2, "Modern"
+	0, "$BDO_VANILLA"
+	1, "$BDO_ENHANCED"
+	2, "$BDO_MODERN"
 }
 
 OptionValue "bdoom_muzzle" {
-	0, "Vanilla"
-	1, "Enhanced"
+	0, "$BDO_VANILLA"
+	1, "$BDO_ENHANCED"
 }
 
 

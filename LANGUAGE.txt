@@ -2,31 +2,112 @@
 
 //// Beautiful Doom Settings Menu 
 
+BDMENU_TITLE =			"Beautiful Doom Settings";
+BDMENU_DESC	= 			"Customize Beautiful Doom settings";
+
+BDMENU_TITLE_KEYS = 	"BEAUTIFUL KEYBINDS";
 BDMENU_QKICK = 			"Can be used with Modern Guns during ready and reload animations";
+BDMENU_QKICK_NAME = 	"Quick Kick";
 BDMENU_WEAPONHELP = 	"Show tool tip for the currently selected weapon\n(Enhanced/Modern Guns only)";
+BDMENU_WEAPONHELP_NAME = "Show Weapon Help";
 BDMENU_CLEARDEBRIS = 	"Assign a key that will instantly clear debris, gibs and blood on the level";
+BDMENU_CLEARDEBRIS_NAME = "Clear all debris";
+
+BDMENU_TITLE_WEAPONS = 	"WEAPONS";
 BDMENU_PLAYERWEAPONS = 	"Vanilla: classic weapons with smooth animations and HD sounds.\nEnhanced: slightly rebalanced weapons with alternative attacks.\nModern: new visuals, magazines, reloads, recoil, bullet travel time.";
+BDMENU_PLAYERWEAPONS_NAME = "Player Weapons";
+BDMENU_weaponbobstyle = "Switch between two styles of weapon bobbing during walking.\nCan be changed at any time. Requires Beautiful Doom weapons to be enabled.";
+BDMENU_BOBSTYLE_NAME =	"Weapon bob style";
+BDMENU_FLASHES_NAME = 	"Muzzle Flashes";
 BDMENU_TRACERS =		"Enable/disable bullet tracers for Vanilla/Enhanced weapons and monsters.\nPurely visual effect (bullets are still instant).";
+BDMENU_TRACERS_NAME =	"Bullet Tracers";
 BDMENU_AUTORELOAD =		"When enabled Modern Guns will reload automatically if deselected long enough.\nBackground reload takes x2 the amount of time of the normal reload duration.";
-BDMENU_GIBSTOGGLE =		"Special effects and detailed gibs for monster deaths.\nMay impact performance. Requires Beautiful Monsters to be enabled.";
-BDMENU_BLOODTOGGLE = 	"Particle blood and dynamic blood pools. May impact performance.";
-BDMENU_NOBOSSGIBS = 	"Show classic boss death animations even when enhanced gibs are enabled.\nOtherwise bosses will use special death animations with lots of effects.";
-BDMENU_FLAMES =			"Dynamic particle flames and halos around light sources.\nMay impact performance.";
-BDMENU_DEBRIS = 		"Enable/disable spent bullet casings, particle smoke, projectile trails,\nsparks, debris spawned by shooting walls, etc.\nMay impact performance.";
-BDMENU_KILLABLEOBJECTS = "When enabled, some decorations will react to being shot, and it will be\npossible to kill decorative victims and destroy lamps by explosions";
+BDMENU_AUTORELOAD_NAME = "Background reload";
 BDMENU_GLOVES = 		"Change the color of your gloves at any point";
+BDMENU_GLOVES_NAME =	"Player gloves color";
+
+BDMENU_TITLE_SFX = 		"SPECIAL EFFECTS";
+BDMENU_GIBSTOGGLE =		"Special effects and detailed gibs for monster deaths.\nMay impact performance. Requires Beautiful Monsters to be enabled.";
+BDMENU_GIBS_NAME = 		"Enhanced gibs & deaths";
+BDMENU_BLOODTOGGLE = 	"Particle blood and dynamic blood pools. May impact performance.";
+BDMENU_BLOOD_NAME = 	"Enhanced blood";
+BDMENU_NOBOSSGIBS = 	"Show classic boss death animations even when enhanced gibs are enabled.\nOtherwise bosses will use special death animations with lots of effects.";
+BDMENU_NOBOSSGIBS_NAME = "Force vanilla boss deaths";
+BDMENU_FLAMES =			"Dynamic particle flames and halos around light sources.\nMay impact performance.";
+BDMENU_FLAMES_NAME =			"Halos & particle flames";
+BDMENU_DEBRIS = 		"Enable/disable spent bullet casings, particle smoke, projectile trails,\nsparks, debris spawned by shooting walls, etc.\nMay impact performance.";
+BDMENU_DEBRIS_NAME = 	"Extra weapon effects";
+BDMENU_KILLABLEOBJECTS = "When enabled, some decorations will react to being shot, and it will be\npossible to kill decorative victims and destroy lamps by explosions";
+BDMENU_KILLABLEOBJECTS_NAME = "Shootable Decorations";
+BDMENU_liquidtextures = "Enable/disable Beautiful Doom liquid texture enhancements.\nNo performance impact. May be incompatible with other mods that have their own textures.\nCan be changed at any moment.";
+BDMENU_liquidtextures_NAME = "Enhanced liquid textures";
+
+BDMENU_MAXGIBS = "Max gibs";
+BDMENU_MAXBLOOD = "Max blood particles";
+BDMENU_MAXFLAMES = "Max flames/light FX";
+BDMENU_MAXDEBRIS = "Max debris/trails/smoke FX";
+
+BDMENU_TITLE_EXTRAFX = "ADDITIONAL EFFECTS AND SOUNDS";
 BDMENU_FOOTSTEPS = 		"Enable/disable the sounds of player footsteps\n(In multiplayer this option is defined by the host)";
-BDMENU_SPARKS =			"If you're annoyed by the loud ricochet sounds or the chainsaw screeching\nwhen hitting a wall, this option can disable those.";
+BDMENU_FOOTSTEPS_NAME = "Footstep sounds";
+BDMENU_FOOTSTEPS_VOL = 	"Footstep volume";
+BDMENU_SPARKS =			"Enable/disable the sounds of ricochetting bullets and chainsaw screeching against a wall.";
+BDMENU_SPARKS_NAME =	"Ricochet & spark sounds";
 BDMENU_FLIES = 			"When enabled flies will appear over killed monsters after a few minutes";
+BDMENU_FLIES_NAME = 	"Flies over corpses";
 BDMENU_SHAKES = 		"Enable/disable screen shaking from nearby explosions";
+BDMENU_SHAKES_NAME = 	"Explosion shakes";
 BDMENU_HUDFACE = 		"Enable/disable Doomguy's face on the statusbar version of the HUD.\nBy default the face is only shown on the fullscreen version.";
+BDMENU_HUDFACE_NAME = 	"Face on Standard HUD";
+
+BDMENU_TITLE_COMPATIBILITY = "COMPATIBILITY";
+BDMENU_COMPATIBILITY_NOTE = "Compatibility changes require a map restart (you won't be able to load a save)";
 BDMENU_SAFEREPLACEMENT ="When enabled the mod will try to not replace monsters and decorations\nwhen another version of that monster or decoration is also loaded.\nLeave this on when running the mod with another mod.\nDEHACKED only: won't override actors that have DEHACKED definitions.\nDEHACKED and sprites: also won't override actors that have their sprites replaced.";
+BDMENU_SAFEREPLACEMENT_NAME = "Safe actor replacement";
 BDMENU_REPLACEWEAPONS = "Enable/disable Beautiful Doom weapons.\nWhen disabled can be played with anoter weapon mod.";
+BDMENU_REPLACEWEAPONS_NAME = "Beautiful Doom weapons";
 BDMENU_REPLACEMONSTERS = "Enable/disable Beautiful Doom monsters.\nWhen disabled the mod can be played with other monster packs.\nNote: Monster-specific Beautiful Doom effects, such as gibbing,\nwill not work if this option is disabled.";
+BDMENU_REPLACEMONSTERS_NAME = "Beautiful Doom monsters";
 BDMENU_REPLACEITEMS = 	"Enable/disable Beautiful Doom items.\nWhen disabled can be played with anoter mod that has its own items.";
+BDMENU_REPLACEITEMS_NAME = "Beautiful Doom items";
 BDMENU_REPLACEOBJECTS = "Enable/disable Beautiful Doom decorations.\nCan affect performance. Use it if you want vanilla decorations.\nNote: You don't need this for compatibility with other mods,\nsince Safe Actor Replacement (above) should take care of that.";
-bdoom_liquidtextures = "Enable/disable Beautiful Doom liquid texture enhancements.\nNo performance impact. May be incompatible with other mods that have their own textures.\nCan be changed at any moment.";
-bdoom_weaponbobstyle = "Switch between two styles of weapon bobbing during walking.\nCan be changed at any time. Requires Beautiful Doom weapons to be enabled.";
+BDMENU_REPLACEOBJECTS_NAME = "Beautiful Doom decorations";
+BDMENU_PERMONSTERREPLACEMENT = "Per-monster replacement settings";
+
+//options
+BDO_CLASSIC 		= "Classic";
+BDO_EDGY			= "Edgy";
+BDO_VANILLA			= "Vanilla";
+BDO_ENHANCED		= "Enhanced";
+BDO_MODERN			= "Modern";
+BDO_DISABLED		= "Disabled";
+BDO_ENABLED			= "Enabled";
+BDO_DEHACKEDONLY	= "DEHACKED only";
+BDO_DEHACKEDSPRITES	= "DEHACKED and sprites";
+
+//per-monster replacements
+
+BDM_Zombieman = "Zombieman";
+BDM_ShotgunGuy = "Shotgun Guy";
+BDM_ChaingunGuy = "Chaingun Guy";
+BDM_WolfSS = "Wolfenstein Soldier";
+BDM_DoomImp = "Imp";
+BDM_Pinky = "Pinky Demon";
+BDM_Spectre = "Spectre Demon";
+BDM_Cacodemon = "Cacodemon";
+BDM_PainElemental = "Pain Elemental";
+BDM_LostSoul = "Lost Soul";
+BDM_Revenant = "Revenant";
+BDM_Arachnotron = "Arachnotron";
+BDM_Mancubus = "Mancubus";
+BDM_HellKnight = "Hell Knight";
+BDM_BaronOfHell = "Baron of Hell";
+BDM_ArchVile = "Arch-Vile";
+BDM_Cyberdemon = "Cyberdemon";
+BDM_SpiderMastermind = "Spider Mastermind";	
+
+
+
 
 						
 						
