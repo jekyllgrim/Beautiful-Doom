@@ -97,8 +97,7 @@ class BD_WeaponOverrideHandler : EventHandler {
 					case 'BFG9000' 		:    player.pendingweapon = GetWeapon(mo, "BD_BFG9000"			); mo.TakeInventory(oldweapr,1); break;
 				}				
 			}
-			else {		
-				//mo.speed = mo.default.speed; 	//to ensure the player is no longer affected by speed-altering effects of kicking or modern rifle ADS
+			else {
 			/*
 			NOTE: You're NOT supposed to be able to toggle bdoom_replaceweapons whenever you want. You have to restart your game.
 			So, the fact that, if you had it enabled and then disabled it, and you ended up having no weapons, is intentional. Doing it any other way
