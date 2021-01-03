@@ -22,6 +22,7 @@ Class BDoomWeapon : Weapon abstract {
 	
 	protected transient CVar c_muzzle;	
 	protected transient CVar c_blackgloves;
+	protected transient CVar c_bobstyle;
 	protected bool wasempty;			//used in reload animations to keep track of whether reload was dry (affects animations)
 	protected bool dontforcebob;		//if false, weapons will bob all the time
 	property dontforcebob : dontforcebob;
@@ -123,8 +124,9 @@ Class BDoomWeapon : Weapon abstract {
 			return;
 		if (owner.player) {
 			let plr = owner.player;
-			c_muzzle = CVar.GetCVar("bdoom_muzzle",plr);
-			c_blackgloves = CVar.GetCVar("bdoom_blackgloves",plr);
+			c_muzzle = CVar.GetCVar('bdoom_muzzle',plr);
+			c_blackgloves = CVar.GetCVar('bdoom_blackgloves',plr);
+			c_bobstyle = CVar.GetCvar('bdoom_weaponbobstyle',plr);
 		}
 		if (picked)
 			return;
@@ -226,7 +228,7 @@ Class BDoomWeapon : Weapon abstract {
 			if (psp && (InStateSequence(psp.curstate,mreload)))
 				owner.player.WeaponState |= WF_WEAPONSWITCHOK;
 		}
-		if (CVar.FindCVar('bdoom_weaponbobstyle').GetBool() == true) {
+		if (c_bobstyle.GetBool() == true) {
 			BobRangeX = 0.2;
 			BobRangeY = 0.2;
 			BobStyle = 5;
