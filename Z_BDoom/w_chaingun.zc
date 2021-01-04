@@ -271,7 +271,7 @@ Class BD_Chaingun : BDoomWeapon {
 		Flash:
 			TNT1 A 1 {
 				A_Light2();
-				if(!invoker.c_muzzle.GetBool())
+				if(!invoker.c_muzzle)
 					A_Overlay(PSP_EFLASH,"FlashVanilla");
 				else {
 					for (int i = random (2,3); i > 0; i --)
@@ -367,7 +367,7 @@ Class BD_Chaingun : BDoomWeapon {
 		AltFlash:
 			TNT1 A 1 {
 				A_Light2();
-				if(!invoker.c_muzzle.GetBool())
+				if(!invoker.c_muzzle)
 					A_Overlay(PSP_EFLASH,"AltFlashVanilla");
 				else {
 					for (int i = random (2,3); i > 0; i --)
@@ -671,7 +671,7 @@ Class BD_Chaingun : BDoomWeapon {
 				else
 					A_Overlay(PSP_EFLASH,"FlashModernHighlights");
 				
-				if (invoker.c_muzzle.GetBool()) {
+				if (invoker.c_muzzle) {
 					for (int i = random (2,3); i > 0; i --) {
 						if (invoker.riflesights)
 							A_Eject("BD_MuzzleSmoke",12,0,1.5,32);
@@ -696,7 +696,7 @@ Class BD_Chaingun : BDoomWeapon {
 			RIFM ABCD 0;
 		FlashModernHighlights:
 			RIFL AB 1 bright {
-				if (invoker.c_muzzle.GetBool()) {
+				if (invoker.c_muzzle) {
 					let fl = player.FindPSprite(OverlayID());
 					if (fl) fl.sprite = GetSpriteIndex("RIFM");
 				}
@@ -704,7 +704,7 @@ Class BD_Chaingun : BDoomWeapon {
 			stop;
 		FlashModernSights:
 			RIFL CD 1 bright {
-				if (invoker.c_muzzle.GetBool()) {
+				if (invoker.c_muzzle) {
 					let fl = player.FindPSprite(OverlayID());
 					if (fl) fl.sprite = GetSpriteIndex("RIFM");
 				}

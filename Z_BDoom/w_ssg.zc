@@ -162,7 +162,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 	Flash:
 		TNT1 A 2 {
 			A_Light2();
-			if(!invoker.c_muzzle.GetBool())
+			if(!invoker.c_muzzle)
 				A_Overlay(PSP_EFLASH,"FlashVanilla");
 			else {
 				double vofs = 0;
@@ -321,7 +321,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 	AltFlash:
 		TNT1 A 2 {
 			A_Light2();
-			if(!invoker.c_muzzle.GetBool()) {
+			if(!invoker.c_muzzle) {
 				if	(invoker.shotfired || (bdoom_weapons == 2 && CountInv("BD_SSGClip") < 2))
 					A_Overlay(PSP_EFLASH,"FlashVanillaLeft");
 				else

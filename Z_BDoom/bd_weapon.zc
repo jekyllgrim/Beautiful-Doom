@@ -20,9 +20,12 @@ Class BDoomWeapon : Weapon abstract {
 	protected int magammogive;			//amount of magazine ammo given at first pickup (full mag for most weapons except Rocket Launcher)
 	property magammogive : magammogive;
 	
-	protected transient CVar c_muzzle;	
-	protected transient CVar c_blackgloves;
-	protected transient CVar c_bobstyle;
+	protected transient CVar c_muzzle_cache;	
+	protected transient CVar c_blackgloves_cache;
+	protected transient CVar c_bobstyle_cache;
+	protected bool c_muzzle;	
+	protected bool c_blackgloves;
+	protected bool c_bobstyle;
 	protected bool wasempty;			//used in reload animations to keep track of whether reload was dry (affects animations)
 	protected bool dontforcebob;		//if false, weapons will bob all the time
 	property dontforcebob : dontforcebob;
@@ -42,7 +45,7 @@ Class BDoomWeapon : Weapon abstract {
 		let psp = player.FindPSprite(OverlayID());
 		if (!psp)
 			return;
-		if (invoker.c_blackgloves.GetBool() == false)
+		if (invoker.c_blackgloves == false)
 			psp.sprite = GetSpriteIndex(sprite1);
 		else
 			psp.sprite = GetSpriteIndex(sprite2);
@@ -122,12 +125,6 @@ Class BDoomWeapon : Weapon abstract {
 		super.AttachToOwner(other);
 		if (!owner)
 			return;
-		if (owner.player) {
-			let plr = owner.player;
-			c_muzzle = CVar.GetCVar('bdoom_muzzle',plr);
-			c_blackgloves = CVar.GetCVar('bdoom_blackgloves',plr);
-			c_bobstyle = CVar.GetCvar('bdoom_weaponbobstyle',plr);
-		}
 		if (picked)
 			return;
 		int ama = (magammogive > 0) ? magammogive : 100; //give either full mag, or however much is specified with magammo property
@@ -205,11 +202,22 @@ Class BDoomWeapon : Weapon abstract {
 	}
 		
 	override void DoEffect() {
+		if (owner && owner.player) {
+			let plr = owner.player;
+			if (c_muzzle_cache == null)
+				c_muzzle_cache = CVar.GetCVar('bdoom_muzzle',plr);
+			if (c_blackgloves_cache == null)
+				c_blackgloves_cache = CVar.GetCVar('bdoom_blackgloves',plr);
+			if (c_bobstyle_cache == null)
+				c_bobstyle_cache = CVar.GetCvar('bdoom_weaponbobstyle',plr);
+		}
+		c_muzzle = c_muzzle_cache.GetBool();
+		c_blackgloves = c_blackgloves_cache.GetBool();
+		c_bobstyle = c_bobstyle_cache.GetBool();
 		Super.DoEffect();
 		if (!owner || !owner.player)
 			return;
-		/*int bgl = CVar.GetCvar("bdoom_blackgloves",owner.player).GetInt();
-		Console.Printf("%s | blackgloves var: %b | blackgloves CVAR: %b",GetClassName(),c_blackgloves.GetInt(),bgl);*/
+		let plr = owner.player;
 		if (magammo) {
 			if (bdoom_weapons == 2)
 				Ammo1 = ammo(owner.FindInventory(magammo));
@@ -223,19 +231,19 @@ Class BDoomWeapon : Weapon abstract {
 		//Console.Printf("x: %d, y: %d, z:%d", owner.pos.x,owner.pos.y,owner.pos.z);
 		//allow switching weapons during reload:
 		if(bdoom_weapons == 2) {
-			owner.player.cheats |= CF_INTERPVIEW; //force mouse smoothing to avoid screwy camera when A_CameraSway is used
-			let psp = owner.player.FindPSprite(PSP_Weapon);
+			plr.cheats |= CF_INTERPVIEW; //force mouse smoothing to avoid screwy camera when A_CameraSway is used
+			let psp = plr.FindPSprite(PSP_Weapon);
 			if (psp && (InStateSequence(psp.curstate,mreload)))
-				owner.player.WeaponState |= WF_WEAPONSWITCHOK;
+				plr.WeaponState |= WF_WEAPONSWITCHOK;
 		}
-		if (c_bobstyle.GetBool() == true) {
+		if (c_bobstyle == true) {
 			BobRangeX = 0.2;
 			BobRangeY = 0.2;
 			BobStyle = 5;
 			BobSpeed = 2.0;
 			//force bobbing all the time:
-			if (owner.player.readyweapon && owner.player.readyweapon == self && !dontforcebob)
-				owner.player.WeaponState |= WF_WEAPONBOBBING;
+			if (plr.readyweapon && plr.readyweapon == self && !dontforcebob)
+				plr.WeaponState |= WF_WEAPONBOBBING;
 		}
 		else {
 			BobRangeX = 1.0;
@@ -259,22 +267,22 @@ Class BDoomWeapon : Weapon abstract {
 		
 	//QUICK KICK
 		//if player presses +user1 (default Q and Mouse4)
-		if 	((owner.player.cmd.buttons & BT_USER1) && !(owner.player.oldbuttons & BT_USER1)) {
-			let psp = owner.player.FindPSprite(PSP_WEAPON);
-			let kicks = owner.player.FindPSprite(PSP_KICK);
+		if 	((plr.cmd.buttons & BT_USER1) && !(plr.oldbuttons & BT_USER1)) {
+			let psp = plr.FindPSprite(PSP_WEAPON);
+			let kicks = plr.FindPSprite(PSP_KICK);
 			if(!psp || bdoom_weapons != 2  || kicks) //if dead, or not Modern guns selected, or is already kicking
 				return;
 			//do this if used from Ready: will not only kick in overlay but will also move the weapon aside
 			else if	(InStateSequence(psp.curstate, mready) )
-				owner.player.setPSprite(PSP_Weapon,ResolveState("QKick"));
+				plr.setPSprite(PSP_Weapon,ResolveState("QKick"));
 			//do this if used during Reload: weapon sprite will stay the same, kick will be shown and executed independently in overlay
 			else if (InStateSequence(psp.curstate, mreload))
-				owner.player.setPSprite(PSP_KICK,FindState("QuickKick"));
+				plr.setPSprite(PSP_KICK,FindState("QuickKick"));
 		}
 	//BACKGROUND RELOAD
 		if (bdoom_weapons != 2 || !bdoom_autoreload || !ammo1 || !ammo2 || (ammo1 == ammo2))
 			return;
-		if (owner.player.readyweapon == self || ammo1.amount == ammo1.maxamount || ammo2.amount < 1) {
+		if (plr.readyweapon == self || ammo1.amount == ammo1.maxamount || ammo2.amount < 1) {
 			NonselTimer = 0;
 			return;
 		}
@@ -285,7 +293,7 @@ Class BDoomWeapon : Weapon abstract {
 				owner.TakeInventory(ammo2.GetClass(),1);
 				owner.GiveInventory(ammo1.GetClass(),1);
 			}
-			if (owner.player == players[consoleplayer])
+			if (plr == players[consoleplayer])
 				Console.Printf("%s reloaded",GetTag());
 			owner.A_StartSound(reloadsound,slot:CHAN_AUTO,flags:CHAN_NOPAUSE,volume:0.5,attenuation:20);
 		}			

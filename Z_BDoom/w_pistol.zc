@@ -112,7 +112,7 @@ Class BD_Pistol : BDoomWeapon {
 	Flash:
 		TNT1 A 3 {
 			A_Light1();
-			if(!invoker.c_muzzle.GetBool())
+			if(!invoker.c_muzzle)
 				A_Overlay(PSP_EFLASH,"FlashVanilla");
 			else {
 				for (int i = random (2,3); i > 0; i --)
@@ -287,7 +287,7 @@ Class BD_Pistol : BDoomWeapon {
 	AltFlash:
 		TNT1 A 2 {
 			A_Light1();
-			if(!invoker.c_muzzle.GetBool())
+			if(!invoker.c_muzzle)
 				A_Overlay(PSP_EFLASH,"AltFlashVanilla");
 			else {
 				for (int i = random (2,3); i > 0; i --) {
