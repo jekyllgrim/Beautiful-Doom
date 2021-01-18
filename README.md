@@ -46,8 +46,10 @@ It's possible to play the version that is currently in the repository but hasn't
 ## USE OF RESOURCES AND PERMISSIONS
 
 If you want to use any of my resources, you have to contact me first and ask for permission. Reach me:
-Email: jekyllgrim@gmail.com
-Discord: Agent_Ash#4401
+
+**Email**: jekyllgrim@gmail.com
+
+**Discord server**: https://discord.gg/MJGdYjk
 
 You may NOT use any of Beautiful Doom assets without my explicit approval. I do not guarantee a permission will always be granted. Permissions may vary for different resources, since some of these are 100% original, others are edits, and some come from other people. If a permission is granted, you'll need to credit me and all other people involved in the creation of a specific resource.
 
