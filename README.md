@@ -71,8 +71,10 @@ Here are a few recommendations on stuff that plays well with Beautiful Doom and 
 ### CREDITS
 
 If you feel anyone was forgotten, or that I'm using somebody's assets without permisssion — please contact me, and I'll make sure to resolve it as soon as possible:
-Email: jekyllgrim@gmail.com
-Discord: Agent_Ash#4401
+
+**Email**: jekyllgrim@gmail.com
+
+**Discord server**: https://discord.gg/MJGdYjk
 
 * Gifty: [Smooth Doom](https://forum.zdoom.org/viewtopic.php?t=45550) and smooth monsters animations which are widely used, both edited and unedited, in Beautiful Doom
 * [3saster](https://github.com/3saster), Accensus, Arctangent, Caligari87, D2JK, Gutawer, josh771, Lewisk3, [Marisa Kirisame](https://github.com/MarisaKirisame), [Nash Muhandes](https://github.com/nashmuhandes), [phantombeta](https://github.com/Doom2fan), [Zombie](https://github.com/DaZombieKiller): scripting help and contributions
@@ -112,3 +114,4 @@ One of the main new features of the ZScript version of Beautiful Doom is a third
 * The mod is fully ZScript-ified
 * Added Modern weaponset (see above)
 * Revamped blood and gibs graphics and physics
+* High compatibility with other mods thanks to multiple special checks and parsers, as well as optional replacements
