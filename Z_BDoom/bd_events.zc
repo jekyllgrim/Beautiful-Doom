@@ -39,21 +39,21 @@ class BD_WeaponOverrideHandler : EventHandler {
 
 	// Replaces weapons on the map if the appropriate CVAR is true.
 	override void CheckReplacement(ReplaceEvent e) {
-		if (!bdoom_replaceweapons)
-			return;
-		switch (e.Replacee.GetClassName()) {
-			case 'Fist' 			: e.Replacement = 'BD_Fist'; 				break;
-			case 'Berserk' 		: e.Replacement = 'BD_Berserk'; 			break;
-			case 'Chainsaw' 		: e.Replacement = 'BD_Chainsaw'; 			break;
-			case 'Pistol' 			: e.Replacement = 'BD_Pistol'; 			break;
-			case 'Shotgun'			: e.Replacement = 'BD_Shotgun'; 			break;
-			case 'SuperShotgun' 	: e.Replacement = 'BD_SuperShotgun';		break;
-			case 'Chaingun' 		: e.Replacement = 'BD_Chaingun'; 			break;
-			case 'RocketLauncher'	: e.Replacement = 'BD_RocketLauncher'; 	break;
-			case 'PlasmaRifle' 	: e.Replacement = 'BD_PlasmaRifle'; 		break;
-			case 'BFG9000' 		: e.Replacement = 'BD_BFG9000'; 			break;
+		if (bdoom_replaceweapons) {
+			//e.IsFinal = true;
+			switch (e.Replacee.GetClassName()) {
+				case 'Fist' 			: e.Replacement = 'BD_Fist'; 				break;
+				case 'Berserk' 		: e.Replacement = 'BD_Berserk'; 			break;
+				case 'Chainsaw' 		: e.Replacement = 'BD_Chainsaw'; 			break;
+				case 'Pistol' 			: e.Replacement = 'BD_Pistol'; 			break;
+				case 'Shotgun'			: e.Replacement = 'BD_Shotgun'; 			break;
+				case 'SuperShotgun' 	: e.Replacement = 'BD_SuperShotgun';		break;
+				case 'Chaingun' 		: e.Replacement = 'BD_Chaingun'; 			break;
+				case 'RocketLauncher'	: e.Replacement = 'BD_RocketLauncher'; 	break;
+				case 'PlasmaRifle' 	: e.Replacement = 'BD_PlasmaRifle'; 		break;
+				case 'BFG9000' 		: e.Replacement = 'BD_BFG9000'; 			break;
+			}
 		}
-		e.IsFinal = true;
 	}
 		
 	/* This override detects if the player received a vanilla weapon directly (e.g. via ACS script)
@@ -193,6 +193,7 @@ class BD_ActorOverrideHandler : EventHandler {
 			}
 		}
 		if (bdoom_replacemonsters) {
+			//e.IsFinal = true;
 			let monst = e.Replacee.GetClassName();
 			switch (monst) {
 				case 'Zombieman' 			: if (!CheckVanillaReplacement(monst/*, "POSSA1"*/) && bdoom_Zombieman) 			e.Replacement = 'BD_Zombieman'; 			break;
@@ -225,6 +226,7 @@ class BD_ActorOverrideHandler : EventHandler {
 			}
 		}
 		if (bdoom_replaceitems) {
+			//e.IsFinal = true;
 			name itm = e.Replacee.GetClassName();
 			switch (itm) {
 				case 'Blursphere' 				: e.Replacement = 'BD_Blursphere'; 				break;
@@ -248,6 +250,7 @@ class BD_ActorOverrideHandler : EventHandler {
 			}
 		}
 		if (bdoom_replaceobjects) {
+			//e.IsFinal = true;
 			name obj = e.Replacee.GetClassName();
 			switch (obj) {
 					//VICTIMS
@@ -296,7 +299,6 @@ class BD_ActorOverrideHandler : EventHandler {
 				case 'Column' 				: if (!CheckVanillaReplacement(obj,"COLUA0"))	e.Replacement = 'BD_Column';				break;
 			}
 		}
-		e.IsFinal = true;
 	}
 	//  This override tells the game which of the original monsters the modded monster replaces. Necessary for "hardcoded" effects such as Map07 or E1M8
 	override void Checkreplacee(ReplacedEvent e) {
