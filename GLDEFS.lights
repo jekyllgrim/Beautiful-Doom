@@ -139,7 +139,7 @@ object BD_HomingRocket
     frame BOM6T { light ROCKET_X1 }
 }
 
-object ModernRocket
+object BD_ModernRocket
 {
     frame MROK { light ROCKET }
     frame BOM4 { light ROCKET_X1 }
@@ -147,7 +147,7 @@ object ModernRocket
 }
 
 
-object ModernGrenade
+object BD_ModernGrenade
 {
     frame BOM4 { light ROCKET_X1 }
     frame BOM5 { light ROCKET_X3 }
@@ -169,7 +169,7 @@ pointlight MGRENADE_R
 	dontlightself 1
 }
 
-object ModernGrenadeFlare
+object BD_ModernGrenadeFlare
 {
 	frame LENY { light MGRENADE_Y }
 	frame LENR { light MGRENADE_R }
@@ -200,7 +200,7 @@ object BD_HomingRocket
     frame REXPO { light ROCKET_X1 }
 }
 
-object ModernRocket
+object BD_ModernRocket
 {
     frame MROKB { light ROCKET }
     frame BOM2A { light ROCKET_X3 }
@@ -334,7 +334,7 @@ flickerlight YellowPLASMA_X4
     chance 0.4
 }
 
-object ModernArachnotronPlasma
+object BD_ModernArachnotronPlasma
 {
 	frame COIL { light YellowPLASMABALL }
 	frame PEXPA { light YellowPLASMA_X1 }
@@ -369,7 +369,7 @@ pointlight YPLASMABALL
     size 48
 }
 
-object ModernPlasmaball
+object BD_ModernPlasmaBall
 {
 	frame COIS { light ARACHPLAS }
 	frame PEXPA { light ARACHPLAS_1 }
@@ -493,7 +493,7 @@ object BD_BFGBall
     frame BFGXK { light BFGBALL_X1 }
 }
 
-flickerlight BFGRailBall_Hold
+flickerlight BD_BFGRailBall_Hold
 {
 	color 0.1 1.0 0.1
     attenuate 1
@@ -502,12 +502,12 @@ flickerlight BFGRailBall_Hold
 	chance 0.1
 }
 
-object BFGRailBall_Hold
+object BD_BFGRailBall_Hold
 {
-	frame PEXP { light BFGRailBall_Hold }
+	frame PEXP { light BD_BFGRailBall_Hold }
 }
 
-object BFGRailBall
+object BD_BFGRailBall
 {
     frame PEXPA { light BFGBALL_X1 }
     frame PEXPB { light BFGBALL_X2 }
@@ -524,7 +524,7 @@ object BFGRailBall
     frame PEXPM { light BFGBALL_X1 }
 }
 
-object ModernBFGBall
+object BD_ModernBFGBall
 {
     frame COIR { light BFGBALL }
 
@@ -1284,7 +1284,7 @@ object BD_TechLamp
 */
 
 // Tall red torch
-flickerlight2 TallTorch_Red
+flickerlight2 BD_TallTorch_Red
 {
     color 1.0 0.3 0.0
     attenuate 1
@@ -1296,7 +1296,7 @@ flickerlight2 TallTorch_Red
 }
 
 // Tall green torch
-flickerlight2 TallTorch_Green
+flickerlight2 BD_TallTorch_Green
 {
     color 0.0 1.0 0.0
     attenuate 1
@@ -1308,7 +1308,7 @@ flickerlight2 TallTorch_Green
 }
 
 // Tall blue torch
-flickerlight2 TallTorch_Blue
+flickerlight2 BD_TallTorch_Blue
 {
     color 0.0 0.0 1.0
     attenuate 1
@@ -1319,21 +1319,21 @@ flickerlight2 TallTorch_Blue
 	dontlightself 1
 }
 
-object TallTorch_Red
-{	frame TTRR { light TallTorch_Red }	}
+object BD_TallTorch_Red
+{	frame TTRR { light BD_TallTorch_Red }	}
 
-object TallTorch_Green
-{	frame TTRG { light TallTorch_Green }}
+object BD_TallTorch_Green
+{	frame TTRG { light BD_TallTorch_Green }}
 
-object TallTorch_Blue
-{	frame TTRB { light TallTorch_Blue }	}
+object BD_TallTorch_Blue
+{	frame TTRB { light BD_TallTorch_Blue }	}
 
 /*
 	SMALL TORCHES
 */
 
 // Short red torch
-flickerlight2 ShortTorch_Red
+flickerlight2 BD_ShortTorch_Red
 {
     color 1.0 0.3 0.0
     attenuate 1
@@ -1345,7 +1345,7 @@ flickerlight2 ShortTorch_Red
 }
 
 // Short green torch
-flickerlight2 ShortTorch_Green
+flickerlight2 BD_ShortTorch_Green
 {
     color 0.0 1.0 0.0
     attenuate 1
@@ -1357,7 +1357,7 @@ flickerlight2 ShortTorch_Green
 }
 
 // Short blue torch
-flickerlight2 ShortTorch_Blue
+flickerlight2 BD_ShortTorch_Blue
 {
     color 0.0 0.0 1.0
     attenuate 1
@@ -1368,14 +1368,14 @@ flickerlight2 ShortTorch_Blue
 	dontlightself 1
 }
 
-object ShortTorch_Red
-{	frame STRR { light ShortTorch_Red }		}
+object BD_ShortTorch_Red
+{	frame STRR { light BD_ShortTorch_Red }		}
 
-object ShortTorch_Green
-{	frame STRG { light ShortTorch_Green}	}
+object BD_ShortTorch_Green
+{	frame STRG { light BD_ShortTorch_Green}	}
 
-object ShortTorch_Blue
-{	frame STRB { light ShortTorch_Blue }	}
+object BD_ShortTorch_Blue
+{	frame STRB { light BD_ShortTorch_Blue }	}
 
 
 // Burning barrel

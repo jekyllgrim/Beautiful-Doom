@@ -286,7 +286,7 @@ Class BD_TeleportFog : TeleportFog {
 
 // Explosive Barrel
 
-Class EBarrelPiece : BD_WallPart {
+Class BD_EBarrelPiece : BD_WallPart {
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		wrot = random(16,24)*randompick(-1,1);
@@ -416,7 +416,7 @@ Class BD_ExplosiveBarrel : ExplosiveBarrel {
 					for (int i = random(3,6); i > 0; i--)
 						A_SpawnItemEx("BD_SmokingPiece",	frandom(-6,6),frandom(-6,6),frandom(4,24),	frandom(-5,5),frandom(-5,5),frandom(7,12));
 					for (int i = random(4,7); i > 0; i--)
-						A_SpawnItemEx("EBarrelPiece",	frandom(-6,6),frandom(-6,6),frandom(4,24),	frandom(-10,10),frandom(-10,10),frandom(4,15));
+						A_SpawnItemEx("BD_EBarrelPiece",	frandom(-6,6),frandom(-6,6),frandom(4,24),	frandom(-10,10),frandom(-10,10),frandom(4,15));
 				}
 			}
 			BEXP DDEEFFGGH 1 {
@@ -479,13 +479,13 @@ Class BD_EvilEye : EvilEye {
 		Spawn:
 			TNT1 A -1 NoDelay {
 				Spawn("BD_Candlestick",pos);
-				Spawn("FloatingEye",(pos.x,pos.y,pos.z+10));
+				Spawn("BD_FloatingEye",(pos.x,pos.y,pos.z+10));
 			}
 			stop;
 	}
 }
 
-Class FloatingEye : Actor {
+Class BD_FloatingEye : Actor {
 	BD_BaseFlare flare;
 	Default {
 		renderstyle "Translucent";

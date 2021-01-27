@@ -177,7 +177,7 @@ Class BD_RocketLauncher : BDoomWeapon {
 			goto ready;
 		Fire.Modern:
 			TNT1 A 0 {
-				invoker.proj = "ModernRocket";
+				invoker.proj = "BD_ModernRocket";
 				invoker.pitchshift = 1.2;
 				invoker.vangle = 0;
 				let mag = CountInv("BD_RLClip");
@@ -190,7 +190,7 @@ Class BD_RocketLauncher : BDoomWeapon {
 			goto ready;
 		AltFire.Modern:
 			TNT1 A 0 {
-				invoker.proj = "ModernGrenade";
+				invoker.proj = "BD_ModernGrenade";
 				invoker.pitchshift = 0.25;
 				invoker.vangle = -5;
 				let mag = CountInv("BD_RLClip");
@@ -473,7 +473,7 @@ Class BD_HomingRocket : BD_Rocket {
 	}
 }
 
-Class ModernRocket : BD_Rocket {
+Class BD_ModernRocket : BD_Rocket {
 	Default {
 		+FORCERADIUSDMG
 		scale 0.4;
@@ -496,7 +496,7 @@ Class ModernRocket : BD_Rocket {
 			if (mo) {
 				mo.vel = (frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5));
 			}
-			if (GetClassname() == "ModernRocket")
+			if (GetClassname() == "BD_ModernRocket")
 				actor fir = Spawn("BD_ModernRocketFireTrail", oldPos );				
 			oldPos = level.vec3Offset( oldPos, direction );
 		}
@@ -600,7 +600,7 @@ Class BD_ModernRocketTrail : BD_WallSmoke {
 }
 
 
-Class ModernGrenade : ModernRocket {
+Class BD_ModernGrenade : BD_ModernRocket {
 	private state sspawn;
 	Default	{
 		scale 0.45;
@@ -623,7 +623,7 @@ Class ModernGrenade : ModernRocket {
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		if (bdoom_debris) {
-			let a = Spawn("ModernGrenadeFlare",pos);
+			let a = Spawn("BD_ModernGrenadeFlare",pos);
 			if (a)
 				a.master = self;
 			}
@@ -672,7 +672,7 @@ Class ModernGrenade : ModernRocket {
 }
 
 //yellow flare around the grenade
-Class ModernGrenadeFlare : BD_BaseFlare {
+Class BD_ModernGrenadeFlare : BD_BaseFlare {
 	Default {
 		BD_BaseDebris.sfxtype 'debris';
 		alpha 0.4;

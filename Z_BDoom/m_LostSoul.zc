@@ -56,11 +56,11 @@ Class BD_LostSoul : LostSoul {
 			if (bdoom_gibs) {
 				A_SpawnItemEx("BD_LS_Horn",	frandom(-4,4),frandom(-4,4),frandom(5,24),	frandom(-4,4),frandom(-4,4),frandom(2,5),	0,	0, 180);
 				A_SpawnItemEx("BD_LS_Horn",	frandom(-4,4),frandom(-4,4),frandom(5,24),	frandom(-4,4),frandom(-4,4),frandom(2,5),	0,	0, 180);
-				A_SpawnItemEx("LS_skull",	frandom(-4,4),frandom(-4,4),frandom(5,24),	frandom(-4,4),frandom(-4,4),frandom(2,5),	0,	0, 128);
+				A_SpawnItemEx("BD_LS_Skull",	frandom(-4,4),frandom(-4,4),frandom(5,24),	frandom(-4,4),frandom(-4,4),frandom(2,5),	0,	0, 128);
 				for (int i = 5; i > 0; i--)
 					A_SpawnItemEx("BD_LS_Shard",	frandom(-4,4),frandom(-4,4),frandom(5,24),	frandom(-4,4),frandom(-4,4),frandom(2,5),	0,	0, 128);
 				for (int i = 4; i > 0; i--)
-					A_SpawnItemEx("LS_FlameShard",	frandom(-4,4),frandom(-4,4),frandom(5,24),	frandom(-4,4),frandom(-4,4),frandom(2,5),	0,	0, 128);
+					A_SpawnItemEx("BD_LS_FlameShard",	frandom(-4,4),frandom(-4,4),frandom(5,24),	frandom(-4,4),frandom(-4,4),frandom(2,5),	0,	0, 128);
 			}
 		}
 		ssou f 3 bright A_noblocking();
@@ -101,7 +101,7 @@ Class BD_LostSoul : LostSoul {
 	}
 }
 
-Class LS_FlameShard : BD_SmallDebris {
+Class BD_LS_FlameShard : BD_SmallDebris {
 	protected double fade;
 	Default {
 		BD_SmallDebris.dbrake 0.3;

@@ -148,7 +148,7 @@ Class BD_Cacodemon : BDoomMonster  {
 	}
 }
 
-Class CacoRedTrail : BD_BaseFlare {
+Class BD_CacoRedTrail : BD_BaseFlare {
 	Default {
 		alpha 0.8;
 		scale 0.05;
@@ -163,7 +163,7 @@ Class CacoRedTrail : BD_BaseFlare {
 	}
 }
 
-Class CacoBlueTrail : BD_BaseFlare {
+Class BD_CacoBlueTrail : BD_BaseFlare {
 	Default {
 		alpha 0.8;
 		scale 0.1;
@@ -205,11 +205,11 @@ Class BD_CacodemonBall : CacodemonBall {
 			f.alpha = 0.3;
 			f.master = self;
 			
-			let lt = CacoBallLightning(Spawn("CacoBallLightning",pos));
+			let lt = BD_CacoBallLightning(Spawn("BD_CacoBallLightning",pos));
 			if (lt) 
 				lt.master = self;
 			
-			let lt1 = CacoBallLightning(Spawn("CacoBallLightning",pos));
+			let lt1 = BD_CacoBallLightning(Spawn("BD_CacoBallLightning",pos));
 			if (!lt1) {
 				lt1.master = self;
 				lt1.upward = true;
@@ -227,8 +227,8 @@ Class BD_CacodemonBall : CacodemonBall {
 		int steps = int( distance );
 		
 		for( int i = 0; i < steps; i++ )  {
-			Spawn("CacoRedTrail", oldPos );
-			Spawn("CacoBlueTrail", oldPos );
+			Spawn("BD_CacoRedTrail", oldPos );
+			Spawn("BD_CacoBlueTrail", oldPos );
 			oldPos = level.vec3Offset( oldPos, direction );
 		}
 	}
@@ -244,7 +244,7 @@ Class BD_CacodemonBall : CacodemonBall {
 			A_RemoveChildren(true,RMVF_EVERYTHING );
 			if (bdoom_debris) {
 				for (int i = 8; i > 0; i--)
-					A_SpawnItemEx("CacoBallPiece",frandom(-6,6),frandom(-6,6),frandom(-6,6),frandom(-2,2),frandom(-2,2),frandom(2,4),failchance:16);
+					A_SpawnItemEx("BD_CacoBallPiece",frandom(-6,6),frandom(-6,6),frandom(-6,6),frandom(-2,2),frandom(-2,2),frandom(2,4),failchance:16);
 				let f = BD_BaseFlare(Spawn("BD_BaseFlare",pos));
 				if (f) {
 					f.fcolor = 'blue';
@@ -270,7 +270,7 @@ Class BD_CacodemonBall : CacodemonBall {
 	}
 }
 
-Class CacoballRay : BD_BaseFlare {
+Class BD_CacoballRay : BD_BaseFlare {
 	Default {
 		alpha 0.8;
 		scale 0.02;
@@ -283,7 +283,7 @@ Class CacoballRay : BD_BaseFlare {
 	}
 }
 
-Class CacoBallLightning : BD_BaseFlare {
+Class BD_CacoBallLightning : BD_BaseFlare {
 	bool upward;
 	double ceilz;
 	double flrz;
@@ -311,7 +311,7 @@ Class CacoBallLightning : BD_BaseFlare {
 				alpha = Clamp(alpha+0.1,0,0.5);
 				A_StartSound("spark",flags:CHANF_DEFAULT,volume:0.8,attenuation:2);
 				for (int i = random(1,3); i > 0; i --) {
-					let piece = CacoBallPiece(Spawn("CacoBallPiece",(pos.x+frandom(-3,3),pos.y+frandom(-3,3),ceilz-0.5)));
+					let piece = BD_CacoBallPiece(Spawn("BD_CacoBallPiece",(pos.x+frandom(-3,3),pos.y+frandom(-3,3),ceilz-0.5)));
 					if (piece) 
 						piece.vel = (frandom(-3,3),frandom(-3,3),0);
 				}
@@ -325,7 +325,7 @@ Class CacoBallLightning : BD_BaseFlare {
 				alpha = Clamp(alpha+0.1,0,0.5);
 				A_StartSound("spark",flags:CHANF_DEFAULT,volume:0.8,attenuation:2);
 				for (int i = random(1,3); i > 0; i --) {
-					let piece = CacoBallPiece(Spawn("CacoBallPiece",(pos.x+frandom(-3,3),pos.y+frandom(-3,3),flrz+0.5)));
+					let piece = BD_CacoBallPiece(Spawn("BD_CacoBallPiece",(pos.x+frandom(-3,3),pos.y+frandom(-3,3),flrz+0.5)));
 					if (piece) 
 						piece.vel = (frandom(-2,2),frandom(-2,2),frandom(2,4));
 				}
@@ -347,7 +347,7 @@ Class CacoBallLightning : BD_BaseFlare {
 	}
 }
 
-Class CacoBallPiece : BD_RicochetSpark {
+Class BD_CacoBallPiece : BD_RicochetSpark {
 	Default {
 		alpha 1.0;
 		scale 0.065;

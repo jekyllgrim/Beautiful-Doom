@@ -52,7 +52,7 @@ Class BD_BossBrain : BossBrain {
 }
 
 
-Class BD_SpawnFire : ArchPentagram {
+Class BD_SpawnFire : BD_ArchPentagram {
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		A_StartSound("bossbrain/spawn");

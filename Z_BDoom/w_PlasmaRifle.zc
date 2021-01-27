@@ -296,7 +296,7 @@ Class BD_PlasmaRifle : BDoomWeapon {
 			PLGF A 1 { 
 				A_WeaponOffset(0,32,WOF_INTERPOLATE);
 				invoker.HeatCounter+=0.5;
-				A_FireProjectile("ModernPlasmaball",frandom(-1.8,1.8),1,0,0,0,frandom(-1.5,1.5));
+				A_FireProjectile("BD_ModernPlasmaBall",frandom(-1.8,1.8),1,0,0,0,frandom(-1.5,1.5));
 				A_ZoomFactor(0.997,ZOOM_NOSCALETURNING);
 				A_OverlayOffset(PSP_GUN3,0,1);
 				A_OverlayOffset(PSP_LIGHTS,0,1);
@@ -493,7 +493,7 @@ Class BD_PlasmaRailBall : BD_BaseFlare {
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		If(bdoom_debris)
-			A_SpawnItemEx("PlamaRailFlare",flags:SXF_SETMASTER);
+			A_SpawnItemEx("BD_PlamaRailFlare",flags:SXF_SETMASTER);
 	}
 	states {
 		Spawn:
@@ -504,7 +504,7 @@ Class BD_PlasmaRailBall : BD_BaseFlare {
 }
 
 //flare around railgun particles
-Class PlamaRailFlare : BD_BaseFlare {
+Class BD_PlamaRailFlare : BD_BaseFlare {
 	Default {
 		alpha 0.3;
 		scale 0.07;
@@ -544,7 +544,7 @@ Class BD_PlasmaRailPuff : Actor {
 
 
 
-Class ModernPlasmaBall : BD_Plasmaball {
+Class BD_ModernPlasmaBall : BD_Plasmaball {
 	Default {
 		BD_Plasmaball.pcolor "green";
 		Radius 8;
@@ -580,14 +580,14 @@ Class ModernPlasmaBall : BD_Plasmaball {
 				A_SetScale(0.14*randompick(-1,1),0.14*randompick(-1,1));
 				if (bdoom_debris) {
 					for (int i = 0; i <= 8; i++)
-						A_SpawnItemEx("ModernPlasmaPiece",0,0,1,frandom(-3,3),frandom(-3,3),frandom(3,8),0,0,32);
+						A_SpawnItemEx("BD_ModernPlasmaPiece",0,0,1,frandom(-3,3),frandom(-3,3),frandom(3,8),0,0,32);
 				}
 			}
 			PEXP CDEFGH 1 bright {
 				if (bdoom_debris) {
-					A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"BD_NullPuff",random(0,360),random(0,360),range:32,spawnclass:"MPlasmaBallRay");
-					A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"BD_NullPuff",random(0,360),random(0,360),range:32,spawnclass:"MPlasmaBallRay");
-					A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"BD_NullPuff",random(0,360),random(0,360),range:32,spawnclass:"MPlasmaBallRay");
+					A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"BD_NullPuff",random(0,360),random(0,360),range:32,spawnclass:"BD_MPlasmaBallRay");
+					A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"BD_NullPuff",random(0,360),random(0,360),range:32,spawnclass:"BD_MPlasmaBallRay");
+					A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"BD_NullPuff",random(0,360),random(0,360),range:32,spawnclass:"BD_MPlasmaBallRay");
 				}
 				else {
 					A_CustomRailGun(0,0,"","BBFFBB",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ|RGF_FULLBRIGHT,maxdiff:15,pufftype:"BD_NullPuff",random(0,360),random(0,360),range:32,duration:16,sparsity:0.2,driftspeed:0.1);
@@ -600,7 +600,7 @@ Class ModernPlasmaBall : BD_Plasmaball {
 }
 
 
-Class ModernPlasmaPiece : BD_SmallDebris {
+Class BD_ModernPlasmaPiece : BD_SmallDebris {
 	Default {
 		renderstyle "Add";
 		alpha 1.0;
@@ -615,7 +615,7 @@ Class ModernPlasmaPiece : BD_SmallDebris {
 	}
 }
 
-Class ModernFlarePlasmaTrail : BD_BaseFlare {
+Class BD_ModernFlarePlasmaTrail : BD_BaseFlare {
 	Default {
 		+FORCEXYBILLBOARD
 		alpha 0.5;
@@ -632,7 +632,7 @@ Class ModernFlarePlasmaTrail : BD_BaseFlare {
 	}
 }
 
-Class MPlasmaBallRay : BD_BaseFlare {
+Class BD_MPlasmaBallRay : BD_BaseFlare {
 	Default {
 		alpha 0.5;
 		scale 0.015;
@@ -642,14 +642,14 @@ Class MPlasmaBallRay : BD_BaseFlare {
 		Spawn:
 			TNT1 A 0 NoDelay {
 				if(Bdoom_debris)
-					A_SpawnItem("MPlasmaBallRayFlare");
+					A_SpawnItem("BD_MPlasmaBallRayFlare");
 			}
 			PEXP ABCDEFGHIJKLM 1 bright A_FadeOut(0.02);
 			stop;
 	}
 }
 
-Class MPlasmaBallRayFlare : BD_BaseFlare {
+Class BD_MPlasmaBallRayFlare : BD_BaseFlare {
 	Default {
 		renderstyle "Add";
 		alpha 0.07;

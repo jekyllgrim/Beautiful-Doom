@@ -86,7 +86,7 @@ Class BDoomWeapon : Weapon abstract {
 			(FindInventory("PowerStrength") && berserkdamage != 0) ? berserkdamage : damage,
 			norandom: true,
 			flags: 0, //don't use ammo
-			pufftype: (FindInventory("PowerStrength" /*"ModernBerserk_Regen"*/) && berserkpuff) ? berserkpuff : pufftype,
+			pufftype: (FindInventory("PowerStrength" /*"BD_ModernBerserk_Regen"*/) && berserkpuff) ? berserkpuff : pufftype,
 			range : range
 		);
 	}
@@ -313,7 +313,7 @@ Class BDoomWeapon : Weapon abstract {
 				A_OverlayFlags(OverlayID(),PSPF_ADDBOB|PSPF_ADDWEAPON,false);
 				A_OverlayFlags(OverlayID(),PSPF_FLIP|PSPF_MIRROR|PSPF_PLAYERTRANSLATED,true);
 				if (player.onGround) {
-					if (CountInv("Modernberserk_Regen") > 0)
+					if (CountInv("BD_ModernBerserk_Regen") > 0)
 						speed = invoker.preKickSpeed * 0.5;
 					else
 						speed = invoker.preKickSpeed * 0.25;
@@ -329,13 +329,13 @@ Class BDoomWeapon : Weapon abstract {
 			}
 			KICK CD 1;
 			KICK EF 1 {
-				if (CountInv("Modernberserk_Regen") > 0)
+				if (CountInv("BD_ModernBerserk_Regen") > 0)
 					A_Recoil(-6);
 				else
 					A_Recoil(-3);
 			}
 			KICK G 3 {
-				if (CountInv("Modernberserk_Regen") > 0) {
+				if (CountInv("BD_ModernBerserk_Regen") > 0) {
 					A_Recoil(-5);
 				}
 				else {

@@ -42,7 +42,7 @@ Class BD_Arachnotron : BDoomMonster {
 		ARAT a 3 {
 			A_FaceTarget();
 			if (bdoom_weapons == 2)
-				A_Spawnprojectile("ModernArachnotronPlasma");
+				A_Spawnprojectile("BD_ModernArachnotronPlasma");
 			else 
 				A_Spawnprojectile("BD_ArachnotronPlasma");
 		}
@@ -76,7 +76,7 @@ Class BD_ArachnotronPlasma : BD_Plasmaball {
 	}
 }
 
-Class ModernArachnotronPlasma : BD_Plasmaball {
+Class BD_ModernArachnotronPlasma : BD_Plasmaball {
 	Default	{
 		BD_Plasmaball.pcolor "yellow";
 		decal "YellowPlasmaSplat";

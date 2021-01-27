@@ -89,7 +89,7 @@ Class BD_PainElemental : BDoomMonster {
 					A_SpawnItemEx("BD_BasicMeatPiece_Heavy",	frandom(-10,10),frandom(-10,10),frandom(6,40),	frandom(-5,5),frandom(-5,5),frandom(3,6),0, 	SXF_SETTARGET,160);
 				}
 				for (int i = 0; i < 7; i++)
-					A_SpawnItemEx("LS_FlameShard",	frandom(-6,6),frandom(-6,6),frandom(10,38),		frandom(-7,7),frandom(-7,7),frandom(2,6),0, 	SXF_SETTARGET,32);				
+					A_SpawnItemEx("BD_LS_FlameShard",	frandom(-6,6),frandom(-6,6),frandom(10,38),		frandom(-7,7),frandom(-7,7),frandom(2,6),0, 	SXF_SETTARGET,32);				
 				A_SpawnItemEx("BD_PainExplosion",frandom(-4,4),frandom(-4,4),frandom(14,30),	frandom(-1,1),frandom(-1,1),frandom(-1,1));
 			}
 		}

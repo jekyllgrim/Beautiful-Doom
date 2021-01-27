@@ -285,12 +285,12 @@ class BD_ActorOverrideHandler : EventHandler {
 				case 'BigTree' 			: if (!CheckVanillaReplacement(obj,"TRE2A0"))	e.Replacement = 'BD_BigTree';				break;
 				case 'TorchTree' 			: if (!CheckVanillaReplacement(obj,"TRE1A0"))	e.Replacement = 'BD_TorchTree';			break;
 					//LIGHTS
-				case 'GreenTorch' 			: if (!CheckVanillaReplacement(obj,"TGRNA0"))	e.Replacement = 'TallTorch_Green';		break;
-				case 'RedTorch' 			: if (!CheckVanillaReplacement(obj,"TREDA0"))	e.Replacement = 'TallTorch_Red';			break;
-				case 'BlueTorch' 			: if (!CheckVanillaReplacement(obj,"TBLUA0"))	e.Replacement = 'TallTorch_Blue';			break;
-				case 'ShortGreenTorch'	: if (!CheckVanillaReplacement(obj,"SMGTA0"))	e.Replacement = 'ShortTorch_Green';		break;
-				case 'ShortRedTorch' 		: if (!CheckVanillaReplacement(obj,"SMRTA0"))	e.Replacement = 'ShortTorch_Red';			break;
-				case 'ShortBlueTorch' 	: if (!CheckVanillaReplacement(obj,"SMBTA0"))	e.Replacement = 'ShortTorch_Blue';		break;
+				case 'GreenTorch' 			: if (!CheckVanillaReplacement(obj,"TGRNA0"))	e.Replacement = 'BD_TallTorch_Green';		break;
+				case 'RedTorch' 			: if (!CheckVanillaReplacement(obj,"TREDA0"))	e.Replacement = 'BD_TallTorch_Red';			break;
+				case 'BlueTorch' 			: if (!CheckVanillaReplacement(obj,"TBLUA0"))	e.Replacement = 'BD_TallTorch_Blue';			break;
+				case 'ShortGreenTorch'	: if (!CheckVanillaReplacement(obj,"SMGTA0"))	e.Replacement = 'BD_ShortTorch_Green';		break;
+				case 'ShortRedTorch' 		: if (!CheckVanillaReplacement(obj,"SMRTA0"))	e.Replacement = 'BD_ShortTorch_Red';			break;
+				case 'ShortBlueTorch' 	: if (!CheckVanillaReplacement(obj,"SMBTA0"))	e.Replacement = 'BD_ShortTorch_Blue';		break;
 				case 'Candlestick' 		: if (!CheckVanillaReplacement(obj,"CANDA0"))	e.Replacement = 'BD_Candlestick';			break;
 				case 'Candelabra' 			: if (!CheckVanillaReplacement(obj,"CBRAA0"))	e.Replacement = 'BD_Candelabra';			break;
 				case 'BurningBarrel' 		: if (!CheckVanillaReplacement(obj,"FCANA0"))	e.Replacement = 'BD_BurningBarrel';		break;

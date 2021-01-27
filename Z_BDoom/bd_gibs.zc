@@ -773,7 +773,7 @@ class BD_Gib_Torso1 : BD_BasicMeatPiece {
 							pool.target = body;
 						}
 					}
-					A_SpawnItemEx("CorpseFlySpawner",flags:SXF_SETMASTER);
+					A_SpawnItemEx("BD_CorpseFlySpawner",flags:SXF_SETMASTER);
 					return ResolveState("Rest");
 				}
 				return ResolveState(null);
@@ -902,7 +902,7 @@ Class BD_LS_Shard : BD_LS_Horn {
 	}
 }
 
-Class LS_Skull : BD_LS_Horn {
+Class BD_LS_Skull : BD_LS_Horn {
 	Default {
 		height 4;
 		radius 2;

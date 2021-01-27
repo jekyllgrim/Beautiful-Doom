@@ -11,7 +11,7 @@ class BD_BFG9000 : BDoomWeapon {
 	private double wzoommul;
 	
 	private double lightsalpha;
-	ModernBFG_PrepOrb preporb;
+	BD_ModernBFG_PrepOrb preporb;
 	Default {
 		BDoomWeapon.dontforcebob True;
 		Height 20;
@@ -194,7 +194,7 @@ class BD_BFG9000 : BDoomWeapon {
 				If(invoker.railcounter >= 100)
 					return ResolveState("AltEnd");					
 				A_WeaponOffset(random(-1,1),random(32,34),WOF_INTERPOLATE);
-				A_RailAttack(10*random(1,6),0,1,"","green",RGF_SILENT|RGF_NORANDOMPUFFZ,1,"BFGRailPuff",0,0,300,0,5.0,0,"BFGRailBall_Hold",-4); //this is memory-light
+				A_RailAttack(10*random(1,6),0,1,"","green",RGF_SILENT|RGF_NORANDOMPUFFZ,1,"BD_BFGRailPuff",0,0,300,0,5.0,0,"BD_BFGRailBall_Hold",-4); //this is memory-light
 				if (invoker.railcounter >= 30 && bdoom_shakes == 1)
 					A_Quake(1,2,0,64,"");
 				invoker.railcounter++;
@@ -206,7 +206,7 @@ class BD_BFG9000 : BDoomWeapon {
 			TNT1 A 0 {
 				A_ClearRefire();
 				A_WeaponOffset(0,32);
-				A_RailAttack(0,0,0,"","green",RGF_SILENT|RGF_NORANDOMPUFFZ,2,"BFGRailPuff",0,0,300,0,3.0,5.0,"BFGRailBall",-4); //this memory-heavy ray is for nicer after-shot effect similar to plasma railgun
+				A_RailAttack(0,0,0,"","green",RGF_SILENT|RGF_NORANDOMPUFFZ,2,"BD_BFGRailPuff",0,0,300,0,3.0,5.0,"BD_BFGRailBall",-4); //this memory-heavy ray is for nicer after-shot effect similar to plasma railgun
 				A_StopSound(CHAN_5);
 				A_StartSound("weapons/bfg/railcool",slot:CHAN_6);
 				A_ClearOverlays(PSP_LIGHTS,PSP_LIGHTS);
@@ -335,7 +335,7 @@ class BD_BFG9000 : BDoomWeapon {
 				A_OverlayRenderstyle(PSP_FLASH,STYLE_Add);				
 				A_StartSound("Mweapons/bfg/charge",slot:CHAN_5);
 				//spawn rotating orb in front of the barrel
-				invoker.preporb = ModernBFG_PrepOrb(Spawn("ModernBFG_PrepOrb",player.mo.pos));
+				invoker.preporb = BD_ModernBFG_PrepOrb(Spawn("BD_ModernBFG_PrepOrb",player.mo.pos));
 				if (invoker.preporb) {
 					invoker.preporb.master = player.mo;
 					invoker.preporb.bfg = BD_BFG9000(invoker);
@@ -382,7 +382,7 @@ class BD_BFG9000 : BDoomWeapon {
 			TNT1 A 0 {
 				A_StopSound(CHAN_5);
 				A_StartSound("Mweapons/bfg/fire",slot:CHAN_6);
-				A_FireProjectile("ModernBFGBall",0,0);
+				A_FireProjectile("BD_ModernBFGBall",0,0);
 				if(bdoom_shakes)
 					A_Quake(0.5*invoker.wcharge,12 + invoker.wcharge,0,128,"");
 				invoker.wzoom = 1 - (invoker.wcharge * 0.02);
@@ -422,7 +422,7 @@ class BD_BFG9000 : BDoomWeapon {
 			BBGN B 2 {
 				A_StopSound(CHAN_6);
 				A_StopSound(CHAN_7);
-				A_FireProjectile("ModernBFGBall",0,0);
+				A_FireProjectile("BD_ModernBFGBall",0,0);
 				A_Quake(1,14,0,128,"");
 				A_StartSound("Mweapons/bfg/fire",slot:CHAN_5);
 				invoker.wzoom = 1 - (invoker.wcharge * 0.01);
@@ -451,7 +451,7 @@ class BD_BFG9000 : BDoomWeapon {
 	}
 }
 
-Class ModernBFG_PrepOrb : BD_SmallDebris {
+Class BD_ModernBFG_PrepOrb : BD_SmallDebris {
 	BD_BFG9000 bfg;
 	Default {
 		+FORCEXYBILLBOARD
@@ -495,7 +495,7 @@ Class ModernBFG_PrepOrb : BD_SmallDebris {
 								velx:xoff*-0.1,vely:yoff*-0.1,velz:zoff*-0.1,
 								startalphaf:0.8,fadestepf:0,sizestep:0.3
 							);*/
-				let orb = Spawn("BFGpreorbParticle",pos+(frandom(-10,10),frandom(-10,10),frandom(-10,10)));
+				let orb = Spawn("BD_BFGpreorbParticle",pos+(frandom(-10,10),frandom(-10,10),frandom(-10,10)));
 				if (orb) {
 					orb.target = self;
 					orb.master = master;
@@ -506,7 +506,7 @@ Class ModernBFG_PrepOrb : BD_SmallDebris {
 	}
 }
 
-Class BFGpreorbParticle : BD_BaseFlare {
+Class BD_BFGpreorbParticle : BD_BaseFlare {
 	int ftimer;
 	Default {
 		translation "GreenPlasma";
@@ -561,7 +561,7 @@ Class BD_BFGBall : BFGBall {
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		trailactor = "BFGTrail";
+		trailactor = "BD_BFGTrail";
 	}
 	override void Tick () {
 		Vector3 oldPos = self.pos;
@@ -584,13 +584,13 @@ Class BD_BFGBall : BFGBall {
 		}
 		if (Getclassname() == "BD_BFGBall") {
 			if (pos.z <= floorz+100 && floorpic != skyflatnum && random(0,32) > 28) {
-				let lt = BFGLightningSpawner(Spawn("BFGLightningSpawner",pos));
+				let lt = BD_BFGLightningSpawner(Spawn("BD_BFGLightningSpawner",pos));
 				if (lt) {
 					lt.master = self;
 				}
 			}
 			if (pos.z >= ceilingz-128 && ceilingpic != skyflatnum && random(0,32) > 28) {
-				let lt = BFGLightningSpawner(Spawn("BFGLightningSpawner",pos));
+				let lt = BD_BFGLightningSpawner(Spawn("BD_BFGLightningSpawner",pos));
 				if (lt) {
 					lt.master = self;
 					lt.upward = true;
@@ -614,7 +614,7 @@ Class BD_BFGBall : BFGBall {
 		BFGB ABCDEFGH 1 {
 			A_FaceMovementDirection();
 			//if (bdoom_debris)
-				//A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,4,"BD_NullPuff",random(0,360),random(0,360),64,20,0,4,"BFGBallRay");
+				//A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,0,4,"BD_NullPuff",random(0,360),random(0,360),64,20,0,4,"BD_BFGBallRay");
 		}
 		loop;
 	Death.Sky:
@@ -641,15 +641,15 @@ Class BD_BFGBall : BFGBall {
 		BFGX ABCD 4 {
 			dead = true;
 			if (bdoom_debris) {
-				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(48,128),duration:48,sparsity:2.5,spawnclass:"BFGBallRay");
-				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(48,128),duration:48,sparsity:2.5,spawnclass:"BFGBallRay");
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(48,128),duration:48,sparsity:2.5,spawnclass:"BD_BFGBallRay");
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(48,128),duration:48,sparsity:2.5,spawnclass:"BD_BFGBallRay");
 			}
 		}
 		BFGX E 4 A_BFGSpray("BD_BFGExtra");
 		BFGX FGHIJK 4 {
 			if (bdoom_debris) {		
-				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(48,128),duration:48,sparsity:2.5,spawnclass:"BFGBallRay");
-				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(48,128),duration:48,sparsity:2.5,spawnclass:"BFGBallRay");
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(48,128),duration:48,sparsity:2.5,spawnclass:"BD_BFGBallRay");
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(48,128),duration:48,sparsity:2.5,spawnclass:"BD_BFGBallRay");
 			}
 		}
 		stop;
@@ -657,7 +657,7 @@ Class BD_BFGBall : BFGBall {
 }
 
 //flare-like trail behind the orb
-Class BFGTrail : BD_BaseFlare {
+Class BD_BFGTrail : BD_BaseFlare {
 	default {
 		alpha 0.2;
 		scale 0.16;
@@ -672,7 +672,7 @@ Class BFGTrail : BD_BaseFlare {
 	}
 }
 
-Class BFGLightningSpawner : BD_SmallDebris {
+Class BD_BFGLightningSpawner : BD_SmallDebris {
 	bool upward;
 	double broll;
 	Default {
@@ -699,7 +699,7 @@ Class BFGLightningSpawner : BD_SmallDebris {
 			return;
 		pitch -= broll;
 		if (bdoom_debris)
-			A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:4,pufftype:"BD_NullPuff",range:200,sparsity:0,driftspeed:4,spawnclass:"BFGBallRay");
+			A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:4,pufftype:"BD_NullPuff",range:200,sparsity:0,driftspeed:4,spawnclass:"BD_BFGBallRay");
 		if (GetAge() > 20) {
 			destroy();
 			return;
@@ -708,7 +708,7 @@ Class BFGLightningSpawner : BD_SmallDebris {
 }
 
 //particles of the decorative lightning of the orb
-Class BFGBallRay : BD_BaseFlare {
+Class BD_BFGBallRay : BD_BaseFlare {
 	Default {
 		alpha 0.5;
 		scale 0.015;
@@ -742,7 +742,7 @@ Class BD_BFGExtra : BFGExtra {
 			TNT1 A 0 NoDelay {
 				If(bdoom_debris) {
 					for (int i = 24; i > 0; i--)
-						A_SpawnItemEx("BFGExtraParticle",frandom(-10,10),frandom(-10,10),frandom(-2,10),frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(0,0.5),failchance:64);
+						A_SpawnItemEx("BD_BFGExtraParticle",frandom(-10,10),frandom(-10,10),frandom(-2,10),frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(0,0.5),failchance:64);
 				}
 			}
 			PEXP AABBCCDDEEFFGGHHIIJJKKLLMM 1 A_FadeOut(0.005);
@@ -750,7 +750,7 @@ Class BD_BFGExtra : BFGExtra {
 	}
 }
 
-Class BFGExtraParticle : BD_BaseFlare {
+Class BD_BFGExtraParticle : BD_BaseFlare {
 	Default {
 		scale 0.07;
 	}
@@ -765,7 +765,7 @@ Class BFGExtraParticle : BD_BaseFlare {
 }
 
 //small particles spawned by BFG hits
-Class BFGPlasmaPiece : BD_BaseFlare {
+Class BD_BFGPlasmaPiece : BD_BaseFlare {
 	Default {
 		translation "GreenPlasma";
 		alpha 1.0;
@@ -787,7 +787,7 @@ Class BFGPlasmaPiece : BD_BaseFlare {
 
 
 // particles for heavy laser (alt attack)
-Class BFGRailBall : BD_BaseFlare {
+Class BD_BFGRailBall : BD_BaseFlare {
 	Default {
 		renderstyle "Add";
 		alpha 0.6;
@@ -803,7 +803,7 @@ Class BFGRailBall : BD_BaseFlare {
 		Spawn:
 			TNT1 A 0 NoDelay {
 				if(bdoom_debris)
-					A_SpawnItemEx("BFGRailFlare",0,0,0,0,0,0,0);
+					A_SpawnItemEx("BD_BFGRailFlare",0,0,0,0,0,0,0);
 			}
 			PEXP ABCDEFGHIJKLM 1 A_FadeOut(0.1);
 			stop;
@@ -811,7 +811,7 @@ Class BFGRailBall : BD_BaseFlare {
 }
 
 //flares for heavy laser particles
-Class BFGRailFlare : BD_BaseFlare {
+Class BD_BFGRailFlare : BD_BaseFlare {
 	Default {
 		alpha 0.05;
 		scale 0.2;
@@ -824,12 +824,12 @@ Class BFGRailFlare : BD_BaseFlare {
 }
 
 //bigger particles used on the last heavy laser rail when the user stops shooting (too obnoxious to use all the time)
-Class BFGRailBall_Hold : BFGRailBall {
+Class BD_BFGRailBall_Hold : BD_BFGRailBall {
 	States {
 		Spawn:
 			TNT1 A 0 noDelay {
 				if(bdoom_debris)
-					A_SpawnItemEx("BFGRailFlare_Hold");
+					A_SpawnItemEx("BD_BFGRailFlare_Hold");
 			}
 			TNT1 A 0 A_Jump(256,1,2,3,4,5);
 			PEXP ABCDEFGHIJKLM 1 A_FadeOut(0.2);
@@ -838,7 +838,7 @@ Class BFGRailBall_Hold : BFGRailBall {
 }
 
 //flares for bigger heavy laser particles
-Class BFGRailFlare_Hold : BFGRailFlare {
+Class BD_BFGRailFlare_Hold : BD_BFGRailFlare {
 	States {
 		Spawn:
 			LENG A 1 A_FadeOut(0.01);
@@ -847,7 +847,7 @@ Class BFGRailFlare_Hold : BFGRailFlare {
 }
 
 //heavy laser puff
-Class BFGRailPuff : BDoomPuff {
+Class BD_BFGRailPuff : BDoomPuff {
 	Default {
 		+BLOODLESSIMPACT
 		+ALWAYSPUFF
@@ -859,7 +859,7 @@ Class BFGRailPuff : BDoomPuff {
 			TNT1 A 1 NoDelay {
 				if (bdoom_debris) {
 					for (int i = 12; i > 0; i--)
-						A_SpawnItemEx("BFGPlasmaPiece",0,0,0,frandom(-2,2),frandom(-2,2),frandom(-2,2),random(0,360));
+						A_SpawnItemEx("BD_BFGPlasmaPiece",0,0,0,frandom(-2,2),frandom(-2,2),frandom(-2,2),random(0,360));
 					/*for (int i = 8; i > 0; i--)
 						A_SpawnItemEx("BFGPlasmaShred",0,0,0,randompick(-5,5),randompick(-5,5),randompick(-5,5),random(0,360));*/
 					A_CustomRailGun(0,0,"","baffb5",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ|RGF_FULLBRIGHT,maxdiff:15,pufftype:"BD_NullPuff",random(0,360),random(0,360),range:32,duration:16,sparsity:0.2,driftspeed:0.1);
@@ -871,7 +871,7 @@ Class BFGRailPuff : BDoomPuff {
 }
 
 
-Class ModernBFGBall : BD_BFGBall {
+Class BD_ModernBFGBall : BD_BFGBall {
 	//wcharge just transfers the charge value from the weapon. 1-8 is normal shot, 9-12 is overcharge (12 leads to self-destruct)
 	private double wcharge;
 	/*wpower determines power, speed, range and max number of beam targets. Equal to wcharge but clamped to 8 
@@ -1038,14 +1038,14 @@ Class ModernBFGBall : BD_BFGBall {
 			}
 		}
 		TNT1 A 0 {
-			let ring = Spawn("ModernBFGBall_XRing",pos);
+			let ring = Spawn("BD_ModernBFGBall_XRing",pos);
 			if (ring) {
 				ring.pitch = frandom(15,20)*randompick(-1,1);
 				ring.angle = random(0,360);
 				ring.master = self;
 				ring.scale = scale*1.1;
 			}
-			let ring2 = Spawn("ModernBFGBall_XRing",pos);
+			let ring2 = Spawn("BD_ModernBFGBall_XRing",pos);
 			if (ring2) {
 				ring2.pitch = frandom(70,85)*randompick(-1,1);
 				ring2.angle = random(0,360);
@@ -1071,7 +1071,7 @@ Class ModernBFGBall : BD_BFGBall {
 	}
 }
 
-Class ModernBFGBall_XRing : BD_BaseFlare {
+Class BD_ModernBFGBall_XRing : BD_BaseFlare {
 	protected double wroll;
 	protected double scalemul;
 	Default {
@@ -1134,7 +1134,7 @@ Class MBFGTetherControl : Inventory {
 	}
 }
 	
-Class MBFGTether : ModernBFGBall_XRing {
+Class MBFGTether : BD_ModernBFGBall_XRing {
 	Default {
 		BD_BaseDebris.sfxtype 'debris';
 		alpha 0.75;
@@ -1191,7 +1191,7 @@ Class MBFGTrail : BD_BaseFlare {
 	}
 }
 
-Class MBFGRailPuff : BFGRailPuff {
+Class MBFGRailPuff : BD_BFGRailPuff {
 	Default {
 		+ALLOWTHRUFLAGS
 		+MTHRUSPECIES //this will make the rails pass through the player who shot the projectile

@@ -141,19 +141,19 @@ Class BD_Torch : BD_LightSource abstract {
 	TALL TORCHES
 */
 
-Class TallTorch_Green : BD_Torch {
+Class BD_TallTorch_Green : BD_Torch {
 	Default {
 		BD_LightSource.fcolor 'green';
 	}
 }
 
-Class TallTorch_Red : BD_Torch {
+Class BD_TallTorch_Red : BD_Torch {
 	Default {
 		BD_LightSource.fcolor 'red';
 	}
 }
 
-Class TallTorch_Blue : BD_Torch {
+Class BD_TallTorch_Blue : BD_Torch {
 	Default {
 		BD_LightSource.fcolor 'blue';
 	}
@@ -163,7 +163,7 @@ Class TallTorch_Blue : BD_Torch {
 	SHORT TORCHES
 */
 
-Class ShortTorch_Green : BD_Torch {
+Class BD_ShortTorch_Green : BD_Torch {
 	Default {
 		radius 16;
 		height 37;
@@ -186,13 +186,13 @@ Class ShortTorch_Green : BD_Torch {
 	}
 }
 
-Class ShortTorch_Red : ShortTorch_Green {
+Class BD_ShortTorch_Red : BD_ShortTorch_Green {
 	Default {
 		BD_LightSource.fcolor 'red';
 	}
 }
 
-Class ShortTorch_Blue : ShortTorch_Green {
+Class BD_ShortTorch_Blue : BD_ShortTorch_Green {
 	Default {
 		BD_LightSource.fcolor 'blue';
 	}
@@ -272,7 +272,7 @@ Class BD_BurningBarrel : BD_LightSource {
 	TECH LAMPS
 */
 
-Class ElectroSpark : BD_RicochetSpark {
+Class BD_ElectroSpark : BD_RicochetSpark {
 	Default {
 		alpha 0.8;
 		gravity 0.4;
@@ -311,7 +311,7 @@ Class BD_BaseLamp : BD_LightSource abstract {
 		for (int i = 10; i > 0; i--)
 			A_SpawnItemEx("BD_GlassPiece",frandom(-1.5,1.5),frandom(-1.5,1.5),fspawnheight+frandom(-1.5,1.5),frandom(-5,5),frandom(-5,5),frandom(3,6),failchance:48);
 		for (int i = 5; i > 0; i--)
-			A_SpawnItemEx("ElectroSpark",frandom(-1.5,1.5),frandom(-1.5,1.5),fspawnheight+frandom(-1.5,1.5),frandom(-2,2),frandom(-2,2),frandom(4,7),failchance:48);
+			A_SpawnItemEx("BD_ElectroSpark",frandom(-1.5,1.5),frandom(-1.5,1.5),fspawnheight+frandom(-1.5,1.5),frandom(-2,2),frandom(-2,2),frandom(4,7),failchance:48);
 	}
 	states	{
 		Loadsprites:
@@ -338,7 +338,7 @@ Class BD_BaseLamp : BD_LightSource abstract {
 					A_StartSound("spark",flags:CHANF_DEFAULT,volume:0.5,attenuation:3);
 					if (bdoom_debris) {
 						for (int i = 7; i > 0; i--)
-							A_SpawnItemEx("ElectroSpark",frandom(-1.5,1.5),frandom(-1.5,1.5),fspawnheight+frandom(-1.5,1.5),frandom(-1,1),frandom(-1,1),frandom(1,3),failchance:48);
+							A_SpawnItemEx("BD_ElectroSpark",frandom(-1.5,1.5),frandom(-1.5,1.5),fspawnheight+frandom(-1.5,1.5),frandom(-1,1),frandom(-1,1),frandom(1,3),failchance:48);
 					}
 				}
 			}

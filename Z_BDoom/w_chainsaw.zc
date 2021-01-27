@@ -127,7 +127,7 @@ Class BD_Chainsaw : BDoomWeapon {
 			}
 			#### A 0 {
 				if (bdoom_debris && random(0,1) == 1) {
-					A_Eject("SawSmoke",frandom(16,18),frandom(6,8),frandom(8,9.5),zvel:frandom(0.3,0.7));
+					A_Eject("BD_SawSmoke",frandom(16,18),frandom(6,8),frandom(8,9.5),zvel:frandom(0.3,0.7));
 				}
 			}
 			loop;
@@ -222,7 +222,7 @@ Class BD_Chainsaw : BDoomWeapon {
 				invoker.started = true;
 				A_AlertMonsters(312);
 				if (random(0,32) < invoker.jamstacks) {
-					let blod = A_Eject("ChainsawBloodSpill",20,frandom(1,1.2),frandom(4.5,6.5));
+					let blod = A_Eject("BD_ChainsawBloodSpill",20,frandom(1,1.2),frandom(4.5,6.5));
 					if (blod) {
 						blod.translation = invoker.tbloodtranslation;
 						blod.CopyBloodColor(invoker);
@@ -232,7 +232,7 @@ Class BD_Chainsaw : BDoomWeapon {
 			#### GHIJIH 2 A_WeaponReady();
 			#### A 0 {
 				if (bdoom_debris)
-					A_Eject("SawSmoke",frandom(16,18),frandom(6,8),frandom(8,9.5),zvel:frandom(0.3,0.7));
+					A_Eject("BD_SawSmoke",frandom(16,18),frandom(6,8),frandom(8,9.5),zvel:frandom(0.3,0.7));
 				invoker.jamstacks = clamp(invoker.jamstacks-1,0,1024);
 			}
 			goto ready;
@@ -247,7 +247,7 @@ Class BD_Chainsaw : BDoomWeapon {
 			TNT1 A 0 A_StartSound("Mweapons/saw/start",slot:CHAN_BODY);
 			BSAW VXVXVWXYV 1  {
 				if (invoker.jamstacks > 0) {
-					let blod = A_Eject("ChainsawBloodSpray",12,2,5,frandom(4,5),frandom(-0.5,0.5),frandom(3,5));
+					let blod = A_Eject("BD_ChainsawBloodSpray",12,2,5,frandom(4,5),frandom(-0.5,0.5),frandom(3,5));
 					if (blod) {
 						blod.target = null;
 						blod.translation = invoker.tbloodtranslation;						
@@ -310,7 +310,7 @@ Class BD_Chainsaw : BDoomWeapon {
 				else
 					A_StartSound("Mweapons/saw/highloop",slot:CHAN_BODY,flags:CHANF_DEFAULT|CHANF_LOOPING);
 				A_AlertMonsters();
-				A_CustomPunch(6*random(1,4),1,CPF_NOTURN,"ModernsawPuff");
+				A_CustomPunch(6*random(1,4),1,CPF_NOTURN,"BD_ModernsawPuff");
 				invoker.sndcounter++;
 				A_SetAngle(angle + frandom(invoker.jamstacks * -0.01,invoker.jamstacks * 0.01));
 				A_SetPitch(Pitch + frandom(invoker.jamstacks * -0.01,invoker.jamstacks * 0.01));
@@ -514,7 +514,7 @@ Class BD_ChainsawPuff : BDoomPuff {
 	}
 }
 
-Class ModernsawPuff : BD_ChainsawPuff {
+Class BD_ModernsawPuff : BD_ChainsawPuff {
 	Default {
 		+HITTRACER
 		+PUFFONACTORS
@@ -549,7 +549,7 @@ Class ModernsawPuff : BD_ChainsawPuff {
 	}
 }
 
-Class ChainsawBloodSpray : BD_BloodSpray {
+Class BD_ChainsawBloodSpray : BD_BloodSpray {
 	Default {
 		scale 0.1;
 		gravity 0.5;
@@ -564,7 +564,7 @@ Class ChainsawBloodSpray : BD_BloodSpray {
 	}*/
 }
 
-Class ChainsawBloodSpill : BD_CeilingBloodDrop {
+Class BD_ChainsawBloodSpill : BD_CeilingBloodDrop {
 	Default {
 		scale 0.06;
 	}
@@ -591,7 +591,7 @@ Class ChainsawBloodSpill : BD_CeilingBloodDrop {
 	}
 }
 
-class SawSmoke : BD_BaseSmoke {
+class BD_SawSmoke : BD_BaseSmoke {
 	Default {
 		alpha 0.3;
 		scale 0.22;

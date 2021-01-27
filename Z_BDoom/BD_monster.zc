@@ -232,7 +232,7 @@ Class BDoomMonster : BDoomActor abstract {
 							meatlist.Push(pool);
 						}
 					}
-					A_SpawnItemEx("CorpseFlySpawner",flags:SXF_SETMASTER);
+					A_SpawnItemEx("BD_CorpseFlySpawner",flags:SXF_SETMASTER);
 					return ResolveState("DeathEnd");
 				}
 				return ResolveState(null);
@@ -520,7 +520,7 @@ Class BD_SpiderBullet : BD_PistolBullet {
 	}
 }
 
-Class CorpseFlySpawner : Actor {
+Class BD_CorpseFlySpawner : Actor {
 	private bool active;
 	Default {
 		+NOINTERACTION
