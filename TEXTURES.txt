@@ -150,6 +150,38 @@ Sprite "MUZ1D0", 180, 180
 	Patch "MUZ1D", 0, 0
 }
 
+Sprite "MUZ7A0", 180, 180
+{	
+	XScale 2.900
+	YScale 3.500
+	Offset -375, -280
+	Patch "MUZ2A", 0, 0
+}
+
+Sprite "MUZ7B0", 180, 180
+{
+	XScale 2.900
+	YScale 3.500
+	Offset -375, -280
+	Patch "MUZ2B", 0, 0
+}
+
+Sprite "MUZ7C0", 180, 180
+{
+	XScale 2.900
+	YScale 3.500
+	Offset -375, -280
+	Patch "MUZ2C", 0, 0
+}
+
+Sprite "MUZ7D0", 180, 180
+{
+	XScale 2.900
+	YScale 3.500
+	Offset -375, -280
+	Patch "MUZ2D", 0, 0
+}
+
 Sprite "MUZ2A0", 180, 180
 {	
 	XScale 2.300

@@ -298,7 +298,7 @@ Class BD_Chaingun : BDoomWeapon {
 			MGGM D 1 bright A_OverlayAlpha(PSP_EFLASH,0.4);
 			goto lightdone;
 		FlashMuzzle:
-			MUZ2 A 1 bright {
+			MUZ7 A 1 bright {
 					A_OverlayOffset(PSP_MFLASH,frandom(-0.5,0.5),frandom(-0.5,0.5));
 					let fl = player.FindPSprite(OverlayID());
 					fl.frame = random(0,3);
@@ -392,7 +392,7 @@ Class BD_Chaingun : BDoomWeapon {
 			MGGM C 1 bright A_OverlayAlpha(PSP_EFLASH,0.6);
 			goto lightdone;
 		AltFlashMuzzle:
-			MUZ2 A 1 bright {
+			MUZ7 A 1 bright {
 					A_OverlayOffset(PSP_MFLASH,frandom(-0.5,0.5),frandom(-0.5,0.5));
 					let fl = player.FindPSprite(OverlayID());
 					fl.frame = random(0,3);
