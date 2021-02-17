@@ -3,7 +3,6 @@
 //// Beautiful Doom Settings Menu 
 
 BDMENU_TITLE =			"Beautiful Doom Settings";
-BDMENU_TITLE_SHORT =	"Beautiful Settings";
 BDMENU_DESC	= 			"Customize Beautiful Doom settings";
 
 BDMENU_TITLE_KEYS = 	"BEAUTIFUL KEYBINDS";
@@ -37,7 +36,7 @@ BDMENU_NOBOSSGIBS_NAME = "Force vanilla boss deaths";
 BDMENU_FLAMES =			"Dynamic particle flames and halos around light sources.\nMay impact performance.";
 BDMENU_FLAMES_NAME =			"Halos & particle flames";
 BDMENU_DEBRIS = 		"Enable/disable spent bullet casings, particle smoke, projectile trails,\nsparks, debris spawned by shooting walls, etc.\nMay impact performance.";
-BDMENU_DEBRIS_NAME = 	"Smoke, trails, sparks, debris";
+BDMENU_DEBRIS_NAME = 	"Extra weapon effects";
 BDMENU_KILLABLEOBJECTS = "When enabled, some decorations will react to being shot, and it will be\npossible to kill decorative victims and destroy lamps by explosions";
 BDMENU_KILLABLEOBJECTS_NAME = "Shootable Decorations";
 BDMENU_liquidtextures = "Enable/disable Beautiful Doom liquid texture enhancements.\nNo performance impact. May be incompatible with other mods that have their own textures.\nCan be changed at any moment.";
