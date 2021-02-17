@@ -1,4 +1,4 @@
-LISTMENU "MainMenu" {
+/*LISTMENU "MainMenu" {
 	IfGame(Doom) {
 		StaticPatch 85, 0, "BD_TITLE"
 		Position 97, 72
@@ -21,6 +21,11 @@ LISTMENU "MainMenu" {
 	}
 	//TextItem "Beautiful Credits", "", "BDoom_Credits"
 	TextItem "$MNU_QUITGAME", "q", "QuitMenu"
+}*/
+
+AddListMenu "MainMenu" {
+	//TLTPTextItem "$BDMENU_TITLE_SHORT", "$BDMENU_DESC", "White", b, "BDoom_Settings"
+	TextItem "$BDMENU_TITLE_SHORT", "b", "BDoom_Settings"
 }
 
 AddOptionMenu "OptionsMenu"
