@@ -42,6 +42,8 @@ BDMENU_KILLABLEOBJECTS = "When enabled, some decorations will react to being sho
 BDMENU_KILLABLEOBJECTS_NAME = "Shootable Decorations";
 BDMENU_liquidtextures = "Enable/disable Beautiful Doom liquid texture enhancements.\nNo performance impact. May be incompatible with other mods that have their own textures.\nCan be changed at any moment.";
 BDMENU_liquidtextures_NAME = "Enhanced liquid textures";
+BDMENU_goretextures = "Enable/disable Beautiful Doom gore texture enhancements that match new gore sprites.\nNo performance impact. May be incompatible with other mods that have their own textures.\nCan be changed at any moment.";
+BDMENU_goretextures_NAME = "Enhanced gore textures";
 
 BDMENU_MAXGIBS = "Max gibs";
 BDMENU_MAXBLOOD = "Max blood particles";

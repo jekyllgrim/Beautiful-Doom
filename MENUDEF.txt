@@ -58,6 +58,7 @@ OptionMenu "BDoom_Settings" {
 	TLTPOption "$BDMENU_DEBRIS_NAME",			"$BDMENU_DEBRIS", "White",	"bdoom_debris", "OnOff", "", 1	
 	TLTPOption "$BDMENU_KILLABLEOBJECTS_NAME",	"$BDMENU_KILLABLEOBJECTS", "White",	"bdoom_killableobjects", "Toggle", "bdoom_replaceobjects"
 	TLTPOption "$BDMENU_liquidtextures_NAME",	"$BDMENU_liquidtextures", "White", "bdoom_liquidtextures", "OnOff", ""
+	TLTPOption "$BDMENU_goretextures_NAME",	"$BDMENU_goretextures", "White", "bdoom_goretextures", "OnOff", ""
 	StaticText " "
 	
 	ScaleSliderGC "$BDMENU_MAXGIBS",					"bdoom_gibnum", 100, 3000, 100, "", "bdoom_gibs", "bdoom_replacemonsters"
