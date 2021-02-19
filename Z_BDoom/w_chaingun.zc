@@ -99,7 +99,7 @@ Class BD_Chaingun : BDoomWeapon {
 				owner.A_StartSound("weapons/chaingun/spin",CHAN_CHGSPIN,flags:CHANF_LOOPING);
 				//spinspeed increases while holding altfire
 				if (owner.player.cmd.buttons & BT_ALTATTACK && owner.player.oldbuttons & BT_ALTATTACK) {
-					spinspeed = Clamp(spinspeed+0.5,0,40);
+					spinspeed = Clamp(spinspeed+0.7,0,40);
 				}
 				//decreases otherwise
 				else {
