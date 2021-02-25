@@ -115,8 +115,9 @@ Class BD_Pistol : BDoomWeapon {
 			if(!invoker.c_muzzle)
 				A_Overlay(PSP_EFLASH,"FlashVanilla");
 			else {
-				for (int i = random (2,3); i > 0; i --)
-					A_Eject("BD_MuzzleSmoke",12,0,6.2,32);
+				//for (int i = random (2,3); i > 0; i --)
+					//A_Eject("BD_MuzzleSmoke",12,0,6.2,32);
+				A_Overlay(PSP_SMOKE,"GunSmoke");
 				A_Overlay(PSP_EFLASH,"FlashEnhanced");
 				A_Overlay(PSP_MFLASH,"FlashMuzzle");
 				if (bdoom_weapons != 2)

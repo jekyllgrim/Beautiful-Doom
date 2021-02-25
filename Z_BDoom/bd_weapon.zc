@@ -20,6 +20,14 @@ Class BDoomWeapon : Weapon abstract {
 	protected int magammogive;			//amount of magazine ammo given at first pickup (full mag for most weapons except Rocket Launcher)
 	property magammogive : magammogive;
 	
+	protected int smokeFrame; //to create multiple smoke layers
+	protected double prevAngle[21];
+	protected double prevPitch[21];
+	protected double smokeVSpeed[21];
+	protected double smokeHSpeed[21];
+	protected double smokeRoll[21];
+	
+	
 	protected transient CVar c_muzzle_cache;	
 	protected transient CVar c_blackgloves_cache;
 	protected transient CVar c_bobstyle_cache;
@@ -99,11 +107,13 @@ Class BDoomWeapon : Weapon abstract {
 	}
 	
 	enum BD_Layers {
+		PSP_SMOKEEND		= -10,
+		PSP_SMOKE			= -16,
 		PSP_MAG 			= -3,
 		PSP_GUN2 			=  2,
 		PSP_GUN3 			=  3,
 		PSP_HEAT 			=  5,
-		PSP_KICK 			= -10,
+		PSP_KICK 			= -50,
 		PSP_REDDOT 		= -4,
 		PSP_MFLASH 		= -5,
 		PSP_EFLASH 		=  12,
@@ -300,6 +310,63 @@ Class BDoomWeapon : Weapon abstract {
 	}
 
 	states	{
+		GunSmoke:
+			TNT1 A 1 {
+				if (waterlevel > 1) {
+					A_ClearOverlays(PSP_SMOKE,PSP_SMOKEEND);
+					return ResolveState("Null");
+				}
+				invoker.smokeFrame++;
+				if (PSP_SMOKE + invoker.smokeFrame >= PSP_SMOKEEND) {
+					invoker.smokeFrame = 1;
+					//A_ClearOverlays(PSP_SMOKE,PSP_SMOKEEND);
+					return ResolveState("Null");
+				}
+				int layer = PSP_SMOKE + invoker.smokeFrame;
+				A_Overlay(layer,"GunSmokeDo");
+				A_OverlayOffset(layer,0,10);
+				A_OverlayPivotAlign(layer,PSPA_CENTER,PSPA_CENTER);
+				A_OverlayFlags(layer,PSPF_Renderstyle|PSPF_Alpha|PSPF_ForceAlpha,true);
+				A_OverlayAlpha(layer,0.5);
+				int valueID = -layer;
+				invoker.smokeVSpeed[valueID] = frandom[sfx](0.2,1.5);
+				invoker.smokeHSpeed[valueID] = frandom[sfx](-0.08,0.08);
+				invoker.smokeRoll[valueID] = frandom[sfx](0.2,1.5) *  randompick[sfx](-1,1);
+				invoker.prevAngle[valueID] = angle;
+				invoker.prevPitch[valueID] = pitch;
+				A_OverlayScale(layer,0.5,0.5);
+				let psp = Player.FindPSprite(layer);
+				if (psp)
+					psp.frame = random[sfx](0,5);
+				return ResolveState(null);
+			}
+			loop;
+		GunSmokeDo:
+			GSMO # 1 {
+				int valueID = -OverlayID();
+				A_OverlayOffset(
+					OverlayID(),
+					invoker.smokeHSpeed[valueID] - (invoker.prevAngle[valueID] - angle),
+					-invoker.smokeVSpeed[valueID] + (invoker.prevPitch[valueID] - pitch),
+					WOF_ADD
+				);
+				invoker.prevAngle[valueID] = angle;
+				invoker.prevPitch[valueID] = pitch;
+				invoker.smokeVSpeed[valueID] *= 0.95;
+				A_OverlayRotate(OverlayID(),invoker.smokeRoll[valueID],WOF_ADD);
+				let psp = player.FindPSprite(OverlayID());
+				if (psp) {
+					if (psp.alpha <= 0)
+						return ResolveState("Null");
+					else if (psp.alpha > 0.1)
+						A_OverlayAlpha(OverlayID(),psp.alpha * 0.93);
+					else
+						A_OverlayAlpha(OverlayID(),psp.alpha - 0.01);
+					A_OverlayScale(OverlayID(),psp.scale.x*1.02,psp.scale.y*1.02,WOF_INTERPOLATE);
+				}
+				return ResolveState(null);
+			}
+			loop;				
 		QKick:
 			#### # 0 A_Overlay(PSP_KICK,"QuickKick");
 			#### ###### 1 A_WeaponOffset(7,4,WOF_ADD);
@@ -359,6 +426,7 @@ Class BDoomWeapon : Weapon abstract {
 			#### # 0 A_Jump(256,"Reload");
 			wait;
 		LoadSprites:
+			GSMO ABCDEF 0;
 			MUZ1 ABCDEFGH 0;
 			MUZ2 ABCD 0;
 			MUZ3 ABCD 0;
