@@ -115,9 +115,7 @@ Class BD_Pistol : BDoomWeapon {
 			if(!invoker.c_muzzle)
 				A_Overlay(PSP_EFLASH,"FlashVanilla");
 			else {
-				//for (int i = random (2,3); i > 0; i --)
-					//A_Eject("BD_MuzzleSmoke",12,0,6.2,32);
-				A_Overlay(PSP_SMOKE,"GunSmoke");
+				DrawMuzzleSmoke((0,10), sAlpha: bdoom_weapons == 2 ? 0.45 : 0.7);
 				A_Overlay(PSP_EFLASH,"FlashEnhanced");
 				A_Overlay(PSP_MFLASH,"FlashMuzzle");
 				if (bdoom_weapons != 2)
@@ -291,12 +289,8 @@ Class BD_Pistol : BDoomWeapon {
 			if(!invoker.c_muzzle)
 				A_Overlay(PSP_EFLASH,"AltFlashVanilla");
 			else {
-				for (int i = random (2,3); i > 0; i --) {
-					if (invoker.firedright)
-						A_Eject("BD_MuzzleSmoke",12,-6.5,5.5,32);
-					else
-						A_Eject("BD_MuzzleSmoke",12,6.5,5.5,32);
-				}
+				double xofs = invoker.firedright ? -37 : 37;
+				DrawMuzzleSmoke((xofs, 6), fade: 0.8, sVSpeed: 1.6);
 				A_Overlay(PSP_EFLASH,"AltFlashEnhanced");
 				A_Overlay(PSP_MFLASH,"AltFlashMuzzle");
 				A_OverlayOffset(PSP_MFLASH,40,0);

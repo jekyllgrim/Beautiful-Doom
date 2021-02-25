@@ -2401,4 +2401,52 @@ Texture Optional "BDT_DBRN", 64, 32
 	Patch "DBRAIN1", 0, 0
 }
 
+Sprite "GSMOA0", 256, 256
+{
+	XScale 3.700
+	YScale 4.300
+	Offset -465, -291
+	Patch "SMO2A0", 0, 0
+}
+
+Sprite "GSMOB0", 256, 256
+{
+	XScale 3.700
+	YScale 4.300
+	Offset -465, -291
+	Patch "SMO2B0", 0, 0
+}
+
+Sprite "GSMOC0", 256, 256
+{
+	XScale 3.700
+	YScale 4.300
+	Offset -465, -291
+	Patch "SMO2C0", 0, 0
+}
+
+Sprite "GSMOD0", 256, 256
+{
+	XScale 3.700
+	YScale 4.300
+	Offset -465, -291
+	Patch "SMO2D0", 0, 0
+}
+
+Sprite "GSMOE0", 256, 256
+{
+	XScale 3.700
+	YScale 4.300
+	Offset -465, -291
+	Patch "SMO2E0", 0, 0
+}
+
+Sprite "GSMOF0", 256, 256
+{
+	XScale 3.700
+	YScale 4.300
+	Offset -465, -291
+	Patch "SMO2F0", 0, 0
+}
+
 // End of texture definitions

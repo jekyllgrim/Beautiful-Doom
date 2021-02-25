@@ -274,8 +274,7 @@ Class BD_Chaingun : BDoomWeapon {
 				if(!invoker.c_muzzle)
 					A_Overlay(PSP_EFLASH,"FlashVanilla");
 				else {
-					for (int i = random (2,3); i > 0; i --)
-						A_Eject("BD_MuzzleSmoke",12,0,4,32);
+					DrawMuzzleSmoke((frandom[sfx](-3,3),12), fade: 0.75, sVSpeed: 1.2, sScale: 0.6);
 					A_Overlay(PSP_EFLASH,"FlashEnhanced");
 					A_Overlay(PSP_MFLASH,"FlashMuzzle");
 					if (random(0,1) == 1) 
@@ -370,8 +369,7 @@ Class BD_Chaingun : BDoomWeapon {
 				if(!invoker.c_muzzle)
 					A_Overlay(PSP_EFLASH,"AltFlashVanilla");
 				else {
-					for (int i = random (2,3); i > 0; i --)
-						A_Eject("BD_MuzzleSmoke",12,0,4,32);
+					DrawMuzzleSmoke((frandom[sfx](-3,3),12), sAlpha: 0.5, fade: 0.8, sVSpeed: 1.4, sScale: 0.85);
 					A_Overlay(PSP_EFLASH,"AltFlashEnhanced");
 					A_Overlay(PSP_MFLASH,"AltFlashMuzzle");
 					if (random(0,1) == 1) 
@@ -674,9 +672,9 @@ Class BD_Chaingun : BDoomWeapon {
 				if (invoker.c_muzzle) {
 					for (int i = random (2,3); i > 0; i --) {
 						if (invoker.riflesights)
-							A_Eject("BD_MuzzleSmoke",12,0,1.5,32);
+							DrawMuzzleSmoke((0,0), sAlpha: 0.15, fade: 0.75, sVSpeed: 1.04, sScale: 0.9);
 						else
-							A_Eject("BD_MuzzleSmoke",12,0,4,32);
+							DrawMuzzleSmoke((0,5), sAlpha: 0.35, fade: 0.7, sVSpeed: 1.07, sScale: 0.5);
 					}
 					A_Overlay(PSP_MFLASH,"FlashModernMuzzle");
 					if (invoker.riflesights)
