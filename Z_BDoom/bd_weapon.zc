@@ -63,6 +63,8 @@ Class BDoomWeapon : Weapon abstract {
 	}
 	
 	action void DrawMuzzleSmoke(vector2 ofs = (0,0), double sAlpha = 0.75, double fade = 0.9, double sVSpeed = 1.2, double sScale = 0.5, bool drawOver = false) {
+		if (!bdoom_debris)
+			return;
 		invoker.smokeFade = fade;
 		if (waterlevel > 1) {
 			A_ClearOverlays(PSP_SMOKE,PSP_SMOKEEND);
