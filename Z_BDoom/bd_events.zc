@@ -165,24 +165,6 @@ class BD_ActorOverrideHandler : EventHandler {
 		}
 		return false;
 	}
-	/*
-	// This replaces gore texures (SP_DUDEs) with custom gore textures based on Beautiful gore decorations (if decorations are replaced too)
-	static const name BD_SP_DUDE1[] = { "textures/BD_DUDE1a.png", "textures/BD_DUDE1b.png" };
-	static const name BD_SP_DUDE2[] = { "textures/BD_DUDE2a.png", "textures/BD_DUDE2b.png" };
-	static const name BD_SP_DUDE4[] = { "textures/BD_DUDE4a.png", "textures/BD_DUDE4b.png", "textures/BD_DUDE4c.png" };
-	static const name BD_SP_DUDE5[] = { "textures/BD_DUDE5a.png", "textures/BD_DUDE5b.png", "textures/BD_DUDE5c.png", "textures/BD_DUDE5d.png" };
-	static const name BD_SP_DUDE7[] = { "textures/BD_DUDE7a.png", "textures/BD_DUDE7b.png", "textures/BD_DUDE7c.png" };
-	static const name BD_SP_DUDE8[] = { "textures/BD_DUDE8a.png", "textures/BD_DUDE8b.png", "textures/BD_DUDE8c.png" };
-	override void WorldLoaded(WorldEvent e) {
-		if (bdoom_replaceobjects) {
-			level.ReplaceTextures("SP_DUDE1", BD_SP_DUDE1[random(0,1)],0);
-			level.ReplaceTextures("SP_DUDE2", BD_SP_DUDE2[random(0,1)],0);
-			level.ReplaceTextures("SP_DUDE4", BD_SP_DUDE4[random(0,2)],0);
-			level.ReplaceTextures("SP_DUDE5", BD_SP_DUDE5[random(0,3)],0);
-			level.ReplaceTextures("SP_DUDE7", BD_SP_DUDE7[random(0,2)],0);
-			level.ReplaceTextures("SP_DUDE8", BD_SP_DUDE8[random(0,2)],0);
-		}
-	}*/
 	
 	// This performs the actual conditional actor replacement:
 	override void CheckReplacement(ReplaceEvent e) {
