@@ -583,8 +583,10 @@ Class BD_FXAmountControl : EventHandler {
 	//continuously check if the number of FX actors is bigger than the array. if true, delete the oldest actors
 	override void WorldTick() {
 		if (DebrisCleaning) {
-			while (alldebris.Size() > 0)
-				alldebris[0].destroy();
+			while (alldebris.Size() > 0) {
+				if (alldebris[0])
+					alldebris[0].destroy();
+			}
 			alldebris.Clear();
 			DebrisCleaning = false;
 			return;				
