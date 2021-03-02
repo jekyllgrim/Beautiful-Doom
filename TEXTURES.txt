@@ -2449,4 +2449,192 @@ Sprite "GSMOF0", 256, 256
 	Patch "SMO2F0", 0, 0
 }
 
+Sprite "BPREA0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRA0", 0, 0
+}
+
+Sprite "BPREB0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRB0", 0, 0
+}
+
+Sprite "BPREC0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRC0", 0, 0
+}
+
+Sprite "BPRED0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRD0", 0, 0
+}
+
+Sprite "BPREE0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRE0", 0, 0
+}
+
+Sprite "BPREF0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRF0", 0, 0
+}
+
+Sprite "BPREG0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRG0", 0, 0
+}
+
+Sprite "BPREH0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRH0", 0, 0
+}
+
+Sprite "BPREI0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRI0", 0, 0
+}
+
+Sprite "BPREJ0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRJ0", 0, 0
+}
+
+Sprite "BPREK0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRK0", 0, 0
+}
+
+Sprite "BPREL0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRL0", 0, 0
+}
+
+Sprite "BPREM0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRM0", 0, 0
+}
+
+Sprite "BPREN0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRN0", 0, 0
+}
+
+Sprite "BPREO0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRO0", 0, 0
+}
+
+Sprite "BPREP0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRP0", 0, 0
+}
+
+Sprite "BPREQ0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRQ0", 0, 0
+}
+
+Sprite "BPRER0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRR0", 0, 0
+}
+
+Sprite "BPRES0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRS0", 0, 0
+}
+
+Sprite "BPRET0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRT0", 0, 0
+}
+
+Sprite "BPREU0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRU0", 0, 0
+}
+
+Sprite "BPREV0", 320, 320
+{
+	XScale 3.000
+	YScale 3.600
+	Offset -321, -137
+	Patch "COIRV0", 0, 0
+}
+
+Sprite "BPREZ0", 20, 19
+{
+	XScale 3.000
+	YScale 3.500
+	Offset -470, -340
+	Patch "PLBSA0", 0, 0
+	{
+		Translation "192:207=112:127", "240:247=122:127"
+	}
+}
+
+
 // End of texture definitions

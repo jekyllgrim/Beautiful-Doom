@@ -21,13 +21,14 @@ Class BDoomWeapon : Weapon abstract {
 	property magammogive : magammogive;
 	
 	protected int smokeFrame; //to create multiple smoke layers
+	const smokeLayers = 21;
 	protected double smokeFade;
-	protected double prevAngle[21];
-	protected double prevPitch[21];
-	protected double smokeVVel[21];
-	protected double smokeHVel[21];
-	protected double smokeRollChange[21];
-	protected int smokeTics[21];
+	protected double prevAngle[smokeLayers];
+	protected double prevPitch[smokeLayers];
+	protected double smokeVVel[smokeLayers];
+	protected double smokeHVel[smokeLayers];
+	protected double smokeRollChange[smokeLayers];
+	protected int smokeTics[smokeLayers];
 	
 	
 	protected transient CVar c_muzzle_cache;	
@@ -61,16 +62,18 @@ Class BDoomWeapon : Weapon abstract {
 			psp.sprite = GetSpriteIndex(sprite2);
 	}
 	
-	action void DrawMuzzleSmoke(vector2 ofs = (0,0), double sAlpha = 0.75, double fade = 0.9, double sVSpeed = 1.2, double sScale = 0.5) {
+	action void DrawMuzzleSmoke(vector2 ofs = (0,0), double sAlpha = 0.75, double fade = 0.9, double sVSpeed = 1.2, double sScale = 0.5, bool drawOver = false) {
 		invoker.smokeFade = fade;
 		if (waterlevel > 1) {
 			A_ClearOverlays(PSP_SMOKE,PSP_SMOKEEND);
+			A_ClearOverlays(PSP_SMOKETOP,PSP_SMOKEENDTOP);
 			return;
-		}				
-		invoker.smokeFrame++;
-		if (PSP_SMOKE + invoker.smokeFrame >= PSP_SMOKEEND)
-			invoker.smokeFrame = 1;
-		int layer = PSP_SMOKE + invoker.smokeFrame;
+		}
+		int smokeStart = drawOver ? PSP_SMOKETOP : PSP_SMOKE;
+		int smokeEnd = drawOver ? PSP_SMOKEEND : PSP_SMOKEENDTOP;
+		if (invoker.smokeFrame >= smokelayers)
+			invoker.smokeFrame = 0;
+		int layer = smokeStart + invoker.smokeFrame;
 		A_Overlay(layer,"GunSmokeDo");
 		A_OverlayOffset(layer,ofs.x,ofs.y+32);
 		A_OverlayPivotAlign(layer,PSPA_CENTER,PSPA_CENTER);
@@ -78,17 +81,16 @@ Class BDoomWeapon : Weapon abstract {
 		A_OverlayFlags(layer,PSPF_ADDBOB|PSPF_ADDWEAPON,false);
 		A_OverlayAlpha(layer,sAlpha);
 		A_OverlayRotate(layer,frandom[sfx](0,359));
-		int valueID = -layer;
-		invoker.smokeVVel[valueID] = sVSpeed*frandom[sfx](0.75,1.25);
-		invoker.smokeHVel[valueID] = frandom[sfx](-0.08,0.08);
-		invoker.smokeRollChange[valueID] = frandom[sfx](0.2,1.5) * randompick[sfx](-1,1);
-		invoker.prevAngle[valueID] = angle;
-		invoker.prevPitch[valueID] = pitch;
-		invoker.smokeTics[valueID] = 0;
+		//int valueID = layer - smokeStart;
+		invoker.smokeVVel[invoker.smokeFrame] = sVSpeed*frandom[sfx](0.75,1.25);
+		invoker.smokeHVel[invoker.smokeFrame] = frandom[sfx](-0.08,0.08);
+		invoker.smokeRollChange[invoker.smokeFrame] = frandom[sfx](-1,1);
+		invoker.prevAngle[invoker.smokeFrame] = angle;
+		invoker.prevPitch[invoker.smokeFrame] = pitch;
+		invoker.smokeTics[invoker.smokeFrame] = 0;
 		A_OverlayScale(layer,sScale,sScale);
-		let psp = Player.FindPSprite(layer);
-		if (psp)
-			psp.frame = random[sfx](0,5);
+		//console.printf("smokeframe %d",invoker.smokeframe);
+		invoker.smokeFrame++;
 	}
 	
 	//Removes PSprite. Can be called both from state and from DoEffect and allows removing multiple psprite IDs, not a from-to range.
@@ -139,22 +141,24 @@ Class BDoomWeapon : Weapon abstract {
 	}
 	
 	enum BD_Layers {
+		PSP_KICK 			= -50,
+		PSP_SMOKE			= -30,
+		PSP_MFLASH 		= -5,
+		PSP_REDDOT 		= -4,
 		PSP_SMOKEEND		= -10,
-		PSP_SMOKE			= -20,
 		PSP_MAG 			= -3,
 		PSP_GUN2 			=  2,
 		PSP_GUN3 			=  3,
 		PSP_HEAT 			=  5,
-		PSP_KICK 			= -50,
-		PSP_REDDOT 		= -4,
-		PSP_MFLASH 		= -5,
-		PSP_EFLASH 		=  12,
 		PSP_LIGHTS 		=  10,
 		PSP_HLIGHTS 		=  11,
+		PSP_EFLASH 		=  12,
 		PSP_CHAINBLOOD 	=  30,
 		PSP_CHAINBLOODR 	=  31,
 		PSP_CHAINBLOODG 	=  32,
-		PSP_CHAINBLOODB 	=  33
+		PSP_CHAINBLOODB 	=  33,
+		PSP_SMOKETOP		= 500,
+		PSP_SMOKEENDTOP	= 520
 	};
 	
 	enum BD_SoundChannels {
@@ -343,8 +347,14 @@ Class BDoomWeapon : Weapon abstract {
 
 	states {
 		GunSmokeDo:
-			GSMO # 1 {
-				int valueID = -OverlayID();
+			GSMO A 0 {
+				let psp = Player.FindPSprite(OverlayID());
+				if (psp)
+					psp.frame = random[sfx](0,5);
+			}
+			#### # 1 {
+				int smokeStart = OverlayID() > 0 ? PSP_SMOKETOP : PSP_SMOKE;
+				int valueID = Clamp(OverlayID() - smokeStart, 0, smokeLayers-1);
 				A_OverlayOffset(
 					OverlayID(),
 					invoker.smokeHVel[valueID] - (invoker.prevAngle[valueID] - angle),
@@ -371,7 +381,7 @@ Class BDoomWeapon : Weapon abstract {
 				}
 				return ResolveState(null);
 			}
-			loop;				
+			wait;				
 		QKick:
 			#### # 0 A_Overlay(PSP_KICK,"QuickKick");
 			#### ###### 1 A_WeaponOffset(7,4,WOF_ADD);

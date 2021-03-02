@@ -126,8 +126,8 @@ Class BD_Chainsaw : BDoomWeapon {
 					A_WeaponReady(WRF_NOSECONDARY);
 			}
 			#### A 0 {
-				if (bdoom_debris && random(0,1) == 1) {
-					A_Eject("BD_SawSmoke",frandom(16,18),frandom(6,8),frandom(8,9.5),zvel:frandom(0.3,0.7));
+				if (/*bdoom_debris && */random(0,1) == 1) {
+					DrawMuzzleSmoke((64, 72), sAlpha: 0.2, sVSpeed: 1.35, sScale: 0.85);
 				}
 			}
 			loop;
@@ -231,8 +231,7 @@ Class BD_Chainsaw : BDoomWeapon {
 			}
 			#### GHIJIH 2 A_WeaponReady();
 			#### A 0 {
-				if (bdoom_debris)
-					A_Eject("BD_SawSmoke",frandom(16,18),frandom(6,8),frandom(8,9.5),zvel:frandom(0.3,0.7));
+				DrawMuzzleSmoke((64, 72), sAlpha: 0.2, sVSpeed: 1.35, sScale: 0.85);
 				invoker.jamstacks = clamp(invoker.jamstacks-1,0,1024);
 			}
 			goto ready;
@@ -591,6 +590,8 @@ Class BD_ChainsawBloodSpill : BD_CeilingBloodDrop {
 	}
 }
 
+/* unused
+
 class BD_SawSmoke : BD_BaseSmoke {
 	Default {
 		alpha 0.3;
@@ -608,7 +609,7 @@ class BD_SawSmoke : BD_BaseSmoke {
 			SMK1 AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRR 1 A_FadeOut(0.01);
 			stop;
 	}
-}
+}*/
 
 
 /* 

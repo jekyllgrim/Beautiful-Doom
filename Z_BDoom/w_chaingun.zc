@@ -339,7 +339,7 @@ Class BD_Chaingun : BDoomWeapon {
 				if (psp)
 					psp.frame = invoker.spinframe;
 				if (invoker.isLocked && random[bdsfx](0,60) < invoker.heatStacks) {
-					A_Eject("BD_WeaponSmoke",frandom[bdsfx](8,12),frandom[bdsfx](-2.5,2.5),frandom[bdsfx](2,4),zvel:frandom[bdsfx](0.3,0.8));
+					DrawMuzzleSmoke((frandom[sfx](-25,25),frandom[sfx](15,50)), fade: 0.5, sVSpeed: 1.2, sScale: 1, drawover: true);		//A_Eject("BD_WeaponSmoke",frandom[bdsfx](8,12),frandom[bdsfx](-2.5,2.5),frandom[bdsfx](2,4),zvel:frandom[bdsfx](0.3,0.8));
 				}
 				if (invoker.ammo1.amount > 0 && !invoker.isLocked && player.cmd.buttons & BT_ATTACK && invoker.spinframe == 0) {
 					invoker.HeatStacks = Clamp(invoker.heatStacks+1.2,0,60);
