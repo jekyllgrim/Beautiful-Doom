@@ -7,11 +7,11 @@ class BD_BFG9000 : BDoomWeapon {
 	int wcharge; //charge of the Modern BFG
 	int railcounter; //used for Heavy Laser alt attack
 	string PrevSpecies;
+	private int particleLayer;
 	private double wzoom;
 	private double wzoommul;
 	
 	private double lightsalpha;
-	BD_ModernBFG_PrepOrb preporb;
 	Default {
 		BDoomWeapon.dontforcebob True;
 		Height 20;
@@ -50,8 +50,6 @@ class BD_BFG9000 : BDoomWeapon {
 				bAMMO_OPTIONAL = false;
 			//console.printf("Player Species: %s",owner.species);
 		}
-		if (preporb && (owner.player.readyweapon != self || bdoom_weapons != 2 || owner.health <= 0))
-			preporb.destroy();
 	}
 	States {
 		Spawn:
@@ -146,7 +144,7 @@ class BD_BFG9000 : BDoomWeapon {
 				}
 				else
 					A_ReFire();
-				A_Eject("BD_WeaponSmoke",12, frandom(-3,3),frandom(0,6), frandom(-0.1,0.1),frandom(-0.1,0.1),frandom(0.1,0.4));
+				DrawMuzzleSmoke((frandom[sfx](-25,25),frandom[sfx](-10,20)), salpha: 0.35,fade: 0.6, sVSpeed: 1.22, sScale: 0.7);
 			}
 			goto ready;
 		LightsOn:
@@ -192,7 +190,15 @@ class BD_BFG9000 : BDoomWeapon {
 		RailFire:
 			BBGN A 2 {
 				If(invoker.railcounter >= 100)
-					return ResolveState("AltEnd");					
+					return ResolveState("AltEnd");
+				for (int i = invoker.railcounter * 0.25; i > 0; i--) {
+					int layer = -300+invoker.particleLayer;
+					A_Overlay(layer,"RailParticle");
+					A_OverlayOffset(layer,frandom[sfx](-72,72),frandom[sfx](-72,72));
+					invoker.particleLayer++;
+					if (invoker.particleLayer >= 50)
+						invoker.particleLayer = 0;
+				}	
 				A_WeaponOffset(random(-1,1),random(32,34),WOF_INTERPOLATE);
 				A_RailAttack(10*random(1,6),0,1,"","green",RGF_SILENT|RGF_NORANDOMPUFFZ,1,"BD_BFGRailPuff",0,0,300,0,5.0,0,"BD_BFGRailBall_Hold",-4); //this is memory-light
 				if (invoker.railcounter >= 30 && bdoom_shakes == 1)
@@ -216,7 +222,7 @@ class BD_BFG9000 : BDoomWeapon {
 			}
 			BBGN BCDEFGHIJAAA 2 {
 				if (bdoom_debris)
-					A_Eject("BD_WeaponSmoke",12, frandom(-3,3),frandom(0,6), frandom(-0.1,0.1),frandom(-0.1,0.1),frandom(0.1,0.4));
+					DrawMuzzleSmoke((frandom[sfx](-25,25),frandom[sfx](-10,20)), salpha: 0.35,fade: 0.6, sVSpeed: 1.22, sScale: 0.7);;
 			}
 			BBGN A 5 {
 				If(invoker.railcounter >= 100)
@@ -228,11 +234,11 @@ class BD_BFG9000 : BDoomWeapon {
 		AltEndLong: //Played only if you held the button until the end
 			BBGN AAAAAAAAAAAAAAAA 1 {
 				if (bdoom_debris)
-					A_Eject("BD_WeaponSmoke",12, frandom(-3,3),frandom(0,6), frandom(-0.1,0.1),frandom(-0.1,0.1),frandom(0.1,0.4));
+					DrawMuzzleSmoke((frandom[sfx](-25,25),frandom[sfx](-10,20)), salpha: 0.35,fade: 0.6, sVSpeed: 1.22, sScale: 0.7);;
 			}
 			BBGN AAAAA 1 { 
 				if (bdoom_debris)
-					A_Eject("BD_WeaponSmoke",12, frandom(-3,3),frandom(0,6), frandom(-0.1,0.1),frandom(-0.1,0.1),frandom(0.1,0.4));
+					DrawMuzzleSmoke((frandom[sfx](-25,25),frandom[sfx](-10,20)), salpha: 0.35,fade: 0.6, sVSpeed: 1.22, sScale: 0.7);;
 				invoker.railcounter = 0; 
 			}
 			goto ready;	
@@ -334,13 +340,15 @@ class BD_BFG9000 : BDoomWeapon {
 				A_OverlayFlags(PSP_FLASH,PSPF_RENDERSTYLE,true);
 				A_OverlayRenderstyle(PSP_FLASH,STYLE_Add);				
 				A_StartSound("Mweapons/bfg/charge",slot:CHAN_5);
+				
 				//spawn rotating orb in front of the barrel
-				invoker.preporb = BD_ModernBFG_PrepOrb(Spawn("BD_ModernBFG_PrepOrb",player.mo.pos));
-				if (invoker.preporb) {
-					invoker.preporb.master = player.mo;
-					invoker.preporb.bfg = BD_BFG9000(invoker);
-				}
-			}
+				A_Overlay(PSP_MFLASH,"Preorb");
+				A_OverlayOffset(PSP_MFLASH,0,15);
+				A_OverlayFlags(PSP_MFLASH,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
+				A_OverlayRenderstyle(PSP_MFLASH,Style_Add);
+				A_OverlayAlpha(PSP_MFLASH,1);
+				A_OverlayPivotAlign(PSP_MFLASH,PSPA_CENTER,PSPA_CENTER);
+			}		
 		Hold.Modern:
 			BBGN A 14 {
 				A_SetTics(11+invoker.wcharge);
@@ -358,6 +366,56 @@ class BD_BFG9000 : BDoomWeapon {
 			}
 			TNT1 A 0 A_ReFire("Hold.Modern");
 			goto FireBFG;
+		Preorb:
+			BPRE ABCDEFGHIJKLMNOPQRSTUV 2 bright {
+				A_OverlayRotate(OverlayID(),5*invoker.wcharge,WOF_ADD);
+				for (int i = 0; i < invoker.wcharge; i++) {
+					int layer = -300+invoker.particleLayer;
+					A_Overlay(layer,"PreorbParticle");
+					A_OverlayOffset(layer,frandom[sfx](-80,80),frandom[sfx](-80,80));
+					invoker.particleLayer++;
+					if (invoker.particleLayer >= 50)
+						invoker.particleLayer = 0;
+				}
+			}
+			loop;
+		PreorbParticle:
+			TNT1 A 0 {
+				A_OverlayPivotAlign(OverlayID(),PSPA_CENTER,PSPA_CENTER);
+				A_OverlayFlags(OverlayID(),PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
+				A_OverlayRenderstyle(OverlayID(),Style_Add);
+				A_OverlayAlpha(OverlayID(),0);
+				A_OverlayScale(OverlayID(),0.05,0.05);
+			}
+			BPRE ZZZZZZZZZZZZZZZZ 1 {
+				A_OverlayScale(OverlayID(),0.08,0.08,WOF_ADD);
+				let psp = player.FindPSprite(OverlayID());
+				if (psp) {
+					A_OverlayAlpha(OverlayID(),Clamp(psp.alpha + 0.25, 0, 1));
+					//Console.Printf("layer %d offsets: %d, %d",OverlayID(),psp.x,psp.y);
+					A_OverlayOffset(OverlayID(),psp.x * 0.9, psp.y * 0.9, WOF_INTERPOLATE);
+				}
+			}
+			stop;	
+		RailParticle:
+			TNT1 A 0 {
+				A_OverlayPivotAlign(OverlayID(),PSPA_CENTER,PSPA_CENTER);
+				A_OverlayFlags(OverlayID(),PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
+				A_OverlayRenderstyle(OverlayID(),Style_Add);
+				A_OverlayAlpha(OverlayID(),0);
+				A_OverlayScale(OverlayID(),0.05,0.05);
+			}
+			BPRE ZZZZZZZZZZZZZZZZ 1 {
+				double smul = double(Clamp(invoker.railcounter,0,100) * 0.005);	
+				A_OverlayScale(OverlayID(),smul,smul,WOF_ADD);
+				let psp = player.FindPSprite(OverlayID());
+				if (psp) {
+					A_OverlayAlpha(OverlayID(),Clamp(psp.alpha + 0.3, 0, 1));
+					double pmul = 1 - double(Clamp(invoker.railcounter,0,100) * 0.005);	
+					A_OverlayOffset(OverlayID(),psp.x * pmul, psp.y * pmul, WOF_INTERPOLATE);
+				}
+			}
+			stop;		
 		OverCharge:	
 			BBGN A 25 {
 				if (invoker.wcharge >= 12) {
@@ -370,8 +428,8 @@ class BD_BFG9000 : BDoomWeapon {
 			goto FireBFG;
 		FireBFG:
 			BBGN A 8 {
-				if (invoker.preporb)
-					invoker.preporb.destroy();
+				A_ClearOverlays(PSP_MFLASH,PSP_MFLASH);
+				A_ClearOverlays(-300,-250);
 				A_Overlay(PSP_FLASH,"Flash");
 				A_OverlayFlags(PSP_FLASH,PSPF_RENDERSTYLE,true);
 				A_OverlayRenderstyle(PSP_FLASH,STYLE_Add);		
@@ -404,14 +462,14 @@ class BD_BFG9000 : BDoomWeapon {
 					A_ZoomFactor(1.0,ZOOM_NOSCALETURNING);
 					return ResolveState("Ready");
 				}
-				A_Eject("BD_WeaponSmoke",12, frandom(-3,3),frandom(0,6), frandom(-0.1,0.1),frandom(-0.1,0.1),frandom(0.1,0.4));
+				DrawMuzzleSmoke((frandom[sfx](-25,25),frandom[sfx](-10,20)), salpha: 0.35,fade: 0.6, sVSpeed: 1.22, sScale: 0.7);;
 				return ResolveState(null);
 			}
 			wait;					
 		FireSelf:
 			BBGN A 8 {
-				if (invoker.preporb)
-					invoker.preporb.destroy();
+				A_ClearOverlays(PSP_MFLASH,PSP_MFLASH);
+				A_ClearOverlays(-300,-250);
 				A_ClearOverlays(PSP_HEAT,PSP_HEAT);
 				A_ClearOverlays(PSP_LIGHTS,PSP_LIGHTS);
 				A_Overlay(PSP_FLASH,"Flash");			
@@ -435,7 +493,7 @@ class BD_BFG9000 : BDoomWeapon {
 			BBGN IIJJ 1 {
 				invoker.wzoom = Clamp ( invoker.wzoom *= 1.004, 0.8, 1);
 				A_ZoomFactor(invoker.wzoom,ZOOM_NOSCALETURNING);
-				A_Eject("BD_WeaponSmoke",12, frandom(-3,3),frandom(0,6), frandom(-0.1,0.1),frandom(-0.1,0.1),frandom(0.1,0.4));
+				DrawMuzzleSmoke((frandom[sfx](-25,25),frandom[sfx](-10,20)), salpha: 0.35,fade: 0.6, sVSpeed: 1.22, sScale: 0.7);;
 			}
 			TNT1 A 0 {
 				A_Overlay(PSP_LIGHTS,"LightsBlink");		
@@ -444,104 +502,10 @@ class BD_BFG9000 : BDoomWeapon {
 			BBGN AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 {
 				invoker.wzoom = Clamp ( invoker.wzoom *= 1.004, 0.8, 1);
 				A_ZoomFactor(invoker.wzoom,ZOOM_NOSCALETURNING);
-				A_Eject("BD_WeaponSmoke",12, frandom(-3,3),frandom(0,6), frandom(-0.1,0.1),frandom(-0.1,0.1),frandom(0.1,0.4));
+				DrawMuzzleSmoke((frandom[sfx](-25,25),frandom[sfx](-10,20)), salpha: 0.35,fade: 0.6, sVSpeed: 1.22, sScale: 0.7);;
 			}
 			TNT1 A 0 A_ZoomFactor(1,ZOOM_NOSCALETURNING);
 			goto ready;
-	}
-}
-
-Class BD_ModernBFG_PrepOrb : BD_SmallDebris {
-	BD_BFG9000 bfg;
-	Default {
-		+FORCEXYBILLBOARD
-		+NOINTERACTION
-		+BRIGHT
-		renderstyle 'Add';
-		alpha 0.9;
-		scale 0.02;
-		gravity 0;
-	}
-	override void Tick() {
-		super.Tick();
-		if (!master || !master.player) {
-			destroy();
-			return;
-		}
-		Vector3 ofs = master.player.mo.pos+(0,0,master.player.viewz - master.pos.z);
-		Vector3 x, y, z;
-		[x, y, z] = Matrix4.getaxes(master.player.mo.pitch,master.player.mo.angle,master.player.mo.roll);
-		SetOrigin(ofs+x*16-z*3.5,true);
-		if (bfg) {
-			roll += 5*bfg.wcharge;
-			double jitter = 0.1 * bfg.wcharge;
-			scale = (default.scale * (1 + jitter));			
-		}
-	}
-	states {
-	Spawn:
-		COIR ABCDEFGHIJKLMNOPQRSTUV 2 {
-			if (!bdoom_debris)
-				return;
-			if (!bfg)
-				return;
-			for (int i = 0; i < bfg.wcharge; i++) {/*
-				let xoff = frandom(-10,10);
-				let yoff = frandom(-10,10);
-				let zoff = frandom(-10,10);
-				let colshift = random(0,200);
-				A_SpawnParticle(Color(0x00+colshift,0xFF,0x00+colshift),SPF_FULLBRIGHT|SPF_NOTIMEFREEZE,lifetime:10,size:0.3,
-								xoff:xoff,yoff:yoff,zoff:zoff,
-								velx:xoff*-0.1,vely:yoff*-0.1,velz:zoff*-0.1,
-								startalphaf:0.8,fadestepf:0,sizestep:0.3
-							);*/
-				let orb = Spawn("BD_BFGpreorbParticle",pos+(frandom(-10,10),frandom(-10,10),frandom(-10,10)));
-				if (orb) {
-					orb.target = self;
-					orb.master = master;
-				}
-			}
-		}
-		loop;
-	}
-}
-
-Class BD_BFGpreorbParticle : BD_BaseFlare {
-	int ftimer;
-	Default {
-		translation "GreenPlasma";
-		alpha 0.01;
-		scale 0.035;
-	}
-	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		scale *= frandom(0.8,1.2);
-		ftimer = 10;
-		moving = true;
-	}
-	override void Tick() {
-		if (!target) {
-			destroy();
-			return;
-		}
-		if (isFrozen())
-			return;
-		double tdist = Distance3D(target);
-		A_FaceTarget(0,0,flags:FAF_MIDDLE);
-		double fspeed = tdist / ftimer;
-		Vel3DFromAngle(fspeed,angle,pitch);
-		if (ftimer > 1)
-			ftimer--;
-		else {
-			destroy();
-			return;
-		}
-		super.Tick();
-	}
-	states {
-	Spawn:
-		PLBS A 1 A_FadeIn(0.1,FTF_CLAMP);
-		loop;
 	}
 }
 
