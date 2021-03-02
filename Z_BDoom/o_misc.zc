@@ -333,7 +333,7 @@ Class BD_ExplosiveBarrel : ExplosiveBarrel {
 		deathsound "world/ebarrel";
 		scale 0.8;
 	}
-	//private array < Class<BD_ExplosiveBarrel> > barrels;
+	//private array < BD_ExplosiveBarrel > barrels;
 	override void Tick() {
 		super.Tick();
 		if (isFrozen())
@@ -358,7 +358,9 @@ Class BD_ExplosiveBarrel : ExplosiveBarrel {
 					continue;
 				if (Distance3D(obj) > dist)
 					continue;
-				barrels.Push(obj);
+				let bar = BD_ExplosiveBarrel(obj);
+				if (bar)
+					barrels.Push(bar);
 			}
 			if (flare) {
 				double fac = Clamp(barrels.Size()*0.8,1,20);
