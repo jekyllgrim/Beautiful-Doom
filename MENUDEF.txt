@@ -70,6 +70,7 @@ OptionMenu "BDoom_Settings" {
 	StaticText "$BDMENU_TITLE_EXTRAFX", yellow
 	TLTPOption "$BDMENU_FOOTSTEPS_NAME", 		"$BDMENU_FOOTSTEPS", "White", "bdoom_fs_enabled", "OnOff", ""
 	Slider "$BDMENU_FOOTSTEPS_VOL",				"bdoom_fs_volume_mul", 0, 1.0, 0.1
+	Slider "$BDMENU_FOOTSTEPS_FREQ",			"bdoom_fs_delay_mul", 0.1, 2.0, 0.1
 	TLTPOption "$BDMENU_SPARKS_NAME", 			"$BDMENU_SPARKS", "White","bdoom_sparks", "OnOff", ""
 	TLTPOption "$BDMENU_FLIES_NAME", 			"$BDMENU_FLIES", "White", "bdoom_flies", "OnOff", "bdoom_replacemonsters"
 	TLTPOption "$BDMENU_SHAKES_NAME", 			"$BDMENU_SHAKES", "White", "bdoom_shakes", "OnOff", ""
