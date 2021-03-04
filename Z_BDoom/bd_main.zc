@@ -173,6 +173,12 @@ mixin class BD_PlayerSightCheck {
 	}
 }
 
+mixin class BD_LinearMapCheck {
+	double LinearMap(double val, double o_min, double o_max, double n_min, double n_max) {
+		return (val - o_min) * (n_max - n_min) / (o_max - o_min) + n_min;
+	}
+}
+
 //base class for most debris
 Class BD_BaseDebris : BDoomActor abstract {
 	protected bool landed;			//true if object landed on the floor (or ceiling, if can stick to ceiling)
