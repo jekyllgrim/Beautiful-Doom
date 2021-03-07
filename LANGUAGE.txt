@@ -54,6 +54,7 @@ BDMENU_TITLE_EXTRAFX = "ADDITIONAL EFFECTS AND SOUNDS";
 BDMENU_FOOTSTEPS = 		"Enable/disable the sounds of player footsteps\n(In multiplayer this option is defined by the host)";
 BDMENU_FOOTSTEPS_NAME = "Footstep sounds";
 BDMENU_FOOTSTEPS_VOL = 	"Footstep volume";
+BDMENU_FOOTSTEPS_FREQ = "Footstep frequency";
 BDMENU_SPARKS =			"Enable/disable the sounds of ricochetting bullets and chainsaw screeching against a wall.";
 BDMENU_SPARKS_NAME =	"Ricochet & spark sounds";
 BDMENU_FLIES = 			"When enabled flies will appear over killed monsters after a few minutes";
@@ -88,32 +89,216 @@ BDO_ENABLED			= "Enabled";
 BDO_DEHACKEDONLY	= "DEHACKED only";
 BDO_DEHACKEDSPRITES	= "DEHACKED and sprites";
 
-//per-monster replacements
+//// Beautiful Doom Weapon Help strings
 
-BDM_Zombieman = "Zombieman";
-BDM_ShotgunGuy = "Shotgun Guy";
-BDM_ChaingunGuy = "Chaingun Guy";
-BDM_WolfSS = "Wolfenstein Soldier";
-BDM_DoomImp = "Imp";
-BDM_Pinky = "Pinky Demon";
-BDM_Spectre = "Spectre Demon";
-BDM_Cacodemon = "Cacodemon";
-BDM_PainElemental = "Pain Elemental";
-BDM_LostSoul = "Lost Soul";
-BDM_Revenant = "Revenant";
-BDM_Arachnotron = "Arachnotron";
-BDM_Mancubus = "Mancubus";
-BDM_HellKnight = "Hell Knight";
-BDM_BaronOfHell = "Baron of Hell";
-BDM_ArchVile = "Arch-Vile";
-BDM_Cyberdemon = "Cyberdemon";
-BDM_SpiderMastermind = "Spider Mastermind";	
+BDH_WEAPONINFO		= "WEAPON INFO";
+//stats
+BDH_Primary		= "Primary";
+BDH_Secondary		= "Secondary";
+BDH_AtkRate		= "Atk. Rate";
+BDH_Damage			= "Damage";
+BDH_Type			= "Type";
+BDH_ReloadTime		= "Reload time";
+BDH_Magazine		= "Magazine";
+BDH_FireRate		= "Fire rate";
+BDH_BaseDamage		= "Base damage";
+BDH_BestRange		= "Best range";
+BDH_BulletSpeed	= "Bullet speed";
+BDH_PelletSpeed	= "Pellet speed";
+BDH_ProjSpeed		= "Proj. speed";
+BDH_BlastArea		= "Blast area";
+BDH_Duration		= "Duration";
+//atk types
+BDH_Melee			= "Melee";
+BDH_Hitscan		= "Hitscan";
+BDH_Projectile		= "Projectile";
+BDH_Bullet			= "Bullet";
+BDH_Pellet			= "Pellet";
+BDH_Railgun		= "Railgun";
+//characteristics
+BDH_Continuous		= "Continuous";
+BDH_hstunlock		= "high stunlock";
+BDH_medfalloff		= "medium DMG falloff";
+BDH_highfalloff	= "high DMG falloff";
+BDH_vhighfalloff	= "very high DMG falloff";
+BDH_semiauto		= "semi-auto";
+BDH_fullauto		= "full auto";
+//projectile
+BDH_impact			= "impact";
+BDH_blast			= "blast";
+BDH_explosive		= "explosive";
+BDH_linear			= "linear";
+BDH_bouncing		= "bouncing";
+BDH_homing			= "homing";
+BDH_nonpiercing 	= "non-piercing";
+BDH_piercing 		= "piercing";
+BDH_tracing 		= "tracing";
+BDH_initial		= "initial";
+//values
+BDH_hitssec		= "hits/sec";
+BDH_shotssec		= "shots/sec";
+BDH_max			= "max";
+BDH_approx			= "approx.";
+BDH_upto			= "up to";
+BDH_sec			= "sec";
+BDH_Any			= "Any";
 
+//Fist
+BDH_Fist			= "Fist";
+BDH_CQC			= "CQC";
+BDH_EFist_Desc		= 	"Fist with a knuckleduster. Faster than Vanilla.\n"
+						"Doesn't alert enemies that weren't hit.\n"
+						"You can also use your boot to kick enemies.";
+BDH_EFist_Note		= 	"Kicking pushes monsters away.\n"
+						"It also slightly slows you down\nunless you do it while jumping.";
+BDH_MFist_Desc		= 	"Raise Combo Counter (CC) with Primary.\n"
+						"CC changes your Secondary. Finishers reset CC.\n"
+						"Kick can be added after finishers.";
+BDH_MFist_Note		= 	"CC defines fist & kick damage and kick range.\n"
+						"5 Light Punches in a row will reset CC.\n"
+						"\n"
+						"As long as you keep punching an enemy,\n"
+						"your chance to stunlock them will increase.";
+BDH_CQC_LPunch		= "Light Left Punch (+1 CC)";
+BDH_CQC_RPunch		= 	"CC0: Slow punch\n"
+						"CC1: Fast punch\n"
+						"CC2: Heavy punch\n"
+						"CC3+: Uppercut (finisher)";
+BDH_CQC_Kick		= "Heavy kick (finisher+)";
+BDH_Punch			= "Punch";
+BDH_Kick			= "Kick";
 
+//chainsaw
+BDH_Chainsaw		= "Chainsaw";
+BDH_EChainsaw_Desc = "Your classic chainsaw. Doesn’t pull you\ntowards the target, allowing for easier\nmovement.";
+BDH_MChainsaw_Desc = "Powerful chainsaw with a high chance to\nstunlock the target. Gets jammed easily.";
+BDH_MChainsaw_Note = 	"Attacking enemies covers the blade with blood.\n"
+						"The more there is, the higher is the chance\n"
+						"for the chainsaw to jam.\n"
+						"The more bloodied the saw, the harder it'll be\n"
+						"to restart.\n"
+						"Secondary attack pushes blood out, cleaning\n"
+						"the blade.";
+BDH_ESawAttack		= "Saw attack";
+BDH_MSawAttack		= "Saw attack (chance to jam)";
+BDH_MSawAlt		= "Rev (pushes out blood)";
+BDH_MSawPull		= "(when off) Pull starter";
 
+//pistol
+BDH_Pistol			= "Pistol";
+BDH_EPistol_Desc	= "Basic pistol, slightly faster than its\nVanilla counterpart.\nCan be equipped and unequipped fairly quickly.";		
+BDH_MPistol_Desc	= "Modern Pistol with high fire rate and\nstopping power.";						
+BDH_FirePistol		= "Fire Pistol";
+BDH_EPistol_Note	= "Can be dual-wielded if you get a second pistol\nfrom a Zombieman.";
 
-						
-						
+//dual pistols
+BDH_Pistols		= "Dual Pistols";
+BDH_PistolsDesc	= "Basic pistols, slightly faster than their\nVanilla counterpart.\nCan be equipped and unequipped fairly quickly.";
+BDH_PistolsNote	= "You need a moment to aim the guns before you\ncan start using the secondary attack.\nDual-wielding has reduced accuracy.";
+BDH_Fire1Pistol	= "Fire one pistol";
+BDH_DualFire		= "Dual fire";
+
+//shotgun
+BDH_Shotgun		= "Pump Shotgun";
+BDH_EShotgun_Desc	= "Classic Shotgun with an added melee attack.";
+BDH_MShotgun_Desc	= "Modern Shotgun with high stopping power.";
+BDH_EShotgun_Note	= "Melee animation can be quickly cancelled into\na shot, allowing for an efficient combo.";
+BDH_MShotgun_Note	= 	"Reloading with an empty magazine takes longer,\n"
+						"because you'll have to pump the shotgun\n"
+						"after loading the first shell.";
+BDH_FireShotgun	= "Fire shotgun";
+BDH_MFireRate		= "1.05 sec (+0.35s per shell)";
+
+//super shotgun
+BDH_SSG			= "Super Shotgun";
+BDH_MSSG			= "Sawed-Off Shotgun";
+BDH_ESSG_Desc		= "Classic double-barreled Shotgun that can\nfire 1 or 2 shells simultaneously.";
+BDH_MSSG_Desc		= "Quick-draw double-barrelled sawed-off shotgun.\nHigh power, low accuracy and range.";
+BDH_MSSG_Note		= 	"Pellets can pierce enemies. The efficiency of\n"
+						"piercing depends on the target's health.\n\n"
+						"You can fire after loading only one shell.\n\n"
+						"Sometimes it's better to switch to a different\nweapon than spend time reloading.";
+BDH_MSSG_Reload	= "1.48s (1 shell) / 1.86s (full)";
+BDH_MSSG_Damage	= "12 x 12 (per shell)";
+BDH_ESSG_Note		= "Press the ‘Reload’ button to reload 1 shell\nafter firing once.";
+BDH_SSGFire2		= "Fire both barrels";
+BDH_SSGFire1		= "Fire one barrel";
+
+//chaingun
+BDH_Chaingun		= "Chaingun";
+BDH_Chaingun_Desc	= "Classic Chaingun with rapid-fire mode\nas a secondary attack.";
+BDH_Chaingun_Note	= 	"Hold Secondary for fast spin, then fire\n"
+						"with Primary. The gun needs to cool down\n"
+						"after rapid fire. Watch the barrels: when\n"
+						"they're red, the gun is getting hot.";
+BDH_ChaingunFire	= "Fire chaingun";
+BDH_RapidFire		= "(Hold) Fast spin";
+
+//Rifle
+BDH_Rifle			= "Assault Rifle";
+BDH_Rifle_Desc		= "An assault rifle with good range and damage\nand a reflex sight for longer ranges.";	
+BDH_Rifle_Note		= 	"Aiming down sights (ADS) provides zoom and\n"
+						"reduces spread but it also slows your\n"
+						"movement by 20% and switches the weapon\n"
+						"into a 3-round burst mode.";
+BDH_RifleReload	= "1.54 sec (+1s if dry)";
+BDH_RiflePrimary	= "(Hip) Automatic fire\n(ADS) 3-round burst";
+BDH_RifleFirerate	= "(Hip) 8.75 $BDH_shotssec\n(ADS) 7 $BDH_shotssec";
+BDH_RifleSecondary	= "Toggle hip/ADS";
+
+//rocket launcher
+BDH_RLaun			= "Rocket Launcher";
+BDH_MRLaun			= "Rocket/grenade launcher";
+BDH_MRLaun_Desc	= "Drum-loaded multi-purpose platform\nthat can fire rockets and grenades.";
+BDH_MRLaun_note	= "Rockets gain speed during flight.\n\nGrenades will beep and flash before exploding.\n\nRockets and grenades deal the same damage.";
+BDH_ERLaun_Desc	= "Classic Rocket Launcher that can fire homing\nrockets as a secondary attack.";
+BDH_FireRocket		= "Fire rocket";
+BDH_FireGrenade	= "Fire grenade";
+BDH_FireHoming		= "Fire homing rocket";
+BDH_MRlaunSpeed	= "25 (%BDH_initial) / 51.8 (%BDH_max)";
+
+//plasma rifle
+BDH_Plasma			= "Plasma Rifle";
+BDH_MPlasma_desc	= "Plasma Rifle that deals damage over a small\narea. Projectiles have noticeable spread.";	
+BDH_MPlasma_note	= 	"Duration of manual cooldown depends on how\n"
+						"much heat was accumulated.\n"
+						"After approx. 60 continuous shots the gun will\n"
+						"be forced to cool down.\n"
+						"Forced cooldown has a fixed duration of 1.66 sec.";
+BDH_MCooldown		= "Manual cooldown";
+BDH_EPlasma_desc	= "Classic Plasma Rifle with a railgun mode.";
+BDH_EPlasma_note	= "Secondary Attack has a 0.4-second\ncharge-up; make sure to track your target\ncarefully.";
+BDH_FirePlasma 	= "Fire plasma orbs";
+BDH_FireRailgun	= "Fire railgun";
+
+//bfg
+BDH_BFG			= "BFG 9000";
+BDH_EBFG_Desc		= "Classic BFG 9000 with a new attack mode.";
+BDH_MBFG_Desc		= 	"Powered-up BFG that allows the shooter to\n"
+						"control the power of the shot. Hold the attack\n"
+						"button to change the power of the attack.";
+BDH_EBFG_Note		= 	"After firing 100 cells in the secondary attack\n"
+						"mode, the gun will be forced to cool down.\n"
+						"The cooldown will be shorter if you stop\n"						
+						"firing before that happens.";
+BDH_MBFG_Note		= 	"There are 8 levels of charge.\n"
+						"The charge determines:\n"
+						"- Orb initial speed\n"
+						"- Orb explosion damage\n"
+						"- Orb explosion radius\n"
+						"- Number of beam targets\n"
+						"- Damage per beam\n"
+						"- Max beam range\n\n"						
+						"The greater the charge, the longer you\nneed to hold Fire button to reach it.";
+BDH_FireBFG		= "Fire BFG orb";
+BDH_FireBeam		= "Channel plasma beam";
+BDH_FireMBFG		= "(Hold) Charge\n(Release) Fire BFG";
+BDH_OrbDamage		= "Orb Blast DMG";
+BDH_OrbArea		= "Orb Blast Area";
+BDH_BeamDamage		= "DMG per beam";
+BDH_BeamRange		= "Beam Range";
+BDH_NumberTargets	= "# of Targets";
+BDH_BFGProjSpeed	= "7-21 ($BDH_initial),\nslows down to 0";
 
 
 //// Tooltips menu
@@ -287,235 +472,5 @@ TLTPTOOLTIPMNU_FONT_OPTION_NEWSMALL = "New Small Font";
 // Font lump names
 TLTPTOOLTIPMNU_FONT_OPTION_CONSOLE_NAME = "consolefont";
 TLTPTOOLTIPMNU_FONT_OPTION_NEWSMALL_NAME = "newsmallfont";
-
-
-/* Footsteps
- Language Definitions
-
- This is where the footstep sounds for each texture are defined.
- The definition MUST be STEP_<texturename>
-*/
-
-
-// Flats
-// This is a list of flats that have footstep sounds associated with them.
-// Items are separated by a colon ( : )
-// If a flat/texture is not present in this list, then only the default sound will be
-// played when it is walked on.
-STEP_FLATS = "FWATER1:FWATER2:FWATER3:FWATER4:"
-			"FLOOR0_1:FLOOR0_3:FLOOR1_7:FLOOR4_1:"
-			"FLOOR4_5:FLOOR4_6:TLITE6_1:TLITE6_5:"
-			"CEIL3_1:CEIL3_2:CEIL4_2:CEIL4_3:"
-			"CEIL5_1:FLAT2:FLAT5:FLAT18:"
-			"FLOOR0_2:FLOOR0_5:FLOOR0_7:FLAT5_3:"
-			"CRATOP1:CRATOP2:FLAT9:FLAT17:"
-			"FLAT19:COMP01:GRNLITE1:FLOOR1_1:"
-			"FLAT14:FLAT5_5:FLOOR1_6:CEIL4_1:"
-			"GRASS1:GRASS2:RROCK16:RROCK19:"
-			"FLOOR6_1:FLOOR6_2:FLAT10:MFLR8_3:"
-			"MFLR8_4:RROCK17:RROCK18:FLOOR0_6:"
-			"FLOOR4_8:FLOOR5_1:FLOOR5_2:FLOOR5_3:"
-			"FLOOR5_4:TLITE6_4:TLITE6_6:FLOOR7_1:"
-			"MFLR8_1:CEIL3_5:CEIL5_2:CEIL3_6:"
-			"FLAT8:SLIME13:STEP1:STEP2:"
-			"GATE1:GATE2:GATE3:CEIL1_2:"
-			"CEIL1_3:SLIME14:SLIME15:SLIME16:"
-			"FLAT22:FLAT23:CONS1_1:CONS1_5:"
-			"CONS1_7:GATE4:FLAT4:FLAT1:"
-			"FLAT5_4:MFLR8_2:FLAT1_1:FLAT1_2:"
-			"FLAT1_3:FLAT5_7:FLAT5_8:GRNROCK:"
-			"RROCK01:RROCK02:RROCK03:RROCK04:"
-			"RROCK05:RROCK06:RROCK07:RROCK08:"
-			"RROCK09:RROCK10:RROCK11:RROCK12:"
-			"RROCK13:RROCK14:RROCK15:RROCK20:"
-			"SLIME09:SLIME10:SLIME11:SLIME12:"
-			"FLAT5_6:FLOOR3_3:FLAT20:CEIL3_3:"
-			"CEIL3_4:FLAT3:FLOOR7_2:DEM1_1:"
-			"DEM1_2:DEM1_3:DEM1_4:DEM1_5:"
-			"DEM1_6:CEIL1_1:FLAT5_1:FLAT5_2:"
-			"NUKAGE1:NUKAGE2:NUKAGE3:BLOOD1:"
-			"BLOOD2:BLOOD3:SLIME01:SLIME02:"
-			"SLIME03:SLIME04:SLIME05:SLIME06:"
-			"SLIME07:SLIME08:SFLR6_1:SFLR6_4:"
-			"SFLR7_1:SFLR7_4:LAVA1:LAVA2:"
-			"LAVA3:LAVA4:F_SKY1:"
-			"BDT_WFL:BDT_BFL:BDT_LFL:BDT_AFL:BDT_SFL1:BDT_SFL2";
-
-// footstep sounds definitions created by The Zombie Killer, modified by Agent_Ash
-
-STEP_DEFAULT = "step/default";
-
-STEP_BDT_WFL = "step/slime"; //"step/water";
-STEP_BDT_BFL = "step/slime";
-STEP_BDT_LFL = "step/lava";
-STEP_BDT_AFL = "step/slime";
-STEP_BDT_SFL1 = "step/slime";
-STEP_BDT_SFL2 = "step/slime";
-
-STEP_BLOOD1 = "step/slime";
-STEP_BLOOD2 = "step/slime";
-STEP_BLOOD3 = "step/slime";
-STEP_NUKAGE1 = "step/slime";
-STEP_NUKAGE2 = "step/slime";
-STEP_NUKAGE3 = "step/slime";
-STEP_SLIME01 = "step/slime";
-STEP_SLIME02 = "step/slime";
-STEP_SLIME03 = "step/slime";
-STEP_SLIME04 = "step/slime";
-STEP_SLIME05 = "step/slime";
-STEP_SLIME06 = "step/slime";
-STEP_SLIME07 = "step/slime";
-STEP_SLIME08 = "step/slime";
-
-STEP_SFLR6_1 = "step/slimy";
-STEP_SFLR6_4 = "step/slimy";
-STEP_SFLR7_1 = "step/slimy";
-STEP_SFLR7_4 = "step/slimy";
-
-STEP_FWATER1 = "step/slime"; //"step/water";
-STEP_FWATER2 = "step/slime"; //"step/water";
-STEP_FWATER3 = "step/slime"; //"step/water";
-STEP_FWATER4 = "step/slime"; //"step/water";
-
-STEP_LAVA1 = "step/lava";
-STEP_LAVA2 = "step/lava";
-STEP_LAVA3 = "step/lava";
-STEP_LAVA4 = "step/lava";
-
-STEP_SLIME09 = "step/rock";
-STEP_SLIME10 = "step/rock";
-STEP_SLIME11 = "step/rock";
-STEP_SLIME12 = "step/rock";
-STEP_RROCK01 = "step/rock";
-STEP_RROCK02 = "step/rock";
-STEP_RROCK05 = "step/rock";
-STEP_RROCK06 = "step/rock";
-STEP_RROCK07 = "step/rock";
-STEP_RROCK08 = "step/rock";
-STEP_FLAT1 = "step/rock";
-STEP_FLAT1_1 = "step/rock";
-STEP_FLAT1_2 = "step/rock";
-STEP_FLAT5_6 = "step/rock";
-STEP_FLAT5_7 = "step/rock";
-STEP_FLAT5_8 = "step/rock";
-STEP_FLOOR5_4 = "step/rock";
-STEP_GRNROCK = "step/rock";
-STEP_MFLR8_2 = "step/rock";
-STEP_MFLR8_3 = "step/rock";
-STEP_RROCK03 = "step/rock";
-STEP_RROCK04 = "step/rock";
-STEP_RROCK09 = "step/rock";
-STEP_RROCK10 = "step/rock";
-STEP_RROCK11 = "step/rock";
-STEP_RROCK12 = "step/rock";
-STEP_RROCK13 = "step/rock";
-STEP_RROCK14 = "step/rock";
-STEP_RROCK15 = "step/rock";
-STEP_SLIME13 = "step/rock";
-
-STEP_CEIL1_1 = "step/wood";
-STEP_CRATOP1 = "step/wood";
-STEP_CRATOP2 = "step/wood";
-STEP_FLAT5_1 = "step/wood";
-STEP_FLAT5_2 = "step/wood";
-
-STEP_CEIL1_2 = "step/metal/a";
-STEP_FLAT1_3 = "step/metal/a";
-STEP_FLAT20 = "step/metal/a";
-
-STEP_CEIL1_3 = "step/tile/a";
-STEP_CEIL3_3 = "step/tile/a";
-STEP_CEIL3_4 = "step/tile/a";
-STEP_COMP01 = "step/tile/a";
-STEP_FLAT2 = "step/tile/a";
-STEP_FLAT3 = "step/tile/a";
-STEP_FLAT8 = "step/tile/a";
-STEP_FLAT9 = "step/tile/a";
-STEP_FLAT17 = "step/tile/a";
-STEP_FLAT18 = "step/tile/a";
-STEP_FLAT19 = "step/tile/a";
-STEP_FLOOR0_5 = "step/tile/a";
-STEP_FLOOR0_6 = "step/tile/a";
-STEP_FLOOR0_7 = "step/tile/a";
-STEP_FLOOR3_3 = "step/tile/a";
-STEP_FLOOR4_1 = "step/tile/a";
-STEP_FLOOR4_5 = "step/tile/a";
-STEP_FLOOR4_6 = "step/tile/a";
-STEP_FLOOR4_8 = "step/tile/a";
-STEP_FLOOR5_1 = "step/tile/a";
-STEP_FLOOR5_2 = "step/tile/a";
-STEP_FLOOR5_3 = "step/tile/a";
-STEP_TLITE6_1 = "step/tile/a";
-STEP_TLITE6_4 = "step/tile/a";
-STEP_TLITE6_5 = "step/tile/a";
-STEP_TLITE6_6 = "step/tile/a";
-
-STEP_DEM1_1 = "step/tile/b";
-STEP_DEM1_2 = "step/tile/b";
-STEP_DEM1_3 = "step/tile/b";
-STEP_DEM1_4 = "step/tile/b";
-STEP_DEM1_5 = "step/tile/b";
-STEP_DEM1_6 = "step/tile/b";
-STEP_FLOOR7_2 = "step/tile/b";
-
-STEP_CEIL3_1 = "step/hard";
-STEP_CEIL3_2 = "step/hard";
-STEP_CEIL3_5 = "step/hard";
-STEP_CEIL3_6 = "step/hard";
-STEP_CEIL5_1 = "step/hard";
-STEP_CEIL5_2 = "step/hard";
-STEP_FLAT5 = "step/hard";
-STEP_FLOOR0_1 = "step/hard";
-STEP_FLOOR0_2 = "step/hard";
-STEP_FLOOR0_3 = "step/hard";
-STEP_FLOOR1_6 = "step/hard";
-STEP_FLOOR1_7 = "step/hard";
-STEP_FLOOR7_1 = "step/hard";
-STEP_GRNLITE1 = "step/hard";
-STEP_MFLR8_1 = "step/hard";
-
-STEP_CEIL4_1 = "step/carpet";
-STEP_CEIL4_2 = "step/carpet";
-STEP_CEIL4_3 = "step/carpet";
-STEP_FLAT5_3 = "step/carpet";
-STEP_FLAT5_4 = "step/carpet";
-STEP_FLAT5_5 = "step/carpet";
-STEP_FLAT14 = "step/carpet";
-STEP_FLOOR1_1 = "step/carpet";
-
-STEP_GATE1 = "step/metal/a";
-STEP_GATE2 = "step/metal/a";
-STEP_GATE3 = "step/metal/a";
-STEP_SLIME14 = "step/metal/a";
-STEP_SLIME15 = "step/metal/a";
-STEP_SLIME16 = "step/metal/a";
-STEP_STEP1 = "step/metal/a";
-STEP_STEP2 = "step/metal/a";
-
-STEP_CONS1_1 = "step/metal/b";
-STEP_CONS1_5 = "step/metal/b";
-STEP_CONS1_7 = "step/metal/b";
-STEP_FLAT4 = "step/metal/b";
-STEP_FLAT22 = "step/metal/b";
-STEP_FLAT23 = "step/metal/b";
-STEP_GATE4 = "step/metal/b";
-
-
-STEP_FLAT10 = "step/dirt";
-STEP_GRASS1 = "step/dirt";
-STEP_GRASS2 = "step/dirt";
-STEP_MFLR8_4 = "step/dirt";
-STEP_RROCK16 = "step/dirt";
-STEP_RROCK17 = "step/dirt";
-STEP_RROCK18 = "step/dirt";
-STEP_RROCK19 = "step/dirt";
-STEP_RROCK20 = "step/dirt";
-
-STEP_FLOOR6_1 = "step/gravel";
-STEP_FLOOR6_2 = "step/gravel";
-
-
-STEP_F_SKY1 = "";
-
 
 [enu default]
