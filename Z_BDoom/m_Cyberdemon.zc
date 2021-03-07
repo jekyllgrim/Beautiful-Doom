@@ -22,6 +22,22 @@ Class BD_CyberDemon : BDoomMonster {
 		Obituary "$OB_CYBORG";
 		Tag "$FN_CYBER";
 	}
+	void FireCyberRocket() {
+		if (!bdoom_replaceweapons) {
+			A_SpawnProjectile("Rocket",56);
+			return;
+		}
+		sound snd;
+		if (bdoom_weapons == 2) {
+			let rock = A_SpawnProjectile("BD_ModernRocket",56,-24);
+			if (rock)
+				rock.vel = rock.vel.unit() * 16;
+		}
+		else if (bdoom_weapons == 1)
+			A_SpawnProjectile("BD_Rocket",56,-24);
+		else 
+			A_SpawnProjectile("BD_Rocket",56);
+	}
 	states	{
 	Raise:
 		stop;
@@ -45,30 +61,15 @@ Class BD_CyberDemon : BDoomMonster {
 		
 	Missile:
 		CBDS abc 2 a_facetarget;
-		CBDS d 3 {
-			if (bdoom_weapons > 0)
-				A_SpawnProjectile("Rocket",56,-24);
-			else
-				A_SpawnProjectile("Rocket",56);
-		}
+		CBDS d 3 FireCyberRocket();
 		CBDS e 3;
 		CBDS c 6;
 		CBDS abc 4 a_facetarget;
-		CBDS d 3 {
-			if (bdoom_weapons > 0)
-				A_SpawnProjectile("Rocket",56,-24);
-			else
-				A_SpawnProjectile("Rocket",56);
-		}
+		CBDS d 3 FireCyberRocket();
 		CBDS e 3;
 		CBDS c 6;
 		CBDS abc 4 a_facetarget;
-		CBDS d 3 {
-			if (bdoom_weapons > 0)
-				A_SpawnProjectile("Rocket",56,-24);
-			else
-				A_SpawnProjectile("Rocket",56);
-		}
+		CBDS d 3 FireCyberRocket();
 		CBDS e 3;
 		CBDS c 6;
 		goto see;
@@ -86,15 +87,15 @@ Class BD_CyberDemon : BDoomMonster {
 		CBDD a 13;
 		CBDD b 5 a_scream;
 		CBDD cdefghij 4;
-		CBDD k 4 a_noblocking ;
+		CBDD k 4 a_noblocking;
 		CBDD l 30;
 		CBDD l -1 a_bossdeath;
 		stop;
 	Death.Particles:
 		TNT1 A 0 A_StartSound("cyberdemon/death",slot:CHAN_6);
-		CBDI AABCAABCAA 5 A_SpawnItemEx("BD_CyberExplosion",frandom(-24,24),frandom(-24,24),frandom(32,104),flags:SXF_SETTARGET,failchance:48);
+		CBDI AABCAABCAA 5 A_SpawnItemEx("BD_CyberExplosion",frandom[bdsfx](-24,24),frandom[bdsfx](-24,24),frandom[bdsfx](32,104),flags:SXF_SETTARGET,failchance:48);
 		TNT1 A 0 A_NoBlocking;
-		CBDI BCAABC 5 A_SpawnItemEx("BD_CyberExplosion",frandom(-24,24),frandom(-24,24),frandom(32,104),flags:SXF_SETTARGET,failchance:36);
+		CBDI BCAABC 5 A_SpawnItemEx("BD_CyberExplosion",frandom[bdsfx](-24,24),frandom[bdsfx](-24,24),frandom[bdsfx](32,104),flags:SXF_SETTARGET,failchance:36);
 		TNT1 A 0 {
 			if (bdoom_shakes)
 				A_Quake(5,20,0,800,"");
@@ -104,32 +105,30 @@ Class BD_CyberDemon : BDoomMonster {
 		TNT1 A 0 {
 			A_FaceTarget();
 			A_StartSound("gibs/gibbed");
-			A_SpawnItemEx("BD_CyberHead",0,-8,80, frandom(-2,2),frandom(-2,2),frandom(5,9),flags:SXF_SETTARGET);
-			A_SpawnItemEx("BD_CyberHandLeft",0,-36,64, frandom(-1.5,1.5),frandom(-3.5,-5.5),frandom(4,6),flags:SXF_SETTARGET);
-			A_SpawnItemEx("BD_CyberHandRight",0,36,64, frandom(-1.5,1.5),frandom(3.5,5.5),frandom(4,6),flags:SXF_SETTARGET);
-			A_SpawnItemEx("BD_CyberLegLeft",0,-22,14, frandom(-1.5,1.5),frandom(-3.5,-5.5),frandom(2.5,4),flags:SXF_SETTARGET);
-			A_SpawnItemEx("BD_CyberLegRight",0,24,14, frandom(-1.5,1.5),frandom(3.5,5.5),frandom(2.5,4),flags:SXF_SETTARGET);
+			A_SpawnItemEx("BD_CyberHead",0,-8,80, frandom[bdsfx](-2,2),frandom[bdsfx](-2,2),frandom[bdsfx](5,9),flags:SXF_SETTARGET);
+			A_SpawnItemEx("BD_CyberHandLeft",0,-36,64, frandom[bdsfx](-1.5,1.5),frandom[bdsfx](-3.5,-5.5),frandom[bdsfx](4,6),flags:SXF_SETTARGET);
+			A_SpawnItemEx("BD_CyberHandRight",0,36,64, frandom[bdsfx](-1.5,1.5),frandom[bdsfx](3.5,5.5),frandom[bdsfx](4,6),flags:SXF_SETTARGET);
+			A_SpawnItemEx("BD_CyberLegLeft",0,-22,14, frandom[bdsfx](-1.5,1.5),frandom[bdsfx](-3.5,-5.5),frandom[bdsfx](2.5,4),flags:SXF_SETTARGET);
+			A_SpawnItemEx("BD_CyberLegRight",0,24,14, frandom[bdsfx](-1.5,1.5),frandom[bdsfx](3.5,5.5),frandom[bdsfx](2.5,4),flags:SXF_SETTARGET);
 			
-			A_SpawnItemEx("BD_CyberTorso1",0,36,64, frandom(-3,3),frandom(2,4),frandom(5,7),flags:SXF_SETTARGET);
-			A_SpawnItemEx("BD_CyberTorso2",0,-36,64, frandom(-3,3),frandom(-2,-4),frandom(5,7),flags:SXF_SETTARGET);
-			A_SpawnItemEx("BD_CyberTorso3",0,0,26, frandom(-4,4),frandom(-4,4),frandom(3,6),flags:SXF_SETTARGET);
-					
+			A_SpawnItemEx("BD_CyberTorso1",0,36,64, frandom[bdsfx](-3,3),frandom[bdsfx](2,4),frandom[bdsfx](5,7),flags:SXF_SETTARGET);
+			A_SpawnItemEx("BD_CyberTorso2",0,-36,64, frandom[bdsfx](-3,3),frandom[bdsfx](-2,-4),frandom[bdsfx](5,7),flags:SXF_SETTARGET);
+			A_SpawnItemEx("BD_CyberTorso3",0,0,26, frandom[bdsfx](-4,4),frandom[bdsfx](-4,4),frandom[bdsfx](3,6),flags:SXF_SETTARGET);
+			
 			for (int i = 10; i > 0; i--)
-				A_SpawnItemEx("BD_BFountainSpray",frandom(-5.0,5.0),frandom(-5.0,5.0),random(24,72),frandom(-1.5,1.5),frandom(-1.5,1.5),frandom(4.5,6.5),0,SXF_SETTARGET,36);
+				A_SpawnItemEx("BD_BFountainSpray",frandom[bdsfx](-5.0,5.0),frandom[bdsfx](-5.0,5.0),random(24,72),frandom[bdsfx](-1.5,1.5),frandom[bdsfx](-1.5,1.5),frandom[bdsfx](4.5,6.5),0,SXF_SETTARGET,36);			
 			for (int i = 6; i > 0; i--)
-				A_SpawnItemEx("BD_BasicMeatPiece_Heavy",random(-4,4),random(-4,4),random(24,72),	frandom(-5,5),frandom(-5,5),random(5,8),	0,	SXF_SETTARGET, 64);
+				A_SpawnItemEx("BD_BasicMeatPiece_Heavy",random(-4,4),random(-4,4),random(24,72),	frandom[bdsfx](-5,5),frandom[bdsfx](-5,5),frandom[bdsfx](5,8),	0,	SXF_SETTARGET, 64);
 			for (int i = 6; i > 0; i--)
-				A_SpawnItemEx("BD_BasicMetalPiece",random(-4,4),random(-4,4),random(24,72),		frandom(-10,10),frandom(-10,10),random(5,10),	0,SXF_SETTARGET, 64);
+				A_SpawnItemEx("BD_BasicMetalPiece",frandom[bdsfx](-4,4),frandom[bdsfx](-4,4),frandom[bdsfx](24,72),		frandom[bdsfx](-10,10),frandom[bdsfx](-10,10),frandom[bdsfx](5,10),	0,SXF_SETTARGET, 64);
 		}
 		CBDO HHHIIIJJJ 1 {
-			if (bdoom_gibs) {
-				for (int i = 4; i > 0; i--)
-					A_SpawnItemEx("BD_BFountainSpray",frandom(-5.0,5.0),frandom(-5.0,5.0),random(24,72),frandom(-1.5,1.5),frandom(-1.5,1.5),frandom(4.5,6.5),0,SXF_SETTARGET,36);
-				for (int i = 2; i > 0; i--)
-					A_SpawnItemEx("BD_BasicMeatPiece_Heavy",random(-4,4),random(-4,4),random(24,72),	frandom(-5,5),frandom(-5,5),random(5,8),	0,	SXF_SETTARGET, 64);
-				for (int i = 2; i > 0; i--)
-					A_SpawnItemEx("BD_BasicMetalPiece",random(-4,4),random(-4,4),random(24,72),		frandom(-10,10),frandom(-10,10),random(5,10),	0,SXF_SETTARGET, 64);
-			}
+			for (int i = 4; i > 0; i--)
+				A_SpawnItemEx("BD_BFountainSpray",	frandom[bdsfx](-5.0,5.0),frandom[bdsfx](-5.0,5.0),random(24,72),frandom[bdsfx](-1.5,1.5),frandom[bdsfx](-1.5,1.5),frandom[bdsfx](4.5,6.5),0,SXF_SETTARGET,36);
+			for (int i = 2; i > 0; i--)
+				A_SpawnItemEx("BD_BasicMeatPiece_Heavy",frandom[bdsfx](-4,4),random(-4,4),random(24,72),	frandom[bdsfx](-5,5),frandom[bdsfx](-5,5),random(5,8),	0,	SXF_SETTARGET, 64);
+			for (int i = 2; i > 0; i--)
+				A_SpawnItemEx("BD_BasicMetalPiece",frandom[bdsfx](-4,4),frandom[bdsfx](-4,4),frandom[bdsfx](24,72),		frandom[bdsfx](-10,10),frandom[bdsfx](-10,10),frandom[bdsfx](5,10),	0,SXF_SETTARGET, 64);
 		}
 		CBDO K 3;
 		CBDO L 150;
@@ -147,7 +146,7 @@ Class BD_CyberExplosion : BD_BaseFlare {
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		A_SetScale(frandom(0.65,1.0));
+		A_SetScale(frandom[bdsfx](0.65,1.0));
 		roll = random(0,359);
 		if (target && !(target is "BossBrain")) {
 			A_StartSound("weapons/rlan/explosion",slot:CHAN_WEAPON,flags:CHANF_DEFAULT,1.0);
@@ -155,10 +154,10 @@ Class BD_CyberExplosion : BD_BaseFlare {
 		}
 		if(bdoom_blood) {
 			for (int i = random(4,6); i > 0; i--)
-				A_SpawnItemEx("BD_Blood",0,0,0,frandom(-3,3),frandom(-3,3),frandom(3,6),flags:SXF_SETTARGET);
+				A_SpawnItemEx("BD_Blood",0,0,0,frandom[bdsfx](-3,3),frandom[bdsfx](-3,3),frandom[bdsfx](3,6),flags:SXF_SETTARGET);
 		}
 		if(bdoom_debris && target)
-			A_SpawnItemEx("BD_BasicMetalPiece",random(-4,4),random(-4,4),random(10,48),		frandom(5,8),frandom(-2,2),random(4,7),	AngleTo(target)*random(170,190),SXF_SETTARGET, 144);	
+			A_SpawnItemEx("BD_BasicMetalPiece",random(-4,4),random(-4,4),random(10,48),		frandom[bdsfx](5,8),frandom[bdsfx](-2,2),random(4,7),	AngleTo(target)*random(170,190),SXF_SETTARGET, 144);	
 	}
 	states	{
 	Spawn:
