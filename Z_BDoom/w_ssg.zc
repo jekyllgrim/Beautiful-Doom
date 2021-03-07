@@ -166,8 +166,8 @@ Class BD_SuperShotgun : BDoomWeapon {
 				A_Overlay(PSP_EFLASH,"FlashVanilla");
 			else {
 				double vofs = bdoom_weapons == 2 ? 10 : 15;
-				DrawMuzzleSmoke((10,vofs), sVSpeed: 1.3, sScale: 0.7);
-				DrawMuzzleSmoke((-10,vofs), sVSpeed: 1.3, sScale: 0.7);
+				DrawMuzzleSmoke((10,vofs), sAlpha: 0.38, sVSpeed: 1.3, sScale: 0.7);
+				DrawMuzzleSmoke((-10,vofs), sAlpha: 0.38, sVSpeed: 1.3, sScale: 0.7);
 				A_Overlay(PSP_EFLASH,"FlashEnhanced");
 				A_Overlay(PSP_MFLASH,"FlashMuzzle");
 				if (random(0,1) == 1) 
@@ -334,10 +334,10 @@ Class BD_SuperShotgun : BDoomWeapon {
 				A_OverlayRenderstyle(PSP_MFLASH,STYLE_Add);
 				double vofs = bdoom_weapons == 2 ? 10 : 15;
 				if	((bdoom_weapons == 1 && invoker.shotfired) || (bdoom_weapons == 2 && CountInv("BD_SSGClip") < 2)) {
-					DrawMuzzleSmoke((-10,vofs), sVSpeed: 1.3, sScale: 0.7);
+					DrawMuzzleSmoke((-10,vofs), sAlpha: 0.38, sVSpeed: 1.3, sScale: 0.7);
 				}
 				else {
-					DrawMuzzleSmoke((10,vofs), sVSpeed: 1.3, sScale: 0.7);
+					DrawMuzzleSmoke((10,vofs), sAlpha: 0.38, sVSpeed: 1.3, sScale: 0.7);
 					A_OverlayFlags(PSP_MFLASH,PSPF_FLIP|PSPF_MIRROR,true);
 					A_OverlayFlags(PSP_EFLASH,PSPF_FLIP|PSPF_MIRROR,true);
 				}
