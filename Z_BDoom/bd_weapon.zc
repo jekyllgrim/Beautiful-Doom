@@ -503,12 +503,13 @@ Class BD_RealBullet : FastProjectile {
 		alpha 0.75;
 		speed 64;
 		renderstyle "add";
-		seesound "null";
-		deathsound "null";
+		seesound "";
+		deathsound "";
 		DamageFunction CalculateDamage();
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
+		vel = vel.unit() * bulletspeed;
 		if (target)
 			SpawnPos = target.pos;
 	}
@@ -557,8 +558,8 @@ Class BD_RealBullet : FastProjectile {
 		
 	states {
 		Spawn:
-			TNT1 A 2 NoDelay {
-				vel = vel.unit() * bulletspeed;
+			TNT1 A 1 NoDelay {
+				//vel = vel.unit() * bulletspeed;
 			}
 			PUFF A 1 {
 				if (waterlevel > 2) {
