@@ -678,6 +678,7 @@ Class BD_TorchTree : TorchTree {
 Class BD_Cleaner : Actor {
 	BD_FXAmountControl fxcontrol;
 	private int targetcounter;
+	private int moploops;
 	Default {
 		monster;
 		+FLOORCLIP
@@ -841,6 +842,7 @@ Class BD_Cleaner : Actor {
 			}
 			loop;
 		Mop:
+			TNT1 A 0 { moploops = random[cleaner](1,5); }
 			RGWM ABCDEFGHII 2;
 		MopLoop:
 			TNT1 A 0 {				
@@ -859,13 +861,17 @@ Class BD_Cleaner : Actor {
 				return ResolveState(null);
 			}
 			TNT1 A 0 {
+				moploops--;
 				if (target)
 					return ResolveState("MopLoop");
 				let blood = FindClosestBlood();
-				if (blood && Distance2D(blood) < 48) {
+				if (blood && Distance2D(blood) < 72) {
 					target = blood;
 					return ResolveState("MopLoop");
 				}
+				//this is just visual repetition, to reduce the number of cases where Roger makes just one move with his mop
+				if (moploops > 0)
+					return ResolveState("MopLoop");
 				return ResolveState(null);
 			}
 			RGWM RSTEDCBA 2;
