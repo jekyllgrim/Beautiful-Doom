@@ -131,7 +131,7 @@ Class BD_Shotgun : BDoomWeapon {
 			if(!invoker.c_muzzle)
 				A_Overlay(PSP_EFLASH,"FlashVanilla");
 			else {				
-				DrawMuzzleSmoke((0,10), sVSpeed: 1.6, sScale: 0.7);
+				DrawMuzzleSmoke((0,10), sAlpha: 0.38, sVSpeed: 1.3, sScale: 0.7);
 				A_Overlay(PSP_EFLASH,"FlashEnhanced");
 				A_Overlay(PSP_MFLASH,"FlashMuzzle");
 				//A_OverlayOffset(PSP_MFLASH,0,53);
@@ -265,7 +265,7 @@ Class BD_Shotgun : BDoomWeapon {
 			if(!invoker.c_muzzle)
 				A_Overlay(PSP_EFLASH,"ModernFlashVanilla");
 			else {
-				DrawMuzzleSmoke((0,15), sVSpeed: 1.6, sScale: 0.7);
+				DrawMuzzleSmoke((0,15), sAlpha: 0.38, sVSpeed: 1.3, sScale: 0.7);
 				A_Overlay(PSP_EFLASH,"ModernFlashEnhanced");
 				A_Overlay(PSP_MFLASH,"ModernFlashMuzzle");
 				//A_OverlayOffset(PSP_MFLASH,0,53);
