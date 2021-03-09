@@ -4,7 +4,8 @@ Model BD_BulletTracer
 	Path "models"
 	Model 0 "tracer.md3"
 	Scale 1.0 1.0 1.0
-	PITCHFROMMOMENTUM
+	USEACTORPITCH
+	USEACTORROLL
 	
 	Skin 0 "tracer1.png"
 	FrameIndex PUFF A 0 0
@@ -47,7 +48,8 @@ Model BD_PistolBullet
 	Model 0 "tracer.md3"
 	Skin 0 "tracer1.png"
 	Scale 1.0 1.0 1.0
-	PITCHFROMMOMENTUM
+	UseActorPitch
+	UseActorRoll
 	
 	Skin 0 "tracer1.png"
 	FrameIndex PUFF A 0 0
@@ -62,7 +64,8 @@ Model BD_RifleBullet
 	Model 0 "tracer.md3"
 	Skin 0 "tracer1.png"
 	Scale 1.0 1.0 1.0
-	PITCHFROMMOMENTUM
+	UseActorPitch
+	UseActorRoll
 	
 	Skin 0 "tracer1.png"
 	FrameIndex PUFF A 0 0
@@ -77,7 +80,8 @@ Model BD_ShotgunPellet
 	Model 0 "tracer.md3"
 	Skin 0 "tracer1.png"
 	Scale 0.75 0.75 0.75
-	PITCHFROMMOMENTUM
+	UseActorPitch
+	UseActorRoll
 	
 	Skin 0 "tracer1.png"
 	FrameIndex PUFF A 0 0
@@ -92,7 +96,8 @@ Model BD_SSGPellet
 	Model 0 "tracer.md3"
 	Skin 0 "tracer1.png"
 	Scale 0.75 0.75 0.75
-	PITCHFROMMOMENTUM
+	UseActorPitch
+	UseActorRoll
 	
 	Skin 0 "tracer1.png"
 	FrameIndex PUFF A 0 0
@@ -107,7 +112,8 @@ Model BD_ZombiePellet
 	Model 0 "tracer.md3"
 	Skin 0 "tracer1.png"
 	Scale 1.0 1.0 1.0
-	PITCHFROMMOMENTUM
+	UseActorPitch
+	UseActorRoll
 	
 	Skin 0 "tracer1.png"
 	FrameIndex PUFF A 0 0
@@ -122,7 +128,8 @@ Model BD_ZombieBullet
 	Model 0 "tracer.md3"
 	Skin 0 "tracer1.png"
 	Scale 1.0 1.0 1.0
-	PITCHFROMMOMENTUM
+	UseActorPitch
+	UseActorRoll
 	
 	Skin 0 "tracer1.png"
 	FrameIndex PUFF A 0 0
@@ -137,7 +144,8 @@ Model BD_SpiderBullet
 	Model 0 "tracer.md3"
 	Skin 0 "tracer1.png"
 	Scale 1.0 1.0 1.0
-	PITCHFROMMOMENTUM
+	UseActorPitch
+	UseActorRoll
 	
 	Skin 0 "tracer1.png"
 	FrameIndex PUFF A 0 0
