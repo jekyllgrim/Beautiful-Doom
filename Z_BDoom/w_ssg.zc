@@ -415,7 +415,8 @@ Class BD_SuperShotgun : BDoomWeapon {
 				return ResolveState("DryReload");
 			else If(CountInv("BD_SSGClip") == 1)
 				return ResolveState("AltFire.Modern");
-			A_FireBullets (15.0, 7, 24, 0, "BD_NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_SSGPellet",4,0);
+			BD_FireModernBullet("BD_ShotgunPellet", 15.0, 7, numbullets: 24);
+			//A_FireBullets (15.0, 7, 24, 0, "BD_NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_SSGPellet",4,0);
 			A_SetPitch(pitch-frandom(2.8,3.5),SPF_INTERPOLATE);
 			A_setAngle(angle+frandom(-1,1),SPF_INTERPOLATE);
 			A_Gunflash("Flash");

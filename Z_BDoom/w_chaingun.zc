@@ -467,7 +467,8 @@ Class BD_Chaingun : BDoomWeapon {
 				A_gunflash("FlashModern");
 				A_StartSound("Mweapons/rifle/fire");
 				A_WeaponOffset(frandom(-0.3,0.3),2,WOF_ADD);
-				A_FireBullets(1.5 + (invoker.tfired * 0.15),1.0 + (invoker.tfired * 0.15),-1,0,"BD_NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_RifleBullet",0,0);
+				BD_FireModernBullet("BD_RifleBullet", 1.5 + (invoker.tfired * 0.15),1.0 + (invoker.tfired * 0.15));
+				//A_FireBullets(1.5 + (invoker.tfired * 0.15),1.0 + (invoker.tfired * 0.15),-1,0,"BD_NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_RifleBullet",0,0);
 				A_SetPitch(pitch - frandom(0.37,0.42),SPF_INTERPOLATE);
 				A_ZoomFactor(0.996,ZOOM_INSTANT|ZOOM_NOSCALETURNING);
 				invoker.tfired = clamp(invoker.tfired+1,0,9);
@@ -496,7 +497,8 @@ Class BD_Chaingun : BDoomWeapon {
 			RIFS A 1 {
 				let plr = PlayerPawn(self);
 				plr.AttackZOffset = 13.5;
-				A_FireBullets(0.4,0.15,-1,0,"BD_NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_RifleBullet",0,0);
+				BD_FireModernBullet("BD_RifleBullet", 0.4,0.15);
+				//A_FireBullets(0.4,0.15,-1,0,"BD_NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_RifleBullet",0,0);
 				A_gunflash("FlashModern");
 				A_StartSound("Mweapons/rifle/fire");
 				A_SetPitch(pitch - 0.3,SPF_INTERPOLATE);
@@ -519,7 +521,8 @@ Class BD_Chaingun : BDoomWeapon {
 			#### A 1 {
 				let plr = PlayerPawn(self);
 				plr.AttackZOffset = 13.5;
-				A_FireBullets(0.4,0.15,-1,0,"BD_NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_RifleBullet",0,0);
+				BD_FireModernBullet("BD_RifleBullet", 0.4,0.15);
+				//A_FireBullets(0.4,0.15,-1,0,"BD_NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_RifleBullet",0,0);
 				A_gunflash("FlashModern");
 				A_StartSound("Mweapons/rifle/fire");
 				A_SetPitch(pitch - 0.3,SPF_INTERPOLATE);
@@ -542,7 +545,8 @@ Class BD_Chaingun : BDoomWeapon {
 			#### A 1 {
 				let plr = PlayerPawn(self);
 				plr.AttackZOffset = 13.5;
-				A_FireBullets(0.4,0.15,-1,0,"BD_NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_RifleBullet",0,0);
+				BD_FireModernBullet("BD_RifleBullet", 0.4,0.15);
+				//A_FireBullets(0.4,0.15,-1,0,"BD_NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_RifleBullet",0,0);
 				A_gunflash("FlashModern");
 				A_StartSound("Mweapons/rifle/fire");
 				A_SetPitch(pitch - 0.3,SPF_INTERPOLATE);
