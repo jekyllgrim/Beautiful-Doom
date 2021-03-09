@@ -135,6 +135,18 @@ Class BDoomWeapon : Weapon abstract {
 		);
 	}
 	
+	action void BD_FireModernBullet(Class<Actor> bullet, double spread_horz = 0, double spread_vert = 0, int numbullets = 1) {
+		if (numbullets < 1) numbullets = 1;
+		for (int i = 0; i < numbullets; i++) {
+			A_FireProjectile(
+				bullet, 
+				angle: frandom(-spread_horz,spread_horz),
+				spawnheight: 2,
+				pitch: frandom(-spread_vert,spread_vert)
+			);
+		}
+	}
+	
 	action void BD_FireBullets(double spread_horz = 0, double spread_vert = 0, int numbullets = 1, int damage = 1, sound vanillasnd = "", sound enhancedsnd = "") {
 		sound snd =  (enhancedsnd && bdoom_weapons == 1) ? enhancedsnd : vanillasnd;
 		A_StartSound(snd);
@@ -229,7 +241,10 @@ Class BDoomWeapon : Weapon abstract {
 		Vector3 ofs = pmo.pos+(0,0,plr.viewheight-GetFloorTerrain().footclip);
 		Vector3 x, y, z;
 		[x, y, z] = Matrix4.getaxes(pmo.pitch,pmo.angle,pmo.roll);
-		let c = Spawn(itemtype,ofs+x*xofs+y*yofs-z*zofs);
+		let targofs = ofs+x*xofs+y*yofs-z*zofs;
+		if (!Level.IsPointInLevel(targofs))
+			return null;
+		let c = Spawn(itemtype,targofs);
 		if (c) {
 			c.vel = x*xvel+y*yvel+z*zvel;
 			c.target = self;
@@ -479,6 +494,7 @@ Class BDoomWeapon : Weapon abstract {
 
 
 Class BD_RealBullet : FastProjectile {
+	mixin BD_DecalControl;
 	protected vector3 SpawnPos; //where the bullet was shot from
 	double bulletdamage; 		//the actual damage value
 	double falloffstrength; 	//how quickly the damage is reduced during travel
@@ -509,9 +525,13 @@ Class BD_RealBullet : FastProjectile {
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		vel = vel.unit() * bulletspeed;
+		if (!(vel ~== (0,0,0))) {
+			vel = vel.unit() * bulletspeed;
+		}
+		A_FaceMovementDirection();
 		if (target)
 			SpawnPos = target.pos;
+		//Console.Printf("bullet spawned at %.1f, %.1f, %.1f | vel: %.1f, %.1f, %.1f",pos.x,pos.y,pos.z,vel.x,vel.y,vel.z);
 	}
 	//whizz sound snippet by phantombeta
 	override void Tick () {
@@ -541,7 +561,7 @@ Class BD_RealBullet : FastProjectile {
 		if (!curCamera) // If the player's PlayerPawn is null too, just stop trying
 			return;
 		if (CheckIfCloser (curCamera, 192))
-			A_StartSound("weapons/tracerwhizz",slot:CHAN_WEAPON,flags:CHANF_DEFAULT,1.0,attenuation:8);
+			A_StartSound("weapons/tracerwhizz",slot:CHAN_WEAPON,attenuation:8);
 	}
 	double CalculateDamage() {
 		int ddamage;
@@ -558,9 +578,9 @@ Class BD_RealBullet : FastProjectile {
 		
 	states {
 		Spawn:
-			TNT1 A 1 NoDelay {
-				//vel = vel.unit() * bulletspeed;
-			}
+			TNT1 A 1; /*NoDelay {
+				vel = vel.unit() * bulletspeed;
+			}*/
 			PUFF A 1 {
 				if (waterlevel > 2) {
 					sprite = GetSpriteIndex("WATR");
@@ -571,17 +591,6 @@ Class BD_RealBullet : FastProjectile {
 							//xofs:i*16,
 							xvel:frandom[wtr](-1,1),yvel:frandom[wtr](-1,1),zvel:frandom[wtr](-1,1)
 						);
-					/*	A_SpawnParticle(
-							"DDDDDD",
-							flags:SPF_RELPOS|SPF_RELANG,
-							lifetime:100,
-							size:2,
-							xoff: i*16,
-							velx:frandom[wtr](-1,1),vely:frandom[wtr](-1,1),velz:frandom[wtr](-1,1),
-							startalphaf:0.5,
-							fadestepf:-1,
-							sizestep:1.01
-						);*/
 					}
 				}
 				else {
@@ -598,7 +607,12 @@ Class BD_RealBullet : FastProjectile {
 			}
 			stop;
 		Death:
-			TNT1 A 1 A_SpawnItemEx("BD_EnBulletPuff",flags:SXF_TRANSFERPOINTERS);
+			TNT1 A 1 {
+				CreateDecal();
+				let puf = Spawn("BD_EnBulletPuff",pos);
+				if (puf)
+					puf.SetStateLabel("PuffSpawn");
+			}
 			stop;
 	}
 }
