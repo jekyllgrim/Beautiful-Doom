@@ -30,7 +30,7 @@ Class BD_Chainsaw : BDoomWeapon {
 		if (owner) {
 			if(bdoom_weapons == 2 && !owner.bKILLEd) { 
 				bNOALERT = true;
-				bNOAUTOFIRE = true;
+				//bNOAUTOFIRE = true;
 				if (jamstacks > 4 && owner.player.readyweapon == self) {
 					let blod = Owner.player.FindPSprite (PSP_CHAINBLOOD);
 					if (!blod) {
@@ -46,7 +46,7 @@ Class BD_Chainsaw : BDoomWeapon {
 			}
 			else { 
 				bNOALERT = false;
-				bNOAUTOFIRE = false;
+				//bNOAUTOFIRE = false;
 				BD_ClearPsprite(PSP_CHAINBLOOD,PSP_CHAINBLOODR,PSP_CHAINBLOODG,PSP_CHAINBLOODB);
 			}
 			//Console.Printf("jamstacks "..jamstacks);
@@ -219,7 +219,6 @@ Class BD_Chainsaw : BDoomWeapon {
 		ReadyOn:
 			#### A 0 {
 				A_StartSound("Mweapons/saw/ready",slot:CHAN_5,flags:CHANF_DEFAULT|CHANF_LOOPING);
-				invoker.started = true;
 				A_AlertMonsters(312);
 				if (random(0,32) < invoker.jamstacks) {
 					let blod = A_Eject("BD_ChainsawBloodSpill",20,frandom(1,1.2),frandom(4.5,6.5));
@@ -273,7 +272,7 @@ Class BD_Chainsaw : BDoomWeapon {
 				return ResolveState(null);
 			}
 			#### A 0 BD_SetSprite("BSAW","QSAW");
-			#### UTSR 1;
+			#### UTSR 1 A_WeaponReady(WRF_NOSECONDARY);
 			goto ready;	
 
 		Fire.Modern:
@@ -288,8 +287,10 @@ Class BD_Chainsaw : BDoomWeapon {
 			#### ABCDEF 1;
 			#### EDCBA 2;
 			#### G 2 {
-				if (random(0,128) > invoker.jamstacks)
+				if (random(0,128) > invoker.jamstacks) {
+					invoker.started = true;
 					return ResolveState("ReadyOn");
+				}
 				invoker.jamstacks = clamp(invoker.jamstacks - 8,0,1024); 		
 				if ((player.cmd.buttons & BT_ATTACK) && !(player.oldbuttons & BT_ATTACK))
 					return ResolveState("Fire.Modern");
