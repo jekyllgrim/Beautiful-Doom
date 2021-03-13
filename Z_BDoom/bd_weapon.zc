@@ -137,10 +137,14 @@ Class BDoomWeapon : Weapon abstract {
 	
 	action void BD_FireModernBullet(Class<Actor> bullet, double spread_horz = 0, double spread_vert = 0, int numbullets = 1) {
 		if (numbullets < 1) numbullets = 1;
+		let weapon = player.ReadyWeapon;
+		if (!weapon || !weapon.DepleteAmmo(weapon.bAltFire, true))
+			return;
 		for (int i = 0; i < numbullets; i++) {
 			A_FireProjectile(
 				bullet, 
 				angle: frandom(-spread_horz,spread_horz),
+				useammo:false,
 				spawnheight: 2,
 				pitch: frandom(-spread_vert,spread_vert)
 			);
