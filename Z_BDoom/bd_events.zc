@@ -260,8 +260,8 @@ class BD_ActorOverrideHandler : EventHandler {
 				Case 'ColonGibs'			: if (!CheckVanillaReplacement(obj,"POB1A0") && bdoom_gibs)	e.Replacement = 'BD_ColonGibs';		break;
 				Case 'SmallBloodPool'		: if (!CheckVanillaReplacement(obj,"POB2A0") && bdoom_blood)	e.Replacement = 'BD_SmallBloodPool';	break;
 					//MISC
-				case 'TeleportFog' 		: if (!CheckVanillaReplacement(obj,"HDB5A0"))	e.Replacement = 'BD_TeleportFog';			break;
-				case 'ExplosiveBarrel' 	: if (!CheckVanillaReplacement(obj,"HDB5A0"))	e.Replacement = 'BD_ExplosiveBarrel';		break;
+				case 'TeleportFog' 		: if (!CheckVanillaReplacement(obj,"TFOGA0"))	e.Replacement = 'BD_TeleportFog';			break;
+				case 'ExplosiveBarrel' 	: if (!CheckVanillaReplacement(obj,"BAR1A0"))	e.Replacement = 'BD_ExplosiveBarrel';		break;
 				case 'EvilEye' 			: if (!CheckVanillaReplacement(obj,"CEYEA0"))	e.Replacement = 'BD_EvilEye';				break;
 				case 'FloatingSkull' 		: if (!CheckVanillaReplacement(obj,"FSKUA0"))	e.Replacement = 'BD_FloatingSkull';		break;
 				case 'HeartColumn' 		: if (!CheckVanillaReplacement(obj,"COL5A0"))	e.Replacement = 'BD_HeartColumn';			break;
