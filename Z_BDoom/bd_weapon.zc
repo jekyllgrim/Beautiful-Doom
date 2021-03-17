@@ -152,10 +152,21 @@ Class BDoomWeapon : Weapon abstract {
 	}
 	
 	action void BD_FireBullets(double spread_horz = 0, double spread_vert = 0, int numbullets = 1, int damage = 1, sound vanillasnd = "", sound enhancedsnd = "") {
-		sound snd =  (enhancedsnd && bdoom_weapons == 1) ? enhancedsnd : vanillasnd;
-		A_StartSound(snd);
-		Class<Actor> trac = bdoom_tracers ? "BD_BulletTracer" : "";
-		A_FireBullets (spread_horz, spread_vert, numbullets, damage, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,missile:trac,spawnheight:0);
+		if (numbullets < 1) numbullets = 1;
+		let weapon = player.ReadyWeapon;
+		if (!weapon || !weapon.DepleteAmmo(weapon.bAltFire, true))
+			return;
+		sound snd = (enhancedsnd && bdoom_weapons == 1) ? enhancedsnd : vanillasnd;
+		A_StartSound(snd,CHAN_WEAPON);
+		int atkbutton = weapon.bAltFire ? BT_ALTATTACK : BT_ATTACK;
+		bool held = (numbullets != 1 || (player.cmd.buttons & atkbutton && player.oldbuttons & atkbutton));
+		for (int i = 0; i < numbullets; i++) {			
+			double hspread = held ? frandom(-spread_horz,spread_horz) : 0;
+			double vspread = held ? frandom(-spread_vert,spread_vert) : 0;	
+			if (bdoom_tracers)
+				A_FireProjectile("BD_BulletTracer",hspread,useammo:false,pitch:vspread);
+			A_FireBullets (hspread, vspread, -1, damage, "BD_EnBulletPuff",flags:FBF_NORANDOMPUFFZ|FBF_EXPLICITANGLE);
+		}
 	}
 	
 	enum BD_Layers {
