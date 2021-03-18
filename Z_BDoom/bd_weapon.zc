@@ -623,6 +623,9 @@ Class BD_RealBullet : FastProjectile {
 				vel = vel.unit() * bulletspeed;
 			}*/
 			PUFF A 1 {
+				if (!bdoom_tracers) {
+					return ResolveState("SpawnInvisible");
+				}
 				if (waterlevel > 2) {
 					sprite = GetSpriteIndex("WATR");
 					bBRIGHT = false;
@@ -638,8 +641,12 @@ Class BD_RealBullet : FastProjectile {
 					sprite = GetSpriteIndex("PUFF");
 					bBRIGHT = true;
 				}
+				return ResolveState(null);
 			}
 			wait;
+		SpawnInvisible:
+			TNT1 A -1;
+			stop;
 		XDeath:
 			TNT1 A 1 {
 				let mon = BDoomMonster(tracer);
