@@ -162,7 +162,7 @@ Class BDoomWeapon : Weapon abstract {
 		sound snd = (enhancedsnd && bdoom_weapons == 1) ? enhancedsnd : vanillasnd;
 		A_StartSound(snd,CHAN_WEAPON);
 		int atkbutton = weapon.bAltFire ? BT_ALTATTACK : BT_ATTACK;
-		bool held = (numbullets != 1 || (player.cmd.buttons & atkbutton && player.oldbuttons & atkbutton));
+		bool held = (numbullets != 1 || player.refire);
 		for (int i = 0; i < numbullets; i++) {			
 			double hspread = held ? frandom(-spread_horz,spread_horz) : 0;
 			double vspread = held ? frandom(-spread_vert,spread_vert) : 0;	
