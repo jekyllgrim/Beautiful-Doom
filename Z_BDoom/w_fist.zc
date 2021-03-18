@@ -813,22 +813,25 @@ Class BD_ModernFistPuff : BdoomPuff {
 	states {
 	Crash:
 		TNT1 A 1 {
-			if (target)
-				A_SetPitch(target.pitch+frandom(-1,1),SPF_INTERPOLATE,AAPTR_TARGET);
+			if (target && target.player && target.player.readyweapon) {
+				let weap = BDoomWeapon(target.player.readyweapon);
+				if (weap)
+					weap.BD_SetPitch(target.pitch+frandom(-1,1),SPF_INTERPOLATE);
+			}
 		}
 		stop;
 	melee:
 		TNT1 A 1 {
-			if(target) {
+			if(target && target.player && target.player.readyweapon) {
 				let bdfist = BD_Fist (target.player.readyweapon);
 				if (bdfist) {
+					bdfist.BD_SetPitch(target.pitch+frandom(-1,1),SPF_INTERPOLATE);
 					bdfist.tcombo++;
 					if (bdfist.hurtchance > random(0,100) || FindInventory("BD_ModernBerserk_Regen")) {
 						bFORCEPAIN = true;
 					}
 				}
 			}
-			A_SetPitch(target.pitch+frandom(-1,1),SPF_INTERPOLATE,AAPTR_TARGET);
 		}
 		stop;
 	}		
@@ -881,8 +884,11 @@ states	{
 				for (int i = 5; i > 0; i--)
 					A_SpawnItemEx("BD_WallPart",0,0,0,	frandom(2,5),0,frandom(2,4),	random(0,360),0,64);
 			}
-			if (target)
-				A_SetPitch(target.pitch+frandom(-2,2),SPF_INTERPOLATE,AAPTR_TARGET);
+			if (target && target.player && target.player.readyweapon) {
+				let weap = BDoomWeapon(target.player.readyweapon);
+				if (weap)
+					weap.BD_SetPitch(target.pitch+frandom(-2,2),SPF_INTERPOLATE);
+			}
 		}
 		stop;
 	melee:
@@ -903,9 +909,14 @@ states	{
 			if (tracer && tracer.bISMONSTER) {
 				if (!tracer.bNOGRAVITY) //knock enemy back if they're non-flying (for flying enemies it would make fighting them only more inconvenient)
 					tracer.vel.z += clamp(1 * 130 / tracer.mass, 0, 1.5);
-				if (target)
+				if (target) {
 					tracer.vel += AngletoVector (target.AngleTo (tracer), 4);
-					A_SetPitch(target.pitch+frandom(-2,2),SPF_INTERPOLATE,AAPTR_TARGET);
+					if (target.player && target.player.readyweapon) {
+						let weap = BDoomWeapon(target.player.readyweapon);
+						if (weap)
+							weap.BD_SetPitch(target.pitch+frandom(-2,2),SPF_INTERPOLATE);
+					}
+				}
 			}
 		}
 		stop;
@@ -932,8 +943,11 @@ Class BD_ModernKickPuff : BD_ModernFistPuffHeavy {
 					for (int i = 7; i > 0; i--)
 						A_SpawnItemEx("BD_WallPart",0,0,0,	frandom(2,5),0,frandom(2,4),	random(0,360),0,64);
 				}
-				if (target)
-					A_SetPitch(target.pitch+frandom(-2,2),SPF_INTERPOLATE,AAPTR_TARGET);
+				if (target && target.player && target.player.readyweapon) {
+					let weap = BDoomWeapon(target.player.readyweapon);
+					if (weap)
+						weap.BD_SetPitch(target.pitch+frandom(-2,2),SPF_INTERPOLATE);
+				}
 			}
 			stop;	
 		HitTracer:
@@ -941,9 +955,14 @@ Class BD_ModernKickPuff : BD_ModernFistPuffHeavy {
 				if (tracer) {
 					if (!tracer.bNOGRAVITY)
 						tracer.vel.z += clamp(1.5 * 130 / tracer.mass, 0.5, 3);
-					if (target)
+					if (target) {
 						tracer.vel += AngletoVector (target.AngleTo (tracer), 5.5);
-						A_SetPitch(target.pitch+frandom(-2,2),SPF_INTERPOLATE,AAPTR_TARGET);
+						if (target.player && target.player.readyweapon) {
+							let weap = BDoomWeapon(target.player.readyweapon);
+							if (weap)
+								weap.BD_SetPitch(target.pitch+frandom(-2,2),SPF_INTERPOLATE);
+						}
+					}
 				}
 			}
 			stop;
@@ -982,9 +1001,14 @@ Class BD_ModernKickPuff_Berserk : BD_ModernKickPuff {
 				if (tracer) {
 					if (!tracer.bNOGRAVITY)
 						tracer.vel.z += clamp(1.5 * 180 / tracer.mass, 1, 5);
-					if (target)
+					if (target) {
 						tracer.vel += AngletoVector (target.AngleTo (tracer), 12);
-						A_SetPitch(target.pitch+frandom(-2,2),SPF_INTERPOLATE,AAPTR_TARGET);
+						if (target.player && target.player.readyweapon) {
+							let weap = BDoomWeapon(target.player.readyweapon);
+							if (weap)
+								weap.BD_SetPitch(target.pitch+frandom(-2,2),SPF_INTERPOLATE);
+						}
+					}
 				}
 			}
 			stop;
@@ -1006,8 +1030,11 @@ Class BD_ModernFistPuffUppercut : BD_ModernFistPuffHeavy {
 					for (int i = 7; i > 0; i--)
 						A_SpawnItemEx("BD_WallPart",0,0,0,	frandom(2,5),0,frandom(2,4),	random(0,360),0,64);
 				}
-				if (target)
-					A_SetPitch(target.pitch+frandom(-2,2),SPF_INTERPOLATE,AAPTR_TARGET);
+				if (target && target.player && target.player.readyweapon) {
+					let weap = BDoomWeapon(target.player.readyweapon);
+					if (weap)
+						weap.BD_SetPitch(target.pitch+frandom(-2,2),SPF_INTERPOLATE);
+				}
 			}
 			stop;
 		Melee:
@@ -1023,9 +1050,14 @@ Class BD_ModernFistPuffUppercut : BD_ModernFistPuffHeavy {
 						return ResolveState("Crash");
 					if (!tracer.bNOGRAVITY)
 						tracer.vel.z += clamp(7 * 120 / tracer.mass, 0, 9);
-					if (target)
+					if (target) {
 						tracer.vel += AngleToVector (target.AngleTo (tracer), 0.5);
-						A_SetPitch(target.pitch+frandom(-2,2),SPF_INTERPOLATE,AAPTR_TARGET);
+						if (target.player && target.player.readyweapon) {
+							let weap = BDoomWeapon(target.player.readyweapon);
+							if (weap)
+								weap.BD_SetPitch(target.pitch+frandom(-2,2),SPF_INTERPOLATE);
+						}
+					}
 				}
 				return ResolveState(null);
 			}
@@ -1051,8 +1083,11 @@ Class BD_ModernFistPuffUppercut_Berserk : BD_ModernFistPuffUppercut {
 					for (int i = 7; i > 0; i--)
 						A_SpawnItemEx("BD_WallPart",0,0,0,	frandom(2,5),0,frandom(2,4),	random(0,360),0,64);
 				}
-				if (target)
-					A_SetPitch(target.pitch+frandom(-2,2),SPF_INTERPOLATE,AAPTR_TARGET);
+				if (target && target.player && target.player.readyweapon) {
+					let weap = BDoomWeapon(target.player.readyweapon);
+					if (weap)
+						weap.BD_SetPitch(target.pitch+frandom(-2,2),SPF_INTERPOLATE);
+				}
 			}
 			stop;
 		Melee:
@@ -1068,9 +1103,14 @@ Class BD_ModernFistPuffUppercut_Berserk : BD_ModernFistPuffUppercut {
 						return ResolveState("Crash");
 					if (!tracer.bNOGRAVITY)
 						tracer.vel.z += clamp(9 * 120 / tracer.mass, 1, 14);
-					if (target)
+					if (target) {
 						tracer.vel += AngleToVector (target.AngleTo (tracer), 5);
-						A_SetPitch(target.pitch+frandom(-2,2),SPF_INTERPOLATE,AAPTR_TARGET);
+						if (target.player && target.player.readyweapon) {
+							let weap = BDoomWeapon(target.player.readyweapon);
+							if (weap)
+								weap.BD_SetPitch(target.pitch+frandom(-2,2),SPF_INTERPOLATE);
+						}
+					}
 				}
 				return ResolveState(null);
 			}

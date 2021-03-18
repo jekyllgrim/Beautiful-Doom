@@ -245,7 +245,7 @@ Class BD_Shotgun : BDoomWeapon {
 			A_AlertMonsters();
 			A_gunflash("ModernFlash");
 			A_StartSound("Mweapons/shotgun/fire");
-			A_SetPitch(pitch-frandom(1.4,1.7),SPF_INTERPOLATE);
+			BD_SetPitch(pitch-frandom(1.4,1.7),SPF_INTERPOLATE);
 			A_ZoomFactor(0.99,ZOOM_NOSCALETURNING);
 			BD_SetSprite("SHON","QHON");
 		}

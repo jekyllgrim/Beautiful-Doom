@@ -34,9 +34,11 @@ Class BDoomWeapon : Weapon abstract {
 	protected transient CVar c_muzzle_cache;	
 	protected transient CVar c_blackgloves_cache;
 	protected transient CVar c_bobstyle_cache;
+	protected transient CVar c_freelook_cache;
 	protected bool c_muzzle;	
 	protected bool c_blackgloves;
 	protected bool c_bobstyle;
+	protected bool c_freelook;
 	protected bool wasempty;			//used in reload animations to keep track of whether reload was dry (affects animations)
 	protected bool dontforcebob;		//if false, weapons will bob all the time
 	property dontforcebob : dontforcebob;
@@ -119,7 +121,8 @@ Class BDoomWeapon : Weapon abstract {
 		invoker.maxOffsetTics = tics;
 		
 		invoker.offsetAngle = aoffset;
-		invoker.offsetPitch = poffset;
+		//pitch offset is ignored if freelook isn't in use:
+		invoker.offsetPitch = CheckFreeLook() ? poffset : 0;
 
 		invoker.currentAngleOffset = 0.0;
 		invoker.currentPitchOffset = 0.0;
@@ -278,20 +281,43 @@ Class BDoomWeapon : Weapon abstract {
 			mreload = FindState("ForcedCool");
 		mready = FindState("Ready.Modern");
 	}
-		
+	//check if freelook is in use
+	action bool CheckFreeLook() {
+		//double-check 'freelook' cvar was cached correctly
+		if (!invoker.c_freelook) {
+			//console.printf("Freelook not cached correctly");
+			return false;
+		}
+		//if singleplayer: return false if freelook is *disabled* OR if the player isn't *using* it
+		//if multiplayer: ignore player settings, since everyone should be on equal terms
+		if (!Level.IsFreelookAllowed() || (!multiplayer && !invoker.c_freelook)) {
+			//Console.Printf("Freelook allowed: %d | multiplayer: %d | Freelook in use: %d",Level.IsFreelookAllowed(),multiplayer,invoker.c_freelook);
+			return false;
+		}
+		return true;
+	}
+	action void BD_SetPitch(double pitch, int flags = 0) {
+		if (!CheckFreeLook())
+			return;
+		A_SetPitch(pitch, flags);
+	}
 	override void DoEffect() {
 		if (owner && owner.player) {
 			let plr = owner.player;
+			//double-check if user cvars are cached correctly:
 			if (c_muzzle_cache == null)
 				c_muzzle_cache = CVar.GetCVar('bdoom_muzzle',plr);
 			if (c_blackgloves_cache == null)
 				c_blackgloves_cache = CVar.GetCVar('bdoom_blackgloves',plr);
 			if (c_bobstyle_cache == null)
 				c_bobstyle_cache = CVar.GetCvar('bdoom_weaponbobstyle',plr);
+			if (c_freelook_cache == null)
+				c_freelook_cache = CVar.GetCvar('freelook',plr);
 		}
 		c_muzzle = c_muzzle_cache.GetBool();
 		c_blackgloves = c_blackgloves_cache.GetBool();
 		c_bobstyle = c_bobstyle_cache.GetBool();
+		c_freelook = c_freelook_cache.GetBool();
 		Super.DoEffect();
 		if (!owner || !owner.player)
 			return;

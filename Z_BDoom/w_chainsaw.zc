@@ -313,7 +313,7 @@ Class BD_Chainsaw : BDoomWeapon {
 				A_CustomPunch(6*random(1,4),1,CPF_NOTURN,"BD_ModernsawPuff");
 				invoker.sndcounter++;
 				A_SetAngle(angle + frandom(invoker.jamstacks * -0.01,invoker.jamstacks * 0.01));
-				A_SetPitch(Pitch + frandom(invoker.jamstacks * -0.01,invoker.jamstacks * 0.01));
+				BD_SetPitch(Pitch + frandom(invoker.jamstacks * -0.01,invoker.jamstacks * 0.01));
 				//draw the actual attack frames on overlay because 
 				A_Overlay(PSP_GUN2,"HoldDo.Modern",nooverride:true);
 			}
