@@ -1,3 +1,14 @@
+/*
+	Beautiful Doom © 2008–2021 Jekyll Grim Payne aka Agent Ash. All rights reserved.
+
+	Beautiful Doom is NOT open-source. While it's fine to learn from it, or make personal addons for it, 
+	mod authors may NOT use the contents of Beautiful Doom as a base for their own projects without first 
+	obtaining the author's explicit approval.
+	
+	You can Find more details in the mod's README
+	(also available on github: https://github.com/jekyllgrim/Beautiful-Doom/blob/master/README.md)	
+*/
+
 version "4.5.0"
 
 #include "Z_Bdoom/bd_main.zc"
