@@ -1,25 +1,29 @@
 # Beautiful-Doom
 
-Beautiful Doom © Jekyll Grim Payne, 2008–2020
+Beautiful Doom © 2008–2021 Jekyll Grim Payne aka Agent Ash. All rights reserved.
+
+***Beautiful Doom is NOT open-source. While it's fine to learn from it, or make personal addons for it, mod authors may NOT use the contents of Beautiful Doom as a base for their own projects without first obtaining <u>the author's explicit approval</u>. See more details [below](#Use-of-resources-and-permissions).***
+
+## General information
+
+Beautiful Doom is an all-encompassing total enhancement mod for GZDoom, aimed at making Doom feel, look and sound better, while keeping the original balance and gameplay intact (or tweaking it with some of the available options). Smoother animations, some improved sprites, particle effects, physics-based gibbing, as well as high compatibility with other mods—those are some of the features.
 
 Beautiful Doom mod thread at ZDoom Forums:
 https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752ec93aed
 
 Requires **GZDoom**. At the moment of writing you need a development version, at least [GZDoom g4.5pre-70](https://devbuilds.drdteam.org/gzdoom/) since the latest stable release suffers from memory leaks.
 
-## HOW TO PLAY THE LATEST RELEASE
+## How to play the latest stable release
 
 Releases aren't always super-stable or bug-free, but they should be playable. Some releases are development versions which don't have all the planned features implemented yet.
 
 1. Navigate to the "Releases" tab at the top or following this URL: https://github.com/jekyllgrim/Beautiful-Doom/releases
-2. Download the "source code .zip" below. Don't unpack! Run it as you'd run any .wad or .pk3:
+2. Download the attached PK3 file. Run it as you'd run any .wad or .pk3:
 ```
-gzdoom.exe -file Beautiful-Doom.zip
+gzdoom.exe -file Beautiful_Doom.pk3
 ```
-3. (Optional) Rename .zip to .pk3 to remember you don't need to unpack it.
 
-
-## HOW TO PLAY THE VERSION CURRENTLY IN DEVELOPMENT
+## How to play the freshest dev build
 
 It's possible to play the version that is currently in the repository but hasn't been made into a separate release yet:
 
@@ -43,7 +47,7 @@ It's possible to play the version that is currently in the repository but hasn't
 
 6. Enjoy!
 
-## USE OF RESOURCES AND PERMISSIONS
+## Use of resources and permissions
 
 If you want to use any of my resources, you have to contact me first and ask for permission. Reach me:
 
@@ -59,7 +63,9 @@ Before asking if you can borrow an asset for your own project, make sure your wo
 - It's not a low-effort repack/rehash/edit of other people's works
 - The resource you want to use is already available in one of the stable RELEASE versions of Beautiful Doom (if it's only on GitHub, it's not free to use)
 
-### MODS THAT GO WELL WITH BEAUTIFUL Doom
+
+
+## Mods that go well with Beautiful Doom
 
 Here are a few recommendations on stuff that plays well with Beautiful Doom and matches the concept of overall enhancement:
 
@@ -68,7 +74,7 @@ Here are a few recommendations on stuff that plays well with Beautiful Doom and 
 * [Tilt++](https://forum.zdoom.org/viewtopic.php?f=43&t=55413) by Nash Muhandes: adds customizable camera tilting
 
 
-### CREDITS
+## CREDITS
 
 If you feel anyone was forgotten, or that I'm using somebody's assets without permisssion — please contact me, and I'll make sure to resolve it as soon as possible:
 
@@ -97,7 +103,7 @@ If you feel anyone was forgotten, or that I'm using somebody's assets without pe
 
 ## Some features of the ZScript version
 
-### MODERN WEAPON SET
+### Modern Guns
 One of the main new features of the ZScript version of Beautiful Doom is a third weapon set. All weapons require reloading, weapons that aren't automatic require pressing trigger manually. All bullet weapons use projectile bullets instead of hitscans. Weapons have different sway and recoil. Also all of them use varied and realistic sounds, mostly from real weapons.
 * Quick Kick: a melee attack that can be used while handling or reloading other weapons. Affected by Berserk.
 * Fist: has a combo system with finishers and stuff. Supports combos; the longer you're punching an enemy, the higher is the chance of stun-locking them. The Quick Kick is uniquely modified to be a part of the combo for this weapon.
@@ -110,8 +116,6 @@ One of the main new features of the ZScript version of Beautiful Doom is a third
 * Plasma Rifle: similar to original but builds up heat that needs to be dissipated manually (with Alt Fire or Reload buttons). Also deals damage in tiny explosions, so it's AOE.
 * BFG 9000: the orb explodes and damages monsters with railguns, without taking the shooter's position into account. Can be charged by holding the Fire button; the higher the charge, the more damage it deals and the further it'll fly. It's possible to spend between 10 and 80 cells on one shot. Warning: overcharging is possible and will damage you.
 
-### Various improvements
-* The mod is fully ZScript-ified
-* Added Modern weaponset (see above)
-* Revamped blood and gibs graphics and physics
-* High compatibility with other mods thanks to multiple special checks and parsers, as well as optional replacements
+### High Compatibility
+
+A huge amount of effort has been put into making Beautiful Doom as compatible as possible. You can disable almost any feature of the mod (special effects, monster replacements, weapon replacements, decorations), play with various options, and as such play it with almost any other mod or map set available.
