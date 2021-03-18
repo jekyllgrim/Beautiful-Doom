@@ -351,7 +351,7 @@ brightmap sprite STRRX0		{ map "brightmaps/shorttorch.png" disablefullbright }
 brightmap sprite STRRY0		{ map "brightmaps/shorttorch.png" disablefullbright }
 brightmap sprite STRRZ0		{ map "brightmaps/shorttorch.png" disablefullbright }
 
-// BURNING BARREL
+// BURNING [REL
 brightmap sprite BURBA0		{ map "brightmaps/burningbarrel.png" disablefullbright }
 brightmap sprite BURBB0		{ map "brightmaps/burningbarrel.png" disablefullbright }
 brightmap sprite BURBC0		{ map "brightmaps/burningbarrel.png" disablefullbright }
