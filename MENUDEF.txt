@@ -52,7 +52,7 @@ OptionMenu "BDoom_Settings" {
 	
 	StaticText "$BDMENU_TITLE_SFX", yellow
 	TLTPOption "$BDMENU_GIBS_NAME",		"$BDMENU_GIBSTOGGLE", "White","bdoom_gibs", "OnOff", "bdoom_replacemonsters"
-	TLTPOption "$BDMENU_BLOOD_NAME",				"$BDMENU_BLOODTOGGLE", "White","bdoom_blood", "OnOff"
+	TLTPOption "$BDMENU_BLOOD_NAME",				"$BDMENU_BLOODTOGGLE", "White","bdoom_blood", "bdoom_blood"
 	OptionEither_TLTP "$BDMENU_NOBOSSGIBS_NAME","$BDMENU_NOBOSSGIBS","White",	"bdoom_nobossgibs", "OnOff", "bdoom_gibs", "bdoom_replacemonsters"
 	TLTPOption "$BDMENU_FLAMES_NAME",		"$BDMENU_FLAMES", "White",	"bdoom_flames", "OnOff", ""
 	TLTPOption "$BDMENU_DEBRIS_NAME",			"$BDMENU_DEBRIS", "White",	"bdoom_debris", "OnOff", "", 1	
@@ -145,6 +145,12 @@ OptionValue "bdoom_weapons" {
 	0, "$BDO_VANILLA"
 	1, "$BDO_ENHANCED"
 	2, "$BDO_MODERN"
+}
+
+OptionValue "bdoom_blood" {
+	0, "$BDO_DISABLED"
+	1, "$BDO_BLOOD_FULL"
+	2, "$BDO_BLOOD_NOPOOLS"
 }
 
 OptionValue "bdoom_muzzle" {

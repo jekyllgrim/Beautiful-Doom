@@ -11,7 +11,7 @@ user 	bool 	bdoom_muzzle			= true;
 server 	bool 	bdoom_tracers			= true;
 user	bool	bdoom_blackgloves		= false;
 
-server 	bool 	bdoom_blood 			= true;
+server 	int 	bdoom_blood 			= 1;
 server 	bool 	bdoom_gibs 				= true;
 server 	bool 	bdoom_nobossgibs		= false;
 server	bool	bdoom_livegibs			= true;

@@ -30,7 +30,7 @@ BDMENU_GLOVES_NAME =	"Player gloves color";
 BDMENU_TITLE_SFX = 		"SPECIAL EFFECTS";
 BDMENU_GIBSTOGGLE =		"Special effects and detailed gibs for monster deaths.\nMay impact performance. Requires Beautiful Monsters to be enabled.";
 BDMENU_GIBS_NAME = 		"Enhanced gibs & deaths";
-BDMENU_BLOODTOGGLE = 	"Particle blood and dynamic blood pools. May impact performance.";
+BDMENU_BLOODTOGGLE = 	"Enable particle blood and (optionally) floor pools. May impact performance.";
 BDMENU_BLOOD_NAME = 	"Enhanced blood";
 BDMENU_NOBOSSGIBS = 	"Show classic boss death animations even when enhanced gibs are enabled.\nOtherwise bosses will use special death animations with lots of effects.";
 BDMENU_NOBOSSGIBS_NAME = "Force vanilla boss deaths";
@@ -88,6 +88,8 @@ BDO_DISABLED		= "Disabled";
 BDO_ENABLED			= "Enabled";
 BDO_DEHACKEDONLY	= "DEHACKED only";
 BDO_DEHACKEDSPRITES	= "DEHACKED and sprites";
+BDO_BLOOD_NOPOOLS	= "Only blood particles (no pools)";
+BDO_BLOOD_FULL		= "Blood particles and pools";
 
 //// Beautiful Doom Weapon Help strings
 
