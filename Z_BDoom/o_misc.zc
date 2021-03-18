@@ -404,8 +404,8 @@ Class BD_ExplosiveBarrel : ExplosiveBarrel {
 					A_Quake(2,15,0,320,"");
 				A_SetScale(1.0);
 			}
-			BEXP AABBC 1;
-			BEXP C 1 A_Scream;
+			BXP1 AABBC 1;
+			BXP1 C 1 A_Scream;
 			TNT1 A 0 {
 				let bar = Spawn("BD_ExplodedBarrel",pos);
 				bar.master = self;
@@ -421,14 +421,14 @@ Class BD_ExplosiveBarrel : ExplosiveBarrel {
 						A_SpawnItemEx("BD_EBarrelPiece",	frandom(-6,6),frandom(-6,6),frandom(4,24),	frandom(-10,10),frandom(-10,10),frandom(4,15));
 				}
 			}
-			BEXP DDEEFFGGH 1 {
+			BXP1 DDEEFFGGH 1 {
 				if (bdoom_debris && canSeePlayer) {
 					for (int i = random(0,4); i > 0; i--)
 						A_SpawnItemEx("BD_BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(1,52),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.2,1));
 				}
 			}
-			BEXP H 1 A_Explode();
-			BEXP IJKLMNOPQ 3 {
+			BXP1 H 1 A_Explode();
+			BXP1 IJKLMNOPQ 3 {
 				if (bdoom_debris && canSeePlayer)
 					A_SpawnItemEx("BD_BigBlackSmoke",	frandom(-6,6),frandom(-6,6),frandom(1,52),	frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.2,1),failchance:32);
 			}
