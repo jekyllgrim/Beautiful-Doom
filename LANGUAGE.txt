@@ -1,5 +1,10 @@
 [enu default]
 
+//// Beautiful Doom Items
+BD_ARTAG =				"Assault Rifle";
+BD_AROBITUARY =			"%o was penetrated by %k's assault rifle.";
+BD_ARPICKUP = 			"You got the Assault Rifle!";
+
 //// Beautiful Doom Settings Menu 
 
 BDMENU_TITLE =			"Beautiful Doom Settings";
@@ -228,7 +233,7 @@ BDH_SSGFire1		= "Fire one barrel";
 
 //chaingun
 BDH_Chaingun		= "Chaingun";
-BDH_Chaingun_Desc	= "Classic Chaingun with rapid-fire mode\nas a secondary attack.";
+BDH_Chaingun_Desc	= "Classic Chaingun with a rapid-spin feature\nas a secondary attack.";
 BDH_Chaingun_Note	= 	"Hold Secondary for fast spin, then fire\n"
 						"with Primary. The gun needs to cool down\n"
 						"after rapid fire. Watch the barrels: when\n"
