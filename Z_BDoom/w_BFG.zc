@@ -30,6 +30,7 @@ class BD_BFG9000 : BDoomWeapon {
 		weapon.kickback 30;
 		decal "ArachnotronPlasmaSplat";
 		weapon.slotnumber 7;
+		inventory.icon "BFUGA0";
 	}
 	override void DoEffect() {
 		Super.DoEffect();

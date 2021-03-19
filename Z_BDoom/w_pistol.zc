@@ -36,6 +36,10 @@ Class BD_Pistol : BDoomWeapon {
 			bNOAUTOFIRE = false;
 			bAMMO_OPTIONAL = false;
 		}
+		if (bdoom_weapons == 1 && CountInv("BD_Pistol") > 1)
+			icon = texman.CheckForTexture("PISDZ0", TexMan.Type_Any);
+		else
+			icon = texman.CheckForTexture("PISTZ0", TexMan.Type_Any);
 	}
 	
 	states {

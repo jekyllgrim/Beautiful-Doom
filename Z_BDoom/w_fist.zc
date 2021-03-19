@@ -26,6 +26,8 @@ Class BD_Fist : BDoomWeapon {
 		Tag "$TAG_FIST";
 		+WEAPON.WIMPY_WEAPON
 		+WEAPON.MELEEWEAPON
+		BDoomWeapon.ClassicIcon "FIS0D0";
+		BDoomWeapon.ModernIcon "NUKWJ0";
 	}
 	override void DoEffect() {
 		Super.DoEffect();

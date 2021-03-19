@@ -24,6 +24,7 @@ Class BD_Chainsaw : BDoomWeapon {
 		weapon.slotpriority 1;
 		+WEAPON.MELEEWEAPON
 		+WEAPON.AXEBLOOD
+		inventory.icon "CSAWA0";
 	}
 		
 	override void DoEffect() {

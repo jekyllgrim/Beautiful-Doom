@@ -48,6 +48,11 @@ Class BDoomWeapon : Weapon abstract {
 	
 	protected double preKickSpeed;
 	
+	protected Name ClassicIcon;
+	protected Name ModernIcon;
+	property ClassicIcon : ClassicIcon;
+	property ModernIcon : ModernIcon;
+	
 	Default {
 		BDoomWeapon.AutoReloadTime 60;
 		BDoomWeapon.maxOffsetTics 1; //required default values for A_CameraSway. Otherwise it'll crash due to division by zero
@@ -321,6 +326,12 @@ Class BDoomWeapon : Weapon abstract {
 		Super.DoEffect();
 		if (!owner || !owner.player)
 			return;
+		if (!default.icon) {
+			if (bdoom_weapons == 2 && ModernIcon)
+				icon = texman.CheckForTexture(ModernIcon, TexMan.Type_Any);
+			else if (ClassicIcon)
+				icon = texman.CheckForTexture(ClassicIcon, TexMan.Type_Any);
+		}
 		let plr = owner.player;
 		if (magammo) {
 			if (bdoom_weapons == 2)

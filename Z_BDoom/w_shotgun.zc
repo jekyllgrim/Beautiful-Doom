@@ -16,6 +16,8 @@ Class BD_Shotgun : BDoomWeapon {
 		weapon.slotpriority 0;
 		BDoomWeapon.AutoReloadTime 200;
 		BDoomWeapon.reloadsound "Mweapons/shotgun/shellin";
+		BDoomWeapon.ClassicIcon "SHOTA0";
+		BDoomWeapon.ModernIcon "SHOTB0";
 	}
 	override void Tick() {
 		If (Owner)

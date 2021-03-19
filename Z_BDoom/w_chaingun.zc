@@ -25,6 +25,8 @@ Class BD_Chaingun : BDoomWeapon {
 		weapon.slotnumber		4;
 		BDoomWeapon.AutoReloadTime 140;
 		BDoomWeapon.reloadsound "Mweapons/rifle/clipin";
+		BDoomWeapon.ClassicIcon "MGUNZ0";
+		BDoomWeapon.ModernIcon "RIFNZ0";
 	}
 	action void SpawnChaingunCasing() {
 		if(bdoom_debris)
@@ -40,8 +42,8 @@ Class BD_Chaingun : BDoomWeapon {
 	}
 	
 	override string PickupMessage () {
-		if(bdoom_weapons == 2) 
-			return "You got the Assault Rifle!"; 
+		if(bdoom_weapons == 2)
+			return "$BD_ARTAG"; 
 		else
 			return "$GOTCHAINGUN"; 
 	}
@@ -51,7 +53,7 @@ Class BD_Chaingun : BDoomWeapon {
 	}
 	override string GetObituary (Actor victim, Actor inflictor, Name mod, bool playerattack) {
 		if(bdoom_weapons == 2) 
-			return "%o was penetrated by %k's assault rifle."; 
+			return "$BD_AROBITUARY"; 
 		else 
 			return "$OB_MPCHAINGUN"; 
 	}
@@ -73,7 +75,7 @@ Class BD_Chaingun : BDoomWeapon {
 		if (!owner)
 			return;
 		if(bdoom_weapons == 2) {
-			SetTag("Assault Rifle");
+			SetTag("$BD_ARTAG");
 			if (RifleSights)
 				bNOAUTOFIRE = true;
 			else	

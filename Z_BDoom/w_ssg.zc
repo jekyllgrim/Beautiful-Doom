@@ -17,6 +17,8 @@ Class BD_SuperShotgun : BDoomWeapon {
 		weapon.slotpriority 1;
 		BDoomWeapon.AutoReloadTime 160;
 		BDoomWeapon.reloadsound "Mweapons/ssg/close";
+		BDoomWeapon.ClassicIcon "SGN2A0";
+		BDoomWeapon.ModernIcon "SGN2B0";
 	}
 	action state BD_CancelReload() {		
 		if ((player.cmd.buttons & BT_ATTACK) && !(player.oldbuttons & BT_ATTACK)) {

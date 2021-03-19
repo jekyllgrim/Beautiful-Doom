@@ -19,6 +19,8 @@ Class BD_RocketLauncher : BDoomWeapon {
 		weapon.slotnumber 5;
 		BDoomWeapon.AutoReloadTime 110;
 		BDoomWeapon.reloadsound "Mweapons/rocket/clipin";
+		BDoomWeapon.ClassicIcon "LAUNA0";
+		BDoomWeapon.ModernIcon "LAUNB0";
 	}
 		
 	override void DoEffect() {
