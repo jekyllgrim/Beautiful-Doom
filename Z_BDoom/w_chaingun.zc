@@ -72,7 +72,7 @@ Class BD_Chaingun : BDoomWeapon {
 	}
 	override void DoEffect() {
 		Super.DoEffect();
-		if (!owner)
+		if (!owner || !owner.player)
 			return;
 		if(bdoom_weapons == 2) {
 			SetTag("$BD_ARTAG");
@@ -125,8 +125,8 @@ Class BD_Chaingun : BDoomWeapon {
 				if (!fl) {
 					owner.player.SetPSprite(PSP_HEAT,FindState("FlashHeated"));
 				}
-				else
-					fl.frame = spinframe;
+				/*else
+					fl.frame = spinframe;*/
 			}
 			else {
 				owner.player.SetPSprite(PSP_HEAT,null);
@@ -311,9 +311,14 @@ Class BD_Chaingun : BDoomWeapon {
 				A_OverlayRenderstyle(OverlayID(),Style_ADD);
 				A_OverlayFlags(OverlayID(),PSPF_Alpha|PSPF_ForceAlpha,true);
 				A_OverlayAlpha(OverlayID(),Clamp(invoker.HeatStacks*0.0165,0,1));
-				/*let psp = Player.FindPSprite(OverlayID());
-				if (psp)
-					psp.frame = invoker.spinframe;*/
+				/*Console.Printf("heatstacks: %d",invoker.heatstacks);
+				if (invoker.heatStacks <= 0)
+					return ResolveState("Null");
+				return ResolveState(null);*/
+				let psp = Player.FindPSprite(PSP_WEAPON);
+				let heat = Player.FindPSprite(OverlayID());
+				if (psp && heat)
+					heat.frame = psp.frame;
 			}
 			loop;
 		AltFire:
@@ -352,8 +357,7 @@ Class BD_Chaingun : BDoomWeapon {
 					}
 					A_GunFlash("AltFlash");
 					A_StartSound("weapons/chaingun/fire",flags:CHANF_OVERLAP);
-					Class<Actor> trac = bdoom_tracers ? "BD_BulletTracer" : "";
-					A_FireBullets (8,3, -1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,missile:trac,spawnheight:0) ;
+					BD_FireBullets (8, 3, 1, 5);
 					SpawnChaingunCasing();
 				}
 				if (! ((player.cmd.buttons & BT_ALTATTACK) && (player.oldbuttons & BT_ALTATTACK)) ) {
