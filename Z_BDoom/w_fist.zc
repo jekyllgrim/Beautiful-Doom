@@ -31,7 +31,7 @@ Class BD_Fist : BDoomWeapon {
 	}
 	override void DoEffect() {
 		Super.DoEffect();
-		If (!Owner)
+		If (!Owner || !owner.player)
 			return;
 		if(bdoom_weapons == 2) {
 			//console.printf("hurt chance: %d",hurtchance);

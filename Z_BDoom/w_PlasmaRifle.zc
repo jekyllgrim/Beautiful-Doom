@@ -24,7 +24,7 @@ Class BD_PlasmaRifle : BDoomWeapon {
 	}
 	override void DoEffect () {
 		super.DoEffect();
-		if (!owner)
+		if (!owner || !owner.player)
 			return;
 		let psp = owner.player.FindPSprite(PSP_WEAPON);
 		if (psp && bdoom_weapons == 2 && heatcounter > 0)
