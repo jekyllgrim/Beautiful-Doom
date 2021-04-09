@@ -1,3 +1,85 @@
+Class BD_WeaponPickupControl : Inventory {
+	Default {
+		+INVENTORY.UNDROPPABLE
+		+INVENTORY.UNTOSSABLE
+		+INVENTORY.PERSISTENTPOWER
+		inventory.maxamount 1;
+	}
+	static const Class<Weapon> bd_vanillaweapons[] = {
+		"Fist",
+		"Chainsaw",
+		"Pistol",
+		"Shotgun",
+		"SuperShotgun",
+		"Chaingun",
+		"RocketLauncher",
+		"PlasmaRifle",
+		"BFG9000"
+	};
+	static const Class<Weapon> bd_modweapons[] = {
+		"BD_Fist",
+		"BD_Chainsaw",
+		"BD_Pistol",
+		"BD_Shotgun",
+		"BD_SuperShotgun",
+		"BD_Chaingun",
+		"BD_RocketLauncher",
+		"BD_PlasmaRifle",
+		"BD_BFG9000"
+	};
+		
+	override void DoEffect() {
+		super.DoEffect();
+		if (!owner || !owner.player)
+			return;
+		//here we make sure that the player will never have vanilla weapons in their inventory:
+		let plr = owner.player;
+		for (int i = 0; i < bd_vanillaweapons.Size(); i++) {
+			Class<Weapon> oldweap = bdoom_replaceweapons ? bd_vanillaweapons[i] : bd_modweapons[i];
+			Class<Weapon> newweap = bdoom_replaceweapons ? bd_modweapons[i] : bd_vanillaweapons[i];
+			if (!oldweap || !newweap)
+				continue;
+			//check if all values are valid and the player has a vanilla weapon in the inventory:
+			if (oldweap && newweap && owner.CountInv(oldweap)) {
+				owner.GiveInventory(newweap,1);
+				owner.A_TakeInventory(oldweap);
+			}
+		}
+	}
+	private Weapon GetWeapon(Class<Weapon> type) {
+		let weap = Weapon(FindInventory(type));
+		if (weap)
+			return weap;
+		return Weapon(GiveInventoryType(type));
+	}
+    override bool HandlePickup (Inventory item) {
+        let oldweap = item.GetClassName();
+        Class<Inventory> replacement = null;
+        if (bdoom_replaceweapons) {
+			for (int i = 0; i < bd_vanillaweapons.Size(); i++) {
+				if (bd_modweapons[i] && oldweap == bd_vanillaweapons[i]) {
+					replacement = bd_modweapons[i];
+					break;
+				}
+			}
+		}
+		else {
+			for (int i = 0; i < bd_vanillaweapons.Size(); i++) {
+				if (bd_vanillaweapons[i] && oldweap == bd_modweapons[i]) {
+					replacement = bd_vanillaweapons[i];
+					break;
+				}
+			}
+		}
+        if (!replacement)
+            return false;			
+        item.bPickupGood = true;
+        owner.A_GiveInventory(replacement,1);		
+        return true;
+    }
+}
+		
+
 Class BDoomWeapon : Weapon abstract {	
 	protected bool picked; //has this gun been picked up before?
 	protected int offsetTics; // current camera sway timer
@@ -158,16 +240,21 @@ Class BDoomWeapon : Weapon abstract {
 			);
 		}
 	}
-	
+	//a wrapper function that automatically plays either vanilla or enhanced weapon sound, and fires tracers with A_FireProjectile so that they don't break on portals and such:
 	action void BD_FireBullets(double spread_horz = 0, double spread_vert = 0, int numbullets = 1, int damage = 1, sound vanillasnd = "", sound enhancedsnd = "") {
 		if (numbullets < 1) numbullets = 1;
 		let weapon = player.ReadyWeapon;
+		//deplete the appropriate ammo
 		if (!weapon || !weapon.DepleteAmmo(weapon.bAltFire, true))
 			return;
+		//decide which sound to play based on current weapon set
 		sound snd = (enhancedsnd && bdoom_weapons == 1) ? enhancedsnd : vanillasnd;
-		A_StartSound(snd,CHAN_WEAPON);
-		int atkbutton = weapon.bAltFire ? BT_ALTATTACK : BT_ATTACK;
+		//play only if non-null
+		if (snd)
+			A_StartSound(snd,CHAN_WEAPON);
+		//emulate perfect accuracy on first bullet: it'll happen if there's only 1 bullet and player isn't in refire (holding attack button):
 		bool held = (numbullets != 1 || player.refire);
+		//fire bullets with explicit angle and simply pass the offsets to the projectiles instead of using AimBulletMissile at puffs (because puffs don't always spawn!)
 		for (int i = 0; i < numbullets; i++) {			
 			double hspread = held ? frandom(-spread_horz,spread_horz) : 0;
 			double vspread = held ? frandom(-spread_vert,spread_vert) : 0;	
@@ -307,32 +394,29 @@ Class BDoomWeapon : Weapon abstract {
 		A_SetPitch(pitch, flags);
 	}
 	override void DoEffect() {
-		if (owner && owner.player) {
-			let plr = owner.player;
-			//double-check if user cvars are cached correctly:
-			if (c_muzzle_cache == null)
-				c_muzzle_cache = CVar.GetCVar('bdoom_muzzle',plr);
-			if (c_blackgloves_cache == null)
-				c_blackgloves_cache = CVar.GetCVar('bdoom_blackgloves',plr);
-			if (c_bobstyle_cache == null)
-				c_bobstyle_cache = CVar.GetCvar('bdoom_weaponbobstyle',plr);
-			if (c_freelook_cache == null)
-				c_freelook_cache = CVar.GetCvar('freelook',plr);
-		}
+		if (!owner || !owner.player)
+			return;
+		let plr = owner.player;
+		//double-check if user cvars are cached correctly:
+		if (c_muzzle_cache == null)
+			c_muzzle_cache = CVar.GetCVar('bdoom_muzzle',plr);
+		if (c_blackgloves_cache == null)
+			c_blackgloves_cache = CVar.GetCVar('bdoom_blackgloves',plr);
+		if (c_bobstyle_cache == null)
+			c_bobstyle_cache = CVar.GetCvar('bdoom_weaponbobstyle',plr);
+		if (c_freelook_cache == null)
+			c_freelook_cache = CVar.GetCvar('freelook',plr);
 		c_muzzle = c_muzzle_cache.GetBool();
 		c_blackgloves = c_blackgloves_cache.GetBool();
 		c_bobstyle = c_bobstyle_cache.GetBool();
 		c_freelook = c_freelook_cache.GetBool();
 		Super.DoEffect();
-		if (!owner || !owner.player)
-			return;
 		if (!default.icon) {
 			if (bdoom_weapons == 2 && ModernIcon)
 				icon = texman.CheckForTexture(ModernIcon, TexMan.Type_Any);
 			else if (ClassicIcon)
 				icon = texman.CheckForTexture(ClassicIcon, TexMan.Type_Any);
 		}
-		let plr = owner.player;
 		if (magammo) {
 			if (bdoom_weapons == 2)
 				Ammo1 = ammo(owner.FindInventory(magammo));

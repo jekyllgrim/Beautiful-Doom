@@ -12,10 +12,13 @@ class BD_WeaponOverrideHandler : EventHandler {
 		}
 	}
 
-	// These items have no new visuals and only new pickup sounds, so, I insert them via an event handler, without replacing the actual actors
 	override void WorldThingSpawned(WorldEvent e) {
-		if (e.thing && e.thing.player && !e.thing.FindInventory("BD_OverlayControl"))
-			e.thing.GiveInventory("BD_OverlayControl",1);
+		if (e.thing && e.thing.player) {
+			if (!e.thing.FindInventory("BD_OverlayControl"))
+				e.thing.GiveInventory("BD_OverlayControl",1);
+			if (!e.thing.FindInventory("BD_WeaponPickupControl"))
+				e.thing.GiveInventory("BD_WeaponPickupControl",1);
+		}
 		if (!bdoom_replaceitems)
 			return;
 		if (!(e.thing is "Inventory"))
@@ -23,15 +26,16 @@ class BD_WeaponOverrideHandler : EventHandler {
 		let inv = Inventory(e.thing);
 		if (!inv)
 			return;
+		// These items have no new visuals and only new pickup sounds, so, I insert them via an event handler, without replacing the actual actors
 		switch (inv.GetClassName()) {
 			case 'Clip' 		: inv.pickupsound = "ammo/clip";			break;
 			case 'ClipBox' 	: inv.pickupsound = "ammo/clipbox";		break;
 			case 'Shell' 		: inv.pickupsound = "ammo/shells";		break;
 			case 'ShellBox' 	: inv.pickupsound = "ammo/shells";		break;
-			case 'RocketAmmo' 	: inv.pickupsound = "ammo/rockets";		break;
+			case 'RocketAmmo' : inv.pickupsound = "ammo/rockets";		break;
 			case 'RocketBox' 	: inv.pickupsound = "ammo/rockets";		break;
-			case 'Cell' 		: inv.pickupsound = "ammo/cells";			break;
-			case 'CellPack' 	: inv.pickupsound = "ammo/cells";			break;
+			case 'Cell' 		: inv.pickupsound = "ammo/cells";		break;
+			case 'CellPack' 	: inv.pickupsound = "ammo/cells";		break;
 			case 'BackPack' 	: inv.pickupsound = "pickups/backpack";	break;
 			case 'RadSuit' 	: inv.pickupsound = "pickups/radsuit";	break;
 		}
@@ -54,85 +58,6 @@ class BD_WeaponOverrideHandler : EventHandler {
 				case 'BFG9000' 		: e.Replacement = 'BD_BFG9000'; 			break;
 			}
 		}
-	}
-		
-	/* This override detects if the player received a vanilla weapon directly (e.g. via ACS script)
-	and replaces them with one from the mod. It also replaces the starting weapon.
-	Initial version provided by Zombie
-	*/
-	override void WorldTick() {		
-		for (int pn = 0; pn < MAXPLAYERS; pn++) {
-			if (!playerInGame[pn])
-				continue;
-			PlayerInfo player	= players[pn];
-			PlayerPawn mo		= player.mo;
-			if (!player || !mo)
-				continue;
-			if (!player.readyweapon)
-				continue;
-			let oldweap = player.pendingweapon.GetClassName();
-			let oldweapr = player.readyweapon.GetClassName();
-			if (bdoom_replaceweapons) { 
-				switch (oldweap) {
-					case 'Fist' 			:    player.pendingweapon = GetWeapon(mo, "BD_Fist"			); mo.TakeInventory(oldweap,1); break;
-					case 'Chainsaw' 		:    player.pendingweapon = GetWeapon(mo, "BD_Chainsaw"		); mo.TakeInventory(oldweap,1); break;
-					case 'Pistol' 			:    player.pendingweapon = GetWeapon(mo, "BD_Pistol"			); mo.TakeInventory(oldweap,1); break;
-					case 'Shotgun'			:    player.pendingweapon = GetWeapon(mo, "BD_Shotgun"			); mo.TakeInventory(oldweap,1); break;
-					case 'SuperShotgun' 	:    player.pendingweapon = GetWeapon(mo, "BD_SuperShotgun"	); mo.TakeInventory(oldweap,1); break;
-					case 'Chaingun' 		:    player.pendingweapon = GetWeapon(mo, "BD_Chaingun"		); mo.TakeInventory(oldweap,1); break;
-					case 'RocketLauncher'	:    player.pendingweapon = GetWeapon(mo, "BD_RocketLauncher"	); mo.TakeInventory(oldweap,1); break;
-					case 'PlasmaRifle' 	:    player.pendingweapon = GetWeapon(mo, "BD_PlasmaRifle"	); mo.TakeInventory(oldweap,1); break;
-					case 'BFG9000' 		:    player.pendingweapon = GetWeapon(mo, "BD_BFG9000"			); mo.TakeInventory(oldweap,1); break;
-				}				
-				
-				switch (oldweapr) {
-					case 'Fist' 			:    player.pendingweapon = GetWeapon(mo, "BD_Fist"			); mo.TakeInventory(oldweapr,1); break;
-					case 'Chainsaw' 		:    player.pendingweapon = GetWeapon(mo, "BD_Chainsaw"		); mo.TakeInventory(oldweapr,1); break;
-					case 'Pistol' 			:    player.pendingweapon = GetWeapon(mo, "BD_Pistol"			); mo.TakeInventory(oldweapr,1); break;
-					case 'Shotgun'			:    player.pendingweapon = GetWeapon(mo, "BD_Shotgun"			); mo.TakeInventory(oldweapr,1); break;
-					case 'SuperShotgun' 	:    player.pendingweapon = GetWeapon(mo, "BD_SuperShotgun"	); mo.TakeInventory(oldweapr,1); break;
-					case 'Chaingun' 		:    player.pendingweapon = GetWeapon(mo, "BD_Chaingun"		); mo.TakeInventory(oldweapr,1); break;
-					case 'RocketLauncher'	:    player.pendingweapon = GetWeapon(mo, "BD_RocketLauncher"	); mo.TakeInventory(oldweapr,1); break;
-					case 'PlasmaRifle' 	:    player.pendingweapon = GetWeapon(mo, "BD_PlasmaRifle"	); mo.TakeInventory(oldweapr,1); break;
-					case 'BFG9000' 		:    player.pendingweapon = GetWeapon(mo, "BD_BFG9000"			); mo.TakeInventory(oldweapr,1); break;
-				}				
-			}
-			else {
-			/*
-			NOTE: You're NOT supposed to be able to toggle bdoom_replaceweapons whenever you want. You have to restart your game.
-			So, the fact that, if you had it enabled and then disabled it, and you ended up having no weapons, is intentional. Doing it any other way
-			would cause more issues.
-			The part below has only one purpose: if you disable Beautiful Doom Weapons, the block below makes sure they never appear in your inventory.
-			You won't receive them with "give all" or "give weapons". Without this section, you wouldn't be able to avoid using Beautifull Doom guns at all.
-			*/
-				if (mo.FindInventory('BD_Fist'))
-					mo.TakeInventory('BD_Fist',1);
-				if (mo.FindInventory('BD_Chainsaw'))
-					mo.TakeInventory('BD_Chainsaw',1);
-				if (mo.FindInventory('BD_Pistol'))
-					mo.TakeInventory('BD_Pistol',1);
-				if (mo.FindInventory('BD_Shotgun'))
-					mo.TakeInventory('BD_Shotgun',1);
-				if (mo.FindInventory('BD_SuperShotgun'))
-					mo.TakeInventory('BD_SuperShotgun',1);
-				if (mo.FindInventory('BD_Chaingun'))
-					mo.TakeInventory('BD_Chaingun',1);
-				if (mo.FindInventory('BD_RocketLauncher'))
-					mo.TakeInventory('BD_RocketLauncher',1);
-				if (mo.FindInventory('BD_PlasmaRifle'))
-					mo.TakeInventory('BD_PlasmaRifle',1);
-				if (mo.FindInventory('BD_BFG9000'))
-					mo.TakeInventory('BD_BFG9000',1);
-			}
-		}
-	}
-	// Courtesy of Zombie
-	private Weapon GetWeapon(PlayerPawn mo, Class<Weapon> type) {
-		let weap = Weapon(mo.FindInventory(type));
-		if (weap)
-			return weap;
-		else
-			return Weapon(mo.GiveInventoryType(type));
 	}
 }
 
