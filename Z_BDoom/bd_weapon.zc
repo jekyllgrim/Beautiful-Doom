@@ -242,7 +242,7 @@ Class BDoomWeapon : Weapon abstract {
 	}
 	//a wrapper function that automatically plays either vanilla or enhanced weapon sound, and fires tracers with A_FireProjectile so that they don't break on portals and such:
 	action void BD_FireBullets(double spread_horz = 0, double spread_vert = 0, int numbullets = 1, int damage = 1, sound vanillasnd = "", sound enhancedsnd = "") {
-		if (numbullets < 1) numbullets = 1;
+		if (numbullets == 0) numbullets = 1;
 		let weapon = player.ReadyWeapon;
 		//deplete the appropriate ammo
 		if (!weapon || !weapon.DepleteAmmo(weapon.bAltFire, true))
@@ -254,6 +254,8 @@ Class BDoomWeapon : Weapon abstract {
 			A_StartSound(snd,CHAN_WEAPON);
 		//emulate perfect accuracy on first bullet: it'll happen if there's only 1 bullet and player isn't in refire (holding attack button):
 		bool held = (numbullets != 1 || player.refire);
+		//make sure numbullets is positive, now that the check is finished
+		numbullets = abs(numbullets);
 		//fire bullets with explicit angle and simply pass the offsets to the projectiles instead of using AimBulletMissile at puffs (because puffs don't always spawn!)
 		for (int i = 0; i < numbullets; i++) {			
 			double hspread = held ? frandom(-spread_horz,spread_horz) : 0;

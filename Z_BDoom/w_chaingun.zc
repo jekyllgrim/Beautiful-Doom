@@ -357,7 +357,7 @@ Class BD_Chaingun : BDoomWeapon {
 					}
 					A_GunFlash("AltFlash");
 					A_StartSound("weapons/chaingun/fire",flags:CHANF_OVERLAP);
-					BD_FireBullets (8, 3, 1, 5);
+					BD_FireBullets (8, 3, -1, 5);
 					SpawnChaingunCasing();
 				}
 				if (! ((player.cmd.buttons & BT_ALTATTACK) && (player.oldbuttons & BT_ALTATTACK)) ) {
