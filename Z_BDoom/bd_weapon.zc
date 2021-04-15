@@ -151,6 +151,7 @@ Class BDoomWeapon : Weapon abstract {
 			psp.sprite = GetSpriteIndex(sprite2);
 	}
 	
+	//draw multi-layered muzzle smoke in an overlay
 	action void DrawMuzzleSmoke(vector2 ofs = (0,0), double sAlpha = 0.75, double fade = 0.9, double sVSpeed = 1.2, double sScale = 0.5, bool drawOver = false) {
 		if (!bdoom_debris)
 			return;
@@ -225,6 +226,7 @@ Class BDoomWeapon : Weapon abstract {
 		);
 	}
 	
+	//fires projectile-based bullets; designed to look as similar to A_FireBullets as possible
 	action void BD_FireModernBullet(Class<Actor> bullet, double spread_horz = 0, double spread_vert = 0, int numbullets = 1) {
 		if (numbullets < 1) numbullets = 1;
 		let weapon = player.ReadyWeapon;
@@ -240,8 +242,9 @@ Class BDoomWeapon : Weapon abstract {
 			);
 		}
 	}
+	
 	//a wrapper function that automatically plays either vanilla or enhanced weapon sound, and fires tracers with A_FireProjectile so that they don't break on portals and such:
-	action void BD_FireBullets(double spread_horz = 0, double spread_vert = 0, int numbullets = 1, int damage = 1, sound vanillasnd = "", sound enhancedsnd = "") {
+	action void BD_FireBullets(double spread_horz = 0, double spread_vert = 0, int numbullets = 1, int damage = 1, sound vanillasnd = "", sound enhancedsnd = "", Class<Actor> pufftype = "BD_EnBulletPuff") {
 		if (numbullets == 0) numbullets = 1;
 		let weapon = player.ReadyWeapon;
 		//deplete the appropriate ammo
@@ -252,7 +255,7 @@ Class BDoomWeapon : Weapon abstract {
 		//play only if non-null
 		if (snd)
 			A_StartSound(snd,CHAN_WEAPON);
-		//emulate perfect accuracy on first bullet: it'll happen if there's only 1 bullet and player isn't in refire (holding attack button):
+		//emulate perfect accuracy on first bullet: it'll happen if there's only 1 bullet, player isn't in refire (holding attack button), and numbullets is positive
 		bool held = (numbullets != 1 || player.refire);
 		//make sure numbullets is positive, now that the check is finished
 		numbullets = abs(numbullets);
@@ -262,7 +265,7 @@ Class BDoomWeapon : Weapon abstract {
 			double vspread = held ? frandom(-spread_vert,spread_vert) : 0;	
 			if (bdoom_tracers)
 				A_FireProjectile("BD_BulletTracer",hspread,useammo:false,pitch:vspread);
-			A_FireBullets (hspread, vspread, -1, damage, "BD_EnBulletPuff",flags:FBF_NORANDOMPUFFZ|FBF_EXPLICITANGLE);
+			A_FireBullets (hspread, vspread, -1, damage, pufftype,flags:FBF_NORANDOMPUFFZ|FBF_EXPLICITANGLE);
 		}
 	}
 	
@@ -304,9 +307,6 @@ Class BDoomWeapon : Weapon abstract {
 		picked = true;
 	}
 	
-	//override bool CheckAmmo(int fireMode, bool autoSwitch, bool requireAmmo = false, int ammocount = -1) {
-		//if (bdoom_weapons == 2 && 
-
 	//an analog of A_WeaponReady that makes sure Reload state is unaccessible if mag is full or you have no reserve ammo:
 	action void BD_WeaponReady (bool allowSecondary = false, bool allowReload = true, bool allowKick = true) {
 		int flags = 0;
