@@ -14,8 +14,13 @@ Class BD_ZombieMan : BDoomMonster {
 		Obituary "$OB_ZOMBIE";
 		Tag "$FN_ZOMBIE";
 		BdoomMonster.monsterclip 15;
-		dropitem "BD_Pistol",40,1;
-		dropitem "Clip",256;
+	}
+	void BD_NoBlocking() {
+		A_NoBlocking(false);
+		if (bdoom_weapons == 1 && random[drop](0,100) >= 80)
+			A_DropItem("BD_Pistol");
+		else
+			A_DropItem("Clip");
 	}
 	states {
 	Spawn:
@@ -84,7 +89,7 @@ Class BD_ZombieMan : BDoomMonster {
 			BD_Bleed();
 		}
 		POSM B 3 {
-			A_NoBlocking();
+			BD_NoBlocking();
 			BD_Bleed();
 		}
 		POSM CDEFG 3;
@@ -94,7 +99,7 @@ Class BD_ZombieMan : BDoomMonster {
 	Death1: //fall forward
 		POSO A 3 BD_Bleed();
 		POSO B 3 A_Scream();
-		POSO C 3 A_NoBlocking();
+		POSO C 3 BD_NoBlocking();
 		POSO DDDMMD random(4,7) {
 			if (!burning && random(0,100) < 40) {
 				A_StartSound("gibs/bloodspurt");
@@ -116,7 +121,7 @@ Class BD_ZombieMan : BDoomMonster {
 			if(!burning && bdoom_blood)
 				A_SpawnItemEx("Blood",random(-2,2),0,random(44,48),	random(4,6),0,random(3,5),random(-70,-90)*scale.x,SXF_SETTARGET);
 		}
-		TNT1 A 0 A_NoBlocking();
+		TNT1 A 0 BD_NoBlocking();
 		POSN DEF 3 {
 			if(!burning && bdoom_blood)
 				A_SpawnItemEx("Blood",random(-2,2),0,random(32,36),	random(4,6),0,random(3,5),random(-70,-90)*scale.x,SXF_SETTARGET);
@@ -136,7 +141,7 @@ Class BD_ZombieMan : BDoomMonster {
 			}
 		}
 		POSD BC 2 BD_Bleed();
-		TNT1 A 0 A_NoBlocking();
+		TNT1 A 0 BD_NoBlocking();
 		POSD DE 2 BD_Bleed();
 		POSD FGH 2;
 		goto deathbleed;
@@ -145,7 +150,7 @@ Class BD_ZombieMan : BDoomMonster {
 			scale.x *= randompick[bdsfx](-1,1);
 		}
 		POSY AB 6;		
-		TNT1 A 0 A_NoBlocking();
+		TNT1 A 0 BD_NoBlocking();
 		POSY CD 6;
 		POSY EFGHIJ 3 {
 			if(bdoom_blood) {
@@ -163,7 +168,7 @@ Class BD_ZombieMan : BDoomMonster {
 	XDeath.Vanilla:
 		ZGIB ab 2;
 		ZGIB cd 2 A_XScream();
-		ZGIB e 2 A_NoBlocking();
+		ZGIB e 2 BD_NoBlocking();
 		ZGIB f 2;
 		ZGIB ghijklmnopq 2;
 		goto deathbleed;
