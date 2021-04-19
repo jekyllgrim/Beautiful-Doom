@@ -12,7 +12,7 @@ Class BD_Pistol : BDoomWeapon {
 		weapon.slotnumber 2;
 		weapon.ammotype1 		"Clip";
 		weapon.ammouse1 		1;
-		weapon.ammogive1	 	0;
+		weapon.ammogive1	 	10;
 		BDoomWeapon.magammo	"BD_PistolClip";
 		weapon.ammotype2 		"Clip";
 		weapon.ammouse2 		1;
@@ -40,17 +40,16 @@ Class BD_Pistol : BDoomWeapon {
 			icon = texman.CheckForTexture("PISDZ0", TexMan.Type_Any);
 		else
 			icon = texman.CheckForTexture("PISTZ0", TexMan.Type_Any);
-	}
-	
+	}	
 	states {
 	Spawn:
 		PIST Z 1 {		
 			if(bdoom_weapons == 1 && bdoom_replaceweapons) { 
-				A_SetRenderstyle (1.0,STYLE_Normal); 
+				A_SetRenderstyle(alpha,STYLE_Normal); 
 				bSPECIAL = true;
 			}
 			else { 
-				A_SetRenderstyle (1.0,STYLE_None); 
+				A_SetRenderstyle(alpha,STYLE_None); 
 				bSPECIAL = false;
 			}
 		}
@@ -259,15 +258,11 @@ Class BD_Pistol : BDoomWeapon {
 		PIDF A 2 {
 			A_StartSound("weapons/pistol/fire");
 			A_gunflash("AltFlash");
-			BD_SetSprite("PIDF","QIDF");			
-			if(bdoom_tracers) {
-				double ofs = 7.9;
-				if (invoker.firedright)
-					ofs *= -1;
-				A_FireBullets (5, 1.5, -1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,missile:"BD_BulletTracer",spawnheight:2,spawnofs_xy:ofs); 
-			}
-			else
-				A_FireBullets (5, 1.5, -1, 5, "BD_EnBulletPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ);
+			BD_SetSprite("PIDF","QIDF");	
+			double ofs = 7.9;
+			if (invoker.firedright)
+				ofs *= -1;
+			BD_FireBullets(5, 1.5, -1, 5, pufftype: "BD_EnBulletPuff",spawnheight:2,spawnofs:ofs);
 		}
 		#### BC 1;
 		#### DE 1;
