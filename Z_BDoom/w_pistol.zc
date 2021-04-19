@@ -4,7 +4,7 @@ Class BD_Pistol : BDoomWeapon {
 		Obituary "$OB_MPPISTOL";
 		+WEAPON.WIMPY_WEAPON
 		+WEAPON.NO_AUTO_SWITCH
-		Inventory.Pickupmessage "Picked up a pistol";
+		Inventory.Pickupmessage "$PICKUP_PISTOL_DROPPED";
 		Inventory.Pickupsound "weapons/pistol/pickup";
 		Tag "$TAG_PISTOL";
 		weapon.selectionorder 190;
