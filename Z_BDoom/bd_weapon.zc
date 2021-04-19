@@ -5,7 +5,8 @@ Class BD_WeaponPickupControl : Inventory {
 		+INVENTORY.PERSISTENTPOWER
 		inventory.maxamount 1;
 	}
-	static const Class<Weapon> bd_vanillaweapons[] = {
+	const ALLWEAPONS = 9;
+	static const Class<Weapon> vanillaWeapons[] = {
 		"Fist",
 		"Chainsaw",
 		"Pistol",
@@ -16,7 +17,7 @@ Class BD_WeaponPickupControl : Inventory {
 		"PlasmaRifle",
 		"BFG9000"
 	};
-	static const Class<Weapon> bd_modweapons[] = {
+	static const Class<Weapon> modWeapons[] = {
 		"BD_Fist",
 		"BD_Chainsaw",
 		"BD_Pistol",
@@ -27,54 +28,92 @@ Class BD_WeaponPickupControl : Inventory {
 		"BD_PlasmaRifle",
 		"BD_BFG9000"
 	};
-		
+	//here we make sure that the player will never have vanilla weapons in their inventory:
 	override void DoEffect() {
 		super.DoEffect();
 		if (!owner || !owner.player)
 			return;
-		//here we make sure that the player will never have vanilla weapons in their inventory:
 		let plr = owner.player;
-		for (int i = 0; i < bd_vanillaweapons.Size(); i++) {
-			Class<Weapon> oldweap = bdoom_replaceweapons ? bd_vanillaweapons[i] : bd_modweapons[i];
-			Class<Weapon> newweap = bdoom_replaceweapons ? bd_modweapons[i] : bd_vanillaweapons[i];
-			if (!oldweap || !newweap)
+		array < int > changeweapons; //stores all weapons that need to be exchanged
+		int selweap = -1; //will store readyweapon
+		//record all weapons that need to be replaced
+		for (int i = 0; i < ALLWEAPONS; i++) {
+			//if a weapon is found, cache its position in the array:
+			Class<Weapon> oldweap = bdoom_replaceweapons ? vanillaWeapons[i] : modWeapons[i];
+			if (owner.CountInv(oldweap) >= 1) {
+				if (bdoom_debug)  console.printf("found %s that shouldn't be here",oldweap.GetClassName());
+				changeweapons.Push(i);
+			}
+			//also, if it was seleted, cache its number separately:
+			if (owner.player.readyweapon && owner.player.readyweapon.GetClass() == oldweap)
+				selweap = i;
+		}
+		//if no old weapons were found, do nothing else:
+		if (changeweapons.Size() <= 0)
+			return;
+		for (int i = 0; i < ALLWEAPONS; i++) {
+			//do nothing if this weapon wasn't cached:
+			if (changeweapons.Find(i) == changeweapons.Size())
 				continue;
-			//check if all values are valid and the player has a vanilla weapon in the inventory:
-			if (oldweap && newweap && owner.CountInv(oldweap)) {
-				owner.GiveInventory(newweap,1);
-				owner.A_TakeInventory(oldweap);
+			Class<Weapon> oldweap = bdoom_replaceweapons ? vanillaWeapons[i] : modWeapons[i];
+			Class<Weapon> newweap = bdoom_replaceweapons ? modWeapons[i] : vanillaWeapons[i];
+			//remove old weapon
+			owner.A_TakeInventory(oldweap);
+			if (bdoom_debug) console.printf("Exchanging %s for %s",oldweap.GetClassName(),newweap.GetClassName());
+			if (!owner.CountInv(newweap)) {
+				//create a copy that won't give any ammo and attach it to the player
+				let wp = Weapon(Spawn(newweap));
+				if (wp) {
+					wp.ammogive1 = 0;
+					wp.ammogive2 = 0;
+					wp.AttachToOwner(owner);
+					//console.printf("Giving %s",wp.GetClassName());
+				}
+			}
+		}		
+		//select the corresponding new weapon if an old weapon was selected:
+		if (selweap != -1) {
+			Class<Weapon> newsel = bdoom_replaceweapons ? modWeapons[selweap] : vanillaWeapons[selweap];
+			let wp = Weapon(owner.FindInventory(newsel));
+			if (wp) {
+				if (bdoom_debug) console.printf("Selecting %s", wp.GetClassName());
+				owner.player.pendingweapon = wp;
+				//tried to set readyweapon but it's wonky, so it's easier to modify pendingweapon instead
+				/*owner.player.readyweapon = wp;
+				let psp = owner.player.FindPSprite(PSP_WEAPON);
+				if (psp) {
+					owner.player.SetPSprite(PSP_WEAPON,wp.ResolveState("Ready"));
+					psp.y = WEAPONTOP;
+				}*/
 			}
 		}
-	}
-	private Weapon GetWeapon(Class<Weapon> type) {
-		let weap = Weapon(FindInventory(type));
-		if (weap)
-			return weap;
-		return Weapon(GiveInventoryType(type));
+		changeweapons.Clear();
 	}
     override bool HandlePickup (Inventory item) {
-        let oldweap = item.GetClassName();
+        let oldWeapClass = item.GetClassName();
         Class<Inventory> replacement = null;
         if (bdoom_replaceweapons) {
-			for (int i = 0; i < bd_vanillaweapons.Size(); i++) {
-				if (bd_modweapons[i] && oldweap == bd_vanillaweapons[i]) {
-					replacement = bd_modweapons[i];
+			for (int i = 0; i < vanillaWeapons.Size(); i++) {
+				if (modWeapons[i] && oldWeapClass == vanillaWeapons[i]) {
+					replacement = modWeapons[i];
 					break;
 				}
 			}
 		}
 		else {
-			for (int i = 0; i < bd_vanillaweapons.Size(); i++) {
-				if (bd_vanillaweapons[i] && oldweap == bd_modweapons[i]) {
-					replacement = bd_vanillaweapons[i];
+			for (int i = 0; i < vanillaWeapons.Size(); i++) {
+				if (vanillaWeapons[i] && oldWeapClass == modWeapons[i]) {
+					replacement = vanillaWeapons[i];
 					break;
 				}
 			}
 		}
         if (!replacement)
-            return false;			
+            return false;
+		int r_amount = GetDefaultByType(replacement).amount;
         item.bPickupGood = true;
-        owner.A_GiveInventory(replacement,1);		
+        owner.A_GiveInventory(replacement,r_amount);
+		if (bdoom_debug) console.printf("Replacing %s with %s (amount: %d)",oldWeapClass,replacement.GetClassName(),r_amount);
         return true;
     }
 }
@@ -244,7 +283,7 @@ Class BDoomWeapon : Weapon abstract {
 	}
 	
 	//a wrapper function that automatically plays either vanilla or enhanced weapon sound, and fires tracers with A_FireProjectile so that they don't break on portals and such:
-	action void BD_FireBullets(double spread_horz = 0, double spread_vert = 0, int numbullets = 1, int damage = 1, sound vanillasnd = "", sound enhancedsnd = "", Class<Actor> pufftype = "BD_EnBulletPuff") {
+	action void BD_FireBullets(double spread_horz = 0, double spread_vert = 0, int numbullets = 1, int damage = 1, sound vanillasnd = "", sound enhancedsnd = "", Class<Actor> pufftype = "BD_EnBulletPuff", double spawnheight = 0, double spawnofs = 0) {
 		if (numbullets == 0) numbullets = 1;
 		let weapon = player.ReadyWeapon;
 		//deplete the appropriate ammo
@@ -264,7 +303,7 @@ Class BDoomWeapon : Weapon abstract {
 			double hspread = held ? frandom(-spread_horz,spread_horz) : 0;
 			double vspread = held ? frandom(-spread_vert,spread_vert) : 0;	
 			if (bdoom_tracers)
-				A_FireProjectile("BD_BulletTracer",hspread,useammo:false,pitch:vspread);
+				A_FireProjectile("BD_BulletTracer",hspread,useammo:false,spawnofs_xy:spawnofs,spawnheight:spawnheight,pitch:vspread);
 			A_FireBullets (hspread, vspread, -1, damage, pufftype,flags:FBF_NORANDOMPUFFZ|FBF_EXPLICITANGLE);
 		}
 	}
