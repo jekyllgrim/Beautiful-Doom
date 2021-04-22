@@ -431,9 +431,9 @@ Class BD_Rocket : BDoomActor {
 			else
 				A_StartSound("weapons/rlan/explosion",slot:CHAN_5);
 			if(bdoom_debris) {
-				for (int i = random(3,7); i > 0; i--) 
+				for (int i = random[bdsfx](3,7); i > 0; i--) 
 					A_SpawnItemEx("BD_SmokingPiece",0,0,1, random(3,7),0,random(5,12),random(0,360));
-				for (int i = random(5,15); i > 0; i--) {
+				for (int i = random[bdsfx](5,15); i > 0; i--) {
 					let a = Spawn("BD_WallPart",pos+(0,0,1));
 					if (a) {
 						a.vel = (frandom(-4,4),frandom(-4,4),frandom(2,8));
@@ -535,14 +535,14 @@ Class BD_ModernRocket : BD_Rocket {
 			if(bdoom_shakes)
 				A_Quake(2,8,0,256,"");
 			if(bdoom_debris) {
-				for (int i = random(8,20); i > 0; i--)
+				for (int i = random[bdsfx](8,20); i > 0; i--)
 					A_SpawnItemEx("BD_RicochetSpark",0,0,1,	frandom(-6,6),frandom(-6,6),frandom(3,10));
 				if (pos.z <= floorz+10) {
-					for (int i = random(4,10); i > 0; i--)
+					for (int i = random[bdsfx](4,10); i > 0; i--)
 						A_SpawnItemEx("BD_RocketDebris",0,0,1,	frandom(-4,4),frandom(-4,4),frandom(9,12));
 				}
 				else {
-					for (int i = random(4,10); i > 0; i--)
+					for (int i = random[bdsfx](4,10); i > 0; i--)
 						A_SpawnItemEx("BD_RocketDebris",0,0,0,	frandom(-6.5,6.5),frandom(-6.5,6.5),frandom(-2,14));
 				}
 			}
@@ -550,14 +550,14 @@ Class BD_ModernRocket : BD_Rocket {
 		}
 		BOM4 ABCDEFGHIJKLMNOPQ 1 bright {
 			if (bdoom_debris) {
-				for (int i = random(1,4); i > 0; i --)
+				for (int i = random[bdsfx](1,4); i > 0; i --)
 					A_SpawnItemEx("BD_BigBlackSmoke",random(-12,12),random(-12,12),random(0,12),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.1,0.5));
 			}
 		}
 		BOM5 ABCDEFGH 1 bright {
 			A_Fadeout(0.04);
 			if (bdoom_debris) {
-				for (int i = random(0,2); i > 0; i --)
+				for (int i = random[bdsfx](0,2); i > 0; i --)
 					A_SpawnItemEx("BD_BigBlackSmoke",random(-12,12),random(-12,12),random(0,12),frandom(-0.4,0.4),frandom(-0.4,0.4),frandom(0.1,0.5));
 			}
 		}
