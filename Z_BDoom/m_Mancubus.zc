@@ -19,6 +19,18 @@ Class BD_Fatso : BDoomMonster {
 		bloodcolor "DarkRed";
 		BDoomMonster.smokeheight 24;
 	}
+	/*void BD_FatAttack1() {
+		Class<Actor> proj = (bdoom_projectiles < 1) ? "FatShot" : "BD_FatShot";
+		A_FatAttack1(proj);
+	}
+	void BD_FatAttack2() {
+		Class<Actor> proj = (bdoom_projectiles < 1) ? "FatShot" : "BD_FatShot";
+		A_FatAttack2(proj);
+	}
+	void BD_FatAttack3() {
+		Class<Actor> proj = (bdoom_projectiles < 1) ? "FatShot" : "BD_FatShot";
+		A_FatAttack3(proj);
+	}*/
 	states {
 		Spawn:
 			MANC I 15 A_Look;
@@ -32,19 +44,19 @@ Class BD_Fatso : BDoomMonster {
 		missile:
 			FATA a 17 a_fatraise;
 			FATA b 3;
-			FATA c 3  a_fatattack1("BD_FatShot");
+			FATA c 3  A_FatAttack1;
 			FATA d 3 ;
 			FATA e 4;
 			FATA a 5 A_FaceTarget;
 			FATA A 2 A_FaceTarget;
 			FATA b 3;
-			FATA c 3  a_fatattack2("BD_FatShot");
+			FATA c 3  A_FatAttack2;
 			FATA d 3 ;
 			FATA e 4;
 			FATA a 5 A_FaceTarget;
 			FATA A 2 A_FaceTarget;
 			FATA b 3;
-			FATA c 3  a_fatattack3("BD_FatShot");
+			FATA c 3 A_FatAttack3;
 			FATA d 3 ;
 			FATA e 4;
 			FATA AA 5 A_FaceTarget;
@@ -124,16 +136,23 @@ Class BD_FatShot : FatShot {
 			let flare = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
 			if (flare) {
 				flare.master = self;
-				flare.fcolor = 'yellow';
-				flare.fscale = 0.29;
-				flare.falpha = 0.4;
+				if (bdoom_projectiles < 2) {
+					flare.fcolor = 'yellow';
+					flare.fscale = 0.25;
+					flare.falpha = 0.2;
+				}
+				else {
+					flare.fcolor = 'yellow';
+					flare.fscale = 0.29;
+					flare.falpha = 0.4;
+				}
 			}
 		}
 	}
 	override void Tick () {
 		Vector3 oldPos = self.pos;    
 		Super.Tick();
-		if (!bdoom_debris || isFrozen())
+		if (!bdoom_debris || bdoom_projectiles < 2 || isFrozen())
 			return;
 		Vector3 path = level.vec3Diff( self.pos, oldPos );
 		double distance = path.length() / 3; //this determines how far apart the particles are
@@ -147,16 +166,21 @@ Class BD_FatShot : FatShot {
 	}
 	States {
 		Spawn:
-			MANF AABB 1 NoDelay;
+			MANF AB 2;
 			loop;
 		Death:
 			TNT1 A 0 {
 				A_RemoveChildren(1,RMVF_EVERYTHING);
 				bFORCEXYBILLBOARD = true;
 				alpha = 0.85;
-				if (bdoom_debris) {
-					for (int i = 20; i > 0; i--)
-						A_SpawnItemEx("BD_ImpFireParticle",0,0,0,	frandom(-3,3),frandom(-3,3),frandom(-3,3),0,0,92);
+				if (bdoom_debris && bdoom_projectiles == 2) {
+					for (int i = random[bdsfx](4,8); i > 0; i--) {
+						let part = BD_SmallDebris(Spawn("BD_LS_FlameShard",pos + (frandom[bdsfx](-6,6),frandom[bdsfx](-6,6),frandom[bdsfx](-6,6))));
+						if (part) {
+							part.removeonfall = true;
+							part.vel = (frandom[bdsfx](-3,3),frandom[bdsfx](-3,3),frandom[bdsfx](2,7));
+						}
+					}
 				}
 			}
 			BOM0 ABCDEF 3 bright A_FadeOut(0.1);

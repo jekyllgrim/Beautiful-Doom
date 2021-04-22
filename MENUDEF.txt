@@ -54,6 +54,7 @@ OptionMenu "BDoom_Settings" {
 	TLTPOption "$BDMENU_GIBS_NAME",		"$BDMENU_GIBSTOGGLE", "White","bdoom_gibs", "OnOff", "bdoom_replacemonsters"
 	TLTPOption "$BDMENU_BLOOD_NAME",				"$BDMENU_BLOODTOGGLE", "White","bdoom_blood", "bdoom_blood"
 	OptionEither_TLTP "$BDMENU_NOBOSSGIBS_NAME","$BDMENU_NOBOSSGIBS","White",	"bdoom_nobossgibs", "OnOff", "bdoom_gibs", "bdoom_replacemonsters"
+	TLTPOption "$BDMENU_PROJ_NAME",		"$BDMENU_PROJTOGGLE", "White","bdoom_projectiles", "bdoom_projectiles", "bdoom_replacemonsters"
 	TLTPOption "$BDMENU_FLAMES_NAME",		"$BDMENU_FLAMES", "White",	"bdoom_flames", "OnOff", ""
 	TLTPOption "$BDMENU_DEBRIS_NAME",			"$BDMENU_DEBRIS", "White",	"bdoom_debris", "OnOff", "", 1	
 	TLTPOption "$BDMENU_KILLABLEOBJECTS_NAME",	"$BDMENU_KILLABLEOBJECTS", "White",	"bdoom_killableobjects", "Toggle", "bdoom_replaceobjects"
@@ -118,6 +119,12 @@ OptionMenu "BDMonsterReplacements" {
 	Option "$FN_ARCH",			"bdoom_ArchVile", "Toggle", ""
 	Option "$FN_CYBER",			"bdoom_Cyberdemon", "Toggle", ""
 	Option "$FN_SPIDER",		"bdoom_SpiderMastermind", "Toggle", ""
+}
+
+OptionValue "bdoom_projectiles" {
+	0, "$BDO_NOREPLACE"
+	1, "$BDO_CLASSIC"
+	2, "$BDO_ENHANCED"
 }
 
 OptionValue "bdgloves" {

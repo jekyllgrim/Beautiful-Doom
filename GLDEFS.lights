@@ -705,16 +705,24 @@ object BD_DoomImpBall
     frame IMPBA { light IMPBALL    }
     frame IMPBB { light IMPBALL    }
     frame IMPBC { light IMPBALL    }
+    frame BAL1  { light IMPBALL    }
 
     frame IMPBD { light IMPBALL_X1 }
     frame IMPBE { light IMPBALL_X1 }
     frame IMPBF { light IMPBALL_X2 }
     frame IMPBG { light IMPBALL_X2 }
     frame IMPBH { light IMPBALL_X3 }
+    frame BPIMA { light IMPBALL_X2 }
+    frame BPIMB { light IMPBALL_X2 }
+    frame BPIMC { light IMPBALL_X3 }
+    frame BPIMD { light IMPBALL_X3 }
+    frame BPIME { light IMPBALL_X1 }
+    frame BPIMF { light IMPBALL_X1 }
+    frame BPIMG { light IMPBALL_X1 }
 }
 
 // Cacodemon fireball
-flickerlight CACOBALL
+flickerlight CACOBALL_B
 {
     color 0.3 0.1 1.0 
     attenuate 1
@@ -723,25 +731,36 @@ flickerlight CACOBALL
     chance 0.5
 	dontlightself 1
 }
+flickerlight CACOBALL_R
+{
+    color 1.0 0.1 0.3 
+    attenuate 1
+    size 34
+    secondarySize 38
+    chance 0.5
+	dontlightself 1
+}
 
 pulselight XCACOBALL
 {
     color 0.3 0.1 1.0 
     attenuate 1
-    size 58
+    size 72
     secondarySize 0
-	interval 1
-	dontlightself 1
+	interval 2
 }
 
-object BD_CacodemonBall
+/*object BD_CacodemonBall
 {
-    frame ELBA { light CACOBALL }
-    //frame ELBA { light CACOBALL1 }
+    frame ELBA { light CACOBALL_B }
+    frame ELBA { light CACOBALL_B }
+    frame BAL2 { light CACOBALL }    
 
     frame ELBX { light XCACOBALL }
-    //frame ELBX { light XCACOBALL1 }
-}
+    frame BPCAA { light XCACOBALL }
+    frame BPCAB { light XCACOBALL }
+    frame BPCAC { light XCACOBALL }
+}*/
 
 // Baron / Hell Knight fireball
 pointlight BARONBALL
@@ -782,6 +801,7 @@ object BD_BaronBall
 {
     frame BARBA { light BARONBALL    }
     frame BARBB { light BARONBALL    }
+    frame BAL7  { light BARONBALL    }
 
     frame BARBC { light BARONBALL_X1 }
     frame BARBD { light BARONBALL_X1 }
@@ -789,6 +809,17 @@ object BD_BaronBall
     frame BARBF { light BARONBALL_X2 }
     frame BARBG { light BARONBALL_X3 }
     frame BARBH { light BARONBALL_X3 }
+	
+    frame BPBAA { light BARONBALL_X2 }
+    frame BPBAB { light BARONBALL_X2 }
+    frame BPBAC { light BARONBALL_X3 }
+    frame BPBAD { light BARONBALL_X3 }
+    frame BPBAE { light BARONBALL_X3 }
+    frame BPBAF { light BARONBALL_X2 }
+    frame BPBAF { light BARONBALL_X2 }
+    frame BPBAG { light BARONBALL_X1 }
+    frame BPBAH { light BARONBALL_X1 }
+    frame BPBAI { light BARONBALL_X1 }
 }
 
 // Lost Soul

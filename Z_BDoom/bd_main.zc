@@ -247,7 +247,7 @@ Class BD_SmallDebris : BD_BaseDebris abstract {
 	double wrot;					//gets added to roll to imitate rotation during flying
 	double dbrake; 				//how quickly to reduce horizontal speed of "landed" particles to simulate sliding along the floor
 	property dbrake : dbrake;	
-	protected bool removeonfall;	//if true, object is removed when reaching the floor
+	bool removeonfall;	//if true, object is removed when reaching the floor
 	property removeonfall : removeonfall;
 	protected bool removeonliquid;
 	property removeonliquid : removeonliquid;

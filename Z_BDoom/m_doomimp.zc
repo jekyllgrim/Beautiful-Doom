@@ -18,6 +18,12 @@ Class BD_DoomImp : BDoomMonster {
 		Obituary "$OB_IMP";
 		Tag "$FN_IMP";
 	}
+	/*void BD_TroopAttack() {
+		if (bdoom_projectiles < 1)
+			A_TroopAttack();
+		else
+			A_CustomComboAttack("BD_DoomImpBall", 32, 3 * random(1, 8), "imp/melee");
+	}*/
 	states	{
 	Death.Fire:
 		stop;
@@ -30,7 +36,7 @@ Class BD_DoomImp : BDoomMonster {
 	Melee: //16 face target, 6 attack
 		TRO2 I 1 a_facetarget();
 		TRO2 IIJKL 3 a_facetarget();
-		TRO2 M 3 A_CustomComboAttack("BD_DoomImpBall", 32, 3 * random(1, 8), "imp/melee");
+		TRO2 M 3 A_TroopAttack;
 		TRO2 LKJ 1;
 		Goto See;	
 	Missile:
@@ -44,7 +50,7 @@ Class BD_DoomImp : BDoomMonster {
 			if (bdoom_flames)
 				A_SpawnItemEx("ParticleFire_DoomImp",12,16,33,	0,0,frandom(0.8,1.0),0);
 		}
-		TRO2 M 3 A_CustomComboAttack("BD_DoomImpBall", 32, 3 * random(1, 8), "imp/melee");
+		TRO2 M 3 A_TroopAttack;
 		TRO2 J 1 {
 			if (bdoom_flames)
 				A_SpawnItemEx("ParticleFire_DoomImp",24,0,36,	0,0,frandom(0.8,1.0),0);
@@ -169,8 +175,12 @@ states {
 }
 
 Class BD_DoomImpBall : DoomImpBall {
+	int broll;
 	Default {
+		+ROLLSPRITE
+		+FORCEXYBILLBOARD
 		+BLOODLESSIMPACT
+		+BRIGHT
 		Damagetype "Fire";
 		scale 0.5;
 		decal "Scorch";
@@ -179,21 +189,50 @@ Class BD_DoomImpBall : DoomImpBall {
 	}
 	override void PostBeginPlay () {
 		super.PostBeginPlay();
-		if (bdoom_debris) {
+		if (bdoom_projectiles < 2) {
+			broll = frandom[bdsfx](6,9) * randompick[bdsfx](-1,1);
+			frame = random[bdsfx](0,1);
+			alpha = 1;
+			A_SetScale(1);
+			bSPRITEFLIP = randompick[bdsfx](0,1);
+		}
+		else if (bdoom_debris) {
 			let f = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
 			f.fcolor = "yellow";
 			f.master = self;
+			f.alpha = 0.35;
+			f.fscale = 0.2;
 		}
 	}
 	States	{
 	Spawn:
-		IMPB AABBCC 1 NoDelay {
+		TNT1 A 0 NoDelay A_JumpIf(bdoom_projectiles < 2,"Spawn.Classic");
+		IMPB AABBCC 1 {
 			if (bdoom_debris)
 				A_SpawnItemEx("BD_ImpFireParticle",frandom(-8,-12),frandom(-3,3),frandom(-3,3));
 			}
 		Loop;
+	Spawn.Classic:
+		BAL1 # 1 {
+			roll += broll;
+		}
+		loop;
 	Death:
+		TNT1 A 0 A_JumpIf(bdoom_projectiles < 2,"Death.Classic");
+		TNT1 A 0 {
+			for (int i = random[bdsfx](5,10); i > 0; i--)
+				A_SpawnItemEx(
+					"BD_DoomImpBallDebris",
+					xvel:frandom[bdsfx](-5,5),
+					yvel:frandom[bdsfx](-5,5),
+					zvel:frandom[bdsfx](0,5)
+				);
+		}
 		IMPB DEFGH 3  A_FadeOUt(0.1);
+		stop;
+	Death.Classic:
+		TNT1 A 0 { roll = 0; }
+		BPIM ABCDEFG 2 bright;
 		stop;
 	}
 }
@@ -206,5 +245,17 @@ Class BD_ImpFireParticle : BD_BaseFlare {
 	Spawn:
 		FIRP ABCDEFGHIJ 1;
 		stop;
+	}
+}
+
+Class BD_DoomImpBallDebris : BD_ImpFireParticle {
+	Default {
+		-NOINTERACTION
+		gravity 0.65;
+	}
+	states	{
+	Spawn:
+		FIRP ABCDEFGHIJ 1 A_FadeOut(0.01);
+		wait;
 	}
 }

@@ -1,4 +1,5 @@
 Class BD_BaronOfHell : BDoomMonster {
+	protected bool isknight;
 	Default	{
 		species "BaronOfHell";
 		Health 1000;
@@ -20,6 +21,18 @@ Class BD_BaronOfHell : BDoomMonster {
 		bloodcolor "00 70 00";
 		gibhealth 60;
 	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		if (GetClassName() == 'BD_HellKnight')
+			isknight = true;
+		SetBruiserSprite("BARI","KNII");
+	}
+	protected void SetBruiserSprite(name sprite1, name sprite2) {
+		if (isknight)
+			sprite = GetSpriteIndex(sprite2);
+		else
+			sprite = GetSpriteIndex(sprite1);
+	}
 	states	{
 	Death.Fire:
 		TNT1 A 0 A_Jump(256,"Death.PlasmaDamage");
@@ -28,36 +41,41 @@ Class BD_BaronOfHell : BDoomMonster {
 		TNT1 A 0 A_Jump(256,"Death.PlasmaDamage");
 		wait;
 	Spawn:
-		BARI ABB 10 A_Look;
+		#### A 0 SetBruiserSprite("BARI","KNII");
+		#### ABB 10 A_Look;
 		loop;
 	See:
-		BARO ABCDCBA 3 A_Chase;
+		#### A 0 SetBruiserSprite("BARO","KNIT");
+		#### ABCDCBA 3 A_Chase;
 		loop;
 	Melee:
-		ZBOS a 4 a_facetarget;
-		ZBOS bcde 3;
-		ZBOS f 8 A_CustomComboAttack("BD_BaronBall", 32, 10 * random(1, 8), "baron/melee");
+		#### A 0 SetBruiserSprite("ZBOS","SBOS");
+		#### a 4 a_facetarget;
+		#### bcde 3;
+		#### f 8 A_BruisAttack;//A_CustomComboAttack("BD_BaronBall", 32, 10 * random(1, 8), "baron/melee");
 		Goto See;
 	Missile:
-		TNT1 A 0 A_FaceTarget;
-		ZBOS AABB 2 {
+		#### A 0 SetBruiserSprite("ZBOS","SBOS");
+		#### A 0 A_FaceTarget;
+		#### AABB 2 {
 			if (bdoom_flames)
 				A_SpawnItemEx("BD_ParticleFire_Green",4,29,random(60,62),random(0,1),random(0,1),random(1,2),0);
 		}
-		TNT1 A 0 A_FaceTarget;
-		ZBOS CCDD 2 {
+		#### A 0 A_FaceTarget;
+		#### CCDD 2 {
 			if (bdoom_flames)
 				A_SpawnItemEx("BD_ParticleFire_Green",4,31,random(46,48),random(0,1),random(0,1),random(1,2),0);
 		}
-		TNT1 A 0 A_CustomComboAttack("BD_BaronBall", 32, 10 * random(1, 8), "baron/melee");
-		ZBOS EEFF 2 {
+		#### A 0 A_BruisAttack;//A_CustomComboAttack("BD_BaronBall", 32, 10 * random(1, 8), "baron/melee");
+		#### EEFF 2 {
 			if (bdoom_flames)
 				A_SpawnItemEx("BD_ParticleFire_Green",10,random(-4,-6),random(24,26),random(0,1),random(0,1),random(1,2),0);
 		}
 		Goto See;
 	Pain:
-		BS1P a 2;
-		BS1P b 2 A_Pain;
+		#### A 0 SetBruiserSprite("BS1P","BS2P");
+		#### a 2;
+		#### b 2 A_Pain;
 		Goto See;		
 	Death:
 		TNT1 A 0 {
@@ -65,77 +83,80 @@ Class BD_BaronOfHell : BDoomMonster {
 			return A_Jump(256,"Death.Vanilla","Death1","Death2");
 		}
 	Death.Vanilla:
-		BS1M A 3;
-		BS1M b 3 {
+		#### A 0 SetBruiserSprite("BS1M","BS2M");
+		#### A 3;
+		#### b 3 {
 			if (bdoom_blood && !burning)
 				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(8,32),frandom(2,4),frandom(2,4),frandom(1,4),random(0,360),SXF_SETTARGET);
 		}
-		BS1M c 3 A_scream;
-		BS1M defg 3 {
+		#### c 3 A_scream;
+		#### defg 3 {
 			if (bdoom_blood && !burning)
 				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(8,32),frandom(2,4),frandom(2,4),frandom(1,4),random(0,360),SXF_SETTARGET,80);
 		}
-		BS1M h 3 A_NoBlocking;
-		BS1M ijklm 3 {
+		#### h 3 A_NoBlocking;
+		#### ijklm 3 {
 			if (bdoom_blood && !burning)
 				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(8,32),frandom(2,4),frandom(2,4),frandom(1,4),random(0,360),SXF_SETTARGET,100);
 		}
 		goto deathbleed;
 	Death1: //in halves
-		BS1N A 3;
-		BS1N b 3 {
+		#### A 0 SetBruiserSprite("BS1N","BS2N");
+		#### A 3;
+		#### b 3 {
 			if (bdoom_blood && !burning)
 				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,80);
 		}
-		BS1N c 3 {
+		#### c 3 {
 			A_scream();
 			if (bdoom_blood && !burning)				
 				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,80);
 		}
-		BS1N defg 3 {
+		#### defg 3 {
 			if (bdoom_blood && !burning)
 				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
 		}
-		BS1N h 3 A_NoBlocking;
-		BS1N ijkl 3 {
+		#### h 3 A_NoBlocking;
+		#### ijkl 3 {
 			if (bdoom_blood && !burning)
 				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
 		}
 		goto deathbleed;
 	Death2: //fall back
-		BS1O A 3;
-		BS1O b 3 {
+		#### A 0 SetBruiserSprite("BS1O","BS2O");
+		#### A 3;
+		#### b 3 {
 			if (bdoom_blood && !burning)
 				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(18,40),frandom(3,5),frandom(-2,2),frandom(2,4),0,SXF_SETTARGET);
 		}
-		BS1O c 3 A_scream;
-		BS1O defg 3 {
+		#### c 3 A_scream;
+		#### defg 3 {
 			if (bdoom_blood && !burning)
 				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(18,40),frandom(3,5),frandom(-2,2),frandom(2,4),0,SXF_SETTARGET,64);
 		}
-		BS1O h 3 A_NoBlocking;
-		BS1O iJk 3;
+		#### h 3 A_NoBlocking;
+		#### iJk 3;
 		goto deathbleed;
 	XDeath:
-		//TNT1 A 0 A_Jump(128,"Death");
-		BS1X A 3;
-		BS1X b 3 {
+		#### A 0 SetBruiserSprite("BS1X","BS2X");
+		#### A 3;
+		#### b 3 {
 			if (bdoom_blood && !burning)
 				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET);
 		}
-		BS1X c 3 A_scream;
-		BS1X defg 3 {
+		#### c 3 A_scream;
+		#### defg 3 {
 			if (bdoom_blood && !burning)
 				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET,80);
 		}
-		BS1X h 3 A_NoBlocking;
-		BS1X ijklMN 2  {
+		#### h 3 A_NoBlocking;
+		#### ijklMN 2  {
 			if (bdoom_blood && !burning)
 				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET,80);
 		}
-		BS1X OP 2;
-		TNT1 A 0 A_StartSound("gibs/meatland");
-		BS1X Q 1;
+		#### OP 2;
+		#### A 0 A_StartSound("gibs/meatland");
+		#### Q 1;
 		goto deathbleed;
 	Crush:
 		CRS3 G -1;
@@ -157,118 +178,26 @@ Class BD_HellKnight : BD_BaronOfHell {
 		bloodcolor "00 70 00";
 		gibhealth 60;
 	}
-	states	{
-	Spawn:
-		KNII ABB 10 A_Look;
-		loop;
-	See:
-		KNIT ABCDCBA 3 A_Chase;
-		loop;
-	Melee:
-		SBOS a 4 a_facetarget;
-		SBOS bcde 3;
-		SBOS f 8 A_CustomComboAttack("BD_BaronBall", 32, 10 * random(1, 8), "baron/melee");
-		Goto See;
-	Missile:
-		TNT1 A 0 A_FaceTarget;
-		SBOS AABB 2 {
-			if (bdoom_flames)
-				A_SpawnItemEx("BD_ParticleFire_Green",4,29,random(60,62),random(0,1),random(0,1),random(1,2),0);
-		}
-		TNT1 A 0 A_FaceTarget;
-		SBOS CCDD 2 {
-			if (bdoom_flames)
-				A_SpawnItemEx("BD_ParticleFire_Green",4,31,random(46,48),random(0,1),random(0,1),random(1,2),0);
-		}
-		TNT1 A 0 A_CustomComboAttack("BD_BaronBall", 32, 10 * random(1, 8), "baron/melee");
-		SBOS EEFF 2 {
-			if (bdoom_flames)
-				A_SpawnItemEx("BD_ParticleFire_Green",10,random(-4,-6),random(24,26),random(0,1),random(0,1),random(1,2),0);
-		}
-		Goto See;
-	Pain:
-		BS2P a 2;
-		BS2P b 2 A_Pain;
-		Goto See;		
-	Death:
-		TNT1 A 0 {
-			bSPRITEFLIP = random[bdsfx](0,1);
-			return A_Jump(256,"Death.Vanilla","Death1","Death2");
-		}
-	Death.Vanilla:
-		BS2M A 3;
-		BS2M b 3 {
-			if (bdoom_blood && !burning)
-				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(8,32),frandom(2,4),frandom(2,4),frandom(1,4),random(0,360),SXF_SETTARGET);
-		}
-		BS2M c 3 A_scream;
-		BS2M defg 3 {
-			if (bdoom_blood && !burning)
-				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(8,32),frandom(2,4),frandom(2,4),frandom(1,4),random(0,360),SXF_SETTARGET,80);
-		}
-		BS2M h 3 A_NoBlocking;
-		BS2M ijkl 3 {
-			if (bdoom_blood && !burning)
-				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(8,32),frandom(2,4),frandom(2,4),frandom(1,4),random(0,360),SXF_SETTARGET,100);
-		}
-		BS2M m 1;
-		goto deathbleed;
-	Death1: //in halves
-		BS2N A 3;
-		BS2N b 3 {
-			if (bdoom_blood && !burning)
-				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,80);
-		}
-		BS2N c 3 {
-			A_scream();
-			if (bdoom_blood)
-				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,80);
-		}
-		BS2N defg 3 {
-			if (bdoom_blood && !burning)
-				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
-		}
-		BS2N h 3 A_NoBlocking;
-		BS2N ijkl 3 {
-			if (bdoom_blood && !burning)
-				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,32),frandom(-2,2),frandom(-2,2),frandom(4.5,7),0,SXF_SETTARGET,64);
-		}
-		goto deathbleed;
-	Death2: //fall back
-		BS2O A 3;
-		BS2O b 3 {
-			if (bdoom_blood && !burning)
-				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(18,40),frandom(3,5),frandom(-2,2),frandom(2,4),0,SXF_SETTARGET);
-		}
-		BS2O c 3 A_scream;
-		BS2O defg 3 {
-			if (bdoom_blood && !burning)
-				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(18,40),frandom(3,5),frandom(-2,2),frandom(2,4),0,SXF_SETTARGET,64);
-		}
-		BS2O h 3 A_NoBlocking;
-		BS2O iJk 3;
-		goto deathbleed;
-	XDeath:
-		BS2X A 3;
-		BS2X b 3 {
-			if (bdoom_blood && !burning)
-				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET);
-		}
-		BS2X c 3 A_scream;
-		BS2X defg 3 {
-			if (bdoom_blood && !burning)
-				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET,80);
-		}
-		BS2X h 3 A_NoBlocking;
-		BS2X ijklMN 2 {
-			if (bdoom_blood && !burning)
-				A_SpawnItemEx("BD_Blood",frandom(-4,4),frandom(-4,4),random(14,36),frandom(-4,4),frandom(-4,4),frandom(2,4.5),0,SXF_SETTARGET,80);
-		}
-		BS2X OP 2;
-		TNT1 A 0 A_StartSound("gibs/meatland");
-		BS2X Q 1;
-		goto deathbleed;
-	}	
+	States {
+	Loadsprites:
+		//baron:
+		ZBOS A 0;
+		BARI A 0;
+		BARO A 0;
+		BS1M A 0;
+		BS1P A 0;
+		BS1O A 0;
+		BS1N A 0;
+		BS1X A 0;
+		//knight:
+		SBOS A 0;
+		KNII A 0;
+		KNIT A 0;
+		BS2M A 0;
+		BS2P A 0;
+		BS2O A 0;
+		BS2N A 0;
+		BS2X A 0;
 }
 
 
@@ -284,24 +213,40 @@ Class BD_BaronBall : BaronBall {
 	}
 	override void PostBeginPlay () {
 		super.PostBeginPlay();
+		if (bdoom_projectiles == 2)
+			A_SetScale(1);
 		if (bdoom_debris) {
 			let f = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
-			f.master = self;
-			f.alpha = 0.6;
-			f.scale = (0.12,0.12);
 			f.fcolor = "green";
+			f.master = self;
+			if (bdoom_projectiles == 2) {
+				f.alpha = 0.6;
+				f.scale = (0.12,0.12);
+			}
+			else {
+				f.alpha = 0.35;
+				f.scale = (0.1,0.1);
+			}
 		}
 		broll = random(14,20)*randompick(-1,1);
 	}
 	States	{
 	Spawn:
+		TNT1 A 0 NoDelay A_JumpIf(bdoom_projectiles < 2,"Spawn.Classic");
 		BARB AABB 1 bright {
 			if (bdoom_debris)
 				A_SpawnItemEx("BD_BaronFireParticle",frandom(8,12),frandom(-4,4),frandom(-4,4),frandom(0.5,0.8),0,0,180,0);
 		}
 		loop;
+	Spawn.Classic:
+		BAL7 AB 4 bright;
+		loop;
 	Death:
+		TNT1 A 0 A_JumpIf(bdoom_projectiles < 2,"Death.Classic");
 		BARB CDEFGH 3 bright A_SetRoll(roll+broll,SPF_INTERPOLATE);
+		stop;
+	Death.Classic:
+		BPBA ABCDEFGHI 1 bright;
 		stop;
 	}
 }

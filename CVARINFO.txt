@@ -6,6 +6,7 @@ server	bool	bdoom_replaceobjects	= true;
 server	bool	bdoom_liquidtextures	= true;
 server	bool	bdoom_goretextures		= true;
 server 	int		bdoom_weapons 			= 1;
+server	int		bdoom_projectiles		= 2;
 server	bool	bdoom_autoreload		= true;
 user 	bool 	bdoom_muzzle			= true;
 server 	bool 	bdoom_tracers			= true;
