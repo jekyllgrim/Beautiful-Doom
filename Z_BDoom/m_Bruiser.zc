@@ -198,6 +198,7 @@ Class BD_HellKnight : BD_BaronOfHell {
 		BS2O A 0;
 		BS2N A 0;
 		BS2X A 0;
+	}
 }
 
 
