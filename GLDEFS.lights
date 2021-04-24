@@ -112,6 +112,15 @@ object BD_Rocket
     frame BOM6R { light ROCKET_X1 }
     frame BOM6S { light ROCKET_X1 }
     frame BOM6T { light ROCKET_X1 }
+	
+	frame BOM0A { light ROCKET_X2 }
+	frame BOM0B { light ROCKET_X2 }
+	frame BOM0C { light ROCKET_X3 }
+	frame BOM0D { light ROCKET_X3 }
+	frame BOM0E { light ROCKET_X3 }
+	frame BOM0F { light ROCKET_X3 }
+	frame BOM0G { light ROCKET_X1 }
+	frame BOM0H { light ROCKET_X1 }
 }
 
 object BD_HomingRocket
