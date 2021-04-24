@@ -68,7 +68,7 @@ Class BDoomMonster : BDoomActor abstract {
 	void BD_Bleed(double xvel = 2, double yvel = 3) {
 		if (burning || !bdoom_blood)
 			return;
-		let bld = BD_Blood(Spawn("BD_Blood", (pos.x + frandom(-5.0,5.0), pos.y + frandom(-5.0,5.0), pos.z + frandom(16,default.height))));
+		let bld = BD_Blood(Spawn("BD_Blood", (pos.x + frandom(-5.0,5.0), pos.y + frandom(-5.0,5.0), pos.z + frandom(16,default.height)),ALLOW_REPLACE));
 		if (bld) {
 			bld.vel = (frandom(-xvel,xvel),frandom(-xvel,xvel),frandom(yvel*0.34,yvel));
 			bld.target = self;
@@ -95,7 +95,7 @@ Class BDoomMonster : BDoomActor abstract {
 	}
 
 	state BD_Refire(int ChanceToEnd = 0, statelabel endstate = "See") { 
-		if (bdoom_weapons < 2)
+		if (bdoom_weapons < 2 || !bdoom_replaceweapons)
 			return ResolveState("See");
 		else if (monsterclip == 0)
 			return ResolveState("Reload");
@@ -138,7 +138,7 @@ Class BDoomMonster : BDoomActor abstract {
 			return null;
 		if (!(spawnclass is "BD_BasicMeatPiece"))
 			return null;
-		let meat = BD_BasicMeatPiece(Spawn(spawnclass, (pos.x + frandom(-hpos,hpos), pos.y + frandom(-hpos,hpos), pos.z + vpos)));
+		let meat = BD_BasicMeatPiece(Spawn(spawnclass, (pos.x + frandom(-hpos,hpos), pos.y + frandom(-hpos,hpos), pos.z + vpos),ALLOW_REPLACE));
 		if (meat) {
 			//meat.gibtype = GetClassName();
 			vector3 meatvel;
@@ -165,7 +165,7 @@ Class BDoomMonster : BDoomActor abstract {
 		A_StartSound("gibs/gibbed",volume:0.65);
 		//a fountain of blood spraying in all directions and creating multiple drops on landing
 		for (int i = random(16,22); i > 0; i--) {
-			let bld = BD_Blood(Spawn("BD_GibBlood", (pos.x + frandom(-5.0,5.0), pos.y + frandom(-5.0,5.0), pos.z + frandom(16,default.height))));
+			let bld = BD_Blood(Spawn("BD_GibBlood", (pos.x + frandom(-5.0,5.0), pos.y + frandom(-5.0,5.0), pos.z + frandom(16,default.height)),ALLOW_REPLACE));
 			if (bld) {
 				bld.vel = (frandom(-3,3),frandom(-3,3),frandom(2,6));
 				bld.target = self;
@@ -226,7 +226,7 @@ Class BDoomMonster : BDoomActor abstract {
 			#### # 50 {
 				if (vel == (0,0,0) && pos.z == floorz) {
 					if (bdoom_blood && !BDoomActor.CheckAnimated(self)) {
-						let pool = BD_BaseDebris(Spawn("BD_AniBloodPool",(pos.x,pos.y,floorz)));
+						let pool = BD_BaseDebris(Spawn("BD_AniBloodPool",(pos.x,pos.y,floorz),ALLOW_REPLACE));
 						if (pool) {
 							pool.target = self;
 							meatlist.Push(pool);
@@ -289,7 +289,7 @@ Class BDoomMonster : BDoomActor abstract {
 				A_SetTranslation("Scorched");
 				A_SetRenderstyle(alpha,STYLE_Normal);
 				//a bright overlay sprite is briefly spawned
-				burncorpse = BD_TranslatedBurningBody(Spawn("BD_TranslatedBurningBody",pos));
+				burncorpse = BD_TranslatedBurningBody(Spawn("BD_TranslatedBurningBody",pos,ALLOW_REPLACE));
 				//the overlay shares color with the flame and acts as a brief "flash"
 				if (burncorpse) {
 					burncorpse.master = self;
@@ -321,7 +321,7 @@ Class BDoomMonster : BDoomActor abstract {
 			stop;
 		Death.PlasmaDamage:
 			#### # 0 {
-				burncorpse = BD_TranslatedBurningBody(Spawn("BD_TranslatedBurningBody"));
+				burncorpse = BD_TranslatedBurningBody(Spawn("BD_TranslatedBurningBody",pos,ALLOW_REPLACE));
 				if (burncorpse) {
 					burncorpse.A_SetTranslation("Scorched");
 					burncorpse.transfer = true;
@@ -547,7 +547,7 @@ Class BD_CorpseFlySpawner : Actor {
 		}
 	}
 	void SpawnFly() {
-		let fly = BD_CorpseFly(Spawn("BD_CorpseFly",(pos.x+frandom(64,128)*randompick(-1,1),pos.y+frandom(64,128)*randompick(-1,1),pos.z+height + frandom(18,22))));
+		let fly = BD_CorpseFly(Spawn("BD_CorpseFly",(pos.x+frandom(64,128)*randompick(-1,1),pos.y+frandom(64,128)*randompick(-1,1),pos.z+height + frandom(18,22)),ALLOW_REPLACE));
 		if (fly) fly.master = self;
 	}
 	states	{

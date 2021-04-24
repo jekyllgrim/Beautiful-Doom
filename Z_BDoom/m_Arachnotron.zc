@@ -41,7 +41,7 @@ Class BD_Arachnotron : BDoomMonster {
 		ARAC a 20 a_facetarget();
 		ARAT a 3 {
 			A_FaceTarget();
-			if (bdoom_weapons == 2)
+			if (bdoom_replaceweapons && bdoom_weapons == 2)
 				A_Spawnprojectile("BD_ModernArachnotronPlasma");
 			else 
 				A_Spawnprojectile("BD_ArachnotronPlasma");
@@ -83,6 +83,19 @@ Class BD_ModernArachnotronPlasma : BD_Plasmaball {
 		speed 30;
 		SeeSound "Mweapons/plasma/fire";
 		translation "192:207=208:223";
+	}
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		if (bdoom_projectiles < 2) {
+			alpha = 1;
+			A_SetScale(1);
+		}
+	}
+	override void Tick() {
+		if (bdoom_projectiles < 2)
+			Plasmaball.Tick();
+		else
+			super.Tick();
 	}
 	States	{
 	Spawn:

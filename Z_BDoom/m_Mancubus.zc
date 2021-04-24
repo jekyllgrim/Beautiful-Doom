@@ -183,7 +183,7 @@ Class BD_FatShot : FatShot {
 					}
 				}
 			}
-			BOM0 ABCDEF 3 bright A_FadeOut(0.1);
+			BOM0 ABCDEFGHIJ 1 bright A_FadeOut(0.05);
 			stop;
 	}
 }

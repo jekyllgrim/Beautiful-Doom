@@ -182,7 +182,7 @@ Class BD_Blood : BD_BloodBase {
 		wait;
 	Death:
 		#### # 0 { 
-			let bld = Spawn("BD_BloodDropSplash",(pos.x,pos.y,floorz));
+			let bld = Spawn("BD_BloodDropSplash",(pos.x,pos.y,floorz),ALLOW_REPLACE);
 			if (bld) {
 				bld.translation = translation;
 				bld.SetStateLabel("SpawnDo");
@@ -253,7 +253,7 @@ Class BD_BloodLight : BD_Blood {
 			return;
 		A_Stop();
 		A_Scream();		
-		let bld = Spawn("BD_BloodDropSplash",(pos.x,pos.y,floorz));
+		let bld = Spawn("BD_BloodDropSplash",(pos.x,pos.y,floorz),ALLOW_REPLACE);
 		if (bld) {
 			bld.translation = translation;
 			bld.SetStateLabel("SpawnDo");
@@ -285,7 +285,7 @@ Class BD_GibBlood : BD_Blood {
 			vector3 bloodpos = (bx,by,GetZAt(bx,by,flags:GZF_ABSOLUTEPOS));
 			if (!level.IsPointInLevel(bloodpos))
 				continue;
-			let bld = Spawn("BD_BloodDropSplash",bloodpos);
+			let bld = Spawn("BD_BloodDropSplash",bloodpos,ALLOW_REPLACE);
 			if (bld) {
 				if (target)
 					bld.target = target;
@@ -324,7 +324,7 @@ Class BD_BloodDropSplash : BD_SmallDebris {
 		TNT1 A 0 {
 			if (target && random(1,10) >= 6) {
 				A_StartSound("gibs/blooddrop");
-				let b = Spawn("BD_BloodPool",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),floorz));
+				let b = Spawn("BD_BloodPool",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),floorz),ALLOW_REPLACE);
 				if (b) {
 					b.target == target;
 					b.scale *= scale.x;
@@ -644,7 +644,7 @@ Class BD_BloodyPrintControl : Inventory {
 		}
 		if (bootsblood.Size() > 12 && (level.time % 6 == 0) && pspeed >= 2) {
 			drip = true;
-			let print = BD_BloodyFootPrint(Spawn("BD_BloodyFootPrint",(owner.pos.x,owner.pos.y,owner.floorz)));
+			let print = BD_BloodyFootPrint(Spawn("BD_BloodyFootPrint",(owner.pos.x,owner.pos.y,owner.floorz),ALLOW_REPLACE));
 			if (print) {
 				print.side = side;
 				print.angle = owner.angle;

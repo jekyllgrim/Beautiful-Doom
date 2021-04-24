@@ -30,7 +30,7 @@ Class BD_ZombieMan : BDoomMonster {
 		POS1 ABCDDCBA 4 A_Chase();
 		loop; 	
 	Missile:
-		TNT1 A 0 A_Jumpif(bdoom_weapons==2,"MissileModern");
+		TNT1 A 0 A_Jumpif(bdoom_replaceweapons && bdoom_weapons==2,"MissileModern");
 		PSSA A 5 A_FaceTarget();
 		PSSA B 2 A_FaceTarget();
 		POS1 E 3 A_FaceTarget();
