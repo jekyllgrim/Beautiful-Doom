@@ -136,11 +136,14 @@ class BD_ActorOverrideHandler : EventHandler {
 		if (bdoom_projectiles > 0) {
 			name proj = e.Replacee.GetClassName();
 			switch (proj) {
-				case 'DoomImpBall'		: e.Replacement = 'BD_DoomImpBall';		break;
-				case 'CacodemonBall'		: e.Replacement = 'BD_CacodemonBall';	break;
+				case 'DoomImpBall'			: e.Replacement = 'BD_DoomImpBall';		break;
+				case 'CacodemonBall'		: e.Replacement = 'BD_CacodemonBall';		break;
 				case 'FatShot'				: e.Replacement = 'BD_FatShot';			break;
 				case 'RevenantTracer'		: e.Replacement = 'BD_RevenantTracer';	break;
-				case 'BaronBall'			: e.Replacement = 'BD_BaronBall';		break;
+				case 'BaronBall'			: e.Replacement = 'BD_BaronBall';			break;
+				case 'Plasmaball'			: e.Replacement = 'BD_Plasmaball';		break;
+				case 'ArachnotronPlasma'	: e.Replacement = 'BD_ArachnotronPlasma';break;
+				case 'Rocket'				: e.Replacement = 'BD_Rocket';			break;
 			}
 		}
 		if (bdoom_replaceitems) {

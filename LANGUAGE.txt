@@ -33,8 +33,8 @@ BDMENU_GLOVES = 		"Change the color of your gloves at any point";
 BDMENU_GLOVES_NAME =	"Player gloves color";
 
 BDMENU_TITLE_SFX = 		"SPECIAL EFFECTS";
-BDMENU_PROJ_NAME =		"Monster projectiles";
-BDMENU_PROJTOGGLE = 		"Switch between 3 styles of MONSTER projectiles.\nDon't replace: Monsters will fire default projectiles.\nClassic: Smoother visuals but still close to vanilla.\nEnhanced: Added trails, particles and sometimes slightly different sprites.";
+BDMENU_PROJ_NAME =		"Projectiles' style";
+BDMENU_PROJTOGGLE = 		"Switch between 3 styles of projectiles for monsters and guns:\nDon't replace: Monsters/guns will fire default projectiles.\nClassic: Smoother visuals but in vanilla style.\nEnhanced: Added trails, particles and altered, higher definition sprites.\n\nNOTE: This doesn't affect Modern Guns because they use different projectiles.";
 BDMENU_GIBSTOGGLE =		"Special effects and detailed gibs for monster deaths.\nMay impact performance. Requires Beautiful Monsters to be enabled.";
 BDMENU_GIBS_NAME = 		"Enhanced gibs & deaths";
 BDMENU_BLOODTOGGLE = 	"Enable particle blood and (optionally) floor pools. May impact performance.";

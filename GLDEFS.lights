@@ -297,6 +297,18 @@ object BD_Plasmaball
 	frame PEXPK { light PLASMA_X4 }
 	frame PEXPL { light PLASMA_X4 }
 	frame PEXPM { light PLASMA_X4 }
+	
+	frame EPLB { light PLASMABALL }
+	frame EPLCA { light PLASMA_X1 }
+	frame EPLCB { light PLASMA_X1 }
+	frame EPLCC { light PLASMA_X1 }
+	frame EPLCD { light PLASMA_X2 }
+	frame EPLCE { light PLASMA_X2 }
+	frame EPLCF { light PLASMA_X2 }
+	frame EPLCG { light PLASMA_X3 }
+	frame EPLCH { light PLASMA_X3 }
+	frame EPLCI { light PLASMA_X4 }
+	frame EPLCJ { light PLASMA_X4 }
 }
 
 pointlight YellowPLASMABALL
@@ -346,19 +358,19 @@ flickerlight YellowPLASMA_X4
 object BD_ModernArachnotronPlasma
 {
 	frame COIL { light YellowPLASMABALL }
-	frame PEXPA { light YellowPLASMA_X1 }
-	frame PEXPB { light YellowPLASMA_X1 }
-	frame PEXPC { light YellowPLASMA_X1 }
-	frame PEXPD { light YellowPLASMA_X2 }
-	frame PEXPE { light YellowPLASMA_X2 }
-	frame PEXPF { light YellowPLASMA_X2 }
-	frame PEXPG { light YellowPLASMA_X2 }
-	frame PEXPH { light YellowPLASMA_X3 }
-	frame PEXPI { light YellowPLASMA_X3 }
-	frame PEXPJ { light YellowPLASMA_X3 }
-	frame PEXPK { light YellowPLASMA_X4 }
-	frame PEXPL { light YellowPLASMA_X4 }
-	frame PEXPM { light YellowPLASMA_X4 }
+	frame PEXPA { light YELLOWPLASMA_X1 }
+	frame PEXPB { light YELLOWPLASMA_X1 }
+	frame PEXPC { light YELLOWPLASMA_X1 }
+	frame PEXPD { light YELLOWPLASMA_X2 }
+	frame PEXPE { light YELLOWPLASMA_X2 }
+	frame PEXPF { light YELLOWPLASMA_X2 }
+	frame PEXPG { light YELLOWPLASMA_X2 }
+	frame PEXPH { light YELLOWPLASMA_X3 }
+	frame PEXPI { light YELLOWPLASMA_X3 }
+	frame PEXPJ { light YELLOWPLASMA_X3 }
+	frame PEXPK { light YELLOWPLASMA_X4 }
+	frame PEXPL { light YELLOWPLASMA_X4 }
+	frame PEXPM { light YELLOWPLASMA_X4 }	
 }
 
 
@@ -982,6 +994,18 @@ object BD_ArachnotronPlasma
     frame PEXPK { light ARACHPLAS_X4 }
     frame PEXPL { light ARACHPLAS_X4 }
     frame PEXPM { light ARACHPLAS_X4 }
+	
+	frame EPLB { light ARACHPLAS }
+	frame GPLDA { light ARACHPLASMA_X1 }
+	frame GPLDB { light ARACHPLASMA_X1 }
+	frame GPLDC { light ARACHPLASMA_X1 }
+	frame GPLDD { light ARACHPLASMA_X2 }
+	frame GPLDE { light ARACHPLASMA_X2 }
+	frame GPLDF { light ARACHPLASMA_X2 }
+	frame GPLDG { light ARACHPLASMA_X3 }
+	frame GPLDH { light ARACHPLASMA_X3 }
+	frame GPLDI { light ARACHPLASMA_X4 }
+	frame GPLDJ { light ARACHPLASMA_X4 }
 }
 
 // Revenant tracer

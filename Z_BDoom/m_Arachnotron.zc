@@ -41,10 +41,10 @@ Class BD_Arachnotron : BDoomMonster {
 		ARAC a 20 a_facetarget();
 		ARAT a 3 {
 			A_FaceTarget();
-			if (bdoom_replaceweapons && bdoom_weapons == 2)
+			if (bdoom_replaceweapons && bdoom_weapons >= 2)
 				A_Spawnprojectile("BD_ModernArachnotronPlasma");
 			else 
-				A_Spawnprojectile("BD_ArachnotronPlasma");
+				A_Spawnprojectile("ArachnotronPlasma");
 		}
 		ARAT b 3;
 		ARAT c 3 a_SpidRefire();
@@ -74,6 +74,11 @@ Class BD_ArachnotronPlasma : BD_Plasmaball {
 		decal "ArachnotronPlasmaSplat";
 		translation "GreenPlasma";
 		stencilcolor "2dff1d";
+	}
+	States {
+	Death.Classic:
+		GPLD ABCDEFGHIJKLMN 1;
+		stop;
 	}
 }
 

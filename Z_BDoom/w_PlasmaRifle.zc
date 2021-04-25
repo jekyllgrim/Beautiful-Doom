@@ -29,7 +29,7 @@ Class BD_PlasmaRifle : BDoomWeapon {
 		let psp = owner.player.FindPSprite(PSP_WEAPON);
 		if (psp && bdoom_weapons == 2 && heatcounter > 0)
 			heatcounter -= 0.05;
-	}
+	}	
 	states {
 		Spawn:
 			PLAS A 1 NoDelay A_JumpIf(bdoom_weapons == 2, "Spawn.Modern");
@@ -76,7 +76,7 @@ Class BD_PlasmaRifle : BDoomWeapon {
 			PLGF A 3 {
 				if (bdoom_weapons == 2)
 					return ResolveState("Fire.Modern");
-				A_FireProjectile("BD_Plasmaball",0,1);
+				A_FireProjectile("Plasmaball",0,1);
 				A_GunFlash("Flash1");
 				return ResolveState(null);
 			}
@@ -84,14 +84,14 @@ Class BD_PlasmaRifle : BDoomWeapon {
 			goto FireEnd;
 		fire2:
 			PLGF B 3 {
-				A_FireProjectile("BD_Plasmaball",0,1);
+				A_FireProjectile("Plasmaball",0,1);
 				A_GunFlash("Flash2");
 			}
 			TNT1 A 0 A_refire("fire3");
 			goto FireEnd;
 		fire3:
 			PLGF C 3 {
-				A_FireProjectile("BD_Plasmaball",0,1);
+				A_FireProjectile("Plasmaball",0,1);
 				A_GunFlash("Flash3");
 			}
 			TNT1 A 0 A_refire("fire");
@@ -348,6 +348,7 @@ Class BD_Plasmaball : Plasmaball {
 		+THRUGHOST
 		+NOEXTREMEDEATH
 		+BLOODLESSIMPACT
+		+BRIGHT
 		decal "BluePlasmaSplat";
 		renderstyle "Add";
 		scale 0.045;
@@ -358,7 +359,6 @@ Class BD_Plasmaball : Plasmaball {
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		A_StartSound("Mweapons/plasma/fire",slot:CHAN_6,flags:CHANF_DEFAULT,0.7);
 		if (bdoom_debris){
 			let flare = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
 			if (flare) {
@@ -368,11 +368,26 @@ Class BD_Plasmaball : Plasmaball {
 				flare.master = self;
 			}
 		}
+		if (bdoom_projectiles < 2) {
+			A_SetScale(1);
+			alpha = 1;
+		}
+		else 
+			A_SetScale(scale.x*randompick(-1,1),scale.y*randompick(-1,1));
+		sound snd;
+		if(bdoom_weapons == 0)
+			snd = "weapons/plasmaf";
+		else if(bdoom_weapons == 1)
+			snd = "weapons/plasma/fire";
+		//this is only used by Arachnotron, since the player uses a different plasmaball when using Modern guns
+		else
+			snd = "Mweapons/plasma/fire";
+		A_StartSound(snd,slot:CHAN_5,flags:CHANF_DEFAULT,1.0);
 	}
 	override void Tick () {
 		Vector3 oldPos = self.pos;    
 		Super.Tick();
-		if (!bdoom_debris || isFrozen())
+		if (!bdoom_debris || bdoom_projectiles < 2 || isFrozen())
 			return;
 		CheckMovingSetor();
 		Vector3 path = level.vec3Diff( self.pos, oldPos );
@@ -388,20 +403,17 @@ Class BD_Plasmaball : Plasmaball {
 	}
 	States	{
 	Spawn:
-		TNT1 A 0 NoDelay {
-			A_SetScale(scale.x*randompick(-1,1),scale.y*randompick(-1,1));
-			if(bdoom_weapons == 0)
-				A_StartSound("weapons/plasmaf",slot:CHAN_5,flags:CHANF_DEFAULT,1.0);
-			else if(bdoom_weapons == 1)
-				A_StartSound("weapons/plasma/fire",slot:CHAN_5,flags:CHANF_DEFAULT,1.0);
-			else if (bdoom_weapons == 2) //this is only used by Arachnotron, since the player uses a different plasmaball when using Modern guns
-				A_StartSound("Mweapons/plasma/fire",slot:CHAN_5,flags:CHANF_DEFAULT,1.0);
-		}
-		COIL ABCDEFGHIJKLMNO 1 bright;
-		goto spawn+1;
+		TNT1 A 0 NoDelay A_JumpIf(bdoom_projectiles < 2, "Spawn.Classic");
+		COIL ABCDEFGHIJKLMNO 1;
+		loop;
+	Spawn.Classic:
+		EPLB ABCD 2;
+		loop;
 	Death:
 		TNT1 A 0 {
 			A_RemoveChildren(1,RMVF_EVERYTHING);
+			if (bdoom_projectiles < 2)
+				return ResolveState("Death.Classic");
 			if (bdoom_debris) {
 				if (!inMovingSector) {
 					for (int i = 12; i > 0; i --)
@@ -425,9 +437,14 @@ Class BD_Plasmaball : Plasmaball {
 					}
 				}
 			}
+			return ResolveState(null);
 		}
 		TNT1 A 0 A_SetScale(0.2*randompick(-1,1),0.2*randompick(-1,1));
-		PEXP ABCDEFGHIJKLM 2 bright A_FadeOut(0.05);
+		PEXP ABCDEFGHIJKLM 2 A_FadeOut(0.05);
+		stop;
+	Death.Classic:
+		EPLC ABCDE 1;
+		EPLC FGHIJKLMN 2;
 		stop;
 	}
 }
