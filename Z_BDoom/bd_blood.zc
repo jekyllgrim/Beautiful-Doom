@@ -453,6 +453,10 @@ Class BD_AniBloodPool : BD_BaseBloodPool {
 		radius 1;
 	}
 	override void PostBeginPlay() {
+		if (bdoom_blood >= 2) {
+			destroy();
+			return;
+		}
 		Super.PostBeginPlay();
 		if (waterlevel > 0) {
 			destroy();

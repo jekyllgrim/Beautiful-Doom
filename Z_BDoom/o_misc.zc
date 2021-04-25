@@ -565,7 +565,7 @@ Class BD_HeartColumn : HeartColumn {
 	BD_LightFlare flare;
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		let a = BD_AniBloodPool(Spawn("BD_AniBloodPool",(pos.x,pos.y,floorz)));
+		let a = BD_AniBloodPool(Spawn("BD_AniBloodPool",(pos.x,pos.y,floorz),ALLOW_REPLACE));
 		if (a)  a.instant = true;
 	}
 	override void Tick() {

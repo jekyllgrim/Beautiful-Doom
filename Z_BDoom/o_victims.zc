@@ -78,7 +78,7 @@ Class BD_BaseVictim : BDoomActor abstract {
 		if (!bdoom_blood)
 			return;
 		if (SpawnBloodPool) {
-			let a = BD_AniBloodPool(Spawn("BD_AniBloodPool",(pos.x,pos.y,floorz)));
+			let a = BD_AniBloodPool(Spawn("BD_AniBloodPool",(pos.x,pos.y,floorz),ALLOW_REPLACE));
 			if (a) {
 				a.instant = true;
 				//a.scale = (0.2,0.2)*frandom(0.8,1.4);
@@ -558,7 +558,7 @@ Class BD_SmallBloodPool : Actor {
 	override void Tick() {}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		let a = BD_AniBloodPool(Spawn("BD_AniBloodPool",(pos.x,pos.y,floorz)));
+		let a = BD_AniBloodPool(Spawn("BD_AniBloodPool",(pos.x,pos.y,floorz),ALLOW_REPLACE));
 		if (a) {
 			a.instant = true;
 			a.target = self;
