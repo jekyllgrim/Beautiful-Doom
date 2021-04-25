@@ -564,20 +564,13 @@ Class BD_ModernPlasmaBall : BD_Plasmaball {
 				A_Explode(30,40,0,0,40,0,0,"none");
 				A_SetScale(0.14*randompick(-1,1),0.14*randompick(-1,1));
 				if (bdoom_debris) {
-					for (int i = 0; i <= 8; i++)
-						A_SpawnItemEx("BD_ModernPlasmaPiece",0,0,1,frandom(-3,3),frandom(-3,3),frandom(3,8),0,0,32);
+					for (int i = random[bdsfx](5,7); i >  0; i--)
+						A_SpawnItemEx("BD_ModernPlasmaPiece",frandom(-3,3),frandom(-3,3),frandom(1,4),frandom(-3,3),frandom(-3,3),frandom(3,8));
 				}
 			}
 			PEXP CDEFGH 1 bright {
-				if (bdoom_debris) {
-					A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"BD_NullPuff",random(0,360),random(0,360),range:32,spawnclass:"BD_MPlasmaBallRay");
-					A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"BD_NullPuff",random(0,360),random(0,360),range:32,spawnclass:"BD_MPlasmaBallRay");
-					A_CustomRailGun(0,0,"","0",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ,0,4,"BD_NullPuff",random(0,360),random(0,360),range:32,spawnclass:"BD_MPlasmaBallRay");
-				}
-				else {
-					A_CustomRailGun(0,0,"","BBFFBB",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ|RGF_FULLBRIGHT,maxdiff:15,pufftype:"BD_NullPuff",random(0,360),random(0,360),range:32,duration:16,sparsity:0.2,driftspeed:0.1);
-					A_CustomRailGun(0,0,"","BBFFBB",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ|RGF_FULLBRIGHT,maxdiff:15,pufftype:"BD_NullPuff",random(0,360),random(0,360),range:32,duration:16,sparsity:0.2,driftspeed:0.1);
-				}
+				A_CustomRailGun(0,0,"","BBFFBB",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ|RGF_FULLBRIGHT,maxdiff:15,pufftype:"BD_NullPuff",random(0,360),random(0,360),range:32,duration:16,sparsity:0.2,driftspeed:0.1);
+				A_CustomRailGun(0,0,"","BBFFBB",RGF_SILENT|RGF_NOPIERCING|RGF_CENTERZ|RGF_FULLBRIGHT,maxdiff:15,pufftype:"BD_NullPuff",random(0,360),random(0,360),range:32,duration:16,sparsity:0.2,driftspeed:0.1);
 			}
 			PEXP IJKLM 1 bright;
 			stop;
@@ -617,6 +610,8 @@ Class BD_ModernFlarePlasmaTrail : BD_BaseFlare {
 	}
 }
 
+
+//unused:
 Class BD_MPlasmaBallRay : BD_BaseFlare {
 	Default {
 		alpha 0.5;
@@ -625,10 +620,6 @@ Class BD_MPlasmaBallRay : BD_BaseFlare {
 	}
 	states {
 		Spawn:
-			TNT1 A 0 NoDelay {
-				if(Bdoom_debris)
-					A_SpawnItem("BD_MPlasmaBallRayFlare");
-			}
 			PEXP ABCDEFGHIJKLM 1 bright A_FadeOut(0.02);
 			stop;
 	}

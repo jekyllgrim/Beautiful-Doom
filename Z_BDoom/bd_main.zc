@@ -161,6 +161,30 @@ Class BDoomActor : Actor abstract {
 	}
 }
 
+mixin class BD_MovingSectorCheck {
+	protected bool checkedOnce;
+	protected double prevFloorZ;
+	protected double prevCeilingZ;
+	protected bool inMovingSector;
+	bool CheckMovingSetor() {
+		if (!checkedOnce) {
+			prevFloorZ = floorz;
+			prevCeilingZ = ceilingz;
+			checkedOnce = true;
+			inMovingSector	= false;
+			return false;
+		}
+		if (floorz != prevFloorZ || ceilingz != prevCeilingZ) {
+			prevFloorZ = floorz;
+			prevCeilingZ = ceilingz;
+			inMovingSector = true;
+			return true;
+		}
+		inMovingSector	= false;
+		return false;
+	}
+}		
+
 mixin class BD_PlayerSightCheck {
 	protected bool canSeePlayer;
 	//a simple check that returns true if the actor is in any player's LOS:
