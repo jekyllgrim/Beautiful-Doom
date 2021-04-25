@@ -30,6 +30,7 @@ class BD_BaseGib : BD_SmallDebris abstract {
 		radius 8;
 		height 12;
 		alpha 1.0;
+		bouncecount 3;
 		translation "0:255=0:255";
 	}
 	override void PostBeginPlay() {

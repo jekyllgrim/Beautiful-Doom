@@ -942,6 +942,7 @@ Class BD_BaseEmptyCasing : BD_SmallDebris {
 		Height 4;
 		bouncefactor 0.3;
 		wallbouncefactor 0.4;
+		bouncecount 6;
 		Scale 0.15;
 	}
 	Override Void PostBeginPlay() {

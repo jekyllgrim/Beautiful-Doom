@@ -243,6 +243,7 @@ Class BD_BaseDebris : BDoomActor abstract {
 Class BD_SmallDebris : BD_BaseDebris abstract {
 	protected bool onceiling;		//true if object is stuck on ceiling (must be combined with landed)
 	protected bool onliquid;
+	protected int bounces;
 	protected double Voffset;		//small randomized plane offset to reduce z-fighting for blood pools and such
 	double wrot;					//gets added to roll to imitate rotation during flying
 	double dbrake; 				//how quickly to reduce horizontal speed of "landed" particles to simulate sliding along the floor
@@ -276,6 +277,7 @@ Class BD_SmallDebris : BD_BaseDebris abstract {
 		BD_SmallDebris.removeonliquid true;
 		BD_SmallDebris.dbrake 0;
 		BD_SmallDebris.hitceiling false;
+		bouncecount 8;
 		+MOVEWITHSECTOR
 		-NOBLOCKMAP
 	}
@@ -409,7 +411,7 @@ Class BD_SmallDebris : BD_BaseDebris abstract {
 			else {
 				if (pos.z <= floorz+Voffset) {
 					bool liquid = CheckLiquidFlat();
-					if (liquid || !bBOUNCEONFLOORS || abs(vel.z) <= 2) {
+					if (bounces >= bouncecount || !bBOUNCEONFLOORS || liquid || abs(vel.z) <= 2) {
 						if (liquid)
 							onliquid = true;
 						BD_HitFloor();	
@@ -417,6 +419,7 @@ Class BD_SmallDebris : BD_BaseDebris abstract {
 					else {
 						SetZ(floorz+Voffset);
 						vel.z *= -bouncefactor;
+						bounces++;
 						if (bouncesound)
 							A_StartSound(bouncesound);
 					}
