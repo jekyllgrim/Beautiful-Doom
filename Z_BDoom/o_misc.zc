@@ -327,6 +327,7 @@ Class BD_EbarrelTrail : BD_BaseFlare {
 
 Class BD_ExplosiveBarrel : ExplosiveBarrel {
 	BD_BaseFlare flare;
+	actor remains;
 	//private int otherBarrelsNearby;
 	mixin BD_PlayerSightCheck;
 	Default {
@@ -407,8 +408,11 @@ Class BD_ExplosiveBarrel : ExplosiveBarrel {
 			BXP1 AABBC 1;
 			BXP1 C 1 A_Scream;
 			TNT1 A 0 {
-				let bar = Spawn("BD_ExplodedBarrel",pos);
-				bar.master = self;
+				if (bdoom_debris) {
+					remains = Spawn("BD_ExplodedBarrel",pos);
+					if (remains)
+						remains.master = self;
+				}
 				A_SetRenderstyle(0.8,Style_ADD);
 				scale *= frandom(0.7,1);
 				scale.x *= randompick(-1,1);
@@ -436,7 +440,8 @@ Class BD_ExplosiveBarrel : ExplosiveBarrel {
 			TNT1 A 5 {
 				A_SetRenderstyle(1.0,Style_Normal);
 				A_SetScale(0.8);
-				A_RemoveChildren(true,RMVF_EVERYTHING);
+				if (remains)
+					remains.destroy();
 				A_Respawn();
 			}
 			wait;
@@ -448,10 +453,15 @@ Class BD_ExplodedBarrel : BD_SmallDebris {
 		+NOINTERACTION
 		scale 0.8;
 	}
-	static const string SSprite[] =
-		{
-			"BXP2","BXP3","BXP4"
+	static const string SSprite[] = {
+		"BXP2","BXP3","BXP4"
 	};
+	override void Tick() {
+		if (master)
+			BD_SetOrigin(master.pos);
+		else
+			super.Tick();
+	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		sprite = GetSpriteIndex(SSprite[random(0,2)]);
