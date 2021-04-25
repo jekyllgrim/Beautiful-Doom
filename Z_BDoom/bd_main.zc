@@ -833,7 +833,7 @@ Class BD_RocketTrail : BD_BaseSmoke {
 	Default {
 		scale 0.1;
 		renderstyle 'Translucent';
-		alpha 0.3;
+		alpha 0.45;
 	}
 	states {
 	Spawn:
@@ -1270,11 +1270,12 @@ Class BD_EnBulletPuff : BDoomPuff {
 }
 
 //3d-model "decal" to spawn on the floors and ceilings
-Class BD_PlaneDecal : BD_BaseDebris {
+Class BD_PlaneDecal : BD_SmallDebris {
 	bool ceiling;
 	name decaltype;
 	Default {
 		renderstyle 'Shaded';
+		height 1;
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
@@ -1305,9 +1306,9 @@ Class BD_PlaneDecal : BD_BaseDebris {
 	}
 	override void Tick() {
 		if (ceiling)
-			SetOrigin((pos.x,pos.y,ceilingz),true);
+			SetZ(ceilingz);
 		else
-			SetOrigin((pos.x,pos.y,floorz),true);
+			SetZ(floorz);
 	}
 	states {
 	//even though these are not real sprites, they still need to be defined for MODELDEF to attach the model properly

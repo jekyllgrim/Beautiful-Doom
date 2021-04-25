@@ -158,7 +158,7 @@ Model BD_PlaneDecal
 {
 	UseActorRoll
 	UseActorPitch
-	zoffset 1.0
+	zoffset 0.1
 	Scale 2.2 2.2 2.2
 	
 	Model 0 "models/BloodPool.md3"
