@@ -73,6 +73,7 @@ Class BD_ArachnotronPlasma : BD_Plasmaball {
 		BD_Plasmaball.pcolor "green";
 		decal "ArachnotronPlasmaSplat";
 		translation "GreenPlasma";
+		stencilcolor "2dff1d";
 	}
 }
 

@@ -340,7 +340,7 @@ Class BD_PlasmaRifle : BDoomWeapon {
 Class BD_Plasmaball : Plasmaball {
 	name pcolor;
 	property pcolor : pcolor;
-
+	mixin BD_MovingSectorCheck;
 	Default {
 		BD_Plasmaball.pcolor 'blue';
 		damagetype "PlasmaDamage";
@@ -354,6 +354,7 @@ Class BD_Plasmaball : Plasmaball {
 		alpha 1.0;
 		SeeSound "none";
 		DeathSound "weapons/plasmax";
+		stencilcolor "1d7dff"; //used to colorize particles spawned on death
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
@@ -373,6 +374,7 @@ Class BD_Plasmaball : Plasmaball {
 		Super.Tick();
 		if (!bdoom_debris || isFrozen())
 			return;
+		CheckMovingSetor();
 		Vector3 path = level.vec3Diff( self.pos, oldPos );
 		double distance = path.length() / 3; //this determines how far apart the particles are
 		Vector3 direction = path / distance;
@@ -401,9 +403,26 @@ Class BD_Plasmaball : Plasmaball {
 		TNT1 A 0 {
 			A_RemoveChildren(1,RMVF_EVERYTHING);
 			if (bdoom_debris) {
-				A_SpawnItem("BD_WeaponSmoke");
-				for (int i = 12; i > 0; i --) {
+				if (!inMovingSector) {
+					for (int i = 12; i > 0; i --)
 						A_spawnItemEx("BD_BluePlasmaPiece",0,0,1,frandom(-3,3),frandom(-3,3),frandom(3,6),flags:SXF_TRANSFERTRANSLATION,failchance:48);
+				}
+				else {
+					for (int i = random[bdsfx](6,9); i > 0; i --) {
+						double vx = frandom[bdsfx](1,4);
+						A_SpawnParticle(
+							fillcolor,
+							flags: SPF_RELATIVE|SPF_FULLBRIGHT,
+							lifetime: 30,
+							size: 2.5,
+							angle: random[bdsfx](0,359),
+							velx: vx,
+							velz: frandom[bdsfx](2,6),
+							accelx: -vx * 0.05,
+							accelz: -0.5,
+							sizestep: 0.08
+						);	
+					}
 				}
 			}
 		}
@@ -544,6 +563,7 @@ Class BD_ModernPlasmaBall : BD_Plasmaball {
 		alpha 1.0;
 		SeeSound "";
 		DeathSound "weapons/plasmax";
+		stencilcolor "2dff1d";
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
@@ -564,8 +584,25 @@ Class BD_ModernPlasmaBall : BD_Plasmaball {
 				A_Explode(30,40,0,0,40,0,0,"none");
 				A_SetScale(0.14*randompick(-1,1),0.14*randompick(-1,1));
 				if (bdoom_debris) {
-					for (int i = random[bdsfx](5,7); i >  0; i--)
-						A_SpawnItemEx("BD_ModernPlasmaPiece",frandom(-3,3),frandom(-3,3),frandom(1,4),frandom(-3,3),frandom(-3,3),frandom(3,8));
+					for (int i = random[bdsfx](5,7); i >  0; i--) {
+						if (!inMovingSector)
+							A_SpawnItemEx("BD_ModernPlasmaPiece",frandom(-3,3),frandom(-3,3),frandom(1,4),frandom(-3,3),frandom(-3,3),frandom(3,8));
+						else {
+							double vx = frandom[bdsfx](0,3);
+							A_SpawnParticle(
+								fillcolor,
+								flags: SPF_RELATIVE|SPF_FULLBRIGHT,
+								lifetime: 30,
+								size: 2.5,
+								angle: random[bdsfx](0,359),
+								velx: vx,
+								velz: frandom[bdsfx](1,5),
+								accelx: -vx * 0.05,
+								accelz: -0.5,
+								sizestep: 0.08
+							);	
+						}
+					}
 				}
 			}
 			PEXP CDEFGH 1 bright {

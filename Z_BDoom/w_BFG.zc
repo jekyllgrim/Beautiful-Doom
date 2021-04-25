@@ -616,17 +616,17 @@ Class BD_BFGBall : BFGBall {
 			}
 		}
 		BFGX ABCD 4 {
-			/*if (bdoom_debris) {
-				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(48,128),duration:48,sparsity:2.5,spawnclass:"BD_BFGBallRay");
-				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(48,128),duration:48,sparsity:2.5,spawnclass:"BD_BFGBallRay");
-			}*/
+			if (bdoom_debris && !inMovingSector) {
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(48,128),duration:48,sparsity:1.5,spawnclass:"BD_BFGBallRay");
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(48,128),duration:48,sparsity:1.5,spawnclass:"BD_BFGBallRay");
+			}
 		}
 		BFGX E 4 A_BFGSpray("BD_BFGExtra");
 		BFGX FGHIJK 4 {
-			/*if (bdoom_debris) {		
-				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(48,128),duration:48,sparsity:2.5,spawnclass:"BD_BFGBallRay");
-				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(48,128),duration:48,sparsity:2.5,spawnclass:"BD_BFGBallRay");
-			}*/
+			if (bdoom_debris && !inMovingSector) {		
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(48,128),duration:48,sparsity:1.5,spawnclass:"BD_BFGBallRay");
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(48,128),duration:48,sparsity:1.5,spawnclass:"BD_BFGBallRay");
+			}
 		}
 		stop;
 	}
@@ -685,9 +685,10 @@ Class BD_BFGLightningSpawner : BD_SmallDebris {
 			return;
 		pitch -= broll;
 		if (CheckMovingSetor())
-			A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:4,pufftype:"BD_NullPuff",range:200,sparsity:0,driftspeed:4);
+			beamParticle = null;
 		else
-			A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:4,pufftype:"BD_NullPuff",range:200,sparsity:0,driftspeed:4,spawnclass:"BD_BFGBallRay");
+			beamParticle = "BD_BFGBallRay";
+		A_CustomRailGun(0,0,"","FFFFFF",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:4,pufftype:"BD_NullPuff",range:200,sparsity:0,driftspeed:4,spawnclass:beamParticle);
 		if (GetAge() > 20) {
 			destroy();
 			return;
