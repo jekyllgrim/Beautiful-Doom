@@ -768,7 +768,7 @@ class BD_Gib_Torso1 : BD_BasicMeatPiece {
 				if (frame == restframe && vel ~== (0, 0, 0)) { //in contrast to other gibs, torso is always noninteractive, so that it always stays close to the position of the original dead body (so that players can see where the monster died and can predict where the Arch-Vile is going to go to resurrect them)
 					if (bdoom_blood && target && (target is "BDoomMonster")) {
 						let body = BDoomMonster(target);
-						let pool = BD_BaseDebris(Spawn("BD_AniBloodPool",(pos.x,pos.y,floorz)));
+						let pool = BD_BaseDebris(Spawn("BD_AniBloodPool",(pos.x,pos.y,floorz),ALLOW_REPLACE));
 						if (body && pool) {
 							body.meatlist.push(pool);
 							pool.target = body;

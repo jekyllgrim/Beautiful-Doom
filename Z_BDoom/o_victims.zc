@@ -180,7 +180,7 @@ Class BD_HangingTorso : BD_BaseVictim {
 				g.instant = true;
 		}
 		for (int i = random(2,4); i > 0; i--) {
-			let b = Spawn("BD_BloodPool",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),floorz));
+			let b = Spawn("BD_BloodPool",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),floorz),ALLOW_REPLACE);
 			if (b)
 				b.target = self;
 		}
@@ -537,7 +537,7 @@ Class BD_ColonGibs : Actor {
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		for (int i = random(1,2); i > 0; i--) {
-			let b = Spawn("BD_BloodPool",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),floorz));
+			let b = Spawn("BD_BloodPool",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),floorz),ALLOW_REPLACE);
 			if (b)
 				b.target = self;
 		}

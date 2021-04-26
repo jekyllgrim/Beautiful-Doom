@@ -4,7 +4,7 @@ Class BD_DeadBody : Actor abstract {
 		scale.x *= randompick(-1,1);
 		if (!bdoom_blood)
 			return;
-		let a = BD_AniBloodPool(Spawn("BD_AniBloodPool",(pos.x,pos.y,floorz)));
+		let a = BD_AniBloodPool(Spawn("BD_AniBloodPool",(pos.x,pos.y,floorz),ALLOW_REPLACE));
 		if (a) { 
 			a.instant = true;
 			a.target = self;
