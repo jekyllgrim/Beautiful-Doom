@@ -924,19 +924,24 @@ Class BD_ModernBFGBall : BD_BFGBall {
 		if (!InStateSequence(curstate,sspawn))
 			return;
 		if (vel.length() < 2) {
+			Class<Actor> part = "MBFGRailParticle";
+			if (inMovingSector) 
+				part = null;
 			A_SetScale(Clamp(scale.x*1.02,0.1,8));
 			alpha*= 1.01;
 			if (bdoom_debris && frandom(0.1,2) > vel.length())
-				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(128,256)*scale.x,duration:56,sparsity:2.0,spawnclass:"MBFGRailParticle");
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(128,256)*scale.x,duration:72,sparsity:2.0,spawnclass:part);
 			if (bdoom_debris && frandom(0.1,2) > vel.length())							
-				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(128,256)*scale.x,duration:56,sparsity:2.0,spawnclass:"MBFGRailParticle");
+				A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(128,256)*scale.x,duration:72,sparsity:2.0,spawnclass:part);
 		}
 		//Console.printf("No of BFG targets: %d",bfglist.size());
 		if (bfglist.size() > 0) {
 			for (int i = 0; i < bfglist.size(); i++) {
 				if (bfglist[i]) {
-					if (Distance3D(bfglist[i]) > rdistance)
-						bfglist.delete(i);					
+					if (Distance3D(bfglist[i]) > rdistance) {
+						bfglist[i].A_TakeInventory("MBFGTetherControl");
+						bfglist.delete(i);
+					}
 					else {
 						BD_TrackingBeam beam = BD_TrackingBeam.MakeBeam("BD_TrackingBeam",self,bfglist[i],"00EE00",radius: 1.0, targetOffset: (0,0,bfglist[i].height*0.5),lifetimer: 3, style: STYLE_ADDSHADED);
 						if(beam)
@@ -945,7 +950,7 @@ Class BD_ModernBFGBall : BD_BFGBall {
 							bfglist[i].GiveInventory("MBFGTetherControl",1);
 						if (!CheckSight(bfglist[i],SF_IGNOREWATERBOUNDARY)) {
 							//Console.printf("LOF check failed");
-							bfglist[i].TakeInventory("MBFGTetherControl",1);
+							bfglist[i].A_TakeInventory("MBFGTetherControl");
 							bfglist.delete(i);
 						}
 					}
@@ -1005,8 +1010,11 @@ Class BD_ModernBFGBall : BD_BFGBall {
 		TNT1 A 0 {
 			dead = true;
 			if (bdoom_debris) {
+				Class<Actor> part = "MBFGRailParticle";
+				if (inMovingSector) 
+					part = null;
 				for (int i = 3*wpower; i > 0; i--)
-					A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(1,8)+300*scale.x,duration:56,sparsity:1.0,spawnclass:"MBFGRailParticle");
+					A_CustomRailGun(0,0,"","baffb5",RGF_CENTERZ|RGF_SILENT|RGF_NOPIERCING,aim:0,maxdiff:15,pufftype:"BD_NullPuff",spread_xy:random(0,360),spread_z:random(0,360),range:random(1,8)+300*scale.x,duration:72,sparsity:1.0,spawnclass:part);
 			}
 			A_RemoveChildren(1,RMVF_EVERYTHING);
 			A_StopSound(CHAN_6);
