@@ -168,7 +168,7 @@ Class BD_RevenantTracer : RevenantTracer {
 				else
 					BD_Tracer();
 			}
-			goto spawn+1;
+			loop;
 		Death:
 			TNT1 A 0 {
 				A_StopSound(4);
