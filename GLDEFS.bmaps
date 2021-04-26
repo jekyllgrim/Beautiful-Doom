@@ -625,6 +625,81 @@ brightmap sprite BS2Pb6		{ map "brightmaps/Bruiser/BS2Pb6.png" disablefullbright
 brightmap sprite BS2Pb7		{ map "brightmaps/Bruiser/BS2Pb7.png" disablefullbright }
 brightmap sprite BS2Pb8		{ map "brightmaps/Bruiser/BS2Pb8.png" disablefullbright }
 
+// Spider Mastermind
+
+brightmap sprite "SMMAa1g1" { map "brightmaps/spider/SMMAa1g1.png" }
+brightmap sprite "SMMAa2a8" { map "brightmaps/spider/SMMAa2a8.png" }
+brightmap sprite "SMMAa3a7" { map "brightmaps/spider/SMMAa3a7.png" }
+brightmap sprite "SMMAb1h1" { map "brightmaps/spider/SMMAb1h1.png" }
+brightmap sprite "SMMAb2b8" { map "brightmaps/spider/SMMAb2b8.png" }
+brightmap sprite "SMMAb3b7" { map "brightmaps/spider/SMMAb3b7.png" }
+brightmap sprite "SMMAc1i1" { map "brightmaps/spider/SMMAc1i1.png" }
+brightmap sprite "SMMAc2c8" { map "brightmaps/spider/SMMAc2c8.png" }
+brightmap sprite "SMMAc3c7" { map "brightmaps/spider/SMMAc3c7.png" }
+brightmap sprite "SMMAd1j1" { map "brightmaps/spider/SMMAd1j1.png" }
+brightmap sprite "SMMAd2d8" { map "brightmaps/spider/SMMAd2d8.png" }
+brightmap sprite "SMMAe1k1" { map "brightmaps/spider/SMMAe1k1.png" }
+brightmap sprite "SMMAe2e8" { map "brightmaps/spider/SMMAe2e8.png" }
+brightmap sprite "SMMAf1l1" { map "brightmaps/spider/SMMAf1l1.png" }
+brightmap sprite "SMMAf2f8" { map "brightmaps/spider/SMMAf2f8.png" }
+brightmap sprite "SMMAg2g8" { map "brightmaps/spider/SMMAg2g8.png" }
+brightmap sprite "SMMAg3g7" { map "brightmaps/spider/SMMAg3g7.png" }
+brightmap sprite "SMMAh2h8" { map "brightmaps/spider/SMMAh2h8.png" }
+brightmap sprite "SMMAh3h7" { map "brightmaps/spider/SMMAh3h7.png" }
+brightmap sprite "SMMAi2i8" { map "brightmaps/spider/SMMAi2i8.png" }
+brightmap sprite "SMMAi3i7" { map "brightmaps/spider/SMMAi3i7.png" }
+brightmap sprite "SMMAj2j8" { map "brightmaps/spider/SMMAj2j8.png" }
+brightmap sprite "SMMAj3j7" { map "brightmaps/spider/SMMAj3j7.png" }
+brightmap sprite "SMMAk2k8" { map "brightmaps/spider/SMMAk2k8.png" }
+brightmap sprite "SMMAk3k7" { map "brightmaps/spider/SMMAk3k7.png" }
+brightmap sprite "SMMAl2l8" { map "brightmaps/spider/SMMAl2l8.png" }
+brightmap sprite "SMMAl3l7" { map "brightmaps/spider/SMMAl3l7.png" }
+brightmap sprite "SPIXA0" { map "brightmaps/spider/SPIXA0.png" }
+brightmap sprite "SPIXB0" { map "brightmaps/spider/SPIXB0.png" }
+brightmap sprite "SPIXC0" { map "brightmaps/spider/SPIXC0.png" }
+brightmap sprite "SPIXD0" { map "brightmaps/spider/SPIXD0.png" }
+brightmap sprite "SPIXE0" { map "brightmaps/spider/SPIXE0.png" }
+brightmap sprite "SPIXF0" { map "brightmaps/spider/SPIXF0.png" }
+brightmap sprite "SPMAa1" { map "brightmaps/spider/SPMAa1.png" }
+brightmap sprite "SPMAa2" { map "brightmaps/spider/SPMAa2.png" }
+brightmap sprite "SPMAa3" { map "brightmaps/spider/SPMAa3.png" }
+brightmap sprite "SPMAa8" { map "brightmaps/spider/SPMAa8.png" }
+brightmap sprite "SPMAb1" { map "brightmaps/spider/SPMAb1.png" }
+brightmap sprite "SPMAb2" { map "brightmaps/spider/SPMAb2.png" }
+brightmap sprite "SPMAb3" { map "brightmaps/spider/SPMAb3.png" }
+brightmap sprite "SPMAb8" { map "brightmaps/spider/SPMAb8.png" }
+brightmap sprite "SPMAc1" { map "brightmaps/spider/SPMAc1.png" }
+brightmap sprite "SPMAc2" { map "brightmaps/spider/SPMAc2.png" }
+brightmap sprite "SPMAc3" { map "brightmaps/spider/SPMAc3.png" }
+brightmap sprite "SPMAc8" { map "brightmaps/spider/SPMAc8.png" }
+brightmap sprite "SSMAa1" { map "brightmaps/spider/SSMAa1.png" }
+brightmap sprite "SSMAa2a8" { map "brightmaps/spider/SSMAa2a8.png" }
+brightmap sprite "SSMAb1" { map "brightmaps/spider/SSMAb1.png" }
+brightmap sprite "SSMAb2b8" { map "brightmaps/spider/SSMAb2b8.png" }
+brightmap sprite "SSMAb3b7" { map "brightmaps/spider/SSMAb3b7.png" }
+brightmap sprite "SSMAb4b6" { map "brightmaps/spider/SSMAb4b6.png" }
+brightmap sprite "SSMAb5" { map "brightmaps/spider/SSMAb5.png" }
+brightmap sprite "SSMAc1" { map "brightmaps/spider/SSMAc1.png" }
+brightmap sprite "SSMAc2c8" { map "brightmaps/spider/SSMAc2c8.png" }
+brightmap sprite "SSMAc3c7" { map "brightmaps/spider/SSMAc3c7.png" }
+brightmap sprite "SSMAc4c6" { map "brightmaps/spider/SSMAc4c6.png" }
+brightmap sprite "SSMAc5" { map "brightmaps/spider/SSMAc5.png" }
+brightmap sprite "SSMAD1" { map "brightmaps/spider/SSMAD1.png" }
+brightmap sprite "SSMAD2D8" { map "brightmaps/spider/SSMAD2D8.png" }
+
+brightmap sprite "SSMBA1" { map "brightmaps/spider/SSMAD1.png" }
+brightmap sprite "SSMBA2A8" { map "brightmaps/spider/SSMAD2D8.png" }
+brightmap sprite "SSMBB1" { map "brightmaps/spider/SSMAD1.png" }
+brightmap sprite "SSMBB2B8" { map "brightmaps/spider/SSMAD2D8.png" }
+brightmap sprite "SSMBC1" { map "brightmaps/spider/SSMAD1.png" }
+brightmap sprite "SSMBC2C8" { map "brightmaps/spider/SSMAD2D8.png" }
+brightmap sprite "SSMBD1" { map "brightmaps/spider/SSMAD1.png" }
+brightmap sprite "SSMBD2D8" { map "brightmaps/spider/SSMAD2D8.png" }
+brightmap sprite "SSMBE1" { map "brightmaps/spider/SSMAD1.png" }
+brightmap sprite "SSMBE2E8" { map "brightmaps/spider/SSMAD2D8.png" }
+brightmap sprite "SSMBF1" { map "brightmaps/spider/SSMAD1.png" }
+brightmap sprite "SSMBF2F8" { map "brightmaps/spider/SSMAD2D8.png" }
+
 // Explosive Barrel
 
 brightmap sprite BAR1A0		{ map "brightmaps/BAR1A0.png" disablefulllight }
@@ -643,4 +718,3 @@ brightmap sprite MROKA7A3	{ map "brightmaps/MROKA7A3.png" disablefullbright }
 brightmap sprite MROKA6A4	{ map "brightmaps/MROKA6A4.png" disablefullbright }
 
 brightmap sprite MROKA5		{ map "brightmaps/MROKA5.png" disablefullbright }
-
