@@ -415,12 +415,10 @@ Class BD_Plasmaball : Plasmaball {
 			if (bdoom_projectiles < 2)
 				return ResolveState("Death.Classic");
 			if (bdoom_debris) {
-				if (!inMovingSector) {
-					for (int i = 12; i > 0; i --)
-						A_spawnItemEx("BD_BluePlasmaPiece",0,0,1,frandom(-3,3),frandom(-3,3),frandom(3,6),flags:SXF_TRANSFERTRANSLATION,failchance:48);
-				}
-				else {
-					for (int i = random[bdsfx](6,9); i > 0; i --) {
+				for (int i = random[bdsfx](6,9); i > 0; i --) {
+					if (!inMovingSector)
+						A_spawnItemEx("BD_BluePlasmaPiece",frandom(-3,3),frandom(-3,3),frandom(1,4),frandom(-3,3),frandom(-3,3),frandom(3,6),flags:SXF_TRANSFERTRANSLATION);
+					else {
 						double vx = frandom[bdsfx](1,4);
 						A_SpawnParticle(
 							fillcolor,
@@ -433,7 +431,7 @@ Class BD_Plasmaball : Plasmaball {
 							accelx: -vx * 0.05,
 							accelz: -0.5,
 							sizestep: 0.08
-						);	
+						);
 					}
 				}
 			}
