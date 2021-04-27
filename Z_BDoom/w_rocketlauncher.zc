@@ -518,21 +518,22 @@ Class BD_ModernRocket : BD_Rocket {
 			oldPos = level.vec3Offset( oldPos, direction );
 		}
 	}
-	states	{
-	Spawn:
-		TNT1 A 0 NoDelay { 
-			A_StartSound("weapons/rlan/fly",slot:CHAN_BODY,flags:CHANF_LOOPING,attenuation:1);
-			if(Bdoom_debris){
-				let flare = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
-				if (flare) {
-					flare.master = self;
-					flare.fcolor = 'yellow';
-					flare.fscale = 0.06;
-					flare.falpha = 0.4;
-					flare.xoffset = -7;
-				}
+	override void PostBeginPlay() {
+		actor.PostBeginPlay();
+		A_StartSound("weapons/rlan/fly",slot:CHAN_BODY,flags:CHANF_LOOPING,attenuation:1);
+		if(Bdoom_debris){
+			let flare = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
+			if (flare) {
+				flare.master = self;
+				flare.fcolor = 'yellow';
+				flare.fscale = 0.06;
+				flare.falpha = 0.4;
+				flare.xoffset = -7;
 			}
 		}
+	}
+	states	{
+	Spawn:
 		MROK AAAA 1 bright A_ScaleVelocity(1.2);
 		MROK A 1;
 		wait;
@@ -638,12 +639,12 @@ Class BD_ModernGrenade : BD_ModernRocket {
 		bouncesound "Mweapons/grenade/bounce";	
 	}
 	override void PostBeginPlay() {
-		super.PostBeginPlay();
+		actor.PostBeginPlay();
 		if (bdoom_debris) {
 			let a = Spawn("BD_ModernGrenadeFlare",pos);
 			if (a)
 				a.master = self;
-			}
+		}
 		sspawn = FindState("Spawn");
 	}
 	override void Tick() {
