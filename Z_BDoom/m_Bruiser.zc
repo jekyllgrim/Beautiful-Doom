@@ -214,7 +214,7 @@ Class BD_BaronBall : BaronBall {
 	}
 	override void PostBeginPlay () {
 		super.PostBeginPlay();
-		if (bdoom_projectiles == 2)
+		if (bdoom_projectiles < 2)
 			A_SetScale(1);
 		if (bdoom_debris) {
 			let f = BD_ProjFlare(Spawn("BD_ProjFlare",pos));
