@@ -40,7 +40,7 @@ class OptionMenuItemScaleSliderGC : OptionMenuItemScaleSlider
 		return indent;
 	}
 	
-	virtual bool isGrayed()
+	override bool isGrayed()
 	{
 		if ( (mGraycheck && mGrayCheck.GetInt() == 0) || (mGraycheck2 && mGrayCheck2.GetInt() == 0) || (mGraycheck3 && mGrayCheck3.GetInt() == 0)  )
 			return true;
