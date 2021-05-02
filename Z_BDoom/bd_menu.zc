@@ -21,7 +21,7 @@ class OptionMenuItemScaleSliderGC : OptionMenuItemScaleSlider
 	//=============================================================================
 	override int Draw(OptionMenuDescriptor desc, int y, int indent, bool selected)
 	{
-		bool grayed = isGrayed();
+		bool grayed = isGrayedCompat();
 		
 		drawLabel(indent, y, selected? OptionMenuSettings.mFontColorSelection : OptionMenuSettings.mFontColor, grayed);
 
@@ -40,7 +40,10 @@ class OptionMenuItemScaleSliderGC : OptionMenuItemScaleSlider
 		return indent;
 	}
 	
-	virtual bool isGrayed()
+	/*	this function had been defined here before an isGrayed virtual was added to the base ScaleSlider (what was in a dev build of GZDoom 
+		prior 4.6.0), so I had to rename it to make sure it works both on stable 4.5.0 and on dev builds at the time.
+	*/
+	virtual bool isGrayedCompat()
 	{
 		if ( (mGraycheck && mGrayCheck.GetInt() == 0) || (mGraycheck2 && mGrayCheck2.GetInt() == 0) || (mGraycheck3 && mGrayCheck3.GetInt() == 0)  )
 			return true;
@@ -50,7 +53,7 @@ class OptionMenuItemScaleSliderGC : OptionMenuItemScaleSlider
 
 	override bool Selectable()
 	{
-		return !isGrayed();
+		return !isGrayedCompat();
 	}
 	
 }
@@ -70,7 +73,7 @@ class OptionMenuItemSubmenuGC : OptionMenuItemSubmenu
 
 	override int Draw(OptionMenuDescriptor desc, int y, int indent, bool selected)
 	{
-		bool grayed = isGrayed();		
+		bool grayed = isGrayedCompat();		
 		int x = drawLabel(indent, y, selected? OptionMenuSettings.mFontColorSelection : OptionMenuSettings.mFontColorMore, grayed);
 		int overlay = grayed? Color(96,48,0,0) : 0;
 		if (mCentered) 
@@ -80,14 +83,14 @@ class OptionMenuItemSubmenuGC : OptionMenuItemSubmenu
 		return indent;
 	}
 
-	virtual bool isGrayed()
+	virtual bool isGrayedCompat()
 	{
 		return mGrayCheck != null && !mGrayCheck.GetInt();
 	}
 
 	override bool Selectable()
 	{
-		return !isGrayed();
+		return !isGrayedCompat();
 	}
 }
 
@@ -170,7 +173,7 @@ class OptionMenuItemControlGC_TLTP : OptionMenuItemTLTPControl
 	}
 	override int Draw(OptionMenuDescriptor desc, int y, int indent, bool selected)
 	{
-		bool grayed = isGrayed();
+		bool grayed = isGrayedCompat();
 		drawLabel(indent, y, mWaiting? OptionMenuSettings.mFontColorHighlight: 
 			(selected? OptionMenuSettings.mFontColorSelection : OptionMenuSettings.mFontColor),grayed);
 		int overlay = grayed? Color(96,48,0,0) : 0;
@@ -190,7 +193,7 @@ class OptionMenuItemControlGC_TLTP : OptionMenuItemTLTPControl
 		}
 		return indent;
 	}
-	virtual bool isGrayed()
+	virtual bool isGrayedCompat()
 	{
 		if ((mInverseCheck == 1) && mGraycheck && (mGrayCheck.GetInt() != mCvarVal))
 			return true;
@@ -201,6 +204,6 @@ class OptionMenuItemControlGC_TLTP : OptionMenuItemTLTPControl
 
 	override bool Selectable()
 	{
-		return !isGrayed();
+		return !isGrayedCompat();
 	}
 }
