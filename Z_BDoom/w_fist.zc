@@ -1259,7 +1259,7 @@ Class BD_OverlayControl : CustomInventory {
 	BerserkOverlay:
 		TNT1 A 0 {
 			if (invoker.mregen && invoker.mregen.EffectTics <= 175)
-				A_StartSound("weapons/fist/heartbeat",slot:CHAN_VOICE);
+				A_StartSound("world/heartbeat",slot:CHAN_VOICE);
 		}
 		BDOL BBBBBBBBBBBBBBB 1 {
 			int mul = (invoker.mregen && invoker.mregen.EffectTics <= 175) ? 2 : 1;
