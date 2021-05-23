@@ -92,8 +92,6 @@ mgib7	"sounds/metalfall7.ogg"
 $volume gibs/metallic 0.4
 $attenuation gibs/metallic 2
 
-HeartBeat	HARTBEAT
-
 $random gibs/bloodspurt { gibs/bloodspurt1 gibs/bloodspurt2 gibs/bloodspurt3 gibs/bloodspurt4 }
 gibs/bloodspurt1 "sounds/gore/bloodspurt1.ogg"
 gibs/bloodspurt2 "sounds/gore/bloodspurt2.ogg"
@@ -101,10 +99,6 @@ gibs/bloodspurt3 "sounds/gore/bloodspurt3.ogg"
 gibs/bloodspurt4 "sounds/gore/bloodspurt4.ogg"
 
 //gib landing sound
-//old sounds
-meatland1	DSMEAT1
-meatland2	DSMEAT2
-meatland3	DSMEAT3
 //new sounds
 meatl1	meatl1
 meatl2	meatl2
@@ -119,8 +113,6 @@ meatl9	meatl9
 $limit gibs/meatland 10
 $random gibs/meatland { meatl1 meatl2 meatl3 meatl4 meatl5 meatl6 meatl7 meatl8 meatl9 }
 
-
-bounce		BOUNCE
 
 //minor ripping sound
 gibs/rip1	DSRIP1
@@ -141,7 +133,7 @@ ggibbed7	DSGIB7
 ggibbed8	DSGIB8
 $limit gibs/gibbed 6
 
-
+misc/bounce BOUNCE
 misc/flyloop "sounds/flyloop.ogg"
 $limit misc/flyloop 10
 
@@ -153,7 +145,7 @@ $limit misc/flyloop 10
 
 gibs/metalgib DSMETALB
 $random gibs/cybergibs { gibs/metalgib gibs/metalgib gibs/meatland }
-$random gibs/metalgibs { gibs/metalgib gibs/metalgib bounce }
+$random gibs/metalgibs { gibs/metalgib gibs/metalgib misc/bounce }
 
 
 
@@ -199,24 +191,25 @@ archvile/flameexplosion	"Sounds/arfireexplo.ogg"
 //////////////////////////
 
 
-
-
 /// MISC
 
-glasscrack	glascrck
+//misc/keytry 	LOCKCARD[
 
-world/torch	DSTORCH
+world/glassbreak	glascrck
+world/trycard	LOCKCARD
+world/tryskull	LOCKSKUL
+world/torch		DSTORCH
 
 $random world/heartbeat { hbeat1 hbeat2 hbeat3 }
 hbeat1	hbeat1
 hbeat2	hbeat2
 hbeat3	hbeat3
 
-$random spark { spark1 spark2 spark3 }
-spark1	"sounds/decorations/spark1.ogg"
-spark2	"sounds/decorations/spark2.ogg"
-spark3	"sounds/decorations/spark3.ogg"
-$limit spark 3
+$random world/spark { bspark1 bspark2 bspark3 }
+bspark1	"sounds/decorations/spark1.ogg"
+bspark2	"sounds/decorations/spark2.ogg"
+bspark3	"sounds/decorations/spark3.ogg"
+$limit world/spark 3
 
 lamp/hum	"sounds/decorations/humloop.ogg"
 $limit lamp/hum 4
@@ -258,8 +251,6 @@ vicdie2	vicdie2
 vicdie3	vicdie3
 vicdie4	vicdie4
 
-misc/keytry LOCKCARD
-
 $random world/ebarrel	{ ebarrel1 ebarrel2 ebarrel3 ebarrel4 }
 ebarrel1	ebarrel1
 ebarrel2	ebarrel2
@@ -287,15 +278,15 @@ pickups/skullkey	SKULPKUP
 pickups/radsuit		SUITPKUP
 pickups/backpack	BKPKPKUP
 
-pickups/berserk		BERSPKUP
+pickups/berserk	BERSPKUP
 ammo/clip			CLIPPKUP
 ammo/clipbox		CBOXPKUP
-ammo/shells			SHELPKUP
+ammo/shells		SHELPKUP
 ammo/rockets		ROCKPKUP
 ammo/cells			CELLPKUP
 
-pickups/chaingun		CHGNPKUP
-pickups/rocketlauncher	RLANDRAW
+pickups/chaingun			CHGNPKUP
+pickups/rocketlauncher		RLANDRAW
 pickups/plasmarifle		PLSDRAW
 pickups/bfg				BFGDRAW
 

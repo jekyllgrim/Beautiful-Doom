@@ -345,7 +345,7 @@ Class BD_CacoBallLightning : BD_BaseFlare {
 				alpha = Clamp(alpha-0.025,0,0.5);
 			else {
 				alpha = Clamp(alpha+0.1,0,0.5);
-				A_StartSound("spark",flags:CHANF_DEFAULT,volume:0.8,attenuation:2);
+				A_StartSound("world/spark",flags:CHANF_DEFAULT,volume:0.8,attenuation:2);
 				for (int i = random(1,3); i > 0; i --) {
 					let piece = BD_CacoBallPiece(Spawn("BD_CacoBallPiece",(pos.x+frandom(-3,3),pos.y+frandom(-3,3),ceilz-0.5)));
 					if (piece) 
@@ -359,7 +359,7 @@ Class BD_CacoBallLightning : BD_BaseFlare {
 				alpha = Clamp(alpha-0.025,0,0.5);
 			else {
 				alpha = Clamp(alpha+0.1,0,0.5);
-				A_StartSound("spark",flags:CHANF_DEFAULT,volume:0.8,attenuation:2);
+				A_StartSound("world/spark",flags:CHANF_DEFAULT,volume:0.8,attenuation:2);
 				for (int i = random(1,3); i > 0; i --) {
 					let piece = BD_CacoBallPiece(Spawn("BD_CacoBallPiece",(pos.x+frandom(-3,3),pos.y+frandom(-3,3),flrz+0.5)));
 					if (piece) 
