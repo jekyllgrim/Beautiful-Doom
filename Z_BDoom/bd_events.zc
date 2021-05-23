@@ -91,6 +91,44 @@ class BD_ActorOverrideHandler : EventHandler {
 		return false;
 	}
 	
+	//universal function by Marisa Kirisame that returns locknumber if the line is locked:
+    static clearscope int GetLineLock( Line l ) {
+        int locknum = l.locknumber;
+        if ( !locknum ) {
+            // check the special
+            switch ( l.special )
+            {
+            case FS_Execute:
+                locknum = l.Args[2];
+                break;
+            case Door_LockedRaise:
+            case Door_Animated:
+                locknum = l.Args[3];
+                break;
+            case ACS_LockedExecute:
+            case ACS_LockedExecuteDoor:
+            case Generic_Door:
+                locknum = l.Args[4];
+                break;
+            }
+        }
+        return locknum;
+    }
+	override void WorldLinePreActivated  (worldEvent e) {
+		let line = e.ActivatedLine;
+		int lock = GetLineLock(line);
+		if (lock <= 0)
+			return;
+		let act = e.thing;
+		if (!e.thing.player)
+			return;			
+		console.printf("%d is trying to open lock: %d",act.PlayerNumber(),lock);
+		sound snd = "world/trycard";
+		if (lock >= 4 && lock <= 6)
+			snd = "world/tryskull";
+		act.A_StartSound(snd,CHAN_AUTO,CHANF_UI|CHANF_LOCAL);
+	}
+	
 	// This performs the actual conditional actor replacement:
 	override void CheckReplacement(ReplaceEvent e) {
 		if (bdoom_blood) {	
