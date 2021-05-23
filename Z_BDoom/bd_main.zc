@@ -6,10 +6,9 @@ Class BDoomActor : Actor abstract {
 	protected double pi;
 	protected name bcolor;
 	
-	//returns true if 8 points around the actor in a specified radius are at the same height as at its pos; used by blood pools:
+	//returns false if 8 points around the actor in a specified radius are at the same height as at its pos; used by blood pools:
 	bool CheckLandingSize (double cradius = 0, bool checkceiling = false) {
 		if (checkceiling) {
-			double ceilingHeight = GetZAt (flags: GZF_CEILING);
 			for (int i = 0; i < 360; i += 45) {
 				double curHeight = GetZAt (cradius, 0, i, GZF_ABSOLUTEANG | GZF_CEILING);
 				if (curHeight > ceilingz)
@@ -17,7 +16,6 @@ Class BDoomActor : Actor abstract {
 			}
 		}
 		else {
-			double floorHeight = GetZAt ();
 			for (int i = 0; i < 360; i += 45) {
 				double curHeight = GetZAt (cradius, 0, i, GZF_ABSOLUTEANG);
 				if (curHeight < floorz)
