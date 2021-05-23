@@ -121,8 +121,10 @@ class BD_ActorOverrideHandler : EventHandler {
 			return;
 		let act = e.thing;
 		if (!e.thing.player)
-			return;			
-		console.printf("%d is trying to open lock: %d",act.PlayerNumber(),lock);
+			return;
+		if (act.CheckKeys(lock,false,quiet:true))
+			return;
+		//console.printf("%d is trying to open lock: %d",act.PlayerNumber(),lock);
 		sound snd = "world/trycard";
 		if (lock >= 4 && lock <= 6)
 			snd = "world/tryskull";
