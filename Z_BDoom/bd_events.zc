@@ -114,6 +114,7 @@ class BD_ActorOverrideHandler : EventHandler {
         }
         return locknum;
     }
+	
 	override void WorldLinePreActivated  (worldEvent e) {
 		let line = e.ActivatedLine;
 		int lock = GetLineLock(line);
@@ -124,10 +125,29 @@ class BD_ActorOverrideHandler : EventHandler {
 			return;
 		if (act.CheckKeys(lock,false,quiet:true))
 			return;
-		//console.printf("%d is trying to open lock: %d",act.PlayerNumber(),lock);
 		sound snd = "world/trycard";
 		if (lock >= 4 && lock <= 6)
 			snd = "world/tryskull";
+		else if (lock >= 129 && lock <= 131) {
+			let side = line.sidedef[0];
+			let texname = TexMan.GetName(side.GetTexture(0));
+			bool wooden = texname.IndexOf("WOOD") >= 0;
+			if (!wooden) {
+				static const name SkullDoors[] = {
+					'BIGDOOR5',
+					'BIGDOOR6',
+					'BIGDOOR7'
+				};
+				for (int i = 0; i < SkullDoors.Size(); i++) {
+					wooden = texname == SkullDoors[i];
+					if (wooden)
+						break;
+				}
+			}
+			if (wooden)
+				snd = "world/tryskull";
+		}
+		//console.printf("%d is trying to open lock: %d | tex: %s",act.PlayerNumber(),lock, texname);
 		act.A_StartSound(snd,CHAN_AUTO,CHANF_UI|CHANF_LOCAL);
 	}
 	
