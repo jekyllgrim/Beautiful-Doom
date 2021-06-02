@@ -90,19 +90,10 @@ Class BD_ModernArachnotronPlasma : BD_Plasmaball {
 		SeeSound "Mweapons/plasma/fire";
 		translation "192:207=208:223";
 		stencilcolor "ffd21d";
+		scale 0.03;
 	}
 	override void PostBeginPlay() {
-		super.PostBeginPlay();
-		if (bdoom_projectiles < 2) {
-			alpha = 1;
-			A_SetScale(1);
-		}
-	}
-	override void Tick() {
-		if (bdoom_projectiles < 2)
-			Plasmaball.Tick();
-		else
-			super.Tick();
+		Plasmaball.PostBeginPlay();
 	}
 	States	{
 	Spawn:

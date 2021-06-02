@@ -387,7 +387,7 @@ Class BD_Plasmaball : Plasmaball {
 	override void Tick () {
 		Vector3 oldPos = self.pos;    
 		Super.Tick();
-		if (!bdoom_debris || bdoom_projectiles < 2 || isFrozen())
+		if (!bdoom_debris || (bdoom_weapons < 2 && bdoom_projectiles < 2) || isFrozen())
 			return;
 		CheckMovingSetor();
 		Vector3 path = level.vec3Diff( self.pos, oldPos );
@@ -581,7 +581,7 @@ Class BD_ModernPlasmaBall : BD_Plasmaball {
 		stencilcolor "2dff1d";
 	}
 	override void PostBeginPlay() {
-		super.PostBeginPlay();
+		Plasmaball.PostBeginPlay();
 		A_StartSound("Mweapons/plasma/fire",slot:CHAN_6,flags:CHANF_DEFAULT,0.7);
 		A_StartSound("Mweapons/plasma/loop",slot:CHAN_5,flags:CHANF_DEFAULT|CHANF_LOOPING,0.6,attenuation:3);
 	}
