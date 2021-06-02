@@ -345,7 +345,7 @@ Class BD_ShotgunMeleePuff : BD_ModernFistPuffHeavy {
 	}
 	states {
 	Crash:
-		TNT1 A 0 {
+		TNT1 A 1 {
 			if (bdoom_debris) {
 				for (int i = 4; i > 0; i--)
 					A_SpawnItemEx("BD_WallSmoke",frandom(-3.0,3.0),frandom(-3.0,3.0),frandom(-1.0,1.0),frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.3,0.3),0,0,32);
@@ -355,19 +355,17 @@ Class BD_ShotgunMeleePuff : BD_ModernFistPuffHeavy {
 		}
 		stop;
 	Melee:
-		TNT1 A 0 {
+		TNT1 A 1 {
 			A_AlertMonsters(196,AMF_EMITFROMTARGET);
-			if (tracer && (tracer.bISMONSTER == false || tracer.bNOBLOOD == true))
-				return ResolveState("Crash");
-			return ResolveState(null);
-		}
-		TNT1 A 0 {
 			if (tracer) {
+				if (tracer.bISMONSTER == false || tracer.bNOBLOOD == true)
+					return ResolveState("Crash");		
 				if (!tracer.bNOGRAVITY)
 					tracer.vel.z += clamp(7.0 * 120 / tracer.mass, 0.0, 8.0);
 				if (target)
 					tracer.vel += AngleToVector (target.AngleTo (tracer), 0.5);
 			}
+			return ResolveState(null);
 		}
 		stop;
 	}
