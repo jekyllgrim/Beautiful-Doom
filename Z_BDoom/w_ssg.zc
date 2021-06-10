@@ -1,6 +1,6 @@
 Class BD_SuperShotgun : BDoomWeapon {
-	private bool ShotFired;
-	private bool WasCancelled;
+	protected bool ShotFired;
+	protected bool WasCancelled;
 	Default {
 		Tag "$TAG_SUPERSHOTGUN";
 		inventory.pickupmessage "$GOTSHOTGUN2"; 
@@ -246,14 +246,14 @@ Class BD_SuperShotgun : BDoomWeapon {
 		}
 		#### B 1 {
 			A_Gunflash("Flash");
-			A_WeaponOffset(frandom(-0.5,0.5),frandom(10,11),WOF_ADD);
-			A_StartSound("weapons/ssg/fire",slot:CHAN_5);
+			A_WeaponOffset(frandom(-0.5,0.5),frandom(15,18),WOF_ADD);
+			A_StartSound("weapons/ssg/dfire",slot:CHAN_5);
 			BD_FireBullets(11.2, 7.1, 20, 5, pufftype: "BD_EnSSGPuff");
 			A_TakeInventory("Shell",1,TIF_NOTAKEINFINITE);
 		}
 		
-		#### C 1 A_StartSound("weapons/ssg/fire", 6);
-		#### CCCCC 1 A_WeaponOffset(0,-2,WOF_ADD);
+		#### # 0 A_StartSound("weapons/ssg/dfire2", 6);
+		#### CCCCCC 1 A_WeaponOffset(0,-2.5,WOF_ADD);
 		TNT1 A 0 A_WeaponOffset(0,32,WOF_INTERPOLATE);
 		TNT1 A 0 A_CheckReload();
 		goto Reload;
@@ -271,7 +271,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		#### B 1 {
 			A_Gunflash("AltFlash");
 			A_StartSound("weapons/ssg/fire",slot:CHAN_5);
-			A_WeaponOffset(0,6,WOF_ADD);
+			A_WeaponOffset(0,12,WOF_ADD);
 			If(invoker.ShotFired) {
 				let psp = player.FindPSprite(PSP_WEAPON);
 				if (psp) psp.frame = 2;
@@ -281,7 +281,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 				invoker.ShotFired = true;
 			BD_FireBullets(10,6.5,10,5, pufftype: "BD_EnSSGPuff");
 		}
-		#### ###### 1 A_WeaponOffset(0,-1,WOF_ADD);
+		#### ###### 1 A_WeaponOffset(0,-2,WOF_ADD);
 		TNT1 A 0 {
 			A_WeaponOffset(0,32,WOF_INTERPOLATE);
 			if (invoker.shotfired)

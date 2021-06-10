@@ -101,6 +101,12 @@ weapons/ssg/open	SSGOPEN
 weapons/ssg/close	SSGCLOSE
 weapons/ssg/in		SSGIN
 weapons/ssg/fire	SSGSHOT1
+/*
+Defined as separate sounds for compatibility with possible submods:
+(See w_ssg.zc Fire.Enhanced sequence for details)
+*/
+weapons/ssg/dfire	SSGSHOT1
+weapons/ssg/dfire2	SSGSHOT1
 
 // Chaingun
 weapons/chaingun/draw	CHGNDRAW
