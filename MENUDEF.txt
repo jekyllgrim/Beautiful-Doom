@@ -35,6 +35,8 @@ AddOptionMenu "OptionsMenu"
 }
 
 OptionMenu "BDoom_Settings" {	
+	Class "TLTPOptionsMenu"
+	Title "$BDMENU_TITLE"
 	StaticText "$BDMENU_TITLE_KEYS", yellow
 	ControlGC_TLTP "$BDMENU_QKICK_NAME",		"$BDMENU_QKICK", "White",	"+user1","bdoom_weapons",2,1
 	ControlGC_TLTP "$BDMENU_WEAPONHELP_NAME",	"$BDMENU_WEAPONHELP", "White",	"event BD_ShowWeapHelp","bdoom_weapons",0,0
@@ -62,7 +64,7 @@ OptionMenu "BDoom_Settings" {
 	TLTPOption "$BDMENU_goretextures_NAME",	"$BDMENU_goretextures", "White", "bdoom_goretextures", "OnOff", ""
 	StaticText " "
 	
-	ScaleSliderGC "$BDMENU_MAXGIBS",					"bdoom_gibnum", 100, 3000, 100, "", "bdoom_gibs", "bdoom_replacemonsters"
+	ScaleSliderGC "$BDMENU_MAXGIBS",		"bdoom_gibnum", 100, 3000, 100, "", "bdoom_gibs", "bdoom_replacemonsters"
 	ScaleSliderGC "$BDMENU_MAXBLOOD",		"bdoom_bloodnum", 100, 3000, 100, "", "bdoom_blood"
 	ScaleSliderGC "$BDMENU_MAXFLAMES",		"bdoom_flamesnum", 100, 5000, 100, "", "bdoom_flames"
 	ScaleSliderGC "$BDMENU_MAXDEBRIS",	"bdoom_debrisnum", 100, 5000, 100, "", "bdoom_debris"
@@ -90,8 +92,6 @@ OptionMenu "BDoom_Settings" {
 	SubmenuGC "$BDMENU_PERMONSTERREPLACEMENT", "BDMonsterReplacements", "bdoom_replacemonsters"
 	StaticText " "
 	
-	Class "TLTPOptionsMenu"
-	Title "$BDMENU_TITLE"
 	StaticText "$TLTPTOOLTIPMNU_VERSION", "yellow"
 	Submenu "$OPTMNU_TLTPTOOLTIP", "TooltipOptionsMenu"
 	StaticText " "
