@@ -377,18 +377,21 @@ Class BD_Chainsaw : BDoomWeapon {
 					else
 						blodframe = psp.frame;
 					if (stacks >  4 && stacks < 30)
-						blod.sprite = GetSpriteIndex("BXZ1");
+						blod.sprite = GetSpriteIndex("BXR1");
 					else if (stacks >= 30 && stacks < 52)
-						blod.sprite = GetSpriteIndex("BXZ2");
+						blod.sprite = GetSpriteIndex("BXR2");
 					else if (stacks >= 52 && stacks < 64)
-						blod.sprite = GetSpriteIndex("BXZ3");
+						blod.sprite = GetSpriteIndex("BXR3");
 					else if (stacks >= 64)
-						blod.sprite = GetSpriteIndex("BXZ4");
+						blod.sprite = GetSpriteIndex("BXR4");
 					blod.frame = blodframe;
 					//console.printf("blood frame: %d",blodframe);
-				}				
+					blod.translation = invoker.tbloodtranslation;
+				}
+				// Stuff below is no longer needed since overlay translation is now a thing
+				
 				//Console.Printf("blood Red: %i, Green: %i, Blue: %i",invoker.tbloodR,invoker.tbloodG,invoker.tbloodB);
-				if (invoker.tbloodR > 0) {
+				/*if (invoker.tbloodR > 0) {
 					A_Overlay(PSP_CHAINBLOODR,"BloodOverlayR");					
 					A_OverlayFlags(PSP_CHAINBLOODR,PSPF_Renderstyle|PSPF_Alpha|PSPF_ForceAlpha,true);
 					A_OverlayRenderstyle(PSP_CHAINBLOODR,Style_ADD);
@@ -447,7 +450,7 @@ Class BD_Chainsaw : BDoomWeapon {
 					}
 				}
 				else
-					BD_ClearPsprite(PSP_CHAINBLOODB);
+					BD_ClearPsprite(PSP_CHAINBLOODB);*/
 				
 				return ResolveState(null);
 			}
@@ -530,7 +533,7 @@ Class BD_ModernsawPuff : BD_ChainsawPuff {
 				csaw.hittarget = true;	
 				if (tracer) {
 					//console.printf("Tracer red: %i, gren: %i, blue: %i",tracer.bloodcolor.R,tracer.bloodcolor.G,tracer.bloodcolor.B);
-					if (tracer.bloodcolor == 0) {
+					/*if (tracer.bloodcolor == 0) {
 						csaw.tbloodR = gameinfo.defaultbloodcolor.R / 255.0;
 						csaw.tbloodG = gameinfo.defaultbloodcolor.G / 255.0;
 						csaw.tbloodB = gameinfo.defaultbloodcolor.B / 255.0;
@@ -539,7 +542,7 @@ Class BD_ModernsawPuff : BD_ChainsawPuff {
 						csaw.tbloodR = tracer.bloodcolor.R / 255.0;
 						csaw.tbloodG = tracer.bloodcolor.G / 255.0;
 						csaw.tbloodB = tracer.bloodcolor.B / 255.0;
-					}
+					}*/
 					//console.printf("MAPINFO red: %i, gren: %i, blue: %i",csaw.tbloodR,csaw.tbloodG,csaw.tbloodB);
 					csaw.CopyBloodColor(tracer);
 					csaw.tbloodtranslation = tracer.BloodTranslation;
