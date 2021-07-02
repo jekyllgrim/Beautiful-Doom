@@ -326,7 +326,7 @@ Class BD_BloodDropSplash : BD_SmallDebris {
 				A_StartSound("gibs/blooddrop");
 				let b = Spawn("BD_BloodPool",(pos.x+frandom(-8,8),pos.y+frandom(-8,8),floorz),ALLOW_REPLACE);
 				if (b) {
-					b.target == target;
+					b.target = target;
 					b.scale *= scale.x;
 				}
 			}
