@@ -404,7 +404,7 @@ Class BD_TranslatedBurningBody : Actor {
 		//super.Tick();
 		if (isFrozen())
 			return;
-		if (!master) {
+		if (!master || master.health > 0) {
 			destroy();
 			return;
 		}
@@ -455,12 +455,12 @@ Class BurningBodyFlame : BD_BaseFlare {
 		super.Tick();
 		if (isFrozen())
 			return;
-		if (waterlevel > 0) {
+		if (!master || master.health > 0 || !bdoom_flames) {
 			destroy();
 			return;
 		}
-		if (!master || !bdoom_flames) {
-			self.destroy();
+		if (waterlevel > 0) {
+			destroy();
 			return;
 		}
 		SetOrigin(master.pos,true);
