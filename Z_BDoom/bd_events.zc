@@ -11,14 +11,18 @@ class BD_WeaponOverrideHandler : EventHandler {
 				player.SetPSprite(i,null);
 		}
 	}
+	
+	override void PlayerSpawned(PlayerEvent e) {
+		let plr = players[e.PlayerNumber].mo;
+		if (!plr)
+			return;
+		if (!plr.FindInventory("BD_OverlayControl"))
+			plr.GiveInventory("BD_OverlayControl",1);
+		if (!plr.FindInventory("BD_WeaponPickupControl"))
+			plr.GiveInventory("BD_WeaponPickupControl",1);
+	}
 
 	override void WorldThingSpawned(WorldEvent e) {
-		if (e.thing && e.thing.player) {
-			if (!e.thing.FindInventory("BD_OverlayControl"))
-				e.thing.GiveInventory("BD_OverlayControl",1);
-			if (!e.thing.FindInventory("BD_WeaponPickupControl"))
-				e.thing.GiveInventory("BD_WeaponPickupControl",1);
-		}
 		if (!bdoom_replaceitems)
 			return;
 		if (!(e.thing is "Inventory"))
@@ -502,6 +506,14 @@ Class BD_FXAmountControl : EventHandler {
 			Console.Printf("Clearing debris");
 			DebrisCleaning = true;
 		}
+	}	
+	
+	override void PlayerSpawned(PlayerEvent e) {
+		let plr = players[e.PlayerNumber].mo;
+		if (!plr)
+			return;
+		if (!plr.FindInventory("BD_BloodyPrintControl"))
+			plr.GiveInventory("BD_BloodyPrintControl",1);
 	}
 	
 	//clear the arrays upon map start
@@ -515,10 +527,6 @@ Class BD_FXAmountControl : EventHandler {
 
 	//add a thing into a corresponding array when it gets spawned
 	override void WorldThingSpawned(WorldEvent e) {
-		if (e.thing && e.thing.player) {
-			if (!e.thing.FindInventory("BD_BloodyPrintControl"))
-				e.thing.GiveInventory("BD_BloodyPrintControl",1);
-		}			
 		if (e.thing && e.thing is "BD_BaseDebris") {
 			let a = BD_BaseDebris(e.thing);
 			if (a) {
