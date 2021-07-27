@@ -115,7 +115,7 @@ Class BD_ArchVile : BDoomMonster {
 				}
 			}
 		MissileDo:
-			TNT1 A 0 A_VileAttack();
+			TNT1 A 0 A_VileAttack(flags:VAF_DMGTYPEAPPLYTODIRECT);
 			NVIL NNOO 2  {
 				if (bdoom_flames) {
 					A_SpawnItemEx("BD_ParticleFire_Yellow",36,frandom(-1.5,1.5),frandom(37,40),frandom(-2.2,2.2),frandom(-2.2,2.2),frandom(-1,2));
