@@ -159,6 +159,19 @@ Class BDoomActor : Actor abstract {
 	}
 }
 
+/*	A simple base class for control items that are given at game start
+	and shouldn't be ever removed from the inventory.
+*/
+Class BD_DummyInventory : Inventory abstract [{
+	Default {
+		+INVENTORY.UNDROPPABLE
+		+INVENTORY.UNTOSSABLE
+		+INVENTORY.PERSISTENTPOWER
+		inventory.maxamount 1;
+	}
+	override void Tick() {}
+}
+
 mixin class BD_MovingSectorCheck {
 	protected bool checkedOnce;
 	protected double prevFloorZ;
