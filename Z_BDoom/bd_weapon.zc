@@ -1,12 +1,5 @@
-Class BD_WeaponPickupControl : Inventory {
-	Default {
-		+INVENTORY.UNDROPPABLE
-		+INVENTORY.UNTOSSABLE
-		+INVENTORY.PERSISTENTPOWER
-		inventory.maxamount 1;
-	}
-	const ALLWEAPONS = 9;
-	static const Class<Weapon> vanillaWeapons[] = {
+Class BD_WeaponPickupControl : BD_DummyInventory {
+	static const Class<Inventory> vanillaWeapons[] = {
 		"Fist",
 		"Chainsaw",
 		"Pistol",
@@ -17,7 +10,7 @@ Class BD_WeaponPickupControl : Inventory {
 		"PlasmaRifle",
 		"BFG9000"
 	};
-	static const Class<Weapon> modWeapons[] = {
+	static const Class<Inventory> modWeapons[] = {
 		"BD_Fist",
 		"BD_Chainsaw",
 		"BD_Pistol",
@@ -28,6 +21,22 @@ Class BD_WeaponPickupControl : Inventory {
 		"BD_PlasmaRifle",
 		"BD_BFG9000"
 	};
+	static const Class<Inventory> modKeys[] = {	
+		"BD_RedCard",
+		"BD_BlueCard",
+		"BD_YellowCard",
+		"BD_RedSkull",
+		"BD_BlueSkull",
+		"BD_YellowSkull"
+	};
+	static const Class<Inventory> vanillaKeys[] = {	
+		"RedCard",
+		"BlueCard",
+		"YellowCard",
+		"RedSkull",
+		"BlueSkull",
+		"YellowSkull"
+	};
 	//here we make sure that the player will never have vanilla weapons in their inventory:
 	override void DoEffect() {
 		super.DoEffect();
@@ -37,9 +46,9 @@ Class BD_WeaponPickupControl : Inventory {
 		array < int > changeweapons; //stores all weapons that need to be exchanged
 		int selweap = -1; //will store readyweapon
 		//record all weapons that need to be replaced
-		for (int i = 0; i < ALLWEAPONS; i++) {
+		for (int i = 0; i < vanillaWeapons.Size(); i++) {
 			//if a weapon is found, cache its position in the array:
-			Class<Weapon> oldweap = bdoom_replaceweapons ? vanillaWeapons[i] : modWeapons[i];
+			Class<Inventory> oldweap = bdoom_replaceweapons ? vanillaWeapons[i] : modWeapons[i];
 			if (owner.CountInv(oldweap) >= 1) {
 				if (bdoom_debug)  console.printf("found %s that shouldn't be here",oldweap.GetClassName());
 				changeweapons.Push(i);
@@ -51,12 +60,12 @@ Class BD_WeaponPickupControl : Inventory {
 		//if no old weapons were found, do nothing else:
 		if (changeweapons.Size() <= 0)
 			return;
-		for (int i = 0; i < ALLWEAPONS; i++) {
+		for (int i = 0; i < vanillaWeapons.Size(); i++) {
 			//do nothing if this weapon wasn't cached:
 			if (changeweapons.Find(i) == changeweapons.Size())
 				continue;
-			Class<Weapon> oldweap = bdoom_replaceweapons ? vanillaWeapons[i] : modWeapons[i];
-			Class<Weapon> newweap = bdoom_replaceweapons ? modWeapons[i] : vanillaWeapons[i];
+			let oldweap = bdoom_replaceweapons ? vanillaWeapons[i] : modWeapons[i];
+			let newweap = bdoom_replaceweapons ? modWeapons[i] : vanillaWeapons[i];
 			//remove old weapon
 			owner.A_TakeInventory(oldweap);
 			if (bdoom_debug) console.printf("Exchanging %s for %s",oldweap.GetClassName(),newweap.GetClassName());
@@ -73,7 +82,7 @@ Class BD_WeaponPickupControl : Inventory {
 		}		
 		//select the corresponding new weapon if an old weapon was selected:
 		if (selweap != -1) {
-			Class<Weapon> newsel = bdoom_replaceweapons ? modWeapons[selweap] : vanillaWeapons[selweap];
+			let newsel = bdoom_replaceweapons ? modWeapons[selweap] : vanillaWeapons[selweap];
 			let wp = Weapon(owner.FindInventory(newsel));
 			if (wp) {
 				if (bdoom_debug) console.printf("Selecting %s", wp.GetClassName());
@@ -89,12 +98,11 @@ Class BD_WeaponPickupControl : Inventory {
 		}
 		changeweapons.Clear();
 	}
-    override bool HandlePickup (Inventory item) {
-        let oldWeapClass = item.GetClassName();
+	Class<Inventory> GetWeaponReplacement(Class<Inventory> replacee) {
         Class<Inventory> replacement = null;
         if (bdoom_replaceweapons) {
 			for (int i = 0; i < vanillaWeapons.Size(); i++) {
-				if (modWeapons[i] && oldWeapClass == vanillaWeapons[i]) {
+				if (modWeapons[i] && replacee == vanillaWeapons[i]) {
 					replacement = modWeapons[i];
 					break;
 				}
@@ -102,18 +110,38 @@ Class BD_WeaponPickupControl : Inventory {
 		}
 		else {
 			for (int i = 0; i < vanillaWeapons.Size(); i++) {
-				if (vanillaWeapons[i] && oldWeapClass == modWeapons[i]) {
+				if (vanillaWeapons[i] && replacee == modWeapons[i]) {
 					replacement = vanillaWeapons[i];
 					break;
 				}
 			}
 		}
+		return replacement;
+	}
+	Class<Inventory> GetKeyReplacement(Class<Inventory> replacee) {
+        Class<Inventory> replacement = null;
+		for (int i = 0; i < modKeys.Size(); i++) {
+			if (vanillaKeys[i] && replacee == modKeys[i]) {
+				replacement = vanillaKeys[i];
+				break;
+			}
+		}
+		return replacement;
+	}
+    override bool HandlePickup (Inventory item) {
+        let replacee = item.GetClassName();
+		Class<Inventory> replacement = null;
+		if (item is "Weapon")
+			replacement = GetWeaponReplacement(replacee);
+		else if (item is "Key")
+			replacement = GetKeyReplacement(replacee);
         if (!replacement)
             return false;
 		int r_amount = GetDefaultByType(replacement).amount;
         item.bPickupGood = true;
         owner.A_GiveInventory(replacement,r_amount);
-		if (bdoom_debug) console.printf("Replacing %s with %s (amount: %d)",oldWeapClass,replacement.GetClassName(),r_amount);
+		if (bdoom_debug)
+			console.printf("Replacing %s with %s (amount: %d)",replacee,replacement.GetClassName(),r_amount);
         return true;
     }
 }
