@@ -158,7 +158,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 				A_StartSound("weapons/sshotc");
 		}
 		#### CCB 1;
-		#### BAA 1 A_WeaponReady(WRF_NOSWITCH);
+		#### BAA 1 A_WeaponReady(WRF_NOSECONDARY|WRF_NOSWITCH);
 		goto ready;
 	Flash:
 		TNT1 A 2 {
