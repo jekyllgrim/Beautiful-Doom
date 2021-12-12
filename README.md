@@ -2,11 +2,13 @@
 
 Beautiful Doom © 2008–2021 Jekyll Grim Payne aka Agent Ash. All rights reserved.
 
-***Beautiful Doom is NOT open-source. While it's fine to learn from it, or make personal addons for it, mod authors may NOT use the contents of Beautiful Doom as a base for their own projects without first obtaining <u>the author's explicit approval</u>. See more details [below](#Use-of-resources-and-permissions).***
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/D1D27F686)
 
 ## General information
 
 Beautiful Doom is an all-encompassing total enhancement mod for GZDoom, aimed at making Doom feel, look and sound better, while keeping the original balance and gameplay intact (or tweaking it with some of the available options). Smoother animations, some improved sprites, particle effects, physics-based gibbing, as well as high compatibility with other mods—those are some of the features.
+
+***Beautiful Doom is NOT open-source. While it's fine to learn from it, or make personal addons for it, mod authors may NOT use the contents of Beautiful Doom as a base for their own projects without first obtaining <u>the author's explicit approval</u>. See more details [below](#Use-of-resources-and-permissions).***
 
 Beautiful Doom mod thread at ZDoom Forums:
 https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752ec93aed
