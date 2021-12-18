@@ -31,7 +31,7 @@ server 	int  	bdoom_bloodnum 			= 500;
 server 	int  	bdoom_gibnum 			= 500;
 server 	int  	bdoom_flamesnum			= 300;
 
-server bool bdoom_debug = false;
+server int bdoom_debug = 0;
 
 
 user float	bdoom_fs_volume_mul = 1.0;

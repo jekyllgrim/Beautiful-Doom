@@ -93,7 +93,9 @@ class BD_Footsteps : Actor
 			}
 		}
 		// and return default sound if not found
-		if (!inlist) {			
+		if (!inlist) {
+			if (bdoom_debug > 2)
+				Console.Printf("texture %s not in FLAT_NAMES list", texname);
 			return "step/default";
 		}
 		//if found, check against each array with the names of differently sounding floors
@@ -179,8 +181,8 @@ class BD_Footsteps : Actor
 			"DEM1_1","DEM1_2","DEM1_3","DEM1_4","DEM1_5","DEM1_6",
 			"CEIL1_1","FLAT5_1","FLAT5_2",
 			"NUKAGE1","NUKAGE2","NUKAGE3","BLOOD1","BLOOD2","BLOOD3","SLIME01","SLIME02","SLIME03","SLIME04","SLIME05","SLIME06","SLIME07","SLIME08",
-			"SFLR6_1","SFLR6_4","SFLR7_1","SFLR7_4","LAVA1","LAVA2","LAVA3","LAVA4","F_SKY1","
-			BDT_WFL","BDT_BFL","BDT_LFL","BDT_AFL","BDT_SFL1","BDT_SFL2"
+			"SFLR6_1","SFLR6_4","SFLR7_1","SFLR7_4","LAVA1","LAVA2","LAVA3","LAVA4","F_SKY1",
+			"BDT_WFL","BDT_BFL","BDT_LFL","BDT_AFL","BDT_SFL1","BDT_SFL2"
 		};
 		
 		//"step/slime"
