@@ -50,9 +50,9 @@ Class BD_BaronOfHell : BDoomMonster {
 		loop;
 	Melee:
 		#### A 0 SetBruiserSprite("ZBOS","SBOS");
-		#### a 4 a_facetarget;
-		#### bcde 3;
-		#### f 8 A_BruisAttack;//A_CustomComboAttack("BD_BaronBall", 32, 10 * random(1, 8), "baron/melee");
+		#### a 4 A_FaceTarget;
+		#### bcde 2 A_FaceTarget;
+		#### f 8 A_BruisAttack;
 		Goto See;
 	Missile:
 		#### A 0 SetBruiserSprite("ZBOS","SBOS");
