@@ -23,10 +23,12 @@ Class BD_ChaingunGuy : BDoomMonster {
 		Dropitem "Chaingun";
 		BdoomMonster.monsterclip 40;
 	}
+	
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		ddeath1 = FindState("Death1");
 	}
+	
 	override void Tick() {
 		super.Tick();
 		if (isFrozen() || !bdoom_replaceweapons || bdoom_weapons != 2)
@@ -44,10 +46,23 @@ Class BD_ChaingunGuy : BDoomMonster {
 		else if (vxdeath && InStateSequence(curstate,vxdeath))
 			sprite = GetSpriteIndex('RGIB');
 	}
+	
 	void SetChainguySprite(name spritename) {
 		if (bdoom_weapons == 2 && bdoom_replaceweapons)
 			sprite = GetSpriteIndex(spritename);
 	}
+	
+	void ModernChaingunguyAttack() {
+		BD_ModernBulletAttack(
+			"BD_ZombieBullet", 
+			bulletheight:30, bulletofs_xy:12,
+			horz_spread: 20, vert_spread: 1.3,
+			attacksound: "Mweapons/rifle/fire",
+			casing: "BD_ChaingunCasing",
+			casingX: 14, casingY: -15, casingZ: 32
+		);
+	}
+	
 	states {
 	Spawn:
 		CPAS A 10 {
@@ -94,13 +109,7 @@ Class BD_ChaingunGuy : BDoomMonster {
 	MissileModern:
 		RPAS BCDD 2 A_FaceTarget();
 	MissileModernDo:
-		RPAS E 1 {
-			if (bdoom_debris)
-				A_SpawnItemEx("BD_ChaingunCasing",14,-15,32,		frandom(2,4),0,random(2,4),	random(-85,-95),SXF_SETTARGET);
-			A_StartSound("Mweapons/rifle/fire");
-			A_CustomBulletAttack(20.0,1.3,1,0,"BD_NullPuff",0,0,AAPTR_TARGET,"BD_ZombieBullet",30,4);
-			monsterclip--;
-		}
+		RPAS E 1 ModernChaingunguyAttack();
 		RPAS FD 2 A_FaceTarget();
 		TNT1 A 0 BD_Refire(4,"MissileModernEnd");
 		goto MissileModernDo;

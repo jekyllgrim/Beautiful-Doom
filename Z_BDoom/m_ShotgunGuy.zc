@@ -20,6 +20,36 @@ Class BD_ShotgunGuy : BDoomMonster {
 		DropItem "Shotgun";
 		BDoomMonster.monsterclip 8;
 	}
+	
+	void ModernSergeantAttack() {
+		BD_ModernBulletAttack(
+			"BD_ZombiePellet", 
+			bulletheight:30, bulletofs_xy:8,
+			horz_spread: 20, vert_spread: 1.5,
+			numbullets: 6,
+			attacksound: "Mweapons/shotgun/fire"
+		);
+	}
+	
+	state SergeantMissileEnd() {
+		if (monsterclip == 0)
+			return ResolveState("Reload");
+		else if (target && Distance2D(target) > 512)
+			return ResolveState("See");
+		return ResolveState(null);
+	}
+	
+	state SergeantReloadShell() {
+		A_StartSound("Mweapons/shotgun/shellin");
+		if (monsterclip <8)
+			monsterclip++;
+		else {
+			bFRIGHTENED = false;
+			return ResolveState("See");
+		}
+		return ResolveState(null);
+	}
+	
 	states {
 	Spawn:
 		SARR AB 10 A_Look();
@@ -52,60 +82,35 @@ Class BD_ShotgunGuy : BDoomMonster {
 		SPSR A 5 A_FaceTarget();
 		SPSR C 2 A_FaceTarget();
 		SPO1 E 3 A_FaceTarget();
-		SPO1 F 4 {
-			if (monsterclip == 0)
-				return ResolveState("Reload");
-			A_StartSound("Mweapons/shotgun/fire");
-			A_CustomBulletAttack(20.0, 1.5, 6, 0, "BD_NullPuff", 0, CBAF_NORANDOM,AAPTR_TARGET,"BD_ZombiePellet",30,8);
-			monsterclip--;
-			return ResolveState(null);
-		}
+	MissileModernDo:
+		SPO1 F 4 ModernSergeantAttack();
 		SPO1 E 3;
-		SPSR C 3;
-		SPSR A 3;
+		SPSR CA 3;
 		SPSR B 3 {
 			A_StartSound("Mweapons/shotgun/pump",slot:CHAN_5);
-			If(bdoom_debris)
-				A_SpawnItemEx("BD_ShotgunCasing",0,0,28,		frandom(2,4),0,random(2,4),	random(-30,-40),SXF_SETTARGET);
+			if (bdoom_debris)
+				A_SpawnItemEx(
+					"BD_ShotgunCasing",
+					0,0,28,
+					frandom[sfx](2,4),0,random[sfx](2,4),
+					frandom[sfx](-30,-40),
+					SXF_SETTARGET
+				);
 		}
 		SPSR AC 4;
-		SPO1 E 15 {
-			if (monsterclip == 0)
-				return ResolveState("Reload");
-			else if (target && Distance2D(target) > 512)
-				return ResolveState("See");
-			return ResolveState(null);
-		}
+		SPO1 E 15 SergeantMissileEnd();
 		SPO1 E 15;
 		TNT1 A 0 BD_Refire(96,"See");
-		goto MissileModern+3;
+		goto MissileModernDo;
 	Reload:
 		TNT1 A 0 {
 			bFRIGHTENED = true;
 		}
 	    SPO1 ABCDDCBA 3 A_Chase(null,null);
 	ReloadDo:
-		TNT1 A 0 {
-			A_StartSound("Mweapons/shotgun/shellin");
-			if (monsterclip <8)
-				monsterclip++;
-			else {
-				bFRIGHTENED = false;
-				return ResolveState("See");
-			}
-			return ResolveState(null);
-		}
+		TNT1 A 0 SergeantReloadShell();
 	    SPO1 ABCD 3 A_Chase(null,null);
-		TNT1 A 0 {
-			A_StartSound("Mweapons/shotgun/shellin");
-			if (monsterclip <8)
-				monsterclip++;
-			else {
-				bFRIGHTENED = false;
-				return ResolveState("See");
-			}
-			return ResolveState(null);
-		}
+		TNT1 A 0 SergeantReloadShell();
 	    SPO1 DCBA 3 A_Chase(null,null);
 		loop;
 	Pain:

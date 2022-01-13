@@ -36,6 +36,28 @@ Class BD_SpiderMastermind : BdoomMonster {
 			}
 		}
 	}
+	
+	void ModernSpiderAttack() {
+		BD_ModernBulletAttack(
+			"BD_SpiderBullet", 
+			bulletheight:40, bulletofs_xy:7,
+			horz_spread: 5, vert_spread: 1,
+			attacksound: "spiderdemon/fire",
+			casing: "BD_ChaingunCasing",
+			casingX: 12, casingY: -15, casingZ: 40
+		);
+	}
+	
+	state SpiderMissileEnd() {
+		if (bdoom_weapons == 0)
+			return ResolveState("Missile.Vanilla");
+		else if (bdoom_weapons == 1)
+			return ResolveState("Missile.Enhanced");
+		else if (bdoom_weapons == 2)
+			return ResolveState("Missile.Modern");
+		return ResolveState(null);
+	}
+	
 	states	{
 	Raise:
 		stop;
@@ -66,30 +88,14 @@ Class BD_SpiderMastermind : BdoomMonster {
 		SSMB ABCDEF 1;
 		SSMB ABCDEF 1;
 		SSMB ACEACEAD 1;
-		TNT1 A 0 {
-			if (bdoom_weapons == 0)
-				return ResolveState("Missile.Vanilla");
-			else if (bdoom_weapons == 1)
-				return ResolveState("Missile.Enhanced");
-			else if (bdoom_weapons == 2)
-				return ResolveState("Missile.Modern");
-			return ResolveState(null);
-		}
+		TNT1 A 0 SpiderMissileEnd();
 	Missile.Vanilla:
 		SSMA B 1 BD_BulletAttack(22.5, 0, 3, random(1,5)*3,"spider/attack","spiderdemon/fire","BD_ChaingunCasing",12,-15,43,43,10);
 		SSMA CAD 1;
 		SSMA B 1 BD_BulletAttack(22.5, 0, 3, random(1,5)*3,"spider/attack","spiderdemon/fire","BD_ChaingunCasing",12,-15,43,43,10);
 		SSMA CAD 1;
 		SSMA D 1 A_SpidRefire;
-		TNT1 A 0 {
-			if (bdoom_weapons == 0)
-				return ResolveState("Missile.Vanilla");
-			else if (bdoom_weapons == 1)
-				return ResolveState("Missile.Enhanced");
-			else if (bdoom_weapons == 2)
-				return ResolveState("Missile.Modern");
-			return ResolveState(null);
-		}
+		TNT1 A 0 SpiderMissileEnd();
 		loop;
 	Missile.Enhanced: //firing twice as fast but per-shot damage is approximately halved 
 		SSMA B 1 BD_BulletAttack(22.5, 0, 3, random(1,5)*1.5,"spider/attack","spiderdemon/fire","BD_ChaingunCasing",12,-15,43,43,10);
@@ -97,39 +103,15 @@ Class BD_SpiderMastermind : BdoomMonster {
 		SSMA B 1 BD_BulletAttack(22.5, 0, 3, random(1,5)*1.5,"spider/attack","spiderdemon/fire","BD_ChaingunCasing",12,-15,43,43,10);
 		SSMA A 1;
 		SSMA D 1 A_SpidRefire;
-		TNT1 A 0 {
-			if (bdoom_weapons == 0)
-				return ResolveState("Missile.Vanilla");
-			else if (bdoom_weapons == 1)
-				return ResolveState("Missile.Enhanced");
-			else if (bdoom_weapons == 2)
-				return ResolveState("Missile.Modern");
-			return ResolveState(null);
-		}
+		TNT1 A 0 SpiderMissileEnd();
 		loop;
 	Missile.Modern:
-		SSMA B 1 {
-			A_StartSound("spiderdemon/fire");
-			A_SpawnItemEx("BD_ChaingunCasing",12,-15,40, frandom(2,4),0,random(2,4), random(-85,-95),SXF_SETTARGET);
-			A_CustomBulletAttack(5.0, 1, 1, 0, "BD_NullPuff", 0, CBAF_NORANDOM,AAPTR_TARGET,"BD_SpiderBullet",43,10);
-		}
+		SSMA B 1 ModernSpiderAttack();
 		SSMA A 1;
-		SSMA B 1 {
-			A_StartSound("spiderdemon/fire");		
-			A_SpawnItemEx("BD_ChaingunCasing",12,-15,40, frandom(2,4),0,random(2,4), random(-85,-95),SXF_SETTARGET);
-			A_CustomBulletAttack(5.0, 1, 1, 0, "BD_NullPuff", 0, CBAF_NORANDOM,AAPTR_TARGET,"BD_SpiderBullet",43,10);	
-		}
+		SSMA B 1 ModernSpiderAttack();
 		SSMA A 1;
 		SSMA D 1 A_SpidRefire;
-		TNT1 A 0 {
-			if (bdoom_weapons == 0)
-				return ResolveState("Missile.Vanilla");
-			else if (bdoom_weapons == 1)
-				return ResolveState("Missile.Enhanced");
-			else if (bdoom_weapons == 2)
-				return ResolveState("Missile.Modern");
-			return ResolveState(null);
-		}
+		TNT1 A 0 SpiderMissileEnd();
 		loop;
 	pain:
 		SPMA a 2;

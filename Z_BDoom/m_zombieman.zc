@@ -15,6 +15,7 @@ Class BD_ZombieMan : BDoomMonster {
 		Tag "$FN_ZOMBIE";
 		BdoomMonster.monsterclip 15;
 	}
+	
 	void BD_NoBlocking() {
 		A_NoBlocking(false);
 		if (bdoom_weapons == 1 && random[drop](0,100) >= 80)
@@ -22,6 +23,18 @@ Class BD_ZombieMan : BDoomMonster {
 		else
 			A_DropItem("Clip");
 	}
+	
+	void ModernZombiemanAttack() {
+		BD_ModernBulletAttack(
+			"BD_ZombieBullet", 
+			bulletheight:30, bulletofs_xy:8, 
+			horz_spread: 19.5, vert_spread: 1,
+			attacksound: "Mweapons/pistol/fire",
+			casing: "BD_PistolCasing",
+			casingX: -8, casingY: 30, casingZ: 30
+		);
+	}
+	
 	states {
 	Spawn:
 		PSSS AB 10 A_Look();
@@ -43,13 +56,7 @@ Class BD_ZombieMan : BDoomMonster {
 		PSSA A 5 A_FaceTarget();
 		PSSA B 2 A_FaceTarget();
 		POS1 E 3 A_FaceTarget();
-		POS1 F 3 {
-			if (bdoom_debris == 1)
-				A_SpawnItemEx("BD_PistolCasing",7,-8,30,		frandom(2,4),0,random(2,4),	random(-85,-95),SXF_SETTARGET);
-			A_StartSound("Mweapons/pistol/fire");
-			A_CustomBulletAttack(19.5,1.3,1,0,"BD_NullPuff",0,0,AAPTR_TARGET,"BD_ZombieBullet",30,8);
-			monsterclip--;
-		}
+		POS1 F 3 ModernZombiemanAttack();
 		POS1 E 14;
 		TNT1 A 0 BD_Refire(72,"MissileModernEnd");
 		goto MissileModern+3;

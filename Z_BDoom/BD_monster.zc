@@ -64,7 +64,7 @@ Class BDoomMonster : BDoomActor abstract {
 		bFORCEXYBILLBOARD = default.bFORCEXYBILLBOARD;		
 		scale = prevScale;
 	}
-		
+	
 	void BD_Bleed(double xvel = 2, double yvel = 3) {
 		if (burning || !bdoom_blood)
 			return;
@@ -83,15 +83,43 @@ Class BDoomMonster : BDoomActor abstract {
 	}
 	
 	//A_BulletAttack variant that spawns casings, uses tracers when CVAR allows it and chooses between a vanilla and a new sound
-	void BD_BulletAttack(double horz_spread, double vert_spread, int numbullets, int damageperbullet, string OldSound, string NewSound, string Casing, double CasingX = 0, double CasingY = 0, double CasingZ = 0, double TracerHeight = 32, double Tracerofs_xy = 0, class<Actor> puff = "BD_EnBulletPuff") {		
+	void BD_BulletAttack(double horz_spread, double vert_spread, int numbullets, int damageperbullet, sound OldSound, sound NewSound, class<Actor> casing, double CasingX = 0, double CasingY = 0, double CasingZ = 0, double TracerHeight = 32, double Tracerofs_xy = 0, class<Actor> puff = "BD_EnBulletPuff") {		
 		if (bdoom_debris)
-			A_SpawnItemEx(Casing,CasingX,CasingY,CasingZ,		frandom[bdsfx](2,4),0,frandom[bdsfx](2,4),	frandom[bdsfx](-85,-95),SXF_SETTARGET);
-		If(bdoom_weapons)
+			A_SpawnItemEx(
+				Casing,
+				CasingX,CasingY,CasingZ,	
+				frandom[bdsfx](2,4),0,frandom[bdsfx](2,4),
+				frandom[bdsfx](-85,-95),
+				SXF_SETTARGET
+			);
+		if (bdoom_weapons)
 			A_StartSound(newsound);
 		else			
 			A_StartSound(oldsound);
 		Class<Actor> trac = bdoom_tracers ? "BD_BulletTracer" : "";
 		A_CustomBulletAttack(horz_spread, vert_spread, numbullets, damageperbullet, puff, 0, CBAF_NORANDOM,AAPTR_TARGET,trac,TracerHeight,Tracerofs_xy);
+	}	
+	
+	void BD_ModernBulletAttack(class<Actor> bullet, double bulletheight = 30, double bulletofs_xy = 8, double horz_spread = 0, double vert_spread = 0, int numbullets = 1, sound attacksound = "", class<Actor> casing = "", double CasingX = 0, double CasingY = 0, double CasingZ = 0) {
+		A_StartSound(attacksound, CHAN_AUTO);
+		if (bdoom_debris && casing)
+			A_SpawnItemEx(
+				Casing,
+				CasingX,CasingY,CasingZ,	
+				frandom[bdsfx](3,5),0,frandom[bdsfx](2,4),
+				frandom[bdsfx](-85,-95),
+				SXF_SETTARGET
+			);
+		A_FaceTarget(0,0);
+		for (int i = numbullets ; i + 0; i--)
+			A_SpawnProjectile(
+				bullet, bulletheight, bulletofs_xy, 
+				frandom[sfx](-horz_spread, horz_spread), 
+				CMF_AIMDIRECTION, 
+				pitch+frandom[sfx](-vert_spread, vert_spread)
+			);
+		if (monsterclip > 0)
+			monsterclip--;
 	}
 
 	state BD_Refire(int ChanceToEnd = 0, statelabel endstate = "See") { 
