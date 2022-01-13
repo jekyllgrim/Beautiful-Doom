@@ -51,7 +51,7 @@ Class BD_BaronOfHell : BDoomMonster {
 	Melee:
 		#### A 0 SetBruiserSprite("ZBOS","SBOS");
 		#### a 4 A_FaceTarget;
-		#### bcde 2 A_FaceTarget;
+		#### bcde 3 A_FaceTarget;
 		#### f 8 A_BruisAttack;
 		Goto See;
 	Missile:
@@ -59,17 +59,17 @@ Class BD_BaronOfHell : BDoomMonster {
 		#### A 0 A_FaceTarget;
 		#### AABB 2 {
 			if (bdoom_flames)
-				A_SpawnItemEx("BD_ParticleFire_Green",4,29,random(60,62),random(0,1),random(0,1),random(1,2),0);
+				A_SpawnItemEx("BD_ParticleFire_Green",4,29,frandom(60,62),frandom(0,1),frandom(0,1),frandom(1,2),0);
 		}
 		#### A 0 A_FaceTarget;
 		#### CCDD 2 {
 			if (bdoom_flames)
-				A_SpawnItemEx("BD_ParticleFire_Green",4,31,random(46,48),random(0,1),random(0,1),random(1,2),0);
+				A_SpawnItemEx("BD_ParticleFire_Green",4,31,frandom(46,48),frandom(0,1),frandom(0,1),frandom(1,2),0);
 		}
-		#### A 0 A_BruisAttack;//A_CustomComboAttack("BD_BaronBall", 32, 10 * random(1, 8), "baron/melee");
+		#### A 0 A_BruisAttack;
 		#### EEFF 2 {
 			if (bdoom_flames)
-				A_SpawnItemEx("BD_ParticleFire_Green",10,random(-4,-6),random(24,26),random(0,1),random(0,1),random(1,2),0);
+				A_SpawnItemEx("BD_ParticleFire_Green",10,frandom(-4,-6),frandom(24,26),frandom(0,1),frandom(0,1),frandom(1,2),0);
 		}
 		Goto See;
 	Pain:
