@@ -139,7 +139,7 @@ Class BD_Spectre : BD_Demon  {
 		Tag "$FN_SPECTRE";
 	}
 	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath) {
-		if (!burncorpse) {
+		if (MeansOfDeath == 'norma' && !burncorpse) {
 			burncorpse = BD_TranslatedBurningBody(Spawn("BD_TranslatedBurningBody",pos));
 			if (burncorpse) {
 				burncorpse.master = self;
