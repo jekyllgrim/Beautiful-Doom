@@ -188,8 +188,10 @@ Class BD_Shotgun : BDoomWeapon {
 		#### JJ 1 A_WeaponReady(WRF_NOSECONDARY);
 		TNT1 A 3 A_WeaponReady(WRF_NOSECONDARY);
 		TNT1 A 0 A_ReFire("AltHold");
-		TNT1 A 0 A_WeaponOffset(0,86);
-		TNT1 A 0 BD_SetSprite("SHOG","QHOG");
+		TNT1 A 0 {
+			A_WeaponOffset(0,86);
+			BD_SetSprite("SHOG","QHOG");
+		}
 		#### JIHGED 1 {
 			A_WeaponOffset(0,-9,WOF_ADD);
 			A_WeaponReady(WRF_NOSECONDARY|WRF_NOBOB);
@@ -197,17 +199,23 @@ Class BD_Shotgun : BDoomWeapon {
 		TNT1 A 0 A_WeaponOffset(0,32);
 		goto ready;
 	AltHoldStrong:
-		TNT1 A 0 A_StartSound("weapons/fist/swing");
-		SHOM ABC 1;
-		SHOM D 1 A_CustomPunch(42*random(1,6),TRUE,CPF_NOTURN,"BD_ShotgunMeleePuff",72);
-		SHOM DDDD 1 A_WeaponOffset(frandom(-1,1),frandom(32,33.5),WOF_INTERPOLATE);
-		SHOM EF 2;
-		SHOM GHI 2 A_WeaponReady(WRF_NOSECONDARY);
-		SHOM JJ 1 A_WeaponReady(WRF_NOSECONDARY);
+		TNT1 A 0 {
+			A_StartSound("weapons/fist/swing");
+			BD_SetSprite("SHOM","QHOM");
+		}
+		#### ABC 1;
+		#### D 1 A_CustomPunch(42*random(1,6),TRUE,CPF_NOTURN,"BD_ShotgunMeleePuff",72);
+		#### DDDD 1 A_WeaponOffset(frandom(-1,1),frandom(32,33.5),WOF_INTERPOLATE);
+		#### EF 2;
+		#### GHI 2 A_WeaponReady(WRF_NOSECONDARY);
+		#### JJ 1 A_WeaponReady(WRF_NOSECONDARY);
 		TNT1 A 1 A_WeaponReady(WRF_NOSECONDARY);
-		TNT1 A 0 A_ReFire("AltHoldStrong");		
-		TNT1 A 0 A_WeaponOffset(0,86);
-		SHOG DEGHIJ 1 A_WeaponOffset(0,-9,WOF_ADD);
+		TNT1 A 0 A_ReFire("AltHoldStrong");
+		TNT1 A 0 {
+			A_WeaponOffset(0,86);
+			BD_SetSprite("SHOG","QHOG");
+		}
+		#### JIHGED 1 A_WeaponOffset(0,-9,WOF_ADD);
 		goto ready;
 
 // MODERN GUNS
