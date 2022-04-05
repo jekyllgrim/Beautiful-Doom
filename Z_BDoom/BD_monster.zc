@@ -68,9 +68,9 @@ Class BDoomMonster : BDoomActor abstract {
 	void BD_Bleed(double xvel = 2, double yvel = 3) {
 		if (burning || !bdoom_blood)
 			return;
-		let bld = BD_Blood(Spawn("BD_Blood", (pos.x + frandom(-5.0,5.0), pos.y + frandom(-5.0,5.0), pos.z + frandom(16,default.height)),ALLOW_REPLACE));
+		let bld = BD_Blood(Spawn("BD_Blood", (pos.x + frandom[bdbleed](-5.0,5.0), pos.y + frandom[bdbleed](-5.0,5.0), pos.z + frandom[bdbleed](16,default.height)),ALLOW_REPLACE));
 		if (bld) {
-			bld.vel = (frandom(-xvel,xvel),frandom(-xvel,xvel),frandom(yvel*0.34,yvel));
+			bld.vel = (frandom[bdbleed](-xvel,xvel),frandom[bdbleed](-xvel,xvel),frandom[bdbleed](yvel*0.34,yvel));
 			bld.target = self;
 			meatlist.push(bld);
 		}

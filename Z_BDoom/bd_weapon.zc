@@ -405,8 +405,8 @@ Class BDoomWeapon : Weapon abstract {
 	action void BD_Reload()	{
 		if (invoker.ammo1 && invoker.ammo2) {
 			while (invoker.ammo2.amount > 0 && invoker.ammo1.amount < invoker.ammo1.maxamount) {
-				TakeInventory(invoker.ammo2.GetClass(),1);
-				GiveInventory(invoker.ammo1.GetClass(),1);
+				TakeInventory(invoker.ammotype2, 1);
+				GiveInventory(invoker.ammotype1, 1);
 			}
 		}
 	}
@@ -487,10 +487,14 @@ Class BDoomWeapon : Weapon abstract {
 				icon = texman.CheckForTexture(ClassicIcon, TexMan.Type_Any);
 		}
 		if (magammo) {
-			if (bdoom_weapons == 2)
-				Ammo1 = ammo(owner.FindInventory(magammo));
-			else
-				Ammo1 = ammo(owner.FindInventory(ammotype1));
+			if (bdoom_weapons == 2) {
+				ammo1 = ammo(owner.FindInventory(magammo));
+				ammotype1 = magammo;
+			}
+			else {
+				ammo1 = ammo(owner.FindInventory(default.ammotype1));
+				ammotype1 = default.ammotype1;
+			}
 		}
 		if (!bdoom_replaceweapons)
 			self.SelectionOrder = self.default.SelectionOrder+50000;
