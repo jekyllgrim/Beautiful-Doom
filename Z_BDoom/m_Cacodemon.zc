@@ -115,20 +115,30 @@ Class BD_Cacodemon : BDoomMonster  {
 		HEAP I 4 A_SetFloorClip();
 		HEAP JKL 4;
 		goto deathbleed;
-	Death.Saw: //sliced diagonally
-		TNT1 A 0 A_Jump(128,"Death");
-		HEAM A 3 BD_Bleed();
-		HEAM B 3 A_Scream();
-		TNT1 A 0 A_FaceTarget();
-		HEAO AABBCCDD 2 {
-			if (bdoom_blood)
-				A_SpawnItemEx("BD_BloodSpurt",	1,0,frandom(30,38),0,0,0,random(-40,40),SXF_SETTARGET,96);
-		}
+	Death.Saw:
+		TNT1 A 0 { bNOGRAVITY = true; } // Prevent from auto-unsetting, it should hover for a bit
+		HEAY ABCDE 3 A_FaceTarget();
 		TNT1 A 0 {
+			A_SpawnItemEx("BD_CacoInnards", 4, flags: SXF_SETTARGET);
 			A_NoBlocking();
-			A_SetFloorClip();
+			A_Scream();
 		}
-		HEAO EFG 4;
+		HEAY FGHI 2 {
+			A_SetTics(random[caco](2,4));
+			BD_Bleed();
+			if (bdoom_gibs)
+				A_SpawnItemEx("BD_CacodemonMeatPiece", frandom[caco](-6,6), frandom[caco](-6,6), flags: SXF_SETTARGET, failchance: 128);
+		}
+		HEAY J 2 { bNOGRAVITY = false; }
+		HEAY K 2 {
+			if (pos.z <= floorz || waterlevel > 0)
+				return ResolveState("Death.SawEnd");
+			return ResolveState(null);
+		}
+		wait;
+	Death.SawEnd:
+		TNT1 A 0 A_SetFloorClip();
+		HEAY LMNOP 2;
 		goto deathbleed;
 	XDeath: //sprite gibbing from Smooth Doom with added particles
 		TNT1 A 0 A_Jump(128,"Death");

@@ -132,7 +132,8 @@ Class BD_ChaingunGuy : BDoomMonster {
 		TNT1 A 0 {
 			if (attacking && bdoom_weapons != 2) {
 				attacking = false;
-				A_StartSound("weapons/chaingun/stop",slot:CHAN_5);
+				A_StopSound(CHAN_5);
+				//A_StartSound("weapons/chaingun/stop",slot:CHAN_5);
 			}
 		}
 		CPOG a 3;
@@ -142,10 +143,14 @@ Class BD_ChaingunGuy : BDoomMonster {
 		TNT1 A 0 {
 			if (attacking && bdoom_weapons != 2) {
 				attacking = false;
-				A_StartSound("weapons/chaingun/stop",slot:CHAN_6);
+				A_StopSound(CHAN_5);
 			}
-			return A_Jump(128,"Death1");
+			if (!burning && hitheight > default.height*0.75) {
+				return ResolveState("DeathHeadshot");
+			}
+			return A_Jump(256,"Death.Vanilla", "Death1", "Death2");
 		}
+	Death.Vanilla:
 		CPOM a 3 BD_Bleed();
 		CPOM b 3 A_scream();
 		CPOM c 3 BD_Bleed();
@@ -156,12 +161,32 @@ Class BD_ChaingunGuy : BDoomMonster {
 		goto deathbleed;
 	Death1: //fall backwards
 		CPON A 3 A_scream();
-		CPON B 3 BD_Bleed();
+		CPON B 3;
 		CPON C 3 A_NoBlocking(); 
-		CPON D 3 BD_Bleed();
+		CPON D 3;
 		CPON EFG 2;
 		CPON GHI 2 BD_Bleed();
 		CPON JK 2;
+		goto deathbleed;
+	Death2: //fall forward
+		CPOO ABCEFGHJ 3;
+		TNT1 A 0 {
+			A_Scream();
+			A_NoBlocking();
+		}
+		CPOO KLM 4;
+		CPOO N 4 A_StartSound("body/fall",slot:CHAN_AUTO);
+		CPOO OPQRST 4;
+		goto deathbleed;
+	DeathHeadshot:
+		CPP1 A 3;
+		CPP1 B 5 A_StartSound("gibs/gibbed",volume:0.5);
+		TNT1 A 0 A_NoBlocking();
+		CPP1 EFGHJ 4;
+		CPP1 KLM 4;
+		CPP1 N 4 A_StartSound("body/fall",slot:CHAN_AUTO);
+		CPP1 OPQRSTUVWXYZ 3 A_StartSound("gibs/bloodspurt",CHANF_NOSTOP);
+		CPP2 ABCDEFGHIJ 3 A_StartSound("gibs/bloodspurt",CHANF_NOSTOP);
 		goto deathbleed;
 	Death.Saw:
 		CPOY ABCDE 2;
