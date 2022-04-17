@@ -1,8 +1,6 @@
 # Beautiful-Doom
 
-Beautiful Doom © 2008–2021 Jekyll Grim Payne aka Agent Ash. All rights reserved.
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/D1D27F686)
+Beautiful Doom © Jekyll Grim Payne aka Agent Ash. All rights reserved.
 
 ## General information
 
@@ -21,9 +19,10 @@ Releases aren't always super-stable or bug-free, but they should be playable. So
 
 1. Navigate to the "Releases" tab at the top or following this URL: https://github.com/jekyllgrim/Beautiful-Doom/releases
 2. Download the attached PK3 file. Run it as you'd run any .wad or .pk3:
-```
-gzdoom.exe -file Beautiful_Doom.pk3
-```
+   
+   ```
+   gzdoom.exe -file Beautiful_Doom.pk3
+   ```
 
 ## How to play the freshest dev build
 
@@ -36,15 +35,17 @@ It's possible to play the version that is currently in the repository but hasn't
 3. (Optional) Rename the downloaded **.zip** to **.pk3** to remember that you don't need to unpack it.
 
 4. Run the archive as you would run any mod; from command line or a bat file in the GZDoom directory:
+   
+   ```
+   gzdoom.exe -file Beautiful-Doom-master.zip 
+   ```
+   
+    Or, if you renamed it: 
+   
+   ```
+   gzdoom.exe -file Beautiful-Doom-master.pk3
+   ```
 
-	```
-	gzdoom.exe -file Beautiful-Doom-master.zip 
-	```
-	Or, if you renamed it: 
-	```
-	gzdoom.exe -file Beautiful-Doom-master.pk3
-	```
-	
 5. If you're getting errors, try running it with the latest [development build of GZDoom](https://devbuilds.drdteam.org/gzdoom/). Github builds may contain features that haven't made it into a stable GZDoom release yet.
 
 6. Enjoy!
@@ -60,12 +61,11 @@ If you want to use any of my resources, you have to contact me first and ask for
 You may NOT use any of Beautiful Doom assets without my explicit approval. I do not guarantee a permission will always be granted. Permissions may vary for different resources, since some of these are 100% original, others are edits, and some come from other people. If a permission is granted, you'll need to credit me and all other people involved in the creation of a specific resource.
 
 Before asking if you can borrow an asset for your own project, make sure your work adheres to the following requirements:
+
 - It's not and will never be commercial in any way
 - It's not affiliated in any way with projects or authors that are unwelcome in the Doom community (there are several, and you probably know who they are)
 - It's not a low-effort repack/rehash/edit of other people's works
 - The resource you want to use is already available in one of the stable RELEASE versions of Beautiful Doom (if it's only on GitHub, it's not free to use)
-
-
 
 ## Mods that go well with Beautiful Doom
 
@@ -74,7 +74,6 @@ Here are a few recommendations on stuff that plays well with Beautiful Doom and 
 * [SpriteShadow](https://forum.zdoom.org/viewtopic.php?f=105&t=54992) by Nash Muhandes: adds Duke3D-style shadows to all monsters (used to be part of Beautiful Doom; since it's a universal mod, I decided there was no reason to include it in the package)
 * [Universal Weapon Sway](https://forum.zdoom.org/viewtopic.php?t=68255&p=1147667) by Boondorl: adds natural-looking sway to weapon sprites based on mouse movement
 * [Tilt++](https://forum.zdoom.org/viewtopic.php?f=43&t=55413) by Nash Muhandes: adds customizable camera tilting
-
 
 ## CREDITS
 
@@ -106,7 +105,9 @@ If you feel anyone was forgotten, or that I'm using somebody's assets without pe
 ## Some features of the ZScript version
 
 ### Modern Guns
+
 One of the main new features of the ZScript version of Beautiful Doom is a third weapon set. All weapons require reloading, weapons that aren't automatic require pressing trigger manually. All bullet weapons use projectile bullets instead of hitscans. Weapons have different sway and recoil. Also all of them use varied and realistic sounds, mostly from real weapons.
+
 * Quick Kick: a melee attack that can be used while handling or reloading other weapons. Affected by Berserk.
 * Fist: has a combo system with finishers and stuff. Supports combos; the longer you're punching an enemy, the higher is the chance of stun-locking them. The Quick Kick is uniquely modified to be a part of the combo for this weapon.
 * Chainsaw: very powerful but gets clogged with blood while used and may jam (the chance increases with clogging). Needs to be restarted manually. The more clogged it is, the harder it is to restart. While on, Alt Fire will push blood out, unclogging it.
