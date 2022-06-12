@@ -84,7 +84,7 @@ If you feel anyone was forgotten, or that I'm using somebody's assets without pe
 **Discord server**: https://discord.gg/MJGdYjk
 
 * Gifty: [Smooth Doom](https://forum.zdoom.org/viewtopic.php?t=45550) and smooth monsters animations which are widely used, both edited and unedited, in Beautiful Doom
-* [3saster](https://github.com/3saster), Accensus, Arctangent, Caligari87, D2JK, Gutawer, josh771, Lewisk3, [Marisa Kirisame](https://github.com/MarisaKirisame), [Nash Muhandes](https://github.com/nashmuhandes), [phantombeta](https://github.com/Doom2fan), [Zombie](https://github.com/DaZombieKiller): scripting help and contributions
+* [3saster](https://github.com/3saster), Accensus, Arctangent, Caligari87, D2JK, Gutawer, josh771, Lewisk3, [Marisa the Magigian (formerly Marisa Kirisame)](https://github.com/OrdinaryMagician), [Nash Muhandes](https://github.com/nashmuhandes), [phantombeta](https://github.com/Doom2fan), [Zombie](https://github.com/DaZombieKiller): scripting help and contributions
 * kodi: BFG model-based beam code
 * [3saster](https://github.com/3saster): animated texture handler, DEHACKED parser, code contributions, various fixes and improvements
 * Nero: [menu tool tips](https://forum.zdoom.org/viewtopic.php?f=105&t=68495)
