@@ -1276,7 +1276,7 @@ pulselight BARREL
 
 object BD_ExplosiveBarrel
 {
-    frame BAR1  { light BARREL    }
+    frame BEBR  { light BARREL    }
 
     frame BXP1C { light ROCKET_X1 }
     frame BXP1D { light ROCKET_X1 }
