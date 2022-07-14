@@ -6,7 +6,7 @@ Beautiful Doom © Jekyll Grim Payne aka Agent Ash. All rights reserved.
 
 Beautiful Doom is an all-encompassing total enhancement mod for GZDoom, aimed at making Doom feel, look and sound better, while keeping the original balance and gameplay intact (or tweaking it with some of the available options). Smoother animations, some improved sprites, particle effects, physics-based gibbing, as well as high compatibility with other mods—those are some of the features.
 
-***Beautiful Doom is NOT open-source. While it's fine to learn from it, or make personal addons for it, mod authors may NOT use the contents of Beautiful Doom as a base for their own projects without first obtaining <u>the author's explicit approval</u>. See more details [below](#Use-of-resources-and-permissions).***
+***Beautiful Doom's code is licensed under GPLv3. Permissions for assets may vary. If you want to use Beautiful Doom in your work, please obtain a permission from <u>the author's explicit approval</u>. See more details [below](#Use-of-resources-and-permissions).***
 
 Beautiful Doom mod thread at ZDoom Forums:
 https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752ec93aed
@@ -18,6 +18,7 @@ Requires **GZDoom**. At the moment of writing you need a development version, at
 Releases aren't always super-stable or bug-free, but they should be playable. Some releases are development versions which don't have all the planned features implemented yet.
 
 1. Navigate to the "Releases" tab at the top or following this URL: https://github.com/jekyllgrim/Beautiful-Doom/releases
+
 2. Download the attached PK3 file. Run it as you'd run any .wad or .pk3:
    
    ```
@@ -52,13 +53,15 @@ It's possible to play the version that is currently in the repository but hasn't
 
 ## Use of resources and permissions
 
-If you want to use any of my resources, you have to contact me first and ask for permission. Reach me:
+If you want to use any of my resources, please contact me:
 
 **Email**: jekyllgrim@gmail.com
 
 **Discord server**: https://discord.gg/MJGdYjk
 
-You may NOT use any of Beautiful Doom assets without my explicit approval. I do not guarantee a permission will always be granted. Permissions may vary for different resources, since some of these are 100% original, others are edits, and some come from other people. If a permission is granted, you'll need to credit me and all other people involved in the creation of a specific resource.
+The code part of Beautiful Doom is licensed under GPLv3, which means all derivative code also has to comply with GPLv3. Please see [LICENSE.txt](Z_BDoom/LICENSE.txt) for details.
+
+Regarding assets, permissions may vary for different resources, since some of these are 100% original, others are edits, and some come from other people. You will need to obtain a permission before using any of them. If a permission is granted, you'll need to credit me and all other people involved in the creation of a specific resource.
 
 Before asking if you can borrow an asset for your own project, make sure your work adheres to the following requirements:
 
@@ -71,7 +74,6 @@ Before asking if you can borrow an asset for your own project, make sure your wo
 
 Here are a few recommendations on stuff that plays well with Beautiful Doom and matches the concept of overall enhancement:
 
-* [SpriteShadow](https://forum.zdoom.org/viewtopic.php?f=105&t=54992) by Nash Muhandes: adds Duke3D-style shadows to all monsters (used to be part of Beautiful Doom; since it's a universal mod, I decided there was no reason to include it in the package)
 * [Universal Weapon Sway](https://forum.zdoom.org/viewtopic.php?t=68255&p=1147667) by Boondorl: adds natural-looking sway to weapon sprites based on mouse movement
 * [Tilt++](https://forum.zdoom.org/viewtopic.php?f=43&t=55413) by Nash Muhandes: adds customizable camera tilting
 
@@ -84,7 +86,7 @@ If you feel anyone was forgotten, or that I'm using somebody's assets without pe
 **Discord server**: https://discord.gg/MJGdYjk
 
 * Gifty: [Smooth Doom](https://forum.zdoom.org/viewtopic.php?t=45550) and smooth monsters animations which are widely used, both edited and unedited, in Beautiful Doom
-* [3saster](https://github.com/3saster), Accensus, Arctangent, Caligari87, D2JK, Gutawer, josh771, Lewisk3, [Marisa the Magigian (formerly Marisa Kirisame)](https://github.com/OrdinaryMagician), [Nash Muhandes](https://github.com/nashmuhandes), [phantombeta](https://github.com/Doom2fan), [Zombie](https://github.com/DaZombieKiller): scripting help and contributions
+* [3saster](https://github.com/3saster), Accensus, Arctangent, Caligari87, D2JK, Gutawer, josh771, Lewisk3, [Marisa the Magician (formerly Marisa Kirisame)](https://github.com/OrdinaryMagician), [Nash Muhandes](https://github.com/nashmuhandes), [phantombeta](https://github.com/Doom2fan), [Zombie](https://github.com/DaZombieKiller): scripting help and contributions
 * kodi: BFG model-based beam code
 * [3saster](https://github.com/3saster): animated texture handler, DEHACKED parser, code contributions, various fixes and improvements
 * Nero: [menu tool tips](https://forum.zdoom.org/viewtopic.php?f=105&t=68495)
