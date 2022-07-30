@@ -62,35 +62,35 @@ server bool bdoom_IconOfSin	= true;
 
 //// MENU TOOLTIPS
 
-user bool tltp_show_tips = true;
-user bool tltp_show_delay = false;
-user bool tltp_delay_skip = true;
-user int tltp_delay_tics = 25;
-user bool tltp_time_out = false;
-user int tltp_time_out_val = 5;
-user bool tltp_draw_order = false;
+user bool bd_TLTP_show_tips = true;
+user bool bd_TLTP_show_delay = false;
+user bool bd_TLTP_delay_skip = true;
+user int bd_TLTP_delay_tics = 25;
+user bool bd_TLTP_time_out = false;
+user int bd_TLTP_time_out_val = 5;
+user bool bd_TLTP_draw_order = false;
 
-user bool tltp_border_toggle = false;
-user bool tltp_border_type = true;
-user int tltp_border_horizontal_thickness = 3;
-user int tltp_border_vertical_thickness = 3;
-user color tltp_border_color;
-user float tltp_border_alpha = 1.0;
+user bool bd_TLTP_border_toggle = false;
+user bool bd_TLTP_border_type = true;
+user int bd_TLTP_border_horizontal_thickness = 3;
+user int bd_TLTP_border_vertical_thickness = 3;
+user color bd_TLTP_border_color;
+user float bd_TLTP_border_alpha = 1.0;
 
-user bool tltp_show_background = true;
-user int tltp_background_name = 2;
-user bool tltp_background_mode = false;
-user int tltp_background_horizontal_padding = 9;
-user int tltp_background_vertical_padding = 3;
+user bool bd_TLTP_show_background = true;
+user int bd_TLTP_background_name = 2;
+user bool bd_TLTP_background_mode = false;
+user int bd_TLTP_background_horizontal_padding = 9;
+user int bd_TLTP_background_vertical_padding = 3;
 
-user int tltp_tooltip_location = 5;
-user int tltp_location_horizontal_margin = 10;
-user int tltp_location_vertical_margin = 10;
-user int tltp_tooltip_alignment = 2;
+user int bd_TLTP_tooltip_location = 5;
+user int bd_TLTP_location_horizontal_margin = 10;
+user int bd_TLTP_location_vertical_margin = 10;
+user int bd_TLTP_tooltip_alignment = 2;
 
-user int tltp_tooltip_font = 2;
-user string tltp_tooltip_font_name;
-user bool tltp_font_color_override = true;
-user int tltp_font_color = 23;
+user int bd_TLTP_tooltip_font = 2;
+user string bd_TLTP_tooltip_font_name;
+user bool bd_TLTP_font_color_override = true;
+user int bd_TLTP_font_color = 23;
 
-user bool tltp_i_disabledOptions = true;
+user bool bd_TLTP_i_disabledOptions = true;

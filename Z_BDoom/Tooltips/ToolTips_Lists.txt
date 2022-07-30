@@ -42,14 +42,14 @@
   */
 
 /*
-*	TLTP Text Item
+*	bd_TLTP Text Item
 */
-class ListMenuItemTLTPTextItem : ListMenuItemTextItem
+class ListMenuItembd_TLTPTextItem : ListMenuItemTextItem
 {
 	String mTooltip;
 	Name cr_TipColor;
 	
-	ListMenuItemTLTPTextItem Init(ListMenuDescriptor desc, String text, String tooltip, Name tipColor, String hotkey, Name child, int param = 0)
+	ListMenuItembd_TLTPTextItem Init(ListMenuDescriptor desc, String text, String tooltip, Name tipColor, String hotkey, Name child, int param = 0)
 	{
 		mTooltip = tooltip;
 		cr_TipColor = tipColor;
@@ -60,14 +60,14 @@ class ListMenuItemTLTPTextItem : ListMenuItemTextItem
 
 
 /*
-*	TLTP Patch Item
+*	bd_TLTP Patch Item
 */
-class ListMenuItemTLTPPatchItem : ListMenuItemPatchItem
+class ListMenuItembd_TLTPPatchItem : ListMenuItemPatchItem
 {
 	String mTooltip;
 	Name cr_TipColor;
 	
-	ListMenuItemTLTPPatchItem Init(ListMenuDescriptor desc, TextureID patch, String tooltip, Name tipColor, String hotkey, Name child, int param = 0)
+	ListMenuItembd_TLTPPatchItem Init(ListMenuDescriptor desc, TextureID patch, String tooltip, Name tipColor, String hotkey, Name child, int param = 0)
 	{
 		mTooltip = tooltip;
 		cr_TipColor = tipColor;
@@ -77,11 +77,11 @@ class ListMenuItemTLTPPatchItem : ListMenuItemPatchItem
 }
 
 /*
-*	TLTP List Menu
+*	bd_TLTP List Menu
 */
-class TLTPListMenu : ListMenu
+class bd_TLTPListMenu : ListMenu
 {
-	enum TLTPBACKGROUND
+	enum bd_TLTPBACKGROUND
 	{
 		bDefault = 1,
 		DoomBrick,
@@ -98,7 +98,7 @@ class TLTPListMenu : ListMenu
 		HereticWood,
 	};
 	
-	enum TLTPLOCATION
+	enum bd_TLTPLOCATION
 	{
 		Mouse,
 		UpperLeft,
@@ -109,14 +109,14 @@ class TLTPListMenu : ListMenu
 		BottomCenter,
 	};
 	
-	enum TLTPALIGNMENT
+	enum bd_TLTPALIGNMENT
 	{
 		Left,
 		Right,
 		Center,
 	};
 	
-	enum TLTPFONT
+	enum bd_TLTPFONT
 	{
 		Custom,
 		Console,
@@ -161,7 +161,7 @@ class TLTPListMenu : ListMenu
 	float fBorderAlpha;
 	
 		
-	TLTPListMenu Init(Menu parent, ListMenuDescriptor desc)
+	bd_TLTPListMenu Init(Menu parent, ListMenuDescriptor desc)
 	{
 		iSkipTime = 0;
 		iCurrentTimeOutVal = 0;
@@ -185,16 +185,16 @@ class TLTPListMenu : ListMenu
 		// Get the tooltip string and its text color
 		if (mDesc.mSelectedItem > -1 && mDesc.mItems[mDesc.mSelectedItem].Selectable()) // Index 0 should be something - usually the title
 		{
-			if (mDesc.mItems[mDesc.mSelectedItem] is "ListMenuItemTLTPTextItem")
+			if (mDesc.mItems[mDesc.mSelectedItem] is "ListMenuItembd_TLTPTextItem")
 			{
-				tt = StringTable.Localize(ListMenuItemTLTPTextItem(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
-				cr = ListMenuItemTLTPTextItem(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
+				tt = StringTable.Localize(ListMenuItembd_TLTPTextItem(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
+				cr = ListMenuItembd_TLTPTextItem(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
 				bValidObject = true;
 			}
-			else if (mDesc.mItems[mDesc.mSelectedItem] is "ListMenuItemTLTPPatchItem")
+			else if (mDesc.mItems[mDesc.mSelectedItem] is "ListMenuItembd_TLTPPatchItem")
 			{
-				tt = StringTable.Localize(ListMenuItemTLTPPatchItem(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
-				cr = ListMenuItemTLTPPatchItem(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
+				tt = StringTable.Localize(ListMenuItembd_TLTPPatchItem(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
+				cr = ListMenuItembd_TLTPPatchItem(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
 				bValidObject = true;
 			}
 			else
@@ -204,35 +204,35 @@ class TLTPListMenu : ListMenu
 			bValidObject = false;
 		
 		// Update Settings
-		bShowTips = Cvar.GetCVar('tltp_show_tips', players[consoleplayer]).GetBool();
-		bTimeOut = CVar.GetCVar('tltp_time_out', players[consoleplayer]).GetBool();
-		iTimeOutVal = CVar.GetCVar('tltp_time_out_val', players[consoleplayer]).GetInt();
-		bDrawOrder = CVar.GetCVar('tltp_draw_order', players[consoleplayer]).GetBool();
+		bShowTips = Cvar.GetCVar('bd_TLTP_show_tips', players[consoleplayer]).GetBool();
+		bTimeOut = CVar.GetCVar('bd_TLTP_time_out', players[consoleplayer]).GetBool();
+		iTimeOutVal = CVar.GetCVar('bd_TLTP_time_out_val', players[consoleplayer]).GetInt();
+		bDrawOrder = CVar.GetCVar('bd_TLTP_draw_order', players[consoleplayer]).GetBool();
 		
-		bDrawBorder = CVar.GetCVar('tltp_border_toggle', players[consoleplayer]).GetBool();
-		bBorderType = CVar.GetCVar('tltp_border_type', players[consoleplayer]).GetBool();
-		iBorder_HorizontalThickness = CVar.GetCVar('tltp_border_horizontal_thickness', players[consoleplayer]).GetInt();
-		iBorder_VerticalThickness = CVar.GetCVar('tltp_border_vertical_thickness', players[consoleplayer]).GetInt();
-		cBorderColor = Color(CVar.GetCVar('tltp_border_color', players[consoleplayer]).GetInt());
-		fBorderAlpha = CVar.GetCVar('tltp_border_alpha', players[consoleplayer]).GetFloat();
+		bDrawBorder = CVar.GetCVar('bd_TLTP_border_toggle', players[consoleplayer]).GetBool();
+		bBorderType = CVar.GetCVar('bd_TLTP_border_type', players[consoleplayer]).GetBool();
+		iBorder_HorizontalThickness = CVar.GetCVar('bd_TLTP_border_horizontal_thickness', players[consoleplayer]).GetInt();
+		iBorder_VerticalThickness = CVar.GetCVar('bd_TLTP_border_vertical_thickness', players[consoleplayer]).GetInt();
+		cBorderColor = Color(CVar.GetCVar('bd_TLTP_border_color', players[consoleplayer]).GetInt());
+		fBorderAlpha = CVar.GetCVar('bd_TLTP_border_alpha', players[consoleplayer]).GetFloat();
 		
-		bDrawBackground = CVar.GetCVar('tltp_show_background', players[consoleplayer]).GetBool();
-		bBackgroundMode = CVar.GetCVar('tltp_background_mode', players[consoleplayer]).GetBool();
-		iBackground_HorizontalPadding = CVar.GetCVar('tltp_background_horizontal_padding', players[consoleplayer]).GetInt();
-		iBackground_VerticalPadding = CVar.GetCVar('tltp_background_vertical_padding', players[consoleplayer]).GetInt();
+		bDrawBackground = CVar.GetCVar('bd_TLTP_show_background', players[consoleplayer]).GetBool();
+		bBackgroundMode = CVar.GetCVar('bd_TLTP_background_mode', players[consoleplayer]).GetBool();
+		iBackground_HorizontalPadding = CVar.GetCVar('bd_TLTP_background_horizontal_padding', players[consoleplayer]).GetInt();
+		iBackground_VerticalPadding = CVar.GetCVar('bd_TLTP_background_vertical_padding', players[consoleplayer]).GetInt();
 		
-		bDisplayDelay = CVar.GetCVar('tltp_show_delay', players[consoleplayer]).GetBool();
-		bDisplaySkip = CVar.GetCVar('tltp_delay_skip', players[consoleplayer]).GetBool();
-		iDelayTime = CVar.GetCVar('tltp_delay_tics', players[consoleplayer]).GetInt();
+		bDisplayDelay = CVar.GetCVar('bd_TLTP_show_delay', players[consoleplayer]).GetBool();
+		bDisplaySkip = CVar.GetCVar('bd_TLTP_delay_skip', players[consoleplayer]).GetBool();
+		iDelayTime = CVar.GetCVar('bd_TLTP_delay_tics', players[consoleplayer]).GetInt();
 		
-		iTipLocation = CVar.GetCVar('tltp_tooltip_location', players[consoleplayer]).GetInt();
-		iPosition_HorizontalMargin = CVar.GetCVar('tltp_location_horizontal_margin', players[consoleplayer]).GetInt();
-		iPosition_VerticalMargin = CVar.GetCVar('tltp_location_vertical_margin', players[consoleplayer]).GetInt();
-		iTxtAlignment = CVar.GetCVar('tltp_tooltip_alignment', players[consoleplayer]).GetInt();
-		iFontId = CVar.GetCVar('tltp_tooltip_font', players[consoleplayer]).GetInt();
-		sCustomFont = CVar.GetCVar('tltp_tooltip_font_name', players[consoleplayer]).GetString();
-		bFontColorOverride = CVar.GetCVar('tltp_font_color_override', players[consoleplayer]).GetBool();
-		iFontColorOverride = CVar.GetCVar('tltp_font_color', players[consoleplayer]).GetInt();
+		iTipLocation = CVar.GetCVar('bd_TLTP_tooltip_location', players[consoleplayer]).GetInt();
+		iPosition_HorizontalMargin = CVar.GetCVar('bd_TLTP_location_horizontal_margin', players[consoleplayer]).GetInt();
+		iPosition_VerticalMargin = CVar.GetCVar('bd_TLTP_location_vertical_margin', players[consoleplayer]).GetInt();
+		iTxtAlignment = CVar.GetCVar('bd_TLTP_tooltip_alignment', players[consoleplayer]).GetInt();
+		iFontId = CVar.GetCVar('bd_TLTP_tooltip_font', players[consoleplayer]).GetInt();
+		sCustomFont = CVar.GetCVar('bd_TLTP_tooltip_font_name', players[consoleplayer]).GetString();
+		bFontColorOverride = CVar.GetCVar('bd_TLTP_font_color_override', players[consoleplayer]).GetBool();
+		iFontColorOverride = CVar.GetCVar('bd_TLTP_font_color', players[consoleplayer]).GetInt();
 		
 		// Delay Time
 		if (bDisplayDelay && iDelayTime > iCurrentTime)
@@ -284,7 +284,7 @@ class TLTPListMenu : ListMenu
 					
 		// Get what background to use - this relies on settings
 		if (bDrawBackground)
-			txid_Background = TexMan.CheckForTexture(backgroundSerializer(CVar.GetCVar('tltp_background_name', players[consoleplayer]).GetInt()), TexMan.TYPE_ANY);
+			txid_Background = TexMan.CheckForTexture(backgroundSerializer(CVar.GetCVar('bd_TLTP_background_name', players[consoleplayer]).GetInt()), TexMan.TYPE_ANY);
 		
 		// Figure out what the default cursor should be
 		switch (gameinfo.gametype)

@@ -24,7 +24,7 @@
 }*/
 
 AddListMenu "MainMenu" {
-	//TLTPTextItem "$BDMENU_TITLE_SHORT", "$BDMENU_DESC", "White", b, "BDoom_Settings"
+	//bd_TLTPTextItem "$BDMENU_TITLE_SHORT", "$BDMENU_DESC", "White", b, "BDoom_Settings"
 	TextItem "$BDMENU_TITLE_SHORT", "b", "BDoom_Settings"
 }
 
@@ -35,33 +35,33 @@ AddOptionMenu "OptionsMenu"
 }
 
 OptionMenu "BDoom_Settings" {	
-	Class "TLTPOptionsMenu"
+	Class "bd_TLTPOptionsMenu"
 	Title "$BDMENU_TITLE"
 	StaticText "$BDMENU_TITLE_KEYS", yellow
-	ControlGC_TLTP "$BDMENU_QKICK_NAME",		"$BDMENU_QKICK", "White",	"+user1","bdoom_weapons",2,1
-	ControlGC_TLTP "$BDMENU_WEAPONHELP_NAME",	"$BDMENU_WEAPONHELP", "White",	"event BD_ShowWeapHelp","bdoom_weapons",0,0
-	TLTPControl "$BDMENU_CLEARDEBRIS_NAME",		"$BDMENU_CLEARDEBRIS", "White", "netevent BD_ClearDebris"
+	ControlGC_bd_TLTP "$BDMENU_QKICK_NAME",		"$BDMENU_QKICK", "White",	"+user1","bdoom_weapons",2,1
+	ControlGC_bd_TLTP "$BDMENU_WEAPONHELP_NAME",	"$BDMENU_WEAPONHELP", "White",	"event BD_ShowWeapHelp","bdoom_weapons",0,0
+	bd_TLTPControl "$BDMENU_CLEARDEBRIS_NAME",		"$BDMENU_CLEARDEBRIS", "White", "netevent BD_ClearDebris"
 	StaticText " "
 	
 	StaticText "$BDMENU_TITLE_WEAPONS", yellow
-	TLTPOption "$BDMENU_PLAYERWEAPONS_NAME",	"$BDMENU_PLAYERWEAPONS", "White","bdoom_weapons", "bdoom_weapons", "bdoom_replaceweapons"
-	TLTPOption "$BDMENU_BOBSTYLE_NAME",			"$BDMENU_weaponbobstyle", "White","bdoom_weaponbobstyle", "BobStyle", "bdoom_replaceweapons"
+	bd_TLTPOption "$BDMENU_PLAYERWEAPONS_NAME",	"$BDMENU_PLAYERWEAPONS", "White","bdoom_weapons", "bdoom_weapons", "bdoom_replaceweapons"
+	bd_TLTPOption "$BDMENU_BOBSTYLE_NAME",			"$BDMENU_weaponbobstyle", "White","bdoom_weaponbobstyle", "BobStyle", "bdoom_replaceweapons"
 	Option "$BDMENU_FLASHES_NAME", 				"bdoom_muzzle", "bdoom_muzzle", "bdoom_replaceweapons"
 	OptionBoth "$BDMENU_TRACERS_NAME",			"$BDMENU_TRACERS", "White","bdoom_tracers", "OnOff", "bdoom_replaceweapons", "bdoom_replacemonsters"
-	OptionBGReload_TLTP "$BDMENU_AUTORELOAD_NAME","$BDMENU_AUTORELOAD", "White", "bdoom_autoreload", "OnOff", "bdoom_weapons", "bdoom_replaceweapons"
-	TLTPOption "$BDMENU_GLOVES_NAME",			"$BDMENU_GLOVES", "White", "bdoom_blackgloves", "bdgloves", "bdoom_replaceweapons"
+	OptionBGReload_bd_TLTP "$BDMENU_AUTORELOAD_NAME","$BDMENU_AUTORELOAD", "White", "bdoom_autoreload", "OnOff", "bdoom_weapons", "bdoom_replaceweapons"
+	bd_TLTPOption "$BDMENU_GLOVES_NAME",			"$BDMENU_GLOVES", "White", "bdoom_blackgloves", "bdgloves", "bdoom_replaceweapons"
 	StaticText " "
 	
 	StaticText "$BDMENU_TITLE_SFX", yellow
-	TLTPOption "$BDMENU_GIBS_NAME",		"$BDMENU_GIBSTOGGLE", "White","bdoom_gibs", "OnOff", "bdoom_replacemonsters"
-	TLTPOption "$BDMENU_BLOOD_NAME",				"$BDMENU_BLOODTOGGLE", "White","bdoom_blood", "bdoom_blood"
-	OptionEither_TLTP "$BDMENU_NOBOSSGIBS_NAME","$BDMENU_NOBOSSGIBS","White",	"bdoom_nobossgibs", "OnOff", "bdoom_gibs", "bdoom_replacemonsters"
-	TLTPOption "$BDMENU_PROJ_NAME",		"$BDMENU_PROJTOGGLE", "White","bdoom_projectiles", "bdoom_projectiles", "bdoom_replacemonsters"
-	TLTPOption "$BDMENU_FLAMES_NAME",		"$BDMENU_FLAMES", "White",	"bdoom_flames", "OnOff", ""
-	TLTPOption "$BDMENU_DEBRIS_NAME",			"$BDMENU_DEBRIS", "White",	"bdoom_debris", "OnOff", "", 1	
-	TLTPOption "$BDMENU_KILLABLEOBJECTS_NAME",	"$BDMENU_KILLABLEOBJECTS", "White",	"bdoom_killableobjects", "Toggle", "bdoom_replaceobjects"
-	TLTPOption "$BDMENU_liquidtextures_NAME",	"$BDMENU_liquidtextures", "White", "bdoom_liquidtextures", "OnOff", ""
-	TLTPOption "$BDMENU_goretextures_NAME",	"$BDMENU_goretextures", "White", "bdoom_goretextures", "OnOff", ""
+	bd_TLTPOption "$BDMENU_GIBS_NAME",		"$BDMENU_GIBSTOGGLE", "White","bdoom_gibs", "OnOff", "bdoom_replacemonsters"
+	bd_TLTPOption "$BDMENU_BLOOD_NAME",				"$BDMENU_BLOODTOGGLE", "White","bdoom_blood", "bdoom_blood"
+	OptionEither_bd_TLTP "$BDMENU_NOBOSSGIBS_NAME","$BDMENU_NOBOSSGIBS","White",	"bdoom_nobossgibs", "OnOff", "bdoom_gibs", "bdoom_replacemonsters"
+	bd_TLTPOption "$BDMENU_PROJ_NAME",		"$BDMENU_PROJTOGGLE", "White","bdoom_projectiles", "bdoom_projectiles", "bdoom_replacemonsters"
+	bd_TLTPOption "$BDMENU_FLAMES_NAME",		"$BDMENU_FLAMES", "White",	"bdoom_flames", "OnOff", ""
+	bd_TLTPOption "$BDMENU_DEBRIS_NAME",			"$BDMENU_DEBRIS", "White",	"bdoom_debris", "OnOff", "", 1	
+	bd_TLTPOption "$BDMENU_KILLABLEOBJECTS_NAME",	"$BDMENU_KILLABLEOBJECTS", "White",	"bdoom_killableobjects", "Toggle", "bdoom_replaceobjects"
+	bd_TLTPOption "$BDMENU_liquidtextures_NAME",	"$BDMENU_liquidtextures", "White", "bdoom_liquidtextures", "OnOff", ""
+	bd_TLTPOption "$BDMENU_goretextures_NAME",	"$BDMENU_goretextures", "White", "bdoom_goretextures", "OnOff", ""
 	StaticText " "
 	
 	ScaleSliderGC "$BDMENU_MAXGIBS",		"bdoom_gibnum", 100, 3000, 100, "", "bdoom_gibs", "bdoom_replacemonsters"
@@ -71,29 +71,29 @@ OptionMenu "BDoom_Settings" {
 	StaticText " "
 	
 	StaticText "$BDMENU_TITLE_EXTRAFX", yellow
-	TLTPOption "$BDMENU_FOOTSTEPS_NAME", 		"$BDMENU_FOOTSTEPS", "White", "bdoom_fs_enabled", "OnOff", ""
+	bd_TLTPOption "$BDMENU_FOOTSTEPS_NAME", 		"$BDMENU_FOOTSTEPS", "White", "bdoom_fs_enabled", "OnOff", ""
 	Slider "$BDMENU_FOOTSTEPS_VOL",				"bdoom_fs_volume_mul", 0, 1.0, 0.1
 	Slider "$BDMENU_FOOTSTEPS_FREQ",			"bdoom_fs_delay_mul", 0.1, 2.0, 0.1
-	TLTPOption "$BDMENU_SPARKS_NAME", 			"$BDMENU_SPARKS", "White","bdoom_sparks", "OnOff", ""
-	TLTPOption "$BDMENU_FLIES_NAME", 			"$BDMENU_FLIES", "White", "bdoom_flies", "OnOff", "bdoom_replacemonsters"
-	TLTPOption "$BDMENU_SHAKES_NAME", 			"$BDMENU_SHAKES", "White", "bdoom_shakes", "OnOff", ""
+	bd_TLTPOption "$BDMENU_SPARKS_NAME", 			"$BDMENU_SPARKS", "White","bdoom_sparks", "OnOff", ""
+	bd_TLTPOption "$BDMENU_FLIES_NAME", 			"$BDMENU_FLIES", "White", "bdoom_flies", "OnOff", "bdoom_replacemonsters"
+	bd_TLTPOption "$BDMENU_SHAKES_NAME", 			"$BDMENU_SHAKES", "White", "bdoom_shakes", "OnOff", ""
 	//Command "Toggle Enhanced/Classic liquid textures", "netevent BD_ToggleLiquidTextures"
-	TLTPOption "$BDMENU_HUDFACE_NAME", 			"$BDMENU_HUDFACE", "White", "bdoom_hudface", "OnOff", "", 1	
+	bd_TLTPOption "$BDMENU_HUDFACE_NAME", 			"$BDMENU_HUDFACE", "White", "bdoom_hudface", "OnOff", "", 1	
 	StaticText " "
 
 	StaticText "$BDMENU_TITLE_COMPATIBILITY", yellow
 	StaticText "$BDMENU_COMPATIBILITY_NOTE", green
 	OptionBoth "$BDMENU_SAFEREPLACEMENT_NAME", 	"$BDMENU_SAFEREPLACEMENT", "white", "bdoom_safereplacement", "SafeReplacement", "bdoom_replaceobjects", "bdoom_replacemonsters"
-	TLTPOption "$BDMENU_REPLACEWEAPONS_NAME",		"$BDMENU_REPLACEWEAPONS", "White", "bdoom_replaceweapons", "Toggle", ""
-	TLTPOption "$BDMENU_REPLACEMONSTERS_NAME",		"$BDMENU_REPLACEMONSTERS","White", "bdoom_replacemonsters", "Toggle", ""
-	TLTPOption "$BDMENU_REPLACEITEMS_NAME",			"$BDMENU_REPLACEITEMS", "White", "bdoom_replaceitems", "Toggle", "", 1	
-	TLTPOption "$BDMENU_REPLACEOBJECTS_NAME",	"$BDMENU_REPLACEOBJECTS","White", "bdoom_replaceobjects", "Toggle", "", 1	
+	bd_TLTPOption "$BDMENU_REPLACEWEAPONS_NAME",		"$BDMENU_REPLACEWEAPONS", "White", "bdoom_replaceweapons", "Toggle", ""
+	bd_TLTPOption "$BDMENU_REPLACEMONSTERS_NAME",		"$BDMENU_REPLACEMONSTERS","White", "bdoom_replacemonsters", "Toggle", ""
+	bd_TLTPOption "$BDMENU_REPLACEITEMS_NAME",			"$BDMENU_REPLACEITEMS", "White", "bdoom_replaceitems", "Toggle", "", 1	
+	bd_TLTPOption "$BDMENU_REPLACEOBJECTS_NAME",	"$BDMENU_REPLACEOBJECTS","White", "bdoom_replaceobjects", "Toggle", "", 1	
 	StaticText ""
 	SubmenuGC "$BDMENU_PERMONSTERREPLACEMENT", "BDMonsterReplacements", "bdoom_replacemonsters"
 	StaticText " "
 	
 	StaticText "$TLTPTOOLTIPMNU_VERSION", "yellow"
-	Submenu "$OPTMNU_TLTPTOOLTIP", "TooltipOptionsMenu"
+	Submenu "$OPTMNU_bd_TLTPTOOLTIP", "TooltipOptionsMenu"
 	StaticText " "
 }
 
@@ -168,7 +168,7 @@ OptionValue "bdoom_muzzle" {
 
 OptionMenu "TooltipOptionsMenu"
 {
-	Class "TLTPOptionsMenu"
+	Class "bd_TLTPOptionsMenu"
 	Title "$TLTPTOOLTIPMNU_TITLE"
 	StaticText		"$TLTPTOOLTIPMNU_VERSION", "Gold"
 	StaticText 		"$TLTPTOOLTIPMNU_TAGLINE", "Olive"
@@ -177,76 +177,76 @@ OptionMenu "TooltipOptionsMenu"
 	StaticText		""
 	// Basic Settings
 	StaticText		"$TLTPTOOLTIPMNU_TITLE_BASICSETTINGS", "White"
-	TLTPOption		"$TLTPTOOLTIPMNU_BASICSETTINGS_TLTPTOGGLE", 				"$TLTPTOOLTIPMNU_TOOLTIP_TLTPTOGGLE", 				"White", "tltp_show_tips", "OnOff"
-	TLTPOption		"$TLTPTOOLTIPMNU_BASICSETTINGS_DELAYTOGGLE", 				"$TLTPTOOLTIPMNU_TOOLTIP_DELAYTOGGLE", 				"White", "tltp_show_delay", "OnOff"
-	TLTPOption		"$TLTPTOOLTIPMNU_BASICSETTINGS_DELAYSKIP", 					"$TLTPTOOLTIPMNU_TOOLTIP_DELAYSKIP", 				"White", "tltp_delay_skip", "OnOff"
-	TLTPSlider		"$TLTPTOOLTIPMNU_BASICSETTINGS_DELAYTIME", 					"$TLTPTOOLTIPMNU_TOOLTIP_DELAYTIME", 				"White", "tltp_delay_tics", 1, 35, 1, 0
-	TLTPOption		"$TLTPTOOLTIPMNU_BASICSETTINGS_TIMEOUTTOGGLE",				"$TLTPTOOLTIPMNU_TOOLTIP_TIMEOUTTOGGLE",			"White", "tltp_time_out", "OnOff"
-	TLTPSlider		"$TLTPTOOLTIPMNU_BASICSETTINGS_TIMEOUTVALUE",				"$TLTPTOOLTIPMNU_TOOLTIP_TIMEOUTVALUE",				"White", "tltp_time_out_val", 1, 10, 1, 0
-	TLTPOption		"$TLTPTOOLTIPMNU_BASICSETTINGS_DRAWORDER",					"$TLTPTOOLTIPMNU_TOOLTIP_DRAWORDER",				"White", "tltp_draw_order", "TLTPDrawOrderOptions"
+	bd_TLTPOption		"$TLTPTOOLTIPMNU_BASICSETTINGS_bd_TLTPTOGGLE", 				"$TLTPTOOLTIPMNU_TOOLTIP_bd_TLTPTOGGLE", 				"White", "bd_TLTP_show_tips", "OnOff"
+	bd_TLTPOption		"$TLTPTOOLTIPMNU_BASICSETTINGS_DELAYTOGGLE", 				"$TLTPTOOLTIPMNU_TOOLTIP_DELAYTOGGLE", 				"White", "bd_TLTP_show_delay", "OnOff"
+	bd_TLTPOption		"$TLTPTOOLTIPMNU_BASICSETTINGS_DELAYSKIP", 					"$TLTPTOOLTIPMNU_TOOLTIP_DELAYSKIP", 				"White", "bd_TLTP_delay_skip", "OnOff"
+	bd_TLTPSlider		"$TLTPTOOLTIPMNU_BASICSETTINGS_DELAYTIME", 					"$TLTPTOOLTIPMNU_TOOLTIP_DELAYTIME", 				"White", "bd_TLTP_delay_tics", 1, 35, 1, 0
+	bd_TLTPOption		"$TLTPTOOLTIPMNU_BASICSETTINGS_TIMEOUTTOGGLE",				"$TLTPTOOLTIPMNU_TOOLTIP_TIMEOUTTOGGLE",			"White", "bd_TLTP_time_out", "OnOff"
+	bd_TLTPSlider		"$TLTPTOOLTIPMNU_BASICSETTINGS_TIMEOUTVALUE",				"$TLTPTOOLTIPMNU_TOOLTIP_TIMEOUTVALUE",				"White", "bd_TLTP_time_out_val", 1, 10, 1, 0
+	bd_TLTPOption		"$TLTPTOOLTIPMNU_BASICSETTINGS_DRAWORDER",					"$TLTPTOOLTIPMNU_TOOLTIP_DRAWORDER",				"White", "bd_TLTP_draw_order", "bd_TLTPDrawOrderOptions"
 	
 	StaticText		""
 	// Border Settings
 	StaticText		"$TLTPTOOLTIPMNU_TITLE_BORDERSETTINGS", White
-	TLTPOption		"$TLTPTOOLTIPMNU_BORDERSETTINGS_BORDERTOGGLE", 				"$TLTPTOOLTIPMNU_TOOLTIP_BORDERTOGGLE",				"White", "tltp_border_toggle", "OnOff"
-	TLTPOption		"$TLTPTOOLTIPMNU_BORDERSETTINGS_BORDERTYPE",				"$TLTPTOOLTIPMNU_TOOLTIP_BORDERTYPE",				"White", "tltp_border_type", "TLTPBorderTypeOptions"
-	TLTPSlider		"$TLTPTOOLTIPMNU_BORDERSETTINGS_BORDER_H_THICKNESS",		"$TLTPTOOLTIPMNU_TOOLTIP_BORDER_H_THICKNESS",		"White", "tltp_border_horizontal_thickness", 0, 5, 1, 0
-	TLTPSlider		"$TLTPTOOLTIPMNU_BORDERSETTINGS_BORDER_V_THICKNESS",		"$TLTPTOOLTIPMNU_TOOLTIP_BORDER_V_THICKNESS",		"White", "tltp_border_vertical_thickness", 0, 5, 1, 0
-	TLTPColorPicker "$TLTPTOOLTIPMNU_BORDERSETTINGS_BORDERCOLOR",				"$TLTPTOOLTIPMNU_TOOLTIP_BORDERCOLOR",				"White", "tltp_border_color"
-	TLTPSlider		"$TLTPTOOLTIPMNU_BORDERSETTINGS_BORDERALPHA",				"$TLTPTOOLTIPMNU_TOOLTIP_BORDERALPHA",				"White", "tltp_border_alpha", 0, 1, 0.05, 2
+	bd_TLTPOption		"$TLTPTOOLTIPMNU_BORDERSETTINGS_BORDERTOGGLE", 				"$TLTPTOOLTIPMNU_TOOLTIP_BORDERTOGGLE",				"White", "bd_TLTP_border_toggle", "OnOff"
+	bd_TLTPOption		"$TLTPTOOLTIPMNU_BORDERSETTINGS_BORDERTYPE",				"$TLTPTOOLTIPMNU_TOOLTIP_BORDERTYPE",				"White", "bd_TLTP_border_type", "bd_TLTPBorderTypeOptions"
+	bd_TLTPSlider		"$TLTPTOOLTIPMNU_BORDERSETTINGS_BORDER_H_THICKNESS",		"$TLTPTOOLTIPMNU_TOOLTIP_BORDER_H_THICKNESS",		"White", "bd_TLTP_border_horizontal_thickness", 0, 5, 1, 0
+	bd_TLTPSlider		"$TLTPTOOLTIPMNU_BORDERSETTINGS_BORDER_V_THICKNESS",		"$TLTPTOOLTIPMNU_TOOLTIP_BORDER_V_THICKNESS",		"White", "bd_TLTP_border_vertical_thickness", 0, 5, 1, 0
+	bd_TLTPColorPicker "$TLTPTOOLTIPMNU_BORDERSETTINGS_BORDERCOLOR",				"$TLTPTOOLTIPMNU_TOOLTIP_BORDERCOLOR",				"White", "bd_TLTP_border_color"
+	bd_TLTPSlider		"$TLTPTOOLTIPMNU_BORDERSETTINGS_BORDERALPHA",				"$TLTPTOOLTIPMNU_TOOLTIP_BORDERALPHA",				"White", "bd_TLTP_border_alpha", 0, 1, 0.05, 2
 	
 	StaticText		""
 	// Background Settings
 	StaticText		"$TLTPTOOLTIPMNU_TITLE_BACKGROUNDSETTINGS", "White"
-	TLTPOption		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND", 			"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND", 				"White", "tltp_show_background", "OnOff"
-	IfGame(Doom){ 				TLTPOption		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_OPTION",		"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_OPTION",		"White", "tltp_background_name", "TLTPBackgroundOptions_Doom", "tltp_show_background" }
-	IfGame(Chex){ 				TLTPOption		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_OPTION",		"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_OPTION",		"White", "tltp_background_name", "TLTPBackgroundOptions_Chex", "tltp_show_background" }
-	IfGame(Strife){ 			TLTPOption		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_OPTION",		"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_OPTION",		"White", "tltp_background_name", "TLTPBackgroundOptions_Strife", "tltp_show_background" }
-	IfGame(Heretic, Hexen){ 	TLTPOption		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_OPTION",		"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_OPTION",		"White", "tltp_background_name", "TLTPBackgroundOptions_Heretic", "tltp_show_background" }
-	TLTPOption		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_MODE",		"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_MODE",			"White", "tltp_background_mode", "TLTPBackgroundModeOptions", "tltp_show_background"
-	TLTPSlider		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_H_PADDING", 	"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_H_PADDING", 	"White", "tltp_background_horizontal_padding", 0, 10, 1, 0
-	TLTPSlider		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_V_PADDING", 	"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_V_PADDING", 	"White", "tltp_background_vertical_padding", 0, 10, 1, 0
+	bd_TLTPOption		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND", 			"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND", 				"White", "bd_TLTP_show_background", "OnOff"
+	IfGame(Doom){ 				bd_TLTPOption		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_OPTION",		"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_OPTION",		"White", "bd_TLTP_background_name", "bd_TLTPBackgroundOptions_Doom", "bd_TLTP_show_background" }
+	IfGame(Chex){ 				bd_TLTPOption		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_OPTION",		"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_OPTION",		"White", "bd_TLTP_background_name", "bd_TLTPBackgroundOptions_Chex", "bd_TLTP_show_background" }
+	IfGame(Strife){ 			bd_TLTPOption		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_OPTION",		"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_OPTION",		"White", "bd_TLTP_background_name", "bd_TLTPBackgroundOptions_Strife", "bd_TLTP_show_background" }
+	IfGame(Heretic, Hexen){ 	bd_TLTPOption		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_OPTION",		"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_OPTION",		"White", "bd_TLTP_background_name", "bd_TLTPBackgroundOptions_Heretic", "bd_TLTP_show_background" }
+	bd_TLTPOption		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_MODE",		"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_MODE",			"White", "bd_TLTP_background_mode", "bd_TLTPBackgroundModeOptions", "bd_TLTP_show_background"
+	bd_TLTPSlider		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_H_PADDING", 	"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_H_PADDING", 	"White", "bd_TLTP_background_horizontal_padding", 0, 10, 1, 0
+	bd_TLTPSlider		"$TLTPTOOLTIPMNU_BACKGROUNDSETTINGS_BACKGROUND_V_PADDING", 	"$TLTPTOOLTIPMNU_TOOLTIP_BACKGROUND_V_PADDING", 	"White", "bd_TLTP_background_vertical_padding", 0, 10, 1, 0
 	
 	StaticText		""
 	// Location Settings
 	StaticText		"$TLTPTOOLTIPMNU_TITLE_LOCATIONSETTINGS", "White"
-	TLTPOption		"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_LOCATION",					"$TLTPTOOLTIPMNU_TOOLTIP_LOCATION",					"White", "tltp_tooltip_location", "TLTPTooltipLocationOptions"
-	TLTPSlider		"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_H_MARGIN", 				"$TLTPTOOLTIPMNU_TOOLTIP_H_MARGIN", 				"White", "tltp_location_horizontal_margin", 0, 10, 1, 0
-	TLTPSlider		"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_V_MARGIN", 				"$TLTPTOOLTIPMNU_TOOLTIP_V_MARGIN", 				"White", "tltp_location_vertical_margin", 0, 10, 1, 0
-	TLTPOption		"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_ALIGNMENT",				"$TLTPTOOLTIPMNU_TOOLTIP_ALIGNMENT",				"White", "tltp_tooltip_alignment", "TLTPTooltipTextAlignmentOptions"
+	bd_TLTPOption		"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_LOCATION",					"$TLTPTOOLTIPMNU_TOOLTIP_LOCATION",					"White", "bd_TLTP_tooltip_location", "bd_TLTPTooltipLocationOptions"
+	bd_TLTPSlider		"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_H_MARGIN", 				"$TLTPTOOLTIPMNU_TOOLTIP_H_MARGIN", 				"White", "bd_TLTP_location_horizontal_margin", 0, 10, 1, 0
+	bd_TLTPSlider		"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_V_MARGIN", 				"$TLTPTOOLTIPMNU_TOOLTIP_V_MARGIN", 				"White", "bd_TLTP_location_vertical_margin", 0, 10, 1, 0
+	bd_TLTPOption		"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_ALIGNMENT",				"$TLTPTOOLTIPMNU_TOOLTIP_ALIGNMENT",				"White", "bd_TLTP_tooltip_alignment", "bd_TLTPTooltipTextAlignmentOptions"
 	
 	StaticText		""
 	// Font Settings
 	StaticText		"$TLTPTOOLTIPMNU_TITLE_FONTSETTINGS", "White"
-	TLTPOption		"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_FONT",						"$TLTPTOOLTIPMNU_TOOLTIP_FONT",						"White", "tltp_tooltip_font", "TLTPTooltipFontOptions"
-	TLTPTextField 	"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_FONT_NAME", 				"$TLTPTOOLTIPMNU_TOOLTIP_FONT_NAME", 				"White", "tltp_tooltip_font_name"
-	TLTPOption		"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_FONT_COLORTOGGLE", 		"$TLTPTOOLTIPMNU_TOOLTIP_FONT_COLORTOGGLE", 		"White", "tltp_font_color_override", "OnOff"
-	TLTPOption		"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_FONT_COLOR",				"$TLTPTOOLTIPMNU_TOOLTIP_FONT_COLOR",				"White", "tltp_font_color", "TextColors"
+	bd_TLTPOption		"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_FONT",						"$TLTPTOOLTIPMNU_TOOLTIP_FONT",						"White", "bd_TLTP_tooltip_font", "bd_TLTPTooltipFontOptions"
+	bd_TLTPTextField 	"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_FONT_NAME", 				"$TLTPTOOLTIPMNU_TOOLTIP_FONT_NAME", 				"White", "bd_TLTP_tooltip_font_name"
+	bd_TLTPOption		"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_FONT_COLORTOGGLE", 		"$TLTPTOOLTIPMNU_TOOLTIP_FONT_COLORTOGGLE", 		"White", "bd_TLTP_font_color_override", "OnOff"
+	bd_TLTPOption		"$TLTPTOOLTIPMNU_DISPLAYSETTINGS_FONT_COLOR",				"$TLTPTOOLTIPMNU_TOOLTIP_FONT_COLOR",				"White", "bd_TLTP_font_color", "TextColors"
 
 	StaticText		""
-	TLTPSubmenu		"$TLTPTOOLTIPMNU_TITLE_LISTTEST", 							"$TLTPTOOLTIPMNU_TOOLTIP_LISTMENU", 				"White", "TooltipListTest"
+	bd_TLTPSubmenu		"$TLTPTOOLTIPMNU_TITLE_LISTTEST", 							"$TLTPTOOLTIPMNU_TOOLTIP_LISTMENU", 				"White", "TooltipListTest"
 }
 
 ListMenu "TooltipListTest"
 {
-	Class "TLTPListMenu"
+	Class "bd_TLTPListMenu"
 	
-	TLTPTextItem "$TLTPTOOLTIPMNU_TITLE_LISTTEXT", 								"$TLTPTOOLTIPMNU_TOOLTIP_LISTTEXT", 				"White", t, ""
+	bd_TLTPTextItem "$TLTPTOOLTIPMNU_TITLE_LISTTEXT", 								"$TLTPTOOLTIPMNU_TOOLTIP_LISTTEXT", 				"White", t, ""
 }
 
-OptionValue "TLTPDrawOrderOptions"
+OptionValue "bd_TLTPDrawOrderOptions"
 {
 	0, "$TLTPTOOLTIPMNU_DRAWORDER_OPTION_TOP"
 	1, "$TLTPTOOLTIPMNU_DRAWORDER_OPTION_BOTTOM"
 }
 
-OptionValue "TLTPBorderTypeOptions"
+OptionValue "bd_TLTPBorderTypeOptions"
 {
 	0, "$TLTPTOOLTIPMNU_BORDERTYPE_OPTION_FRAME"
 	1, "$TLTPTOOLTIPMNU_BORDERTYPE_OPTION_LINE"
 }
 
-OptionValue "TLTPBackgroundOptions_Doom"
+OptionValue "bd_TLTPBackgroundOptions_Doom"
 {
 	0, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_NONE"
 	1, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_DEFAULT"
@@ -255,7 +255,7 @@ OptionValue "TLTPBackgroundOptions_Doom"
 	4, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_DOOM_METAL"
 }
 
-OptionValue "TLTPBackgroundOptions_Chex"
+OptionValue "bd_TLTPBackgroundOptions_Chex"
 {
 	0, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_NONE"
 	1, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_DEFAULT"
@@ -264,7 +264,7 @@ OptionValue "TLTPBackgroundOptions_Chex"
 	7, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_CHEX_METAL"
 }
 
-OptionValue "TLTPBackgroundOptions_Strife"
+OptionValue "bd_TLTPBackgroundOptions_Strife"
 {
 	0, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_NONE"
 	1, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_DEFAULT"
@@ -273,7 +273,7 @@ OptionValue "TLTPBackgroundOptions_Strife"
 	10, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_STRIFE_METAL"
 }
 
-OptionValue "TLTPBackgroundOptions_Heretic"
+OptionValue "bd_TLTPBackgroundOptions_Heretic"
 {
 	0, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_NONE"
 	1, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_DEFAULT"
@@ -282,13 +282,13 @@ OptionValue "TLTPBackgroundOptions_Heretic"
 	13, "$TLTPTOOLTIPMNU_BACKGROUND_OPTION_HERETIC_WOOD"
 }
 
-OptionValue "TLTPBackgroundModeOptions"
+OptionValue "bd_TLTPBackgroundModeOptions"
 {
 	0, "$TLTPTOOLTIPMNU_BACKGROUND_MODE_OPTION_STRETCH"
 	1, "$TLTPTOOLTIPMNU_BACKGROUND_MODE_OPTION_TILE"
 }
 
-OptionValue "TLTPTooltipLocationOptions"
+OptionValue "bd_TLTPTooltipLocationOptions"
 {
 	0, "$TLTPTOOLTIPMNU_LOCATION_OPTION_MOUSE"
 	1, "$TLTPTOOLTIPMNU_LOCATION_OPTION_UPPERLEFT"
@@ -299,14 +299,14 @@ OptionValue "TLTPTooltipLocationOptions"
 	6, "$TLTPTOOLTIPMNU_LOCATION_OPTION_BOTTOMCENTER"
 }
 
-OptionValue "TLTPTooltipTextAlignmentOptions"
+OptionValue "bd_TLTPTooltipTextAlignmentOptions"
 {
 	0, "$TLTPTOOLTIPMNU_ALIGNMENT_OPTION_LEFT"
 	1, "$TLTPTOOLTIPMNU_ALIGNMENT_OPTION_RIGHT" 
 	2, "$TLTPTOOLTIPMNU_ALIGNMENT_OPTION_CENTER"
 }
 
-OptionValue "TLTPTooltipFontOptions"
+OptionValue "bd_TLTPTooltipFontOptions"
 {
 	0, "$TLTPTOOLTIPMNU_FONT_OPTION_CUSTOM"
 	1, "$TLTPTOOLTIPMNU_FONT_OPTION_CONSOLE"

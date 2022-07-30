@@ -42,14 +42,14 @@
   */
 
 /*
-*	TLTPControl
+*	bd_TLTPControl
 */
-class OptionMenuItemTLTPControl : OptionMenuItemControl
+class OptionMenuItembd_TLTPControl : OptionMenuItemControl
 {
 	String mTooltip;
 	Name cr_TipColor;
 
-	OptionMenuItemTLTPControl Init(String label, String tooltip, Name tipColor, Name command)
+	OptionMenuItembd_TLTPControl Init(String label, String tooltip, Name tipColor, Name command)
 	{
 		mTooltip = tooltip;
 		cr_TipColor = tipColor;
@@ -59,14 +59,14 @@ class OptionMenuItemTLTPControl : OptionMenuItemControl
 }
 
 /*
-*	TLTPMapControl
+*	bd_TLTPMapControl
 */
-class OptionMenuItemTLTPMapControl : OptionMenuItemMapControl
+class OptionMenuItembd_TLTPMapControl : OptionMenuItemMapControl
 {
 	String mTooltip;
 	Name cr_TipColor;
 	
-	OptionMenuItemTLTPMapControl Init(String label, String tooltip, Name tipColor, Name command)
+	OptionMenuItembd_TLTPMapControl Init(String label, String tooltip, Name tipColor, Name command)
 	{
 		mTooltip = tooltip;
 		cr_TipColor = tipColor;
@@ -76,14 +76,14 @@ class OptionMenuItemTLTPMapControl : OptionMenuItemMapControl
 }
 
 /*
-*	TLTPOption
+*	bd_TLTPOption
 */
-class OptionMenuItemTLTPOption : OptionMenuItemOption
+class OptionMenuItembd_TLTPOption : OptionMenuItemOption
 {
 	String mTooltip;
 	Name cr_TipColor;
 
-	OptionMenuItemTLTPOption Init(String label, String tooltip, Name tipColor, Name command, Name values, CVar graycheck = null, int center = 0)
+	OptionMenuItembd_TLTPOption Init(String label, String tooltip, Name tipColor, Name command, Name values, CVar graycheck = null, int center = 0)
 	{
 		mTooltip = tooltip;
 		cr_TipColor = tipColor;
@@ -93,14 +93,14 @@ class OptionMenuItemTLTPOption : OptionMenuItemOption
 }
 
 /*
-*	TLTPSlider
+*	bd_TLTPSlider
 */
-class OptionMenuItemTLTPSlider : OptionMenuItemSlider
+class OptionMenuItembd_TLTPSlider : OptionMenuItemSlider
 {
 	String mTooltip;
 	Name cr_TipColor;
 	
-	OptionMenuItemTLTPSlider Init(String label, String tooltip, Name tipColor, Name command, double min, double max, double step, int showval = 1)
+	OptionMenuItembd_TLTPSlider Init(String label, String tooltip, Name tipColor, Name command, double min, double max, double step, int showval = 1)
 	{
 		mTooltip = tooltip;
 		cr_TipColor = tipColor;
@@ -110,14 +110,14 @@ class OptionMenuItemTLTPSlider : OptionMenuItemSlider
 }
 
 /*
-*	TLTPScaleSlider
+*	bd_TLTPScaleSlider
 */
-class OptionMenuItemTLTPScaleSlider : OptionMenuItemScaleSlider
+class OptionMenuItembd_TLTPScaleSlider : OptionMenuItemScaleSlider
 {
 	String mTooltip;
 	Name cr_TipColor;
 	
-	OptionMenuItemTLTPScaleSlider Init(String label, String tooltip, Name tipColor, Name command, double min, double max, double step, String zero, String negone = "")
+	OptionMenuItembd_TLTPScaleSlider Init(String label, String tooltip, Name tipColor, Name command, double min, double max, double step, String zero, String negone = "")
 	{
 		mTooltip = tooltip;
 		cr_TipColor = tipColor;
@@ -127,14 +127,14 @@ class OptionMenuItemTLTPScaleSlider : OptionMenuItemScaleSlider
 }
 
 /*
-*	TLTPColorPicker
+*	bd_TLTPColorPicker
 */
-class OptionMenuItemTLTPColorPicker : OptionMenuItemColorPicker
+class OptionMenuItembd_TLTPColorPicker : OptionMenuItemColorPicker
 {
 	String mTooltip;
 	Name cr_TipColor;
 
-	OptionMenuItemTLTPColorPicker Init(String label, String tooltip, Name tipColor, Name command)
+	OptionMenuItembd_TLTPColorPicker Init(String label, String tooltip, Name tipColor, Name command)
 	{
 		mTooltip = tooltip;
 		cr_TipColor = tipColor;
@@ -144,14 +144,14 @@ class OptionMenuItemTLTPColorPicker : OptionMenuItemColorPicker
 }
 
 /*
-*	TLTPTextField
+*	bd_TLTPTextField
 */
-class OptionMenuItemTLTPTextField : OptionMenuItemTextField
+class OptionMenuItembd_TLTPTextField : OptionMenuItemTextField
 {
 	String mTooltip;
 	Name cr_TipColor;
 	
-	OptionMenuItemTLTPTextField Init(String label, String tooltip, Name tipColor, Name command, CVar graycheck = null)
+	OptionMenuItembd_TLTPTextField Init(String label, String tooltip, Name tipColor, Name command, CVar graycheck = null)
 	{
 		mTooltip = tooltip;
 		cr_TipColor = tipColor;
@@ -161,14 +161,14 @@ class OptionMenuItemTLTPTextField : OptionMenuItemTextField
 }
 
 /*
-*	TLTPNumberField
+*	bd_TLTPNumberField
 */
-class OptionMenuItemTLTPNumberField : OptionMenuItemNumberField
+class OptionMenuItembd_TLTPNumberField : OptionMenuItemNumberField
 {
 	String mTooltip;
 	Name cr_TipColor;
 
-	OptionMenuItemTLTPNumberField Init(String label, String tooltip, Name tipColor, Name command, float minimum = 0, float maximum = 100, float step = 1, CVar graycheck = null)
+	OptionMenuItembd_TLTPNumberField Init(String label, String tooltip, Name tipColor, Name command, float minimum = 0, float maximum = 100, float step = 1, CVar graycheck = null)
 	{
 		mTooltip = tooltip;
 		cr_TipColor = tipColor;
@@ -177,12 +177,12 @@ class OptionMenuItemTLTPNumberField : OptionMenuItemNumberField
 	}
 }
 
-class OptionMenuItemTLTPSubmenu : OptionMenuItemSubmenu
+class OptionMenuItembd_TLTPSubmenu : OptionMenuItemSubmenu
 {
 	String mTooltip;
 	Name cr_TipColor;
 	
-	OptionMenuItemTLTPSubmenu Init(String label, String tooltip, Name tipColor, Name command, int param = 0, bool centered = false)
+	OptionMenuItembd_TLTPSubmenu Init(String label, String tooltip, Name tipColor, Name command, int param = 0, bool centered = false)
 	{
 		mTooltip = tooltip;
 		cr_TipColor = tipColor;
@@ -191,17 +191,17 @@ class OptionMenuItemTLTPSubmenu : OptionMenuItemSubmenu
 	}
 }
 
-class tltpConsole
+class bd_TLTPConsole
 {
 	static void Print(string str) { Console.Printf(str); }
 }
 
 /*
-*	TLTP Option Menu
+*	bd_TLTP Option Menu
 */
-class TLTPOptionsMenu : OptionMenu
+class bd_TLTPOptionsMenu : OptionMenu
 {
-	enum TLTPBACKGROUND
+	enum bd_TLTPBACKGROUND
 	{
 		bDefault = 1,
 		DoomBrick,
@@ -218,7 +218,7 @@ class TLTPOptionsMenu : OptionMenu
 		HereticWood,
 	};
 	
-	enum TLTPLOCATION
+	enum bd_TLTPLOCATION
 	{
 		Mouse,
 		UpperLeft,
@@ -229,14 +229,14 @@ class TLTPOptionsMenu : OptionMenu
 		BottomCenter,
 	};
 	
-	enum TLTPALIGNMENT
+	enum bd_TLTPALIGNMENT
 	{
 		Left,
 		Right,
 		Center,
 	};
 	
-	enum TLTPFONT
+	enum bd_TLTPFONT
 	{
 		Custom,
 		Console,
@@ -296,58 +296,58 @@ class TLTPOptionsMenu : OptionMenu
 		// Get the tooltip string and its text color
 		if (mDesc.mSelectedItem > -1 && mDesc.mItems[mDesc.mSelectedItem].Selectable()) // Index 0 should be something - usually the title
 		{
-			if (mDesc.mItems[mDesc.mSelectedItem] is "OptionMenuItemTLTPControl")
+			if (mDesc.mItems[mDesc.mSelectedItem] is "OptionMenuItembd_TLTPControl")
 			{
-				tt = StringTable.Localize(OptionMenuItemTLTPControl(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
-				cr = OptionMenuItemTLTPControl(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
+				tt = StringTable.Localize(OptionMenuItembd_TLTPControl(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
+				cr = OptionMenuItembd_TLTPControl(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
 				bValidObject = true;
 			}
-			else if (mDesc.mItems[mDesc.mSelectedItem] is "OptionMenuItemTLTPMapControl")
+			else if (mDesc.mItems[mDesc.mSelectedItem] is "OptionMenuItembd_TLTPMapControl")
 			{
-				tt = StringTable.Localize(OptionMenuItemTLTPMapControl(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
-				cr = OptionMenuItemTLTPMapControl(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
+				tt = StringTable.Localize(OptionMenuItembd_TLTPMapControl(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
+				cr = OptionMenuItembd_TLTPMapControl(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
 				bValidObject = true;
 			}			
-			else if (mDesc.mItems[mDesc.mSelectedItem] is "OptionMenuItemTLTPOption")
+			else if (mDesc.mItems[mDesc.mSelectedItem] is "OptionMenuItembd_TLTPOption")
 			{
-				tt = StringTable.Localize(OptionMenuItemTLTPOption(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
-				cr = OptionMenuItemTLTPOption(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
+				tt = StringTable.Localize(OptionMenuItembd_TLTPOption(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
+				cr = OptionMenuItembd_TLTPOption(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
 				bValidObject = true;
 			}			
-			else if (mDesc.mItems[mDesc.mSelectedItem] is "OptionMenuItemTLTPSlider")
+			else if (mDesc.mItems[mDesc.mSelectedItem] is "OptionMenuItembd_TLTPSlider")
 			{
-				tt = StringTable.Localize(OptionMenuItemTLTPSlider(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
-				cr = OptionMenuItemTLTPSlider(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
+				tt = StringTable.Localize(OptionMenuItembd_TLTPSlider(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
+				cr = OptionMenuItembd_TLTPSlider(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
 				bValidObject = true;
 			}
-			else if (mDesc.mItems[mDesc.mSelectedItem] is "OptionMenuItemTLTPScaleSlider")
+			else if (mDesc.mItems[mDesc.mSelectedItem] is "OptionMenuItembd_TLTPScaleSlider")
 			{
-				tt = StringTable.Localize(OptionMenuItemTLTPScaleSlider(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
-				cr = OptionMenuItemTLTPScaleSlider(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
+				tt = StringTable.Localize(OptionMenuItembd_TLTPScaleSlider(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
+				cr = OptionMenuItembd_TLTPScaleSlider(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
 				bValidObject = true;
 			}			
-			else if (mDesc.mItems[mDesc.mSelectedItem] is "OptionMenuItemTLTPTextField")
+			else if (mDesc.mItems[mDesc.mSelectedItem] is "OptionMenuItembd_TLTPTextField")
 			{
-				tt = StringTable.Localize(OptionMenuItemTLTPTextField(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
-				cr = OptionMenuItemTLTPTextField(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
+				tt = StringTable.Localize(OptionMenuItembd_TLTPTextField(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
+				cr = OptionMenuItembd_TLTPTextField(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
 				bValidObject = true;		
 			}			
-			else if (mDesc.mItems[mDesc.mSelectedItem] is "OptionMenuItemTLTPColorPicker")
+			else if (mDesc.mItems[mDesc.mSelectedItem] is "OptionMenuItembd_TLTPColorPicker")
 			{
-				tt = StringTable.Localize(OptionMenuItemTLTPColorPicker(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
-				cr = OptionMenuItemTLTPColorPicker(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
+				tt = StringTable.Localize(OptionMenuItembd_TLTPColorPicker(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
+				cr = OptionMenuItembd_TLTPColorPicker(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
 				bValidObject = true;			
 			}
-			else if (mDesc.mItems[mDesc.mSelectedItem] is "OptionMenuItemTLTPNumberField")
+			else if (mDesc.mItems[mDesc.mSelectedItem] is "OptionMenuItembd_TLTPNumberField")
 			{
-				tt = StringTable.Localize(OptionMenuItemTLTPNumberField(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
-				cr = OptionMenuItemTLTPNumberField(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
+				tt = StringTable.Localize(OptionMenuItembd_TLTPNumberField(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
+				cr = OptionMenuItembd_TLTPNumberField(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
 				bValidObject = true;
 			}	
-			else if (mDesc.mItems[mDesc.mSelectedItem] is "OptionMenuItemTLTPSubmenu")
+			else if (mDesc.mItems[mDesc.mSelectedItem] is "OptionMenuItembd_TLTPSubmenu")
 			{
-				tt = StringTable.Localize(OptionMenuItemTLTPSubmenu(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
-				cr = OptionMenuItemTLTPSubmenu(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
+				tt = StringTable.Localize(OptionMenuItembd_TLTPSubmenu(mDesc.mItems[mDesc.mSelectedItem]).mTooltip);
+				cr = OptionMenuItembd_TLTPSubmenu(mDesc.mItems[mDesc.mSelectedItem]).cr_TipColor;
 				bValidObject = true;
 			}
 			else
@@ -357,35 +357,35 @@ class TLTPOptionsMenu : OptionMenu
 			bValidObject = false;
 		
 		// Update Settings
-		bShowTips = Cvar.GetCVar('tltp_show_tips', players[consoleplayer]).GetBool();
-		bTimeOut = CVar.GetCVar('tltp_time_out', players[consoleplayer]).GetBool();
-		iTimeOutVal = CVar.GetCVar('tltp_time_out_val', players[consoleplayer]).GetInt();
-		bDrawOrder = CVar.GetCVar('tltp_draw_order', players[consoleplayer]).GetBool();
+		bShowTips = Cvar.GetCVar('bd_TLTP_show_tips', players[consoleplayer]).GetBool();
+		bTimeOut = CVar.GetCVar('bd_TLTP_time_out', players[consoleplayer]).GetBool();
+		iTimeOutVal = CVar.GetCVar('bd_TLTP_time_out_val', players[consoleplayer]).GetInt();
+		bDrawOrder = CVar.GetCVar('bd_TLTP_draw_order', players[consoleplayer]).GetBool();
 		
-		bDrawBorder = CVar.GetCVar('tltp_border_toggle', players[consoleplayer]).GetBool();
-		bBorderType = CVar.GetCVar('tltp_border_type', players[consoleplayer]).GetBool();
-		iBorder_HorizontalThickness = CVar.GetCVar('tltp_border_horizontal_thickness', players[consoleplayer]).GetInt();
-		iBorder_VerticalThickness = CVar.GetCVar('tltp_border_vertical_thickness', players[consoleplayer]).GetInt();
-		cBorderColor = Color(CVar.GetCVar('tltp_border_color', players[consoleplayer]).GetInt());
-		fBorderAlpha = CVar.GetCVar('tltp_border_alpha', players[consoleplayer]).GetFloat();
+		bDrawBorder = CVar.GetCVar('bd_TLTP_border_toggle', players[consoleplayer]).GetBool();
+		bBorderType = CVar.GetCVar('bd_TLTP_border_type', players[consoleplayer]).GetBool();
+		iBorder_HorizontalThickness = CVar.GetCVar('bd_TLTP_border_horizontal_thickness', players[consoleplayer]).GetInt();
+		iBorder_VerticalThickness = CVar.GetCVar('bd_TLTP_border_vertical_thickness', players[consoleplayer]).GetInt();
+		cBorderColor = Color(CVar.GetCVar('bd_TLTP_border_color', players[consoleplayer]).GetInt());
+		fBorderAlpha = CVar.GetCVar('bd_TLTP_border_alpha', players[consoleplayer]).GetFloat();
 		
-		bDrawBackground = CVar.GetCVar('tltp_show_background', players[consoleplayer]).GetBool();
-		bBackgroundMode = CVar.GetCVar('tltp_background_mode', players[consoleplayer]).GetBool();
-		iBackground_HorizontalPadding = CVar.GetCVar('tltp_background_horizontal_padding', players[consoleplayer]).GetInt();
-		iBackground_VerticalPadding = CVar.GetCVar('tltp_background_vertical_padding', players[consoleplayer]).GetInt();
+		bDrawBackground = CVar.GetCVar('bd_TLTP_show_background', players[consoleplayer]).GetBool();
+		bBackgroundMode = CVar.GetCVar('bd_TLTP_background_mode', players[consoleplayer]).GetBool();
+		iBackground_HorizontalPadding = CVar.GetCVar('bd_TLTP_background_horizontal_padding', players[consoleplayer]).GetInt();
+		iBackground_VerticalPadding = CVar.GetCVar('bd_TLTP_background_vertical_padding', players[consoleplayer]).GetInt();
 		
-		bDisplayDelay = CVar.GetCVar('tltp_show_delay', players[consoleplayer]).GetBool();
-		bDisplaySkip = CVar.GetCVar('tltp_delay_skip', players[consoleplayer]).GetBool();
-		iDelayTime = CVar.GetCVar('tltp_delay_tics', players[consoleplayer]).GetInt();
+		bDisplayDelay = CVar.GetCVar('bd_TLTP_show_delay', players[consoleplayer]).GetBool();
+		bDisplaySkip = CVar.GetCVar('bd_TLTP_delay_skip', players[consoleplayer]).GetBool();
+		iDelayTime = CVar.GetCVar('bd_TLTP_delay_tics', players[consoleplayer]).GetInt();
 		
-		iTipLocation = CVar.GetCVar('tltp_tooltip_location', players[consoleplayer]).GetInt();
-		iPosition_HorizontalMargin = CVar.GetCVar('tltp_location_horizontal_margin', players[consoleplayer]).GetInt();
-		iPosition_VerticalMargin = CVar.GetCVar('tltp_location_vertical_margin', players[consoleplayer]).GetInt();
-		iTxtAlignment = CVar.GetCVar('tltp_tooltip_alignment', players[consoleplayer]).GetInt();
-		iFontId = CVar.GetCVar('tltp_tooltip_font', players[consoleplayer]).GetInt();
-		sCustomFont = CVar.GetCVar('tltp_tooltip_font_name', players[consoleplayer]).GetString();
-		bFontColorOverride = CVar.GetCVar('tltp_font_color_override', players[consoleplayer]).GetBool();
-		iFontColorOverride = CVar.GetCVar('tltp_font_color', players[consoleplayer]).GetInt();
+		iTipLocation = CVar.GetCVar('bd_TLTP_tooltip_location', players[consoleplayer]).GetInt();
+		iPosition_HorizontalMargin = CVar.GetCVar('bd_TLTP_location_horizontal_margin', players[consoleplayer]).GetInt();
+		iPosition_VerticalMargin = CVar.GetCVar('bd_TLTP_location_vertical_margin', players[consoleplayer]).GetInt();
+		iTxtAlignment = CVar.GetCVar('bd_TLTP_tooltip_alignment', players[consoleplayer]).GetInt();
+		iFontId = CVar.GetCVar('bd_TLTP_tooltip_font', players[consoleplayer]).GetInt();
+		sCustomFont = CVar.GetCVar('bd_TLTP_tooltip_font_name', players[consoleplayer]).GetString();
+		bFontColorOverride = CVar.GetCVar('bd_TLTP_font_color_override', players[consoleplayer]).GetBool();
+		iFontColorOverride = CVar.GetCVar('bd_TLTP_font_color', players[consoleplayer]).GetInt();
 		
 		// Delay Time
 		if (bDisplayDelay && iDelayTime > iCurrentTime)
@@ -437,7 +437,7 @@ class TLTPOptionsMenu : OptionMenu
 					
 		// Get what background to use - this relies on settings
 		if (bDrawBackground)
-			txid_Background = TexMan.CheckForTexture(backgroundSerializer(CVar.GetCVar('tltp_background_name', players[consoleplayer]).GetInt()), TexMan.TYPE_ANY);
+			txid_Background = TexMan.CheckForTexture(backgroundSerializer(CVar.GetCVar('bd_TLTP_background_name', players[consoleplayer]).GetInt()), TexMan.TYPE_ANY);
 		
 		// Figure out what the default cursor should be
 		switch (gameinfo.gametype)
