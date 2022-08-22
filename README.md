@@ -2,6 +2,8 @@
 
 Beautiful Doom © Jekyll Grim Payne aka Agent Ash. All rights reserved.
 
+☕ Support me on Boosty:  https://boosty.to/agent_ash
+
 ## General information
 
 Beautiful Doom is an all-encompassing total enhancement mod for GZDoom, aimed at making Doom feel, look and sound better, while keeping the original balance and gameplay intact (or tweaking it with some of the available options). Smoother animations, some improved sprites, particle effects, physics-based gibbing, as well as high compatibility with other mods—those are some of the features.
