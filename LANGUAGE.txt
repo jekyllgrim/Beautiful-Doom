@@ -128,6 +128,7 @@ BDH_Railgun		= "Railgun";
 //characteristics
 BDH_Continuous		= "Continuous";
 BDH_hstunlock		= "high stunlock";
+BDH_lowfalloff		= "low DMG falloff";
 BDH_medfalloff		= "medium DMG falloff";
 BDH_highfalloff	= "high DMG falloff";
 BDH_vhighfalloff	= "very high DMG falloff";
@@ -253,7 +254,7 @@ BDH_Rifle_Note		= 	"Aiming down sights (ADS) provides zoom and\n"
 						"into a 3-round burst mode.";
 BDH_RifleReload	= "1.54 sec (+1s if dry)";
 BDH_RiflePrimary	= "(Hip) Automatic fire\n(ADS) 3-round burst";
-BDH_RifleFirerate	= "(Hip) 8.75 $BDH_shotssec\n(ADS) 7 $BDH_shotssec";
+BDH_RifleFirerate	= "(Hip) 8.75 %s\n(ADS) 7 %s";
 BDH_RifleSecondary	= "Toggle hip/ADS";
 
 //rocket launcher
@@ -308,7 +309,7 @@ BDH_OrbArea		= "Orb Blast Area";
 BDH_BeamDamage		= "DMG per beam";
 BDH_BeamRange		= "Beam Range";
 BDH_NumberTargets	= "# of Targets";
-BDH_BFGProjSpeed	= "7-21 ($BDH_initial),\nslows down to 0";
+BDH_BFGProjSpeed	= "7-21 (%s),\nslows down to 0";
 
 
 //// Tooltips menu

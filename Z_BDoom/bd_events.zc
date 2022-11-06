@@ -1148,7 +1148,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 					
 					yofs += 30;
 					BD_StatusBarScreen.DrawString("UNRLC",Stringtable.Localize("$BDH_Type"),		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					BD_StatusBarScreen.DrawString("UNRLC",String.Format("%, %s",Stringtable.Localize("$BDH_Bullet"),Stringtable.Localize("$BDH_medfalloff")),
+					BD_StatusBarScreen.DrawString("UNRLC",String.Format("%s, %s",Stringtable.Localize("$BDH_Bullet"),Stringtable.Localize("$BDH_medfalloff")),
 																										(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 30;
@@ -1186,7 +1186,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 					
 					yofs += 30;
 					BD_StatusBarScreen.DrawString("UNRLC",Stringtable.Localize("$BDH_Type"),		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					BD_StatusBarScreen.DrawString("UNRLC",String.Format("%, %s",Stringtable.Localize("$BDH_Pellet"),Stringtable.Localize("$BDH_highfalloff")),			
+					BD_StatusBarScreen.DrawString("UNRLC",String.Format("%s, %s",Stringtable.Localize("$BDH_Pellet"),Stringtable.Localize("$BDH_highfalloff")),			
 																										(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 30;
@@ -1228,7 +1228,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 					
 					yofs += 30;
 					BD_StatusBarScreen.DrawString("UNRLC",Stringtable.Localize("$BDH_Type"),		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					BD_StatusBarScreen.DrawString("UNRLC",String.Format("%s, %s, %s", Stringtable.Localize("$BDH_Pellet"), Stringtable.Localize("$BDH_piercing"), Stringtable.Localize("$BDH_vhighfalloff")),
+					BD_StatusBarScreen.DrawString("UNRLC",String.Format("%s, %s,\n%s", Stringtable.Localize("$BDH_Pellet"), Stringtable.Localize("$BDH_piercing"), Stringtable.Localize("$BDH_vhighfalloff")),
 																										(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 30*2;
@@ -1261,7 +1261,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 																			
 					yofs += 30*2;
 					BD_StatusBarScreen.DrawString("UNRLC",Stringtable.Localize("$BDH_FireRate"),		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					BD_StatusBarScreen.DrawString("UNRLC",Stringtable.Localize("$BDH_RifleFirerate"),		
+					BD_StatusBarScreen.DrawString("UNRLC", String.Format(Stringtable.Localize("$BDH_RifleFirerate"),Stringtable.Localize("$BDH_shotssec"),Stringtable.Localize("$BDH_shotssec")),		
 																			(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 																			
 					yofs += 40*2;
@@ -1275,7 +1275,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 					
 					yofs += 30;
 					BD_StatusBarScreen.DrawString("UNRLC",Stringtable.Localize("$BDH_Type"),			(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					BD_StatusBarScreen.DrawString("UNRLC",String.Format("%s, %s", Stringtable.Localize("$BDH_Bullet"),Stringtable.Localize("$BDH_vhighfalloff")),			
+					BD_StatusBarScreen.DrawString("UNRLC",String.Format("%s, %s", Stringtable.Localize("$BDH_Bullet"),Stringtable.Localize("$BDH_lowfalloff")),			
 																											(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					yofs += 30;
@@ -1406,7 +1406,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 					BD_StatusBarScreen.DrawString("UNRLC","6-14",										(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					yofs += 30*2;
 					BD_StatusBarScreen.DrawString("UNRLC",Stringtable.Localize("$BDH_ProjSpeed"),		(statofs1,yofs),translation:Font.CR_GREEN,scale:(1.5,1.5),linespacing:10);
-					BD_StatusBarScreen.DrawString("UNRLC",Stringtable.Localize("$BDH_BFGProjSpeed"),	(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
+					BD_StatusBarScreen.DrawString("UNRLC", String.Format(Stringtable.Localize("$BDH_BFGProjSpeed"), Stringtable.Localize("$BDH_initial")),	(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5),linespacing:10);
 					
 					
 					note = Stringtable.Localize("$BDH_MBFG_Note");
