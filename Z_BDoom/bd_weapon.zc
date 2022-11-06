@@ -299,6 +299,10 @@ Class BDoomWeapon : Weapon abstract {
 		let weapon = player.ReadyWeapon;
 		if (!weapon || !weapon.DepleteAmmo(weapon.bAltFire, true))
 			return;
+		
+		// Activate shootable linedefs:
+		LineAttack(angle, PLAYERMISSILERANGE, pitch, 0, 'Normal', "BD_NullPuff", LAF_NOIMPACTDECAL, offsetforward: radius);
+		
 		vector2 spread = (0,0);
 		for (int i = 0; i < numbullets; i++) {
 			spread.x = random2[BDFireBull]() * (spread_horz / 256);
@@ -763,20 +767,14 @@ Class BD_RealBullet : FastProjectile {
 		//Console.Printf("bullet spawned at %.1f, %.1f, %.1f | vel: %.1f, %.1f, %.1f",pos.x,pos.y,pos.z,vel.x,vel.y,vel.z);
 	}
 	
-	bool FireLineActivator(){
+	/*bool FireLineActivator(){
 		if (!target || !bACTIVATEIMPACT)
 			return false;
-			
-		FLineTraceData lact;
-		LineTrace(angle, 4096, pitch, data: lact);
-		if (lact.HitLine)	{
-			let lineact = lact.HitLine;
-			lineact.Activate(target, lact.LineSide, SPAC_Impact);
-			return true;
-		}
+		
+		LineAttack(angle, PLAYERMISSILERANGE, pitch, 0, 'Normal', "BD_NullPuff", LAF_NOIMPACTDECAL, offsetforward: radius);
 		
 		return true;
-	}
+	}*/
 	
 	/*virtual void HitSolidActor(Actor victim) {
 		if (target && victim && (victim.bSHOOTABLE || victim.bSOLID)) {
@@ -901,7 +899,7 @@ Class BD_RealBullet : FastProjectile {
 		Death:
 			TNT1 A 1 {
 				CreateDecal();
-				FireLineActivator();
+				//FireLineActivator();
 				let puf = Spawn("BD_EnBulletPuff",pos);
 				if (puf)
 					puf.SetStateLabel("PuffSpawn");
