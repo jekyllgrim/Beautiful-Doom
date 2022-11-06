@@ -328,8 +328,9 @@ Class BDoomWeapon : Weapon abstract {
 		numbullets = abs(numbullets);
 		//fire bullets with explicit angle and simply pass the offsets to the projectiles instead of using AimBulletMissile at puffs (because puffs don't always spawn!)
 		for (int i = 0; i < numbullets; i++) {			
-			double hspread = held ? frandom(-spread_horz,spread_horz) : 0;
-			double vspread = held ? frandom(-spread_vert,spread_vert) : 0;	
+			double hspread = held ? random2() * (spread_horz /255) : 0;
+			double vspread = held ? random2() * (spread_vert /255)  : 0;
+			vspread = BulletSlope();
 			if (bdoom_tracers)
 				A_FireProjectile("BD_BulletTracer",hspread,useammo:false,spawnofs_xy:spawnofs,spawnheight:spawnheight,pitch:vspread);
 			A_FireBullets (hspread, vspread, -1, damage, pufftype,flags:FBF_NORANDOMPUFFZ|FBF_EXPLICITANGLE);
