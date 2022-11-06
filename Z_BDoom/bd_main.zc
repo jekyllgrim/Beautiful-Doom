@@ -971,6 +971,7 @@ Class BdoomPuff : BDoomActor abstract {
 }
 
 //used by stuff like decorative rails spawned by BFGball
+// and by line activator in BD_Weapon
 Class BD_NullPuff : Actor {
 	Default {
 		decal "none";
@@ -1491,18 +1492,35 @@ Class BD_RicochetBullet : BD_SmallDebris {
 }
 
 
-/*
-//////////////// OVERLAY
 
-Class BD_OverlayControl : CustomInventory {
-	Default {
-		+INVENTORY.UNDROPPABLE
-		+INVENTORY.UNTOSSABLE
-		+INVENTORY.UNCLEARABLE
-		inventory.maxamount 1;
+Class BD_DebugSpot : Actor 
+{	
+	Default 
+	{
+		+NOINTERACTION
+		+NOBLOCKMAP
+		+SYNCHRONIZED
+		+DONTBLAST
+		+BRIGHT
+		+FORCEXYBILLBOARD
+		xscale 0.35;
+		yscale 0.292;
+		FloatBobPhase 0;
+		alpha 2;
+		health 3;
+		translation "1:255=%[0.00,1.01,0.00]:[1.02,2.00,0.00]";
 	}
 	
-	override void DoEffect() {
-		if (!owner || !owner.player)
-			return;
-		
+	override void Tick() 
+	{
+		if (GetAge() > 35 * health)
+			Destroy();
+	}
+	
+	states 
+	{
+	Spawn:
+		AMRK A -1;
+		stop;
+	}
+}
