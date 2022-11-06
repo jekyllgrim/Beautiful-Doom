@@ -299,13 +299,16 @@ Class BDoomWeapon : Weapon abstract {
 		let weapon = player.ReadyWeapon;
 		if (!weapon || !weapon.DepleteAmmo(weapon.bAltFire, true))
 			return;
+		vector2 spread = (0,0);
 		for (int i = 0; i < numbullets; i++) {
+			spread.x = random2[BDFireBull]() * (spread_horz / 256);
+			spread.y = BulletSlope() - pitch + random2[BDFireBull]() * (spread_vert / 256);
 			A_FireProjectile(
 				bullet, 
-				angle: frandom(-spread_horz,spread_horz),
+				angle: spread.x,
 				useammo:false,
 				spawnheight: 2,
-				pitch: frandom(-spread_vert,spread_vert)
+				pitch: spread.y
 			);
 		}
 	}
@@ -327,13 +330,24 @@ Class BDoomWeapon : Weapon abstract {
 		//make sure numbullets is positive, now that the check is finished
 		numbullets = abs(numbullets);
 		//fire bullets with explicit angle and simply pass the offsets to the projectiles instead of using AimBulletMissile at puffs (because puffs don't always spawn!)
-		for (int i = 0; i < numbullets; i++) {			
-			double hspread = held ? random2() * (spread_horz /255) : 0;
-			double vspread = held ? random2() * (spread_vert /255)  : 0;
-			vspread = BulletSlope();
-			if (bdoom_tracers)
-				A_FireProjectile("BD_BulletTracer",hspread,useammo:false,spawnofs_xy:spawnofs,spawnheight:spawnheight,pitch:vspread);
-			A_FireBullets (hspread, vspread, -1, damage, pufftype,flags:FBF_NORANDOMPUFFZ|FBF_EXPLICITANGLE);
+		for (int i = 0; i < numbullets; i++) {
+			vector2 spread = (0,0);
+			if (held) {
+				spread.x = random2[BDFireBull]() * (spread_horz / 256);
+				spread.y = BulletSlope() - pitch + random2[BDFireBull]() * (spread_vert / 256);
+			}
+			
+			if (bdoom_tracers) {
+				A_FireProjectile(
+					"BD_BulletTracer",
+					spread.x,
+					useammo:false,
+					spawnofs_xy:spawnofs,
+					spawnheight:spawnheight,
+					pitch:spread.y
+				);
+			}
+			A_FireBullets (spread.x, spread.y, -1, damage, pufftype,flags:FBF_NORANDOMPUFFZ|FBF_EXPLICITANGLE);
 		}
 	}
 	
@@ -704,6 +718,7 @@ Class BDoomWeapon : Weapon abstract {
 
 
 Class BD_RealBullet : FastProjectile {
+	protected bool dead;
 	mixin BD_DecalControl;
 	protected vector3 SpawnPos; //where the bullet was shot from
 	double bulletdamage; 		//the actual damage value
@@ -716,12 +731,15 @@ Class BD_RealBullet : FastProjectile {
 	property falloffstrength : falloffstrength;
 	property falloffdistance : falloffdistance;
 	property mindamage : mindamage;
+	
 	Default {
 		BD_RealBullet.bulletDamage 10;
 		BD_RealBullet.bulletspeed 200;
 		BD_RealBullet.FalloffDistance 1024;
 		BD_RealBullet.falloffstrength 0.3;
 		BD_RealBullet.mindamage 1;
+		//projectile;
+		//+NOINTERACTION
 		+BLOODSPLATTER
 		+HITTRACER
 		radius 1;
@@ -733,6 +751,7 @@ Class BD_RealBullet : FastProjectile {
 		deathsound "";
 		DamageFunction CalculateDamage();
 	}
+	
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		if (!(vel ~== (0,0,0))) {
@@ -743,15 +762,83 @@ Class BD_RealBullet : FastProjectile {
 			SpawnPos = target.pos;
 		//Console.Printf("bullet spawned at %.1f, %.1f, %.1f | vel: %.1f, %.1f, %.1f",pos.x,pos.y,pos.z,vel.x,vel.y,vel.z);
 	}
+	
+	bool FireLineActivator(){
+		if (!target || !bACTIVATEIMPACT)
+			return false;
+			
+		FLineTraceData lact;
+		LineTrace(angle, 4096, pitch, data: lact);
+		if (lact.HitLine)	{
+			let lineact = lact.HitLine;
+			lineact.Activate(target, lact.LineSide, SPAC_Impact);
+			return true;
+		}
+		
+		return true;
+	}
+	
+	/*virtual void HitSolidActor(Actor victim) {
+		if (target && victim && (victim.bSHOOTABLE || victim.bSOLID)) {
+			dead = true;
+			FireLineActivator();
+			if (victim.bSHOOTABLE) {
+				let dmg = victim.DamageMobj(self, target, CalculateDamage(), 'Normal');
+				if (dmg > 0 && bBLOODSPLATTER && !victim.bNOBLOOD) {
+					victim.TraceBleed(dmg, self);
+					victim.SpawnBlood(pos, AngleTo(victim), dmg);
+				}
+				SetStateLabel("XDeath");
+			}
+			else if (victim.bSOLID) {
+				SetStateLabel("Death");
+			}
+		}
+	}*/
+	
+	int CalculateDamage() {
+		double ddamage;
+		double FalloffFactor = 0;
+		double ddistance = level.Vec3Diff(pos, SpawnPos).length() - falloffdistance;
+		//Essentially falloff factor is retroactively applied "every tick", so there are fewer falloff steps for faster projectiles:
+		if (ddistance > 0)
+			FalloffFactor = ddistance / bulletspeed;
+		//falloffstrength is by how much it's reduced—this is applied to damage "every tick"
+		ddamage = clamp(bulletdamage*(falloffstrength**FalloffFactor),mindamage,100);
+		//console.printf("distance: %d Damage: %d",level.Vec3Diff(pos, SpawnPos).length(),ddamage);
+		return int(ddamage);
+	}
+	
 	//whizz sound snippet by phantombeta
 	override void Tick () {
 		if (isFrozen())
 			return;
 		Vector3 oldPos = pos;		
 		Super.Tick();
+		/*if (dead)
+			return;
+		
+		A_FaceMovementDirection();
+		FLineTraceData colcheck;
+		LineTrace(angle, vel.length(), pitch, TRF_SOLIDACTORS, data: colcheck);
+		let ht = colcheck.HitType;
+		if (ht == TRACE_HitActor) {
+			let act = colcheck.HitActor;
+			if (act && act != target && (act.BSOLID || act.bSHOOTABLE)) {
+				HitSolidActor(act);
+			}
+		}
+		if (!dead && (ht == TRACE_HitFloor || ht == TRACE_HitCeiling || ht == TRACE_HitWall)) {
+			A_Stop();
+			FireLineActivator();
+			SetStateLabel("Death");
+			dead = true;
+		}*/
+		
+		// Spawn underwater bubbles:
 		if (bdoom_debris && waterlevel > 2 && level.Vec3Diff(oldPos, SpawnPos).length() > 100) {
 			Vector3 path = level.vec3Diff( pos, oldPos );
-			double distance = path.length() / 4; //this determines how far apart the particles are
+			double distance = path.length() / 4;
 			Vector3 direction = path / distance;
 			int steps = int( distance );			
 			for( int i = 0; i < steps; i++ )  {
@@ -772,18 +859,6 @@ Class BD_RealBullet : FastProjectile {
 			return;
 		if (CheckIfCloser (curCamera, 192))
 			A_StartSound("weapons/tracerwhizz",slot:CHAN_WEAPON,attenuation:8);
-	}
-	double CalculateDamage() {
-		int ddamage;
-		int FalloffFactor = 0;
-		double ddistance = level.Vec3Diff(pos, SpawnPos).length() - falloffdistance;
-		//Essentially falloff factor is retroactively applied "every tick", so there are fewer falloff steps for faster projectiles:
-		if (ddistance > 0)
-			FalloffFactor = int (ddistance / bulletspeed);
-		//falloffstrength is by how much it's reduced—this is applied to damage "every tick"
-		ddamage = clamp(bulletdamage*(falloffstrength**FalloffFactor),mindamage,100);
-		//console.printf("distance: %d Damage: %d",level.Vec3Diff(pos, SpawnPos).length(),ddamage);
-		return ddamage;
 	}
 		
 	states {
@@ -826,6 +901,7 @@ Class BD_RealBullet : FastProjectile {
 		Death:
 			TNT1 A 1 {
 				CreateDecal();
+				FireLineActivator();
 				let puf = Spawn("BD_EnBulletPuff",pos);
 				if (puf)
 					puf.SetStateLabel("PuffSpawn");
@@ -835,6 +911,7 @@ Class BD_RealBullet : FastProjectile {
 }
 
 Class BD_BulletTracer : BD_RealBullet {
+
 	Default {
 		BD_RealBullet.bulletspeed 256;
 		-ACTIVATEIMPACT;
@@ -843,7 +920,8 @@ Class BD_BulletTracer : BD_RealBullet {
 		damage 0;
 		radius 4;
 		height 4;
-	}    
+	}   
+	
 	states {
 		Death:
 			TNT1 A 1;
@@ -891,6 +969,43 @@ Class BD_SSGPellet : BD_RealBullet {
 		BD_RealBullet.FalloffDistance 300;
 		BD_RealBullet.falloffstrength 0.8;
 	}
+	
+	/*override void HitSolidActor(Actor victim) {
+		//deal damage only ONCE even if the pellet rips through
+		//first we make sure the vicitm hasn't been hit yet and isn't the shooter:
+		if (victim && target && victim.bSHOOTABLE && (victim != target) && (victim != hitvictim)) {
+			//reduce ripping ability based on victim's current health (thick monsters are harder to pierce):
+			ripdepth -= victim.health; 
+			hitvictim = victim;
+			bulletdamage = CalculateDamage();
+			let dmg = victim.DamageMobj(self,target,bulletdamage, 'Normal');
+			if (dmg > 0 && !victim.bNOBLOOD && victim.bSHOOTABLE) {
+				if (Distance3D(target) <= 320) {
+					let xd = victim.FindState("XDeath");
+					if (xd && !InStateSequence(victim.curstate,xd)) {
+						if (!victim.FindInventory("BD_SSGGibControl"))
+							victim.GiveInventory("BD_SSGGibControl",1);
+						let ssgib = BD_SSGGibControl(victim.FindInventory("BD_SSGGibControl"));
+						if (ssgib)
+							ssgib.dmgtotal -= bulletdamage*2;
+						//Console.Printf("%s dmgtotal: %d/%d",victim.GetClassName(),ssgib.dmgtotal,victim.GetGibHealth());
+					}
+				}
+				victim.TraceBleed(bulletdamage,self);
+				victim.SpawnBlood(pos,AngleTo(victim),bulletdamage);
+			}
+			if (ripdepth <= 0) {
+				dead = true;
+				SetStateLabel("XDeath");
+			}
+		}
+		else if (victim.bSOLID) {
+			dead = true;
+			FireLineActivator();
+			SetStateLabel("Death");
+		}
+	}*/
+	
 	override int SpecialMissileHit(actor victim) {
 		//deal damage only ONCE even if the pellet rips through
 		//first we make sure the vicitm hasn't been hit yet and isn't the shooter:
