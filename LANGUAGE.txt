@@ -96,8 +96,9 @@ BDO_DISABLED		= "Disabled";
 BDO_ENABLED			= "Enabled";
 BDO_DEHACKEDONLY	= "DEHACKED only";
 BDO_DEHACKEDSPRITES	= "DEHACKED and sprites";
-BDO_BLOOD_NOPOOLS	= "Only blood particles (no pools)";
-BDO_BLOOD_FULL		= "Blood particles and pools";
+BDO_BLOOD_NOPOOLS	= "Only blood particles (no spatters or pools)";
+BDO_BLOOD_FULL		= "Particles and spatters (no pools under bodies)";
+BDO_BLOOD_MAX		= "Particles, spatters and pools under bodies";
 
 //// Beautiful Doom Weapon Help strings
 

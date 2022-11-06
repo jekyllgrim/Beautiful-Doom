@@ -38,8 +38,8 @@ OptionMenu "BDoom_Settings" {
 	Class "bd_TLTPOptionsMenu"
 	Title "$BDMENU_TITLE"
 	StaticText "$BDMENU_TITLE_KEYS", yellow
-	ControlGC_bd_TLTP "$BDMENU_QKICK_NAME",		"$BDMENU_QKICK", "White",	"+user1","bdoom_weapons",2,1
-	ControlGC_bd_TLTP "$BDMENU_WEAPONHELP_NAME",	"$BDMENU_WEAPONHELP", "White",	"event BD_ShowWeapHelp","bdoom_weapons",0,0
+	BD_ControlGC_bd_TLTP "$BDMENU_QKICK_NAME",		"$BDMENU_QKICK", "White",	"+user1","bdoom_weapons",2,1
+	BD_ControlGC_bd_TLTP "$BDMENU_WEAPONHELP_NAME",	"$BDMENU_WEAPONHELP", "White",	"event BD_ShowWeapHelp","bdoom_weapons",0,0
 	bd_TLTPControl "$BDMENU_CLEARDEBRIS_NAME",		"$BDMENU_CLEARDEBRIS", "White", "netevent BD_ClearDebris"
 	StaticText " "
 	
@@ -47,15 +47,15 @@ OptionMenu "BDoom_Settings" {
 	bd_TLTPOption "$BDMENU_PLAYERWEAPONS_NAME",	"$BDMENU_PLAYERWEAPONS", "White","bdoom_weapons", "bdoom_weapons", "bdoom_replaceweapons"
 	bd_TLTPOption "$BDMENU_BOBSTYLE_NAME",			"$BDMENU_weaponbobstyle", "White","bdoom_weaponbobstyle", "BobStyle", "bdoom_replaceweapons"
 	Option "$BDMENU_FLASHES_NAME", 				"bdoom_muzzle", "bdoom_muzzle", "bdoom_replaceweapons"
-	OptionBoth "$BDMENU_TRACERS_NAME",			"$BDMENU_TRACERS", "White","bdoom_tracers", "OnOff", "bdoom_replaceweapons", "bdoom_replacemonsters"
-	OptionBGReload_bd_TLTP "$BDMENU_AUTORELOAD_NAME","$BDMENU_AUTORELOAD", "White", "bdoom_autoreload", "OnOff", "bdoom_weapons", "bdoom_replaceweapons"
+	BD_OptionBoth "$BDMENU_TRACERS_NAME",			"$BDMENU_TRACERS", "White","bdoom_tracers", "OnOff", "bdoom_replaceweapons", "bdoom_replacemonsters"
+	BD_OptionBGReload_bd_TLTP "$BDMENU_AUTORELOAD_NAME","$BDMENU_AUTORELOAD", "White", "bdoom_autoreload", "OnOff", "bdoom_weapons", "bdoom_replaceweapons"
 	bd_TLTPOption "$BDMENU_GLOVES_NAME",			"$BDMENU_GLOVES", "White", "bdoom_blackgloves", "bdgloves", "bdoom_replaceweapons"
 	StaticText " "
 	
 	StaticText "$BDMENU_TITLE_SFX", yellow
 	bd_TLTPOption "$BDMENU_GIBS_NAME",		"$BDMENU_GIBSTOGGLE", "White","bdoom_gibs", "OnOff", "bdoom_replacemonsters"
 	bd_TLTPOption "$BDMENU_BLOOD_NAME",				"$BDMENU_BLOODTOGGLE", "White","bdoom_blood", "bdoom_blood"
-	OptionEither_bd_TLTP "$BDMENU_NOBOSSGIBS_NAME","$BDMENU_NOBOSSGIBS","White",	"bdoom_nobossgibs", "OnOff", "bdoom_gibs", "bdoom_replacemonsters"
+	BD_OptionEither_bd_TLTP "$BDMENU_NOBOSSGIBS_NAME","$BDMENU_NOBOSSGIBS","White",	"bdoom_nobossgibs", "OnOff", "bdoom_gibs", "bdoom_replacemonsters"
 	bd_TLTPOption "$BDMENU_PROJ_NAME",		"$BDMENU_PROJTOGGLE", "White","bdoom_projectiles", "bdoom_projectiles", "bdoom_replacemonsters"
 	bd_TLTPOption "$BDMENU_FLAMES_NAME",		"$BDMENU_FLAMES", "White",	"bdoom_flames", "OnOff", ""
 	bd_TLTPOption "$BDMENU_DEBRIS_NAME",			"$BDMENU_DEBRIS", "White",	"bdoom_debris", "OnOff", "", 1	
@@ -64,10 +64,10 @@ OptionMenu "BDoom_Settings" {
 	bd_TLTPOption "$BDMENU_goretextures_NAME",	"$BDMENU_goretextures", "White", "bdoom_goretextures", "OnOff", ""
 	StaticText " "
 	
-	ScaleSliderGC "$BDMENU_MAXGIBS",		"bdoom_gibnum", 100, 3000, 100, "", "bdoom_gibs", "bdoom_replacemonsters"
-	ScaleSliderGC "$BDMENU_MAXBLOOD",		"bdoom_bloodnum", 100, 3000, 100, "", "bdoom_blood"
-	ScaleSliderGC "$BDMENU_MAXFLAMES",		"bdoom_flamesnum", 100, 5000, 100, "", "bdoom_flames"
-	ScaleSliderGC "$BDMENU_MAXDEBRIS",	"bdoom_debrisnum", 100, 5000, 100, "", "bdoom_debris"
+	BD_ScaleSliderGC "$BDMENU_MAXGIBS",		"bdoom_gibnum", 100, 3000, 100, "", "bdoom_gibs", "bdoom_replacemonsters"
+	BD_ScaleSliderGC "$BDMENU_MAXBLOOD",		"bdoom_bloodnum", 100, 3000, 100, "", "bdoom_blood"
+	BD_ScaleSliderGC "$BDMENU_MAXFLAMES",		"bdoom_flamesnum", 100, 5000, 100, "", "bdoom_flames"
+	BD_ScaleSliderGC "$BDMENU_MAXDEBRIS",	"bdoom_debrisnum", 100, 5000, 100, "", "bdoom_debris"
 	StaticText " "
 	
 	StaticText "$BDMENU_TITLE_EXTRAFX", yellow
@@ -83,13 +83,13 @@ OptionMenu "BDoom_Settings" {
 
 	StaticText "$BDMENU_TITLE_COMPATIBILITY", yellow
 	StaticText "$BDMENU_COMPATIBILITY_NOTE", green
-	OptionBoth "$BDMENU_SAFEREPLACEMENT_NAME", 	"$BDMENU_SAFEREPLACEMENT", "white", "bdoom_safereplacement", "SafeReplacement", "bdoom_replaceobjects", "bdoom_replacemonsters"
+	BD_OptionBoth "$BDMENU_SAFEREPLACEMENT_NAME", 	"$BDMENU_SAFEREPLACEMENT", "white", "bdoom_safereplacement", "SafeReplacement", "bdoom_replaceobjects", "bdoom_replacemonsters"
 	bd_TLTPOption "$BDMENU_REPLACEWEAPONS_NAME",		"$BDMENU_REPLACEWEAPONS", "White", "bdoom_replaceweapons", "Toggle", ""
 	bd_TLTPOption "$BDMENU_REPLACEMONSTERS_NAME",		"$BDMENU_REPLACEMONSTERS","White", "bdoom_replacemonsters", "Toggle", ""
 	bd_TLTPOption "$BDMENU_REPLACEITEMS_NAME",			"$BDMENU_REPLACEITEMS", "White", "bdoom_replaceitems", "Toggle", "", 1	
 	bd_TLTPOption "$BDMENU_REPLACEOBJECTS_NAME",	"$BDMENU_REPLACEOBJECTS","White", "bdoom_replaceobjects", "Toggle", "", 1	
 	StaticText ""
-	SubmenuGC "$BDMENU_PERMONSTERREPLACEMENT", "BDMonsterReplacements", "bdoom_replacemonsters"
+	BD_SubmenuGC "$BDMENU_PERMONSTERREPLACEMENT", "BDMonsterReplacements", "bdoom_replacemonsters"
 	StaticText " "
 	
 	StaticText "$TLTPTOOLTIPMNU_VERSION", "yellow"
@@ -156,8 +156,9 @@ OptionValue "bdoom_weapons" {
 
 OptionValue "bdoom_blood" {
 	0, "$BDO_DISABLED"
-	1, "$BDO_BLOOD_FULL"
-	2, "$BDO_BLOOD_NOPOOLS"
+	1, "$BDO_BLOOD_NOPOOLS"
+	2, "$BDO_BLOOD_FULL"
+	3, "$BDO_BLOOD_MAX"
 }
 
 OptionValue "bdoom_muzzle" {

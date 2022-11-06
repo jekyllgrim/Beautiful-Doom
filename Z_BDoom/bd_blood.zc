@@ -80,7 +80,7 @@ Class BD_Blood : BD_BloodBase {
 		roll = random[bdsfx](0,359);
 		sprite = GetSpriteIndex(bsprite[random[bdsfx](0,2)]);
 		scalemul = 1.02;
-		if (bdoom_blood == 2) {
+		if (bdoom_blood < BLOOD_FULL) {
 			hitceiling = false;
 		}
 	}
@@ -128,7 +128,7 @@ Class BD_Blood : BD_BloodBase {
 			return;
 		A_Stop();
 		A_Scream();
-		if (bdoom_blood == 2) {
+		if (bdoom_blood < BLOOD_FULL) {
 			destroy();
 			return;
 		}
@@ -345,7 +345,7 @@ Class BD_BaseBloodPool : BD_BloodBase abstract {
 	}
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
-		if (bdoom_blood == 2) {
+		if (bdoom_blood < BLOOD_FULL) {
 			destroy();
 			return;
 		}
@@ -453,7 +453,7 @@ Class BD_AniBloodPool : BD_BaseBloodPool {
 		radius 1;
 	}
 	override void PostBeginPlay() {
-		if (bdoom_blood >= 2) {
+		if (bdoom_blood < BLOOD_MAX) {
 			destroy();
 			return;
 		}

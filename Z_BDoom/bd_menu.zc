@@ -1,12 +1,12 @@
 // ScaleSlader that can be greyed out. Supports up to 3 cvars and is greyed out if either is false
 
-class OptionMenuItemScaleSliderGC : OptionMenuItemScaleSlider
+class OptionMenuItemBD_ScaleSliderGC : OptionMenuItemScaleSlider
 {
 	CVar mGrayCheck;
 	CVar mGrayCheck2;
 	CVar mGrayCheck3;
 	
-	OptionMenuItemScaleSliderGC Init(String label, Name command, double min, double max, double step, String zero, CVar graycheck = null, CVar graycheck2 = null, CVar graycheck3 = null)
+	OptionMenuItemBD_ScaleSliderGC Init(String label, Name command, double min, double max, double step, String zero, CVar graycheck = null, CVar graycheck2 = null, CVar graycheck3 = null)
 	{
 		Super.Init(label, command, min, max, step, zero);
 		mCVar = CVar.FindCVar(command);
@@ -60,11 +60,11 @@ class OptionMenuItemScaleSliderGC : OptionMenuItemScaleSlider
 
 // Submenu that can be greyed out
 
-class OptionMenuItemSubmenuGC : OptionMenuItemSubmenu
+class OptionMenuItemBD_SubmenuGC : OptionMenuItemSubmenu
 {
 	CVar mGrayCheck;
 	
-	OptionMenuItemSubmenuGC Init(String label, Name command, CVar graycheck, int param = 0, bool centered = false)
+	OptionMenuItemBD_SubmenuGC Init(String label, Name command, CVar graycheck, int param = 0, bool centered = false)
 	{
 		Super.init(label, command, centered, param);
 		mGrayCheck = graycheck;
@@ -96,12 +96,12 @@ class OptionMenuItemSubmenuGC : OptionMenuItemSubmenu
 
 // Option menu that can be greyed out when CVAR != 2 (for background weapon autoreload option, it's only available when bdoom_weapons == 2)
 
-Class OptionMenuItemOptionBGReload_bd_TLTP : OptionMenuItembd_TLTPOption
+Class OptionMenuItemBD_OptionBGReload_bd_TLTP : OptionMenuItembd_TLTPOption
 {
 	CVar mCVar2;
 	CVar mGrayCheck2;
 
-	OptionMenuItemOptionBGReload_bd_TLTP Init(String label, String tooltip, Name tipColor, Name command, Name values, CVar graycheck = null, CVar graycheck2 = null)
+	OptionMenuItemBD_OptionBGReload_bd_TLTP Init(String label, String tooltip, Name tipColor, Name command, Name values, CVar graycheck = null, CVar graycheck2 = null)
 	{
 		Super.Init(label, tooltip, tipcolor, command, values, graycheck);
 		mCVar2 = CVar.FindCVar(mAction);
@@ -119,7 +119,7 @@ Class OptionMenuItemOptionBGReload_bd_TLTP : OptionMenuItembd_TLTPOption
 }
 
 //option item that is unselectable when either of 2 cvars is false
-class OptionMenuItemOptionEither_bd_TLTP : OptionMenuItembd_TLTPOption
+class OptionMenuItemBD_OptionEither_bd_TLTP : OptionMenuItembd_TLTPOption
 {
 	CVar mCVar2;
 	CVar mGrayCheck2;
@@ -142,7 +142,7 @@ class OptionMenuItemOptionEither_bd_TLTP : OptionMenuItembd_TLTPOption
 }
 
 //option item that is unselectable when both of 2 cvars is false
-Class OptionMenuItemOptionBoth : OptionMenuItemOptionEither_bd_TLTP
+Class OptionMenuItemBD_OptionBoth : OptionMenuItemBD_OptionEither_bd_TLTP
 {
 	override bool isGrayed()
 	{
@@ -154,13 +154,13 @@ Class OptionMenuItemOptionBoth : OptionMenuItemOptionEither_bd_TLTP
 }
 
 //a control (keybind) widget that gets greyed out if CVar value is equal to CVarVal, OR, if InverseCheck is true, if it's NOT equal to CVarVal
-class OptionMenuItemControlGC_bd_TLTP : OptionMenuItembd_TLTPControl
+class OptionMenuItemBD_ControlGC_bd_TLTP : OptionMenuItembd_TLTPControl
 {	
 	CVar mCVar;
 	CVar mGrayCheck;
 	int mCVarVal;
 	int mInverseCheck;
-	OptionMenuItemControlGC_bd_TLTP Init(String label, String tooltip, Name tipColor, Name command, CVar graycheck = null, int CvarVal = 0, int InverseCheck = 0)
+	OptionMenuItemBD_ControlGC_bd_TLTP Init(String label, String tooltip, Name tipColor, Name command, CVar graycheck = null, int CvarVal = 0, int InverseCheck = 0)
 	{
 		mTooltip = tooltip;
 		cr_TipColor = tipColor;
