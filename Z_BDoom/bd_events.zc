@@ -351,31 +351,31 @@ Class BD_LiquidTexturesHandler : EventHandler {
 	static const name BD_SP_DUDE8[] = { "textures/BD_DUDE8a.png", "textures/BD_DUDE8b.png", "textures/BD_DUDE8c.png" };
 	void BD_ReplaceGoreTextures() {
 		if (bdoom_goretextures) {
-			level.ReplaceTextures("SP_DUDE1", BD_SP_DUDE1[random(0,1)],0);
-			level.ReplaceTextures("SP_DUDE2", BD_SP_DUDE2[random(0,1)],0);
-			level.ReplaceTextures("SP_DUDE4", BD_SP_DUDE4[random(0,2)],0);
-			level.ReplaceTextures("SP_DUDE5", BD_SP_DUDE5[random(0,3)],0);
-			level.ReplaceTextures("SP_DUDE7", BD_SP_DUDE7[random(0,2)],0);
-			level.ReplaceTextures("SP_DUDE8", BD_SP_DUDE8[random(0,2)],0);
+			BD_ReplaceTextures("SP_DUDE1", BD_SP_DUDE1[random[goretexreplace](0,1)],0);
+			BD_ReplaceTextures("SP_DUDE2", BD_SP_DUDE2[random[goretexreplace](0,1)],0);
+			BD_ReplaceTextures("SP_DUDE4", BD_SP_DUDE4[random[goretexreplace](0,2)],0);
+			BD_ReplaceTextures("SP_DUDE5", BD_SP_DUDE5[random[goretexreplace](0,3)],0);
+			BD_ReplaceTextures("SP_DUDE7", BD_SP_DUDE7[random[goretexreplace](0,2)],0);
+			BD_ReplaceTextures("SP_DUDE8", BD_SP_DUDE8[random[goretexreplace](0,2)],0);
 		}
 		else {
-			level.ReplaceTextures("textures/BD_DUDE1a.png", "SP_DUDE1",0);
-			level.ReplaceTextures("textures/BD_DUDE1b.png", "SP_DUDE1",0);
-			level.ReplaceTextures("textures/BD_DUDE2a.png", "SP_DUDE2",0);
-			level.ReplaceTextures("textures/BD_DUDE2b.png", "SP_DUDE2",0);
-			level.ReplaceTextures("textures/BD_DUDE4a.png", "SP_DUDE4",0);
-			level.ReplaceTextures("textures/BD_DUDE4b.png", "SP_DUDE4",0);
-			level.ReplaceTextures("textures/BD_DUDE4c.png", "SP_DUDE4",0);
-			level.ReplaceTextures("textures/BD_DUDE5a.png", "SP_DUDE5",0);
-			level.ReplaceTextures("textures/BD_DUDE5b.png", "SP_DUDE5",0);
-			level.ReplaceTextures("textures/BD_DUDE5c.png", "SP_DUDE5",0);
-			level.ReplaceTextures("textures/BD_DUDE5d.png", "SP_DUDE5",0);
-			level.ReplaceTextures("textures/BD_DUDE7a.png", "SP_DUDE7",0);
-			level.ReplaceTextures("textures/BD_DUDE7b.png", "SP_DUDE7",0);
-			level.ReplaceTextures("textures/BD_DUDE7c.png", "SP_DUDE7",0);
-			level.ReplaceTextures("textures/BD_DUDE8a.png", "SP_DUDE8",0);
-			level.ReplaceTextures("textures/BD_DUDE8b.png", "SP_DUDE8",0);
-			level.ReplaceTextures("textures/BD_DUDE8c.png", "SP_DUDE8",0);
+			BD_ReplaceTextures("textures/BD_DUDE1a.png", "SP_DUDE1",0);
+			BD_ReplaceTextures("textures/BD_DUDE1b.png", "SP_DUDE1",0);
+			BD_ReplaceTextures("textures/BD_DUDE2a.png", "SP_DUDE2",0);
+			BD_ReplaceTextures("textures/BD_DUDE2b.png", "SP_DUDE2",0);
+			BD_ReplaceTextures("textures/BD_DUDE4a.png", "SP_DUDE4",0);
+			BD_ReplaceTextures("textures/BD_DUDE4b.png", "SP_DUDE4",0);
+			BD_ReplaceTextures("textures/BD_DUDE4c.png", "SP_DUDE4",0);
+			BD_ReplaceTextures("textures/BD_DUDE5a.png", "SP_DUDE5",0);
+			BD_ReplaceTextures("textures/BD_DUDE5b.png", "SP_DUDE5",0);
+			BD_ReplaceTextures("textures/BD_DUDE5c.png", "SP_DUDE5",0);
+			BD_ReplaceTextures("textures/BD_DUDE5d.png", "SP_DUDE5",0);
+			BD_ReplaceTextures("textures/BD_DUDE7a.png", "SP_DUDE7",0);
+			BD_ReplaceTextures("textures/BD_DUDE7b.png", "SP_DUDE7",0);
+			BD_ReplaceTextures("textures/BD_DUDE7c.png", "SP_DUDE7",0);
+			BD_ReplaceTextures("textures/BD_DUDE8a.png", "SP_DUDE8",0);
+			BD_ReplaceTextures("textures/BD_DUDE8b.png", "SP_DUDE8",0);
+			BD_ReplaceTextures("textures/BD_DUDE8c.png", "SP_DUDE8",0);
 		}			
 	}
 	void BD_ReplaceLiquidTextures() {
