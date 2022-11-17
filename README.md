@@ -31,9 +31,9 @@ Releases aren't always super-stable or bug-free, but they should be playable. So
 
 It's possible to play the version that is currently in the repository but hasn't been made into a separate release yet:
 
-1. Click the green "**Code**" button in the top right part of the page. (Previously it was called "Clone or download")
+1. Click [here](https://github.com/jekyllgrim/Beautiful-Doom/archive/refs/heads/master.zip), or click the green "**Code**" button at the top right of this page and choose "**Download ZIP**". This will download a file called `Beautiful-doom-master.zip`.
 
-2. Click "**Download ZIP**". You do NOT need to unpack the downloaded archive!
+2. Do not unpack the downloaded archive!
 
 3. (Optional) Rename the downloaded **.zip** to **.pk3** to remember that you don't need to unpack it.
 
