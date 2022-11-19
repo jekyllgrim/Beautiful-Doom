@@ -88,52 +88,81 @@ Class BD_Chaingun : BDoomWeapon {
 			bAMMO_OPTIONAL = false;
 			//console.printf("spin speed: %d | frame: %d | tics: %d",spinspeed,spinframe,spintics);
 		}
+		
+		// Weapons are set to Enhanced, this weapon is selected,
+		// player is alive:
 		if (bdoom_weapons == 1 && owner.player.readyweapon == self && owner.health > 0) {
+			// Check PSP_WEAPON layer is active, do nothing otherwise:
 			let psp = owner.player.FindPSprite(PSP_Weapon);
 			if (!psp)
 				return;
+			// If heatstacks are above 0 and the chaingun is 
+			// either already overheated, or the player is
+			// not currently pressing the Fire button, reduce
+			// the amount lf heat:
 			if (heatStacks > 0 && (isLocked || (!(owner.player.cmd.buttons & BT_ATTACK)))) {
+				// If the chaingun is overheated, reduce
+				// by 0.5, otherwise reduce by 1:
 				double rd = isLocked ? 0.5 : 1;
 				HeatStacks = Clamp(heatStacks-rd,0,60); 
 			}
-			//handle altfire spinning:
+			
+			// If the gun is in the AltFire sequence
+			// (i.e. currently spinning):
 			if (InStateSequence(psp.curstate,s_spin)) {			
+				// Play the spin sound:
 				owner.A_StartSound("weapons/chaingun/spin",CHAN_CHGSPIN,flags:CHANF_LOOPING);
-				//spinspeed increases while holding altfire
+				// spinspeed increases while holding AltFire:
 				if (owner.player.cmd.buttons & BT_ALTATTACK && owner.player.oldbuttons & BT_ALTATTACK) {
 					spinspeed = Clamp(spinspeed+0.7,0,40);
 				}
-				//decreases otherwise
+				// Decreases otherwise:
 				else {
 					spinspeed = Clamp(spinspeed-0.5,0,40);
 				}
-				//spin sound pitch continuously changes based on spinspeed
+				// Spin sound pitch continuously changes 
+				// based on current spinspeed:
 				owner.A_SoundPitch(CHAN_CHGSPIN,Clamp(spinspeed * 0.022,0.2,1));
-				//defines the duration of the current frame based on spinspeed, always between 1-4
+				// Defines the duration of the current frame 
+				// based on spinspeed, always between 1-4:
 				spintics = Clamp(4 - floor(spinspeed * 0.1),1,4);
 			}
-			//if not in altfire spinspeed is quickly but not immediately decreased and the sound is still played
+			// If not in altfire spinspeed is quickly but 
+			// NOT immediately decreased and the sound is
+			// still played:
 			else if (spinspeed > 0) {
 				spinspeed = Clamp(spinspeed-1,0,40);
 				owner.A_SoundPitch(CHAN_CHGSPIN,Clamp(spinspeed * 0.022,0.2,1));
 			}
+			// If spinspeed is 0, stop the spin sound:
 			else
-				owner.A_StopSound(CHAN_CHGSPIN);			
+				owner.A_StopSound(CHAN_CHGSPIN);
+
+			// Now handle the cooling sound and overheat layer.
+			// Do this if heat is above 0:
 			if (heatStacks > 0) {
+				// Modify the cooling sound volume based on
+				// the amount of heatstacks:
 				owner.A_SoundVolume(CHAN_CHGCOOL,HeatStacks*0.0165);
+				// Check PSP_HEAT layer exists; if not,
+				// set it:
 				let fl = owner.player.FindPsprite(PSP_HEAT);
 				if (!fl) {
 					owner.player.SetPSprite(PSP_HEAT,FindState("FlashHeated"));
 				}
-				/*else
-					fl.frame = spinframe;*/
 			}
+			// If heat is 0, remove the heat layer
+			// and stop the cooling sound, unlock the gun:
 			else {
 				owner.player.SetPSprite(PSP_HEAT,null);
 				owner.A_StopSound(CHAN_CHGCOOL);
 				isLocked = false;
 			}
 		}
+		
+		// If weapons are not enhanced, or the player is dead,
+		// or a different weapon is selected, stop the 
+		// spin and cooling sounds:
 		else {
 			HeatStacks = 0;
 			owner.A_StopSound(CHAN_CHGSPIN);
@@ -322,50 +351,66 @@ Class BD_Chaingun : BDoomWeapon {
 			}
 			loop;
 		AltFire:
-			TNT1 A 0 {
-				if (bdoom_weapons == 2)
-					return ResolveState("AltFire.Modern");
-				invoker.spintics = 4;
-				invoker.spinspeed = 0;
-				invoker.spinframe = 0;
-				return ResolveState("AltHold");
-			}
-		AltHold:
 			MGGG #### 4 {
+				// If weapons are not set to Enhanced,
+				// reset the values and stop this state
+				// sequence:
 				if (bdoom_weapons != 1) {
 					invoker.isLocked = false;
 					invoker.spinspeed = 0;
 					return ResolveState("Ready");
 				}
+				// Set the duration of the current
+				// frame equal to spintics:
 				A_SetTics(invoker.spintics);
+				// Modify spin frame:
 				int i = invoker.spinframe;
+				// If current spinspeed is above 35,
+				// move ahead 2 frames, otherwise
+				// move ahead 1 frame:
 				i = invoker.spinspeed > 35 ? i+2 : i+1;
 				i = Clamp(i,0,4);
+				// If spinframe is above 3 (D), reset it
+				// back to 0 (A):
 				invoker.spinframe = i > 3 ? i-4 : i;
+				// Now modify the current PSprite frame
+				// so it's equal to the value of spinframe:
 				let psp = Player.FindPSprite(OverlayID());
 				if (psp)
 					psp.frame = invoker.spinframe;
+				// If the chaingun overheated (isLocked is true),
+				// spawn some smoke above the barrel:
 				if (invoker.isLocked && random[bdsfx](0,60) < invoker.heatStacks) {
-					DrawMuzzleSmoke((frandom[sfx](-25,25),frandom[sfx](15,50)), fade: 0.5, sVSpeed: 1.2, sScale: 1, drawover: true);		//A_Eject("BD_WeaponSmoke",frandom[bdsfx](8,12),frandom[bdsfx](-2.5,2.5),frandom[bdsfx](2,4),zvel:frandom[bdsfx](0.3,0.8));
+					DrawMuzzleSmoke((frandom[sfx](-25,25),frandom[sfx](15,50)), fade: 0.5, sVSpeed: 1.2, sScale: 1, drawover: true);
 				}
+				
+				// Let the player fire if they press the Fire button,
+				// as long as they do it on the A frame, have enough
+				// ammo to fire and the chaingun isn't overheated:
 				if (invoker.ammo1.amount > 0 && !invoker.isLocked && player.cmd.buttons & BT_ATTACK && invoker.spinframe == 0) {
+					// Increase heatstacks when firing:
 					invoker.HeatStacks = Clamp(invoker.heatStacks+1.2,0,60);
+					// If heatstacks is over 60, do overheat:
 					if (invoker.heatStacks >= 60) {
 						invoker.isLocked = true;
 						A_StartSound("weapons/chaingun/cool",CHAN_CHGCOOL,flags:CHANF_LOOP);
 						A_StartSound("weapons/chaingun/lock");
 					}
+					// Muzzle flash, firing sound, firing:
 					A_GunFlash("AltFlash");
 					A_StartSound("weapons/chaingun/fire",flags:CHANF_OVERLAP);
 					BD_FireBullets (8, 3, -1, 5);
 					SpawnChaingunCasing();
 				}
+				// If the player isn't pressing and isn't holding
+				// AltFire, go back to ready:
 				if (! ((player.cmd.buttons & BT_ALTATTACK) && (player.oldbuttons & BT_ALTATTACK)) ) {
 					if (invoker.spinspeed <= 0)
 						return ResolveState("Ready");	
 					else if (invoker.spinspeed <= 16)
 						A_WeaponReady(WRF_NOSECONDARY|WRF_NOBOB);
 				}
+				// Otherwise continue:
 				return ResolveState(null);	
 			}
 			wait;
