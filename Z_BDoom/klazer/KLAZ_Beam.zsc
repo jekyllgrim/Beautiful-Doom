@@ -137,11 +137,11 @@ class BD_TrackingBeam : actor
 	{
 		Spawn:
 			TNT1 A 0;
-			MODL A 1 bright 
+			M000 A 1 bright 
 			{
 				lifetimer--;
 			}
-			MODL A 0 A_JumpIf(lifetimer <=0,"death");
+			M000 A 0 A_JumpIf(lifetimer <=0,"death");
 			loop;
 		death:
 			TNT1 A 1;

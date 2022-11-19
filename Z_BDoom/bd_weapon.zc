@@ -864,12 +864,12 @@ Class BD_RealBullet : FastProjectile {
 			TNT1 A 1; /*NoDelay {
 				vel = vel.unit() * bulletspeed;
 			}*/
-			PUFF A 1 {
+			M000 A 1 {
 				if (!bdoom_tracers) {
 					return ResolveState("SpawnInvisible");
 				}
 				if (waterlevel > 2) {
-					sprite = GetSpriteIndex("WATR");
+					sprite = GetSpriteIndex("M001");
 					bBRIGHT = false;
 					for (int i = 20; i > 0; i--) {
 						A_SpawnItemEx(
@@ -880,7 +880,7 @@ Class BD_RealBullet : FastProjectile {
 					}
 				}
 				else {
-					sprite = GetSpriteIndex("PUFF");
+					sprite = GetSpriteIndex("M000");
 					bBRIGHT = true;
 				}
 				return ResolveState(null);

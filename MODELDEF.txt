@@ -8,10 +8,10 @@ Model BD_BulletTracer
 	USEACTORROLL
 	
 	Skin 0 "tracer1.png"
-	FrameIndex PUFF A 0 0
+	FrameIndex M000 A 0 0
 	
 	Skin 0 "wtracer.png"
-	FrameIndex WATR A 0 0
+	FrameIndex M001 A 0 0
 }
 
 model "BD_TrackingBeam"
@@ -21,7 +21,7 @@ model "BD_TrackingBeam"
 	scale 1.0 1.0 1.2 //the 1.2 z-scale is for pixel ratio adjustment
 	USEACTORPITCH
 	DONTCULLBACKFACES //the model has only two planes
-	FrameIndex MODL A 0 0
+	FrameIndex M000 A 0 0
 }
 
 
@@ -36,10 +36,10 @@ Model BD_RicochetBullet
 	PITCHFROMMOMENTUM
 	
 	Skin 0 "tracer1.png"
-	FrameIndex PUFF A 0 0
+	FrameIndex M000 A 0 0
 	
 	Skin 0 "wtracer.png"
-	FrameIndex WATR A 0 0
+	FrameIndex M001 A 0 0
 }
 
 Model BD_PistolBullet
@@ -52,10 +52,10 @@ Model BD_PistolBullet
 	UseActorRoll
 	
 	Skin 0 "tracer1.png"
-	FrameIndex PUFF A 0 0
+	FrameIndex M000 A 0 0
 	
 	Skin 0 "wtracer.png"
-	FrameIndex WATR A 0 0
+	FrameIndex M001 A 0 0
 }
 
 Model BD_RifleBullet
@@ -68,10 +68,10 @@ Model BD_RifleBullet
 	UseActorRoll
 	
 	Skin 0 "tracer1.png"
-	FrameIndex PUFF A 0 0
+	FrameIndex M000 A 0 0
 	
 	Skin 0 "wtracer.png"
-	FrameIndex WATR A 0 0
+	FrameIndex M001 A 0 0
 }
 
 Model BD_ShotgunPellet
@@ -84,10 +84,10 @@ Model BD_ShotgunPellet
 	UseActorRoll
 	
 	Skin 0 "tracer1.png"
-	FrameIndex PUFF A 0 0
+	FrameIndex M000 A 0 0
 	
 	Skin 0 "wtracer.png"
-	FrameIndex WATR A 0 0
+	FrameIndex M001 A 0 0
 }
 
 Model BD_SSGPellet
@@ -100,10 +100,10 @@ Model BD_SSGPellet
 	UseActorRoll
 	
 	Skin 0 "tracer1.png"
-	FrameIndex PUFF A 0 0
+	FrameIndex M000 A 0 0
 	
 	Skin 0 "wtracer.png"
-	FrameIndex WATR A 0 0
+	FrameIndex M001 A 0 0
 }
 
 Model BD_ZombiePellet
@@ -116,10 +116,10 @@ Model BD_ZombiePellet
 	UseActorRoll
 	
 	Skin 0 "tracer1.png"
-	FrameIndex PUFF A 0 0
+	FrameIndex M000 A 0 0
 	
 	Skin 0 "wtracer.png"
-	FrameIndex WATR A 0 0
+	FrameIndex M001 A 0 0
 }
 
 Model BD_ZombieBullet
@@ -132,10 +132,10 @@ Model BD_ZombieBullet
 	UseActorRoll
 	
 	Skin 0 "tracer1.png"
-	FrameIndex PUFF A 0 0
+	FrameIndex M000 A 0 0
 	
 	Skin 0 "wtracer.png"
-	FrameIndex WATR A 0 0
+	FrameIndex M001 A 0 0
 }
 
 Model BD_SpiderBullet
@@ -148,10 +148,10 @@ Model BD_SpiderBullet
 	UseActorRoll
 	
 	Skin 0 "tracer1.png"
-	FrameIndex PUFF A 0 0
+	FrameIndex M000 A 0 0
 	
 	Skin 0 "wtracer.png"
-	FrameIndex WATR A 0 0
+	FrameIndex M001 A 0 0
 }
 
 Model BD_PlaneDecal
@@ -164,46 +164,46 @@ Model BD_PlaneDecal
 	Model 0 "models/BloodPool.md3"
 
 	Skin 0 "graphics/CHIP1.png"
-	FrameIndex 0000 A 0 0
+	FrameIndex M000 A 0 0
 	Skin 0 "graphics/CHIP2.png"
-	FrameIndex 0000 B 0 0	
+	FrameIndex M000 B 0 0	
 	Skin 0 "graphics/CHIP3.png"
-	FrameIndex 0000 C 0 0	
+	FrameIndex M000 C 0 0	
 	Skin 0 "graphics/CHIP4.png"
-	FrameIndex 0000 D 0 0	
+	FrameIndex M000 D 0 0	
 	Skin 0 "graphics/CHIP5.png"
-	FrameIndex 0000 E 0 0
+	FrameIndex M000 E 0 0
 
 	Skin 0 "graphics/MCHIP1.png"
-	FrameIndex 0001 A 0 0
+	FrameIndex M001 A 0 0
 	Skin 0 "graphics/MCHIP2.png"
-	FrameIndex 0001 B 0 0	
+	FrameIndex M001 B 0 0	
 	Skin 0 "graphics/MCHIP3.png"
-	FrameIndex 0001 C 0 0	
+	FrameIndex M001 C 0 0	
 	Skin 0 "graphics/MCHIP4.png"
-	FrameIndex 0001 D 0 0	
+	FrameIndex M001 D 0 0	
 	Skin 0 "graphics/MCHIP5.png"
-	FrameIndex 0001 E 0 0	
+	FrameIndex M001 E 0 0	
 
 	Skin 0 "graphics/WCHIP1.png"
-	FrameIndex 0002 A 0 0
+	FrameIndex M002 A 0 0
 	Skin 0 "graphics/WCHIP2.png"
-	FrameIndex 0002 B 0 0	
+	FrameIndex M002 B 0 0	
 	Skin 0 "graphics/WCHIP3.png"
-	FrameIndex 0002 C 0 0	
+	FrameIndex M002 C 0 0	
 	Skin 0 "graphics/WCHIP4.png"
-	FrameIndex 0002 D 0 0	
+	FrameIndex M002 D 0 0	
 	Skin 0 "graphics/WCHIP5.png"
-	FrameIndex 0002 E 0 0	
+	FrameIndex M002 E 0 0	
 
 	Skin 0 "graphics/SCHIP1.png"
-	FrameIndex 0003 A 0 0
+	FrameIndex M003 A 0 0
 	Skin 0 "graphics/SCHIP2.png"
-	FrameIndex 0003 B 0 0	
+	FrameIndex M003 B 0 0	
 	Skin 0 "graphics/SCHIP3.png"
-	FrameIndex 0003 C 0 0	
+	FrameIndex M003 C 0 0	
 	Skin 0 "graphics/SCHIP4.png"
-	FrameIndex 0003 D 0 0	
+	FrameIndex M003 D 0 0	
 }
 
 //////// BLOOD PRINT
@@ -220,9 +220,9 @@ Model BD_BloodyFootPrint
 	Model 0 "BloodPool.md3"
 	
 	Skin 0 "footprint/bprint_left.png"
-	FrameIndex 0000 A 0 0
+	FrameIndex M000 A 0 0
 	Skin 0 "footprint/bprint_right.png"
-	FrameIndex 0000 B 0 0
+	FrameIndex M000 B 0 0
 }
 	
 ////////// BLOOD POOL
@@ -238,7 +238,7 @@ Model BD_AniBloodPool
 	Path "models"
 	Model 0 "BloodPool.md3"
 	Skin 0 "bloodpool.png"
-	FrameIndex MODL A 0 0	
+	FrameIndex M000 A 0 0	
 }
 
 Model BD_Blood
@@ -251,43 +251,43 @@ Model BD_Blood
 	Model 0 "Models/BloodPool.md3"
 	
 	Skin 0 "graphics/FloorSplats/bsplatA.png"
-	FrameIndex MODL A 0 0
+	FrameIndex M000 A 0 0
 	Skin 0 "graphics/FloorSplats/bsplatB.png"
-	FrameIndex MODL B 0 0
+	FrameIndex M000 B 0 0
 	Skin 0 "graphics/FloorSplats/bsplatC.png"
-	FrameIndex MODL C 0 0
+	FrameIndex M000 C 0 0
 	Skin 0 "graphics/FloorSplats/bsplatD.png"
-	FrameIndex MODL D 0 0
+	FrameIndex M000 D 0 0
 	Skin 0 "graphics/FloorSplats/bsplatE.png"
-	FrameIndex MODL E 0 0
+	FrameIndex M000 E 0 0
 	Skin 0 "graphics/FloorSplats/bsplatF.png"
-	FrameIndex MODL F 0 0
+	FrameIndex M000 F 0 0
 	Skin 0 "graphics/FloorSplats/bsplatG.png"
-	FrameIndex MODL G 0 0
+	FrameIndex M000 G 0 0
 	Skin 0 "graphics/FloorSplats/bsplatH.png"
-	FrameIndex MODL H 0 0
+	FrameIndex M000 H 0 0
 	Skin 0 "graphics/FloorSplats/bsplatI.png"
-	FrameIndex MODL I 0 0
+	FrameIndex M000 I 0 0
 	Skin 0 "graphics/FloorSplats/bsplatJ.png"
-	FrameIndex MODL J 0 0
+	FrameIndex M000 J 0 0
 	Skin 0 "graphics/FloorSplats/bsplatK.png"
-	FrameIndex MODL K 0 0
+	FrameIndex M000 K 0 0
 	Skin 0 "graphics/FloorSplats/bsplatL.png"
-	FrameIndex MODL L 0 0
+	FrameIndex M000 L 0 0
 	Skin 0 "graphics/FloorSplats/bsplatM.png"
-	FrameIndex MODL M 0 0
+	FrameIndex M000 M 0 0
 	Skin 0 "graphics/FloorSplats/bsplatN.png"
-	FrameIndex MODL N 0 0
+	FrameIndex M000 N 0 0
 	Skin 0 "graphics/FloorSplats/bsplatO.png"
-	FrameIndex MODL O 0 0
+	FrameIndex M000 O 0 0
 	Skin 0 "graphics/FloorSplats/bsplatP.png"
-	FrameIndex MODL P 0 0
+	FrameIndex M000 P 0 0
 	Skin 0 "graphics/FloorSplats/bsplatQ.png"
-	FrameIndex MODL Q 0 0
+	FrameIndex M000 Q 0 0
 	Skin 0 "graphics/FloorSplats/bsplatR.png"
-	FrameIndex MODL R 0 0
+	FrameIndex M000 R 0 0
 	Skin 0 "graphics/FloorSplats/bsplatS.png"
-	FrameIndex MODL S 0 0
+	FrameIndex M000 S 0 0
 }
 
 Model BD_GibBlood
@@ -300,43 +300,43 @@ Model BD_GibBlood
 	Model 0 "Models/BloodPool.md3"
 	
 	Skin 0 "graphics/FloorSplats/bsplatA.png"
-	FrameIndex MODL A 0 0
+	FrameIndex M000 A 0 0
 	Skin 0 "graphics/FloorSplats/bsplatB.png"
-	FrameIndex MODL B 0 0
+	FrameIndex M000 B 0 0
 	Skin 0 "graphics/FloorSplats/bsplatC.png"
-	FrameIndex MODL C 0 0
+	FrameIndex M000 C 0 0
 	Skin 0 "graphics/FloorSplats/bsplatD.png"
-	FrameIndex MODL D 0 0
+	FrameIndex M000 D 0 0
 	Skin 0 "graphics/FloorSplats/bsplatE.png"
-	FrameIndex MODL E 0 0
+	FrameIndex M000 E 0 0
 	Skin 0 "graphics/FloorSplats/bsplatF.png"
-	FrameIndex MODL F 0 0
+	FrameIndex M000 F 0 0
 	Skin 0 "graphics/FloorSplats/bsplatG.png"
-	FrameIndex MODL G 0 0
+	FrameIndex M000 G 0 0
 	Skin 0 "graphics/FloorSplats/bsplatH.png"
-	FrameIndex MODL H 0 0
+	FrameIndex M000 H 0 0
 	Skin 0 "graphics/FloorSplats/bsplatI.png"
-	FrameIndex MODL I 0 0
+	FrameIndex M000 I 0 0
 	Skin 0 "graphics/FloorSplats/bsplatJ.png"
-	FrameIndex MODL J 0 0
+	FrameIndex M000 J 0 0
 	Skin 0 "graphics/FloorSplats/bsplatK.png"
-	FrameIndex MODL K 0 0
+	FrameIndex M000 K 0 0
 	Skin 0 "graphics/FloorSplats/bsplatL.png"
-	FrameIndex MODL L 0 0
+	FrameIndex M000 L 0 0
 	Skin 0 "graphics/FloorSplats/bsplatM.png"
-	FrameIndex MODL M 0 0
+	FrameIndex M000 M 0 0
 	Skin 0 "graphics/FloorSplats/bsplatN.png"
-	FrameIndex MODL N 0 0
+	FrameIndex M000 N 0 0
 	Skin 0 "graphics/FloorSplats/bsplatO.png"
-	FrameIndex MODL O 0 0
+	FrameIndex M000 O 0 0
 	Skin 0 "graphics/FloorSplats/bsplatP.png"
-	FrameIndex MODL P 0 0
+	FrameIndex M000 P 0 0
 	Skin 0 "graphics/FloorSplats/bsplatQ.png"
-	FrameIndex MODL Q 0 0
+	FrameIndex M000 Q 0 0
 	Skin 0 "graphics/FloorSplats/bsplatR.png"
-	FrameIndex MODL R 0 0
+	FrameIndex M000 R 0 0
 	Skin 0 "graphics/FloorSplats/bsplatS.png"
-	FrameIndex MODL S 0 0
+	FrameIndex M000 S 0 0
 }
 
 Model BD_BloodSpray
@@ -349,43 +349,43 @@ Model BD_BloodSpray
 	Model 0 "Models/BloodPool.md3"
 	
 	Skin 0 "graphics/FloorSplats/bsplatA.png"
-	FrameIndex MODL A 0 0
+	FrameIndex M000 A 0 0
 	Skin 0 "graphics/FloorSplats/bsplatB.png"
-	FrameIndex MODL B 0 0
+	FrameIndex M000 B 0 0
 	Skin 0 "graphics/FloorSplats/bsplatC.png"
-	FrameIndex MODL C 0 0
+	FrameIndex M000 C 0 0
 	Skin 0 "graphics/FloorSplats/bsplatD.png"
-	FrameIndex MODL D 0 0
+	FrameIndex M000 D 0 0
 	Skin 0 "graphics/FloorSplats/bsplatE.png"
-	FrameIndex MODL E 0 0
+	FrameIndex M000 E 0 0
 	Skin 0 "graphics/FloorSplats/bsplatF.png"
-	FrameIndex MODL F 0 0
+	FrameIndex M000 F 0 0
 	Skin 0 "graphics/FloorSplats/bsplatG.png"
-	FrameIndex MODL G 0 0
+	FrameIndex M000 G 0 0
 	Skin 0 "graphics/FloorSplats/bsplatH.png"
-	FrameIndex MODL H 0 0
+	FrameIndex M000 H 0 0
 	Skin 0 "graphics/FloorSplats/bsplatI.png"
-	FrameIndex MODL I 0 0
+	FrameIndex M000 I 0 0
 	Skin 0 "graphics/FloorSplats/bsplatJ.png"
-	FrameIndex MODL J 0 0
+	FrameIndex M000 J 0 0
 	Skin 0 "graphics/FloorSplats/bsplatK.png"
-	FrameIndex MODL K 0 0
+	FrameIndex M000 K 0 0
 	Skin 0 "graphics/FloorSplats/bsplatL.png"
-	FrameIndex MODL L 0 0
+	FrameIndex M000 L 0 0
 	Skin 0 "graphics/FloorSplats/bsplatM.png"
-	FrameIndex MODL M 0 0
+	FrameIndex M000 M 0 0
 	Skin 0 "graphics/FloorSplats/bsplatN.png"
-	FrameIndex MODL N 0 0
+	FrameIndex M000 N 0 0
 	Skin 0 "graphics/FloorSplats/bsplatO.png"
-	FrameIndex MODL O 0 0
+	FrameIndex M000 O 0 0
 	Skin 0 "graphics/FloorSplats/bsplatP.png"
-	FrameIndex MODL P 0 0
+	FrameIndex M000 P 0 0
 	Skin 0 "graphics/FloorSplats/bsplatQ.png"
-	FrameIndex MODL Q 0 0
+	FrameIndex M000 Q 0 0
 	Skin 0 "graphics/FloorSplats/bsplatR.png"
-	FrameIndex MODL R 0 0
+	FrameIndex M000 R 0 0
 	Skin 0 "graphics/FloorSplats/bsplatS.png"
-	FrameIndex MODL S 0 0
+	FrameIndex M000 S 0 0
 }
 
 Model BD_BloodPool
@@ -398,41 +398,41 @@ Model BD_BloodPool
 	Model 0 "Models/BloodPool.md3"
 	
 	Skin 0 "graphics/FloorSplats/bsplatA.png"
-	FrameIndex MODL A 0 0
+	FrameIndex M000 A 0 0
 	Skin 0 "graphics/FloorSplats/bsplatB.png"
-	FrameIndex MODL B 0 0
+	FrameIndex M000 B 0 0
 	Skin 0 "graphics/FloorSplats/bsplatC.png"
-	FrameIndex MODL C 0 0
+	FrameIndex M000 C 0 0
 	Skin 0 "graphics/FloorSplats/bsplatD.png"
-	FrameIndex MODL D 0 0
+	FrameIndex M000 D 0 0
 	Skin 0 "graphics/FloorSplats/bsplatE.png"
-	FrameIndex MODL E 0 0
+	FrameIndex M000 E 0 0
 	Skin 0 "graphics/FloorSplats/bsplatF.png"
-	FrameIndex MODL F 0 0
+	FrameIndex M000 F 0 0
 	Skin 0 "graphics/FloorSplats/bsplatG.png"
-	FrameIndex MODL G 0 0
+	FrameIndex M000 G 0 0
 	Skin 0 "graphics/FloorSplats/bsplatH.png"
-	FrameIndex MODL H 0 0
+	FrameIndex M000 H 0 0
 	Skin 0 "graphics/FloorSplats/bsplatI.png"
-	FrameIndex MODL I 0 0
+	FrameIndex M000 I 0 0
 	Skin 0 "graphics/FloorSplats/bsplatJ.png"
-	FrameIndex MODL J 0 0
+	FrameIndex M000 J 0 0
 	Skin 0 "graphics/FloorSplats/bsplatK.png"
-	FrameIndex MODL K 0 0
+	FrameIndex M000 K 0 0
 	Skin 0 "graphics/FloorSplats/bsplatL.png"
-	FrameIndex MODL L 0 0
+	FrameIndex M000 L 0 0
 	Skin 0 "graphics/FloorSplats/bsplatM.png"
-	FrameIndex MODL M 0 0
+	FrameIndex M000 M 0 0
 	Skin 0 "graphics/FloorSplats/bsplatN.png"
-	FrameIndex MODL N 0 0
+	FrameIndex M000 N 0 0
 	Skin 0 "graphics/FloorSplats/bsplatO.png"
-	FrameIndex MODL O 0 0
+	FrameIndex M000 O 0 0
 	Skin 0 "graphics/FloorSplats/bsplatP.png"
-	FrameIndex MODL P 0 0
+	FrameIndex M000 P 0 0
 	Skin 0 "graphics/FloorSplats/bsplatQ.png"
-	FrameIndex MODL Q 0 0
+	FrameIndex M000 Q 0 0
 	Skin 0 "graphics/FloorSplats/bsplatR.png"
-	FrameIndex MODL R 0 0
+	FrameIndex M000 R 0 0
 	Skin 0 "graphics/FloorSplats/bsplatS.png"
-	FrameIndex MODL S 0 0
+	FrameIndex M000 S 0 0
 }

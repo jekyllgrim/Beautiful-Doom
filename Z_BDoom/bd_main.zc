@@ -159,9 +159,19 @@ Class BDoomActor : Actor abstract {
 		LENG A 0;
 		LENY A 0;
 		LENC A 0;
-		LENS AB 0;
-		SPRK ABC 0;
-		SMO2 ABCDEF 0;
+		LENS A 0;
+		SPRK A 0;
+		SMO2 A 0;
+		M000 A 0;
+		M001 A 0;
+		M002 A 0;
+		M003 A 0;
+		M004 A 0;
+		M005 A 0;
+		M006 A 0;
+		M007 A 0;
+		M008 A 0;
+		M009 A 0;
 		stop;
 	}
 }
@@ -1303,10 +1313,10 @@ Class BD_PlaneDecal : BD_SmallDebris {
 			return;
 		}
 		switch (decaltype) {
-			case 'BulletChip'	: sprite = GetSpriteIndex("0000");	frame = random[bdsfx](0,4); alpha = 0.85; angle = random[bdsfx](0,360); break;
-			case 'BulletMChip'	: sprite = GetSpriteIndex("0001");	frame = random[bdsfx](0,4); alpha = 0.55; angle = random[bdsfx](0,360);break;
-			case 'BulletWChip'	: sprite = GetSpriteIndex("0002");	frame = random[bdsfx](0,4); alpha = 1.0; break;
-			case 'BulletSChip'	: sprite = GetSpriteIndex("0003");	frame = random[bdsfx](0,3); alpha = 0.75; angle = random[bdsfx](0,360);break;
+			case 'BulletChip'	: sprite = GetSpriteIndex("M000");	frame = random[bdsfx](0,4); alpha = 0.85; angle = random[bdsfx](0,360); break;
+			case 'BulletMChip'	: sprite = GetSpriteIndex("M001");	frame = random[bdsfx](0,4); alpha = 0.55; angle = random[bdsfx](0,360);break;
+			case 'BulletWChip'	: sprite = GetSpriteIndex("M002");	frame = random[bdsfx](0,4); alpha = 1.0; break;
+			case 'BulletSChip'	: sprite = GetSpriteIndex("M003");	frame = random[bdsfx](0,3); alpha = 0.75; angle = random[bdsfx](0,360);break;
 		}
 		if (ceiling) {
 			if (CurSector.CeilingPlane.Normal == (0,0,-1) && CheckLandingSize(2,checkceiling:true)) {
