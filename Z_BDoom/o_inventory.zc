@@ -119,18 +119,6 @@ Class BD_ArmorBonus : ArmorBonus {
 	}
 }
 
-Class BD_Stimpack : Stimpack {
-	Default {
-		inventory.pickupsound "pickups/health1";
-	}
-}
-
-Class BD_Medikit : Medikit {
-	Default {
-		inventory.pickupsound "pickups/health2";
-	}
-}
-
 Class BD_GreenArmor : GreenArmor {
 	Default {
 		inventory.pickupsound "pickups/armor1";
