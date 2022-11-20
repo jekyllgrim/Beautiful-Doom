@@ -405,7 +405,7 @@ Class BD_Rocket : BDoomActor {
 	}
 	states {
 	Spawn:
-		VROK AAAA 1 bright { 
+		BROC AAAA 1 bright { 
 			if(bdoom_debris && bdoom_projectiles >= 2)
 				A_SpawnItemEx("BD_RocketTrail",-15,frandom(-2,2),frandom(-2,2));
 		}
@@ -414,7 +414,7 @@ Class BD_Rocket : BDoomActor {
 			return ResolveState("SpawnDo");
 		}		
 	SpawnDo:
-		VROK A 1 bright { 
+		BROC A 1 bright { 
 			if(bdoom_debris && bdoom_projectiles >= 2)
 				A_SpawnItemEx("BD_RocketTrail",-15,frandom(-2,2),frandom(-2,2));
 		}
