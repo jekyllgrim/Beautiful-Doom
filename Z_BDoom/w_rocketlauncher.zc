@@ -27,7 +27,7 @@ Class BD_RocketLauncher : BDoomWeapon {
 		Super.DoEffect();
 		if (!owner)
 			return;
-		if(bdoom_weapons == 2)	{
+		if(bdoom_weapons == BD_WeaponSet.WS_MODERN)	{
 			AmmoUse2 = 0;
 			bAMMO_OPTIONAL = true;					
 		}
@@ -40,7 +40,7 @@ Class BD_RocketLauncher : BDoomWeapon {
 	states	{
 		Spawn:
 			LAUN A 1 NoDelay {
-				if (bdoom_weapons == 2)
+				if (bdoom_weapons == BD_WeaponSet.WS_MODERN)
 					frame = 1;
 			}
 			Loop;
@@ -48,9 +48,9 @@ Class BD_RocketLauncher : BDoomWeapon {
 			stop;
 		Select:
 			TNT1 A 0 { 
-				if(bdoom_weapons > 0)
+				if(bdoom_weapons > BD_WeaponSet.WS_VANILLA)
 					A_StartSound("weapons/rlan/draw");
-				If(bdoom_weapons == 2)
+				If(bdoom_weapons == BD_WeaponSet.WS_MODERN)
 					return ResolveState("Select.Modern");
 				return ResolveState(null);
 			}
@@ -62,7 +62,7 @@ Class BD_RocketLauncher : BDoomWeapon {
 			loop;
 		Ready:
 			RLAN A 1  { 
-				if (bdoom_weapons == 2)
+				if (bdoom_weapons == BD_WeaponSet.WS_MODERN)
 					return ResolveState("Ready.Modern");
 				else if (bdoom_weapons ==1)
 					A_WeaponReady();
@@ -395,7 +395,7 @@ Class BD_Rocket : BDoomActor {
 			}
 		}
 		sound snd;
-		if(bdoom_weapons == 0)
+		if(bdoom_weapons == BD_WeaponSet.WS_VANILLA)
 			snd = "weapons/rocklf";
 		else 
 			snd = "weapons/rlan/fire";
@@ -428,7 +428,7 @@ Class BD_Rocket : BDoomActor {
 			A_SetRenderStyle(0.85,STYLE_Add);
 			if(bdoom_shakes)
 				A_Quake(1,8,0,256,"");
-			if(bdoom_weapons == 0)
+			if(bdoom_weapons == BD_WeaponSet.WS_VANILLA)
 				A_StartSound("weapons/rocklx",slot:CHAN_5);
 			else
 				A_StartSound("weapons/rlan/explosion",slot:CHAN_5);

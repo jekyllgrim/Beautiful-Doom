@@ -202,6 +202,32 @@ Class BDoomWeapon : Weapon abstract {
 	property ClassicIcon : ClassicIcon;
 	property ModernIcon : ModernIcon;
 	
+	enum BD_PSpriteLayers {
+		PSP_KICK 			= -50,
+		PSP_SMOKE			= -30,
+		PSP_MFLASH 		= -5,
+		PSP_REDDOT 		= -4,
+		PSP_SMOKEEND		= -10,
+		PSP_MAG 			= -3,
+		PSP_GUN2 			=  2,
+		PSP_GUN3 			=  3,
+		PSP_HEAT 			=  5,
+		PSP_LIGHTS 		=  10,
+		PSP_HLIGHTS 		=  11,
+		PSP_EFLASH 		=  12,
+		PSP_CHAINBLOOD 	=  30,
+		PSP_CHAINBLOODR 	=  31,
+		PSP_CHAINBLOODG 	=  32,
+		PSP_CHAINBLOODB 	=  33,
+		PSP_SMOKETOP		= 500,
+		PSP_SMOKEENDTOP	= 520
+	};
+
+	enum BD_SoundChannels {
+		CHAN_CHGSPIN	= 9,
+		CHAN_CHGCOOL	= 10
+	}
+	
 	Default {
 		BDoomWeapon.AutoReloadTime 60;
 		BDoomWeapon.maxOffsetTics 1; //required default values for A_CameraSway. Otherwise it'll crash due to division by zero
@@ -325,7 +351,7 @@ Class BDoomWeapon : Weapon abstract {
 		if (!weapon || !weapon.DepleteAmmo(weapon.bAltFire, true))
 			return;
 		//decide which sound to play based on current weapon set
-		sound snd = (enhancedsnd && bdoom_weapons == 1) ? enhancedsnd : vanillasnd;
+		sound snd = (enhancedsnd && bdoom_weapons == BD_WeaponSet.WS_ENHANCED) ? enhancedsnd : vanillasnd;
 		//play only if non-null
 		if (snd)
 			A_StartSound(snd,CHAN_WEAPON);
@@ -353,32 +379,6 @@ Class BDoomWeapon : Weapon abstract {
 			}
 			A_FireBullets (spread.x, spread.y, -1, damage, pufftype,flags:FBF_NORANDOMPUFFZ|FBF_EXPLICITANGLE);
 		}
-	}
-	
-	enum BD_Layers {
-		PSP_KICK 			= -50,
-		PSP_SMOKE			= -30,
-		PSP_MFLASH 		= -5,
-		PSP_REDDOT 		= -4,
-		PSP_SMOKEEND		= -10,
-		PSP_MAG 			= -3,
-		PSP_GUN2 			=  2,
-		PSP_GUN3 			=  3,
-		PSP_HEAT 			=  5,
-		PSP_LIGHTS 		=  10,
-		PSP_HLIGHTS 		=  11,
-		PSP_EFLASH 		=  12,
-		PSP_CHAINBLOOD 	=  30,
-		PSP_CHAINBLOODR 	=  31,
-		PSP_CHAINBLOODG 	=  32,
-		PSP_CHAINBLOODB 	=  33,
-		PSP_SMOKETOP		= 500,
-		PSP_SMOKEENDTOP	= 520
-	};
-	
-	enum BD_SoundChannels {
-		CHAN_CHGSPIN	= 9,
-		CHAN_CHGCOOL	= 10
 	}
 	
 	//Make sure player's magazine isn't empty when a weapon is first picked up (for Modern Guns):
@@ -484,8 +484,10 @@ Class BDoomWeapon : Weapon abstract {
 	override void DoEffect() {
 		if (!owner || !owner.player)
 			return;
+			
 		let plr = owner.player;
 		//double-check if user cvars are cached correctly:
+		
 		if (c_muzzle_cache == null)
 			c_muzzle_cache = CVar.GetCVar('bdoom_muzzle',plr);
 		if (c_blackgloves_cache == null)
@@ -494,19 +496,21 @@ Class BDoomWeapon : Weapon abstract {
 			c_bobstyle_cache = CVar.GetCvar('bdoom_weaponbobstyle',plr);
 		if (c_freelook_cache == null)
 			c_freelook_cache = CVar.GetCvar('freelook',plr);
+		
 		c_muzzle = c_muzzle_cache.GetBool();
 		c_blackgloves = c_blackgloves_cache.GetBool();
 		c_bobstyle = c_bobstyle_cache.GetBool();
 		c_freelook = c_freelook_cache.GetBool();
+		
 		Super.DoEffect();
 		if (!default.icon) {
-			if (bdoom_weapons == 2 && ModernIcon)
+			if (bdoom_weapons == BD_WeaponSet.WS_MODERN && ModernIcon)
 				icon = texman.CheckForTexture(ModernIcon, TexMan.Type_Any);
 			else if (ClassicIcon)
 				icon = texman.CheckForTexture(ClassicIcon, TexMan.Type_Any);
 		}
 		if (magammo) {
-			if (bdoom_weapons == 2) {
+			if (bdoom_weapons == BD_WeaponSet.WS_MODERN) {
 				ammo1 = ammo(owner.FindInventory(magammo));
 				ammotype1 = magammo;
 			}
@@ -521,7 +525,7 @@ Class BDoomWeapon : Weapon abstract {
 			self.SelectionOrder = self.default.SelectionOrder;
 		//Console.Printf("x: %d, y: %d, z:%d", owner.pos.x,owner.pos.y,owner.pos.z);
 		//allow switching weapons during reload:
-		if(bdoom_weapons == 2) {
+		if(bdoom_weapons == BD_WeaponSet.WS_MODERN) {
 			plr.cheats |= CF_INTERPVIEW; //force mouse smoothing to avoid screwy camera when A_CameraSway is used
 			let psp = plr.FindPSprite(PSP_Weapon);
 			if (psp && (InStateSequence(psp.curstate,mreload)))
@@ -686,30 +690,33 @@ Class BDoomWeapon : Weapon abstract {
 			#### # 0 A_Jump(256,"Reload");
 			wait;
 		LoadSprites:
-			GSMO ABCDEF 0;
-			MUZ1 ABCDEFGH 0;
-			MUZ2 ABCD 0;
-			MUZ3 ABCD 0;
-			MUZ4 ABCD 0;
-			MUZ6 ABCD 0;
-			MUZ7 ABCDEF 0;
-			MUZ8 ABCDEF 0;
-			PZ11 ABC 0;
-			PZ12 ABC 0;
-			PZ21 ABC 0;
-			PZ22 ABC 0;
-			PZ31 ABC 0;
-			PZ32 ABC 0;
-			ROR1 ABCDEFGHIJKL 0;
-			ROR2 ABCDEFGHIJKL 0;
-			ROR3 ABCDEFGHIJKL 0;
-			RORR ABCDE 0;
-			RORS ABCDE 0;
-			RORN ABC 0; RORE ABC 0; RORV ABC 0; RORT ABC 0;
+			GSMO A 0;
+			MUZ1 A 0;
+			MUZ2 A 0;
+			MUZ3 A 0;
+			MUZ4 A 0;
+			MUZ6 A 0;
+			MUZ7 A 0;
+			MUZ8 A 0;
+			PZ11 A 0;
+			PZ12 A 0;
+			PZ21 A 0;
+			PZ22 A 0;
+			PZ31 A 0;
+			PZ32 A 0;
+			ROR1 A 0;
+			ROR2 A 0;
+			ROR3 A 0;
+			RORR A 0;
+			RORS A 0;
+			RORN A 0; 
+			RORE A 0; 
+			RORV A 0; 
+			RORT A 0;
 			PLHE Z 0;
-			PLH1 ABCDEFGHIJ 0;
-			PLH2 ABCDEFGHIJ 0;
-			BBGG ABCD 0;
+			PLH1 A 0;
+			PLH2 A 0;
+			BBGG A 0;
 			stop;
 			
 	}

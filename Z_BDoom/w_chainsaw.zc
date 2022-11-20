@@ -29,7 +29,7 @@ Class BD_Chainsaw : BDoomWeapon {
 		
 	override void DoEffect() {
 		if (owner) {
-			if(bdoom_weapons == 2 && !owner.bKILLEd) { 
+			if(bdoom_weapons == BD_WeaponSet.WS_MODERN && !owner.bKILLEd) { 
 				bNOALERT = true;
 				//bNOAUTOFIRE = true;
 				if (jamstacks > 4 && owner.player.readyweapon == self) {
@@ -62,9 +62,9 @@ Class BD_Chainsaw : BDoomWeapon {
 		Select:
 			TNT1 A 0 {
 				BD_SetSprite("BSAW","QSAW");
-				If(bdoom_weapons == 2)
+				If(bdoom_weapons == BD_WeaponSet.WS_MODERN)
 					return ResolveState("Select.Modern");
-				if (bdoom_weapons == 1)
+				if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
 					A_StartSound("weapons/chainsaw/draw");
 				else
 					A_StartSound("weapons/sawup",slot:CHAN_5);
@@ -82,7 +82,7 @@ Class BD_Chainsaw : BDoomWeapon {
 				A_ClearRefire();
 				A_Stopsound(CHAN_BODY);
 				A_Stopsound(CHAN_5);
-				if(bdoom_weapons == 1)
+				if(bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
 					return ResolveState("Deselect.Enhanced");
 				If(bdoom_weapons ==2)
 					return ResolveState("Deselect.Modern");
@@ -101,27 +101,27 @@ Class BD_Chainsaw : BDoomWeapon {
 				invoker.jamstacks = 0;
 				invoker.started = false;
 				invoker.sndcounter = 0;
-				if (bdoom_weapons == 1)
+				if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
 					A_StartSound("weapons/chainsaw/idle",slot:CHAN_5);
 				else
 					A_StartSound("weapons/sawidle",slot:CHAN_5);
 				return ResolveState(null);
 			}
 			#### GHIJ 2 {
-				if (bdoom_weapons == 2)
+				if (bdoom_weapons == BD_WeaponSet.WS_MODERN)
 					A_WeaponReady();
 				else
 					A_WeaponReady(WRF_NOSECONDARY);
 			}
 			#### A 0 {
-				if (bdoom_weapons == 1)
+				if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
 					A_StartSound("weapons/chainsaw/idle",slot:CHAN_5);
 				else
 					A_StartSound("weapons/sawidle",slot:CHAN_5);
 				return ResolveState(null);
 			}
 			#### JIIHHG 1 {
-				if (bdoom_weapons == 2)
+				if (bdoom_weapons == BD_WeaponSet.WS_MODERN)
 					A_WeaponReady();
 				else
 					A_WeaponReady(WRF_NOSECONDARY);
@@ -134,9 +134,9 @@ Class BD_Chainsaw : BDoomWeapon {
 			loop;
 		Fire: //should be 8 tics with no refire frames
 			#### A 0 {
-				If(bdoom_weapons == 1)
+				If(bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
 					return ResolveState("Fire.Enhanced");
-				If(bdoom_weapons == 2)
+				If(bdoom_weapons == BD_WeaponSet.WS_MODERN)
 					return ResolveState("Fire.Modern");
 			//fake chargeup, attack begins to coincide with vanilla speed
 				A_Saw("","weapons/sawhit",2,"BD_ChainsawPuff") ;

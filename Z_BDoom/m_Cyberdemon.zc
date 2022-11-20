@@ -23,7 +23,7 @@ Class BD_CyberDemon : BDoomMonster {
 		Tag "$FN_CYBER";
 	}
 	void FireCyberRocket() {
-		if (bdoom_replaceweapons && bdoom_weapons == 2) {
+		if (bdoom_replaceweapons && bdoom_weapons == BD_WeaponSet.WS_MODERN) {
 			let rock = A_SpawnProjectile("BD_ModernRocket",56,-24);
 			if (rock) {
 				rock.vel = rock.vel.unit() * 16;

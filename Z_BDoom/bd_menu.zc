@@ -94,7 +94,7 @@ class OptionMenuItemBD_SubmenuGC : OptionMenuItemSubmenu
 	}
 }
 
-// Option menu that can be greyed out when CVAR != 2 (for background weapon autoreload option, it's only available when bdoom_weapons == 2)
+// Option menu that can be greyed out when CVAR != 2 (for background weapon autoreload option, it's only available when bdoom_weapons == BD_WeaponSet.WS_MODERN)
 
 Class OptionMenuItemBD_OptionBGReload_bd_TLTP : OptionMenuItembd_TLTPOption
 {

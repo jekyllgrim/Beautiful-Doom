@@ -26,7 +26,7 @@ Class BD_Pistol : BDoomWeapon {
 		Super.DoEffect();
 		if (!owner)
 			return;
-		if(bdoom_weapons == 2) {			
+		if(bdoom_weapons == BD_WeaponSet.WS_MODERN) {			
 			AmmoUse2 = 0;
 			bNOAUTOFIRE = true;
 			bAMMO_OPTIONAL = true;
@@ -36,7 +36,7 @@ Class BD_Pistol : BDoomWeapon {
 			bNOAUTOFIRE = false;
 			bAMMO_OPTIONAL = false;
 		}
-		if (bdoom_weapons == 1 && CountInv("BD_Pistol") > 1)
+		if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED && CountInv("BD_Pistol") > 1)
 			icon = texman.CheckForTexture("PISDZ0", TexMan.Type_Any);
 		else
 			icon = texman.CheckForTexture("PISTZ0", TexMan.Type_Any);
@@ -44,7 +44,7 @@ Class BD_Pistol : BDoomWeapon {
 	states {
 	Spawn:
 		PIST Z 1 {		
-			if(bdoom_weapons == 1 && bdoom_replaceweapons) { 
+			if(bdoom_weapons == BD_WeaponSet.WS_ENHANCED && bdoom_replaceweapons) { 
 				A_SetRenderstyle(alpha,STYLE_Normal); 
 				bSPECIAL = true;
 			}
@@ -118,7 +118,7 @@ Class BD_Pistol : BDoomWeapon {
 			if(!invoker.c_muzzle)
 				A_Overlay(PSP_EFLASH,"FlashVanilla");
 			else {
-				DrawMuzzleSmoke((0,10), sAlpha: bdoom_weapons == 2 ? 0.45 : 0.7);
+				DrawMuzzleSmoke((0,10), sAlpha: bdoom_weapons == BD_WeaponSet.WS_MODERN ? 0.45 : 0.7);
 				A_Overlay(PSP_EFLASH,"FlashEnhanced");
 				A_Overlay(PSP_MFLASH,"FlashMuzzle");
 				if (bdoom_weapons != 2)
@@ -130,15 +130,15 @@ Class BD_Pistol : BDoomWeapon {
 			A_OverlayFlags(PSP_MFLASH,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
 			A_OverlayRenderstyle(PSP_EFLASH,STYLE_Add);
 			A_OverlayRenderstyle(PSP_MFLASH,STYLE_Add);
-			if (bdoom_weapons > 0)
+			if (bdoom_weapons > BD_WeaponSet.WS_VANILLA)
 				A_OverlayFlags(PSP_EFLASH,PSPF_FLIP|PSPF_MIRROR,true);
-			if (bdoom_weapons == 2) {
+			if (bdoom_weapons == BD_WeaponSet.WS_MODERN) {
 				A_OverlayOffset(PSP_EFLASH,0,-8,WOF_ADD);
 				A_SetTics(1);
 			}
 		}
 		TNT1 A 1 {
-			if (bdoom_weapons == 2) {
+			if (bdoom_weapons == BD_WeaponSet.WS_MODERN) {
 				BD_ClearPsprite(PSP_EFLASH,PSP_MFLASH);
 				return ResolveState("LightDone");
 			}
@@ -148,7 +148,7 @@ Class BD_Pistol : BDoomWeapon {
 		goto lightdone;
 	FlashVanilla:
 		PI0L A 3 bright {
-			if (bdoom_weapons == 2)
+			if (bdoom_weapons == BD_WeaponSet.WS_MODERN)
 				A_SetTics(1);
 		}
 		stop;		

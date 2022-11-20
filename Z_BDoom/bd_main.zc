@@ -6,13 +6,6 @@ Class BDoomActor : Actor abstract {
 	protected double pi;
 	protected name bcolor;
 	
-	enum BD_Blood_Quality {
-		BLOOD_DISABLED,
-		BLOOD_NOPOOLS,
-		BLOOD_FULL,
-		BLOOD_MAX,
-	}
-	
 	//returns false if 8 points around the actor in a specified radius are at the same height as at its pos; used by blood pools:
 	bool CheckLandingSize (double cradius = 0, bool checkceiling = false) {
 		if (checkceiling) {

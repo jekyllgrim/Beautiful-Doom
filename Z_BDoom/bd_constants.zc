@@ -1,0 +1,34 @@
+struct BD_BloodQuality {
+	enum BloodQuality {
+		BQ_DISABLED,
+		BQ_NOPOOLS,
+		BQ_FULL,
+		BQ_EXTRA,
+	}
+}
+
+struct BD_WeaponSet {
+	enum WeaponSet {
+		WS_VANILLA,
+		WS_ENHANCED,
+		WS_MODERN,
+	}
+}
+
+struct BD_SafeReplacement {
+	enum SafeReplacement {
+		SR_DISABLED,
+		SR_DEHACKED,
+		SR_DEHACKED_AND_SPRITES,
+	}
+}
+
+struct BD_GameCompat {
+	enum GameCompat {
+		GC_DOOM,
+		GC_PAINSLAYER,
+		GC_KDIKDIZD,
+		GC_ALICE,
+		GC_VALIANT,
+	}
+}

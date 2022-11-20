@@ -23,7 +23,7 @@ Class BD_Shotgun : BDoomWeapon {
 		If (Owner)
 			return;
 		else {
-			if(bdoom_weapons == 2) {
+			if(bdoom_weapons == BD_WeaponSet.WS_MODERN) {
 				pickupsound = "Mweapons/shotgun/pump";
 			}
 			else {
@@ -36,7 +36,7 @@ Class BD_Shotgun : BDoomWeapon {
 		Super.DoEffect();
 		if (!owner)
 			return;
-		if(bdoom_weapons == 2) {
+		if(bdoom_weapons == BD_WeaponSet.WS_MODERN) {
 			bNOAUTOFIRE = true;
 			bAMMO_OPTIONAL = true;
 			bALT_AMMO_OPTIONAL = false;
@@ -50,16 +50,16 @@ Class BD_Shotgun : BDoomWeapon {
 	States {
 	Spawn:
 		SHOT A 1 {
-			If(bdoom_weapons == 2)
+			If(bdoom_weapons == BD_WeaponSet.WS_MODERN)
 				frame = 1;
 		}
 		loop;
 	Ready:
 		SHOG A 1 {
-			if (bdoom_weapons == 2)
+			if (bdoom_weapons == BD_WeaponSet.WS_MODERN)
 				return ResolveState("Ready.Modern");
 			BD_SetSprite("SHOG","QHOG");
-			if (bdoom_weapons == 1)
+			if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
 				 A_WeaponReady();
 			else
 				A_WeaponReady(WRF_NOSECONDARY);
@@ -68,9 +68,9 @@ Class BD_Shotgun : BDoomWeapon {
 		loop;
 	Deselect:
 		TNT1 A 1 {
-			if(bdoom_weapons == 2)
+			if(bdoom_weapons == BD_WeaponSet.WS_MODERN)
 				return ResolveState("Deselect.Modern");
-			else if(bdoom_weapons == 1)
+			else if(bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
 				return ResolveState("Deselect.Enhanced");		
 			BD_SetSprite("SHOG","QHOG");	
 			return ResolveState(null);
@@ -79,9 +79,9 @@ Class BD_Shotgun : BDoomWeapon {
 		wait;
 	Select:
 		TNT1 A 0 { 
-			if (bdoom_weapons > 0)
+			if (bdoom_weapons > BD_WeaponSet.WS_VANILLA)
 				A_StartSound("weapons/shotgun/draw");
-			if(bdoom_weapons == 2)
+			if(bdoom_weapons == BD_WeaponSet.WS_MODERN)
 				return ResolveState("Select.Modern");
 			A_WeaponOffset(0,86);
 			BD_SetSprite("SHOG","QHOG");	
@@ -94,7 +94,7 @@ Class BD_Shotgun : BDoomWeapon {
 		goto ready;
 	Fire: //pre-fire 3 tics, fire 34 tics, refire 7 tics;
 		SHOG A 3 { 
-			if(bdoom_weapons == 2)
+			if(bdoom_weapons == BD_WeaponSet.WS_MODERN)
 				return ResolveState("Fire.Modern");
 			A_AlertMonsters();
 			BD_SetSprite("SHOG","QHOG");	
@@ -112,7 +112,7 @@ Class BD_Shotgun : BDoomWeapon {
 		#### # 0  A_WeaponOffset(0,32,WOF_INTERPOLATE);
 		#### FHIJKL 1;
 		#### M 2 {
-			if (bdoom_weapons == 1)
+			if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
 				 A_StartSound("weapons/shotgun/pump",slot:CHAN_5);
 		}
 		#### N 4;
@@ -122,7 +122,7 @@ Class BD_Shotgun : BDoomWeapon {
 		}
 		#### NMLKJIHGFE 1;
 		#### DCB 1 {
-			if (bdoom_weapons == 1)
+			if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
 				A_WeaponReady(WRF_NOPRIMARY);
 		}
 		#### A 7 A_ReFire();

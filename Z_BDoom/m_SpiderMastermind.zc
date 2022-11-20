@@ -49,11 +49,11 @@ Class BD_SpiderMastermind : BdoomMonster {
 	}
 	
 	state SpiderMissileEnd() {
-		if (bdoom_weapons == 0)
+		if (bdoom_weapons == BD_WeaponSet.WS_VANILLA)
 			return ResolveState("Missile.Vanilla");
-		else if (bdoom_weapons == 1)
+		else if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
 			return ResolveState("Missile.Enhanced");
-		else if (bdoom_weapons == 2)
+		else if (bdoom_weapons == BD_WeaponSet.WS_MODERN)
 			return ResolveState("Missile.Modern");
 		return ResolveState(null);
 	}

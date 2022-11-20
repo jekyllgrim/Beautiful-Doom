@@ -4,7 +4,7 @@ Class BDoomMonster : BDoomActor abstract {
 	BurningBodyFlame burnflame;
 	protected double smokeheight;
 	property smokeheight : smokeheight;
-	protected int monsterclip; //used by monsters with guns when bdoom_weapons == 2
+	protected int monsterclip; //used by monsters with guns when bdoom_weapons == BD_WeaponSet.WS_MODERN
 	property monsterclip : monsterclip;
 
 	bool burning; //is showing burning or smoking animation
@@ -123,7 +123,7 @@ Class BDoomMonster : BDoomActor abstract {
 	}
 
 	state BD_Refire(int ChanceToEnd = 0, statelabel endstate = "See") { 
-		if (bdoom_weapons < 2 || !bdoom_replaceweapons)
+		if (bdoom_weapons < BD_WeaponSet.WS_MODERN || !bdoom_replaceweapons)
 			return ResolveState("See");
 		else if (monsterclip == 0)
 			return ResolveState("Reload");

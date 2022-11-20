@@ -16,7 +16,7 @@ Class BD_WeaponHelpHandler : EventHandler {
     }
     override void renderOverlay(RenderEvent e) {
         if (ShowWeapHelp) {
-			if (bdoom_weapons < 1)
+			if (bdoom_weapons < BD_WeaponSet.WS_ENHANCED)
 				return;
 			PlayerInfo player	= players[consoleplayer];
 			PlayerPawn mo		= player.mo;
@@ -25,7 +25,7 @@ Class BD_WeaponHelpHandler : EventHandler {
             let weap = player.readyWeapon.GetClassName();
 			if (!weap)
 				return;
-			if (bdoom_weapons < 1)
+			if (bdoom_weapons < BD_WeaponSet.WS_ENHANCED)
 				return;
 			string title;
 			string	desc;
@@ -35,7 +35,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 			int statofs2 = 1270;
 			int yofs = 180;
 			int fillheight = 420;
-			if (bdoom_weapons == 1) {
+			if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED) {
 				string attack1;	string atkrate1;	string damage1;	string type1;	string prspeed1; string blastarea1;
 				string attack2;	string atkrate2;	string damage2;	string type2;	string prspeed2; string blastarea2;
 				switch (weap) {
@@ -194,7 +194,7 @@ Class BD_WeaponHelpHandler : EventHandler {
 					BD_StatusBarScreen.DrawString("UNRLC",blastarea2,		(statofs2,yofs),translation:Font.CR_GOLD,scale:(1.5,1.5));
 				}
 			}
-			else if (bdoom_weapons == 2) {
+			else if (bdoom_weapons == BD_WeaponSet.WS_MODERN) {
 				switch (weap) {
 					case 'BD_Fist' : 
 					fillheight += 30;

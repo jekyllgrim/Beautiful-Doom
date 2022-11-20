@@ -33,7 +33,7 @@ Class BD_Fist : BDoomWeapon {
 		Super.DoEffect();
 		If (!Owner || !owner.player)
 			return;
-		if(bdoom_weapons == 2) {
+		if(bdoom_weapons == BD_WeaponSet.WS_MODERN) {
 			//console.printf("hurt chance: %d",hurtchance);
 			//Console.Printf("dmg mul: %f",dmgmul);
 			bNOAUTOFIRE = true;
@@ -55,9 +55,9 @@ Class BD_Fist : BDoomWeapon {
 	states {
 		Select:
 			TNT1 A 0 {
-				if (bdoom_weapons == 2)
+				if (bdoom_weapons == BD_WeaponSet.WS_MODERN)
 					return ResolveState ("Select.Modern");
-				else if (bdoom_weapons == 1)
+				else if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
 					return ResolveState ("Select.Enhanced");				
 				A_WeaponOffset(35,60,WOF_INTERPOLATE);
 				BD_SetSprite("FIS0","1IS0");
@@ -72,9 +72,9 @@ Class BD_Fist : BDoomWeapon {
 			TNT1 A 0 {
 				BD_ClearPSprite(PSP_GUN2,PSP_GUN3);
 				speed = default.speed;	
-				if (bdoom_weapons == 2)
+				if (bdoom_weapons == BD_WeaponSet.WS_MODERN)
 					return ResolveState ("Deselect.Modern");
-				if (bdoom_weapons == 1)
+				if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
 					return ResolveState ("Deselect.Enhanced");
 				BD_SetSprite("FIS0","1IS0");
 				return ResolveState (null);
@@ -83,11 +83,11 @@ Class BD_Fist : BDoomWeapon {
 			wait;
 		Ready:
 			TNT1 A 0 {
-				if (bdoom_weapons == 2)
+				if (bdoom_weapons == BD_WeaponSet.WS_MODERN)
 					return ResolveState ("Ready.Modern");
 				BD_ClearPSprite(PSP_GUN2,PSP_GUN3);
 				speed = default.speed;	
-				if (bdoom_weapons == 1)
+				if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
 					return ResolveState ("Ready.Enhanced");
 				BD_SetSprite("FIS0","1IS0");
 				return ResolveState (null);
@@ -96,9 +96,9 @@ Class BD_Fist : BDoomWeapon {
 			loop;
 		Fire: //pre-fire 4 tics, fire 13 tics, refire 5 tics
 			FIS0 A 1 {
-				if (bdoom_weapons == 2)
+				if (bdoom_weapons == BD_WeaponSet.WS_MODERN)
 					return ResolveState ("Fire.Modern");
-				else if (bdoom_weapons == 1)
+				else if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
 					return ResolveState ("Fire.Enhanced");
 				A_AlertMonsters();
 				if (FindInventory("PowerStrength"))
@@ -235,7 +235,7 @@ Class BD_Fist : BDoomWeapon {
 			#### A 0 A_Refire("HoldStrong.Enhanced");
 			goto FireEnd.Enhanced;
 		AltFire:
-			TNT1 A 0 A_JumpIf(bdoom_weapons == 2, "AltFire.Modern");
+			TNT1 A 0 A_JumpIf(bdoom_weapons == BD_WeaponSet.WS_MODERN, "AltFire.Modern");
 			TNT1 A 0 BD_SetSprite("KICF","1ICF");
 			#### AB 1;
 		AltHold:
@@ -1290,7 +1290,7 @@ Class BD_Berserk : CustomInventory  {
 		Stop;
 	Pickup:
 		TNT1 A 0 {
-			if (bdoom_weapons == 2) {
+			if (bdoom_weapons == BD_WeaponSet.WS_MODERN) {
 				A_GiveInventory("BD_ModernBerserk_Regen");
 				A_GiveInventory("BD_ModernBerserk_Speed");
 				A_GiveInventory("BD_ModernBerserk_Protection");

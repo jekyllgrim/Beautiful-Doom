@@ -42,7 +42,7 @@ Class BD_Chaingun : BDoomWeapon {
 	}
 	
 	override string PickupMessage () {
-		if(bdoom_weapons == 2)
+		if(bdoom_weapons == BD_WeaponSet.WS_MODERN)
 			return "$BD_ARTAG"; 
 		else
 			return "$GOTCHAINGUN"; 
@@ -52,7 +52,7 @@ Class BD_Chaingun : BDoomWeapon {
 		s_spin = FindState("AltHold");
 	}
 	override string GetObituary (Actor victim, Actor inflictor, Name mod, bool playerattack) {
-		if(bdoom_weapons == 2) 
+		if(bdoom_weapons == BD_WeaponSet.WS_MODERN) 
 			return "$BD_AROBITUARY"; 
 		else 
 			return "$OB_MPCHAINGUN"; 
@@ -61,7 +61,7 @@ Class BD_Chaingun : BDoomWeapon {
 		If (Owner)	
 			return;
 		else {
-			if(bdoom_weapons == 2) {
+			if(bdoom_weapons == BD_WeaponSet.WS_MODERN) {
 				pickupsound = "Mweapons/rifle/clipin";
 			}
 			else {
@@ -74,7 +74,7 @@ Class BD_Chaingun : BDoomWeapon {
 		Super.DoEffect();
 		if (!owner || !owner.player)
 			return;
-		if(bdoom_weapons == 2) {
+		if(bdoom_weapons == BD_WeaponSet.WS_MODERN) {
 			SetTag("$BD_ARTAG");
 			if (RifleSights)
 				bNOAUTOFIRE = true;
@@ -91,7 +91,7 @@ Class BD_Chaingun : BDoomWeapon {
 		
 		// Weapons are set to Enhanced, this weapon is selected,
 		// player is alive:
-		if (bdoom_weapons == 1 && owner.player.readyweapon == self && owner.health > 0) {
+		if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED && owner.player.readyweapon == self && owner.health > 0) {
 			// Check PSP_WEAPON layer is active, do nothing otherwise:
 			let psp = owner.player.FindPSprite(PSP_Weapon);
 			if (!psp)
@@ -171,7 +171,7 @@ Class BD_Chaingun : BDoomWeapon {
 		}
 		
 		//crosshair and bob handling for ADS
-		if (owner.player.readyweapon == self && bdoom_weapons == 2) {
+		if (owner.player.readyweapon == self && bdoom_weapons == BD_WeaponSet.WS_MODERN) {
 			let s = owner.player.FindPsprite(PSP_Weapon);
 			let chg = BD_Chaingun(owner.player.ReadyWeapon);
 			if (!s || !chg)
@@ -186,7 +186,7 @@ Class BD_Chaingun : BDoomWeapon {
 			}
 			else { 
 				chg.crosshair = 0; //if ADS isn't used, set crosshair to default
-				/*if (bdoom_weapons == 2) { //and set bob to either default Modern value...
+				/*if (bdoom_weapons == BD_WeaponSet.WS_MODERN) { //and set bob to either default Modern value...
 					BobRangeX = 0.2;
 					BobRangeY = 0.2;
 					BobStyle = 5;
@@ -206,7 +206,7 @@ Class BD_Chaingun : BDoomWeapon {
 	states {
 		Spawn:
 			MGUN A 1 NoDelay {
-				if (bdoom_weapons == 2) {
+				if (bdoom_weapons == BD_WeaponSet.WS_MODERN) {
 					sprite = GetSpriteIndex("RIFN");
 					frame = 25;
 					A_SetScale(0.75);
@@ -222,9 +222,9 @@ Class BD_Chaingun : BDoomWeapon {
 		Select:
 			TNT1 A 0 { 
 				A_StopSound(CHAN_5);			
-				if (bdoom_weapons == 2)
+				if (bdoom_weapons == BD_WeaponSet.WS_MODERN)
 					return ResolveState("Select.Modern");
-				If(bdoom_weapons == 1) 
+				If(bdoom_weapons == BD_WeaponSet.WS_ENHANCED) 
 					A_StartSound("weapons/chaingun/draw");
 				A_WeaponOffset(-48,86);
 				return ResolveState(null);
@@ -238,7 +238,7 @@ Class BD_Chaingun : BDoomWeapon {
 			TNT1 A 0 { 
 				BD_ClearPSprite(PSP_REDDOT);
 				A_StopSound(CHAN_5); 
-				if (bdoom_weapons == 2)
+				if (bdoom_weapons == BD_WeaponSet.WS_MODERN)
 					return ResolveState("Deselect.Modern");
 				speed = default.speed;
 				A_ZoomFactor(1.0);
@@ -248,12 +248,12 @@ Class BD_Chaingun : BDoomWeapon {
 			wait;
 		Ready:
 			MGGG A 1 {
-				if (bdoom_weapons == 2)
+				if (bdoom_weapons == BD_WeaponSet.WS_MODERN)
 					return ResolveState("Ready.Modern");
 				speed = default.speed;
 				A_ZoomFactor(1.0); 
 				BD_ClearPSprite(PSP_REDDOT);
-				if (bdoom_weapons == 0)
+				if (bdoom_weapons == BD_WeaponSet.WS_VANILLA)
 					A_WeaponReady(WRF_NOSECONDARY);
 				else 
 					A_WeaponReady();
@@ -281,7 +281,7 @@ Class BD_Chaingun : BDoomWeapon {
 			MGGG CD 1;
 			TNT1 A 0 {
 				//jump directly to spinning if AltAttack is pressed as well
-				if (bdoom_weapons == 1 && (player.cmd.buttons & BT_ATTACK) && (player.cmd.buttons & BT_ALTATTACK)) {
+				if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED && (player.cmd.buttons & BT_ATTACK) && (player.cmd.buttons & BT_ALTATTACK)) {
 					A_ClearRefire();
 					invoker.spintics = 4;
 					invoker.spinspeed = 14;

@@ -18,7 +18,7 @@ Class BD_ZombieMan : BDoomMonster {
 	
 	void BD_NoBlocking() {
 		A_NoBlocking(false);
-		if (bdoom_weapons == 1 && random[drop](0,100) >= 80)
+		if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED && random[drop](0,100) >= 80)
 			A_DropItem("BD_Pistol");
 		else
 			A_DropItem("Clip");

@@ -35,7 +35,7 @@ class BD_BFG9000 : BDoomWeapon {
 	override void DoEffect() {
 		Super.DoEffect();
 		If (Owner) {
-			if(bdoom_weapons == 2) {
+			if(bdoom_weapons == BD_WeaponSet.WS_MODERN) {
 				AmmoUse1 = 10;
 				AmmoUse2 = 0;
 				bALT_AMMO_OPTIONAL = true;
@@ -45,7 +45,7 @@ class BD_BFG9000 : BDoomWeapon {
 				AmmoUse2 = 1;
 				bALT_AMMO_OPTIONAL = false;					
 			}
-			if (bdoom_weapons == 1)
+			if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
 				bAMMO_OPTIONAL = true;
 			else
 				bAMMO_OPTIONAL = false;
@@ -55,7 +55,7 @@ class BD_BFG9000 : BDoomWeapon {
 	States {
 		Spawn:
 			BFUG A 1 {
-				if (bdoom_weapons == 2)
+				if (bdoom_weapons == BD_WeaponSet.WS_MODERN)
 					scale.x = -1;
 				else
 					scale.x = 1;
@@ -63,7 +63,7 @@ class BD_BFG9000 : BDoomWeapon {
 			loop;
 		Select:
 			TNT1 A 0 {
-				If(bdoom_weapons > 0)
+				If(bdoom_weapons > BD_WeaponSet.WS_VANILLA)
 					A_StartSound("weapons/bfg/draw");
 				If(bdoom_weapons==2)
 					return ResolveState("Select.Modern");
@@ -98,7 +98,7 @@ class BD_BFG9000 : BDoomWeapon {
 				invoker.wcharge = 0;
 				invoker.wzoom = 1.0;
 				A_ZoomFactor(1.0,ZOOM_NOSCALETURNING);
-				if (bdoom_weapons == 1) {
+				if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED) {
 					if (invoker.ammo1.amount >= 40)
 						A_WeaponReady();
 					else
@@ -111,9 +111,9 @@ class BD_BFG9000 : BDoomWeapon {
 			loop;
 		Fire: //before fire = 30 tics, fire = 10 tics, refire = 20 tics
 			TNT1 A 0 {
-				If(bdoom_weapons == 2)
+				If(bdoom_weapons == BD_WeaponSet.WS_MODERN)
 					return ResolveState("Fire.Modern");
-				if (bdoom_weapons == 0)
+				if (bdoom_weapons == BD_WeaponSet.WS_VANILLA)
 					A_StartSound ("weapons/bfgf",slot:CHAN_WEAPON,flags:CHANF_OVERLAP);
 				else
 					A_StartSound ("weapons/bfg/start",slot:CHAN_5,flags:CHANF_OVERLAP);
@@ -133,13 +133,13 @@ class BD_BFG9000 : BDoomWeapon {
 				A_FireProjectile("BD_BFGBall",0,1);
 				if(bdoom_shakes)
 					A_Quake(1,20,0,128,"");
-				if (bdoom_weapons == 1)
+				if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
 					A_StartSound("weapons/bfg/fire",slot:CHAN_5);
 				A_ClearOverlays(PSP_LIGHTS,PSP_LIGHTS);
 			}
 			BBGN CDEF 2;
 			BBGN GGHHIIJJAAAAAAAAAAAA 1 {
-				if (bdoom_weapons == 1 && invoker.ammo1.amount < 40) {
+				if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED && invoker.ammo1.amount < 40) {
 					A_ClearRefire();
 					A_WeaponReady(WRF_NOFIRE);
 				}
@@ -600,7 +600,7 @@ Class BD_BFGBall : BFGBall {
 			A_SetScale(1);
 			If(bdoom_shakes)
 				A_Quake(4,34,0,256,"");
-			If(bdoom_weapons == 1)
+			If(bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
 				A_StartSound("weapons/bfg/explosion",slot:CHAN_6);
 			else
 				A_StartSound("weapons/bfgx",slot:CHAN_6);			

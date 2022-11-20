@@ -48,7 +48,7 @@ Class BD_ChaingunGuy : BDoomMonster {
 	}
 	
 	void SetChainguySprite(name spritename) {
-		if (bdoom_weapons == 2 && bdoom_replaceweapons)
+		if (bdoom_weapons == BD_WeaponSet.WS_MODERN && bdoom_replaceweapons)
 			sprite = GetSpriteIndex(spritename);
 	}
 	
@@ -90,9 +90,9 @@ Class BD_ChaingunGuy : BDoomMonster {
 		loop;
 	Missile:
 		TNT1 A 0 {
-			if (bdoom_replaceweapons && bdoom_weapons == 2)
+			if (bdoom_replaceweapons && bdoom_weapons == BD_WeaponSet.WS_MODERN)
 				return ResolveState("MissileModern");
-			if (bdoom_weapons > 0) {
+			if (bdoom_weapons > BD_WeaponSet.WS_VANILLA) {
 				A_StartSound("weapons/chaingun/start",slot:CHAN_5);
 				attacking = true;
 			}

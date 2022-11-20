@@ -1,31 +1,23 @@
-class BD_Replacementhandler : EventHandler {
-
+class BD_GameCompatHandler : StaticEventHandler {
 	int gameCompatType;
 
-	enum EGameCompatValues {
-		GC_DOOM,
-		GC_PAINSLAYER,
-		GC_KDIKDIZD,
-		GC_ALICE
-	}
-
 	int GetGameCompat() {
-		int game = GC_DOOM;
+		int game = BD_GameCompat.GC_DOOM;
 		
 		string pkc = "PK_BaseActor";
 		class<Actor> pk = pkc;
 		if (pk) {
-			game |= GC_PAINSLAYER;
+			game |= BD_GameCompat.GC_PAINSLAYER;
 		}
 		
 		string alc = "ToM_BaseActor";
 		class<Actor> al = alc;
 		if (al) {
-			game |= GC_ALICE;
+			game |= BD_GameCompat.GC_ALICE;
 		}
 		
 		if (Wads.FindLump("kdikdizd")) {
-			game |= GC_KDIKDIZD;
+			game |= BD_GameCompat.GC_KDIKDIZD;
 		}
 		
 		return game;
@@ -33,8 +25,16 @@ class BD_Replacementhandler : EventHandler {
 	
 	override void OnRegister() {
 		gameCompatType = GetGameCompat();
-		//if (gameCompatType & GC_KDIKDIZD)
-			//console.printf("Playing Knee-Deep in KDiZD");
+	}
+}
+
+class BD_Replacementhandler : EventHandler {
+	int gameCompatType;
+	
+	override void OnRegister() {
+		let handler = BD_GameCompatHandler(StaticEventHandler.Find("BD_GameCompatHandler"));
+		if (handler)
+			gameCompatType = handler.gameCompatType;
 	}
 
 	/*	This function is designed to avoid replacing actors that are 
@@ -147,7 +147,7 @@ class BD_WeaponOverrideHandler : BD_Replacementhandler {
 
 	// Replaces weapons on the map if the appropriate CVAR is true.
 	override void CheckReplacement(ReplaceEvent e) {
-		bool notAnotherGameplayMod = !(gameCompatType & GC_PAINSLAYER) && !(gameCompatType & GC_ALICE);
+		bool notAnotherGameplayMod = !(gameCompatType & BD_GameCompat.GC_PAINSLAYER) && !(gameCompatType & BD_GameCompat.GC_ALICE);
 		
 		if (bdoom_replaceweapons && notAnotherGameplayMod) {
 			switch (e.Replacee.GetClassName()) {
@@ -317,7 +317,7 @@ class BD_ActorOverrideHandler : BD_Replacementhandler {
 			return false;
 		
 		// If playing Knee-Deep in KDiZD:
-		if (gameCompatType & GC_KDIKDIZD) {
+		if (gameCompatType & BD_GameCompat.GC_KDIKDIZD) {
 			// If class name is provided, check it against
 			// the exceptions:
 			if (classname)
@@ -493,7 +493,7 @@ class BD_ActorOverrideHandler : BD_Replacementhandler {
 			}
 		}
 		
-		bool notAnotherGameplayMod = !(gameCompatType & GC_PAINSLAYER) && !(gameCompatType & GC_ALICE);
+		bool notAnotherGameplayMod = !(gameCompatType & BD_GameCompat.GC_PAINSLAYER) && !(gameCompatType & BD_GameCompat.GC_ALICE);
 		
 		if (bdoom_replaceitems && notAnotherGameplayMod) {
 			switch (rname) {
@@ -503,9 +503,12 @@ class BD_ActorOverrideHandler : BD_Replacementhandler {
 			case 'Soulsphere': 
 				e.Replacement = 'BD_Soulsphere';
 				break;
-			case 'Megasphere': e.Replacement = 'BD_Megasphere'; 				break;
-			case 'InvulnerabilitySphere'
-				: e.Replacement = 'BD_InvulnerabilitySphere'; 	break;
+			case 'Megasphere': 
+				e.Replacement = 'BD_Megasphere';
+				break;
+			case 'InvulnerabilitySphere':
+				e.Replacement = 'BD_InvulnerabilitySphere';
+				break;
 			case 'Allmap' : 
 				e.Replacement = 'BD_Allmap'; 
 				break;
@@ -552,53 +555,188 @@ class BD_ActorOverrideHandler : BD_Replacementhandler {
 		}
 		
 		if (bdoom_replaceobjects) {
-			//e.IsFinal = true;
-			name obj = e.Replacee.GetClassName();
-			switch (obj) {
-					//VICTIMS
-				Case 'HangTLookingDown' 	: if (!CheckVanillaReplacement(obj,"HDB3A0"))	e.Replacement = 'BD_HangingTorso'; 		break;
-				Case 'HangTLookingUp' 	: if (!CheckVanillaReplacement(obj,"HDB5A0"))	e.Replacement = 'BD_HangingTorso'; 		break;
-				Case 'HangTNoBrain' 		: if (!CheckVanillaReplacement(obj,"HDB6A0"))	e.Replacement = 'BD_HangingTorso'; 		break;
-				Case 'HangTSkull': if (!CheckVanillaReplacement(obj,"HDB4A0"))	e.Replacement = 'BD_HangingTorso'; 		break;
-				Case 'HangBNoBrain' 		: if (!CheckVanillaReplacement(obj,"HDB2A0"))	e.Replacement = 'BD_HangingBody'; 		break;
-				Case 'HangNoGuts': if (!CheckVanillaReplacement(obj,"HDB1A0"))	e.Replacement = 'BD_HangingBody'; 		break;
-				Case 'BloodyTwitch'		: if (!CheckVanillaReplacement(obj,"GOR1A0"))	e.Replacement = 'BD_BloodyTwitch'; 		break;
-				Case 'NonSolidTwitch'		: if (!CheckVanillaReplacement(obj,"GOR1A0"))	e.Replacement = 'BD_NonsolidTwitch'; 		break;				
-				Case 'Meat2'				: if (!CheckVanillaReplacement(obj,"GOR2A0"))	e.Replacement = 'BD_Meat2'; 				break;
-				Case 'Meat3'				: if (!CheckVanillaReplacement(obj,"GOR3A0"))	e.Replacement = 'BD_Meat3'; 				break;
-				Case 'Meat4'				: if (!CheckVanillaReplacement(obj,"GOR4A0"))	e.Replacement = 'BD_Meat4'; 				break;
-				Case 'Meat5'				: if (!CheckVanillaReplacement(obj,"GOR5A0"))	e.Replacement = 'BD_Meat5'; 				break;				
-				Case 'NonsolidMeat2'		: if (!CheckVanillaReplacement(obj,"GOR2A0"))	e.Replacement = 'BD_NonsolidMeat2'; 		break;
-				Case 'NonsolidMeat3'		: if (!CheckVanillaReplacement(obj,"GOR3A0"))	e.Replacement = 'BD_NonsolidMeat3'; 		break;
-				Case 'NonsolidMeat4'		: if (!CheckVanillaReplacement(obj,"GOR4A0"))	e.Replacement = 'BD_NonsolidMeat4';		break;
-				Case 'NonsolidMeat5'		: if (!CheckVanillaReplacement(obj,"GOR5A0"))	e.Replacement = 'BD_NonsolidMeat5';		break;
-				Case 'DeadStick'			: if (!CheckVanillaReplacement(obj,"POL1A0"))	e.Replacement = 'BD_DeadStick';			break;
-				Case 'LiveStick'			: if (!CheckVanillaReplacement(obj,"POL6A0"))	e.Replacement = 'BD_LiveStick';			break;
-				Case 'HeadOnAStick'		: if (!CheckVanillaReplacement(obj,"POL4A0"))	e.Replacement = 'BD_HeadOnAStick';		break;
-				Case 'HeadsOnAStick'		: if (!CheckVanillaReplacement(obj,"POL2A0"))	e.Replacement = 'BD_HeadsOnAStick';		break;
-				Case 'ColonGibs'			: if (!CheckVanillaReplacement(obj,"POB1A0") && bdoom_gibs)	e.Replacement = 'BD_ColonGibs';		break;
-				Case 'SmallBloodPool'		: if (!CheckVanillaReplacement(obj,"POB2A0") && bdoom_blood)	e.Replacement = 'BD_SmallBloodPool';	break;
-					//MISC
-				case 'TeleportFog' 		: if (!CheckVanillaReplacement(obj,"TFOGA0"))	e.Replacement = 'BD_TeleportFog';			break;
-				case 'ExplosiveBarrel' 	: if (!CheckVanillaReplacement(obj,"BAR1A0"))	e.Replacement = 'BD_ExplosiveBarrel';		break;
-				case 'EvilEye': if (!CheckVanillaReplacement(obj,"CEYEA0"))	e.Replacement = 'BD_EvilEye';				break;
-				case 'FloatingSkull' 		: if (!CheckVanillaReplacement(obj,"FSKUA0"))	e.Replacement = 'BD_FloatingSkull';		break;
-				case 'HeartColumn' 		: if (!CheckVanillaReplacement(obj,"COL5A0"))	e.Replacement = 'BD_HeartColumn';			break;
-				case 'BigTree': if (!CheckVanillaReplacement(obj,"TRE2A0"))	e.Replacement = 'BD_BigTree';				break;
-				case 'TorchTree': if (!CheckVanillaReplacement(obj,"TRE1A0"))	e.Replacement = 'BD_TorchTree';			break;
-					//LIGHTS
-				case 'GreenTorch': if (!CheckVanillaReplacement(obj,"TGRNA0"))	e.Replacement = 'BD_TallTorch_Green';		break;
-				case 'RedTorch': if (!CheckVanillaReplacement(obj,"TREDA0"))	e.Replacement = 'BD_TallTorch_Red';			break;
-				case 'BlueTorch': if (!CheckVanillaReplacement(obj,"TBLUA0"))	e.Replacement = 'BD_TallTorch_Blue';			break;
-				case 'ShortGreenTorch'	: if (!CheckVanillaReplacement(obj,"SMGTA0"))	e.Replacement = 'BD_ShortTorch_Green';		break;
-				case 'ShortRedTorch' 		: if (!CheckVanillaReplacement(obj,"SMRTA0"))	e.Replacement = 'BD_ShortTorch_Red';			break;
-				case 'ShortBlueTorch' 	: if (!CheckVanillaReplacement(obj,"SMBTA0"))	e.Replacement = 'BD_ShortTorch_Blue';		break;
-				case 'Candlestick' 		: if (!CheckVanillaReplacement(obj,"CANDA0"))	e.Replacement = 'BD_Candlestick';			break;
-				case 'Candelabra': if (!CheckVanillaReplacement(obj,"CBRAA0"))	e.Replacement = 'BD_Candelabra';			break;
-				case 'BurningBarrel' 		: if (!CheckVanillaReplacement(obj,"FCANA0"))	e.Replacement = 'BD_BurningBarrel';		break;
-				case 'Techlamp': if (!CheckVanillaReplacement(obj,"TLMPA0"))	e.Replacement = 'BD_Techlamp';				break;
-				case 'Techlamp2': if (!CheckVanillaReplacement(obj,"TLP2A0"))	e.Replacement = 'BD_Techlamp2';			break;
-				case 'Column' 				: if (!CheckVanillaReplacement(obj,"COLUA0"))	e.Replacement = 'BD_Column';				break;
+			switch (rname) {
+			//VICTIMS
+			case 'HangTLookingDown' :
+				 if (!CheckVanillaReplacement(spritename:
+				"HDB3A0"))
+					e.Replacement = 'BD_HangingTorso';
+				break;
+			case 'HangTLookingUp' :
+				 if (!CheckVanillaReplacement(spritename:
+				"HDB5A0"))
+					e.Replacement = 'BD_HangingTorso';
+				break;
+			case 'HangTNoBrain' :
+				 if (!CheckVanillaReplacement(spritename:
+				"HDB6A0"))
+					e.Replacement = 'BD_HangingTorso';
+				break;
+			case 'HangTSkull':
+				 if (!CheckVanillaReplacement(spritename:
+				"HDB4A0"))
+					e.Replacement = 'BD_HangingTorso';
+				break;
+			case 'HangBNoBrain' :
+				 if (!CheckVanillaReplacement(spritename:
+				"HDB2A0"))
+					e.Replacement = 'BD_HangingBody';
+				break;
+			case 'HangNoGuts':
+				 if (!CheckVanillaReplacement(spritename:
+				"HDB1A0"))
+					e.Replacement = 'BD_HangingBody';
+				break;
+			case 'BloodyTwitch':
+				 if (!CheckVanillaReplacement(spritename:
+				"GOR1A0"))
+					e.Replacement = 'BD_BloodyTwitch';
+				break;
+			case 'NonSolidTwitch':
+				 if (!CheckVanillaReplacement(spritename:
+				"GOR1A0"))
+					e.Replacement = 'BD_NonsolidTwitch';
+				break;
+			case 'Meat2':
+				 if (!CheckVanillaReplacement(spritename:
+				"GOR2A0"))
+					e.Replacement = 'BD_Meat2';
+				break;
+			case 'Meat3':
+				 if (!CheckVanillaReplacement(spritename:
+				"GOR3A0"))
+					e.Replacement = 'BD_Meat3';
+				break;
+			case 'Meat4':
+				 if (!CheckVanillaReplacement(spritename:
+				"GOR4A0"))
+					e.Replacement = 'BD_Meat4';
+				break;
+			case 'Meat5':
+				 if (!CheckVanillaReplacement(spritename:
+				"GOR5A0"))
+					e.Replacement = 'BD_Meat5';
+				break;
+			case 'NonsolidMeat2':
+				 if (!CheckVanillaReplacement(spritename:
+				"GOR2A0"))
+					e.Replacement = 'BD_NonsolidMeat2';
+				break;
+			case 'NonsolidMeat3':
+				 if (!CheckVanillaReplacement(spritename:
+				"GOR3A0"))
+					e.Replacement = 'BD_NonsolidMeat3';
+				break;
+			case 'NonsolidMeat4':
+				 if (!CheckVanillaReplacement(spritename:
+				"GOR4A0"))
+					e.Replacement = 'BD_NonsolidMeat4';break;
+			case 'NonsolidMeat5':
+				 if (!CheckVanillaReplacement(spritename:
+				"GOR5A0"))
+					e.Replacement = 'BD_NonsolidMeat5';break;
+			case 'DeadStick':
+				 if (!CheckVanillaReplacement(spritename:
+				"POL1A0"))
+					e.Replacement = 'BD_DeadStick';break;
+			case 'LiveStick':
+				 if (!CheckVanillaReplacement(spritename:
+				"POL6A0"))
+					e.Replacement = 'BD_LiveStick';break;
+			case 'HeadOnAStick':
+				 if (!CheckVanillaReplacement(spritename:
+				"POL4A0"))
+					e.Replacement = 'BD_HeadOnAStick';break;
+			case 'HeadsOnAStick':
+				 if (!CheckVanillaReplacement(spritename:
+				"POL2A0"))
+					e.Replacement = 'BD_HeadsOnAStick';break;
+			case 'ColonGibs':
+				 if (!CheckVanillaReplacement(spritename:
+				"POB1A0") && bdoom_gibs)
+					e.Replacement = 'BD_ColonGibs';break;
+			case 'SmallBloodPool':
+				 if (!CheckVanillaReplacement(spritename:
+				"POB2A0") && bdoom_blood)
+					e.Replacement = 'BD_SmallBloodPool';break;
+			//MISC
+			case 'TeleportFog' :
+				 if (!CheckVanillaReplacement(spritename:
+				"TFOGA0"))
+					e.Replacement = 'BD_TeleportFog';break;
+			case 'ExplosiveBarrel' :
+				 if (!CheckVanillaReplacement(spritename:
+				"BAR1A0"))
+					e.Replacement = 'BD_ExplosiveBarrel';break;
+			case 'EvilEye':
+				 if (!CheckVanillaReplacement(spritename:
+				"CEYEA0"))
+					e.Replacement = 'BD_EvilEye';break;
+			case 'FloatingSkull' :
+				 if (!CheckVanillaReplacement(spritename:
+				"FSKUA0"))
+					e.Replacement = 'BD_FloatingSkull';break;
+			case 'HeartColumn' :
+				 if (!CheckVanillaReplacement(spritename:
+				"COL5A0"))
+					e.Replacement = 'BD_HeartColumn';break;
+			case 'BigTree':
+				 if (!CheckVanillaReplacement(spritename:
+				"TRE2A0"))
+					e.Replacement = 'BD_BigTree';break;
+			case 'TorchTree':
+				 if (!CheckVanillaReplacement(spritename:
+				"TRE1A0"))
+					e.Replacement = 'BD_TorchTree';break;
+			//LIGHTS
+			case 'GreenTorch':
+				 if (!CheckVanillaReplacement(spritename:
+				"TGRNA0"))
+					e.Replacement = 'BD_TallTorch_Green';break;
+			case 'RedTorch':
+				 if (!CheckVanillaReplacement(spritename:
+				"TREDA0"))
+					e.Replacement = 'BD_TallTorch_Red';break;
+			case 'BlueTorch':
+				 if (!CheckVanillaReplacement(spritename:
+				"TBLUA0"))
+					e.Replacement = 'BD_TallTorch_Blue';break;
+			case 'ShortGreenTorch':
+				 if (!CheckVanillaReplacement(spritename:
+				"SMGTA0"))
+					e.Replacement = 'BD_ShortTorch_Green';break;
+			case 'ShortRedTorch' :
+				 if (!CheckVanillaReplacement(spritename:
+				"SMRTA0"))
+					e.Replacement = 'BD_ShortTorch_Red';break;
+			case 'ShortBlueTorch' :
+				 if (!CheckVanillaReplacement(spritename:
+				"SMBTA0"))
+					e.Replacement = 'BD_ShortTorch_Blue';break;
+			case 'Candlestick' :
+				 if (!CheckVanillaReplacement(spritename:
+				"CANDA0"))
+					e.Replacement = 'BD_Candlestick';break;
+			case 'Candelabra':
+				 if (!CheckVanillaReplacement(spritename:
+				"CBRAA0"))
+					e.Replacement = 'BD_Candelabra';break;
+			case 'BurningBarrel' :
+				 if (!CheckVanillaReplacement(spritename:
+				"FCANA0"))
+					e.Replacement = 'BD_BurningBarrel';break;
+			case 'Techlamp':
+				 if (!CheckVanillaReplacement(spritename:
+				"TLMPA0"))
+					e.Replacement = 'BD_Techlamp';break;
+			case 'Techlamp2':
+				 if (!CheckVanillaReplacement(spritename:
+				"TLP2A0"))
+					e.Replacement = 'BD_Techlamp2';break;
+			case 'Column' :
+				 if (!CheckVanillaReplacement(spritename:
+				"COLUA0"))
+					e.Replacement = 'BD_Column';break;
 			}
 		}
 	}
@@ -609,28 +747,86 @@ class BD_ActorOverrideHandler : BD_Replacementhandler {
 	override void Checkreplacee(ReplacedEvent e) {
 		if (!bdoom_replacemonsters)
 			return;
-		name monst = e.Replacement.GetClassName();
+		
+		name monst = e.Replacement.GetClassName();		
 		switch (monst) {
-			case 'BD_Zombieman': if (bdoom_Zombieman) 			e.Replacee = 'Zombieman'; 			break;
-			case 'BD_ShotgunGuy': if (bdoom_ShotgunGuy) 			e.Replacee = 'ShotgunGuy'; 		break;
-			case 'BD_ChaingunGuy' 		: if (bdoom_ChaingunGuy) 			e.Replacee = 'ChaingunGuy'; 		break;
-			case 'BD_WolfensteinSS'		: if (bdoom_WolfensteinSS) 		e.Replacee = 'WolfensteinSS'; 	break;
-			case 'BD_DoomImp' 				: if (bdoom_DoomImp) 				e.Replacee = 'DoomImp'; 			break;
-			case 'BD_Demon' 				: if (bdoom_Demon) 				e.Replacee = 'Demon'; 				break;
-			case 'BD_Spectre' 				: if (bdoom_Spectre) 				e.Replacee = 'Spectre'; 			break;
-			case 'BD_Cacodemon': if (bdoom_Cacodemon) 			e.Replacee = 'Cacodemon'; 			break;
-			case 'BD_PainElemental'		: if (bdoom_PainElemental) 		e.Replacee = 'PainElemental'; 	break;
-			case 'BD_LostSoul'				: if (bdoom_LostSoul) 			e.Replacee = 'LostSoul'; 			break;
-			case 'BD_Revenant': if (bdoom_Revenant) 			e.Replacee = 'Revenant'; 			break;
-			case 'BD_Arachnotron' 		: if (bdoom_Arachnotron) 			e.Replacee = 'Arachnotron'; 		break;
-			case 'BD_Fatso' 				: if (bdoom_Fatso) 				e.Replacee = 'Fatso'; 				break;
-			case 'BD_HellKnight': if (bdoom_HellKnight) 			e.Replacee = 'HellKnight'; 		break;
-			case 'BD_BaronOfHell' 		: if (bdoom_BaronOfHell) 			e.Replacee = 'BaronOfHell'; 		break;
-			case 'BD_ArchVile': if (bdoom_ArchVile) 			e.Replacee = 'ArchVile'; 			break;
-			case 'BD_Cyberdemon': if (bdoom_Cyberdemon) 			e.Replacee = 'Cyberdemon'; 		break;
-			case 'BD_SpiderMastermind'	: if (bdoom_SpiderMastermind) 	e.Replacee = 'SpiderMastermind';	break;
-			case 'BD_BossBrain': if (bdoom_IconOfSin) 			e.Replacee = 'BossBrain';			break;
-			case 'BD_SpawnShot': if (bdoom_IconOfSin) 			e.Replacee = 'SpawnShot';			break;
+		case 'BD_Zombieman':
+			if (bdoom_Zombieman)
+				e.Replacee = 'Zombieman';
+			break;
+		case 'BD_ShotgunGuy':
+			if (bdoom_ShotgunGuy)
+				e.Replacee = 'ShotgunGuy';
+			break;
+		case 'BD_ChaingunGuy' :
+			if (bdoom_ChaingunGuy)
+				e.Replacee = 'ChaingunGuy';
+			break;
+		case 'BD_WolfensteinSS':
+			if (bdoom_WolfensteinSS)
+				e.Replacee = 'WolfensteinSS';
+			break;
+		case 'BD_DoomImp' :
+			if (bdoom_DoomImp)
+				e.Replacee = 'DoomImp';
+			break;
+		case 'BD_Demon' :
+			if (bdoom_Demon)
+				e.Replacee = 'Demon';
+			break;
+		case 'BD_Spectre' :
+			if (bdoom_Spectre)
+				e.Replacee = 'Spectre';
+			break;
+		case 'BD_Cacodemon':
+			if (bdoom_Cacodemon)
+				e.Replacee = 'Cacodemon';
+			break;
+		case 'BD_PainElemental':
+			if (bdoom_PainElemental)
+				e.Replacee = 'PainElemental';
+			break;
+		case 'BD_LostSoul':
+			if (bdoom_LostSoul)
+				e.Replacee = 'LostSoul';
+			break;
+		case 'BD_Revenant':
+			if (bdoom_Revenant)
+				e.Replacee = 'Revenant';
+			break;
+		case 'BD_Arachnotron' :
+			if (bdoom_Arachnotron)
+				e.Replacee = 'Arachnotron';
+			break;
+		case 'BD_Fatso' :
+			if (bdoom_Fatso)
+				e.Replacee = 'Fatso';
+			break;
+		case 'BD_HellKnight':
+			if (bdoom_HellKnight)
+				e.Replacee = 'HellKnight';
+			break;
+		case 'BD_BaronOfHell' :
+			if (bdoom_BaronOfHell)
+				e.Replacee = 'BaronOfHell';
+			break;
+		case 'BD_ArchVile':
+			if (bdoom_ArchVile)
+				e.Replacee = 'ArchVile';
+			break;
+		case 'BD_Cyberdemon':
+			if (bdoom_Cyberdemon)
+				e.Replacee = 'Cyberdemon';
+			break;
+		case 'BD_SpiderMastermind':
+			if (bdoom_SpiderMastermind)
+				e.Replacee = 'SpiderMastermind';break;
+		case 'BD_BossBrain':
+			if (bdoom_IconOfSin)
+				e.Replacee = 'BossBrain';break;
+		case 'BD_SpawnShot':
+			if (bdoom_IconOfSin)
+				e.Replacee = 'SpawnShot';break;
 		}
 	}
 }
@@ -864,7 +1060,10 @@ Class BD_FXAmountControl : EventHandler {
 					alldebris.push(a);
 					giblist.push(a);
 				}
-				//we're not gonna push flames into alldebris array because it's pointless: everything that spawns flames does so continuously. Better simply disable them.
+				// we're not gonna push flames into alldebris array 
+				// because it's pointless: everything that spawns 
+				// flames does so continuously. Better simply 
+				// disable them:
 				else if (a.sfxtype == 'flames')
 					flamelist.push(a);					
 				else if (a.sfxtype == 'debris') {
