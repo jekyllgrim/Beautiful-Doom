@@ -132,6 +132,7 @@ class BD_WeaponOverrideHandler : BD_Replacementhandler {
 			return;
 		// These items have no new visuals and only new pickup sounds, so, I insert them via an event handler, without replacing the actual actors
 		switch (inv.GetClassName()) {
+		case 'Clip':
 			inv.pickupsound = "ammo/clip";
 			break;
 		case 'ClipBox': 
@@ -363,20 +364,6 @@ class BD_ActorOverrideHandler : BD_Replacementhandler {
 		if (!inv)
 			return;
 		
-		name rname = e.Replacee.GetClassName();
-		if (CheckVanillaReplacement(rname))
-			return;
-		
-		// New pickup sounds without replacing pickups:
-		switch (rname) {
-		case 'Stimpack': 
-			inv.pickupsound = "pickups/health1";
-			break;
-		case 'Medikit': 
-			inv.pickupsound = "pickups/health2";
-			break;
-		}
-		
 		// In KDIKDIZD all keys are replaced with various
 		// key cards, so we don't replace them with our
 		// pickups but instead give them all a keycard
@@ -385,6 +372,32 @@ class BD_ActorOverrideHandler : BD_Replacementhandler {
 			if (inv is "Key") {
 				inv.pickupsound = "pickups/keycard";
 			}
+		}
+		
+		name rname = e.thing.GetClassName();
+		if (CheckVanillaReplacement(rname))
+			return;
+		
+		// New pickup sounds without replacing pickups:
+		switch (rname) {
+		case 'HealthBonus': 
+			inv.pickupsound = "pickups/health0";
+			break;
+		case 'Stimpack': 
+			inv.pickupsound = "pickups/health1";
+			break;
+		case 'Medikit': 
+			inv.pickupsound = "pickups/health2";
+			break;
+		case 'ArmorBonus': 
+			inv.pickupsound = "pickups/armor0";
+			break;
+		case 'GreenArmor': 
+			inv.pickupsound = "pickups/armor1";
+			break;
+		case 'BlueArmor': 
+			inv.pickupsound = "pickups/armor2";
+			break;
 		}
 	}
 	
@@ -578,12 +591,6 @@ class BD_ActorOverrideHandler : BD_Replacementhandler {
 				break;
 			case 'ArmorBonus' : 
 				e.Replacement = 'BD_ArmorBonus'; 
-				break;
-			case 'Stimpack' : 
-				e.Replacement = 'BD_Stimpack'; 
-				break;
-			case 'Medikit' : 
-				e.Replacement = 'BD_Medikit'; 
 				break;
 			case 'GreenArmor' : 
 				e.Replacement = 'BD_GreenArmor'; 
