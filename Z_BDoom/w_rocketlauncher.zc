@@ -2,6 +2,7 @@ Class BD_RocketLauncher : BDoomWeapon {
 	private Class<Actor> proj;
 	private double pitchshift;
 	private double vangle;
+	
 	Default {
 		+WEAPON.NOAUTOFIRE
 		Inventory.PickupMessage "$GOTLAUNCHER";
@@ -22,6 +23,35 @@ Class BD_RocketLauncher : BDoomWeapon {
 		BDoomWeapon.ClassicIcon "LAUNA0";
 		BDoomWeapon.ModernIcon "LAUNB0";
 	}
+	
+	action state PickFireSequence() {
+		state ret = null;
+	
+		int mag = invoker.ammo1.amount;
+		if (mag > 3)
+			ret = ResolveState("Fire0.Modern");
+			
+		else {
+			switch (mag) {
+			case 3:
+				ret = ResolveState("Fire1.Modern"); break;
+			case 2:
+				ret = ResolveState("Fire2.Modern"); break;
+			case 1:
+				ret = ResolveState("Fire3.Modern"); break;
+			case 0:
+				if (IsReadyForReload())
+					ret = ResolveState("DryReload"); 
+				else
+					ret = ResolveState("Ready"); 
+				break;
+			}
+		}
+		
+		invoker.DepleteAmmo(false, false, 1, true);
+		
+		return ret;
+	}		
 		
 	override void DoEffect() {
 		Super.DoEffect();
@@ -37,322 +67,298 @@ Class BD_RocketLauncher : BDoomWeapon {
 		}
 	}
 		
-	states	{
-		Spawn:
-			LAUN A 1 NoDelay {
-				if (bdoom_weapons == BD_WeaponSet.WS_MODERN)
-					frame = 1;
-			}
-			Loop;
-			LAUN B 0;
-			stop;
-		Select:
-			TNT1 A 0 { 
-				if(bdoom_weapons > BD_WeaponSet.WS_VANILLA)
-					A_StartSound("weapons/rlan/draw");
-				If(bdoom_weapons == BD_WeaponSet.WS_MODERN)
-					return ResolveState("Select.Modern");
-				return ResolveState(null);
-			}
-			RLAN DCBEFG 1 A_WeaponReady(WRF_NOFIRE);
-			goto ready;
-		Deselect:
-			TNT1 A 0 A_JumpIf(bdoom_weapons==2,"Deselect.Modern");
-			RLAN A 1 A_Lower;
-			loop;
-		Ready:
-			RLAN A 1  { 
-				if (bdoom_weapons == BD_WeaponSet.WS_MODERN)
-					return ResolveState("Ready.Modern");
-				else if (bdoom_weapons ==1)
-					A_WeaponReady();
-				else
-					A_WeaponReady(WRF_NOSECONDARY);
-				return ResolveState(null);
-			}
-			loop;
-		Fire: //8 tics before fire, 12 tics fire, 0 tics refire
-			RLAN A 2 A_JumpIf(bdoom_weapons==2,"Fire.Modern");
-			TNT1 A 0 A_GunFlash();
-			RLAN ABC 2 ;
-			RLAN D 3 A_FireProjectile("Rocket",0,1);
-			RLAN CB 3;
-			RLAN EFG 1;
-			TNT1 A 0 A_Refire();
-			goto ready;
-		AltFire:
-			TNT1 A 0 A_JumpIf(bdoom_weapons==2,"AltFire.Modern");
-			RLAN A 20 A_StartSound("weapons/rlan/lock");
-			TNT1 A 0 A_GunFlash();
-			RLAN ABC 2 ;
-			RLAN D 2 A_FireProjectile("BD_HomingRocket",0,1);
-			RLAN CB 3;
-			RLAN EFG 1;
-			RLAN A 15 A_WeaponReady(WRF_NOSECONDARY);
-			RLAN A 8 A_ReFire();
-			goto ready	;
-		Flash:
-			RLAF A 2 Bright A_Light1();
-			RLAF B 2 Bright;
-			RLAF C 2 Bright A_Light2();
-			RLAF DE 3 Bright;
-			Goto LightDone;
-			
-	//modern;
-		Select.Modern:
-			RORV C 0 {
-				A_StartSound("weapons/RORN/draw");
-				let ws = player.FindPSprite (PSP_Weapon);
-				if (ws) {
-					if (countinv("BD_RLClip") >= 3) {
-						ws.sprite = GEtSpriteIndex("RORN");
-						ws.frame = 0;
-					}
-					else if (countinv("BD_RLClip") >= 2) {
-						ws.sprite = GEtSpriteIndex("RORE");
-						ws.frame = 0;
-					}
-					else if (countinv("BD_RLClip") >= 1) {
-						ws.sprite = GEtSpriteIndex("RORE");
-						ws.frame = 2;
-					}
-					else {
-						ws.sprite = GEtSpriteIndex("RORV");
-						ws.frame = 2;
-					}
+	States	{
+	Spawn:
+		LAUN A 1 NoDelay {
+			if (bdoom_weapons == BD_WeaponSet.WS_MODERN)
+				frame = 1;
+		}
+		Loop;
+		LAUN B 0;
+		stop;
+	Select:
+		TNT1 A 0 { 
+			if(bdoom_weapons > BD_WeaponSet.WS_VANILLA)
+				A_StartSound("weapons/rlan/draw");
+			If(bdoom_weapons == BD_WeaponSet.WS_MODERN)
+				return ResolveState("Select.Modern");
+			return ResolveState(null);
+		}
+		RLAN DCBEFG 1 A_WeaponReady(WRF_NOFIRE);
+		goto ready;
+	Deselect:
+		TNT1 A 0 A_JumpIf(bdoom_weapons == BD_WeaponSet.WS_MODERN,"Deselect.Modern");
+		RLAN A 1 A_Lower;
+		loop;
+	Ready:
+		RLAN A 1  { 
+			if (bdoom_weapons == BD_WeaponSet.WS_MODERN)
+				return ResolveState("Ready.Modern");
+			else if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
+				A_WeaponReady();
+			else
+				A_WeaponReady(WRF_NOSECONDARY);
+			return ResolveState(null);
+		}
+		loop;
+	Fire: //8 tics before fire, 12 tics fire, 0 tics refire
+		RLAN A 2 A_JumpIf(bdoom_weapons == BD_WeaponSet.WS_MODERN,"Fire.Modern");
+		TNT1 A 0 A_GunFlash();
+		RLAN ABC 2 ;
+		RLAN D 3 A_FireProjectile("Rocket",0,1);
+		RLAN CB 3;
+		RLAN EFG 1;
+		TNT1 A 0 A_Refire();
+		goto ready;
+	AltFire:
+		TNT1 A 0 A_JumpIf(bdoom_weapons == BD_WeaponSet.WS_MODERN,"AltFire.Modern");
+		RLAN A 20 A_StartSound("weapons/rlan/lock");
+		TNT1 A 0 A_GunFlash();
+		RLAN ABC 2 ;
+		RLAN D 2 A_FireProjectile("BD_HomingRocket",0,1);
+		RLAN CB 3;
+		RLAN EFG 1;
+		RLAN A 15 A_WeaponReady(WRF_NOSECONDARY);
+		RLAN A 8 A_ReFire();
+		goto ready	;
+	Flash:
+		RLAF A 2 Bright A_Light1();
+		RLAF B 2 Bright;
+		RLAF C 2 Bright A_Light2();
+		RLAF DE 3 Bright;
+		Goto LightDone;
+		
+//modern;
+	Select.Modern:
+		RORV C 0 {
+			A_StartSound("weapons/RORN/draw");
+			let ws = player.FindPSprite (PSP_Weapon);
+			if (ws) {
+				if (invoker.ammo1.amount >= 3) {
+					ws.sprite = GEtSpriteIndex("RORN");
+					ws.frame = 0;
 				}
-				A_WeaponOffset(-35.0,74.0);
-			}
-			#### ####### 1 {
-				A_WeaponOffset(5.0,-6.0,WOF_ADD);
-				A_WeaponReady(WRF_NOFIRE|WRF_NOBOB);
-			}
-			goto ready;
-		Deselect.Modern:
-			RORV C 0 {
-				let ws = player.FindPSprite (PSP_Weapon);
-				if (ws) {
-					if (countinv("BD_RLClip") >= 3) {
-						ws.sprite = GEtSpriteIndex("RORN");
-						ws.frame = 0;
-					}
-					else if (countinv("BD_RLClip") >= 2) {
-						ws.sprite = GEtSpriteIndex("RORE");
-						ws.frame = 0;
-					}
-					else if (countinv("BD_RLClip") >= 1) {
-						ws.sprite = GEtSpriteIndex("RORE");
-						ws.frame = 2;
-					}
-					else {
-						ws.sprite = GEtSpriteIndex("RORV");
-						ws.frame = 2;
-					}
+				else if (invoker.ammo1.amount >= 2) {
+					ws.sprite = GEtSpriteIndex("RORE");
+					ws.frame = 0;
+				}
+				else if (invoker.ammo1.amount >= 1) {
+					ws.sprite = GEtSpriteIndex("RORE");
+					ws.frame = 2;
+				}
+				else {
+					ws.sprite = GEtSpriteIndex("RORV");
+					ws.frame = 2;
 				}
 			}
-			#### # 1 A_Lower();
-			wait;
-		Ready.Modern:
-			TNT1 A 1 {
-				BD_WeaponReady(1);
-				let ws = player.FindPSprite (PSP_Weapon);
-				if (ws) {
-					let mag = CountInv("BD_RLClip");					
-					if (mag >= 3) {
-						ws.sprite = GEtSpriteIndex("RORN");
-						ws.frame = 0;
-					}
-					else if (mag >= 2) {
-						ws.sprite = GEtSpriteIndex("RORE");
-						ws.frame = 0;
-					}
-					else if (mag >= 1) {
-						ws.sprite = GEtSpriteIndex("RORE");
-						ws.frame = 2;
-					}
-					else {
-						ws.sprite = GEtSpriteIndex("RORV");
-						ws.frame = 2;
-					}
+			A_WeaponOffset(-35.0,74.0);
+		}
+		#### ####### 1 {
+			A_WeaponOffset(5.0,-6.0,WOF_ADD);
+			A_WeaponReady(WRF_NOFIRE|WRF_NOBOB);
+		}
+		goto ready;
+	Deselect.Modern:
+		RORV C 0 {
+			let ws = player.FindPSprite (PSP_Weapon);
+			if (ws) {
+				if (invoker.ammo1.amount >= 3) {
+					ws.sprite = GEtSpriteIndex("RORN");
+					ws.frame = 0;
+				}
+				else if (invoker.ammo1.amount >= 2) {
+					ws.sprite = GEtSpriteIndex("RORE");
+					ws.frame = 0;
+				}
+				else if (invoker.ammo1.amount >= 1) {
+					ws.sprite = GEtSpriteIndex("RORE");
+					ws.frame = 2;
+				}
+				else {
+					ws.sprite = GEtSpriteIndex("RORV");
+					ws.frame = 2;
 				}
 			}
-			goto ready;
-		Fire.Modern:
-			TNT1 A 0 {
-				invoker.proj = "BD_ModernRocket";
-				invoker.pitchshift = 1.2;
-				invoker.vangle = 0;
-				let mag = CountInv("BD_RLClip");
-				if (mag > 3)		return ResolveState("Fire0.Modern");
-				else if (mag > 2) 	return ResolveState("Fire1.Modern");
-				else if (mag > 1) 	return ResolveState("Fire2.Modern");
-				else if (mag > 0) 	return ResolveState("Fire3.Modern");
-				return ResolveState("DryReload");
-			}
-			goto ready;
-		AltFire.Modern:
-			TNT1 A 0 {
-				invoker.proj = "BD_ModernGrenade";
-				invoker.pitchshift = 0.25;
-				invoker.vangle = -5;
-				let mag = CountInv("BD_RLClip");
-				if (mag > 3) {
-					A_TakeInventory("BD_RLClip",1,TIF_NOTAKEINFINITE);
-					return ResolveState("Fire0.Modern");
+		}
+		#### # 1 A_Lower();
+		wait;
+	Ready.Modern:
+		TNT1 A 1 {
+			BD_WeaponReady(1);
+			let ws = player.FindPSprite (PSP_Weapon);
+			if (ws) {
+				let mag = invoker.ammo1.amount;					
+				if (mag >= 3) {
+					ws.sprite = GEtSpriteIndex("RORN");
+					ws.frame = 0;
 				}
-				else if (mag > 2) 	{
-					A_TakeInventory("BD_RLClip",1,TIF_NOTAKEINFINITE);
-					return ResolveState("Fire1.Modern");
+				else if (mag >= 2) {
+					ws.sprite = GEtSpriteIndex("RORE");
+					ws.frame = 0;
 				}
-				else if (mag > 1) 	{
-					A_TakeInventory("BD_RLClip",1,TIF_NOTAKEINFINITE);
-					return ResolveState("Fire2.Modern");
+				else if (mag >= 1) {
+					ws.sprite = GEtSpriteIndex("RORE");
+					ws.frame = 2;
 				}
-				else if (mag > 0) 	{
-					A_TakeInventory("BD_RLClip",1,TIF_NOTAKEINFINITE);
-					return ResolveState("Fire3.Modern");
+				else {
+					ws.sprite = GEtSpriteIndex("RORV");
+					ws.frame = 2;
 				}
-				return ResolveState("DryReload");
 			}
-			goto ready;
-		Fire0.Modern:
-			RORN B 1;
-			RORN C 1 A_FireProjectile(invoker.proj,useammo:true,spawnheight:-5,pitch:invoker.vangle);
-			RORN D 2 BD_SetPitch(pitch - invoker.pitchshift,SPF_INTERPOLATE);
-			RORN C 2;
-			RORN B 2;
-			TNT1 A 0 A_StartSound("Mweapons/rocket/drum",slot:CHAN_VOICE,flags:CHANF_DEFAULT,volume:0.35);
-			RORV ABCD 2;
-			RORV A 2 A_Overlay(PSP_GUN2,"RocketLoad");			
-			RORN A 1;
-			goto ready;
-		Fire1.Modern:
-			RORN B 1;
-			RORN C 1 A_FireProjectile(invoker.proj,useammo:true,spawnheight:-5,pitch:invoker.vangle);
-			RORN D 2 BD_SetPitch(pitch - invoker.pitchshift,SPF_INTERPOLATE);
-			RORN C 2;
-			RORN B 2;
-			TNT1 A 0 A_StartSound("Mweapons/rocket/drum",slot:CHAN_VOICE,flags:CHANF_DEFAULT,volume:0.35);
-			RORV ABCE 2;
-			RORV F 2 A_Overlay(PSP_GUN2,"RocketLoad");	
-			RORE A 1;
-			goto ready;
-		Fire2.Modern:
-			RORE B 1;
-			RORN C 1 A_FireProjectile(invoker.proj,useammo:true,spawnheight:-5,pitch:invoker.vangle);
-			RORN D 2 BD_SetPitch(pitch - invoker.pitchshift,SPF_INTERPOLATE);
-			RORN C 2;
-			RORE B 2;
-			TNT1 A 0 A_StartSound("Mweapons/rocket/drum",slot:CHAN_VOICE,flags:CHANF_DEFAULT,volume:0.35);
-			RORV FGCC 2;
-			RORV C 2 A_Overlay(PSP_GUN2,"RocketLoad");	
-			RORE C 1;
-			goto ready;
-		Fire3.Modern:
-			RORE D 1;
-			RORE E 2 A_FireProjectile(invoker.proj,useammo:true,spawnheight:-5,pitch:invoker.vangle);
-			RORN D 2 BD_SetPitch(pitch - invoker.pitchshift,SPF_INTERPOLATE);
-			RORE E 2;
-			RORE D 2;
-			RORV C 3;
-			goto ready;
-		RocketLoad:
-			RORW ABC 1;
-			stop;
-		Flash.Modern:
-			RLAF A 2 Bright A_Light1();
-			RLAF B 2 Bright;
-			RLAF C 1 Bright A_Light2();
-			RLAF DE 1 Bright;
-			Goto LightDone;
-		DryReload:
-			RORV C 12 {
-				A_StartSound("Mweapons/dry");
-				invoker.wasempty = true;
+		}
+		goto ready;
+	Fire.Modern:
+		TNT1 A 0 {
+			invoker.proj = "BD_ModernRocket";
+			invoker.pitchshift = 1.2;
+			invoker.vangle = 0;
+			return PickFireSequence();
+		}
+		goto ready;
+	AltFire.Modern:
+		TNT1 A 0 {
+			invoker.proj = "BD_ModernGrenade";
+			invoker.pitchshift = 0.25;
+			invoker.vangle = -5;
+			return PickFireSequence();
+		}
+		goto ready;
+	Fire0.Modern:
+		RORN B 1;
+		RORN C 1 A_FireProjectile(invoker.proj,useammo:false,spawnheight:-5,pitch:invoker.vangle);
+		RORN D 2 BD_SetPitch(pitch - invoker.pitchshift,SPF_INTERPOLATE);
+		RORN C 2;
+		RORN B 2;
+		TNT1 A 0 A_StartSound("Mweapons/rocket/drum",slot:CHAN_VOICE,flags:CHANF_DEFAULT,volume:0.35);
+		RORV ABCD 2;
+		RORV A 2 A_Overlay(PSP_GUN2,"RocketLoad");			
+		RORN A 1;
+		goto ready;
+	Fire1.Modern:
+		RORN B 1;
+		RORN C 1 A_FireProjectile(invoker.proj,useammo:false,spawnheight:-5,pitch:invoker.vangle);
+		RORN D 2 BD_SetPitch(pitch - invoker.pitchshift,SPF_INTERPOLATE);
+		RORN C 2;
+		RORN B 2;
+		TNT1 A 0 A_StartSound("Mweapons/rocket/drum",slot:CHAN_VOICE,flags:CHANF_DEFAULT,volume:0.35);
+		RORV ABCE 2;
+		RORV F 2 A_Overlay(PSP_GUN2,"RocketLoad");	
+		RORE A 1;
+		goto ready;
+	Fire2.Modern:
+		RORE B 1;
+		RORN C 1 A_FireProjectile(invoker.proj,useammo:false,spawnheight:-5,pitch:invoker.vangle);
+		RORN D 2 BD_SetPitch(pitch - invoker.pitchshift,SPF_INTERPOLATE);
+		RORN C 2;
+		RORE B 2;
+		TNT1 A 0 A_StartSound("Mweapons/rocket/drum",slot:CHAN_VOICE,flags:CHANF_DEFAULT,volume:0.35);
+		RORV FGCC 2;
+		RORV C 2 A_Overlay(PSP_GUN2,"RocketLoad");	
+		RORE C 1;
+		goto ready;
+	Fire3.Modern:
+		RORE D 1;
+		RORE E 2 A_FireProjectile(invoker.proj,useammo:false,spawnheight:-5,pitch:invoker.vangle);
+		RORN D 2 BD_SetPitch(pitch - invoker.pitchshift,SPF_INTERPOLATE);
+		RORE E 2;
+		RORE D 2;
+		RORV C 3;
+		goto ready;
+	RocketLoad:
+		RORW ABC 1;
+		stop;
+	Flash.Modern:
+		RLAF A 2 Bright A_Light1();
+		RLAF B 2 Bright;
+		RLAF C 1 Bright A_Light2();
+		RLAF DE 1 Bright;
+		Goto LightDone;
+	DryReload:
+		RORV C 2 {
+			invoker.wasempty = true;
+		}
+		goto super::DryReload;
+	Reload:
+		RORR A 0 {
+			if (!IsReadyForReload())
+				return ResolveState("Ready");
+			if (invoker.wasempty) {
+				let psp = player.FindPSprite (PSP_Weapon);
+				psp.sprite = GetSpriteIndex("RORS");
 			}
-			goto Reload;
-		Reload:
-			RORR A 0 {
-				if (CountInv("BD_RLClip") >= 8 || CountInv("RocketAmmo") < 1)
-					return ResolveState("Ready");
-				if (invoker.wasempty) {
-					let psp = player.FindPSprite (PSP_Weapon);
-					psp.sprite = GetSpriteIndex("RORS");
-				}
-				A_Overlay(PSP_MAG,"ReloadMag");
-				A_OverlayFlags(PSP_MAG,PSPF_ADDWEAPON,false);
-				A_OverlayOffset(PSP_MAG,0,32);
-				return ResolveState(null);
-			}			
-			#### ABCDEEEE 1;
-			#### # 1 {
-				A_StartSound("Mweapons/rocket/clipout",slot:CHAN_5);
-				A_WeaponOffset(1.5,0,WOF_ADD);
-			}
-			#### ### 1 A_WeaponOffset(-0.5,0,WOF_ADD);			
-			#### # 26;
-			#### # 10;			
-			#### # 1 {
-				BD_Reload();
-				A_StartSound("Mweapons/rocket/clipin",slot:CHAN_5);
-				A_OverlayFlags(PSP_MAG,PSPF_ADDWEAPON,true);
-				A_OverlayOffset(PSP_MAG,0,0);
-				A_WeaponOffset(-3,0,WOF_ADD);
-			} 
-			#### ### 1 A_WeaponOffset(1,0,WOF_ADD);
-			#### EEEDCBA 2;
-			TNT1 A 0 {
-				if (invoker.wasempty)
-					return ResolveState("ReloadEnd");
-				return ResolveState(null);
-			}
-			goto ready;	
-		ReloadMag:
-			TNT1 A 0 {
-				int mag = CountInv("BD_RLClip");
-				if (mag < 2)
-					BD_SetSprite("ROR3","QOR3");
-				else if (mag < 3)
-					BD_SetSprite("ROR2","QOR2");
-				else
-					BD_SetSprite("ROR1","QOR1");
-			}
-			#### ABCDEFGH 1;
-			#### IJKLM 2;
-			TNT1 A 20;
-			TNT1 A 0 {
-				int rock = CountInv("RocketAmmo");
-				if (rock < 2)
-					BD_SetSprite("ROR2","QOR2");
-				else
-					BD_SetSprite("ROR1","QOR1");
-			}
-			#### MLKJI 2;
-			#### H 4;
-			#### GFEDCBA 2;
-			stop;
-		ReloadEnd:
-			TNT1 A 0 {
-				A_StartSound("Mweapons/rocket/drum",slot:CHAN_VOICE,flags:CHANF_DEFAULT,volume:0.35);
-				invoker.wasempty = false;
-				int mag = CountInv("BD_RLClip");
-				if (mag > 2)
-					return ResolveState("ReloadEnd0");
-				else if (mag > 1)
-					return ResolveState("ReloadEnd1");
-				return ResolveState(null);
-			}
-			RORV FGCC 2;
-			RORV C 2 A_Overlay(PSP_GUN2,"RocketLoad");
-			goto ready;
-		ReloadEnd0:
-			RORV ABCD 2;
-			RORV A 2 A_Overlay(PSP_GUN2,"RocketLoad");
-			goto ready;
-		ReloadEnd1:
-			RORV ABCE 2;
-			RORV F 2 A_Overlay(PSP_GUN2,"RocketLoad");
-			goto ready;			
+			A_Overlay(PSP_MAG,"ReloadMag");
+			A_OverlayFlags(PSP_MAG,PSPF_ADDWEAPON,false);
+			A_OverlayOffset(PSP_MAG,0,32);
+			return ResolveState(null);
+		}			
+		#### ABCDEEEE 1;
+		#### # 1 {
+			A_StartSound("Mweapons/rocket/clipout",slot:CHAN_5);
+			A_WeaponOffset(1.5,0,WOF_ADD);
+		}
+		#### ### 1 A_WeaponOffset(-0.5,0,WOF_ADD);			
+		#### # 36;			
+		#### # 1 {
+			BD_Reload();
+			A_StartSound("Mweapons/rocket/clipin",slot:CHAN_5);
+			A_OverlayFlags(PSP_MAG,PSPF_ADDWEAPON,true);
+			A_OverlayOffset(PSP_MAG,0,0);
+			A_WeaponOffset(-3,0,WOF_ADD);
+		} 
+		#### ### 1 A_WeaponOffset(1,0,WOF_ADD);
+		#### EEEDCBA 2;
+		TNT1 A 0 {
+			if (invoker.wasempty)
+				return ResolveState("ReloadEnd");
+			return ResolveState(null);
+		}
+		goto ready;
+	ReloadMag:
+		TNT1 A 0 {
+			int mag = invoker.ammo1.amount;
+			if (mag < 2)
+				BD_SetSprite("ROR3","QOR3");
+			else if (mag < 3)
+				BD_SetSprite("ROR2","QOR2");
+			else
+				BD_SetSprite("ROR1","QOR1");
+		}
+		#### ABCDEFGH 1;
+		#### IJKLM 2;
+		TNT1 A 20;
+		TNT1 A 0 {
+			int rock = CountInv("RocketAmmo");
+			if (rock < 2)
+				BD_SetSprite("ROR2","QOR2");
+			else
+				BD_SetSprite("ROR1","QOR1");
+		}
+		#### MLKJI 2;
+		#### H 4;
+		#### GFEDCBA 2;
+		stop;
+	ReloadEnd:
+		TNT1 A 0 {
+			A_StartSound("Mweapons/rocket/drum",slot:CHAN_VOICE,flags:CHANF_DEFAULT,volume:0.35);
+			invoker.wasempty = false;
+			int mag = invoker.ammo1.amount;
+			if (mag > 2)
+				return ResolveState("ReloadEnd0");
+			else if (mag > 1)
+				return ResolveState("ReloadEnd1");
+			return ResolveState(null);
+		}
+		RORV FGCC 2;
+		RORV C 2 A_Overlay(PSP_GUN2,"RocketLoad");
+		goto ready;
+	ReloadEnd0:
+		RORV ABCD 2;
+		RORV A 2 A_Overlay(PSP_GUN2,"RocketLoad");
+		goto ready;
+	ReloadEnd1:
+		RORV ABCE 2;
+		RORV F 2 A_Overlay(PSP_GUN2,"RocketLoad");
+		goto ready;			
 	}
 }
 

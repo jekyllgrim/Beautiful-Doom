@@ -1,6 +1,7 @@
 Class BD_SuperShotgun : BDoomWeapon {
 	protected bool ShotFired;
 	protected bool WasCancelled;
+	
 	Default {
 		Tag "$TAG_SUPERSHOTGUN";
 		inventory.pickupmessage "$GOTSHOTGUN2"; 
@@ -20,6 +21,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		BDoomWeapon.ClassicIcon "SGN2A0";
 		BDoomWeapon.ModernIcon "SGN2B0";
 	}
+	
 	action state BD_CancelReload() {		
 		if ((player.cmd.buttons & BT_ATTACK) && !(player.oldbuttons & BT_ATTACK)) {
 			invoker.WasCancelled = true;
@@ -27,6 +29,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		}
 		return ResolveState(null);
 	}
+	
 	override void Tick() {
 		If (Owner)
 			return;
@@ -38,6 +41,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		}
 		Super.Tick();
 	}
+	
 	override void DoEffect() {
 		Super.DoEffect();
 		if (!owner)
@@ -46,18 +50,21 @@ Class BD_SuperShotgun : BDoomWeapon {
 			ammouse2 = 0;
 			bNOAUTOFIRE = true;
 			bAMMO_OPTIONAL = true;
+			bNOALERT = true;
 		}
 		else {
 			ammouse2 = 1;
 			bNOAUTOFIRE = false;
 			bAMMO_OPTIONAL = false;
+			bNOALERT = false;
 		}
-		if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
-			ammouse1 = 1;
-		else
+		if (bdoom_weapons == BD_WeaponSet.WS_VANILLA)
 			ammouse1 = 2;
+		else
+			ammouse1 = 1;
 	}
-	states {
+	
+	States {
 	Spawn:
 		SGN2 A 1 {
 			if (bdoom_weapons == BD_WeaponSet.WS_MODERN)
@@ -68,7 +75,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		loop;
 	Select:
 		TNT1 A 0 {
-			if (bdoom_weapons==2)
+			if (bdoom_weapons == BD_WeaponSet.WS_MODERN)
 				return ResolveState("Select.Modern");
 			else if (bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
 				A_StartSound("weapons/ssg/draw");
@@ -80,9 +87,9 @@ Class BD_SuperShotgun : BDoomWeapon {
 		goto ready;
 	Deselect:
 		TNT1 A 0 {
-			If(bdoom_weapons==2)
+			If(bdoom_weapons == BD_WeaponSet.WS_MODERN)
 				return ResolveState("Deselect.Modern");
-			else If(bdoom_weapons==1)
+			else If(bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
 				return ResolveState("Deselect.Enhanced");
 			BD_SetSprite("SH2N","QH2N");	
 			return ResolveState(null);
@@ -91,9 +98,9 @@ Class BD_SuperShotgun : BDoomWeapon {
 		wait;
 	Ready:
 		TNT1 A 0 {
-			If(bdoom_weapons==2)
+			If(bdoom_weapons == BD_WeaponSet.WS_MODERN)
 				return ResolveState("Ready.Modern");
-			else If(bdoom_weapons==1)
+			else If(bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
 				return ResolveState("Ready.Enhanced");				
 			BD_SetSprite("SH2N","QH2N");
 			return ResolveState(null);
@@ -103,9 +110,9 @@ Class BD_SuperShotgun : BDoomWeapon {
 	Fire:
 	//fire = 10 tics, reload = 41 tics, refire 11 tics
 		TNT1 C 3 {
-			If(bdoom_weapons==2)
+			If(bdoom_weapons == BD_WeaponSet.WS_MODERN)
 				return ResolveState("Fire.Modern");
-			else If(bdoom_weapons==1)
+			else If(bdoom_weapons == BD_WeaponSet.WS_ENHANCED)
 				return ResolveState("Fire.Enhanced");		
 			BD_SetSprite("SH2N","QH2N");
 			return ResolveState(null);
@@ -249,7 +256,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 			A_WeaponOffset(frandom(-0.5,0.5),frandom(15,18),WOF_ADD);
 			A_StartSound("weapons/ssg/dfire",slot:CHAN_5);
 			BD_FireBullets(11.2, 7.1, 20, 5, pufftype: "BD_EnSSGPuff");
-			A_TakeInventory("Shell",1,TIF_NOTAKEINFINITE);
+			A_TakeInventory(invoker.ammotype2,1,TIF_NOTAKEINFINITE);
 		}
 		
 		#### # 0 A_StartSound("weapons/ssg/dfire2", 6);
@@ -292,7 +299,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		goto Reload;		
 	Reload.EnhancedRight:
 		TNT1 A 0 {
-			if (CountInv("Shell") < 1)
+			if (!A_CheckAmmo())
 				A_CheckReload();
 		}
 		TNT1 A 0 {
@@ -319,7 +326,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 		TNT1 A 2 {
 			A_Light2();
 			if(!invoker.c_muzzle) {
-				if	(invoker.shotfired || (bdoom_weapons == BD_WeaponSet.WS_MODERN && CountInv("BD_SSGClip") < 2))
+				if	(invoker.shotfired || (bdoom_weapons == BD_WeaponSet.WS_MODERN && CountInv(invoker.ammotype1) < 2))
 					A_Overlay(PSP_EFLASH,"FlashVanillaLeft");
 				else
 					A_Overlay(PSP_EFLASH,"FlashVanillaRight");
@@ -332,7 +339,7 @@ Class BD_SuperShotgun : BDoomWeapon {
 				A_OverlayFlags(PSP_MFLASH,PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCEALPHA,true);
 				A_OverlayRenderstyle(PSP_MFLASH,STYLE_Add);
 				double vofs = bdoom_weapons == BD_WeaponSet.WS_MODERN ? 10 : 15;
-				if	((bdoom_weapons == BD_WeaponSet.WS_ENHANCED && invoker.shotfired) || (bdoom_weapons == BD_WeaponSet.WS_MODERN && CountInv("BD_SSGClip") < 2)) {
+				if	((bdoom_weapons == BD_WeaponSet.WS_ENHANCED && invoker.shotfired) || (bdoom_weapons == BD_WeaponSet.WS_MODERN && CountInv(invoker.ammotype1) < 2)) {
 					DrawMuzzleSmoke((-10,vofs), sAlpha: 0.38, sVSpeed: 1.3, sScale: 0.7);
 				}
 				else {
@@ -403,19 +410,16 @@ Class BD_SuperShotgun : BDoomWeapon {
 		}
 		goto ready;
 	DryReload:
-		SST2 A 8 {
-			A_StartSound("Mweapons/dry");
-			BD_SetSprite("SST2","QST2");
-		}
-		goto Reload;
+		SST2 A 0 BD_SetSprite("SST2","QST2");
+		goto super::DryReload;
 	Fire.Modern:		
 		SST2 A 1 {
-			If(CountInv("BD_SSGClip") == 0)
+			if(!A_CheckAmmo())
 				return ResolveState("DryReload");
-			else If(CountInv("BD_SSGClip") == 1)
+			else if(!A_CheckAmmo(amount: 2))
 				return ResolveState("AltFire.Modern");
-			BD_FireModernBullet("BD_SSGPellet", 15.0, 7, 24);
-			//A_FireBullets (15.0, 7, 24, 0, "BD_NullPuff",FBF_USEAMMO|FBF_NORANDOMPUFFZ,0,"BD_SSGPellet",4,0);
+			invoker.DepleteAmmo(false, false, 2, true);
+			BD_FireModernBullet("BD_SSGPellet", 15.0, 7, 24, useammo: false);
 			BD_SetPitch(pitch-frandom(2.8,3.5),SPF_INTERPOLATE);
 			A_setAngle(angle+frandom(-1,1),SPF_INTERPOLATE);
 			A_Gunflash("Flash");
@@ -427,19 +431,24 @@ Class BD_SuperShotgun : BDoomWeapon {
 		#### A 0 A_ZoomFactor(1,ZOOM_NOSCALETURNING);
 		#### BCD 1 A_WeaponOffset(frandom(-0.3,0.3),4,WOF_ADD);
 		#### EEFFAA 1 A_WeaponOffset(frandom(-0.15,0.15),-2,WOF_ADD);
-		#### A 0 A_WeaponOffset(0,32,WOF_INTERPOLATE);
-		goto Reload;
+		#### A 0 {
+			A_WeaponOffset(0,32,WOF_INTERPOLATE);
+			if (IsReadyForReload())
+				return ResolveState("Reload");
+			return ResolveState("ready");
+		}
+		wait;
 	AltFire.Modern:
 		SST2 A 1 {
-			If(CountInv("BD_SSGClip") == 0)
+			if (!A_CheckAmmo())
 				return ResolveState("DryReload");
-			else If(CountInv("BD_SSGClip") == 2) 
+			else if (CountInv(invoker.ammotype1) == 2) 
 				A_StartSound("Mweapons/ssg/fire1",slot:CHAN_5);
-			else If(CountInv("BD_SSGClip") == 1) 
+			else if (CountInv(invoker.ammotype1) == 1) 
 				A_StartSound("Mweapons/ssg/fire1",slot:CHAN_6);
 			A_Gunflash("AltFlash");
-			BD_FireModernBullet("BD_SSGPellet", 15.0, 7, 12);
-			A_TakeInventory("BD_SSGClip",1,TIF_NOTAKEINFINITE);
+			invoker.DepleteAmmo(false, false, 1, true);
+			BD_FireModernBullet("BD_SSGPellet", 15.0, 7, 12, useammo: false);
 			BD_SetPitch(pitch-frandom(2.3,3.0),SPF_INTERPOLATE);
 			A_setAngle(angle+frandom(-0.5,0.5),SPF_INTERPOLATE);
 			A_ZoomFactor(0.986,ZOOM_NOSCALETURNING);
@@ -449,26 +458,21 @@ Class BD_SuperShotgun : BDoomWeapon {
 		#### A 0 A_ZoomFactor(1,ZOOM_NOSCALETURNING);
 		#### BCD 1 A_WeaponOffset(0,2.5,WOF_ADD);
 		#### EEFFAA 1 A_WeaponOffset(0,-1.25,WOF_ADD);
-		#### A 0 {
-			If(CountInv("BD_SSGClip") == 0)
+		#### A 5 {
+			If(!A_CheckAmmo() && IsReadyForReload())
 				return ResolveState("Reload");
+			A_WeaponReady(WRF_NOSECONDARY);
 			return ResolveState(null);
 		}
-		#### A 5 A_WeaponReady(WRF_NOSECONDARY);
 		goto ready;
 	Reload.Modern:
-		TNT1 A 0 {
-			if (CountInv("BD_SSGClip") == 2 || CountInv("Shell") < 1)
-				return ResolveState("Ready.Modern");
-			BD_SetSprite("SSTR","QSTR");
-			return ResolveState(null);
-		}
+		TNT1 A 0 BD_SetSprite("SSTR","QSTR");
 		#### ABCDE 1;
 		#### A 0 A_StartSound("Mweapons/ssg/open");
 		#### FGH 2;
 		
 		#### A 0 {
-			if (CountInv("BD_SSGClip") == 1 || CountInv("Shell") == 1)
+			if (invoker.ammo1.amount > 0 || invoker.ammo2.amount < invoker.ammo1.maxamount)
 				return ResolveState("Reload1");
 			return ResolveState(null);
 		}
@@ -483,14 +487,14 @@ Class BD_SuperShotgun : BDoomWeapon {
 		TNT1 A 0 BD_SetSprite("SSTI","QSTI");
 		#### ABCDE 2;
 		#### F 1 {
-			A_TakeInventory("Shell",1,TIF_NOTAKEINFINITE);
-			A_GiveInventory("BD_SSGClip",1);
+			A_TakeInventory(invoker.ammotype2,1,TIF_NOTAKEINFINITE);
+			A_GiveInventory(invoker.ammotype1,1);
 			A_StartSound("Mweapons/ssg/in");
 		}
 		#### FFGGHHIIKKLLMMM 1 BD_CancelReload();
 		#### # 0 {
-			A_TakeInventory("Shell",1,TIF_NOTAKEINFINITE);
-			A_GiveInventory("BD_SSGClip",1);
+			A_TakeInventory(invoker.ammotype2,1,TIF_NOTAKEINFINITE);
+			A_GiveInventory(invoker.ammotype1,1);
 			A_StartSound("Mweapons/ssg/in");
 		}
 		goto ReloadEnd;
@@ -507,8 +511,8 @@ Class BD_SuperShotgun : BDoomWeapon {
 		#### I 1;
 		#### JKL 2;
 		#### M 3 {
-			A_TakeInventory("Shell",1,TIF_NOTAKEINFINITE);
-			A_GiveInventory("BD_SSGClip",1);
+			A_TakeInventory(invoker.ammotype2,1,TIF_NOTAKEINFINITE);
+			A_GiveInventory(invoker.ammotype1,1);
 			A_StartSound("Mweapons/ssg/in");
 		}
 		goto ReloadEnd;

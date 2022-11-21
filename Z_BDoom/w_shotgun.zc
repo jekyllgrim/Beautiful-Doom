@@ -19,6 +19,7 @@ Class BD_Shotgun : BDoomWeapon {
 		BDoomWeapon.ClassicIcon "SHOTA0";
 		BDoomWeapon.ModernIcon "SHOTB0";
 	}
+	
 	override void Tick() {
 		If (Owner)
 			return;
@@ -32,6 +33,7 @@ Class BD_Shotgun : BDoomWeapon {
 		}
 		Super.Tick();
 	}
+	
 	override void DoEffect() {
 		Super.DoEffect();
 		if (!owner)
@@ -40,13 +42,16 @@ Class BD_Shotgun : BDoomWeapon {
 			bNOAUTOFIRE = true;
 			bAMMO_OPTIONAL = true;
 			bALT_AMMO_OPTIONAL = false;
+			bNOALERT = true;
 		}
 		else {
 			bNOAUTOFIRE = false;
 			bAMMO_OPTIONAL = false;
 			bALT_AMMO_OPTIONAL = true;
+			bNOALERT = false;
 		}
 	}
+	
 	States {
 	Spawn:
 		SHOT A 1 {
@@ -242,11 +247,8 @@ Class BD_Shotgun : BDoomWeapon {
 		}
 		goto ready;
 	DryReload:
-		SHON A 8 {
-			A_StartSound("Mweapons/dry");
-			BD_SetSprite("SHON","QHON");
-		}
-		goto reload;
+		SHON A 0 BD_SetSprite("SHON","QHON");
+		goto super::DryReload;
 	Fire.Modern:
 		#### # 0 A_JumpIfNoAmmo("DryReload");
 		SHON A 2 {
@@ -306,16 +308,15 @@ Class BD_Shotgun : BDoomWeapon {
 		#### # 1 bright A_OverlayAlpha(PSP_MFLASH,0.8);
 		stop;
 	Reload:
-		TNT1 A 0 A_JumpIf(CountInv("Shell") == 0, "Ready");
 		TNT1 A 0 BD_SetSprite("SHOR","QHOR");
 		#### ABDFHIJKLLL 1;
 	ReloadDo:
 		#### A 0 {
-			If(CountInv("BD_ShotgunClip") == 8 || CountINv("Shell") == 0 )
+			if (!IsReadyForReload())
 				return ResolveState("ReloadEnd");
-			A_TakeInventory("Shell",1,TIF_NOTAKEINFINITE);
-			GiveInventory("BD_ShotgunClip",1); 
-			A_StartSound("Mweapons/shotgun/shellin",slot:CHAN_AUTO);
+			A_TakeInventory(invoker.ammotype2, 1, TIF_NOTAKEINFINITE);
+			GiveInventory(invoker.ammotype1, 1);
+			A_StartSound("Mweapons/shotgun/shellin", CHAN_AUTO);
 			return ResolveState(null);
 		}
 		#### LLL 2 A_Weaponoffset(0.12,0.3,WOF_ADD);
@@ -323,7 +324,7 @@ Class BD_Shotgun : BDoomWeapon {
 			A_Weaponoffset(-0.6,-0.15,WOF_ADD);
 			A_WeaponReady(WRF_NOSECONDARY);
 		}
-		#### A 0 A_JumpIfInventory("BD_ShotgunClip",2,"ReloadDo");
+		#### A 0 A_JumpIfInventory(invoker.ammotype1,2,"ReloadDo");
 		#### A 0 A_StartSound("Mweapons/shotgun/pump",slot:CHAN_AUTO);
 		#### KLMNOP 1;
 		#### ONMLK 2 A_WeaponReady(WRF_NOSECONDARY);

@@ -183,11 +183,10 @@ Class BDoomWeapon : Weapon abstract {
 	protected transient CVar c_muzzle_cache;	
 	protected transient CVar c_blackgloves_cache;
 	protected transient CVar c_bobstyle_cache;
-	protected transient CVar c_freelook_cache;
+	protected transient CVar c_freelook;
 	protected bool c_muzzle;	
 	protected bool c_blackgloves;
 	protected bool c_bobstyle;
-	protected bool c_freelook;
 	protected bool wasempty;			//used in reload animations to keep track of whether reload was dry (affects animations)
 	protected bool dontforcebob;		//if false, weapons will bob all the time
 	property dontforcebob : dontforcebob;
@@ -319,13 +318,16 @@ Class BDoomWeapon : Weapon abstract {
 		);
 	}
 	
-	//fires projectile-based bullets; designed to look as similar to A_FireBullets as possible
-	action void BD_FireModernBullet(Class<Actor> bullet, double spread_horz = 0, double spread_vert = 0, int numbullets = 1) {
+	// fires projectile-based bullets; designed to look 
+	// as similar to A_FireBullets as possible
+	action void BD_FireModernBullet(Class<Actor> bullet, double spread_horz = 0, double spread_vert = 0, int numbullets = 1, bool useammo = true) {
 		if (numbullets < 1) numbullets = 1;
 		let weapon = player.ReadyWeapon;
-		if (!weapon || !weapon.DepleteAmmo(weapon.bAltFire, true))
+		if (!weapon || (useammo && !weapon.DepleteAmmo(weapon.bAltFire, true)))
 			return;
 		
+		// Alert the monsters:
+		A_AlertMonsters();
 		// Activate shootable linedefs:
 		LineAttack(angle, PLAYERMISSILERANGE, pitch, 0, 'Normal', "BD_NullPuff", LAF_NOIMPACTDECAL, offsetforward: radius);
 		
@@ -343,23 +345,33 @@ Class BDoomWeapon : Weapon abstract {
 		}
 	}
 	
-	//a wrapper function that automatically plays either vanilla or enhanced weapon sound, and fires tracers with A_FireProjectile so that they don't break on portals and such:
+	// a wrapper function that automatically plays either 
+	// vanilla or enhanced weapon sound, and fires tracers 
+	// with A_FireProjectile so that they don't break on 
+	// portals and such:
 	action void BD_FireBullets(double spread_horz = 0, double spread_vert = 0, int numbullets = 1, int damage = 1, sound vanillasnd = "", sound enhancedsnd = "", Class<Actor> pufftype = "BD_EnBulletPuff", double spawnheight = 0, double spawnofs = 0) {
 		if (numbullets == 0) numbullets = 1;
 		let weapon = player.ReadyWeapon;
 		//deplete the appropriate ammo
 		if (!weapon || !weapon.DepleteAmmo(weapon.bAltFire, true))
 			return;
+			
 		//decide which sound to play based on current weapon set
 		sound snd = (enhancedsnd && bdoom_weapons == BD_WeaponSet.WS_ENHANCED) ? enhancedsnd : vanillasnd;
 		//play only if non-null
 		if (snd)
 			A_StartSound(snd,CHAN_WEAPON);
-		//emulate perfect accuracy on first bullet: it'll happen if there's only 1 bullet, player isn't in refire (holding attack button), and numbullets is positive
+		// emulate perfect accuracy on first bullet: it'll 
+		// happen if there's only 1 bullet, player isn't in 
+		// refire (holding attack button), and numbullets 
+		// is positive
 		bool held = (numbullets != 1 || player.refire);
 		//make sure numbullets is positive, now that the check is finished
 		numbullets = abs(numbullets);
-		//fire bullets with explicit angle and simply pass the offsets to the projectiles instead of using AimBulletMissile at puffs (because puffs don't always spawn!)
+		// fire bullets with explicit angle and simply pass 
+		// the offsets to the projectiles instead of using 
+		// AimBulletMissile at puffs (because puffs don't 
+		// always spawn!)
 		for (int i = 0; i < numbullets; i++) {
 			vector2 spread = (0,0);
 			if (held) {
@@ -381,22 +393,10 @@ Class BDoomWeapon : Weapon abstract {
 		}
 	}
 	
-	//Make sure player's magazine isn't empty when a weapon is first picked up (for Modern Guns):
-	override void AttachToOwner(actor other) {
-		super.AttachToOwner(other);
-		if (!owner)
-			return;
-		if (picked)
-			return;
-		int ama = (magammogive > 0) ? magammogive : 100; //give either full mag, or however much is specified with magammo property
-		owner.GiveInventory(magammo,ama);
-		picked = true;
-	}
-	
-	//an analog of A_WeaponReady that makes sure Reload state is unaccessible if mag is full or you have no reserve ammo:
+	//Version of A_WeaponReady that incorporates reloading and kicking
 	action void BD_WeaponReady (bool allowSecondary = false, bool allowReload = true, bool allowKick = true) {
 		int flags = 0;
-		if (allowReload && invoker.ammo1 && invoker.ammo2 && (invoker.ammo2 != invoker.ammo1) && (invoker.ammo2.amount > 0) && (invoker.ammo1.amount < invoker.ammo1.maxamount))
+		if (allowReload && IsReadyForReload())
 			flags |= WRF_ALLOWRELOAD;
 		if (!allowSecondary)
 			flags |= WRF_NOSECONDARY;
@@ -424,10 +424,44 @@ Class BDoomWeapon : Weapon abstract {
 	action void BD_Reload()	{
 		if (invoker.ammo1 && invoker.ammo2) {
 			while (invoker.ammo2.amount > 0 && invoker.ammo1.amount < invoker.ammo1.maxamount) {
-				TakeInventory(invoker.ammotype2, 1);
+				A_TakeInventory(invoker.ammotype2, 1, TIF_NOTAKEINFINITE);
 				GiveInventory(invoker.ammotype1, 1);
 			}
 		}
+	}
+	
+	action bool IsReadyForReload() {
+		return (
+			invoker.ammo1 && invoker.ammo2 && 
+			(invoker.ammo2 != invoker.ammo1) && 
+			(invoker.ammo2.amount > 0) && 
+			(invoker.ammo1.amount < invoker.ammo1.maxamount)
+		);
+	}
+	
+	action bool A_CheckAmmo(bool secondary = false, int amount = -1) {
+		if (A_CheckInfiniteAmmo())
+			return true;
+		
+		let tAmmo = secondary ? invoker.ammo2 : invoker.ammo1;
+		if (!tAmmo)
+			return true; //this weapon doesn't use ammo at all
+		
+		// check for default ammouse value if -1, 
+		// otherwise check for specified:
+		if (amount <= -1) {
+			amount = secondary ? invoker.ammouse2 : invoker.ammouse1;
+		}
+		
+		if (tAmmo.amount < amount) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	action bool A_CheckInfiniteAmmo() {
+		return (sv_infiniteammo || FindInventory("PowerInfiniteAmmo", true) );
 	}
 
 	//Casing spawn function with math by Marisa Kirisame (see mk_matrix)
@@ -452,6 +486,24 @@ Class BDoomWeapon : Weapon abstract {
 		return null;
 	}
 	
+	//check if freelook is in use
+	action bool CheckFreeLook() {
+		if (!player)
+			return false;
+		//double-check 'freelook' cvar was cached correctly
+		if (!invoker.c_freelook)
+			invoker.c_freelook = CVar.GetCvar('freelook',player);
+		// Return true if freelook is allowed
+		// AND the player is using it:
+		return (Level.IsFreelookAllowed() && invoker.c_freelook.GetBool());
+	}
+	
+	action void BD_SetPitch(double pitch, int flags = 0) {
+		if (!CheckFreeLook())
+			return;
+		A_SetPitch(pitch, flags);
+	}
+	
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		mreload = FindState("Reload.Modern");
@@ -461,26 +513,20 @@ Class BDoomWeapon : Weapon abstract {
 			mreload = FindState("ForcedCool");
 		mready = FindState("Ready.Modern");
 	}
-	//check if freelook is in use
-	action bool CheckFreeLook() {
-		//double-check 'freelook' cvar was cached correctly
-		if (!invoker.c_freelook) {
-			//console.printf("Freelook not cached correctly");
-			return false;
-		}
-		//if singleplayer: return false if freelook is *disabled* OR if the player isn't *using* it
-		//if multiplayer: ignore player settings, since everyone should be on equal terms
-		if (!Level.IsFreelookAllowed() || (!multiplayer && !invoker.c_freelook)) {
-			//Console.Printf("Freelook allowed: %d | multiplayer: %d | Freelook in use: %d",Level.IsFreelookAllowed(),multiplayer,invoker.c_freelook);
-			return false;
-		}
-		return true;
-	}
-	action void BD_SetPitch(double pitch, int flags = 0) {
-		if (!CheckFreeLook())
+	
+	// Make sure player's magazine isn't empty when
+	// a weapon is first picked up (for Modern Guns):
+	override void AttachToOwner(actor other) {
+		super.AttachToOwner(other);
+		if (!owner)
 			return;
-		A_SetPitch(pitch, flags);
+		if (picked)
+			return;
+		int ama = (magammogive > 0) ? magammogive : 100; //give either full mag, or however much is specified with magammo property
+		owner.GiveInventory(magammo,ama);
+		picked = true;
 	}
+	
 	override void DoEffect() {
 		if (!owner || !owner.player)
 			return;
@@ -494,13 +540,10 @@ Class BDoomWeapon : Weapon abstract {
 			c_blackgloves_cache = CVar.GetCVar('bdoom_blackgloves',plr);
 		if (c_bobstyle_cache == null)
 			c_bobstyle_cache = CVar.GetCvar('bdoom_weaponbobstyle',plr);
-		if (c_freelook_cache == null)
-			c_freelook_cache = CVar.GetCvar('freelook',plr);
 		
 		c_muzzle = c_muzzle_cache.GetBool();
 		c_blackgloves = c_blackgloves_cache.GetBool();
 		c_bobstyle = c_bobstyle_cache.GetBool();
-		c_freelook = c_freelook_cache.GetBool();
 		
 		Super.DoEffect();
 		if (!default.icon) {
@@ -565,7 +608,7 @@ Class BDoomWeapon : Weapon abstract {
 		if 	((plr.cmd.buttons & BT_USER1) && !(plr.oldbuttons & BT_USER1)) {
 			let psp = plr.FindPSprite(PSP_WEAPON);
 			let kicks = plr.FindPSprite(PSP_KICK);
-			if(!psp || bdoom_weapons != 2  || kicks) //if dead, or not Modern guns selected, or is already kicking
+			if(!psp || bdoom_weapons != BD_WeaponSet.WS_MODERN  || kicks) //if dead, or not Modern guns selected, or is already kicking
 				return;
 			//do this if used from Ready: will not only kick in overlay but will also move the weapon aside
 			else if	(InStateSequence(psp.curstate, mready) )
@@ -575,7 +618,7 @@ Class BDoomWeapon : Weapon abstract {
 				plr.setPSprite(PSP_KICK,FindState("QuickKick"));
 		}
 	//BACKGROUND RELOAD
-		if (bdoom_weapons != 2 || !bdoom_autoreload || !ammo1 || !ammo2 || (ammo1 == ammo2))
+		if (bdoom_weapons != BD_WeaponSet.WS_MODERN || !bdoom_autoreload || !ammo1 || !ammo2 || (ammo1 == ammo2))
 			return;
 		if (plr.readyweapon == self || ammo1.amount == ammo1.maxamount || ammo2.amount < 1) {
 			NonselTimer = 0;
@@ -685,9 +728,14 @@ Class BDoomWeapon : Weapon abstract {
 		DryReload:
 			#### # 8 {
 				A_ClearRefire();
+				if (!IsReadyForReload())
+					return ResolveState("Ready");
 				A_StartSound("Mweapons/dry",0);
+				return ResolveState(null);
 			}
-			#### # 0 A_Jump(256,"Reload");
+			#### # 0 {
+				return ResolveState("Reload");
+			}
 			wait;
 		LoadSprites:
 			GSMO A 0;

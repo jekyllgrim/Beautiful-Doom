@@ -18,7 +18,7 @@ Class BD_Chaingun : BDoomWeapon {
 		Weapon.AmmoType		"Clip";
 		Weapon.AmmoUse			1;
 		Weapon.AmmoGive		0;
-		BDoomWeapon.magammo	"RifleClip";
+		BDoomWeapon.magammo	"BD_RifleClip";
 		Weapon.AmmoType2		"Clip";
 		Weapon.AmmoUse2		1;
 		Weapon.AmmoGive2		20;
@@ -28,10 +28,12 @@ Class BD_Chaingun : BDoomWeapon {
 		BDoomWeapon.ClassicIcon "MGUNZ0";
 		BDoomWeapon.ModernIcon "RIFNZ0";
 	}
+	
 	action void SpawnChaingunCasing() {
 		if(bdoom_debris)
 			A_Eject("BD_ChaingunCasing",10,frandom[bdsfx](5,7),20,frandom[bdsfx](0,2),frandom[bdsfx](3.5,4.5),frandom[bdsfx](3.2,4));
 	}
+	
 	action void SpawnRifleCasing() {
 		if(!bdoom_debris)
 			return;
@@ -47,16 +49,19 @@ Class BD_Chaingun : BDoomWeapon {
 		else
 			return "$GOTCHAINGUN"; 
 	}
+	
 	override void PostBeginPlay() {
 		super.PostBeginPlay();
 		s_spin = FindState("AltHold");
 	}
+	
 	override string GetObituary (Actor victim, Actor inflictor, Name mod, bool playerattack) {
 		if(bdoom_weapons == BD_WeaponSet.WS_MODERN) 
 			return "$BD_AROBITUARY"; 
 		else 
 			return "$OB_MPCHAINGUN"; 
 	}
+	
 	override void Tick() {
 		If (Owner)	
 			return;
@@ -70,6 +75,7 @@ Class BD_Chaingun : BDoomWeapon {
 		}
 		Super.Tick();
 	}
+	
 	override void DoEffect() {
 		Super.DoEffect();
 		if (!owner || !owner.player)
@@ -81,12 +87,13 @@ Class BD_Chaingun : BDoomWeapon {
 			else	
 				bNOAUTOFIRE = false;
 			bAMMO_OPTIONAL = true;
+			bNOALERT = true;
 		}
 		else {
 			SetTag("$TAG_CHAINGUN");
 			bNOAUTOFIRE = false;
 			bAMMO_OPTIONAL = false;
-			//console.printf("spin speed: %d | frame: %d | tics: %d",spinspeed,spinframe,spintics);
+			bNOALERT = false;
 		}
 		
 		// Weapons are set to Enhanced, this weapon is selected,
@@ -203,7 +210,8 @@ Class BD_Chaingun : BDoomWeapon {
 			BobSpeed = 1.0;*/
 		}
 	}
-	states {
+	
+	States {
 		Spawn:
 			MGUN A 1 NoDelay {
 				if (bdoom_weapons == BD_WeaponSet.WS_MODERN) {
@@ -261,7 +269,7 @@ Class BD_Chaingun : BDoomWeapon {
 			}
 			loop;
 		Fire:
-			TNT1 A 0 A_JumpIf(bdoom_weapons==2,"Fire.Modern");
+			TNT1 A 0 A_JumpIf(bdoom_weapons == BD_WeaponSet.WS_MODERN,"Fire.Modern");
 			MGGG A 1 {
 				//A_WeaponOffset(0.0,35.0,WOF_INTERPOLATE);
 				a_gunflash();
@@ -355,7 +363,7 @@ Class BD_Chaingun : BDoomWeapon {
 				// If weapons are not set to Enhanced,
 				// reset the values and stop this state
 				// sequence:
-				if (bdoom_weapons != 1) {
+				if (bdoom_weapons != BD_WeaponSet.WS_ENHANCED) {
 					invoker.isLocked = false;
 					invoker.spinspeed = 0;
 					return ResolveState("Ready");
@@ -480,7 +488,7 @@ Class BD_Chaingun : BDoomWeapon {
 				if (invoker.riflesights)
 					return ResolveState("ReadySights");				
 				BD_SetSprite("RIFN","QIFN");
-				if (CountInv("RifleClip") < 1) {
+				if (!A_CheckAmmo()) {
 					let psp = player.FindPsprite(PSP_WEAPON);
 					if (psp)
 						psp.frame = 4;
@@ -508,7 +516,7 @@ Class BD_Chaingun : BDoomWeapon {
 		Fire.Modern:
 			TNT1 A 0 {
 				BD_SetSprite("RIFN","QIFN");
-				if (CountInv("RifleClip") < 1)
+				if (!A_CheckAmmo())
 					return ResolveState("DryReload");
 				if (invoker.riflesights)
 					return ResolveState("FireSights");
@@ -532,7 +540,7 @@ Class BD_Chaingun : BDoomWeapon {
 			#### A 0 {
 				SpawnRifleCasing();
 				A_ReFire("Fire.Modern");
-				if (CountInv("RifleClip") < 1) {
+				if (!A_CheckAmmo()) {
 					let s = Player.FindPsprite(PSP_Weapon);
 					if (s)
 						s.frame = 3;
@@ -565,7 +573,7 @@ Class BD_Chaingun : BDoomWeapon {
 				A_WeaponOffset(0,32,WOF_INTERPOLATE);
 				let plr = PlayerPawn(self);
 				plr.AttackZOffset = plr.default.AttackZOffset;
-				if (CountInv("RifleClip") < 1)
+				if (!A_CheckAmmo())
 					return ResolveState("DryReload");
 				return ResolveState(null);
 			}
@@ -589,7 +597,7 @@ Class BD_Chaingun : BDoomWeapon {
 				A_WeaponOffset(0,32,WOF_INTERPOLATE);
 				let plr = PlayerPawn(self);
 				plr.AttackZOffset = plr.default.AttackZOffset;
-				if (CountInv("RifleClip") < 1)
+				if (!A_CheckAmmo())
 					return ResolveState("DryReload");
 				return ResolveState(null);
 			}
@@ -614,16 +622,13 @@ Class BD_Chaingun : BDoomWeapon {
 				let plr = PlayerPawn(self);
 				plr.AttackZOffset = plr.default.AttackZOffset;
 				A_WeaponReady(WRF_NOFIRE);
-				if (CountInv("RifleClip") < 1)
+				if (!A_CheckAmmo())
 					return ResolveState("Reload");
 				return ResolveState(null);
 			}
 			goto ready;
 		DryReload:
-			RIFN A 8 {
-				BD_SetSprite("RIFN","QIFN");
-				A_ClearRefire();
-				A_StartSound("Mweapons/dry",slot:CHAN_7);
+			RIFN A 0 {
 				if (invoker.RifleSights) {
 					let psp = player.FindPSprite(PSP_Weapon);
 					if (psp) 
@@ -632,14 +637,12 @@ Class BD_Chaingun : BDoomWeapon {
 				else
 					BD_SetSprite("RIFN","QIFN");
 			}
-			goto reload;
+			goto super::DryReload;
 		Reload:
 			RIFA A 0 { 
 				A_ClearRefire();
 				BD_ClearPsprite(PSP_REDDOT);
-				if (CountINv("Clip") == 0)
-					return ResolveState("Ready");
-				if (CountInv("RifleClip") < 1)
+				if (!A_CheckAmmo())
 					invoker.wasempty = true;
 				if (!invoker.RifleSights)
 					Return ResolveState("ReloadDo");
@@ -777,7 +780,7 @@ Class BD_Chaingun : BDoomWeapon {
 	}
 }
 
-Class RifleClip : ammo {
+Class BD_RifleClip : ammo {
 	Default {
 		inventory.icon "HMAGZ0";
 		inventory.amount 1;
