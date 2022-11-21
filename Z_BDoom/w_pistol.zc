@@ -344,7 +344,7 @@ Class BD_Pistol : BDoomWeapon {
 		PIMN A 0 {
 			A_StartSound("weapons/pistol/draw");			
 			if (countinv("BD_PistolClip") <= 0)
-				BD_SetSprite("QIMT","PIMT");
+				BD_SetSprite("PIMT","QIMT");
 			else			
 				BD_SetSprite("PIMN","QIMN");
 		}
@@ -353,7 +353,7 @@ Class BD_Pistol : BDoomWeapon {
 	Deselect.Modern:
 		PIMN A 0 {	
 			if (countinv("BD_PistolClip") <= 0)
-				BD_SetSprite("QIMT","PIMT");
+				BD_SetSprite("PIMT","QIMT");
 			else			
 				BD_SetSprite("PIMN","QIMN");
 		}
