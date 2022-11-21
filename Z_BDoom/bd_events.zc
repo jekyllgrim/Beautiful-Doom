@@ -1,4 +1,4 @@
-class BD_GameCompatHandler : StaticEventHandler {
+class BD_Replacementhandler : EventHandler {
 	int gameCompatType;
 
 	int GetGameCompat() {
@@ -16,7 +16,7 @@ class BD_GameCompatHandler : StaticEventHandler {
 			game |= BD_GameCompat.GC_ALICE;
 		}
 		
-		if (Wads.FindLump("kdikdizd")) {
+		if (Wads.FindLump("kdikdizd") != -1) {
 			game |= BD_GameCompat.GC_KDIKDIZD;
 		}
 		
@@ -25,16 +25,7 @@ class BD_GameCompatHandler : StaticEventHandler {
 	
 	override void OnRegister() {
 		gameCompatType = GetGameCompat();
-	}
-}
-
-class BD_Replacementhandler : EventHandler {
-	int gameCompatType;
-	
-	override void OnRegister() {
-		let handler = BD_GameCompatHandler(StaticEventHandler.Find("BD_GameCompatHandler"));
-		if (handler)
-			gameCompatType = handler.gameCompatType;
+		console.printf("Game compat type: %d", gameCompatType);
 	}
 
 	/*	This function is designed to avoid replacing actors that are 
@@ -378,7 +369,11 @@ class BD_ActorOverrideHandler : BD_Replacementhandler {
 		if (CheckVanillaReplacement(rname))
 			return;
 		
-		// New pickup sounds without replacing pickups:
+		// New pickup sounds without replacing pickups.
+		// It's done both for pickups that aren't replaced
+		// at all (like health kits), and for pickups that
+		// have a BDoom version but may not be replaced
+		// due to Safe Replacement.
 		switch (rname) {
 		case 'HealthBonus': 
 			inv.pickupsound = "pickups/health0";

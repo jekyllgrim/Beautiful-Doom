@@ -25,10 +25,10 @@ struct BD_SafeReplacement {
 
 struct BD_GameCompat {
 	enum GameCompat {
-		GC_DOOM,
-		GC_PAINSLAYER,
-		GC_KDIKDIZD,
-		GC_ALICE,
-		GC_VALIANT,
+		GC_DOOM = 0,
+		GC_PAINSLAYER = 1,
+		GC_KDIKDIZD = 2,
+		GC_ALICE = 4,
+		GC_VALIANT = 8,
 	}
 }
