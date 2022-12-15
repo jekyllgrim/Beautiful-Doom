@@ -28,10 +28,16 @@ AddListMenu "MainMenu" {
 	TextItem "$BDMENU_TITLE_SHORT", "b", "BDoom_Settings"
 }
 
-AddOptionMenu "OptionsMenu"
+AddOptionMenu "OptionsMenu" before "CustomizeControls"
 {
 	StaticText "$BDMENU_DESC", "Red"
 	Submenu "$BDMENU_TITLE", "BDoom_Settings"
+}
+
+AddOptionMenu "OptionsMenuSimple" before "CustomizeControls"
+{
+	Submenu "$BDMENU_TITLE", "BDoom_Settings"
+	StaticText ""
 }
 
 OptionMenu "BDoom_Settings" {	
