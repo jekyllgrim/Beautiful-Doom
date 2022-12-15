@@ -35,14 +35,14 @@ world/watersplash4			DSSLIME4
 
 $random world/watersplash	{ world/watersplash1 world/watersplash2 world/watersplash3 world/watersplash4 }
 
-$limit world/drip 20
-$limit world/watersplash 20
-$limit world/watersplashsmall 20
-$limit world/sludgegloop 20
-$limit world/sludgegloopsmall 20
-$limit world/lavasizzle 20
-$limit world/lavsiz2 20
-$limit world/lavasizzlesmall 20
+$limit world/drip 2
+$limit world/watersplash 2
+$limit world/watersplashsmall 2
+$limit world/sludgegloop 2
+$limit world/sludgegloopsmall 2
+$limit world/lavasizzle 2
+$limit world/lavsiz2 2
+$limit world/lavasizzlesmall 2
 
 
 //Aspects Floor Sounds
