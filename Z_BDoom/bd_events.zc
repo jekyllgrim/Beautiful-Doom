@@ -316,9 +316,43 @@ class BD_ActorOverrideHandler : BD_Replacementhandler {
 		'BFGExtra' //Quiet Imp
 	};
 	
+	static const name Valiant_Exceptions[] = {
+		//DEHACKED:
+		'BaronOfHell',
+		'HellKnight',
+		'SpiderMastermind',
+		'CommanderKeen',
+		'DoomImpBall',
+		'LightAmp',
+		'HeartColumn',
+		'ArchVile',
+		'ShortBlueTorch',
+		'BlueTorch',
+		'DeadLostSoul',
+		'Revenant',
+		//decorate:
+		'DoomImp',
+		'DoomImpBall',
+		'Demon',
+		'Spectre',
+		'BaronOfHell',
+		'BaronBall',
+		'HellKnight',
+		'SpiderMastermind',
+		'Arachnotron',
+		'Infrared',
+		'HeartColumn',
+		'DeadLostSoul',
+		'Chaingun',
+		'Pistol',
+		'Shotgun',
+		'SuperShotgun',
+		'BlueTorch'
+	};
+	
 	bool IsKDiKDiZDException(name classname) {
 		for (int i = 0; i < KDIKDIZD_Exceptions.Size(); i++) {
-			if (KDIKDIZD_Exceptions[i] && KDIKDIZD_Exceptions[i] ==classname)
+			if (KDIKDIZD_Exceptions[i] && KDIKDIZD_Exceptions[i] == classname)
 				return true;
 		}
 		return false;

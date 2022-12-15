@@ -98,6 +98,7 @@ Class BD_WeaponPickupControl : BD_DummyInventory {
 		}
 		changeweapons.Clear();
 	}
+	
 	Class<Inventory> GetWeaponReplacement(Class<Inventory> replacee) {
         Class<Inventory> replacement = null;
         if (bdoom_replaceweapons) {
@@ -118,6 +119,7 @@ Class BD_WeaponPickupControl : BD_DummyInventory {
 		}
 		return replacement;
 	}
+	
 	Class<Inventory> GetKeyReplacement(Class<Inventory> replacee) {
         Class<Inventory> replacement = null;
 		for (int i = 0; i < modKeys.Size(); i++) {
@@ -128,7 +130,8 @@ Class BD_WeaponPickupControl : BD_DummyInventory {
 		}
 		return replacement;
 	}
-    override bool HandlePickup (Inventory item) {
+    
+	override bool HandlePickup (Inventory item) {
         let replacee = item.GetClassName();
 		Class<Inventory> replacement = null;
 		if (item is "Weapon")
@@ -148,6 +151,10 @@ Class BD_WeaponPickupControl : BD_DummyInventory {
 		
 
 Class BDoomWeapon : Weapon abstract {	
+	mixin BD_LinearMapCheck;
+	
+	protected Weapon prevReadyweapon;
+
 	protected bool picked; //has this gun been picked up before?
 	protected int offsetTics; // current camera sway timer
 	protected double maxOffsetTics; // starting point for the timer
@@ -170,22 +177,21 @@ Class BDoomWeapon : Weapon abstract {
 	property magammogive : magammogive;
 	
 	protected int smokeFrame; //to create multiple smoke layers
-	const smokeLayers = 21;
+	const SMOKELAYERS = 21;
 	protected double smokeFade;
-	protected double prevAngle[smokeLayers];
-	protected double prevPitch[smokeLayers];
-	protected double smokeVVel[smokeLayers];
-	protected double smokeHVel[smokeLayers];
-	protected double smokeRollChange[smokeLayers];
-	protected int smokeTics[smokeLayers];
+	protected double prevAngle[SMOKELAYERS];
+	protected double prevPitch[SMOKELAYERS];
+	protected double smokeVVel[SMOKELAYERS];
+	protected double smokeHVel[SMOKELAYERS];
+	protected double smokeRollChange[SMOKELAYERS];
+	protected int smokeTics[SMOKELAYERS];
 	
 	
 	protected transient CVar c_muzzle_cache;	
-	protected transient CVar c_blackgloves_cache;
+	protected transient CVar c_blackgloves;
 	protected transient CVar c_bobstyle_cache;
 	protected transient CVar c_freelook;
 	protected bool c_muzzle;	
-	protected bool c_blackgloves;
 	protected bool c_bobstyle;
 	protected bool wasempty;			//used in reload animations to keep track of whether reload was dry (affects animations)
 	protected bool dontforcebob;		//if false, weapons will bob all the time
@@ -234,10 +240,15 @@ Class BDoomWeapon : Weapon abstract {
 	}	
 	//Selects between regular weapon sprite and the one with black gloves:
 	action void BD_SetSprite(name sprite1, name sprite2) {
+		if (!player)
+			return;
+		
 		let psp = player.FindPSprite(OverlayID());
 		if (!psp)
 			return;
-		if (invoker.c_blackgloves == false)
+		if (invoker.c_blackgloves == null)
+			invoker.c_blackgloves = CVar.GetCVar('bdoom_blackgloves',player);
+		if (invoker.c_blackgloves.GetBool() == false)
 			psp.sprite = GetSpriteIndex(sprite1);
 		else
 			psp.sprite = GetSpriteIndex(sprite2);
@@ -255,7 +266,7 @@ Class BDoomWeapon : Weapon abstract {
 		}
 		int smokeStart = drawOver ? PSP_SMOKETOP : PSP_SMOKE;
 		int smokeEnd = drawOver ? PSP_SMOKEEND : PSP_SMOKEENDTOP;
-		if (invoker.smokeFrame >= smokelayers)
+		if (invoker.smokeFrame >= SMOKELAYERS)
 			invoker.smokeFrame = 0;
 		int layer = smokeStart + invoker.smokeFrame;
 		A_Overlay(layer,"GunSmokeDo");
@@ -532,17 +543,14 @@ Class BDoomWeapon : Weapon abstract {
 			return;
 			
 		let plr = owner.player;
-		//double-check if user cvars are cached correctly:
 		
+		//double-check if user cvars are cached correctly:
 		if (c_muzzle_cache == null)
 			c_muzzle_cache = CVar.GetCVar('bdoom_muzzle',plr);
-		if (c_blackgloves_cache == null)
-			c_blackgloves_cache = CVar.GetCVar('bdoom_blackgloves',plr);
 		if (c_bobstyle_cache == null)
 			c_bobstyle_cache = CVar.GetCvar('bdoom_weaponbobstyle',plr);
 		
 		c_muzzle = c_muzzle_cache.GetBool();
-		c_blackgloves = c_blackgloves_cache.GetBool();
 		c_bobstyle = c_bobstyle_cache.GetBool();
 		
 		Super.DoEffect();
@@ -646,7 +654,7 @@ Class BDoomWeapon : Weapon abstract {
 			}
 			#### # 1 {
 				int smokeStart = OverlayID() > 0 ? PSP_SMOKETOP : PSP_SMOKE;
-				int valueID = Clamp(OverlayID() - smokeStart, 0, smokeLayers-1);
+				int valueID = Clamp(OverlayID() - smokeStart, 0, SMOKELAYERS-1);
 				A_OverlayOffset(
 					OverlayID(),
 					invoker.smokeHVel[valueID] - (invoker.prevAngle[valueID] - angle),
