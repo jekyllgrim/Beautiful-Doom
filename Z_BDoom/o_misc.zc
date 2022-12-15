@@ -115,6 +115,13 @@ Class BD_WaterSplashChunk : BD_SmallDebris {
 		gravity 0.3;
 		renderstyle 'translucent';
 	}
+	
+	override void Tick() {
+		super.Tick();
+		if (waterlevel > 1)
+			Destroy();
+	}
+	
 	states {
 	Spawn:
 		SPSH ABCD 4;
