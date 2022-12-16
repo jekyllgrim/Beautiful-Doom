@@ -984,6 +984,7 @@ Class BD_NullPuff : Actor {
 		+PAINLESS
 		+PUFFONACTORS
 		+NODAMAGETHRUST
+		+DONTSPLASH
 	}
 	states {
 		Spawn:
