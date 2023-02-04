@@ -400,7 +400,7 @@ Class BDoomWeapon : Weapon abstract {
 					pitch:spread.y
 				);
 			}
-			A_FireBullets (spread.x, spread.y, -1, damage, pufftype,flags:FBF_NORANDOMPUFFZ|FBF_EXPLICITANGLE);
+			A_FireBullets (spread.x, spread.y, -1, damage, pufftype,flags:FBF_NORANDOMPUFFZ|FBF_EXPLICITANGLE|FBF_NOPITCH);
 		}
 	}
 	
