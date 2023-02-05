@@ -385,9 +385,11 @@ Class BDoomWeapon : Weapon abstract {
 		// always spawn!)
 		for (int i = 0; i < numbullets; i++) {
 			vector2 spread = (0,0);
+			int fflags = FBF_NORANDOMPUFFZ|FBF_EXPLICITANGLE;
 			if (held) {
 				spread.x = random2[BDFireBull]() * (spread_horz / 256);
 				spread.y = BulletSlope() - pitch + random2[BDFireBull]() * (spread_vert / 256);
+				fflags |= FBF_NOPITCH;
 			}
 			
 			if (bdoom_tracers) {
@@ -400,7 +402,7 @@ Class BDoomWeapon : Weapon abstract {
 					pitch:spread.y
 				);
 			}
-			A_FireBullets (spread.x, spread.y, -1, damage, pufftype,flags:FBF_NORANDOMPUFFZ|FBF_EXPLICITANGLE|FBF_NOPITCH);
+			A_FireBullets (spread.x, spread.y, -1, damage, pufftype,flags:fflags);
 		}
 	}
 	
