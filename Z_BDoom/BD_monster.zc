@@ -252,7 +252,7 @@ Class BDoomMonster : BDoomActor abstract {
 				return ResolveState(null);
 			}
 			#### # 50 {
-				if (vel == (0,0,0) && pos.z == floorz) {
+				if (vel == (0,0,0) && pos.z <= floorz) {
 					if (bdoom_blood && !BDoomActor.CheckAnimated(self)) {
 						let pool = BD_BaseDebris(Spawn("BD_AniBloodPool",(pos.x,pos.y,floorz),ALLOW_REPLACE));
 						if (pool) {
@@ -302,7 +302,7 @@ Class BDoomMonster : BDoomActor abstract {
 			wait;
 		Death.Telefrag:
 		Death.Massacre:
-			TNT1 A 0 {
+			TNT1 A 1 {
 				if (vxdeath)
 					return vxdeath;
 				else if (xxdeath)
@@ -312,7 +312,7 @@ Class BDoomMonster : BDoomActor abstract {
 			stop;
 		//when killed by damagetype 'Fire':
 		Death.Fire:
-			TNT1 A 0 {
+			TNT1 A 1 {
 				//the body becomes scorched
 				A_SetTranslation("Scorched");
 				A_SetRenderstyle(alpha,STYLE_Normal);
@@ -342,13 +342,13 @@ Class BDoomMonster : BDoomActor abstract {
 			}
 			stop;
 		Death.GreenFire:
-			TNT1 A 0 {
+			TNT1 A 1 {
 				greenFire = true;
 				return ResolveState("Death.Fire");
 			}
 			stop;
 		Death.PlasmaDamage:
-			#### # 0 {
+			#### # 1 {
 				burncorpse = BD_TranslatedBurningBody(Spawn("BD_TranslatedBurningBody",pos,ALLOW_REPLACE));
 				if (burncorpse) {
 					burncorpse.A_SetTranslation("Scorched");
@@ -362,7 +362,7 @@ Class BDoomMonster : BDoomActor abstract {
 			stop;
 		//activates burning itself and goes to regular death
 		DoFireDeath:
-			TNT1 A 0 {
+			TNT1 A 1 {
 				burning = true;
 				burntimer = 0;
 				//if (GetRenderStyle() == 1)
