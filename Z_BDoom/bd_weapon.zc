@@ -344,8 +344,8 @@ Class BDoomWeapon : Weapon abstract {
 		
 		vector2 spread = (0,0);
 		for (int i = 0; i < numbullets; i++) {
-			spread.x = random2[BDFireBull]() * (spread_horz / 256);
-			spread.y = BulletSlope() - pitch + random2[BDFireBull]() * (spread_vert / 256);
+			spread.x = random2[BDFireBull]() * spread_horz / 255;
+			spread.y = BulletSlope() - pitch + ( random2[BDFireBull]() * spread_vert / 255. );
 			A_FireProjectile(
 				bullet, 
 				angle: spread.x,
@@ -357,53 +357,16 @@ Class BDoomWeapon : Weapon abstract {
 	}
 	
 	// a wrapper function that automatically plays either 
-	// vanilla or enhanced weapon sound, and fires tracers 
-	// with A_FireProjectile so that they don't break on 
-	// portals and such:
+	// vanilla or enhanced weapon sound, and fires tracers
 	action void BD_FireBullets(double spread_horz = 0, double spread_vert = 0, int numbullets = 1, int damage = 1, sound vanillasnd = "", sound enhancedsnd = "", Class<Actor> pufftype = "BD_EnBulletPuff", double spawnheight = 0, double spawnofs = 0) {
-		if (numbullets == 0) numbullets = 1;
-		let weapon = player.ReadyWeapon;
-		//deplete the appropriate ammo
-		if (!weapon || !weapon.DepleteAmmo(weapon.bAltFire, true))
-			return;
-			
+
 		//decide which sound to play based on current weapon set
 		sound snd = (enhancedsnd && bdoom_weapons == BD_WeaponSet.WS_ENHANCED) ? enhancedsnd : vanillasnd;
 		//play only if non-null
 		if (snd)
 			A_StartSound(snd,CHAN_WEAPON);
-		// emulate perfect accuracy on first bullet: it'll 
-		// happen if there's only 1 bullet, player isn't in 
-		// refire (holding attack button), and numbullets 
-		// is positive
-		bool held = (numbullets != 1 || player.refire);
-		//make sure numbullets is positive, now that the check is finished
-		numbullets = abs(numbullets);
-		// fire bullets with explicit angle and simply pass 
-		// the offsets to the projectiles instead of using 
-		// AimBulletMissile at puffs (because puffs don't 
-		// always spawn!)
-		for (int i = 0; i < numbullets; i++) {
-			vector2 spread = (0,0);
-			int fflags = FBF_NORANDOMPUFFZ|FBF_EXPLICITANGLE;
-			if (held) {
-				spread.x = random2[BDFireBull]() * (spread_horz / 256);
-				spread.y = BulletSlope() - pitch + random2[BDFireBull]() * (spread_vert / 256);
-				fflags |= FBF_NOPITCH;
-			}
-			
-			if (bdoom_tracers) {
-				A_FireProjectile(
-					"BD_BulletTracer",
-					spread.x,
-					useammo:false,
-					spawnofs_xy:spawnofs,
-					spawnheight:spawnheight,
-					pitch:spread.y
-				);
-			}
-			A_FireBullets (spread.x, spread.y, -1, damage, pufftype,flags:fflags);
-		}
+
+		A_FireBullets(spread_horz, spread_vert, numbullets, damage, pufftype, FBF_NORANDOMPUFFZ|FBF_USEAMMO, missile: bdoom_tracers ? "BD_BulletTracer" : "", spawnheight: spawnheight, spawnofs_xy: spawnofs);
 	}
 	
 	//Version of A_WeaponReady that incorporates reloading and kicking
