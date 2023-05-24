@@ -580,9 +580,9 @@ Class BD_WaterBubble : BD_SmallDebris {
 		
 		
 /*
-modifiable class for flares and flames
-used both as a universal flare (setting fcolor will change its appearance) and as a base class for fire FX
-must NOT be abstract
+	modifiable class for flares and flames
+	used both as a universal flare (setting fcolor will change its appearance)
+	and as a base class for fire FX
 */
 Class BD_BaseFlare : BD_SmallDebris {
 	protected state mdeath;
@@ -1029,6 +1029,7 @@ mixin class BD_DecalControl {
 	static const string BD_PCheck_SkinWalls[] = {
 		"SKIN", "ZFACE"
 	};
+
 	void CreateDecal() {
 		// First we fire linetrace, using angle and pitch of target (which is either the player or the bullet projectile)
 		if (target) {
@@ -1045,9 +1046,14 @@ mixin class BD_DecalControl {
 		vector3 tracepos = (pos.x,pos.y,traceheight);
 		//if (target && (vel ~== (0,0,0) || !Level.IsPointInLevel(tracepos)))
 			//tracepos = target.pos;
+		
 		LineTrace(angle,128,pitch,TRF_THRUACTORS|TRF_NOSKY|TRF_ABSPOSITION,tracepos.z,tracepos.x,tracepos.y,data:puffdata);	
-		hittex = texman.GetName(puffdata.HitTexture);	
+		if (puffdata.HitTexture == skyflatnum)
+			return;
+		
+		hittex = texman.GetName(puffdata.HitTexture);
 		hitnormal = -puffdata.HitDir;
+		
 		if (puffdata.HitType == TRACE_HitFloor) {
 			if (puffdata.Hit3DFloor) 
 				hitnormal = -puffdata.Hit3DFloor.top.Normal;
@@ -1064,7 +1070,8 @@ mixin class BD_DecalControl {
 			hitnormal = (-puffdata.HitLine.delta.y,puffdata.HitLine.delta.x,0).unit();
 			if (!puffdata.LineSide) 
 				hitnormal *= -1;
-		}		
+		}
+
 		// regular liquids — splash sound, no visuals
 		for (int i = 0; i < BD_PCheck_LiquidWalls.Size(); i++) {
 			if (hittex.IndexOf(BD_PCheck_LiquidWalls[i]) >= 0 ) {
@@ -1254,13 +1261,14 @@ mixin class BD_DecalControl {
 	}
 }
 
-// Spawned by hitscans and real bullets (when in Modern Guns mode). Simulates different effects based on texture name
+// Spawned by hitscans or, in Modern Guns mode, by projectiles.
+// Simulates different effects based on texture name
 Class BD_EnBulletPuff : BDoomPuff {
 	Default {
 		+PUFFGETSOWNER
 		+HITTRACER
 		+PUFFONACTORS
-		+ALWAYSPUFF
+		//+ALWAYSPUFF
 		decal "none";
 		renderstyle 'Add';
 		scale 0.075;
@@ -1277,7 +1285,7 @@ Class BD_EnBulletPuff : BDoomPuff {
 		goto puffspawn;
 	PuffSpawn:
 		TNT1 A 0 {			
-			if (waterlevel > 1) {
+			if (waterlevel > 1 && bdoom_debris) {
 				for (int i = random[bdsfx](12,18); i > 0; i--)
 					A_SpawnItemEx("BD_WaterBubble",xvel:frandom[bdsfx](-0.5,0.5),yvel:frandom[bdsfx](-0.5,0.5),zvel:frandom[bdsfx](-0.5,0.5));
 				return ResolveState("Null");
