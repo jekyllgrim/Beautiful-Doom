@@ -8,12 +8,12 @@ Beautiful Doom © Jekyll Grim Payne aka Agent Ash. All rights reserved.
 
 Beautiful Doom is an all-encompassing total enhancement mod for GZDoom, aimed at making Doom feel, look and sound better, while keeping the original balance and gameplay intact (or tweaking it with some of the available options). Smoother animations, some improved sprites, particle effects, physics-based gibbing, as well as high compatibility with other mods—those are some of the features.
 
-***Beautiful Doom's code is licensed under GPLv3. Permissions for assets may vary. If you want to use Beautiful Doom in your work, please obtain a permission from <u>the author's explicit approval</u>. See more details [below](#Use-of-resources-and-permissions).***
+***Beautiful Doom's code is licensed under GPLv3. Permissions for assets may vary. If you want to use Beautiful Doom in your work, please obtain a permission from the author. See more details [below](#Use-of-resources-and-permissions).***
 
 Beautiful Doom mod thread at ZDoom Forums:
 https://forum.zdoom.org/viewtopic.php?f=43&t=50004&sid=1c1118c879d5317400aba8752ec93aed
 
-Requires **GZDoom**. At the moment of writing you need a development version, at least [GZDoom g4.5pre-70](https://devbuilds.drdteam.org/gzdoom/) since the latest stable release suffers from memory leaks.
+Requires **GZDoom**.
 
 ## How to play the latest stable release
 
@@ -49,7 +49,7 @@ It's possible to play the version that is currently in the repository but hasn't
    gzdoom.exe -file Beautiful-Doom-master.pk3
    ```
 
-5. If you're getting errors, try running it with the latest [development build of GZDoom](https://devbuilds.drdteam.org/gzdoom/). Github builds may contain features that haven't made it into a stable GZDoom release yet.
+5. If you're getting errors, make sure you're running the latest version of [GZDoom](https://zdoom.org/downloads).
 
 6. Enjoy!
 
