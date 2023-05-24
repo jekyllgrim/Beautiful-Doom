@@ -112,11 +112,13 @@ Class BD_BaseVictim : BDoomActor abstract {
 		if (isFrozen())
 			return;
 		//re-check visibility to player every 2 seconds
-		if (level.time % 70 == 0)
-			canSeePlayer = CheckPlayerSights();
-		if (canSeePlayer && bdoom_debris && abs(roll) < 5){
-			if (level.time % random(15,40) == 0)
-				A_SpawnitemEx("DecorBloodDrop",frandom(-bleedradius,bleedradius),frandom(-bleedradius,bleedradius),frandom(22,height-16),failchance:255-bleedfrequency);
+		if (bdoom_debris) {
+			if (level.time % 70 == 0)
+				canSeePlayer = CheckPlayerSights();
+			if (canSeePlayer && abs(roll) < 5){
+				if (level.time % random(15,40) == 0)
+					A_SpawnitemEx("DecorBloodDrop",frandom(-bleedradius,bleedradius),frandom(-bleedradius,bleedradius),frandom(22,height-16),failchance:255-bleedfrequency);
+			}
 		}
 		if (!bROLLSPRITE || swingspeed ~== 0)
 			return;

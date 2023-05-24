@@ -615,9 +615,8 @@ Class BD_BigTree : BigTree {
 		Spawn:
 			BTR2 A 0 noDelay { frame = random(0,3); }
 			BTR2 # 20 {
-				if (CheckPlayerSights()) {
-					if (bdoom_debris && frame != 0 && random(0,10) > 9)
-						A_SpawnItemEx("BigTreeLeaf",frandom(-20,20),frandom(-20,20),height+frandom(-4,4),frandom(-2,2),frandom(-2,2),0);
+				if (frame != 0 && bdoom_debris && CheckPlayerSights() && random(0,10) > 9) {
+					A_SpawnItemEx("BigTreeLeaf",frandom(-20,20),frandom(-20,20),height+frandom(-4,4),frandom(-2,2),frandom(-2,2),0);
 				}
 			}
 			wait;
