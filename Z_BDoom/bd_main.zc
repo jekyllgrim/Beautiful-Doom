@@ -1498,7 +1498,7 @@ Class BD_RicochetBullet : BD_SmallDebris {
 	}
 	states {
 	Spawn:
-		PUFF A 3;
+		M000 A 3;
 		stop;
 	}
 }
