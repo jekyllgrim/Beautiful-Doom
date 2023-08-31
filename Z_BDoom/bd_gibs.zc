@@ -881,20 +881,19 @@ Class BD_CacoInnards : BD_BasicMeatPiece {
 	}
 	override void GibBeginPlay() {
 		super.GibBeginPlay();
-		sprite = GetSpriteIndex("TR51");
 		roll = 0;
 	}
 	States {
 	Spawn:
-		TR51 ABCD 2;
+		TR52 ABCD 2;
 		loop;
 	Death:
 		TNT1 A 0 {
 			A_Scream();
 			SpawnGibBloodPool();
 		}
-		TR51 EFGHI 2;
-		TR51 J -1;
+		TR52 EFGHI 2;
+		TR52 J -1;
 		stop;
 	HitWall:
 		stop;
